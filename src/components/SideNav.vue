@@ -20,22 +20,12 @@
                     <span class="text-white text-sm font-extrabold">Plan Voyage</span>
                 </a>
             </nav>
-            
-        <!-- content -->
         </div>
-        <!-- <div class="flex-1"> -->
-            <!-- header -->
-            <!-- <div class="bg-white shadow px-2 py-4">Header</div> -->
-            <!-- content -->
-            <!-- <div class="p-8 text-cyan-700 font-extrabold text-white">Content</div> -->
-        <!-- </div> -->
     </div>
 </template>
 
 <script>
-export default {};
 </script>
 
 <style>
-    
 </style>
