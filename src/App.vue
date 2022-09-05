@@ -1,19 +1,15 @@
-<template>
-</template>
+<script setup>
+import SideNav from './components/SideNav'
 
-<script>
-export default {
-  name: 'App'
-}
 </script>
 
+<template>
+  <SideNav />
+</template>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+@font-face {
+  font-family: "Manrope";
+  src: local("Manrope"), url(./fonts/Manrope-Regular.ttf) format("truetype");
 }
 </style>
