@@ -19,6 +19,11 @@ module.exports = {
     extend: {},
     fontFamily: {
       'sans': ['Manrope'],
+    },
+    fontSize:{
+      base: ['14px','24px'],
+      tiny: ['12px', '20px'],
+      sm: ['14px', '20px']
     }
   },
   variants: {
