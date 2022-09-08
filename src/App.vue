@@ -1,10 +1,20 @@
 <script setup>
 import SideNav from './components/SideNav'
+import WebHeader from './components/WebHeader.vue'
 
 </script>
 
 <template>
-  <SideNav />
+  <div class="flex items-start items-stretch">
+    <div>
+      <SideNav class=""/>
+    </div>
+    <div class="grow h-screen">
+      <WebHeader class="sticky"/>
+      <div class="flex bg-backgroundgray h-full"></div>
+    </div>
+
+  </div>
 </template>
 
 <style>
