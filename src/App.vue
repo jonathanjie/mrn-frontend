@@ -11,7 +11,7 @@ import WebHeader from './components/WebHeader.vue'
     </div>
     <div class="grow h-screen">
       <WebHeader class="sticky"/>
-      <div class="flex bg-backgroundgray h-full"></div>
+      <div class="flex bg-bggray h-full"></div>
     </div>
 
   </div>

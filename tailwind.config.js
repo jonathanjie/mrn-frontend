@@ -15,7 +15,7 @@ module.exports = {
       blue: '#004557',
       lightblue: '#007694',
       white: '#fff',
-      backgroundgray: '#f9fafb'
+      bggray: '#f9fafb'
     },
     extend: {},
     fontFamily: {
