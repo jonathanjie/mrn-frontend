@@ -1,20 +1,26 @@
 <template>
-  <HomeView></HomeView>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/myvessels">My Vessels</router-link>
-    <router-link :to="{ name: 'vessel', params: { vesselId: 'placeholderid' } }" >Vessel</router-link>>
-  </nav>
-  <router-view/>
+  <div class="flex items-start items-stretch">
+    <div class="z-10">
+      <SideNav/>
+    </div>
+    <div class="grow h-screen">
+      <WebHeader class="sticky"/>
+      <router-view></router-view>
+    </div>
+  </div>
 </template>
 
 <script>
-import HomeView from './views/HomeView.vue'
+// import HomeView from './views/HomeView.vue'
+import SideNav from './components/SideNav/SideNav.vue'
+import WebHeader from './components/WebHeader.vue'
 
 export default {
   name: 'App',
   components: {
-    HomeView,
+    // HomeView,
+    SideNav,
+    WebHeader,
   }
 }
 </script>
