@@ -24,8 +24,13 @@ export default {
 </script>
 
 <style>
-@font-face {
+/* @font-face {
   font-family: "Manrope";
   src: local("Manrope"), url(./fonts/Manrope-Regular.ttf) format("truetype");
+} */
+
+@font-face {
+  font-family: "Manrope";
+  src: local("Manrope"), url(./fonts/Manrope-SemiBold.ttf) format("truetype");
 }
 </style>
