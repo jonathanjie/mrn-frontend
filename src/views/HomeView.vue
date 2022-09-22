@@ -10,15 +10,11 @@
 </template>
 
 <script>
-// import SideNav from '../components/SideNav/SideNav.vue'
-// import WebHeader from '../components/WebHeader.vue'
 import GradientButton from '../components/GradientButton.vue'
 
 export default {
   name: 'HomeView',
   components: {
-    // SideNav,
-    // WebHeader,
     GradientButton
 }
 }

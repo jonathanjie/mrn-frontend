@@ -11,14 +11,12 @@
 </template>
 
 <script>
-// import HomeView from './views/HomeView.vue'
 import SideNav from './components/SideNav/SideNav.vue'
 import WebHeader from './components/WebHeader.vue'
 
 export default {
   name: 'App',
   components: {
-    // HomeView,
     SideNav,
     WebHeader,
   }
@@ -31,4 +29,3 @@ export default {
   src: local("Manrope"), url(./fonts/Manrope-Regular.ttf) format("truetype");
 }
 </style>
-
