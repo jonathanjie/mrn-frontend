@@ -15,7 +15,9 @@ module.exports = {
       blue: '#004557',
       lightblue: '#007694',
       white: '#fff',
-      bggray: '#f9fafb'
+      bggray: '#f9fafb',
+      gradientblue: '#0093B8',
+      gradientgreen: '#09DBA9',
     },
     extend: {},
     fontFamily: {
