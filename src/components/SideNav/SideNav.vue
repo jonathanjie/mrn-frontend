@@ -16,19 +16,19 @@
 
             <nav>
                 <div class="py-2"></div>
-                <router-link to="overview" class="flex py-4 px-7 space-x-3 hover:bg-lightblue/[0.24]" :class="{ 'justify-center' : collapsed } ">
+                <router-link to="/overview" class="flex py-4 px-7 space-x-3 hover:bg-lightblue/[0.24]" :class="{ 'justify-center' : collapsed } ">
                     <img src="@/assets/icons/overview.svg" class="h-6 w-6"/>
                     <Transition name="fade">
                         <span v-if="!collapsed" class="text-white text-base font-bold">Overview</span>
                     </Transition>
                 </router-link>
-                <router-link to="my-vessels" class="flex py-4 px-7 space-x-3 hover:bg-lightblue/[0.24]" :class="{ 'justify-center' : collapsed } ">
+                <router-link to="/my-vessels" class="flex py-4 px-7 space-x-3 hover:bg-lightblue/[0.24]" :class="{ 'justify-center' : collapsed } ">
                     <img src="@/assets/icons/my_vessels.svg" class="h-6 w-6"/>
                     <Transition name="fade">
                         <span v-if="!collapsed" class="text-white text-base font-bold">My Vessels</span>
                     </Transition>
                 </router-link>
-                <router-link to="plan-voyage" class="flex py-4 px-7 space-x-3 hover:bg-lightblue/[0.24]" :class="{ 'justify-center' : collapsed } ">
+                <router-link to="/plan-voyage" class="flex py-4 px-7 space-x-3 hover:bg-lightblue/[0.24]" :class="{ 'justify-center' : collapsed } ">
                     <img src="@/assets/icons/plan_voyage.svg" class="h-6 w-6"/>
                     <Transition name="fade">
                         <span v-if="!collapsed" class="text-white text-base font-bold">Plan Voyage</span>
