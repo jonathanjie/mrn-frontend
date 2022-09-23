@@ -22,8 +22,6 @@
 import GradientButton from '../../components/GradientButton.vue'
 import AddVoyageModal from '../../components/AddVoyageModal.vue'
 
-console.log(AddVoyageModal.showModal);
-
 export default {
     name: 'VesselView',
     components: {
