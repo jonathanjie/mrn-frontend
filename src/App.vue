@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-start items-stretch">
-    <div class="z-10 fixed">
+    <div class="z-50 fixed">
       <SideNav/>
     </div>
     <div class="grow h-screen" :class="collapsed?'ml-20':'ml-64'">
