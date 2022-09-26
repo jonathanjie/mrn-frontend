@@ -79,4 +79,4 @@ export default {
         CustomButton,
     },
   }
-  </script>
+</script>
