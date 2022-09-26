@@ -31,5 +31,11 @@ export default {
         GradientButton,
         AddVoyageModal,
     },
+    setup() {
+        const isEmpty = true // TODO: get value from backend?
+        return {
+            isEmpty
+        }
+    },
 };
 </script>

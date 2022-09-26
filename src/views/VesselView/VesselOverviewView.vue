@@ -14,11 +14,11 @@
 
 <script>
 import VoyageCard from '../../components/VoyageCard.vue'
+// import isEmpty from './/VesselView.vue'
 
 export default {
     setup() {
-        const isEmpty = false // TODO: get value from backend
-
+        const isEmpty = false; // TODO: get from VesselView.vue; this is only for test/dev purposes
         return {
             isEmpty,
         }

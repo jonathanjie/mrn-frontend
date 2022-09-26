@@ -8,12 +8,13 @@
 </template>
 
 <script>
-    export default {
-        setup() {
-            const isEmpty = true // TODO: get value from backend?
-            return {
-                isEmpty
-            }
-        },
-    };
+import isEmpty from './/VesselView.vue'
+   
+export default {
+    setup() {
+        return {
+            isEmpty,
+        };
+    },
+};
 </script>
