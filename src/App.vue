@@ -1,9 +1,9 @@
 <template>
   <div class="flex items-start items-stretch">
-    <div class="z-10">
+    <div class="z-10 fixed">
       <SideNav/>
     </div>
-    <div class="grow h-screen">
+    <div class="grow h-screen" :class="collapsed?'ml-20':'ml-64'">
       <WebHeader class="sticky"/>
       <router-view></router-view>
     </div>
@@ -13,9 +13,14 @@
 <script>
 import SideNav from './components/SideNav/SideNav.vue'
 import WebHeader from './components/WebHeader.vue'
+import { collapsed } from "./components/SideNav/state.js"
 
 export default {
-  name: 'App',
+  setup() {
+    return {
+      collapsed
+    };
+  }, 
   components: {
     SideNav,
     WebHeader,
@@ -24,11 +29,6 @@ export default {
 </script>
 
 <style>
-/* @font-face {
-  font-family: "Manrope";
-  src: local("Manrope"), url(./fonts/Manrope-Regular.ttf) format("truetype");
-} */
-
 @font-face {
   font-family: "Manrope";
   src: local("Manrope"), url(./fonts/Manrope-SemiBold.ttf) format("truetype");
