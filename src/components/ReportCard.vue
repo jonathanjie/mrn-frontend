@@ -5,32 +5,32 @@
         <img v-if="report_type==3" src="@/assets/icons/noon_report.svg" class="h-10 w-10 m-5"/>
         <img v-if="report_type==4" src="@/assets/icons/bunker_report.svg" class="h-10 w-10 m-5"/>
         <div class="flex flex-col w-24 mr-3">
-            <span class="text-tiny text-gray-400">Report no.</span>
-            <span class="text-base text-gray-700">{{ report_no }}</span>
+            <span class="text-12 text-gray-400">Report no.</span>
+            <span class="text-14 text-gray-700">{{ report_no }}</span>
         </div>
         <div class="flex flex-col w-24 mr-3">
-            <span class="text-tiny text-gray-400">Departure</span>
-            <span class="text-base text-gray-700">{{ departure }}</span>
+            <span class="text-12 text-gray-400">Departure</span>
+            <span class="text-14 text-gray-700">{{ departure }}</span>
         </div>
         <div class="flex flex-col w-28 mr-3">
-            <span class="text-tiny text-gray-400">Arrival</span>
-            <span class="text-base text-gray-700">{{ arrival }}</span>
+            <span class="text-12 text-gray-400">Arrival</span>
+            <span class="text-14 text-gray-700">{{ arrival }}</span>
         </div>
         <div class="flex flex-col w-28 mr-3">
-            <span class="text-tiny text-gray-400">Status</span>
-            <span class="text-base text-gray-700">{{ status }}</span>
+            <span class="text-12 text-gray-400">Status</span>
+            <span class="text-14 text-gray-700">{{ status }}</span>
         </div>
         <div class="flex flex-col w-28 mr-3">
-            <span class="text-tiny text-gray-400">Cargo L/D</span>
-            <span class="text-base text-gray-700">{{ cargold }}</span>
+            <span class="text-12 text-gray-400">Cargo L/D</span>
+            <span class="text-14 text-gray-700">{{ cargold }}</span>
         </div>
         <div class="flex flex-col w-28 mr-3">
-            <span class="text-tiny text-gray-400">Distance to go</span>
-            <span class="text-base text-gray-700">{{ distance_to_go }}</span>
+            <span class="text-12 text-gray-400">Distance to go</span>
+            <span class="text-14 text-gray-700">{{ distance_to_go }}</span>
         </div>
         <div class="flex flex-col w-36 mr-3">
-            <span class="text-tiny text-gray-400">Date of Submission</span>
-            <span class="text-base text-gray-700">{{ date_of_submission }}</span>
+            <span class="text-12 text-gray-400">Date of Submission</span>
+            <span class="text-14 text-gray-700">{{ date_of_submission }}</span>
         </div>
         <!-- margin set to make total width of all icons equal, but may need to update if there is a better way to do this -->
         <img v-if="report_type==1" src="@/assets/icons/depart_icon.svg" class="m-5 mr-[60px]"/>

@@ -1,5 +1,5 @@
 <template>
-    <button @click="onClick" class="text-gradientblue bg-superlightblue font-bold text-sm py-2 px-4 h-10 rounded-lg inline-flex items-center border border-gradientblue">
+    <button @click="onClick" class="text-gradientblue bg-blue-50 font-bold text-14 py-2 px-4 h-10 rounded-lg inline-flex items-center border border-gradientblue">
         <slot name="icon"></slot>
         <slot name="content">Fallback Content</slot>
     </button>

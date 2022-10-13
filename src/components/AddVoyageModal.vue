@@ -16,7 +16,7 @@
               </button>
             </div>
             <!--body-->
-            <div class="relative p-6 space-y-6 flex-auto w-full text-sm">
+            <div class="relative p-6 space-y-6 flex-auto w-full text-14">
                 <div>
                     <p class="leading-relaxed mb-2 text-gray-700">Vessel name</p>
                     <input class="w-full bg-gray-50 px-3 py-3 rounded border border-gray-300 text-gray-500" :disabled="disabled" v-model="message" :placeholder="vesselname">
@@ -38,10 +38,10 @@
             </div>
             <!--footer-->
             <div class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b space-x-3">
-              <CustomButton class="px-6 py-3 text-sm  mr-1 mb-1" type="button" v-on:click="toggleModal()">
+              <CustomButton class="px-6 py-3 text-14  mr-1 mb-1" type="button" v-on:click="toggleModal()">
                 <template v-slot:content>Cancel</template> 
               </CustomButton>
-              <GradientButton class="px-6 py-2 text-sm mr-1 mb-1" type="button" v-on:click="toggleModal()">
+              <GradientButton class="px-6 py-2 text-14 mr-1 mb-1" type="button" v-on:click="toggleModal()">
                 <!-- TODO: need alternate function for saving changes to backend -->
                 <template v-slot:content>Save Changes</template> 
               </GradientButton>
@@ -49,7 +49,7 @@
           </div>
         </div>
       </div>
-      <div v-if="showModal" class="opacity-80 fixed inset-0 z-40 bg-filtergray"></div>
+      <div v-if="showModal" class="opacity-80 fixed inset-0 z-40 bg-gray-900"></div>
     </div>
 </template>
   
