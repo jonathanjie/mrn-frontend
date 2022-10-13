@@ -488,12 +488,12 @@
             <div class="grid grid-cols-7 border">
                 <div class="col-span-1 text-blue-700 p-3 bg-gray-50 text-14">Correction</div>
                 <!-- what are the options for select here? -->
-                <select v-model="cc_correction_type" class="col-span-3 p-3 text-gray-400 text-14 focus:border-0">
+                <select v-model="cc_correction_type" class="col-span-3 p-3 border-l text-gray-400 text-14 focus:border-0">
                     <option selected disabled value="default">Select type</option>
                 </select>
-                <input v-model="cc_correction" placeholder="00,000.00" class="col-span-3 p-3 pl-4 bg-white text-14 text-gray-700 focus:outline-0"/>
+                <input v-model="cc_correction" placeholder="00,000.00" class="col-span-3 p-3 pl-4 border-l bg-white text-14 text-gray-700 focus:outline-0"/>
                 <div class="col-span-1 row-span-2 text-blue-700 p-3 border-t bg-gray-50 text-14">Remarks</div>
-                <textarea v-model="cc_remarks" placeholder="Input description here" class="col-span-6 row-span-2 border-t p-3 pl-4 bg-white text-14 text-gray-700 focus:outline-0"></textarea>
+                <textarea v-model="cc_remarks" placeholder="Input description here" class="col-span-6 row-span-2 border-t border-l p-3 pl-4 bg-white text-14 text-gray-700 focus:outline-0"></textarea>
             </div>
         </div>
         
