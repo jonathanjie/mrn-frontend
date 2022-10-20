@@ -6,6 +6,15 @@
     <div class="grow h-screen" :class="collapsed?'ml-20':'ml-64'">
       <!-- TODO: change to fixed, not sticky -->
       <WebHeader class="sticky top-0 z-40"/>
+      <div>
+        <h2>User Profile</h2>
+        <button @click="login">Log in</button>
+        <pre v-if="isAuthenticated">
+            <code>{{ user }}</code>
+            <code>{{ data }}</code>
+            <button @click="logout">Log out</button>
+        </pre>
+      </div>
       <router-view class="bg-gray-50 min-h-screen"></router-view>
     </div>
   </div>
@@ -15,11 +24,31 @@
 import SideNav from './components/SideNav/SideNav.vue'
 import WebHeader from './components/WebHeader.vue'
 import { collapsed } from "./components/SideNav/state.js"
+import { useAuth0 } from '@auth0/auth0-vue'
 
 export default {
   setup() {
+    const { loginWithRedirect, user, isAuthenticated, logout, getAccessTokenSilently } = useAuth0();
+
     return {
-      collapsed
+      collapsed,
+      logout: () => {
+        logout({ returnTo: window.location.origin });
+      },
+      login: () => {
+        loginWithRedirect();
+      },
+      doSomethingWithToken: async() => {
+        const token = await getAccessTokenSilently();
+        const response = await fetch('https://django-jwt-test-dan/api/posts', {
+          headers: {
+            Authorization: 'Bearer ' + token
+          }
+        });
+        const data = await response.json();
+      },
+      user,
+      isAuthenticated
     };
   }, 
   components: {
