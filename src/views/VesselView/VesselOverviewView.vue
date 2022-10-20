@@ -1,5 +1,6 @@
 <template>
     <!-- if there are no voyages in backend -->
+    <button @click="getVoyages">Get Voyages</button>
     <div v-if="isEmpty" class="flex flex-col bg-gray-100 p-24 pb-52 m-12 justify-center content-center items-center space-y-2 rounded-xl">
         <img src="@/assets/icons/empty.svg" class="h-28 w-28"/>
         <span class="text-lg font-bold text-gray-800 pt-3">No Voyage Created</span>
@@ -21,6 +22,19 @@ export default {
         const isEmpty = false; // TODO: get from VesselView.vue; this is only for test/dev purposes
         return {
             isEmpty,
+        }
+    },
+    methods: {
+        getVoyages: async function() {
+            const DUMMY_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjYxbl96VlI1WmFoZ0hLcy1QOEx5MyJ9.eyJpc3MiOiJodHRwczovL2Rldi14eXJoczYwOS5ldS5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjM1MGUzZWY2MmNiNTRiMmU5MTcwYjI0IiwiYXVkIjpbImh0dHBzOi8vZGphbmdvLWp3dC10ZXN0LWRhbi9hcGkiLCJodHRwczovL2Rldi14eXJoczYwOS5ldS5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNjY2MjQ5MzIzLCJleHAiOjE2NjYzMzU3MjMsImF6cCI6ImhuTnRMa0lKQmxuSExEVGhTTDc3Q1lUdTlRRWFXaWpOIiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCJ9.hMXcvjne_ig6e0_BQbA2vNhxm_cZICEPPZJn9xohGeC0tk6JtzLUr6uRn7gPSuj0nknOx5CadpQkUzFvrK21EC8aF3IixF7-HfyEuq3b2Grc1GgEH-B6kI5ckKf7A87ADYkmSfudDQm04kSx8oAdJGesMtRn0zraXn4nwVKweYEYIXIa6eB9VHMon05GSI7mrknAbHRAjcYMUmhJ1L4TafAonK-SUe4PUQJyniYDCleeA7Bmm-IgychhG7x6szO2Duk6AZxfoXn-QRjv2zVXTh63_9r391N8MAx3gF-qF780Y4tVonZGbHXeHw2yJyGsJC7DCE98R1ddUKw9LCcuZA"
+            const response = await fetch('https://testapi.marinachain.io/marinanet/ships/1234567/voyages/', {
+                headers: {
+                    Authorization: 'Bearer ' + DUMMY_TOKEN,
+                    "Content-Type": "application/json"
+                },
+                method: 'GET'
+            });
+            console.log(response.json())
         }
     },
     data() {
