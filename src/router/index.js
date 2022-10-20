@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from '@/stores';
+// import { useAuthStore } from '@/stores';
 
 import HomeView from '../views/HomeView.vue'
 import MyVesselsView from '../views/MyVesselsView.vue'
@@ -17,11 +17,11 @@ import NoonInPortReportView from '../views/NoonReportView/NoonInPortReportView.v
 
 
 const routes = [
-  {
-    path: '/login',
-    name: 'login',
-    component: LoginView
-  },
+  // {
+  //   path: '/login',
+  //   name: 'login',
+  //   component: LoginView
+  // },
   {
     path: '/',
     name: 'home',
@@ -97,15 +97,15 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach(async (to) => {
-  const publicPages = ['/login'];
-  const authRequired = !publicPages.includes(to.path);
-  const auth = useAuthStore();
+// router.beforeEach(async (to) => {
+//   const publicPages = ['/login'];
+//   const authRequired = !publicPages.includes(to.path);
+//   const auth = useAuthStore();
 
-  if (authRequired && !auth.user) {
-      auth.returnUrl = to.fullPath;
-      return '/login';
-  }
-})
+//   if (authRequired && !auth.user) {
+//       auth.returnUrl = to.fullPath;
+//       return '/login';
+//   }
+// })
 
 export default router

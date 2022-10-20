@@ -503,7 +503,7 @@
                 <!-- TODO: need alternate function for saving changes to backend -->
                 <template v-slot:content>Save</template> 
             </CustomButton>
-            <GradientButton class="px-5 py-2 text-14 mr-1 mb-1" type="button" v-on:click="doSomething()">
+            <GradientButton class="px-5 py-2 text-14 mr-1 mb-1" type="button" v-on:click="sendReport()">
                 <!-- TODO: need alternate function for saving changes to backend -->
                 <template v-slot:content>Send Report</template> 
             </GradientButton>
@@ -623,6 +623,60 @@ export default {
             format: 'yyyy.MM.dd HH:mm'
         }) 
 
+        const DUMMY_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjYxbl96VlI1WmFoZ0hLcy1QOEx5MyJ9.eyJpc3MiOiJodHRwczovL2Rldi14eXJoczYwOS5ldS5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjM1MGUzZWY2MmNiNTRiMmU5MTcwYjI0IiwiYXVkIjpbImh0dHBzOi8vZGphbmdvLWp3dC10ZXN0LWRhbi9hcGkiLCJodHRwczovL2Rldi14eXJoczYwOS5ldS5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNjY2MjQ5MzIzLCJleHAiOjE2NjYzMzU3MjMsImF6cCI6ImhuTnRMa0lKQmxuSExEVGhTTDc3Q1lUdTlRRWFXaWpOIiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCJ9.hMXcvjne_ig6e0_BQbA2vNhxm_cZICEPPZJn9xohGeC0tk6JtzLUr6uRn7gPSuj0nknOx5CadpQkUzFvrK21EC8aF3IixF7-HfyEuq3b2Grc1GgEH-B6kI5ckKf7A87ADYkmSfudDQm04kSx8oAdJGesMtRn0zraXn4nwVKweYEYIXIa6eB9VHMon05GSI7mrknAbHRAjcYMUmhJ1L4TafAonK-SUe4PUQJyniYDCleeA7Bmm-IgychhG7x6szO2Duk6AZxfoXn-QRjv2zVXTh63_9r391N8MAx3gF-qF780Y4tVonZGbHXeHw2yJyGsJC7DCE98R1ddUKw9LCcuZA"
+
+        const DUMMY_FORMDATA = {
+            "report_type": "NOON",
+            "report_num": 2,
+            "cargo_presence": "EAST",
+            "summer_time": false,
+            "position": "SRID=4326;POINT (106.75205889883298 4.770291088248677)",
+            "status": 1,
+            "voyage": 1,
+            "noonreportatsea": {
+                "distance_to_go": "20000",
+                "hours_since_noon": "24.0",
+                "hours_total": "72.0",
+                "distance_obs_since_noon": "100",
+                "distance_eng_since_noon": "100",
+                "distance_eng_total": "10000",
+                "revolution_count": 1000000,
+                "speed_since_noon": "12.34",
+                "rpm_since_noon": "123.4",
+                "slip_since_noon": "12.34",
+                "speed_avg": "12.34",
+                "rpm_avg": "123.4",
+                "slip_avg": "12.34"
+            },
+            "weatherdata": {
+                "weather": "B",
+                "sea_state": 1,
+                "wind_direction": "45.0",
+                "wind_speed": "10.0",
+                "beaufort": 1
+            },
+            "bunkerdata_set": [
+                {
+                    "fuel_type": "HFO",
+                    "rob": "65536.00",
+                    "me_consumed": "512.00",
+                    "aux_consumed": "256.00",
+                    "boiler_consumed": "256.00",
+                    "gas_generator_consumed": "128.00",
+                    "total_consumed": "1024.00",
+                    "correction": "0.00",
+                    "remarks": "NIL"
+                }
+            ],
+            "freshwaterdata": {
+                "rob": 65536,
+                "consumed": 4096,
+                "evaporated": 4096,
+                "correction": 0,
+                "remarks": "NIL"
+            }
+        }
+
         return {
             toggleDP,
             toggleDDT,
@@ -688,6 +742,19 @@ export default {
             cc_correction_type,
             cc_correction,
             cc_remarks,
+
+            sendReport: async() => {
+                const response = await fetch('https://testapi.marinachain.io/marinanet/reports/new/', {
+                    headers: {
+                        Authorization: 'Bearer ' + DUMMY_TOKEN,
+                        "Content-Type": "application/json"
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(DUMMY_FORMDATA)
+                });
+                const data = await response.json();
+                console.log(response);
+            }
         };
     },
 }
