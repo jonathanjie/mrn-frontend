@@ -14,6 +14,7 @@
             <code>{{ data }}</code>
             <button @click="logout">Log out</button>
         </pre>
+        <button @click="getToken">Get Token</button>
       </div>
       <router-view class="bg-gray-50 min-h-screen"></router-view>
     </div>
@@ -37,6 +38,10 @@ export default {
       },
       login: () => {
         loginWithRedirect();
+      },
+      getToken: async() => {
+        const token = await getAccessTokenSilently();
+        console.log(token);
       },
       doSomethingWithToken: async() => {
         const token = await getAccessTokenSilently();
