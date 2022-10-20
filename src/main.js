@@ -3,9 +3,10 @@ import App from './App.vue'
 import { createAuth0 } from '@auth0/auth0-vue'
 import './index.css'
 import router from './router'
-import Datepicker from '@vuepic/vue-datepicker'
+import DatePicker from '@vuepic/vue-datepicker'
+import { createPinia } from 'pinia'
 
-const app = createApp(App)
+const app = createApp(App).use(createPinia()).use(createPinia()).use(createPinia())
     .use(router)
     .use(createAuth0({
         domain: "dev-xyrhs609.eu.auth0.com",
@@ -14,7 +15,7 @@ const app = createApp(App)
         audience: 'https://django-jwt-test-dan/api'
     }));
 
-app.component('Datepicker', Datepicker);
+app.component('DatePicker', DatePicker);
 
 app.mount('#app')
  
