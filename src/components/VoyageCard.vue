@@ -87,7 +87,7 @@ export default {
     },
     data() {
         return {
-            expanded: this.expanded,
+            // expanded: this.expanded,
             // TODO: need to get data from db 
             dummy: {
                 report_type: 2, // Arrival
