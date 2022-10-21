@@ -16,7 +16,9 @@
             </GradientButton>   
         </div>
         <AddVoyageModal ref="modal" v-bind:vesselname="this.$route.params.vesselname" v-bind:imo="this.$route.params.imo"></AddVoyageModal>
-        <router-view></router-view>
+        <suspense>
+            <router-view></router-view>
+        </suspense>
     </div>
     
 </template>  
