@@ -1,7 +1,7 @@
 <template>
   <div class="p-10 space-y-4">
     <button @click="getShips">Get Ships</button>
-    <div v-for="ship in ships">
+    <div v-for="ship in ships" :key="ship.name">
       {{ship.name}}
     </div>
     <div id="nav" class="px-8 flex flex-col space-y-2">

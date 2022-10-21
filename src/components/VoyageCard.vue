@@ -37,13 +37,12 @@
             </CustomButton>
         </div>
        
-        <div class="flex flex-col space-y-4">
-            <!-- TODO: get data from database -->
-            <ReportCard v-bind="dummy"></ReportCard>
-            <ReportCard v-bind="dummy2"></ReportCard>
-            <ReportCard v-bind="dummy3"></ReportCard>
-            <ReportCard v-bind="dummy4"></ReportCard>
-            <ReportCard v-bind="dummy5"></ReportCard>
+        <!-- TODO: restrict upto 5 most recent reports? -->
+        <div class="flex flex-col space-y-4"> 
+            <div v-for="(report, index) in reports" :key="index">
+                <ReportCard :report_no="report.report_no" :report_type="report.report_type" :departure="report.departure" :arrival="report.arrival" :status="report.status" :cargold="report.cargold" :distance_to_go="report.distance_to_go" :date_of_submission="report.date_of_submission"></ReportCard>
+            </div>
+            <ReportCard :report_no="'DEPARTURE'" :report_type="'DEPART'" :departure="'Singapore'" :arrival="'Ulsan'" :status="'Anchoring'" :cargold="'Ballast'" :distance_to_go="'2503'" :date_of_submission="'2022-10-19'"></ReportCard>
         </div>
     </div>
 </template>  
@@ -63,7 +62,7 @@ export default {
         start: {
             type: String,
             required: true,
-            default: "Liuheng, China"
+            default: "Singapore"
         },
         mid: {
             type: String,
@@ -73,73 +72,78 @@ export default {
         dest: {
             type: String,
             required: true,
-            default: "Juayimah, Saudi Arabia"
+            default: "Ulsan, Korea"
         },
         expanded: {
             type: Boolean,
             required: false,
             default: false
+        },
+        reports: {
+            type: Object,
+            required: true,
+            default: {}
         }
     },
     components: {
         CustomButton,
         ReportCard,
     },
-    data() {
-        return {
-            // expanded: this.expanded,
-            // TODO: need to get data from db 
-            dummy: {
-                report_type: 2, // Arrival
-                report_no: 'Arrival 1',
-                departure: 'Onsan',
-                arrival: 'Singapore',
-                status: 'Anchoring',
-                cargold: 'Ballast',
-                distance_to_go: '-',
-                date_of_submission: '31 May 2022. 12:31 LT'
-            },
-            dummy2: {
-                report_type: 4, // Bunker
-                report_no: '2022-4',
-                departure: '-',
-                arrival: 'Singapore',
-                status: 'Anchoring',
-                cargold: 'Ballast',
-                distance_to_go: '-',
-                date_of_submission: '1 June 2022. 10:12 LT'
-            },
-            dummy3: {
-                report_type: 1, // Departure
-                report_no: 'Depart 2',
-                departure: 'Singapore',
-                arrival: 'Ras Tanura',
-                status: '-',
-                cargold: 'Ballast',
-                distance_to_go: '3694',
-                date_of_submission: '1 June 2022. 12:23 LT'
-            },
-            dummy4: {
-                report_type: 3, // Noon
-                report_no: 'Noon 1',
-                departure: 'Singapore',
-                arrival: 'Ras Tanura',
-                status: 'Sailing',
-                cargold: 'Ballast',
-                distance_to_go: '3410',
-                date_of_submission: '2 June 2022. 12:00 LT'
-            },
-            dummy5: {
-                report_type: 3, // Noon
-                report_no: 'Noon 2',
-                departure: 'Singapore',
-                arrival: 'Ras Tanura',
-                status: 'Sailing',
-                cargold: 'Ballast',
-                distance_to_go: '3117',
-                date_of_submission: '3 June 2022. 12:00 LT'
-            },
-        }
-    },
+    // data() {
+    //     return {
+    //         // expanded: this.expanded,
+    //         // TODO: need to get data from db 
+    //         dummy: {
+    //             report_type: 2, // Arrival
+    //             report_no: 'Arrival 1',
+    //             departure: 'Onsan',
+    //             arrival: 'Singapore',
+    //             status: 'Anchoring',
+    //             cargold: 'Ballast',
+    //             distance_to_go: '-',
+    //             date_of_submission: '31 May 2022. 12:31 LT'
+    //         },
+    //         dummy2: {
+    //             report_type: 4, // Bunker
+    //             report_no: '2022-4',
+    //             departure: '-',
+    //             arrival: 'Singapore',
+    //             status: 'Anchoring',
+    //             cargold: 'Ballast',
+    //             distance_to_go: '-',
+    //             date_of_submission: '1 June 2022. 10:12 LT'
+    //         },
+    //         dummy3: {
+    //             report_type: 1, // Departure
+    //             report_no: 'Depart 2',
+    //             departure: 'Singapore',
+    //             arrival: 'Ras Tanura',
+    //             status: '-',
+    //             cargold: 'Ballast',
+    //             distance_to_go: '3694',
+    //             date_of_submission: '1 June 2022. 12:23 LT'
+    //         },
+    //         dummy4: {
+    //             report_type: 3, // Noon
+    //             report_no: 'Noon 1',
+    //             departure: 'Singapore',
+    //             arrival: 'Ras Tanura',
+    //             status: 'Sailing',
+    //             cargold: 'Ballast',
+    //             distance_to_go: '3410',
+    //             date_of_submission: '2 June 2022. 12:00 LT'
+    //         },
+    //         dummy5: {
+    //             report_type: 3, // Noon
+    //             report_no: 'Noon 2',
+    //             departure: 'Singapore',
+    //             arrival: 'Ras Tanura',
+    //             status: 'Sailing',
+    //             cargold: 'Ballast',
+    //             distance_to_go: '3117',
+    //             date_of_submission: '3 June 2022. 12:00 LT'
+    //         },
+    //     }
+    // },
 };
 </script>
