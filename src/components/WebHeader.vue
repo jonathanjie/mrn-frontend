@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white text-black py-4 px-6 md:flex">
+    <div class="bg-white text-black py-4 px-6 flex">
         <div class="md:flex overflow-hidden pl-6 mr-auto">
             <div class="relative mx-auto text-gray-600">
                 <img class="absolute mr-2 w-10 px-2 py-2" src="@/assets/icons/search_icon.svg">
@@ -18,11 +18,11 @@
                 <img src="@/assets/icons/divider.svg" class="flex h-5 w-6 md:items-center md:visible"/>
             </li>
         </ul>
-        <div class="md:flex md:items-center">
+        <div class="flex items-center">
             <img src="@/assets/icons/avatar.svg" class="h-10 w-10 mx-3"/>
             <div class="flex flex-col items-left">
-                <span class="font-bold text-gray-900 text-14 mr-1">Mark Hunter Alisson</span>
-                <span class="font-semibold text-gray-500 text-12 mr-1">Charterers</span>
+                <span class="font-bold text-gray-900 text-14 mr-1">Lee Ho Geun</span>
+                <span class="font-semibold text-gray-500 text-12 mr-1">Ship Owner</span>
             </div>
             <img src="@/assets/icons/down_arrow.svg" class="h-1.5 w-3 mx-3"/>
         </div>
