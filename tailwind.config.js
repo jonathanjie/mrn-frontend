@@ -11,7 +11,6 @@ module.exports = {
     colors: {
       teal: colors.teal,
       cyan: colors.cyan,
-      gray: colors.gray,
       gray: {
         DEFAULT: '#98A2B3',
         900: '#1D2939',

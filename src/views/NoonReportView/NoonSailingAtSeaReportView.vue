@@ -104,7 +104,7 @@
                     <option value="na">Not Applied</option>
                 </select>
                 <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">Date & time</div>
-                <Datepicker 
+                <DatePicker 
                     v-model="reporting_date_time" 
                     class="col-span-3" 
                     textInput :textInputOptions="textInputOptions"
@@ -113,7 +113,7 @@
                     <template #input-icon>
                         <img src=""/>
                     </template>
-                </Datepicker>
+                </DatePicker>
             </div>
             <div></div>
             <div class="grid grid-cols-5 border bg-gray-50">
@@ -513,12 +513,12 @@
 
 <script>
 import { ref } from 'vue';
-import Datepicker from '@vuepic/vue-datepicker';
+import DatePicker from '@vuepic/vue-datepicker';
 import GradientButton from '@/components/GradientButton.vue';
 import CustomButton from '@/components/CustomButton.vue';
 
 export default {
-    components: { Datepicker, GradientButton, CustomButton },
+    components: { DatePicker, GradientButton, CustomButton },
     setup() {
         const reporting_time_zone = 'default';
         const reporting_summer_time = 'default';

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import { useAuthStore } from '@/stores';
+import { authGuard } from '@auth0/auth0-vue'
 
+import LoginView from '../views/LoginView.vue'
 import HomeView from '../views/HomeView.vue'
 import MyVesselsView from '../views/MyVesselsView.vue'
 import PlanVoyageView from '../views/PlanVoyageView.vue'
@@ -25,22 +26,26 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: HomeView,
+    beforeEnter: authGuard
   },
   {
     path: '/overview',
     name: 'overview',
-    component: OverviewView
+    component: OverviewView,
+    beforeEnter: authGuard
   },
   {
     path: '/my-vessels',
     name: 'my-vessels',
-    component: MyVesselsView
+    component: MyVesselsView,
+    beforeEnter: authGuard
   },
   {
     path: '/plan-voyage',
     name: 'plan-voyage',
-    component: PlanVoyageView
+    component: PlanVoyageView,
+    beforeEnter: authGuard
   },
   {
     path: '/vessels/:vesselname/:imo', 
@@ -67,6 +72,7 @@ const routes = [
         component: VesselCancelledView
       },
     ],
+    beforeEnter: authGuard
   },
   {
     path: '/vessels/:vesselname/:imo/add-report',
@@ -88,7 +94,8 @@ const routes = [
         name: 'noon-in-port',
         component: NoonInPortReportView
       },
-    ]
+    ],
+    beforeEnter: authGuard
   }
 ]
 
