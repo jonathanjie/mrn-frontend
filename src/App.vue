@@ -9,7 +9,17 @@
     <div class="grow h-screen" :class="collapsed?'ml-20':'ml-64'">
       <!-- TODO: change to fixed, not sticky -->
       <WebHeader class="sticky top-0 z-40"/>
-      <router-view></router-view>
+      <div>
+        <h2>User Profile</h2>
+        <button @click="login">Log in</button>
+        <pre v-if="isAuthenticated">
+            <code>{{ user }}</code>
+            <code>{{ data }}</code>
+            <button @click="logout">Log out</button>
+        </pre>
+        <button @click="getToken">Get Token</button>
+      </div>
+      <router-view class="bg-gray-50 min-h-screen"></router-view>
     </div>
   </div>
 </template>
@@ -29,6 +39,13 @@ export default {
       collapsed,
       logout: () => {
         logout({ returnTo: window.location.origin });
+      },
+      login: () => {
+        loginWithRedirect();
+      },
+      getToken: async() => {
+        const token = await getAccessTokenSilently();
+        console.log(token);
       },
       doSomethingWithToken: async() => {
         const token = await getAccessTokenSilently();
