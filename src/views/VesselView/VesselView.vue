@@ -2,7 +2,8 @@
     <div class="bg-gray-50 min-h-screen">
         <div class="relative flex bg-gray-100 h-36 justify-between">
             <div>
-                <span class="absolute text-blue font-extrabold text-20 m-10">{{this.$route.params.vesselname}} (IMO No. {{this.$route.params.imo}})</span>
+                <!-- <span class="absolute text-blue font-extrabold text-20 m-10">{{this.$route.params.vesselname}} (IMO No. {{this.$route.params.imo}})</span> -->
+                <span class="absolute text-blue font-extrabold text-20 m-10">{{vesselname}} (IMO No. {{imo}})</span>
                 <div class="absolute inset-x-0 bottom-5 space-x-8 text-gray-500 text-14 pl-11">
                     <!-- TODO: need to change focus to actual onclick events -->
                     <!-- TODO: don't make these router-links; they shouldn't be separate URIs, just tabs -->
@@ -33,6 +34,9 @@ import { ref, onUpdated } from 'vue'
 const update = ref(0)
 const isEmpty = true
 let voyageNum = 1
+
+const vesselname = 'Marina A'
+const imo = '9876543'
 
 const voyageData = {
     'voyage_num': voyageNum,
