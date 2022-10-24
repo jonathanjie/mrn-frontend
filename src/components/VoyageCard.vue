@@ -1,50 +1,56 @@
 <template>
-    <div class="flex h-20 mx-12 items-center rounded-xl min-w-max z-10" :class="expanded?'bg-blue':'bg-white drop-shadow-md mb-6'">
-        <img src="@/assets/icons/selected_blue_gradient.svg" class="h-6 w-6 -m-0.5"/>
-        <span class="text-14 font-bold px-1 min-w-fit" :class="expanded?'text-white':'text-gray-700'">VOYAGE NO {{ num }}</span>
-        <div class="flex bg-gray-50 h-12 m-3 items-center rounded-xl w-full min-w-fit ml-20">
-            <div class="flex justify-between items-center h-px bg-sysblue-800 ml-5 w-full mx-4 my-3">
-                <!-- TODO: need to add light blue "already traveled" indicator -->
-                <!-- BUG: one voyage card has a thinner line; doesn't look like h-px although all of them have the same h -->
-                <CustomButton class="p-1 h-7 text-12 text-blue min-w-fit rounded-xl z-10">
-                    <template v-slot:content>{{ start }}</template> 
-                </CustomButton>                
-                <img src="@/assets/icons/forward.svg" class="h-4 w-4 z-10"/>
-                <CustomButton class="p-1 h-7 text-12 text-blue min-w-fit rounded-xl z-10">
-                    <template v-slot:content>{{ mid }}</template> 
-                </CustomButton>             
-                <img src="@/assets/icons/forward.svg" class="h-4 w-4 z-10"/>
-                <CustomButton class="p-1 h-7 text-12 text-blue min-w-fit rounded-xl z-10">
-                    <template v-slot:content>{{ dest }}</template> 
-                </CustomButton>     
+    <!-- need to put below two components under one big div and then set min width to child -->
+    <!-- <div class="min-w-max"> WHY DOES ADDING THIS PARENT COMPONENT CAUSE EXPANDED SECTION TO OVERLAP?--> 
+        <div class="flex h-20 mx-12 items-center rounded-xl min-w-max z-10" :class="expanded?'bg-blue':'bg-white drop-shadow-md mb-6'">
+            <img src="@/assets/icons/selected_blue_gradient.svg" class="h-6 w-6 -m-0.5"/>
+            <span class="text-14 font-bold px-1 min-w-fit" :class="expanded?'text-white':'text-gray-700'">VOYAGE NO {{ num }}</span>
+            <div class="flex bg-gray-50 h-12 m-3 items-center rounded-xl w-full min-w-fit ml-20">
+                <div class="flex justify-between items-center h-px bg-sysblue-800 ml-5 w-full mx-4 my-3">
+                    <!-- TODO: need to add light blue "already traveled" indicator -->
+                    <!-- BUG: one voyage card has a thinner line; doesn't look like h-px although all of them have the same h -->
+                    <CustomButton class="p-1 h-7 text-12 text-blue min-w-fit rounded-xl z-10">
+                        <template v-slot:content>{{ start }}</template> 
+                    </CustomButton>                
+                    <img src="@/assets/icons/forward.svg" class="h-4 w-4 z-10"/>
+                    <CustomButton class="p-1 h-7 text-12 text-blue min-w-fit rounded-xl z-10">
+                        <template v-slot:content>{{ mid }}</template> 
+                    </CustomButton>             
+                    <img src="@/assets/icons/forward.svg" class="h-4 w-4 z-10"/>
+                    <CustomButton class="p-1 h-7 text-12 text-blue min-w-fit rounded-xl z-10">
+                        <template v-slot:content>{{ dest }}</template> 
+                    </CustomButton>     
+                </div>
+                <img src="@/assets/icons/forward.svg" class="h-6 w-6 mr-auto"/>
+                <span class="text-14 text-sysblue ml-16 mr-5 min-w-fit">View journey</span>
             </div>
-            <img src="@/assets/icons/forward.svg" class="h-6 w-6 mr-auto"/>
-            <span class="text-14 text-sysblue ml-16 mr-5 min-w-fit">View journey</span>
+            <button @click="expanded = !expanded" class="ml-3 mr-4">
+                <img src="@/assets/icons/dropdown.svg"/>
+            </button>
         </div>
-        <button @click="expanded = !expanded" class="ml-3 mr-4">
-            <img src="@/assets/icons/dropdown.svg"/>
-        </button>
-    </div>
-    <div v-show="expanded" class="min-h-fit bg-darkgray mx-12 mb-6 rounded-xl -mt-4 p-5">
-        <div class="flex items-center py-5 ">
-            <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">All Reports</button>
-            <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">Departure</button>
-            <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">Arrival</button>
-            <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">Noon</button>
-            <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">Bunker Delivery</button>
-            <CustomButton @click="$router.push('add-report')" class="h-9 text-14 text-blue-700 rounded-xl ml-auto">
-                <template v-slot:content>+Add New Report</template> 
-            </CustomButton>
-        </div>
-       
-        <!-- TODO: restrict upto 5 most recent reports? -->
-        <div class="flex flex-col space-y-4"> 
-            <div v-for="(report, index) in reports" :key="index">
-                <ReportCard :report_no="report.report_no" :report_type="report.report_type" :departure="report.departure" :arrival="report.arrival" :status="report.status" :cargold="report.cargold" :distance_to_go="report.distance_to_go" :date_of_submission="report.date_of_submission"></ReportCard>
+        <div v-show="expanded" class="min-h-fit bg-darkgray mx-12 mb-6 rounded-xl -mt-4 p-5">
+            <div class="flex items-center py-5 ">
+                <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">All Reports</button>
+                <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">Departure</button>
+                <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">Arrival</button>
+                <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">Noon</button>
+                <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">Bunker Delivery</button>
+                <CustomButton @click="$router.push('add-report')" class="h-9 text-14 text-blue-700 rounded-xl ml-auto">
+                    <template v-slot:content>+Add New Report</template> 
+                </CustomButton>
             </div>
-            <ReportCard :report_no="'DEPARTURE'" :report_type="'DEPART'" :departure="'Singapore'" :arrival="'Ulsan'" :status="'Anchoring'" :cargold="'Ballast'" :distance_to_go="'2503'" :date_of_submission="'2022-10-19'"></ReportCard>
+        
+            <!-- TODO: restrict upto 5 most recent reports? -->
+            <div class="flex flex-col space-y-4"> 
+                <div v-for="(report, index) in reports" :key="index">
+                    <ReportCard :report_no="report.report_no" :report_type="report.report_type" :departure="report.departure" :arrival="report.arrival" :status="report.status" :cargold="report.cargold" :distance_to_go="report.distance_to_go" :date_of_submission="report.date_of_submission"></ReportCard>
+                </div>
+                <ReportCard :report_no="'DEPARTURE'" :report_type="'DEPART'" :departure="'Singapore'" :arrival="'Ulsan'" :status="'Anchoring'" :cargold="'Ballast'" :distance_to_go="'2503'" :date_of_submission="'2022-10-19'"></ReportCard>
+                <!-- TEST ITEMS -->
+                <!-- <ReportCard :report_no="'ARRIVAL'" :report_type="'ARRIVAL'" :departure="'Singapore'" :arrival="'Ulsan'" :status="'Anchoring'" :cargold="'Ballast'" :distance_to_go="'2503'" :date_of_submission="'2022-10-19'"></ReportCard>
+                <ReportCard :report_no="'NOON'" :report_type="'NOON'" :departure="'Singapore'" :arrival="'Ulsan'" :status="'Anchoring'" :cargold="'Ballast'" :distance_to_go="'2503'" :date_of_submission="'2022-10-19'"></ReportCard> -->
+            </div>
         </div>
-    </div>
+    <!-- </div> -->
 </template>  
 
 <script>
@@ -89,61 +95,5 @@ export default {
         CustomButton,
         ReportCard,
     },
-    // data() {
-    //     return {
-    //         // expanded: this.expanded,
-    //         // TODO: need to get data from db 
-    //         dummy: {
-    //             report_type: 2, // Arrival
-    //             report_no: 'Arrival 1',
-    //             departure: 'Onsan',
-    //             arrival: 'Singapore',
-    //             status: 'Anchoring',
-    //             cargold: 'Ballast',
-    //             distance_to_go: '-',
-    //             date_of_submission: '31 May 2022. 12:31 LT'
-    //         },
-    //         dummy2: {
-    //             report_type: 4, // Bunker
-    //             report_no: '2022-4',
-    //             departure: '-',
-    //             arrival: 'Singapore',
-    //             status: 'Anchoring',
-    //             cargold: 'Ballast',
-    //             distance_to_go: '-',
-    //             date_of_submission: '1 June 2022. 10:12 LT'
-    //         },
-    //         dummy3: {
-    //             report_type: 1, // Departure
-    //             report_no: 'Depart 2',
-    //             departure: 'Singapore',
-    //             arrival: 'Ras Tanura',
-    //             status: '-',
-    //             cargold: 'Ballast',
-    //             distance_to_go: '3694',
-    //             date_of_submission: '1 June 2022. 12:23 LT'
-    //         },
-    //         dummy4: {
-    //             report_type: 3, // Noon
-    //             report_no: 'Noon 1',
-    //             departure: 'Singapore',
-    //             arrival: 'Ras Tanura',
-    //             status: 'Sailing',
-    //             cargold: 'Ballast',
-    //             distance_to_go: '3410',
-    //             date_of_submission: '2 June 2022. 12:00 LT'
-    //         },
-    //         dummy5: {
-    //             report_type: 3, // Noon
-    //             report_no: 'Noon 2',
-    //             departure: 'Singapore',
-    //             arrival: 'Ras Tanura',
-    //             status: 'Sailing',
-    //             cargold: 'Ballast',
-    //             distance_to_go: '3117',
-    //             date_of_submission: '3 June 2022. 12:00 LT'
-    //         },
-    //     }
-    // },
 };
 </script>
