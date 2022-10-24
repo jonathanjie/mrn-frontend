@@ -1,17 +1,17 @@
 <template>
     <div class="bg-white text-black py-4 px-6 flex">
-        <div class="md:flex overflow-hidden pl-6 mr-auto">
+        <div class="flex overflow-hidden pl-6 mr-auto">
             <div class="relative mx-auto text-gray-600">
                 <img class="absolute mr-2 w-10 px-2 py-2" src="@/assets/icons/search_icon.svg">
                 <input class="bg-gray-50 h-10 w-80 pl-11 pr-3 rounded-lg text-14 focus:outline-none"
                 type="search" name="search" placeholder="Type to search..." icon="search">
             </div>
         </div>
-        <ul class="md:flex md:items-center">
-            <li class="md:mx-3">
+        <ul class="flex items-center">
+            <li class="mx-3">
                 <img src="@/assets/icons/message.svg" class="h-6 w-6"/>
             </li>
-            <li class="md:mx-3">
+            <li class="mx-3">
                 <img src="@/assets/icons/bell_notification.svg" class="h-6 w-6"/>
             </li>
             <li>
