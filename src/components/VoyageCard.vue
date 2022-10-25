@@ -61,9 +61,9 @@ export default {
     name: "VoyageCard",
     props: {
         num: {
-            type: String,
+            type: Number,
             required: true,
-            default: "0"
+            default: 0
         },
         start: {
             type: String,
