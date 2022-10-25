@@ -29,7 +29,7 @@
 </template>  
 
 <script setup>
-import { ref, onUpdated } from 'vue'
+import { ref } from 'vue'
 
 const update = ref(0)
 const isEmpty = true
@@ -47,7 +47,7 @@ const addVoyage = async (voyageData) => {
     voyageNum += 1
     // const DUMMY_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjYxbl96VlI1WmFoZ0hLcy1QOEx5MyJ9.eyJpc3MiOiJodHRwczovL2Rldi14eXJoczYwOS5ldS5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjM1MGUzZWY2MmNiNTRiMmU5MTcwYjI0IiwiYXVkIjpbImh0dHBzOi8vZGphbmdvLWp3dC10ZXN0LWRhbi9hcGkiLCJodHRwczovL2Rldi14eXJoczYwOS5ldS5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNjY2MjQ5MzIzLCJleHAiOjE2NjYzMzU3MjMsImF6cCI6ImhuTnRMa0lKQmxuSExEVGhTTDc3Q1lUdTlRRWFXaWpOIiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCJ9.hMXcvjne_ig6e0_BQbA2vNhxm_cZICEPPZJn9xohGeC0tk6JtzLUr6uRn7gPSuj0nknOx5CadpQkUzFvrK21EC8aF3IixF7-HfyEuq3b2Grc1GgEH-B6kI5ckKf7A87ADYkmSfudDQm04kSx8oAdJGesMtRn0zraXn4nwVKweYEYIXIa6eB9VHMon05GSI7mrknAbHRAjcYMUmhJ1L4TafAonK-SUe4PUQJyniYDCleeA7Bmm-IgychhG7x6szO2Duk6AZxfoXn-QRjv2zVXTh63_9r391N8MAx3gF-qF780Y4tVonZGbHXeHw2yJyGsJC7DCE98R1ddUKw9LCcuZA"
     const DUMMY_TOKEN = localStorage.getItem('jwt');
-    const response = fetch('https://testapi.marinachain.io/marinanet/voyages/', {
+    const response = await fetch('https://testapi.marinachain.io/marinanet/voyages/', {
         headers: {
             Authorization: 'Bearer ' + DUMMY_TOKEN,
             "Content-Type": "application/json"
@@ -55,14 +55,11 @@ const addVoyage = async (voyageData) => {
         method: 'POST',
         body: JSON.stringify(voyageData)
     });
-    console.log(response);
 
+    console.log(response);
     update.value += 1
 }
 
-onUpdated(() => {
-    console.log('updated')
-})
 </script>
 
 <script>
