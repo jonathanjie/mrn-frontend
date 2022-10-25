@@ -34,7 +34,7 @@
         </div>
         <!-- margin set to make total width of all icons equal, but may need to update if there is a better way to do this -->
         <!-- TODO: all margins should be set to match bunker -->
-        <img v-if="report_type=='DEPART'" src="@/assets/icons/depart_icon.svg" class="mr-2"/>
+        <img v-if="report_type=='DEPART'" src="@/assets/icons/depart_icon.svg" class="mr-1"/>
         <img v-if="report_type=='ARRIVAL'" src="@/assets/icons/arrival_icon.svg" class="mr-7"/>
         <img v-if="report_type=='NOON'" src="@/assets/icons/noon_icon.svg" class="mr-[34px]"/>
         <img v-if="report_type=='BUNKER'" src="@/assets/icons/bunker_icon.svg" class="m-3"/>
