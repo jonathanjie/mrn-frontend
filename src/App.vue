@@ -32,13 +32,16 @@ export default {
     return {
       collapsed,
       user,
-      isAuthenticated
+      isAuthenticated,
     };
   }, 
-  created() {
+  async created() {
     const authStore = useAuthStore()
     if (!authStore.user || !authStore.token) {
-      authStore.updateUserAndToken()
+      const { user, getAccessTokenSilently } = useAuth0();
+      const jwt = await getAccessTokenSilently();
+
+      authStore.updateUserAndToken(user, jwt)
     }
   },
   components: {
