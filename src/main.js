@@ -6,6 +6,7 @@ import App from './App.vue'
 import './index.css'
 import router from './router'
 import DatePicker from '@vuepic/vue-datepicker'
+import VueClickAway from "vue3-click-away"
 
 // TODO: fix router for custom login; typeof useAuth0 is undefined after initialization
 // router.beforeEach(async (to, from) => {
@@ -38,7 +39,8 @@ const app = createApp(App)
         redirect_uri: window.location.origin,
         audience: 'https://django-jwt-test-dan/api'
     }))
-    .use(createPinia());
+    .use(createPinia())
+    .use(VueClickAway);
 
 app.component('DatePicker', DatePicker);
 
