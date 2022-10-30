@@ -18,30 +18,47 @@
                 <img src="@/assets/icons/divider.svg" class="flex h-5 w-6 md:items-center md:visible"/>
             </li>
         </ul>
-        <div v-if="user" class="flex items-center">
-            <img :src="user.picture"  class="h-10 w-10 mx-3 rounded-full" referrerpolicy="no-referrer"/>
-            <!-- <img v-else src="@/assets/icons/avatar.svg" class="h-10 w-10 mx-3"/> -->
-            <div class="flex flex-col items-left">
+        <div class="flex items-center relative" @mouseenter="mouseEnter" @mouseleave="mouseLeave" >
+            <img v-if="user" :src="user.picture"  class="h-10 w-10 mx-3 rounded-full" referrerpolicy="no-referrer"/>
+            <img v-else src="@/assets/icons/avatar.svg" class="h-10 w-10 mx-3"/>
+            <div v-if="user" class="flex flex-col items-left">
                 <span class="font-bold text-gray-900 text-14 mr-1">{{ user.name }}</span>
                 <span class="font-semibold text-gray-500 text-12 mr-1">Ship Owner</span>
             </div>
-            <img src="@/assets/icons/down_arrow.svg" class="h-1.5 w-3 mx-3"/>
-        </div>
-        <div v-else class="flex items-center">
-            <img src="@/assets/icons/avatar.svg" class="h-10 w-10 mx-3"/>
-            <div class="flex flex-col items-left">
+            <div v-else class="flex flex-col items-left">
                 <span class="font-bold text-gray-900 text-14 mr-1">Unknown</span>
                 <span class="font-semibold text-gray-500 text-12 mr-1">Please log in</span>
             </div>
-            <img src="@/assets/icons/down_arrow.svg" class="h-1.5 w-3 mx-3"/>
+            <img src="@/assets/icons/down_arrow.svg" class="h-1.5 w-3 mx-3"/>        
+            <div v-show="isExpanded" class="absolute -bottom-10 right-5" @mouseenter="mouseEnter">
+                <div class="flex flex-col">
+                    <button @click="logout" class="h-10 w-40 bg-white">Log out</button>
+                </div>
+                <!-- TODO: adjust width based on profile length? -->
+            </div>
         </div>
+        
     </div>
-
+    
 </template>
 
 <script setup>
 import { useAuth0 } from '@auth0/auth0-vue'
+import { ref } from 'vue'
 
 // TODO: get from pinia instead of auth0; need to figure out async state tracking
-const { user } = useAuth0();
+const { user, logout } = useAuth0();
+
+let isExpanded = ref(false);
+
+function mouseEnter() {
+    isExpanded.value = true
+    console.log(isExpanded)
+}
+
+function mouseLeave() {
+    isExpanded.value = false
+    console.log(isExpanded)
+}
+
 </script>
