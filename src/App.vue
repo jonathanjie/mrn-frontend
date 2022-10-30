@@ -14,41 +14,29 @@
   </div>
 </template>
 
-<script>
+<script setup> 
 import SideNav from './components/SideNav/SideNav.vue'
 import WebHeader from './components/WebHeader.vue'
 import { collapsed } from './components/SideNav/state.js'
 import { useAuth0 } from '@auth0/auth0-vue'
 import { useAuthStore } from './store/auth.store.js'
 // import { useRouter } from 'vue-router'
+import { onMounted } from 'vue'
 
-export default {
-  setup() {
-    const { user, isAuthenticated } = useAuth0();
+const { user, isAuthenticated } = useAuth0();
 
-    return {
-      collapsed,
-      user,
-      isAuthenticated,
-    };
-  }, 
+onMounted(async () => {
+  const authStore = useAuthStore()
+  // check not if token exists but if token is expired
+  // https://community.auth0.com/t/how-to-check-access-token-is-expired/78890
   // TODO: this check needs to be done when going from one page to another
-  async created() {
-    const authStore = useAuthStore()
-    // check not if token exists but if token is expired
-    // https://community.auth0.com/t/how-to-check-access-token-is-expired/78890
-    if (!authStore.user || !authStore.token) { 
-      const { user, getAccessTokenSilently } = useAuth0();
-      const jwt = await getAccessTokenSilently();
+  if (!authStore.user || !authStore.token) { 
+    const { user, getAccessTokenSilently } = useAuth0();
+    const jwt = await getAccessTokenSilently();
 
-      authStore.updateUserAndToken(user, jwt)
-    }
-  },
-  components: {
-    SideNav,
-    WebHeader,
+    authStore.updateUserAndToken(user, jwt)
   }
-}
+}) 
 </script>
 
 <style>
