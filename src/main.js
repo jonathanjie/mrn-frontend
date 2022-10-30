@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-// import { createPinia } from 'pinia'
+import { createPinia } from 'pinia'
 import { createAuth0, useAuth0 } from '@auth0/auth0-vue'
 
 import App from './App.vue'
@@ -38,7 +38,7 @@ const app = createApp(App)
         redirect_uri: window.location.origin,
         audience: 'https://django-jwt-test-dan/api'
     }))
-    // .use(createPinia());
+    .use(createPinia());
 
 app.component('DatePicker', DatePicker);
 

@@ -6,23 +6,31 @@ export const useAuthStore = defineStore({
     state: () => ({
         // initialize state from local storage to enable user to stay logged in
         user: JSON.parse(localStorage.getItem('user')),
-        returnUrl: null
+        jwt: localStorage.getItem('jwt'),
     }),
     actions: {
-        login() {
-            // update pinia state
+        async updateUserAndToken() {
+            const { user, getAccessTokenSilently } = useAuth0()
+            
+            const jwt = await getAccessTokenSilently();
+
             this.user = user;
+            this.jwt = jwt
 
-            // store user details and jwt in local storage to keep user logged in between page refreshes
             localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('jwt', JSON.stringify(jwt));
 
-            // redirect to previous url or default to home page
-            router.push(this.returnUrl || '/');
+            console.log("USER: ", JSON.parse(localStorage.getItem('user')));
+            console.log("TOKEN: ", localStorage.getItem('jwt'));
         },
         logout() {
             this.user = null;
+            this.jwt = null;
+
             localStorage.removeItem('user');
-            router.push('/login');
+            localStorage.removeItem('jwt');
+
+            // router.push('/login'); TODO: uncomment when login page is ready
         }
-    }
+    },
 });
