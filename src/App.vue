@@ -54,6 +54,6 @@ export default {
 <style>
 @font-face {
   font-family: "Manrope";
-  src: local("Manrope"), url(./fonts/Manrope-SemiBold.ttf) format("truetype");
+  src: local("Manrope"), url(./fonts/Manrope-Medium.otf) format("truetype");
 }
 </style>
