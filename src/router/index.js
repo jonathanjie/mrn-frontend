@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { authGuard } from '@auth0/auth0-vue'
+import { authGuard, useAuth0 } from '@auth0/auth0-vue'
 
-import LoginView from '../views/LoginView.vue'
+// import LoginView from '../views/LoginView.vue'
 import HomeView from '../views/HomeView.vue'
 import MyVesselsView from '../views/MyVesselsView.vue'
 import PlanVoyageView from '../views/PlanVoyageView.vue'
@@ -15,7 +15,6 @@ import AddReportToVesselView from '../views/AddReportToVesselView.vue'
 import NoonSailingAtSeaReportView from '../views/NoonReportView/NoonSailingAtSeaReportView.vue'
 import NoonCoastalWaterReportView from '../views/NoonReportView/NoonCoastalWaterReportView.vue'
 import NoonInPortReportView from '../views/NoonReportView/NoonInPortReportView.vue'
-
 
 const routes = [
   // {
@@ -103,16 +102,5 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
-
-// router.beforeEach(async (to) => {
-//   const publicPages = ['/login'];
-//   const authRequired = !publicPages.includes(to.path);
-//   const auth = useAuthStore();
-
-//   if (authRequired && !auth.user) {
-//       auth.returnUrl = to.fullPath;
-//       return '/login';
-//   }
-// })
 
 export default router

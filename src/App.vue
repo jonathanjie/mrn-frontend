@@ -32,9 +32,12 @@ export default {
       isAuthenticated,
     };
   }, 
+  // TODO: this check needs to be done when going from one page to another
   async created() {
     const authStore = useAuthStore()
-    if (!authStore.user || !authStore.token) {
+    // check not if token exists but if token is expired
+    // https://community.auth0.com/t/how-to-check-access-token-is-expired/78890
+    if (!authStore.user || !authStore.token) { 
       const { user, getAccessTokenSilently } = useAuth0();
       const jwt = await getAccessTokenSilently();
 

@@ -8,14 +8,18 @@ export const useAuthStore = defineStore({
     }),
     actions: {
         updateUserAndToken(user, token) {
-            this.user = user;
+            this.updateUser(user)
+            this.updateToken(token)
+        },
+        updateToken(token) {
             this.jwt = token;
-
-            localStorage.setItem('user', JSON.stringify(user));
             localStorage.setItem('jwt', JSON.stringify(token));
-
-            console.log("USER: ", JSON.parse(localStorage.getItem('user')));
             console.log("TOKEN: ", localStorage.getItem('jwt'));
+        },
+        updateUser(user) {
+            this.user = user;
+            localStorage.setItem('user', JSON.stringify(user));
+            console.log("USER: ", JSON.parse(localStorage.getItem('user')));
         },
         logout() {
             this.user = null;

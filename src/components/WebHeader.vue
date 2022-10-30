@@ -30,9 +30,10 @@
                 <span class="font-semibold text-gray-500 text-12 mr-1">Please log in</span>
             </div>
             <img src="@/assets/icons/down_arrow.svg" class="h-1.5 w-3 mx-3"/>        
-            <div v-show="isExpanded" class="absolute -bottom-10 right-5" @mouseenter="mouseEnter">
+            <div v-show="isExpanded" class="absolute -bottom-20 right-0" @mouseenter="mouseEnter">
                 <div class="flex flex-col">
-                    <button @click="logout" class="h-10 w-40 bg-white">Log out</button>
+                    <button @click="getToken" class="h-10 w-40 bg-white">Get token</button>
+                    <button @click="logout" class="h-10 w-40 bg-white rounded-b-lg">Log out</button>
                 </div>
                 <!-- TODO: adjust width based on profile length? -->
             </div>
@@ -43,22 +44,27 @@
 </template>
 
 <script setup>
+import { useAuthStore } from '@/store/auth.store';
 import { useAuth0 } from '@auth0/auth0-vue'
 import { ref } from 'vue'
 
 // TODO: get from pinia instead of auth0; need to figure out async state tracking
-const { user, logout } = useAuth0();
+const { user, logout, getAccessTokenSilently } = useAuth0();
 
 let isExpanded = ref(false);
 
 function mouseEnter() {
     isExpanded.value = true
-    console.log(isExpanded)
 }
 
 function mouseLeave() {
     isExpanded.value = false
-    console.log(isExpanded)
 }
 
+async function getToken() {
+    const authStore = useAuthStore();
+    const jwt = await getAccessTokenSilently();
+    
+    authStore.updateToken(jwt);
+}
 </script>
