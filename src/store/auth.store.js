@@ -13,7 +13,7 @@ export const useAuthStore = defineStore({
         },
         updateToken(token) {
             this.jwt = token;
-            localStorage.setItem('jwt', JSON.stringify(token));
+            localStorage.setItem('jwt', token);
             console.log("TOKEN: ", localStorage.getItem('jwt'));
         },
         updateUser(user) {
