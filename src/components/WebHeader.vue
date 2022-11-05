@@ -4,7 +4,7 @@
             <div class="relative mx-auto text-gray-600">
                 <img class="absolute mr-2 w-10 px-2 py-2" src="@/assets/icons/search_icon.svg">
                 <input class="bg-gray-50 h-10 w-80 pl-11 pr-3 rounded-lg text-14 focus:outline-none"
-                type="search" name="search" placeholder="Type to search..." icon="search">
+                type="search" name="search" :placeholder="$t('typeToSearch')" icon="search">
             </div>
         </div>
         <ul class="flex items-center">
