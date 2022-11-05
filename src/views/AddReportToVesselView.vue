@@ -12,7 +12,7 @@
                     </button>
                     <span class="mx-5 text-20 text-blue">{{ $t("submitNewReport") }}</span>
                 </div>
-                <div class="grid grid-cols-4 gap-5 justify-items-stretch pb-8">
+                <div class="grid grid-cols-2 xl:grid-cols-4 gap-5 justify-items-stretch pb-8">
                     <RadioBtnIcon 
                         class="min-w-[188px]"
                         :icon="require('@/assets/icons/noon_report.svg')" 
