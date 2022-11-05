@@ -7,6 +7,7 @@ import './index.css'
 import router from './router'
 import DatePicker from '@vuepic/vue-datepicker'
 import VueClickAway from "vue3-click-away"
+import i18n from "./locales/i18n"
 
 // TODO: fix router for custom login; typeof useAuth0 is undefined after initialization
 // router.beforeEach(async (to, from) => {
@@ -32,6 +33,7 @@ import VueClickAway from "vue3-click-away"
 //   })
    
 const app = createApp(App)
+    .use(i18n)
     .use(router)
     .use(createAuth0({
         domain: "dev-xyrhs609.eu.auth0.com",
