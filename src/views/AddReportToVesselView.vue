@@ -44,8 +44,8 @@
 
                     <!-- TODO: when this page is refrehsed, it should discard any child path -->
                     <!-- NOON -->
-                        <!-- TODO: replace detail icons with actual responsive elements? -->
-                        <span v-if="reportType == 'Noon'" class="col-span-4 text-blue pt-4">{{ $t("selectCase") }}:</span>
+                        <!-- TODO: replace detail icons with actual responsive elements -->
+                        <span v-if="reportType == 'Noon'" class="col-span-2 xl:col-span-4 text-blue pt-4">{{ $t("selectCase") }}:</span>
                         <RadoioBtnDetail v-if="reportType == 'Noon'" class="col-span-2"
                             :icon="require('@/assets/icons/report_subtype_sailing_at_sea.svg')" 
                             content="Sailing at sea" 
@@ -53,7 +53,7 @@
                             @onUpdateBtn="updateActiveSubReportType" 
                             :class="'Sailing at sea' == subReportType ? 'border-green-500 border text-gray-700' :''">
                         </RadoioBtnDetail>
-                        <div></div>
+                        <div class="hidden xl:block"></div>
                         <RadoioBtnDetail v-if="reportType == 'Noon'" class="col-span-2"
                             :icon="require('@/assets/icons/report_subtype_coastal_water.svg')" 
                             content="Coastal water" 
@@ -79,7 +79,6 @@
 
                 <!-- Vue router -->
                 <router-view></router-view>
-            <!-- </div> -->
         </div>
     </div>
 </template>
