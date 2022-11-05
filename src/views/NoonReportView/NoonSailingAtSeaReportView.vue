@@ -4,20 +4,20 @@
         <div class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4">
             <div class="col-span-2 flex items-center">
                 <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
-                <span class="text-blue-700 text-16">Overview</span>
+                <span class="text-blue-700 text-16">{{ $t("overview") }}</span>
             </div>
             <div class="grid grid-cols-5 border bg-gray-50 text-14">
-                <div class="col-span-2 text-blue-700 p-3 border-r border-b">Report No.</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r border-b">{{ $t("reportNo") }}</div>
                 <input class="col-span-3 p-3 border-b text-gray-700 bg-gray-50" disabled v-model="staticValues.reportNo"/>
-                <div class="col-span-2 text-blue-700 p-3 border-r">Departure No.</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("departureNo") }}</div>
                 <input class="col-span-3 p-3 text-gray-700 bg-gray-50" disabled v-model="staticValues.departureNo"/>
             </div>
             <div class="grid grid-cols-5 row-span-1 bg-gray-50 text-14">
-                <div class="col-span-2 text-blue-700 p-3 border-l border-y">Voyage No.</div>
+                <div class="col-span-2 text-blue-700 p-3 border-l border-y">{{ $t("voyageNo") }}</div>
                 <div class="flex col-span-3 p-3 border">
                     <input class="text-gray-700 bg-gray-50 w-12" disabled v-model="staticValues.voyageNo"/>
                     <!-- value here (e.g. Ballast) should be dynamic -->
-                    <div class="flex self-center bg-gray-100 rounded-full p-1 px-2 text-12 text-gray-700">Ballast</div>
+                    <div class="flex self-center bg-gray-100 rounded-full p-1 px-2 text-12 text-gray-700">{{ $t("ballast") }}</div>
                 </div>
                 <!-- dummy div/input for formatting -->
                 <div class="bg-white col-span-2 row-span-1"></div>
@@ -25,20 +25,20 @@
             </div>
             <div class="flex items-center pt-6">
                 <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
-                <span class="text-blue-700">Departure Port</span>
+                <span class="text-blue-700">{{ $t("departurePort") }}</span>
             </div>
             <div class="flex items-center pt-6">
                 <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
-                <span class="text-blue-700">Destination Port</span>
+                <span class="text-blue-700">{{ $t("destinationPort") }}</span>
             </div>
             <div class="grid grid-cols-5 border bg-gray-50 text-14">
-                <div class="col-span-2 text-blue-700 p-3 border-r border-b">Name</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r border-b">{{ $t("name") }}</div>
                 <input class="col-span-3 p-3 border-b text-gray-700 bg-gray-50" disabled v-model="staticValues.departurePort"/>
-                <div class="col-span-2 text-blue-700 p-3 border-r">Date & time</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("dateAndTime") }}</div>
                 <input class="col-span-3 p-3 text-gray-700 bg-gray-50" disabled v-model="staticValues.departureDateTime"/>
             </div>
             <div class="grid grid-cols-5 border bg-gray-50 text-14">
-                <div class="col-span-2 text-blue-700 p-3 border-r border-b">Name</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r border-b">{{ $t("name") }}</div>
                 <div class="col-span-3 p-3 border-b flex" :class="dpEditable?'bg-white':'bg-gray-50'">
                     <input 
                         class="text-gray-700" 
@@ -48,7 +48,7 @@
                         <img src="@/assets/icons/edit.svg"/>
                     </button>
                 </div>
-                <div class="col-span-2 text-blue-700 p-3 border-r">Est date & time</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("estDateAndTime") }}</div>
                 <div class="col-span-3 p-3 flex" :class="ddtEditable?'bg-white':'bg-gray-50'">
                     <input 
                         class="text-gray-700" 
@@ -65,12 +65,12 @@
         <div class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4">
             <div class="col-span-2 flex items-center">
                 <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
-                <span class="text-blue-700 text-16">Reporting Noon</span>
+                <span class="text-blue-700 text-16">{{ $t("reportingNoon") }}</span>
             </div>
             <div class="grid grid-cols-5 border">
-                <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">Time zone</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("timeZone") }}</div>
                 <select v-model="reporting_time_zone" class="col-span-3 p-3 border-b text-gray-400 text-14 focus:border-0">
-                    <option selected disabled value="default">Select time zone</option>
+                    <option selected disabled value="default">{{ $t("selectTimeZone") }}</option>
                     <!-- TODO: select +1 or -1 timezone from previous report -->
                     <option value="utc">UTC</option>
                     <option value="utc1">UTC+1:00</option>
@@ -97,13 +97,13 @@
                     <option value="utc-2">UTC-2:00</option>
                     <option value="utc-1">UTC-1:00</option>
                 </select>
-                <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">Summer time</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("summerTime") }}</div>
                 <select v-model="reporting_summer_time" class="col-span-3 p-3 border-b text-gray-400 text-14 focus:border-0">
-                    <option selected disabled value="default">Select summer time</option>
-                    <option value="a">Applied</option>
-                    <option value="na">Not Applied</option>
+                    <option selected disabled value="default">{{ $t("selectSummerTime") }}</option>
+                    <option value="a">{{ $t("applied") }}</option>
+                    <option value="na">{{ $t("notApplied") }}</option>
                 </select>
-                <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">Date & time</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("dateAndTime") }}</div>
                 <DatePicker 
                     v-model="reporting_date_time" 
                     class="col-span-3" 
@@ -117,23 +117,23 @@
             </div>
             <div></div>
             <div class="grid grid-cols-5 border bg-gray-50">
-                <span class="col-span-2 row-span-3  text-blue-700 p-3 text-14 self-center">Latitude</span>
+                <span class="col-span-2 row-span-3  text-blue-700 p-3 text-14 self-center">{{ $t("latitude") }}</span>
                 <input v-model="latitude_degree" placeholder="000 (Degree)" class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"/>
                 <input v-model="latitude_minutes" placeholder="000 (Minutes)" class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"/>
                 <select v-model="latitudeSN" class="col-span-3 p-3 text-gray-400 text-14 border-l focus:border-0 focus:outline-0">
-                    <option selected disabled value="default">South/North</option>
-                    <option value="y">South</option>
-                    <option value="n">North</option>
+                    <option selected disabled value="default">{{ $t("southAndNorth") }}</option>
+                    <option value="y">{{ $t("south") }}</option>
+                    <option value="n">{{ $t("north") }}</option>
                 </select>
             </div>
             <div class="grid grid-cols-5 border bg-gray-50">
-                <span class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center">Longitude</span>
+                <span class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center">{{ $t("longitude") }}</span>
                 <input v-model="longitude_degree" placeholder="000 (Degree)" class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"/>
                 <input v-model="longitude_minutes" placeholder="000 (Minutes)" class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"/>
                 <select v-model="longitudeSN" class="col-span-3 p-3 text-gray-400 text-14 border-l focus:border-0">
-                    <option selected disabled value="default">South/North</option>
-                    <option value="y">South</option>
-                    <option value="n">North</option>
+                    <option selected disabled value="default">{{ $t("southAndNorth") }}</option>
+                    <option value="y">{{ $t("south") }}</option>
+                    <option value="n">{{ $t("north") }}</option>
                 </select>
             </div>
         </div>
@@ -142,74 +142,74 @@
         <div class="grid bg-white rounded-lg p-5 gap-4">
             <div class="flex items-center">
                 <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
-                <span class="text-blue-700 text-16">Weather</span>
+                <span class="text-blue-700 text-16">{{ $t("weather") }}</span>
             </div>
             <div class="grid grid-cols-2">
                 <div class="grid grid-cols-5 border mr-4">
-                    <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">Sky</div>
+                    <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("sky") }}</div>
                     <select v-model="weather_sky" class="col-span-3 p-3 text-gray-400 text-14 focus:border-0">
-                        <option selected disabled value="default">Select</option>
-                        <option value="b">b: Blue sky (Cloud 0~2)</option>
-                        <option value="bc">bc: Fine but Cloudy (Cloud 3~7)</option>
-                        <option value="c">c: Cloudy (Cloud 8~10)</option>
-                        <option value="d">d: Drizzling rain</option>
-                        <option value="f">f: Fog</option>
-                        <option value="g">g: Gloom</option>
-                        <option value="h">h: Hail</option>
-                        <option value="l">l: Lightning</option>
-                        <option value="m">m: Mist</option>
-                        <option value="o">o: Overcast (Cloud 10)</option>
-                        <option value="p">p: Passing showers</option>
-                        <option value="q">q: Squalls</option>
-                        <option value="r">r: Rain</option>
-                        <option value="s">s: Snow</option>
-                        <option value="t">t: Thunder</option>
-                        <option value="u">u: Ugly threatening wr.</option>
-                        <option value="v">v: Visibility</option>
-                        <option value="w">w: Dew</option>
-                        <option value="z">z: Haze</option>
+                        <option selected disabled value="default">{{ $t("select") }}</option>
+                        <option value="b">{{ $t("sky_b") }}</option>
+                        <option value="bc">{{ $t("sky_bc") }}</option>
+                        <option value="c">{{ $t("sky_c") }}</option>
+                        <option value="d">{{ $t("sky_d") }}</option>
+                        <option value="f">{{ $t("sky_f") }}</option>
+                        <option value="g">{{ $t("sky_g") }}</option>
+                        <option value="h">{{ $t("sky_h") }}</option>
+                        <option value="l">{{ $t("sky_l") }}</option>
+                        <option value="m">{{ $t("sky_m") }}</option>
+                        <option value="o">{{ $t("sky_o") }}</option>
+                        <option value="p">{{ $t("sky_p") }}</option>
+                        <option value="q">{{ $t("sky_q") }}</option>
+                        <option value="r">{{ $t("sky_r") }}</option>
+                        <option value="s">{{ $t("sky_s") }}</option>
+                        <option value="t">{{ $t("sky_t") }}</option>
+                        <option value="u">{{ $t("sky_u") }}</option>
+                        <option value="v">{{ $t("sky_v") }}</option>
+                        <option value="w">{{ $t("sky_w") }}</option>
+                        <option value="z">{{ $t("sky_z") }}</option>
                     </select>
                 </div>
                 <div class="grid grid-cols-5 border">
-                    <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">Visibility</div>
+                    <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("visibility") }}</div>
                     <select v-model="weather_visibility" class="col-span-3 p-3 text-gray-400 text-14 focus:border-0">
-                        <option selected disabled value="default">Select</option>
-                        <option value="1">1 (&lt; 50 m) </option>
-                        <option value="2">2 (50-200 m)</option>
-                        <option value="3">3 (200-500 m)</option>
-                        <option value="4">4 (500-1000 m)</option>
-                        <option value="5">5 (1-2 km)</option>
-                        <option value="6">6 (2-4 km)</option>
-                        <option value="7">7 (4-10 km)</option>
-                        <option value="8">8 (10-20 km)</option>
-                        <option value="9">9 (20-50 km)</option>
-                        <option value="10">10 (50+ km)</option>
+                        <option selected disabled value="default">{{ $t("select") }}</option>
+                        <option value="1">{{ $t("visibility_1") }}</option>
+                        <option value="2">{{ $t("visibility_2") }}</option>
+                        <option value="3">{{ $t("visibility_3") }}</option>
+                        <option value="4">{{ $t("visibility_4") }}</option>
+                        <option value="5">{{ $t("visibility_5") }}</option>
+                        <option value="6">{{ $t("visibility_6") }}</option>
+                        <option value="7">{{ $t("visibility_7") }}</option>
+                        <option value="8">{{ $t("visibility_8") }}</option>
+                        <option value="9">{{ $t("visibility_9") }}</option>
+                        <option value="10">{{ $t("visibility_10") }}</option>
                     </select>
                 </div>
             </div>
             
             <div class="grid grid-cols-10 border">
-                <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">Wind</div>
-                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">Direction</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("wind") }}</div>
+                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("direction") }}</div>
                 <input v-model="wind_dir" placeholder="000 (Degrees)" class="col-span-2 p-3 pl-4 border-r bg-white text-14 text-gray-700 focus:outline-0"/>
-                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">Force</div>
+                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("force") }}</div>
                 <select v-model="wind_force" class="col-span-1 p-3 text-gray-400 border-r text-14 focus:border-0">
-                    <option selected disabled value="default">Select</option>
-                    <option value="0">0 (Calm)</option>
-                    <option value="1">1 (Light air)</option>
-                    <option value="2">2 (Light breeze)</option>
-                    <option value="3">3 (Gentle Breeze)</option>
-                    <option value="4">4 (Moderate breeze)</option>
-                    <option value="5">5 (Fresh Breeze)</option>
-                    <option value="6">6 (Strong Breeze)</option>
-                    <option value="7">7 (Near gale)</option>
-                    <option value="8">8 (Gale)</option>
-                    <option value="9">9 (Severe gale)</option>
-                    <option value="10">10 (Storm)</option>
-                    <option value="11">11 (Violent storm)</option>
-                    <option value="12">12 (Hurricane)</option>
+                    <option selected disabled value="default">{{ $t("select") }}</option>
+                    <option value="0">{{ $t("wind_force_0") }}</option>
+                    <option value="1">{{ $t("wind_force_1") }}</option>
+                    <option value="2">{{ $t("wind_force_2") }}</option>
+                    <option value="3">{{ $t("wind_force_3") }}</option>
+                    <option value="4">{{ $t("wind_force_4") }}</option>
+                    <option value="5">{{ $t("wind_force_5") }}</option>
+                    <option value="6">{{ $t("wind_force_6") }}</option>
+                    <option value="7">{{ $t("wind_force_7") }}</option>
+                    <option value="8">{{ $t("wind_force_8") }}</option>
+                    <option value="9">{{ $t("wind_force_9") }}</option>
+                    <option value="10">{{ $t("wind_force_10") }}</option>
+                    <option value="11">{{ $t("wind_force_11") }}</option>
+                    <option value="12">{{ $t("wind_force_12") }}</option>
                 </select>
-                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">Max. Speed</div>
+                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("maxSpeed") }}</div>
                 <div class="flex col-span-2 p-2 pl-4 bg-white">
                     <input v-model="wind_max_speed" placeholder="00.0" class="text-14 text-gray-700 focus:outline-0"/>
                     <!-- value here (e.g. Ballast) is dynamic -->
@@ -217,48 +217,48 @@
                 </div>
             </div>
             <div class="grid grid-cols-10 border">
-                <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">Wave</div>
-                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">Direction</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("wave") }}</div>
+                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("direction") }}</div>
                 <input v-model="wave_dir" placeholder="000 (Degrees)" class="col-span-2 p-3 pl-4 border-r bg-white text-14 text-gray-700 focus:outline-0"/>
-                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">Force</div>
+                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("force") }}</div>
                 <select v-model="wave_force" class="col-span-1 p-3 text-gray-400 border-r text-14 focus:border-0">
-                    <option selected disabled value="default">Select</option>
-                    <option value="0">0 (Calm, Glassy)</option>
-                    <option value="1">1 (Calm, Rippled)</option>
-                    <option value="2">2 (Smooth)</option>
-                    <option value="3">3 (Slight)</option>
-                    <option value="4">4 (Moderate)</option>
-                    <option value="5">5 (Rough)</option>
-                    <option value="6">6 (Very Rough)</option>
-                    <option value="7">7 (High)</option>
-                    <option value="8">8 (Very High)</option>
-                    <option value="9">9 (Phenomenal)</option>
+                    <option selected disabled value="default">{{ $t("select") }}</option>
+                    <option value="0">{{ $t("wave_force_0") }}</option>
+                    <option value="1">{{ $t("wave_force_1") }}</option>
+                    <option value="2">{{ $t("wave_force_2") }}</option>
+                    <option value="3">{{ $t("wave_force_3") }}</option>
+                    <option value="4">{{ $t("wave_force_4") }}</option>
+                    <option value="5">{{ $t("wave_force_5") }}</option>
+                    <option value="6">{{ $t("wave_force_6") }}</option>
+                    <option value="7">{{ $t("wave_force_7") }}</option>
+                    <option value="8">{{ $t("wave_force_8") }}</option>
+                    <option value="9">{{ $t("wave_force_9") }}</option>
                 </select>
-                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">Max. Height</div>
+                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("maxHeight") }}</div>
                 <div class="flex col-span-2 p-2 pl-4 bg-white">
                     <input v-model="wave_max_height" placeholder="00.0" class="text-14 text-gray-700 focus:outline-0"/>
                     <div class="flex self-center bg-gray-100 rounded-full p-1 px-2 ml-auto text-12 text-gray-700">M</div>
                 </div>
             </div>
             <div class="grid grid-cols-10 border">
-                <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">Swell</div>
-                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">Direction</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("swell") }}</div>
+                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("direction") }}</div>
                 <input v-model="swell_dir" placeholder="000 (Degrees)" class="col-span-2 p-3 pl-4 border-r bg-white text-14 text-gray-700 focus:outline-0"/>
-                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">Scale</div>
+                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("scale") }}</div>
                 <select v-model="swell_scale" class="col-span-1 p-3 text-gray-400 border-r text-14 focus:border-0">
-                    <option selected disabled value="default">Select</option>
-                    <option value="0">0 (No swell)</option>
-                    <option value="1">1 (Low swell - short or average)</option>
-                    <option value="2">2 (Low Swell - long)</option>
-                    <option value="3">3 (Moderate - short)</option>
-                    <option value="4">4 (Moderate - average)</option>
-                    <option value="5">5 (Moderate - long)</option>
-                    <option value="6">6 (Heavy Swell - short)</option>
-                    <option value="7">7 (Heavy Swell - average)</option>
-                    <option value="8">8 (Heavy Swell - long)</option>
-                    <option value="9">9 (Confused Swell)</option>
+                    <option selected disabled value="default">{{ $t("select") }}</option>
+                    <option value="0">{{ $t("swell_0") }}</option>
+                    <option value="1">{{ $t("swell_1") }}</option>
+                    <option value="2">{{ $t("swell_2") }}</option>
+                    <option value="3">{{ $t("swell_3") }}</option>
+                    <option value="4">{{ $t("swell_4") }}</option>
+                    <option value="5">{{ $t("swell_5") }}</option>
+                    <option value="6">{{ $t("swell_6") }}</option>
+                    <option value="7">{{ $t("swell_7") }}</option>
+                    <option value="8">{{ $t("swell_8") }}</option>
+                    <option value="9">{{ $t("swell_9") }}</option>
                 </select>
-                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">Max. Height</div>
+                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("maxHeight") }}</div>
                 <div class="flex col-span-2 p-2 pl-4 bg-white">
                     <input v-model="swell_max_height" placeholder="00.0" class="text-14 text-gray-700 focus:outline-0"/>
                     <div class="flex self-center bg-gray-100 rounded-full p-1 px-2 ml-auto text-12 text-gray-700">M</div>
@@ -267,14 +267,14 @@
 
             <div class="grid grid-cols-2">
                 <div class="grid grid-cols-5 border mr-4">
-                    <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">Glacier Ice Condition</div>
+                    <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("glacierIceCondition") }}</div>
                     <select v-model="glacier_ice_condition" class="col-span-3 p-3 text-gray-400 text-14 focus:border-0">
-                        <option selected disabled value="default">Select</option>
-                        <option value="na">N/A</option>
-                        <option value="low">LOW</option>
-                        <option value="mod">MOD</option>
-                        <option value="high">HIGH</option>
-                        <option value="ext">EXT</option>
+                        <option selected disabled value="default">{{ $t("select") }}</option>
+                        <option value="na">{{ $t("na") }}</option>
+                        <option value="low">{{ $t("glacier_low") }}</option>
+                        <option value="mod">{{ $t("glacier_mod") }}</option>
+                        <option value="high">{{ $t("glacier_high") }}</option>
+                        <option value="ext">{{ $t("glacier_ext") }}</option>
                     </select>
                 </div>
                 <div></div>
@@ -285,20 +285,20 @@
         <div class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4">
             <div class="col-span-2 flex items-center">
                 <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
-                <span class="text-blue-700 text-16">Heavy Weather Condition</span>
+                <span class="text-blue-700 text-16">{{ $t("heavyWeatherCondition") }}</span>
             </div>
             <div class="grid grid-cols-5 border">
-                <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">Total hours</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("totalHours") }}</div>
                 <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
                     <input v-model="hwc_total_hours" placeholder="00.0" class="text-14 text-gray-700 focus:outline-0"/>
                     <div class="flex self-center bg-gray-100 rounded-full p-1 px-2 ml-auto text-12 text-gray-700">HRS</div>
                 </div>
-                <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">Distance</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("distance") }}</div>
                 <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
                     <input v-model="hwc_distance" placeholder="00.0" class="text-14 text-gray-700 focus:outline-0"/>
                     <div class="flex self-center bg-gray-100 rounded-full p-1 px-2 ml-auto text-12 text-gray-700">NM</div>
                 </div>
-                <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">Fuel consumption</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("fuelConsumption") }}</div>
                 <div class="flex col-span-3 p-2 pl-4 bg-white">
                     <input v-model="hwc_fuel_consumption" placeholder="00.0" class="text-14 text-gray-700 focus:outline-0"/>
                     <div class="flex self-center bg-gray-100 rounded-full p-1 px-2 ml-auto text-12 text-gray-700">MT</div>
@@ -306,29 +306,29 @@
             </div>
             <div></div>
             <div class="col-span-2 grid grid-cols-10 border">
-                <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">Wind</div>
-                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">Direction</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("wind") }}</div>
+                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("direction") }}</div>
                 <input v-model="hwc_wave_dir" placeholder="000 (Degrees)" class="col-span-3 p-3 pl-4 border-r bg-white text-14 text-gray-700 focus:outline-0"/>
-                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">Force</div>
+                <div class="col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("force") }}</div>
                 <select v-model="hwc_wave_force" class="col-span-3 p-3 text-gray-400 text-14 focus:border-0">
-                    <option selected disabled value="default">Select</option>
-                    <option value="0">0 (Calm)</option>
-                    <option value="1">1 (Light air)</option>
-                    <option value="2">2 (Light breeze)</option>
-                    <option value="3">3 (Gentle Breeze)</option>
-                    <option value="4">4 (Moderate breeze)</option>
-                    <option value="5">5 (Fresh Breeze)</option>
-                    <option value="6">6 (Strong Breeze)</option>
-                    <option value="7">7 (Near gale)</option>
-                    <option value="8">8 (Gale)</option>
-                    <option value="9">9 (Severe gale)</option>
-                    <option value="10">10 (Storm)</option>
-                    <option value="11">11 (Violent storm)</option>
-                    <option value="12">12 (Hurricane)</option>
+                    <option selected disabled value="default">{{ $t("select") }}</option>
+                    <option value="0">{{ $t("wind_force_0") }}</option>
+                    <option value="1">{{ $t("wind_force_1") }}</option>
+                    <option value="2">{{ $t("wind_force_2") }}</option>
+                    <option value="3">{{ $t("wind_force_3") }}</option>
+                    <option value="4">{{ $t("wind_force_4") }}</option>
+                    <option value="5">{{ $t("wind_force_5") }}</option>
+                    <option value="6">{{ $t("wind_force_6") }}</option>
+                    <option value="7">{{ $t("wind_force_7") }}</option>
+                    <option value="8">{{ $t("wind_force_8") }}</option>
+                    <option value="9">{{ $t("wind_force_9") }}</option>
+                    <option value="10">{{ $t("wind_force_10") }}</option>
+                    <option value="11">{{ $t("wind_force_11") }}</option>
+                    <option value="12">{{ $t("wind_force_12") }}</option>
                 </select>
             </div>
             <div class="grid grid-cols-5 border">
-                <div class="col-span-2 text-blue-700 p-3  bg-gray-50 text-14">Max. wave height</div>
+                <div class="col-span-2 text-blue-700 p-3  bg-gray-50 text-14">{{ $t("maxWaveHeight") }}</div>
                 <div class="flex col-span-3 p-2 pl-4 border-l bg-white">
                     <input v-model="hwc_max_wave_height" placeholder="00.0" class="text-14 text-gray-700 focus:outline-0"/>
                     <div class="flex self-center bg-gray-100 rounded-full p-1 px-2 ml-auto text-12 text-gray-700">M</div>
@@ -341,43 +341,43 @@
         <div class="grid grid-cols-1 bg-white rounded-lg p-5 gap-4">
             <div class="flex items-center">
                 <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
-                <span class="text-blue-700 text-16">Distance & Time</span>
+                <span class="text-blue-700 text-16">{{ $t("distanceAndTime") }}</span>
             </div>
             <div class="grid grid-cols-10">
-                <div class="col-span-2 text-blue-700 p-3 border-l border-t bg-gray-50 text-14">Time</div>
+                <div class="col-span-2 text-blue-700 p-3 border-l border-t bg-gray-50 text-14">{{ $t("time") }}</div>
                 <div class="flex col-span-3 p-2 pl-4 border-x border-t">
                     <input v-model="dt_time" placeholder="0" class="bg-white text-14 text-gray-700 focus:outline-0"/>
                     <div class="flex self-center bg-gray-100 rounded-full ml-auto p-1 px-2 text-12 text-gray-700">HRS</div>
                 </div>
-                <div class="col-span-2 text-blue-700 p-3 border-t bg-gray-50 text-14">Total</div>
+                <div class="col-span-2 text-blue-700 p-3 border-t bg-gray-50 text-14">{{ $t("total") }}</div>
                 <div class="flex col-span-3 p-2 pl-4 border-x border-t">
                     <input v-model="dt_time_total" placeholder="0" class="bg-white text-14 text-gray-700 focus:outline-0"/>
                     <div class="flex self-center bg-gray-100 rounded-full ml-auto p-1 px-2 text-12 text-gray-700">HRS</div>
                 </div>
 
-                <div class="col-span-2 text-blue-700 p-3 border-l border-t bg-gray-50 text-14">Distance by observation</div>
+                <div class="col-span-2 text-blue-700 p-3 border-l border-t bg-gray-50 text-14">{{ $t("distanceByObservation") }}</div>
                 <div class="flex col-span-3 p-2 pl-4 border-x border-t">
                     <input v-model="dt_dbo" placeholder="0" class="bg-white text-14 text-gray-700 focus:outline-0"/>
                     <div class="flex self-center bg-gray-100 rounded-full ml-auto p-1 px-2 text-12 text-gray-700">NM</div>
                 </div>
-                <div class="col-span-2 text-blue-700 p-3 border-t bg-gray-50 text-14">Total</div>
+                <div class="col-span-2 text-blue-700 p-3 border-t bg-gray-50 text-14">{{ $t("total") }}</div>
                 <div class="flex col-span-3 p-2 pl-4 border-x border-t">
                     <input v-model="dt_dbo_total" placeholder="0" class="bg-white text-14 text-gray-700 focus:outline-0"/>
                     <div class="flex self-center bg-gray-100 rounded-full ml-auto p-1 px-2 text-12 text-gray-700">NM</div>
                 </div>
 
-                <div class="col-span-2 text-blue-700 p-3 border-l border-y bg-gray-50 text-14">Distance by engine</div>
+                <div class="col-span-2 text-blue-700 p-3 border-l border-y bg-gray-50 text-14">{{ $t("distanceByEngine") }}</div>
                 <div class="flex col-span-3 p-2 pl-4 border">
                     <input v-model="dt_dbe" placeholder="0" class="bg-white text-14 text-gray-700 focus:outline-0"/>
                     <div class="flex self-center bg-gray-100 rounded-full ml-auto p-1 px-2 text-12 text-gray-700">NM</div>
                 </div>
-                <div class="col-span-2 text-blue-700 p-3 border-y bg-gray-50 text-14">Total</div>
+                <div class="col-span-2 text-blue-700 p-3 border-y bg-gray-50 text-14">{{ $t("total") }}</div>
                 <div class="flex col-span-3 p-2 pl-4 border">
                     <input v-model="dt_dbe_total" placeholder="0" class="bg-white text-14 text-gray-700 focus:outline-0"/>
                     <div class="flex self-center bg-gray-100 rounded-full ml-auto p-1 px-2 text-12 text-gray-700">NM</div>
                 </div>
 
-                <div class="col-span-2 text-blue-700 p-3 border-l border-b bg-gray-50 text-14">Revolution counter</div>
+                <div class="col-span-2 text-blue-700 p-3 border-l border-b bg-gray-50 text-14">{{ $t("revolutionCounter") }}</div>
                 <input v-model="dt_rev_counter" placeholder="0" class="col-span-3 p-3 pl-4 border-x border-b bg-white text-14 text-gray-700 focus:outline-0"/>
             </div>
         </div>
@@ -386,33 +386,33 @@
         <div class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4">
             <div class="col-span-2 flex items-center">
                 <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
-                <span class="text-blue-700 text-16">Performance</span>
+                <span class="text-blue-700 text-16">{{ $t("performance") }}</span>
             </div>
             <div class="grid grid-cols-5 border">
-                <div class="col-span-5 text-blue-700 p-3 border-b bg-gray-50 text-14">Noon to Noon</div>
-                <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">Speed (knots)</div>
+                <div class="col-span-5 text-blue-700 p-3 border-b bg-gray-50 text-14">{{ $t("noonToNoon") }}</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("speedInKnots") }}</div>
                 <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
                     <input v-model="performance_ntn_speed" placeholder="0" class="text-14 text-gray-700 focus:outline-0"/>
                     <div class="flex self-center bg-gray-100 rounded-full p-1 px-2 ml-auto text-12 text-gray-700">KNOTS</div>
                 </div>
-                <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">RPM</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("rpm") }}</div>
                 <input v-model="performance_ntn_rpm" placeholder="0" class="col-span-3 p-3 pl-4 border-b bg-white text-14 text-gray-700 focus:outline-0"/>
-                <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">SLIP</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("slip") }}</div>
                 <div class="flex col-span-3 p-2 pl-4 bg-white">
                     <input v-model="performance_ntn_slip" placeholder="0" class="text-14 text-gray-700 focus:outline-0"/>
                     <div class="flex self-center bg-gray-100 rounded-full p-1 px-2 ml-auto text-12 text-gray-700">%</div>
                 </div>
             </div>
             <div class="grid grid-cols-5 border">
-                <div class="col-span-5 text-blue-700 p-3 border-b bg-gray-50 text-14">Current Voyage</div>
-                <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">Average Speed</div>
+                <div class="col-span-5 text-blue-700 p-3 border-b bg-gray-50 text-14">{{ $t("currentVoyage") }}</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("averageSpeed") }}</div>
                 <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
                     <input v-model="performance_cur_avg_speed" placeholder="0" class="text-14 text-gray-700 focus:outline-0"/>
                     <div class="flex self-center bg-gray-100 rounded-full p-1 px-2 ml-auto text-12 text-gray-700">KNOTS</div>
                 </div>
-                <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">Average RPM</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("averageRPM") }}</div>
                 <input v-model="performance_cur_avg_rpm" placeholder="0" class="col-span-3 p-3 pl-4 border-b bg-white text-14 text-gray-700 focus:outline-0"/>
-                <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">SLIP</div>
+                <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("slip") }}</div>
                 <div class="flex col-span-3 p-2 pl-4 bg-white">
                     <input v-model="performance_cur_slip" placeholder="0" class="text-14 text-gray-700 focus:outline-0"/>
                     <div class="flex self-center bg-gray-100 rounded-full p-1 px-2 ml-auto text-12 text-gray-700">%</div>
@@ -424,75 +424,75 @@
         <div class="grid bg-white rounded-lg p-5 gap-4">
             <div class="flex items-center">
                 <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
-                <span class="text-blue-700 text-16">Consumption & Condition</span>
+                <span class="text-blue-700 text-16">{{ $t("consumptionAndCondition") }}</span>
             </div>
             <div class="grid grid-cols-16">
                 <div class="col-span-4 border-l border-t"></div>
-                <div class="col-span-2 text-blue-700 p-3 border-t border-l bg-gray-50 text-14">M/E</div>
-                <div class="col-span-2 text-blue-700 p-3 border-t border-l bg-gray-50 text-14">G/E</div>
-                <div class="col-span-2 text-blue-700 p-3 border-t border-l bg-gray-50 text-14">BLR</div>
-                <div class="col-span-2 text-blue-700 p-3 border-t border-l bg-gray-50 text-14">IGG</div>
-                <div class="col-span-2 text-blue-700 p-3 border-t border-l bg-gray-50 text-14">Total consumption</div>
-                <div class="col-span-2 text-blue-700 p-3 border-t border-x bg-gray-50 text-14">Remain on Board</div>
+                <div class="col-span-2 text-blue-700 p-3 border-t border-l bg-gray-50 text-14">{{ $t("me") }}</div>
+                <div class="col-span-2 text-blue-700 p-3 border-t border-l bg-gray-50 text-14">{{ $t("ge") }}</div>
+                <div class="col-span-2 text-blue-700 p-3 border-t border-l bg-gray-50 text-14">{{ $t("blr") }}</div>
+                <div class="col-span-2 text-blue-700 p-3 border-t border-l bg-gray-50 text-14">{{ $t("igg") }}</div>
+                <div class="col-span-2 text-blue-700 p-3 border-t border-l bg-gray-50 text-14">{{ $t("totalConsumption") }}</div>
+                <div class="col-span-2 text-blue-700 p-3 border-t border-x bg-gray-50 text-14">{{ $t("remainOnBoard") }}</div>
 
                 <div class="col-span-2 row-span-2 flex p-3 border-l border-t border-green-200 bg-green-100/50">
-                    <div class="self-center text-green-800 text-12">Fuel Oil (MT)</div>
+                    <div class="self-center text-green-800 text-12">{{ $t("fuelOilInMT") }}</div>
                 </div>
-                    <div class="col-span-2 text-green-800 p-3 border-t border-l border-green-100 bg-green-25 text-14">LSFO</div>
+                    <div class="col-span-2 text-green-800 p-3 border-t border-l border-green-100 bg-green-25 text-14">{{ $t("lsfo") }}</div>
                     <input v-model="cc_lsfo_me" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
                     <input v-model="cc_lsfo_ge" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
                     <input v-model="cc_lsfo_blr" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
                     <input v-model="cc_lsfo_igg" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                    <div class="col-span-2 text-gray-400 p-3 border-t border-l bg-gray-25 text-14">N.E.</div>
-                    <div class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25 text-14">N.E.</div>
+                    <div class="col-span-2 text-gray-400 p-3 border-t border-l bg-gray-25 text-14">{{ $t("ne") }}</div>
+                    <div class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25 text-14">{{ $t("ne") }}</div>
                     
-                    <div class="col-span-2 text-green-800 p-3 border-t border-l border-green-100 bg-green-25 text-14">MGO</div>
+                    <div class="col-span-2 text-green-800 p-3 border-t border-l border-green-100 bg-green-25 text-14">{{ $t("mgo") }}</div>
                     <input v-model="cc_mgo_me" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
                     <input v-model="cc_mgo_ge" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
                     <input v-model="cc_mgo_blr" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
                     <input v-model="cc_mgo_igg" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                    <div class="col-span-2 text-gray-400 p-3 border-t border-l bg-gray-25 text-14">N.E.</div>
-                    <div class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25 text-14">N.E.</div>
+                    <div class="col-span-2 text-gray-400 p-3 border-t border-l bg-gray-25 text-14">{{ $t("ne") }}</div>
+                    <div class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25 text-14">{{ $t("ne") }}</div>
 
                 
                 <div class="col-span-2 row-span-4 flex p-3 border-t border-l border-yellow-200 bg-yellow-100/50">
-                    <div class="self-center text-yellow-800 text-12">Lubricate Oil (L)</div>
+                    <div class="self-center text-yellow-800 text-12">{{ $t("lubricateOilInL") }}</div>
                 </div>
-                    <div class="col-span-10 text-yellow-800 p-3 border-t border-l border-yellow-100 bg-yellow-25 text-14">M/E Cylinder</div>
+                    <div class="col-span-10 text-yellow-800 p-3 border-t border-l border-yellow-100 bg-yellow-25 text-14">{{ $t("meCylinder") }}</div>
                         <input v-model="cc_mecylinder_total" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                        <div class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25 text-14">N.E.</div>
-                    <div class="col-span-10 text-yellow-800 p-3 border-t border-l border-yellow-100 bg-yellow-25 text-14">M/E System</div>
+                        <div class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25 text-14">{{ $t("ne") }}</div>
+                    <div class="col-span-10 text-yellow-800 p-3 border-t border-l border-yellow-100 bg-yellow-25 text-14">{{ $t("meSystem") }}</div>
                         <input v-model="cc_mesystem_total" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                        <div class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25 text-14">N.E.</div>
-                    <div class="col-span-10 text-yellow-800 p-3 border-t border-l border-yellow-100 bg-yellow-25 text-14">M/E Sump</div>
+                        <div class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25 text-14">{{ $t("ne") }}</div>
+                    <div class="col-span-10 text-yellow-800 p-3 border-t border-l border-yellow-100 bg-yellow-25 text-14">{{ $t("meSump") }}</div>
                         <input v-model="cc_mesump_total" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                        <div class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25 text-14">N.E.</div>
-                    <div class="col-span-10 text-yellow-800 p-3 border-t border-l border-yellow-100 bg-yellow-25 text-14">G/E System</div>
+                        <div class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25 text-14">{{ $t("ne") }}</div>
+                    <div class="col-span-10 text-yellow-800 p-3 border-t border-l border-yellow-100 bg-yellow-25 text-14">{{ $t("geSystem") }}</div>
                         <input v-model="cc_gesystem_total" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                        <div class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25 text-14">N.E.</div>
+                        <div class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25 text-14">{{ $t("ne") }}</div>
 
                 <div class="col-span-2 row-span-2 flex p-3 border-y border-l border-blue-200 bg-sysblue-100/50">
-                    <div class="self-center  text-sysblue-800 text-12">Fresh Water (TON)</div>
+                    <div class="self-center  text-sysblue-800 text-12">{{ $t("freshWaterInTon") }}</div>
                 </div>
-                    <div class="col-span-5 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25 text-14">Consumed</div>
-                    <div class="col-span-5 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25 text-14">Generated</div>
+                    <div class="col-span-5 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25 text-14">{{ $t("consumed") }}</div>
+                    <div class="col-span-5 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25 text-14">{{ $t("generated") }}</div>
                     <div class="col-span-2 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25 text-14">+/-</div>
-                    <div class="col-span-2 text-sysblue-800 p-3 border-t border-x border-sysblue-100 bg-sysblue-25 text-14">ROB</div>
+                    <div class="col-span-2 text-sysblue-800 p-3 border-t border-x border-sysblue-100 bg-sysblue-25 text-14">{{ $t("ROB") }}</div>
                     
                     <input v-model="cc_freshwater_consumed" placeholder="0" class="col-span-5 p-3 pl-4 border-y border-l bg-white text-14 text-gray-700 focus:outline-0"/>
                     <input v-model="cc_freshwater_generated" placeholder="0" class="col-span-5 p-3 pl-4 border-y border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                    <div class="col-span-2 text-gray-400 p-3 border-y border-l bg-gray-25 text-14">N.E.</div>
-                    <div class="col-span-2 text-gray-400 p-3 border-y border-x bg-gray-25 text-14">N.E.</div>
+                    <div class="col-span-2 text-gray-400 p-3 border-y border-l bg-gray-25 text-14">{{ $t("ne") }}</div>
+                    <div class="col-span-2 text-gray-400 p-3 border-y border-x bg-gray-25 text-14">{{ $t("ne") }}</div>
             </div>
             
             <div class="grid grid-cols-7 border">
-                <div class="col-span-1 text-blue-700 p-3 bg-gray-50 text-14">Correction</div>
+                <div class="col-span-1 text-blue-700 p-3 bg-gray-50 text-14">{{ $t("correction") }}</div>
                 <!-- what are the options for select here? -->
                 <select v-model="cc_correction_type" class="col-span-3 p-3 border-l text-gray-400 text-14 focus:border-0">
-                    <option selected disabled value="default">Select type</option>
+                    <option selected disabled value="default">{{ $t("selectType") }}</option>
                 </select>
                 <input v-model="cc_correction" placeholder="00,000.00" class="col-span-3 p-3 pl-4 border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                <div class="col-span-1 row-span-2 text-blue-700 p-3 border-t bg-gray-50 text-14">Remarks</div>
+                <div class="col-span-1 row-span-2 text-blue-700 p-3 border-t bg-gray-50 text-14">{{ $t("remarks") }}</div>
                 <textarea v-model="cc_remarks" placeholder="Input description here" class="col-span-6 row-span-2 border-t border-l p-3 pl-4 bg-white text-14 text-gray-700 focus:outline-0"></textarea>
             </div>
         </div>
@@ -501,11 +501,11 @@
         <div class="flex justify-end">
             <CustomButton class="px-5 py-2 text-14 mr-1 mb-1" type="button" v-on:click="doSomething()">
                 <!-- TODO: need alternate function for saving changes to backend -->
-                <template v-slot:content>Save</template> 
+                <template v-slot:content>{{ $t("save") }}</template> 
             </CustomButton>
             <GradientButton class="px-5 py-2 text-14 mr-1 mb-1" type="button" v-on:click="sendReport()">
                 <!-- TODO: need alternate function for saving changes to backend -->
-                <template v-slot:content>Send Report</template> 
+                <template v-slot:content>{{ $t("sendReport") }}</template> 
             </GradientButton>
         </div>
     </div>
@@ -623,7 +623,6 @@ export default {
             format: 'yyyy.MM.dd HH:mm'
         }) 
 
-        // const DUMMY_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjYxbl96VlI1WmFoZ0hLcy1QOEx5MyJ9.eyJpc3MiOiJodHRwczovL2Rldi14eXJoczYwOS5ldS5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjM1MGUzZWY2MmNiNTRiMmU5MTcwYjI0IiwiYXVkIjpbImh0dHBzOi8vZGphbmdvLWp3dC10ZXN0LWRhbi9hcGkiLCJodHRwczovL2Rldi14eXJoczYwOS5ldS5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNjY2MjQ5MzIzLCJleHAiOjE2NjYzMzU3MjMsImF6cCI6ImhuTnRMa0lKQmxuSExEVGhTTDc3Q1lUdTlRRWFXaWpOIiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCJ9.hMXcvjne_ig6e0_BQbA2vNhxm_cZICEPPZJn9xohGeC0tk6JtzLUr6uRn7gPSuj0nknOx5CadpQkUzFvrK21EC8aF3IixF7-HfyEuq3b2Grc1GgEH-B6kI5ckKf7A87ADYkmSfudDQm04kSx8oAdJGesMtRn0zraXn4nwVKweYEYIXIa6eB9VHMon05GSI7mrknAbHRAjcYMUmhJ1L4TafAonK-SUe4PUQJyniYDCleeA7Bmm-IgychhG7x6szO2Duk6AZxfoXn-QRjv2zVXTh63_9r391N8MAx3gF-qF780Y4tVonZGbHXeHw2yJyGsJC7DCE98R1ddUKw9LCcuZA"
         const DUMMY_TOKEN = localStorage.getItem('jwt');
 
         const DUMMY_FORMDATA = {

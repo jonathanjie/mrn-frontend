@@ -23,17 +23,17 @@
             <img v-else src="@/assets/icons/avatar.svg" class="h-10 w-10 mx-3"/>
             <div v-if="user" class="flex flex-col items-left">
                 <span class="font-bold text-gray-900 text-14 mr-1">{{ user.name }}</span>
-                <span class="font-semibold text-gray-500 text-12 mr-1">Ship Owner</span>
+                <span class="font-semibold text-gray-500 text-12 mr-1">{{ $t("shipOwner") }}</span>
             </div>
             <div v-else class="flex flex-col items-left">
-                <span class="font-bold text-gray-900 text-14 mr-1">Unknown</span>
-                <span class="font-semibold text-gray-500 text-12 mr-1">Please log in</span>
+                <span class="font-bold text-gray-900 text-14 mr-1">{{ $t("Unknown") }}</span>
+                <span class="font-semibold text-gray-500 text-12 mr-1">{{ $t("pleaseLogIn") }}</span>
             </div>
             <img src="@/assets/icons/down_arrow.svg" class="h-1.5 w-3 mx-3"/>        
             <div v-show="isExpanded" class="absolute -bottom-20 right-0" @mouseenter="mouseEnter">
                 <div class="flex flex-col">
-                    <button @click="getToken" class="h-10 w-40 bg-white">Get token</button>
-                    <button @click="logout" class="h-10 w-40 bg-white rounded-b-lg">Log out</button>
+                    <button @click="getToken" class="h-10 w-40 bg-white">{{ $t("getToken") }}</button>
+                    <button @click="logout" class="h-10 w-40 bg-white rounded-b-lg">{{ $t("logOut") }}</button>
                 </div>
                 <!-- TODO: adjust width based on profile length? -->
             </div>

@@ -1,3 +1,4 @@
+<!-- DEPRECATED -->
 <template>
     <div>
       <div v-if="showModal" class="bg-slate-400 overflow-x-hidden overflow-y-auto fixed inset-0 z-50 justify-center items-center flex">
@@ -6,9 +7,7 @@
           <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white">
             <!--header-->
             <div class="flex items-center justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-              <h3 class="text-3xl font-semibold">
-                General Info
-              </h3>
+              <h3 class="text-3xl font-semibold"> {{ $t("generalInfo") }} </h3>
               <button class="p-1 ml-auto bg-transparent border-0 text-black opacity-50 float-right text-3xl leading-none font-semibold" v-on:click="toggleModal()">
                 <span class="h-6 w-6 text-3xl block">
                   x
@@ -18,17 +17,17 @@
             <!--body-->
             <div class="relative p-6 space-y-6 flex-auto w-full text-14">
                 <div>
-                    <p class="leading-relaxed mb-2 text-gray-700">Vessel name</p>
+                    <p class="leading-relaxed mb-2 text-gray-700">{{ $t("vesselName") }}</p>
                     <input class="w-full bg-gray-50 px-3 py-3 rounded border border-gray-300 text-gray-500" :disabled="disabled" v-model="message" :placeholder="vesselname">
                 </div>
                 <div>
-                    <p class="leading-relaxed mb-2 text-gray-700">IMO no.</p>
+                    <p class="leading-relaxed mb-2 text-gray-700">{{ $t("imoNo") }}</p>
                     <input class="w-full bg-gray-50 px-3 py-3 rounded border border-gray-300 text-gray-500" :disabled="disabled" v-model="message" :placeholder="imo"/>
                 </div>
                 <div>
-                    <p class="leading-relaxed mb-2 text-gray-700">Fuel option</p>
+                    <p class="leading-relaxed mb-2 text-gray-700">{{ $t("fuelOption") }}</p>
                     <select class="w-full bg-gray-0 px-3 py-3 rounded border border-gray-300 text-gray-500" v-model="selected">
-                        <option disabled value="">Please select one</option>
+                        <option disabled value="">{{ $t("pleaseSelectOne") }}</option>
                         <option>A</option>
                         <option>B</option>
                         <option>C</option>
@@ -39,11 +38,11 @@
             <!--footer-->
             <div class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b space-x-3">
               <CustomButton class="px-6 py-3 text-14  mr-1 mb-1" type="button" v-on:click="toggleModal()">
-                <template v-slot:content>Cancel</template> 
+                <template v-slot:content>{{ $t("cancel") }}</template> 
               </CustomButton>
               <GradientButton class="px-6 py-2 text-14 mr-1 mb-1" type="button" v-on:click="addVoyage({vesselname, imo})">
                 <!-- TODO: need alternate function for saving changes to backend -->
-                <template v-slot:content>Save Changes</template> 
+                <template v-slot:content>{{ $t("saveChanges") }}</template> 
               </GradientButton>
             </div>
           </div>

@@ -10,7 +10,7 @@
                             type="button"
                         >
                     </button>
-                    <span class="mx-5 text-20 text-blue">Submit New Report</span>
+                    <span class="mx-5 text-20 text-blue">{{ $t("submitNewReport") }}</span>
                 </div>
                 <div class="grid grid-cols-4 gap-5 justify-items-stretch pb-8">
                     <RadioBtnIcon 
@@ -45,7 +45,7 @@
                     <!-- TODO: when this page is refrehsed, it should discard any child path -->
                     <!-- NOON -->
                         <!-- TODO: replace detail icons with actual responsive elements? -->
-                        <span v-if="reportType == 'Noon'" class="col-span-4 text-blue pt-4">Select case:</span>
+                        <span v-if="reportType == 'Noon'" class="col-span-4 text-blue pt-4">{{ $t("selectCase") }}:</span>
                         <RadoioBtnDetail v-if="reportType == 'Noon'" class="col-span-2"
                             :icon="require('@/assets/icons/report_subtype_sailing_at_sea.svg')" 
                             content="Sailing at sea" 
@@ -70,10 +70,10 @@
                         </RadoioBtnDetail>
 
                     <!-- DEPARTURE: TODO -->
-                        <span v-if="reportType == 'Departure'" class="col-span-4 text-blue pt-4">Select departure type:</span>
+                        <span v-if="reportType == 'Departure'" class="col-span-4 text-blue pt-4">{{ $t("selectDepartureType") }}:</span>
                     
                     <!-- ARRIVAL: TODO -->
-                        <span v-if="reportType == 'Arrival'" class="col-span-4 text-blue pt-4">Arrival Port:</span>
+                        <span v-if="reportType == 'Arrival'" class="col-span-4 text-blue pt-4">{{ $t("arrivalPort") }}:</span>
                         
                 </div>
 

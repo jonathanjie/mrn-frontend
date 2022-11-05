@@ -1,6 +1,6 @@
 <template>
   <div class="p-10 space-y-4">
-    <button @click="getShips">Get Ships</button>
+    <button @click="getShips">{{ $t("getShips") }}</button>
     <div v-for="ship in ships" :key="ship.name">
       {{ship.name}}
     </div>

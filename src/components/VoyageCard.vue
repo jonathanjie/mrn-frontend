@@ -3,7 +3,7 @@
     <!-- <div class="min-w-max"> WHY DOES ADDING THIS PARENT COMPONENT CAUSE EXPANDED SECTION TO OVERLAP?--> 
         <div class="flex h-20 mx-12 items-center rounded-xl min-w-max z-10" :class="expanded?'bg-blue':'bg-white drop-shadow-md mb-6'">
             <img src="@/assets/icons/selected_blue_gradient.svg" class="h-6 w-6 -m-0.5"/>
-            <span class="text-14 font-bold px-1 min-w-fit" :class="expanded?'text-white':'text-gray-700'">VOYAGE NO {{ num }}</span>
+            <span class="text-14 font-bold px-1 min-w-fit" :class="expanded?'text-white':'text-gray-700'">{{ $t("voyageNo") }} {{ num }}</span>
             <div class="flex bg-gray-50 h-12 m-3 items-center rounded-xl w-full min-w-fit ml-20">
                 <div class="flex justify-between items-center h-px bg-sysblue-800 ml-5 w-full mx-4 my-3">
                     <!-- TODO: need to add light blue "already traveled" indicator -->
@@ -21,7 +21,7 @@
                     </CustomButton>     
                 </div>
                 <img src="@/assets/icons/forward.svg" class="h-6 w-6 mr-auto"/>
-                <span class="text-14 text-sysblue ml-16 mr-5 min-w-fit">View journey</span>
+                <span class="text-14 text-sysblue ml-16 mr-5 min-w-fit">{{ $t("viewJourney") }}</span>
             </div>
             <button @click="expanded = !expanded" class="ml-3 mr-4">
                 <img src="@/assets/icons/dropdown.svg"/>
@@ -29,13 +29,13 @@
         </div>
         <div v-show="expanded" class="min-h-fit bg-darkgray mx-12 mb-6 rounded-xl -mt-4 p-5">
             <div class="flex items-center py-5 ">
-                <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">All Reports</button>
-                <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">Departure</button>
-                <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">Arrival</button>
-                <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">Noon</button>
-                <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">Bunker Delivery</button>
+                <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">{{ $t("allReports") }}</button>
+                <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">{{ $t("departure") }}</button>
+                <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">{{ $t("arrival") }}</button>
+                <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">{{ $t("noon") }}</button>
+                <button class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14">{{ $t("bunkerDelivery") }}</button>
                 <CustomButton @click="$router.push('add-report')" class="h-9 text-14 text-blue-700 rounded-xl ml-auto">
-                    <template v-slot:content>+Add New Report</template> 
+                    <template v-slot:content>+{{ $t("addNewReport") }}</template> 
                 </CustomButton>
             </div>
         
