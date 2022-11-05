@@ -518,253 +518,143 @@
     </div>
 </template>
 
-<script>
-import { ref } from 'vue';
-import DatePicker from '@vuepic/vue-datepicker';
-import GradientButton from '@/components/GradientButton.vue';
-import CustomButton from '@/components/CustomButton.vue';
-import MiniUnitDisplay from '@/components/MiniUnitDisplay.vue';
+<script setup>
+import { ref } from 'vue'
+import DatePicker from '@vuepic/vue-datepicker'
+import GradientButton from '@/components/GradientButton.vue'
+import CustomButton from '@/components/CustomButton.vue'
+import MiniUnitDisplay from '@/components/MiniUnitDisplay.vue'
 
-export default {
-    components: { DatePicker, GradientButton, CustomButton, MiniUnitDisplay },
-    setup() {
-        const reporting_time_zone = 'default';
-        const reporting_summer_time = 'default';
-        const reporting_date_time = ref();
+const reporting_time_zone = 'default', reporting_summer_time = 'default', reporting_date_time = ref();
 
-        const latitudeSN = 'default';
-        const latitude_degree = '';
-        const latitude_minutes = '';
+const latitudeSN = 'default', latitude_degree = '',latitude_minutes = '';
+const longitudeSN = 'default', longitude_degree = '', longitude_minutes = '';
 
-        const longitudeSN = 'default';
-        const longitude_degree = '';
-        const longitude_minutes = '';
+const weather_sky = 'default', weather_visibility = 'default';
 
-        const weather_sky = 'default';
-        const weather_visibility = 'default';
-        
-        const wind_dir = '';
-        const wind_force = 'default';
-        const wind_max_speed = '';
-        const wave_dir = '';
-        const wave_force = 'default';
-        const wave_max_height = '';
-        const swell_dir = '';
-        const swell_scale = 'default';
-        const swell_max_height = '';
-        const glacier_ice_condition = 'default';
+const wind_dir = '', wind_force = 'default', wind_max_speed = '';
+const wave_dir = '', wave_force = 'default', wave_max_height = '';
+const swell_dir = '', swell_scale = 'default', swell_max_height = '';
+const glacier_ice_condition = 'default';
 
-        const hwc_total_hours = '';
-        const hwc_distance = '';
-        const hwc_fuel_consumption = '';
-        const hwc_wave_dir = '';
-        const hwc_wave_force = 'default';
-        const hwc_max_wave_height = '';
+const hwc_total_hours = '', hwc_distance = '', hwc_fuel_consumption = '';
+const hwc_wave_dir = '', hwc_wave_force = 'default', hwc_max_wave_height = '';
 
-        const dt_time = '';
-        const dt_time_total = '';
-        const dt_dbo = '';
-        const dt_dbo_total = '';
-        const dt_dbe = '';
-        const dt_dbe_total = '';
-        const dt_rev_counter = '';
+const dt_time = '', dt_time_total = '';
+const dt_dbo = '', dt_dbo_total = '';
+const dt_dbe = '', dt_dbe_total = '';
+const dt_rev_counter = '';
 
-        const performance_ntn_speed = '';
-        const performance_ntn_rpm = '';
-        const performance_ntn_slip = '';
-        const performance_cur_avg_speed= '';
-        const performance_cur_avg_rpm = '';
-        const performance_cur_slip = '';
+const performance_ntn_speed = '', performance_ntn_rpm = '', performance_ntn_slip = '';
+const performance_cur_avg_speed= '', performance_cur_avg_rpm = '', performance_cur_slip = '';
 
-        const cc_lsfo_me = '';
-        const cc_lsfo_ge = '';
-        const cc_lsfo_blr = '';
-        const cc_lsfo_igg = '';
-        const cc_mgo_me = '';
-        const cc_mgo_ge = '';
-        const cc_mgo_blr = '';
-        const cc_mgo_igg = '';
-        const cc_mecylinder_total = '';
-        const cc_mesystem_total = '';
-        const cc_mesump_total = '';
-        const cc_gesystem_total = '';
-        const cc_freshwater_consumed = '';
-        const cc_freshwater_generated = '';
-        const cc_correction_type = 'default';
-        const cc_correction = '';
-        const cc_remarks = '';
+const cc_lsfo_me = '', cc_lsfo_ge = '', cc_lsfo_blr = '', cc_lsfo_igg = '';
+const cc_mgo_me = '', cc_mgo_ge = '', cc_mgo_blr = '', cc_mgo_igg = '';
+const cc_mecylinder_total = '', cc_mesystem_total = '', cc_mesump_total = '', cc_gesystem_total = '';
+const cc_freshwater_consumed = '', cc_freshwater_generated = '';
+const cc_correction_type = 'default', cc_correction = '', cc_remarks = '';
 
-        const dpEditable = ref(false);
-        const ddtEditable = ref(false);
+const dpEditable = ref(false);
+const ddtEditable = ref(false);
 
-        // TODO: retrieve from backend or generate as needed
-        // TODO: modify DateTime display to also display UTC time next to local time
-        const staticValues = {
-            reportNo: 'Noon 2',
-            departureNo: '2',
-            voyageNo: '0000',
-            departurePort: 'Singapore, Singapore',
-            departureDateTime: '2022.06.01 12:23 (LT)',
-            destinationPort: 'Ras Tanura, Saudi Arabia',
-            destinationDateTime: '2022.06.01 12:23 (LT)',
-        }; 
+// TODO: retrieve from backend or generate as needed
+// TODO: modify DateTime display to also display UTC time next to local time
+const staticValues = {
+    reportNo: 'Noon 2',
+    departureNo: '2',
+    voyageNo: '0000',
+    departurePort: 'Singapore, Singapore',
+    departureDateTime: '2022.06.01 12:23 (LT)',
+    destinationPort: 'Ras Tanura, Saudi Arabia',
+    destinationDateTime: '2022.06.01 12:23 (LT)',
+};
 
-        const format = (date) => {
-            const day = ('0' + date.getUTCDate()).slice(-2); // may need to make custom method that takes in time zone and calculates utc time manually
-            const month = ('0' + (date.getUTCMonth() + 1)).slice(-2);
-            const year = date.getUTCFullYear();
-            const hour = ('0' + date.getUTCHours()).slice(-2);
-            const minute = ('0' + date.getUTCMinutes()).slice(-2);
+const format = (date) => {
+    const day = ('0' + date.getUTCDate()).slice(-2); // may need to make custom method that takes in time zone and calculates utc time manually
+    const month = ('0' + (date.getUTCMonth() + 1)).slice(-2);
+    const year = date.getUTCFullYear();
+    const hour = ('0' + date.getUTCHours()).slice(-2);
+    const minute = ('0' + date.getUTCMinutes()).slice(-2);
 
-            return `${year}.${month}.${day} ${hour}:${minute} (UTC)`;
-        }
+    return `${year}.${month}.${day} ${hour}:${minute} (UTC)`;
+}
 
-        const toggleDP = () => {
-            dpEditable.value = !dpEditable.value
-        }
+const toggleDP = () => {
+    dpEditable.value = !dpEditable.value
+}
 
-        const toggleDDT = () => {
-            ddtEditable.value = !ddtEditable.value
-        }
+const toggleDDT = () => {
+    ddtEditable.value = !ddtEditable.value
+}
 
-        const textInputOptions = ref({
-            format: 'yyyy.MM.dd HH:mm'
-        }) 
+const textInputOptions = ref({
+    format: 'yyyy.MM.dd HH:mm'
+}) 
 
-        const DUMMY_TOKEN = localStorage.getItem('jwt');
+const DUMMY_TOKEN = localStorage.getItem('jwt');
 
-        const DUMMY_FORMDATA = {
-            "report_type": "NOON",
-            "report_num": 2,
-            "cargo_presence": "EAST",
-            "summer_time": false,
-            "position": "SRID=4326;POINT (106.75205889883298 4.770291088248677)",
-            "status": 1,
-            "voyage": 1,
-            "noonreportatsea": {
-                "distance_to_go": "20000",
-                "hours_since_noon": "24.0",
-                "hours_total": "72.0",
-                "distance_obs_since_noon": "100",
-                "distance_eng_since_noon": "100",
-                "distance_eng_total": "10000",
-                "revolution_count": 1000000,
-                "speed_since_noon": "12.34",
-                "rpm_since_noon": "123.4",
-                "slip_since_noon": "12.34",
-                "speed_avg": "12.34",
-                "rpm_avg": "123.4",
-                "slip_avg": "12.34"
-            },
-            "weatherdata": {
-                "weather": "B",
-                "sea_state": 1,
-                "wind_direction": "45.0",
-                "wind_speed": "10.0",
-                "beaufort": 1
-            },
-            "bunkerdata_set": [
-                {
-                    "fuel_type": "HFO",
-                    "rob": "65536.00",
-                    "me_consumed": "512.00",
-                    "aux_consumed": "256.00",
-                    "boiler_consumed": "256.00",
-                    "gas_generator_consumed": "128.00",
-                    "total_consumed": "1024.00",
-                    "correction": "0.00",
-                    "remarks": "NIL"
-                }
-            ],
-            "freshwaterdata": {
-                "rob": 65536,
-                "consumed": 4096,
-                "evaporated": 4096,
-                "correction": 0,
-                "remarks": "NIL"
-            }
-        }
-
-        return {
-            toggleDP,
-            toggleDDT,
-            dpEditable,
-            ddtEditable,
-            staticValues,
-            reporting_time_zone,
-            reporting_summer_time,
-            reporting_date_time,
-            latitudeSN,
-            latitude_degree,
-            latitude_minutes,
-            longitudeSN,
-            longitude_degree,
-            longitude_minutes,
-            format,
-            textInputOptions,
-            weather_sky,
-            weather_visibility,
-            wind_dir,
-            wind_force,
-            wind_max_speed,
-            wave_dir,
-            wave_force,
-            wave_max_height,
-            swell_dir,
-            swell_scale,
-            swell_max_height,
-            glacier_ice_condition,
-            hwc_total_hours,
-            hwc_distance,
-            hwc_fuel_consumption,
-            hwc_wave_dir,
-            hwc_wave_force,
-            hwc_max_wave_height,
-            dt_time,
-            dt_time_total,
-            dt_dbo,
-            dt_dbo_total,
-            dt_dbe,
-            dt_dbe_total,
-            dt_rev_counter,
-            performance_ntn_speed,
-            performance_ntn_rpm,
-            performance_ntn_slip,
-            performance_cur_avg_speed,
-            performance_cur_avg_rpm,
-            performance_cur_slip,
-            cc_lsfo_me,
-            cc_lsfo_ge,
-            cc_lsfo_blr,
-            cc_lsfo_igg,
-            cc_mgo_me,
-            cc_mgo_ge,
-            cc_mgo_blr,
-            cc_mgo_igg,
-            cc_mecylinder_total,
-            cc_mesystem_total,
-            cc_mesump_total,
-            cc_gesystem_total,
-            cc_freshwater_consumed,
-            cc_freshwater_generated,
-            cc_correction_type,
-            cc_correction,
-            cc_remarks,
-
-            sendReport: async() => {
-                const response = await fetch('https://testapi.marinachain.io/marinanet/reports/new/', {
-                    headers: {
-                        Authorization: 'Bearer ' + DUMMY_TOKEN,
-                        "Content-Type": "application/json"
-                    },
-                    method: 'POST',
-                    body: JSON.stringify(DUMMY_FORMDATA)
-                });
-                const data = await response.json();
-                console.log(response);
-            }
-        };
+const DUMMY_FORMDATA = {
+    "report_type": "NOON",
+    "report_num": 2,
+    "cargo_presence": "EAST",
+    "summer_time": false,
+    "position": "SRID=4326;POINT (106.75205889883298 4.770291088248677)",
+    "status": 1,
+    "voyage": 1,
+    "noonreportatsea": {
+        "distance_to_go": "20000",
+        "hours_since_noon": "24.0",
+        "hours_total": "72.0",
+        "distance_obs_since_noon": "100",
+        "distance_eng_since_noon": "100",
+        "distance_eng_total": "10000",
+        "revolution_count": 1000000,
+        "speed_since_noon": "12.34",
+        "rpm_since_noon": "123.4",
+        "slip_since_noon": "12.34",
+        "speed_avg": "12.34",
+        "rpm_avg": "123.4",
+        "slip_avg": "12.34"
     },
+    "weatherdata": {
+        "weather": "B",
+        "sea_state": 1,
+        "wind_direction": "45.0",
+        "wind_speed": "10.0",
+        "beaufort": 1
+    },
+    "bunkerdata_set": [
+        {
+            "fuel_type": "HFO",
+            "rob": "65536.00",
+            "me_consumed": "512.00",
+            "aux_consumed": "256.00",
+            "boiler_consumed": "256.00",
+            "gas_generator_consumed": "128.00",
+            "total_consumed": "1024.00",
+            "correction": "0.00",
+            "remarks": "NIL"
+        }
+    ],
+    "freshwaterdata": {
+        "rob": 65536,
+        "consumed": 4096,
+        "evaporated": 4096,
+        "correction": 0,
+        "remarks": "NIL"
+    }
+}
+const sendReport = async() => {
+    const response = await fetch('https://testapi.marinachain.io/marinanet/reports/new/', {
+        headers: {
+            Authorization: 'Bearer ' + DUMMY_TOKEN,
+            "Content-Type": "application/json"
+        },
+        method: 'POST',
+        body: JSON.stringify(DUMMY_FORMDATA)
+    });
+    const data = await response.json();
+    console.log(response);
 }
 </script>
 
