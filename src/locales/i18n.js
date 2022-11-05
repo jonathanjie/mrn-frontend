@@ -19,6 +19,8 @@ const i18n = createI18n({
             arrival: "Arrival",
             status: "Status",
             cargoLD: "Cargo L/D",
+            distance: "Distance",
+            distanceAndTime: "Distance & Time",
             distanceLeft: "Distance Left",
             dateOfSubmission: "Date of Submission",
             voyageNo: "VOYAGE NO",
@@ -147,7 +149,7 @@ const i18n = createI18n({
             revolutionCounter: "Revolution counter",
             performance: "Performance",
             noonToNoon: "Noon to Noon",
-            speedInKnots: "Speed (knots)",
+            speed: "Speed",
             currentVoyage: "Current Voyage",
             averageSpeed: "Average Speed",
             averageRPM: "Average RPM",
@@ -184,7 +186,7 @@ const i18n = createI18n({
             submitted: "Submitted",
             draft: "Draft",
             cancelled: "Cancelled",
-            createNewVoyage: "CreateNewVoyage",
+            createNewVoyage: "Create New Voyage",
             submitNewReport: "Submit New Report",
             selectCase: "Select case",
             selectDepartureType: "Select departure type",
@@ -193,7 +195,7 @@ const i18n = createI18n({
             signInToYourAccount: "Sign in to your account",
             welcomeBack: "Welcome back! Please login with the button below.",
             getShips: "Get Ships",
-            
+            typeToSearch: "Type to search..."
         },
         // TODO: add korean translations here
         kr: {
