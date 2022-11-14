@@ -1,292 +1,13 @@
 <template>
     <div class="flex flex-col space-y-6 pb-6">
         <!-- Overview -->
-        <div class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4">
-            <div class="col-span-2 flex items-center">
-                <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
-                <span class="text-blue-700 text-16">{{ $t("overview") }}</span>
-            </div>
-            <div class="col-span-2 xl:col-span-1 grid grid-cols-5 border bg-gray-50 text-14">
-                <div class="col-span-2 text-blue-700 p-3 border-r border-b">{{ $t("reportNo") }}</div>
-                <input class="col-span-3 p-3 border-b text-gray-700 bg-gray-50" disabled v-model="staticValues.reportNo"/>
-                <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("legNo") }}</div>
-                <input class="col-span-3 p-3 text-gray-700 bg-gray-50" disabled v-model="staticValues.legNo"/>
-            </div>
-            <div class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14">
-                <div class="col-span-2 text-blue-700 p-3 border-l border-y">{{ $t("voyageNo") }}</div>
-                <div class="flex col-span-3 p-3 border">
-                    <input class="text-gray-700 bg-gray-50 w-12" disabled v-model="staticValues.voyageNo"/>
-                    <!-- value here (e.g. Ballast) should be dynamic -->
-                    <MiniUnitDisplay class="ml-0 mr-auto">{{ $t("ballast") }}</MiniUnitDisplay>
-                </div>
-                <!-- dummy div/input for formatting -->
-                <div class="hidden xl:block bg-white col-span-2 row-span-1"></div>
-                <input class="hidden xl:block bg-white col-span-3 p-3" disabled/> 
-            </div>
-            <div class="col-span-2 xl:col-span-1 items-center mt-2">
-                <div class="flex items-center">
-                    <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
-                    <span class="text-blue-700">{{ $t("departurePort") }}</span>
-                </div>
-                <div class="grid grid-cols-5 border bg-gray-50 text-14 mt-4">
-                    <div class="col-span-2 text-blue-700 p-3 border-r border-b">{{ $t("name") }}</div>
-                    <input class="col-span-3 p-3 border-b text-gray-700 bg-gray-50" disabled v-model="staticValues.departurePort"/>
-                    <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("dateAndTime") }}</div>
-                    <input class="col-span-3 p-3 text-gray-700 bg-gray-50" disabled v-model="staticValues.departureDateTime"/>
-                </div>
-            </div>
-
-            <div class="col-span-2 xl:col-span-1 mt-2">
-                <div class="flex items-center">
-                    <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
-                    <span class="text-blue-700">{{ $t("destinationPort") }}</span>
-                </div>
-                <div class="grid grid-cols-5 border bg-gray-50 text-14 mt-4">
-                    <div class="col-span-2 text-blue-700 p-3 border-r border-b">{{ $t("name") }}</div>
-                    <div class="col-span-3 p-3 border-b flex" :class="dpEditable?'bg-white':'bg-gray-50'">
-                        <input 
-                            class="text-gray-700" 
-                            :disabled="!dpEditable" 
-                            v-model="staticValues.destinationPort"/>
-                        <button @click="toggleDP" class="ml-auto">
-                            <img src="@/assets/icons/edit.svg"/>
-                        </button>
-                    </div>
-                    <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("estDateAndTime") }}</div>
-                    <div class="col-span-3 p-3 flex" :class="ddtEditable?'bg-white':'bg-gray-50'">
-                        <input 
-                            class="text-gray-700" 
-                            :disabled="!ddtEditable" 
-                            v-model="staticValues.destinationDateTime"/>
-                        <button @click="toggleDDT" class="ml-auto">
-                            <img src="@/assets/icons/edit.svg"/>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <NoonOverview></NoonOverview>
 
         <!-- Reporting Noon -->
-        <div class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4">
-            <div class="col-span-2 flex items-center">
-                <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
-                <span class="text-blue-700 text-16">{{ $t("reportingNoon") }}</span>
-            </div>
-            <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border">
-                <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("timeZone") }}</div>
-                <select v-model="reporting_time_zone" class="col-span-3 p-3 border-b text-14 focus:border-0" :class="reporting_time_zone === 'default' ? 'text-gray-400' : 'text-gray-700'">
-                    <option selected disabled value="default">{{ $t("selectTimeZone") }}</option>
-                    <!-- TODO: select +1 or -1 timezone from previous report -->
-                    <option value="0">UTC</option>
-                    <option value="1">UTC+1:00</option>
-                    <option value="2">UTC+2:00</option>
-                    <option value="3">UTC+3:00</option>
-                    <option value="4">UTC+4:00</option>
-                    <option value="5">UTC+5:00</option>
-                    <option value="6">UTC+6:00</option>
-                    <option value="7">UTC+7:00</option>
-                    <option value="8">UTC+8:00</option>
-                    <option value="9">UTC+9:00</option>
-                    <option value="10">UTC+10:00</option>
-                    <option value="11">UTC+11:00</option>
-                    <option value="12">UTC+12:00</option>
-                    <option value="-11">UTC-11:00</option>
-                    <option value="-10">UTC-10:00</option>
-                    <option value="-9">UTC-9:00</option>
-                    <option value="-8">UTC-8:00</option>
-                    <option value="-7">UTC-7:00</option>
-                    <option value="-6">UTC-6:00</option>
-                    <option value="-5">UTC-5:00</option>
-                    <option value="-4">UTC-4:00</option>
-                    <option value="-3">UTC-3:00</option>
-                    <option value="-2">UTC-2:00</option>
-                    <option value="-1">UTC-1:00</option>
-                </select>
-                <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("summerTime") }}</div>
-                <select v-model="reporting_summer_time" class="col-span-3 p-3 border-b text-14 focus:border-0" :class="reporting_summer_time === 'default' ? 'text-gray-400' : 'text-gray-700'">
-                    <option selected disabled value="default">{{ $t("selectSummerTime") }}</option>
-                    <option value="true">{{ $t("applied") }}</option>
-                    <option value="false">{{ $t("notApplied") }}</option>
-                </select>
-                <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("dateAndTime") }}</div>
-                <DatePicker 
-                    v-model="reporting_date_time" 
-                    class="col-span-3" 
-                    textInput :textInputOptions="textInputOptions"
-                    :format="format"
-                    :disabled="reporting_time_zone==='default' || reporting_summer_time==='default'"
-                    :modelValue="string"
-                    placeholder="Select date & time">
-                    <template #input-icon>
-                        <img src=""/>
-                    </template>
-                </DatePicker>
-            </div>
-            <div></div>
-            <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-                <span class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center">{{ $t("latitude") }}</span>
-                <input v-model="lat_degree" @keypress="preventNaN($event, lat_degree)" placeholder="000 (Degree)" class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"/>
-                <input v-model="lat_minutes" @keypress="preventNaN($event, lat_minutes)" placeholder="000 (Minutes)" class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"/>
-                <select v-model="lat_dir" class="col-span-3 p-3 text-14 border-l focus:border-0 focus:outline-0" :class="lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'">
-                    <option selected disabled value="default">{{ $t("southAndNorth") }}</option>
-                    <option value="S">{{ $t("south") }}</option>
-                    <option value="N">{{ $t("north") }}</option>
-                </select>
-            </div>
-            <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-                <span class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center">{{ $t("longitude") }}</span>
-                <input v-model="long_degree" @keypress="preventNaN($event, long_degree)" placeholder="000 (Degree)" class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"/>
-                <input v-model="long_minutes" @keypress="preventNaN($event, long_minutes)" placeholder="000 (Minutes)" class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"/>
-                <select v-model="long_dir" class="col-span-3 p-3 text-14 border-l focus:border-0" :class="long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'">
-                    <option selected disabled value="default">{{ $t("eastAndWest") }}</option>
-                    <option value="E">{{ $t("east") }}</option>
-                    <option value="W">{{ $t("west") }}</option>
-                </select>
-            </div>
-        </div>
+        <DateTimeLatLong>{{ $t("reportingNoon") }}</DateTimeLatLong>
 
         <!-- Weather -->
-        <div class="grid bg-white rounded-lg p-5 gap-4">
-            <div class="flex items-center">
-                <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
-                <span class="text-blue-700 text-16">{{ $t("weather") }}</span>
-            </div>
-            <div class="grid grid-cols-2">
-                <div class="grid grid-cols-5 border mr-4">
-                    <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("sky") }}</div>
-                    <select v-model="weather_data.weather" class="col-span-3 p-3 text-14 focus:border-0" :class="weather_data.weather === 'default' ? 'text-gray-400' : 'text-gray-700'">
-                        <option selected disabled value="default">{{ $t("select") }}</option>
-                        <option value="B">{{ $t("sky_b") }}</option>
-                        <option value="BC">{{ $t("sky_bc") }}</option>
-                        <option value="C">{{ $t("sky_c") }}</option>
-                        <option value="D">{{ $t("sky_d") }}</option>
-                        <option value="F">{{ $t("sky_f") }}</option>
-                        <option value="G">{{ $t("sky_g") }}</option>
-                        <option value="H">{{ $t("sky_h") }}</option>
-                        <option value="L">{{ $t("sky_l") }}</option>
-                        <option value="M">{{ $t("sky_m") }}</option>
-                        <option value="O">{{ $t("sky_o") }}</option>
-                        <option value="P">{{ $t("sky_p") }}</option>
-                        <option value="Q">{{ $t("sky_q") }}</option>
-                        <option value="R">{{ $t("sky_r") }}</option>
-                        <option value="S">{{ $t("sky_s") }}</option>
-                        <option value="T">{{ $t("sky_t") }}</option>
-                        <option value="U">{{ $t("sky_u") }}</option>
-                        <option value="V">{{ $t("sky_v") }}</option>
-                        <option value="W">{{ $t("sky_w") }}</option>
-                        <option value="Z">{{ $t("sky_z") }}</option>
-                    </select>
-                </div>
-                <div class="grid grid-cols-5 border">
-                    <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("visibility") }}</div>
-                    <select v-model="weather_data.sea_state" class="col-span-3 p-3 text-14 focus:border-0" :class="weather_data.sea_state === 'default' ? 'text-gray-400' : 'text-gray-700'">
-                        <option selected disabled value="default">{{ $t("select") }}</option>
-                        <option value="1">{{ $t("visibility_1") }}</option>
-                        <option value="2">{{ $t("visibility_2") }}</option>
-                        <option value="3">{{ $t("visibility_3") }}</option>
-                        <option value="4">{{ $t("visibility_4") }}</option>
-                        <option value="5">{{ $t("visibility_5") }}</option>
-                        <option value="6">{{ $t("visibility_6") }}</option>
-                        <option value="7">{{ $t("visibility_7") }}</option>
-                        <option value="8">{{ $t("visibility_8") }}</option>
-                        <option value="9">{{ $t("visibility_9") }}</option>
-                        <option value="10">{{ $t("visibility_10") }}</option>
-                    </select>
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-10 border">
-                <div class="col-span-10 xl:col-span-2 text-blue-700 p-3 border-b xl:border-b-0 xl:border-r bg-gray-50 text-14">{{ $t("wind") }}</div>
-                <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-b xl:border-b-0 border-r bg-gray-50 text-14">{{ $t("direction") }}</div>
-                <input v-model="weather_data.wind_direction" @keypress="preventNaN($event, weather_data.wind_direction)" placeholder="000 (Degrees)" class="col-span-6 xl:col-span-2 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"/>
-                <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-b xl:border-b-0 border-r bg-gray-50 text-14">{{ $t("force") }}</div>
-                <select v-model="weather_data.beaufort" class="col-span-6 xl:col-span-1 p-3 border-b xl:border-b-0 xl:border-r text-14 focus:border-0" :class="weather_data.beaufort === 'default' ? 'text-gray-400' : 'text-gray-700'">
-                    <option selected disabled value="default">{{ $t("select") }}</option>
-                    <option value="0">{{ $t("wind_force_0") }}</option>
-                    <option value="1">{{ $t("wind_force_1") }}</option>
-                    <option value="2">{{ $t("wind_force_2") }}</option>
-                    <option value="3">{{ $t("wind_force_3") }}</option>
-                    <option value="4">{{ $t("wind_force_4") }}</option>
-                    <option value="5">{{ $t("wind_force_5") }}</option>
-                    <option value="6">{{ $t("wind_force_6") }}</option>
-                    <option value="7">{{ $t("wind_force_7") }}</option>
-                    <option value="8">{{ $t("wind_force_8") }}</option>
-                    <option value="9">{{ $t("wind_force_9") }}</option>
-                    <option value="10">{{ $t("wind_force_10") }}</option>
-                    <option value="11">{{ $t("wind_force_11") }}</option>
-                    <option value="12">{{ $t("wind_force_12") }}</option>
-                </select>
-                <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("maxSpeed") }}</div>
-                <div class="col-span-6 flex xl:col-span-2 p-2 pl-4 bg-white">
-                    <input v-model="weather_data.wind_speed" @keypress="preventNaN($event, weather_data.wind_speed)" placeholder="00.0" class="text-14 w-24 text-gray-700 focus:outline-0"/>
-                    <!-- value here (e.g. Ballast) is dynamic -->
-                    <MiniUnitDisplay>M/S</MiniUnitDisplay>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-10 border">
-                <div class="col-span-10 xl:col-span-2 text-blue-700 p-3 border-b xl:border-b-0 xl:border-r bg-gray-50 text-14">{{ $t("wave") }}</div>
-                <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-r border-b xl:border-b-0 bg-gray-50 text-14">{{ $t("direction") }}</div>
-                <input v-model="wave_dir" @keypress="preventNaN($event, wave_dir)" placeholder="000 (Degrees)" class="col-span-6 xl:col-span-2 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"/>
-                <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-r border-b xl:border-b-0 bg-gray-50 text-14">{{ $t("force") }}</div>
-                <select v-model="wave_force" class="col-span-6 xl:col-span-1 p-3 border-b xl:border-b-0 xl:border-r text-14 focus:border-0" :class="wave_force === 'default' ? 'text-gray-400' : 'text-gray-700'">
-                    <option selected disabled value="default">{{ $t("select") }}</option>
-                    <option value="0">{{ $t("wave_force_0") }}</option>
-                    <option value="1">{{ $t("wave_force_1") }}</option>
-                    <option value="2">{{ $t("wave_force_2") }}</option>
-                    <option value="3">{{ $t("wave_force_3") }}</option>
-                    <option value="4">{{ $t("wave_force_4") }}</option>
-                    <option value="5">{{ $t("wave_force_5") }}</option>
-                    <option value="6">{{ $t("wave_force_6") }}</option>
-                    <option value="7">{{ $t("wave_force_7") }}</option>
-                    <option value="8">{{ $t("wave_force_8") }}</option>
-                    <option value="9">{{ $t("wave_force_9") }}</option>
-                </select>
-                <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("maxHeight") }}</div>
-                <div class="flex col-span-6 xl:col-span-2 p-2 pl-4 bg-white">
-                    <input v-model="wave_max_height" @keypress="preventNaN($event, wave_max_height)"  placeholder="00.0" class="w-24 text-14 text-gray-700 focus:outline-0"/>
-                    <MiniUnitDisplay>M</MiniUnitDisplay>
-                </div>
-            </div>
-            <div class="grid grid-cols-10 border">
-                <div class="col-span-10 xl:col-span-2 text-blue-700 p-3 border-b xl:border-b-0 xl:border-r bg-gray-50 text-14">{{ $t("swell") }}</div>
-                <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-b xl:border-b-0 border-r bg-gray-50 text-14">{{ $t("direction") }}</div>
-                <input v-model="swell_dir" @keypress="preventNaN($event, swell_dir)" placeholder="000 (Degrees)" class="col-span-6 xl:col-span-2 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"/>
-                <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-b xl:border-b-0 border-r bg-gray-50 text-14">{{ $t("scale") }}</div>
-                <select v-model="swell_scale" class="col-span-6 xl:col-span-1 p-3 border-b xl:border-b-0 xl:border-r text-14 focus:border-0" :class="swell_scale === 'default' ? 'text-gray-400' : 'text-gray-700'">
-                    <option selected disabled value="default">{{ $t("select") }}</option>
-                    <option value="0">{{ $t("swell_0") }}</option>
-                    <option value="1">{{ $t("swell_1") }}</option>
-                    <option value="2">{{ $t("swell_2") }}</option>
-                    <option value="3">{{ $t("swell_3") }}</option>
-                    <option value="4">{{ $t("swell_4") }}</option>
-                    <option value="5">{{ $t("swell_5") }}</option>
-                    <option value="6">{{ $t("swell_6") }}</option>
-                    <option value="7">{{ $t("swell_7") }}</option>
-                    <option value="8">{{ $t("swell_8") }}</option>
-                    <option value="9">{{ $t("swell_9") }}</option>
-                </select>
-                <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("maxHeight") }}</div>
-                <div class="col-span-6 flex xl:col-span-2 p-2 pl-4 bg-white">
-                    <input v-model="swell_max_height" @keypress="preventNaN($event, swell_max_height)" placeholder="00.0" class="w-24 text-14 text-gray-700 focus:outline-0"/>
-                    <MiniUnitDisplay>M</MiniUnitDisplay>
-                </div>
-            </div>
-
-            <div class="xl:grid xl:grid-cols-2">
-                <div class="grid grid-cols-5 border">
-                    <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("glacierIceCondition") }}</div>
-                    <select v-model="weather_data.ice_condition" class="col-span-3 p-3 text-14 focus:border-0" :class="weather_data.ice_condition === 'default' ? 'text-gray-400' : 'text-gray-700'">
-                        <option selected disabled value="default">{{ $t("select") }}</option>
-                        <option value="0">{{ $t("na") }}</option>
-                        <option value="1">{{ $t("glacier_low") }}</option>
-                        <option value="2">{{ $t("glacier_mod") }}</option>
-                        <option value="3">{{ $t("glacier_high") }}</option>
-                        <option value="4">{{ $t("glacier_ext") }}</option>
-                    </select>
-                </div>
-            </div>
-        </div>
+        <Weather>{{ $t("weather") }}</Weather>
 
         <!-- Heavy Weather Condition -->
         <div class="grid lg:grid-cols-2 bg-white rounded-lg p-5 gap-4">
@@ -613,7 +334,11 @@ import DatePicker from '@vuepic/vue-datepicker'
 import GradientButton from '@/components/GradientButton.vue'
 import CustomButton from '@/components/CustomButton.vue'
 import MiniUnitDisplay from '@/components/MiniUnitDisplay.vue'
-import { textInputOptions, format, preventNaN } from '../../utils/helpers.js'
+import { textInputOptions, format, preventNaN, convertDMSToDD } from '../../utils/helpers.js'
+
+import NoonOverview from '@/components/ReportComponents/NoonOverview.vue'
+import DateTimeLatLong from '@/components/ReportComponents/DateTimeLatLong.vue'
+import Weather from '@/components/ReportComponents/Weather.vue'
 
 const reporting_time_zone = ref('default'), reporting_summer_time = ref('default'), reporting_date_time = ref();
 
@@ -654,9 +379,6 @@ const cc_freshwater_rob = computed(() => (staticValues.freshwaterPrevROB + cc_fr
 
 const cc_correction_type = ref('default'), cc_correction = '', cc_remarks = '';
 
-const dpEditable = ref(false);
-const ddtEditable = ref(false);
-
 // TODO: retrieve from backend or generate as needed
 // TODO: modify DateTime display to also display UTC time next to local time
 const staticValues = {
@@ -676,25 +398,6 @@ const staticValues = {
     gesysPrevROB: 200,
     freshwaterPrevROB: 200
 };
-
-const convertDMSToDD = (degrees, minutes, direction) => {
-    var dd = degrees + minutes/60;
-
-    if (direction == "S" || direction == "E") {
-        dd = dd * -1;
-    } // Don't do anything for N or W
-
-    return dd;
-}
-
-const toggleDP = () => {
-    dpEditable.value = !dpEditable.value
-}
-
-const toggleDDT = () => {
-    ddtEditable.value = !ddtEditable.value
-}
-
 
 const getFuelCorrection = (fuel_type) => { // should return float
     switch(fuel_type) {
