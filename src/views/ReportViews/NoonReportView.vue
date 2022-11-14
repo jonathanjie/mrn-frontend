@@ -124,7 +124,7 @@
             </div>
             <div></div>
             <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-                <span class="col-span-2 row-span-3  text-blue-700 p-3 text-14 self-center">{{ $t("latitude") }}</span>
+                <span class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center">{{ $t("latitude") }}</span>
                 <input v-model="lat_degree" @keypress="preventNaN($event, lat_degree)" placeholder="000 (Degree)" class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"/>
                 <input v-model="lat_minutes" @keypress="preventNaN($event, lat_minutes)" placeholder="000 (Minutes)" class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"/>
                 <select v-model="lat_dir" class="col-span-3 p-3 text-14 border-l focus:border-0 focus:outline-0" :class="lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'">
@@ -613,6 +613,7 @@ import DatePicker from '@vuepic/vue-datepicker'
 import GradientButton from '@/components/GradientButton.vue'
 import CustomButton from '@/components/CustomButton.vue'
 import MiniUnitDisplay from '@/components/MiniUnitDisplay.vue'
+import { textInputOptions, format, preventNaN } from '../../utils/helpers.js'
 
 const reporting_time_zone = ref('default'), reporting_summer_time = ref('default'), reporting_date_time = ref();
 
@@ -686,16 +687,6 @@ const convertDMSToDD = (degrees, minutes, direction) => {
     return dd;
 }
 
-const format = (date) => {
-    const day = ('0' + date.getDate()).slice(-2);
-    const month = ('0' + (date.getMonth() + 1)).slice(-2);
-    const year = date.getFullYear();
-    const hour = ('0' + date.getHours()).slice(-2);
-    const minute = ('0' + date.getMinutes()).slice(-2);
-
-    return `${year}.${month}.${day} ${hour}:${minute} (LT)`;
-}
-
 const toggleDP = () => {
     dpEditable.value = !dpEditable.value
 }
@@ -704,9 +695,6 @@ const toggleDDT = () => {
     ddtEditable.value = !ddtEditable.value
 }
 
-const textInputOptions = ref({
-    format: 'yyyy.MM.dd HH:mm'
-})
 
 const getFuelCorrection = (fuel_type) => { // should return float
     switch(fuel_type) {
@@ -871,14 +859,6 @@ const sendReport = async() => {
     });
     const data = await response.json();
     console.log(response);
-}
-
-// TODO: handle leading zeros
-const preventNaN = (event, content) => {
-    // only accept 0-9 and one decimal point
-    if (!/\d/.test(event.key) && (event.key !== "." || /\./.test(content))) {
-        return event.preventDefault();  
-    } 
 }
 </script>
 
