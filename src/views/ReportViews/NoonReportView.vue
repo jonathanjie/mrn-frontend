@@ -77,30 +77,30 @@
                 <select v-model="reporting_time_zone" class="col-span-3 p-3 border-b text-14 focus:border-0" :class="reporting_time_zone === 'default' ? 'text-gray-400' : 'text-gray-700'">
                     <option selected disabled value="default">{{ $t("selectTimeZone") }}</option>
                     <!-- TODO: select +1 or -1 timezone from previous report -->
-                    <option value="utc">UTC</option>
-                    <option value="utc1">UTC+1:00</option>
-                    <option value="utc2">UTC+2:00</option>
-                    <option value="utc3">UTC+3:00</option>
-                    <option value="utc4">UTC+4:00</option>
-                    <option value="utc5">UTC+5:00</option>
-                    <option value="utc6">UTC+6:00</option>
-                    <option value="utc7">UTC+7:00</option>
-                    <option value="utc8">UTC+8:00</option>
-                    <option value="utc9">UTC+9:00</option>
-                    <option value="utc10">UTC+10:00</option>
-                    <option value="utc11">UTC+11:00</option>
-                    <option value="utc12">UTC+12:00</option>
-                    <option value="utc-11">UTC-11:00</option>
-                    <option value="utc-10">UTC-10:00</option>
-                    <option value="utc-9">UTC-9:00</option>
-                    <option value="utc-8">UTC-8:00</option>
-                    <option value="utc-7">UTC-7:00</option>
-                    <option value="utc-6">UTC-6:00</option>
-                    <option value="utc-5">UTC-5:00</option>
-                    <option value="utc-4">UTC-4:00</option>
-                    <option value="utc-3">UTC-3:00</option>
-                    <option value="utc-2">UTC-2:00</option>
-                    <option value="utc-1">UTC-1:00</option>
+                    <option value="0">UTC</option>
+                    <option value="1">UTC+1:00</option>
+                    <option value="2">UTC+2:00</option>
+                    <option value="3">UTC+3:00</option>
+                    <option value="4">UTC+4:00</option>
+                    <option value="5">UTC+5:00</option>
+                    <option value="6">UTC+6:00</option>
+                    <option value="7">UTC+7:00</option>
+                    <option value="8">UTC+8:00</option>
+                    <option value="9">UTC+9:00</option>
+                    <option value="10">UTC+10:00</option>
+                    <option value="11">UTC+11:00</option>
+                    <option value="12">UTC+12:00</option>
+                    <option value="-11">UTC-11:00</option>
+                    <option value="-10">UTC-10:00</option>
+                    <option value="-9">UTC-9:00</option>
+                    <option value="-8">UTC-8:00</option>
+                    <option value="-7">UTC-7:00</option>
+                    <option value="-6">UTC-6:00</option>
+                    <option value="-5">UTC-5:00</option>
+                    <option value="-4">UTC-4:00</option>
+                    <option value="-3">UTC-3:00</option>
+                    <option value="-2">UTC-2:00</option>
+                    <option value="-1">UTC-1:00</option>
                 </select>
                 <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("summerTime") }}</div>
                 <select v-model="reporting_summer_time" class="col-span-3 p-3 border-b text-14 focus:border-0" :class="reporting_summer_time === 'default' ? 'text-gray-400' : 'text-gray-700'">
@@ -114,6 +114,7 @@
                     class="col-span-3" 
                     textInput :textInputOptions="textInputOptions"
                     :format="format"
+                    :disabled="reporting_time_zone==='default' || reporting_summer_time==='default'"
                     :modelValue="string"
                     placeholder="Select date & time">
                     <template #input-icon>
@@ -605,22 +606,13 @@
     </div>
 </template>
 
+
 <script setup>
 import { ref, reactive, computed } from 'vue'
 import DatePicker from '@vuepic/vue-datepicker'
 import GradientButton from '@/components/GradientButton.vue'
 import CustomButton from '@/components/CustomButton.vue'
 import MiniUnitDisplay from '@/components/MiniUnitDisplay.vue'
-
-const convertDMSToDD = (degrees, minutes, direction) => {
-    var dd = degrees + minutes/60;
-
-    if (direction == "S" || direction == "E") {
-        dd = dd * -1;
-    } // Don't do anything for N or W
-
-    return dd;
-}
 
 const reporting_time_zone = ref('default'), reporting_summer_time = ref('default'), reporting_date_time = ref();
 
@@ -684,14 +676,24 @@ const staticValues = {
     freshwaterPrevROB: 200
 };
 
-const format = (date) => {
-    const day = ('0' + date.getUTCDate()).slice(-2); // may need to make custom method that takes in time zone and calculates utc time manually
-    const month = ('0' + (date.getUTCMonth() + 1)).slice(-2);
-    const year = date.getUTCFullYear();
-    const hour = ('0' + date.getUTCHours()).slice(-2);
-    const minute = ('0' + date.getUTCMinutes()).slice(-2);
+const convertDMSToDD = (degrees, minutes, direction) => {
+    var dd = degrees + minutes/60;
 
-    return `${year}.${month}.${day} ${hour}:${minute} (UTC)`;
+    if (direction == "S" || direction == "E") {
+        dd = dd * -1;
+    } // Don't do anything for N or W
+
+    return dd;
+}
+
+const format = (date) => {
+    const day = ('0' + date.getDate()).slice(-2);
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const year = date.getFullYear();
+    const hour = ('0' + date.getHours()).slice(-2);
+    const minute = ('0' + date.getMinutes()).slice(-2);
+
+    return `${year}.${month}.${day} ${hour}:${minute} (LT)`;
 }
 
 const toggleDP = () => {
@@ -727,6 +729,23 @@ const getFuelCorrectionRemarks = (fuel_type) => {
             break;
     }
 }
+
+const convertReportDate = (date) => {
+    // TODO: consider daylight savings in calculating UTC timezone offset + display
+
+    const userOffset = parseInt(reporting_time_zone.value) * -60;
+    const calcOffset = date.getTimezoneOffset()
+
+    // calculate based on timezone input
+    if (userOffset !== calcOffset) {
+        date = new Date(date.getTime() + (3600000 * ((parseInt(reporting_time_zone.value)) + (calcOffset / 60))));
+    } 
+
+    console.log(date.toISOString())
+
+    return date.toISOString()
+}
+
 
 // TODO: should be dynamic; get all fuels used from database and filter accordingly
 const createBunkerData = () => { 
@@ -827,7 +846,7 @@ const sendReport = async() => {
 
     const REPORT = {
         "report_type": "NOON", // FIXED
-        "report_date": reporting_date_time.value.toISOString(), // ISO-8601 standard
+        "report_date": convertReportDate(reporting_date_time.value), // ISO-8601 standard
         "voyage": parseInt(staticValues.voyageNo), // TODO: need to fetch from BE
         "report_num": parseInt(staticValues.reportNo), // TODO: need to fetch from BE
         "cargo_presence": "EAST", // TODO: where to fetch and edit this value on the form?
