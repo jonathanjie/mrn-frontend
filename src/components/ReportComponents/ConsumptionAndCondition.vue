@@ -87,7 +87,7 @@
 </template>
 
 <script setup>
-import preventNaN from '@/utils/helpers';
+import { preventNaN } from '@/utils/helpers';
 import { ref, reactive, computed } from 'vue';
 import MiniUnitDisplay from '../../components/MiniUnitDisplay.vue'
 

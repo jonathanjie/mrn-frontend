@@ -109,7 +109,7 @@
 </template>
 
 <script setup>
-import { preventNaN, textInputOptions, format } from '../../utils/helpers.js'
+import { preventNaN, textInputOptions, format } from '@/utils/helpers.js'
 import { ref } from 'vue';
 
 const reporting_time_zone = ref('default'), reporting_summer_time = ref('default'), reporting_date_time = ref();

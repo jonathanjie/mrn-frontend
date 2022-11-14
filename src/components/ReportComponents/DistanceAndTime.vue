@@ -69,7 +69,7 @@
 
 <script setup>
 import { reactive } from 'vue'
-import preventNaN from '../../utils/helpers.js'
+import { preventNaN } from '../../utils/helpers.js'
 import MiniUnitDisplay from '../../components/MiniUnitDisplay.vue'
 
 const distance_and_time = reactive({
