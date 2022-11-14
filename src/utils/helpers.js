@@ -22,5 +22,14 @@ const format = (date) => {
     return `${year}.${month}.${day} ${hour}:${minute} (LT)`;
 }
 
+const convertDMSToDD = (degrees, minutes, direction) => {
+    var dd = degrees + minutes/60;
 
-export default { preventNaN, textInputOptions, format };
+    if (direction == "S" || direction == "E") {
+        dd = dd * -1;
+    } // Don't do anything for N or W
+
+    return dd;
+}
+
+export default { preventNaN, textInputOptions, format, convertDMSToDD };
