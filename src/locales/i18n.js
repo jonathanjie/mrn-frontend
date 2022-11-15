@@ -195,7 +195,52 @@ const i18n = createI18n({
             signInToYourAccount: "Sign in to your account",
             welcomeBack: "Welcome back! Please login with the button below.",
             getShips: "Get Ships",
-            typeToSearch: "Type to search..."
+            typeToSearch: "Type to search...",
+            selectAnOption: "Select an option",
+            // Vessel Types
+            vesselType: "Vessel type",
+            bulkCarrier: "Bulk Carrier",
+            gasCarrier: "Gas Carrier",
+            tanker: "Tanker",
+            container: "Container Ship",
+            generalCargo: "General Cargo Ship",
+            refrigeratedCargo: "Refrigerated Cargo Carrier",
+            combiCarrier: "Combination Carrier",
+            lngCarrier: "LNG Carrier",
+            roroCargoVehicle: "Ro-Ro Cargo Ship (Vehicle Carrier)",
+            roroCargo: "Ro-Ro Cargo Ship",
+            roroPassenger: "Ro-Ro Passenger Ship",
+            cruisePassenger: "Cruise Passenger Ship",
+            // Cargo Unit
+            cargoUnit: "Cargo unit",
+            cargoM3: "M³",
+            cargoMt: "MT",
+            cargoTeu: "TEU",
+            cargoCeu: "CEU",
+            // Fuel option
+            fuelOilOption: "Fuel oil option",
+            mdo: "MDO",
+            mgo: "MGO",
+            lsfo: "LSFO",
+            hfo: "HFO",
+            lpgp: "LPG-Propane",
+            lpgb: "LPG-Butbane",
+            lng: "LNG",
+            // Lubricate oil
+            lubricateOilType: "Lubricate oil type",
+            meCylinderOil: "M/E cylinder oil",
+            meSystemOil: "M/E system oil",
+            meSumpTank: "M/E sump tank",
+            geSystemOil: "G/E system oil",
+            tgSystemOil: "TG system oil",
+            others: "Others",
+            // Machinery type
+            machineryType : "Machinery Type",
+            mainEngine : "Main Engine",
+            generatorEngine: "Generator Engine",
+            boilerEngine: "Boiler",
+            inertGasEngine: "Inert gas generator",
+
         },
         // TODO: add korean translations here
         kr: {
