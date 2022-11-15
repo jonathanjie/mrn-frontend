@@ -11,10 +11,12 @@ import VesselOverviewView from '../views/VesselView/VesselOverviewView.vue'
 import VesselSubmittedView from '../views/VesselView/VesselSubmittedView.vue'
 import VesselDraftView from '../views/VesselView/VesselDraftView.vue'
 import VesselCancelledView from '../views/VesselView/VesselCancelledView.vue'
-import AddReportToVesselView from '../views/AddReportToVesselView.vue'
-import NoonSailingAtSeaReportView from '../views/NoonReportView/NoonSailingAtSeaReportView.vue'
-import NoonCoastalWaterReportView from '../views/NoonReportView/NoonCoastalWaterReportView.vue'
-import NoonInPortReportView from '../views/NoonReportView/NoonInPortReportView.vue'
+import AddReportToVoyageView from '../views/AddReportToVoyageView.vue'
+import NoonReportView from '../views/ReportViews/NoonReportView.vue'
+import ArrivalReportView from '../views/ReportViews/ArrivalReportView.vue'
+import DepartureReportView from '../views/ReportViews/DepartureReportView.vue'
+import BDNReportView from '../views/ReportViews/BDNReportView.vue'
+
 
 const routes = [
   // {
@@ -76,22 +78,27 @@ const routes = [
   {
     path: '/vessels/:vesselname/:imo/add-report',
     name: 'vessel-report',
-    component: AddReportToVesselView,
+    component: AddReportToVoyageView,
     children: [
       {
-        path: 'noon-sailing-at-sea',
-        name: 'noon-sailing-at-sea',
-        component: NoonSailingAtSeaReportView
+        path: 'noon',
+        name: 'noon',
+        component: NoonReportView
       },
       {
-        path: 'noon-coastal-water',
-        name: 'noon-coastal-water',
-        component: NoonCoastalWaterReportView
+        path: 'departure',
+        name: 'departure',
+        component: DepartureReportView
       },
       {
-        path: 'noon-in-port',
-        name: 'noon-in-port',
-        component: NoonInPortReportView
+        path: 'arrival',
+        name: 'arrival',
+        component: ArrivalReportView
+      },
+      {
+        path: 'bdn',
+        name: 'bdn',
+        component: BDNReportView
       },
     ],
     beforeEnter: authGuard
