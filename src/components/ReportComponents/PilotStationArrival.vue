@@ -2,7 +2,9 @@
     <div class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4 shadow-card">
         <div class="col-span-2 flex items-center">
             <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
-            <span class="text-blue-700 text-16">{{ $t("pilotStationArrival") }}</span>
+            <span class="text-blue-700 text-16">
+                <slot>{{ $t("pilotStationArrival") }}</slot>
+            </span>
         </div>
         <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border">
             <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("name") }}</div>
