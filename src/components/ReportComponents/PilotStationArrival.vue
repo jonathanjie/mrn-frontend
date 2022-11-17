@@ -6,14 +6,14 @@
         </div>
         <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border">
             <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("name") }}</div>
-            <input v-model="pilotStationArrival.name" 
-                @keypress="preventNaN($event, pilotStationArrival.name)" 
+            <input v-model="data.name" 
+                @keypress="preventNaN($event, data.name)" 
                 :placeholder="$t('inputName')" 
                 class="col-span-3 p-3 pl-4 border-b bg-white text-14 text-gray-700 focus:outline-0"
             />
             <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("dateAndTime") }}</div>
             <DatePicker 
-                v-model="pilotStationArrival.date_time" 
+                v-model="data.date_time" 
                 class="col-span-3" 
                 textInput :textInputOptions="textInputOptions"
                 :format="format"
@@ -27,19 +27,19 @@
         <div></div>
         <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
             <span class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center">{{ $t("latitude") }}</span>
-            <input v-model="pilotStationArrival.lat_degree" 
-                @keypress="preventNaN($event, pilotStationArrival.lat_degree)" 
+            <input v-model="data.lat_degree" 
+                @keypress="preventNaN($event, data.lat_degree)" 
                 placeholder="000 (Degree)" 
                 class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
             />
-            <input v-model="pilotStationArrival.lat_minutes" 
-                @keypress="preventNaN($event, pilotStationArrival.lat_minutes)" 
+            <input v-model="data.lat_minutes" 
+                @keypress="preventNaN($event, data.lat_minutes)" 
                 placeholder="000 (Minutes)" 
                 class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
             />
-            <select v-model="pilotStationArrival.lat_dir" 
+            <select v-model="data.lat_dir" 
                 class="col-span-3 p-3 text-14 border-l focus:border-0 focus:outline-0" 
-                :class="pilotStationArrival.lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+                :class="data.lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
             >
                 <option selected disabled value="default">{{ $t("southAndNorth") }}</option>
                 <option value="S">{{ $t("south") }}</option>
@@ -48,19 +48,19 @@
         </div>
         <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
             <span class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center">{{ $t("longitude") }}</span>
-            <input v-model="pilotStationArrival.long_degree" 
-                @keypress="preventNaN($event, pilotStationArrival.long_degree)" 
+            <input v-model="data.long_degree" 
+                @keypress="preventNaN($event, data.long_degree)" 
                 placeholder="000 (Degree)" 
                 class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
             />
-            <input v-model="pilotStationArrival.long_minutes" 
-                @keypress="preventNaN($event, pilotStationArrival.long_minutes)" 
+            <input v-model="data.long_minutes" 
+                @keypress="preventNaN($event, data.long_minutes)" 
                 placeholder="000 (Minutes)" 
                 class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
             />
-            <select v-model="pilotStationArrival.long_dir" 
+            <select v-model="data.long_dir" 
                 class="col-span-3 p-3 text-14 border-l focus:border-0" 
-                :class="pilotStationArrival.long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+                :class="data.long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
             >
                 <option selected disabled value="default">{{ $t("eastAndWest") }}</option>
                 <option value="E">{{ $t("east") }}</option>
@@ -74,7 +74,7 @@
 import { preventNaN, textInputOptions, format } from '../../utils/helpers.js'
 import { reactive } from 'vue';
 
-const pilotStationArrival = reactive({
+const data = reactive({
     "name": '',
     "date_time": '',
     "lat_dir": 'default',

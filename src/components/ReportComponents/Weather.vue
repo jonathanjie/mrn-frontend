@@ -9,7 +9,7 @@
         <div class="grid grid-cols-2">
             <div class="grid grid-cols-5 border mr-4">
                 <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("sky") }}</div>
-                <select v-model="weather_data.weather" class="col-span-3 p-3 text-14 focus:border-0" :class="weather_data.weather === 'default' ? 'text-gray-400' : 'text-gray-700'">
+                <select v-model="data.weather" class="col-span-3 p-3 text-14 focus:border-0" :class="data.weather === 'default' ? 'text-gray-400' : 'text-gray-700'">
                     <option selected disabled value="default">{{ $t("select") }}</option>
                     <option value="B">{{ $t("sky_b") }}</option>
                     <option value="BC">{{ $t("sky_bc") }}</option>
@@ -34,7 +34,7 @@
             </div>
             <div class="grid grid-cols-5 border">
                 <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("visibility") }}</div>
-                <select v-model="weather_data.sea_state" class="col-span-3 p-3 text-14 focus:border-0" :class="weather_data.sea_state === 'default' ? 'text-gray-400' : 'text-gray-700'">
+                <select v-model="data.sea_state" class="col-span-3 p-3 text-14 focus:border-0" :class="data.sea_state === 'default' ? 'text-gray-400' : 'text-gray-700'">
                     <option selected disabled value="default">{{ $t("select") }}</option>
                     <option value="1">{{ $t("visibility_1") }}</option>
                     <option value="2">{{ $t("visibility_2") }}</option>
@@ -53,9 +53,9 @@
         <div class="grid grid-cols-10 border">
             <div class="col-span-10 xl:col-span-2 text-blue-700 p-3 border-b xl:border-b-0 xl:border-r bg-gray-50 text-14">{{ $t("wind") }}</div>
             <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-b xl:border-b-0 border-r bg-gray-50 text-14">{{ $t("direction") }}</div>
-            <input v-model="weather_data.wind_direction" @keypress="preventNaN($event, weather_data.wind_direction)" placeholder="000 (Degrees)" class="col-span-6 xl:col-span-2 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"/>
+            <input v-model="data.wind_direction" @keypress="preventNaN($event, data.wind_direction)" placeholder="000 (Degrees)" class="col-span-6 xl:col-span-2 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"/>
             <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-b xl:border-b-0 border-r bg-gray-50 text-14">{{ $t("force") }}</div>
-            <select v-model="weather_data.beaufort" class="col-span-6 xl:col-span-1 p-3 border-b xl:border-b-0 xl:border-r text-14 focus:border-0" :class="weather_data.beaufort === 'default' ? 'text-gray-400' : 'text-gray-700'">
+            <select v-model="data.beaufort" class="col-span-6 xl:col-span-1 p-3 border-b xl:border-b-0 xl:border-r text-14 focus:border-0" :class="data.beaufort === 'default' ? 'text-gray-400' : 'text-gray-700'">
                 <option selected disabled value="default">{{ $t("select") }}</option>
                 <option value="0">{{ $t("wind_force_0") }}</option>
                 <option value="1">{{ $t("wind_force_1") }}</option>
@@ -73,7 +73,7 @@
             </select>
             <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("maxSpeed") }}</div>
             <div class="col-span-6 flex xl:col-span-2 p-2 pl-4 bg-white">
-                <input v-model="weather_data.wind_speed" @keypress="preventNaN($event, weather_data.wind_speed)" placeholder="00.0" class="text-14 w-24 text-gray-700 focus:outline-0"/>
+                <input v-model="data.wind_speed" @keypress="preventNaN($event, data.wind_speed)" placeholder="00.0" class="text-14 w-24 text-gray-700 focus:outline-0"/>
                 <!-- value here (e.g. Ballast) is dynamic; fetch from departure report -->
                 <MiniUnitDisplay>M/S</MiniUnitDisplay>
             </div>
@@ -82,9 +82,9 @@
         <div class="grid grid-cols-10 border">
             <div class="col-span-10 xl:col-span-2 text-blue-700 p-3 border-b xl:border-b-0 xl:border-r bg-gray-50 text-14">{{ $t("wave") }}</div>
             <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-r border-b xl:border-b-0 bg-gray-50 text-14">{{ $t("direction") }}</div>
-            <input v-model="weather_data.wave_direction" @keypress="preventNaN($event, weather_data.wave_direction)" placeholder="000 (Degrees)" class="col-span-6 xl:col-span-2 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"/>
+            <input v-model="data.wave_direction" @keypress="preventNaN($event, data.wave_direction)" placeholder="000 (Degrees)" class="col-span-6 xl:col-span-2 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"/>
             <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-r border-b xl:border-b-0 bg-gray-50 text-14">{{ $t("force") }}</div>
-            <select v-model="weather_data.wave_force" class="col-span-6 xl:col-span-1 p-3 border-b xl:border-b-0 xl:border-r text-14 focus:border-0" :class="weather_data.wave_force === 'default' ? 'text-gray-400' : 'text-gray-700'">
+            <select v-model="data.wave_force" class="col-span-6 xl:col-span-1 p-3 border-b xl:border-b-0 xl:border-r text-14 focus:border-0" :class="data.wave_force === 'default' ? 'text-gray-400' : 'text-gray-700'">
                 <option selected disabled value="default">{{ $t("select") }}</option>
                 <option value="0">{{ $t("wave_force_0") }}</option>
                 <option value="1">{{ $t("wave_force_1") }}</option>
@@ -99,16 +99,16 @@
             </select>
             <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("maxHeight") }}</div>
             <div class="flex col-span-6 xl:col-span-2 p-2 pl-4 bg-white">
-                <input v-model="weather_data.wave_height" @keypress="preventNaN($event, weather_data.wave_height)"  placeholder="00.0" class="w-24 text-14 text-gray-700 focus:outline-0"/>
+                <input v-model="data.wave_height" @keypress="preventNaN($event, data.wave_height)"  placeholder="00.0" class="w-24 text-14 text-gray-700 focus:outline-0"/>
                 <MiniUnitDisplay>M</MiniUnitDisplay>
             </div>
         </div>
         <div class="grid grid-cols-10 border">
             <div class="col-span-10 xl:col-span-2 text-blue-700 p-3 border-b xl:border-b-0 xl:border-r bg-gray-50 text-14">{{ $t("swell") }}</div>
             <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-b xl:border-b-0 border-r bg-gray-50 text-14">{{ $t("direction") }}</div>
-            <input v-model="weather_data.swell_direction" @keypress="preventNaN($event, weather_data.swell_direction)" placeholder="000 (Degrees)" class="col-span-6 xl:col-span-2 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"/>
+            <input v-model="data.swell_direction" @keypress="preventNaN($event, data.swell_direction)" placeholder="000 (Degrees)" class="col-span-6 xl:col-span-2 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"/>
             <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-b xl:border-b-0 border-r bg-gray-50 text-14">{{ $t("scale") }}</div>
-            <select v-model="weather_data.swell_scale" class="col-span-6 xl:col-span-1 p-3 border-b xl:border-b-0 xl:border-r text-14 focus:border-0" :class="weather_data.swell_scale === 'default' ? 'text-gray-400' : 'text-gray-700'">
+            <select v-model="data.swell_scale" class="col-span-6 xl:col-span-1 p-3 border-b xl:border-b-0 xl:border-r text-14 focus:border-0" :class="data.swell_scale === 'default' ? 'text-gray-400' : 'text-gray-700'">
                 <option selected disabled value="default">{{ $t("select") }}</option>
                 <option value="0">{{ $t("swell_0") }}</option>
                 <option value="1">{{ $t("swell_1") }}</option>
@@ -123,7 +123,7 @@
             </select>
             <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("maxHeight") }}</div>
             <div class="col-span-6 flex xl:col-span-2 p-2 pl-4 bg-white">
-                <input v-model="weather_data.swell_height" @keypress="preventNaN($event, weather_data.swell_height)" placeholder="00.0" class="w-24 text-14 text-gray-700 focus:outline-0"/>
+                <input v-model="data.swell_height" @keypress="preventNaN($event, data.swell_height)" placeholder="00.0" class="w-24 text-14 text-gray-700 focus:outline-0"/>
                 <MiniUnitDisplay>M</MiniUnitDisplay>
             </div>
         </div>
@@ -131,7 +131,7 @@
         <div class="xl:grid xl:grid-cols-2">
             <div class="grid grid-cols-5 border">
                 <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("glacierIceCondition") }}</div>
-                <select v-model="weather_data.ice_condition" class="col-span-3 p-3 text-14 focus:border-0" :class="weather_data.ice_condition === 'default' ? 'text-gray-400' : 'text-gray-700'">
+                <select v-model="data.ice_condition" class="col-span-3 p-3 text-14 focus:border-0" :class="data.ice_condition === 'default' ? 'text-gray-400' : 'text-gray-700'">
                     <option selected disabled value="default">{{ $t("select") }}</option>
                     <option value="0">{{ $t("na") }}</option>
                     <option value="1">{{ $t("glacier_low") }}</option>
@@ -149,7 +149,7 @@ import { reactive } from 'vue'
 import { preventNaN } from '@/utils/helpers';
 import MiniUnitDisplay from '../MiniUnitDisplay.vue'
 
-const weather_data = reactive({
+const data = reactive({
     "weather": "default", // Weather: sky
     "sea_state": "default", // Weather: visibility
     "wind_direction": '', // Weather: wind dir 

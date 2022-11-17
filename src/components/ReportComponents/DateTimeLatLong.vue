@@ -8,9 +8,9 @@
         </div>
         <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border">
             <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("timeZone") }}</div>
-            <select v-model="dateTimeLatLong.time_zone" 
+            <select v-model="data.time_zone" 
                 class="col-span-3 p-3 border-b text-14 focus:border-0" 
-                :class="dateTimeLatLong.time_zone === 'default' ? 'text-gray-400' : 'text-gray-700'"
+                :class="data.time_zone === 'default' ? 'text-gray-400' : 'text-gray-700'"
             >
                 <option selected disabled value="default">{{ $t("selectTimeZone") }}</option>
                 <!-- TODO: select +1 or -1 timezone from previous report -->
@@ -40,9 +40,9 @@
                 <option value="-1">UTC-1:00</option>
             </select>
             <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("summerTime") }}</div>
-            <select v-model="dateTimeLatLong.summer_time" 
+            <select v-model="data.summer_time" 
                 class="col-span-3 p-3 border-b text-14 focus:border-0" 
-                :class="dateTimeLatLong.summer_time === 'default' ? 'text-gray-400' : 'text-gray-700'"
+                :class="data.summer_time === 'default' ? 'text-gray-400' : 'text-gray-700'"
             >
                 <option selected disabled value="default">{{ $t("selectSummerTime") }}</option>
                 <option value="true">{{ $t("applied") }}</option>
@@ -50,11 +50,11 @@
             </select>
             <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("dateAndTime") }}</div>
             <DatePicker 
-                v-model="dateTimeLatLong.date_time" 
+                v-model="data.date_time" 
                 class="col-span-3" 
                 textInput :textInputOptions="textInputOptions"
                 :format="format"
-                :disabled="dateTimeLatLong.date_time==='default' || dateTimeLatLong.date_time==='default'"
+                :disabled="data.date_time==='default' || data.date_time==='default'"
                 :modelValue="string"
                 placeholder="Select date & time"
             >
@@ -66,19 +66,19 @@
         <div></div>
         <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
             <span class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center">{{ $t("latitude") }}</span>
-            <input v-model="dateTimeLatLong.lat_degree" 
-                @keypress="preventNaN($event, dateTimeLatLong.lat_degree)" 
+            <input v-model="data.lat_degree" 
+                @keypress="preventNaN($event, data.lat_degree)" 
                 placeholder="000 (Degree)" 
                 class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
             />
-            <input v-model="dateTimeLatLong.lat_minutes" 
-                @keypress="preventNaN($event, dateTimeLatLong.lat_minutes)" 
+            <input v-model="data.lat_minutes" 
+                @keypress="preventNaN($event, data.lat_minutes)" 
                 placeholder="000 (Minutes)" 
                 class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
             />
-            <select v-model="dateTimeLatLong.lat_dir" 
+            <select v-model="data.lat_dir" 
                 class="col-span-3 p-3 text-14 border-l focus:border-0 focus:outline-0" 
-                :class="dateTimeLatLong.lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+                :class="data.lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
             >
                 <option selected disabled value="default">{{ $t("southAndNorth") }}</option>
                 <option value="S">{{ $t("south") }}</option>
@@ -87,19 +87,19 @@
         </div>
         <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
             <span class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center">{{ $t("longitude") }}</span>
-            <input v-model="dateTimeLatLong.long_degree" 
-                @keypress="preventNaN($event, dateTimeLatLong.long_degree)" 
+            <input v-model="data.long_degree" 
+                @keypress="preventNaN($event, data.long_degree)" 
                 placeholder="000 (Degree)" 
                 class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
             />
-            <input v-model="dateTimeLatLong.long_minutes" 
-                @keypress="preventNaN($event, dateTimeLatLong.long_minutes)" 
+            <input v-model="data.long_minutes" 
+                @keypress="preventNaN($event, data.long_minutes)" 
                 placeholder="000 (Minutes)" 
                 class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
             />
-            <select v-model="dateTimeLatLong.long_dir" 
+            <select v-model="data.long_dir" 
                 class="col-span-3 p-3 text-14 border-l focus:border-0" 
-                :class="dateTimeLatLong.long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+                :class="data.long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
             >
                 <option selected disabled value="default">{{ $t("eastAndWest") }}</option>
                 <option value="E">{{ $t("east") }}</option>
@@ -113,7 +113,7 @@
 import { preventNaN, textInputOptions, format } from '@/utils/helpers.js'
 import { reactive } from 'vue';
 
-const dateTimeLatLong = reactive({
+const data = reactive({
     "time_zone": 'default', 
     "summer_time": 'default', 
     "date_time": '',
