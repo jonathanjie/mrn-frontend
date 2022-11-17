@@ -1,5 +1,5 @@
 <template>
-    <div class="grid bg-white rounded-lg p-5 gap-4">
+    <div class="grid bg-white rounded-lg p-5 gap-4 shadow-card">
         <div class="flex items-center">
             <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
             <span class="text-blue-700 text-16">

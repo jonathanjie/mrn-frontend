@@ -1,5 +1,5 @@
 <template>
-    <div class="grid bg-gray-25 border border-yellow-500 rounded-lg p-5 gap-4 divide-y divide-dashed">
+    <div class="grid bg-gray-25 border border-yellow-500 rounded-lg p-5 gap-4 divide-y divide-dashed shadow-card">
         <div class="grid grid-cols-2 gap-4 mb-4">
 
             <!-- Actual Performance at Sea -->

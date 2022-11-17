@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-cols-1 lg:grid-cols-2 bg-white rounded-lg p-5 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 bg-white rounded-lg p-5 gap-4 shadow-card">
 
         <!-- Departure -->
         <div class="col-span-1">
@@ -15,7 +15,7 @@
             <div class="grid grid-cols-5 border bg-gray-50 text-14 mb-5">
                 <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("dateAndTime") }}</div>
                 <DatePicker 
-                    v-model="departureDateTime" 
+                    v-model="tempValues.departureDateTime" 
                     class="col-span-3" 
                     textInput :textInputOptions="textInputOptions"
                     :format="format"

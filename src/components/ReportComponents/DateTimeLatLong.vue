@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4">
+    <div class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4 shadow-card">
         <div class="col-span-2 flex items-center">
             <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
             <span class="text-blue-700 text-16">
@@ -78,7 +78,7 @@
             />
             <select v-model="dateTimeLatLong.lat_dir" 
                 class="col-span-3 p-3 text-14 border-l focus:border-0 focus:outline-0" 
-                :class="lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+                :class="dateTimeLatLong.lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
             >
                 <option selected disabled value="default">{{ $t("southAndNorth") }}</option>
                 <option value="S">{{ $t("south") }}</option>
