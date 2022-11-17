@@ -6,18 +6,18 @@
         </div>
         <div class="col-span-2 xl:col-span-1 grid grid-cols-5 border bg-gray-50 text-14">
             <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("reportNo") }}</div>
-            <input class="col-span-3 p-3 text-gray-700 bg-gray-50" disabled v-model="staticValues.reportNo"/>
+            <input class="col-span-3 p-3 text-gray-700 bg-gray-50" disabled v-model="tempValues.reportNo"/>
         </div>
         <div class="col-span-2 xl:col-span-1 grid grid-cols-5 border bg-gray-50 text-14">
             <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("legNo") }}</div>
-            <input class="col-span-3 p-3 text-gray-700 bg-gray-50" disabled v-model="staticValues.legNo"/>
+            <input class="col-span-3 p-3 text-gray-700 bg-gray-50" disabled v-model="tempValues.legNo"/>
         </div>
     </div>
 </template>
 
 <script setup>
 // TODO: retrieve from backend or generate as needed
-const staticValues = {
+const tempValues = {
     reportNo: '2',
     legNo: '2',
 };

@@ -6,14 +6,14 @@
         </div>
         <div class="col-span-2 xl:col-span-1 grid grid-cols-5 border bg-gray-50 text-14">
             <div class="col-span-2 text-blue-700 p-3 border-r border-b">{{ $t("reportNo") }}</div>
-            <input class="col-span-3 p-3 border-b text-gray-700 bg-gray-50" disabled v-model="staticValues.reportNo"/>
+            <input class="col-span-3 p-3 border-b text-gray-700 bg-gray-50" disabled v-model="tempValues.reportNo"/>
             <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("legNo") }}</div>
-            <input class="col-span-3 p-3 text-gray-700 bg-gray-50" disabled v-model="staticValues.legNo"/>
+            <input class="col-span-3 p-3 text-gray-700 bg-gray-50" disabled v-model="tempValues.legNo"/>
         </div>
         <div class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14">
             <div class="col-span-2 text-blue-700 p-3 border-l border-y">{{ $t("voyageNo") }}</div>
             <div class="flex col-span-3 p-3 border">
-                <input class="text-gray-700 bg-gray-50 w-12" disabled v-model="staticValues.voyageNo"/>
+                <input class="text-gray-700 bg-gray-50 w-12" disabled v-model="tempValues.voyageNo"/>
                 <!-- value here (e.g. Ballast) should be dynamic -->
                 <MiniUnitDisplay class="ml-0 mr-auto">{{ $t("ballast") }}</MiniUnitDisplay>
             </div>
@@ -28,9 +28,9 @@
             </div>
             <div class="grid grid-cols-5 border bg-gray-50 text-14 mt-4">
                 <div class="col-span-2 text-blue-700 p-3 border-r border-b">{{ $t("name") }}</div>
-                <input class="col-span-3 p-3 border-b text-gray-700 bg-gray-50" disabled v-model="staticValues.departurePort"/>
+                <input class="col-span-3 p-3 border-b text-gray-700 bg-gray-50" disabled v-model="tempValues.departurePort"/>
                 <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("dateAndTime") }}</div>
-                <input class="col-span-3 p-3 text-gray-700 bg-gray-50" disabled v-model="staticValues.departureDateTime"/>
+                <input class="col-span-3 p-3 text-gray-700 bg-gray-50" disabled v-model="tempValues.departureDateTime"/>
             </div>
         </div>
 
@@ -45,8 +45,8 @@
                     <input 
                         class="text-gray-700" 
                         :disabled="!dpEditable" 
-                        v-model="staticValues.destinationPort"/>
-                    <button @click="toggleDP" class="ml-auto">
+                        v-model="tempValues.destinationPort"/>
+                    <button @click="dpEditable.value = !dpEditable.value" class="ml-auto">
                         <img src="@/assets/icons/edit.svg"/>
                     </button>
                 </div>
@@ -55,8 +55,8 @@
                     <input 
                         class="text-gray-700" 
                         :disabled="!ddtEditable" 
-                        v-model="staticValues.destinationDateTime"/>
-                    <button @click="toggleDDT" class="ml-auto">
+                        v-model="tempValues.destinationDateTime"/>
+                    <button @click="ddtEditable.value = !ddtEditable.value" class="ml-auto">
                         <img src="@/assets/icons/edit.svg"/>
                     </button>
                 </div>
@@ -70,7 +70,7 @@ import { ref } from 'vue'
 import MiniUnitDisplay from '@/components/MiniUnitDisplay.vue'
 
 // TODO: retrieve from backend or generate as needed
-const staticValues = {
+const tempValues = {
     reportNo: '2',
     legNo: '2',
     voyageNo: '1',
@@ -82,12 +82,4 @@ const staticValues = {
 
 const dpEditable = ref(false);
 const ddtEditable = ref(false);
-
-const toggleDP = () => {
-    dpEditable.value = !dpEditable.value
-}
-
-const toggleDDT = () => {
-    ddtEditable.value = !ddtEditable.value
-}
 </script>
