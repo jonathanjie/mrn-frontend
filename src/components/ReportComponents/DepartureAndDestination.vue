@@ -12,7 +12,7 @@
                     class="col-span-3 p-3 text-gray-700 border-l border-b" 
                     :class="departure.port_country === 'default' ? 'text-gray-400' : 'text-gray-700'"
                 >
-                    <!-- TODO: fill up possible timezo -->
+                    <!-- TODO: fill up possible timezone -->
                     <option selected disabled value="default">{{ $t("selectCountry") }}</option>
                 </select>
                 <select v-model="departure.port_name" 
@@ -93,7 +93,7 @@
                     class="col-span-3 p-3 text-gray-700 border-l border-b" 
                     :class="destination.port_country === 'default' ? 'text-gray-400' : 'text-gray-700'"
                 >
-                    <!-- TODO: fill up possible timezo -->
+                    <!-- TODO: fill up possible timezone -->
                     <option selected disabled value="default">{{ $t("selectCountry") }}</option>
                 </select>
                 <select v-model="destination.port_name" 
