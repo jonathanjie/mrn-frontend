@@ -9,13 +9,13 @@
             </div>
             <div class="grid grid-cols-5 border bg-gray-50 text-14 my-5">
                 <div class="col-span-2 row-span-2 self-center text-blue-700 p-3">{{ $t("portName") }}</div>
-                <input class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b" disabled v-model="staticValues.departurePortCountry"/>
-                <input class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l" disabled v-model="staticValues.departurePortName"/>
+                <input class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b" disabled v-model="tempValues.departurePortCountry"/>
+                <input class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l" disabled v-model="tempValues.departurePortName"/>
             </div>
             <div class="grid grid-cols-5 border bg-gray-50 text-14 mb-5">
                 <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("dateAndTime") }}</div>
                 <DatePicker 
-                    v-model="departure_date_time" 
+                    v-model="departureDateTime" 
                     class="col-span-3" 
                     textInput :textInputOptions="textInputOptions"
                     :format="format"
@@ -37,66 +37,72 @@
             </div>
             <div class="grid grid-cols-5 border bg-gray-50 text-14 my-5">
                 <div class="col-span-2 row-span-2 self-center text-blue-700 p-3">{{ $t("portName") }}</div>
-                <input class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b" disabled v-model="staticValues.arrivalPortCountry"/>
-                <input class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l" disabled v-model="staticValues.arrivalPortName"/>
+                <input class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b" disabled v-model="tempValues.arrivalPortCountry"/>
+                <input class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l" disabled v-model="tempValues.arrivalPortName"/>
             </div>
             <div class="grid grid-cols-5 border bg-gray-50 text-14 mb-5">
                 <div class="col-span-2 row-span-2 text-blue-700 p-3 border-r">{{ $t("plannedOperation") }}</div>
                 <div class="col-span-3 bg-white flex flex-col space-y-2 p-3 text-gray-700">
-                    <div class="flex align-center">
-                        <input type="checkbox" id="cargoOpBerth" value="0" v-model="plannedOperations" class="mr-2">
+                    <div class="flex align-center space-x-2">
+                        <input type="checkbox" id="cargoOpBerth" value="0" v-model="departureAndArrival.plannedOperations">
                         <label for="cargoOpBerth">{{ $t("cargoOperationBerth") }}</label>
                     </div>
-                    <div class="flex align-center">
-                        <input type="checkbox" id="cargoOpSTSSTB" value="1" v-model="plannedOperations" class="mr-2">
+                    <div class="flex align-center space-x-2">
+                        <input type="checkbox" id="cargoOpSTSSTB" value="1" v-model="departureAndArrival.plannedOperations">
                         <label for="cargoOpSTSSTB">{{ $t("cargoOperationSTSSTB") }}</label>
                     </div>
-                    <div class="flex align-center">
-                        <input type="checkbox" id="bunkeringDebunkering" value="2" v-model="plannedOperations" class="mr-2">
+                    <div class="flex align-center space-x-2">
+                        <input type="checkbox" id="bunkeringDebunkering" value="2" v-model="departureAndArrival.plannedOperations">
                         <label for="bunkeringDebunkering">{{ $t("bunkeringDebunkering") }}</label>
                     </div>
-                    <div class="flex align-center">
-                        <input type="checkbox" id="dryDocking" value="3" v-model="plannedOperations" class="mr-2">
+                    <div class="flex align-center space-x-2">
+                        <input type="checkbox" id="dryDocking" value="3" v-model="departureAndArrival.plannedOperations">
                         <label for="dryDocking">{{ $t("dryDocking") }}</label>
                     </div>
-                    <div class="flex align-center">
-                        <input type="checkbox" id="crewChange" value="4" v-model="plannedOperations" class="mr-2">
+                    <div class="flex align-center space-x-2">
+                        <input type="checkbox" id="crewChange" value="4" v-model="departureAndArrival.plannedOperations">
                         <label for="crewChange">{{ $t("crewChange") }}</label>
                     </div>
-                    <div class="flex align-center"> 
-                        <input type="checkbox" id="receivingProvisionSpareParts" value="5" v-model="plannedOperations" class="mr-2">
+                    <div class="flex align-center space-x-2"> 
+                        <input type="checkbox" id="receivingProvisionSpareParts" value="5" v-model="departureAndArrival.plannedOperations">
                         <label for="receivingProvisionSpareParts">{{ $t("receivingProvisionSpareParts") }}</label>
                     </div>
-                    <div class="flex align-center">
-                        <input type="checkbox" id="survey" value="6" v-model="plannedOperations" class="mr-2">
+                    <div class="flex align-center space-x-2">
+                        <input type="checkbox" id="survey" value="6" v-model="departureAndArrival.plannedOperations">
                         <label for="survey">{{ $t("survey") }}</label>
                     </div>
-                    <div class="flex align-center">
-                        <input type="checkbox" id="others" value="7" v-model="plannedOperations" class="mr-2">
+                    <div class="flex align-center space-x-2">
+                        <input type="checkbox" id="others" value="7" v-model="departureAndArrival.plannedOperations">
                         <label for="others">{{ $t("others") }}</label>
                     </div>
                 </div>
             </div>
             <div class="grid grid-cols-5 border bg-gray-50 text-14 my-5">
                 <div class="col-span-2 text-blue-700 p-3">{{ $t("others") }}</div>
-                <input class="col-span-3 p-3 text-gray-700 border-l" :placeholder="$t('inputOtherPlannedOperation')" v-model="otherPlannedOperation"/>
+                <input class="col-span-3 p-3 text-gray-700 border-l" 
+                    :placeholder="$t('inputOtherPlannedOperation')" 
+                    v-model="departureAndArrival.otherPlannedOperation"
+                />
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+import { reactive } from 'vue'
 import { textInputOptions, format } from '../../utils/helpers.js'
 
 // TODO: retrieve from backend or generate as needed
-const staticValues = {
+const tempValues = {
     departurePortCountry: 'Country A',
     departurePortName: 'Port A',
     arrivalPortCountry: 'Country A',
     arrivalPortName: 'Port A',
+    departureDateTime: '2022-06-01T04:23:00Z'
 };
 
-const departure_date_time = '2022-06-01T04:23:00Z'
-let plannedOperations = []
-let otherPlannedOperation = ''
+const departureAndArrival = reactive({
+    "plannedOperations": [],
+    "otherPlannedOperation" : ''
+})
 </script>
