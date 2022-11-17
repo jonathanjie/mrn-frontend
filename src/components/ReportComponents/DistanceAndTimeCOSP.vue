@@ -79,7 +79,7 @@
                 <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
                     <input v-model="inHarbour.time" 
                         @keypress="preventNaN($event, inHarbour.time)" 
-                        placeholder="0" 
+                        placeholder="000" 
                         class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
                     />
                     <MiniUnitDisplay>HRS</MiniUnitDisplay>
@@ -89,7 +89,7 @@
                 <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
                     <input v-model="inHarbour.distance_by_observation" 
                         @keypress="preventNaN($event, inHarbour.distance_by_observation)" 
-                        placeholder="0" 
+                        placeholder="000" 
                         class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
                     />
                     <MiniUnitDisplay>NM</MiniUnitDisplay>
@@ -99,7 +99,7 @@
                 <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t lg:border">
                     <input v-model="inHarbour.distance_by_engine" 
                         @keypress="preventNaN($event, inHarbour.distance_by_engine)" 
-                        placeholder="0" 
+                        placeholder="000" 
                         class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
                     />
                     <MiniUnitDisplay>NM</MiniUnitDisplay>
@@ -108,7 +108,7 @@
                 <div class="col-span-2 text-blue-700 p-3 border-l border-t lg:border-t-0 bg-gray-50 text-14">{{ $t("revolutionCounter") }}</div>
                 <input v-model="inHarbour.revolution_counter" 
                     @keypress="preventNaN($event, inHarbour.revolution_counter)" 
-                    placeholder="0" 
+                    placeholder="000" 
                     class="col-span-3 lg:col-span-3 p-3 pl-4 border-x border-t lg:border-t-0 bg-white text-14 text-gray-700 focus:outline-0"
                 />
 
@@ -116,7 +116,7 @@
                 <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t lg:border">
                     <input v-model="inHarbour.setRPMofME" 
                         @keypress="preventNaN($event, inHarbour.setRPMofME)" 
-                        placeholder="0" 
+                        placeholder="000.0" 
                         class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
                     />
                     <MiniUnitDisplay>RPM</MiniUnitDisplay>
