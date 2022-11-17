@@ -15,8 +15,8 @@ import AddReportToVoyageView from '../views/AddReportToVoyageView.vue'
 import NoonReportView from '../views/ReportViews/NoonReportView.vue'
 import ArrivalReportView from '../views/ReportViews/ArrivalReportView.vue'
 import DepartureReportView from '../views/ReportViews/DepartureReportView.vue'
-import BDNReportView from '../views/ReportViews/BDNReportView.vue'
-
+import BunkerReportView from '../views/ReportViews/BunkerReportView.vue'
+import HarbourPortReportView from '../views/ReportViews/HarbourPortReportView.vue'
 
 const routes = [
   // {
@@ -96,9 +96,14 @@ const routes = [
         component: ArrivalReportView
       },
       {
-        path: 'bdn',
-        name: 'bdn',
-        component: BDNReportView
+        path: 'harbour-port',
+        name: 'harbour-port',
+        component: HarbourPortReportView
+      },
+      {
+        path: 'bunker-delivery',
+        name: 'bunker-delivery',
+        component: BunkerReportView
       },
     ],
     beforeEnter: authGuard

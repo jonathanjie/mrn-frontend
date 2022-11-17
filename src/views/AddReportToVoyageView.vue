@@ -12,32 +12,39 @@
                     </button>
                     <span class="mx-5 text-20 text-blue">{{ $t("submitNewReport") }}</span>
                 </div>
-                <div class="grid grid-cols-2 xl:grid-cols-4 gap-5 justify-items-stretch pb-8">
+                <div class="grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 gap-5 justify-items-stretch pb-8">
                     <RadioBtnIcon 
                         :icon="require('@/assets/icons/noon_report.svg')" 
-                        content="Noon" 
+                        :content="$t('noon')" 
                         type="noon"
                         :active="reportType"
                         @onUpdateBtn="updateActiveReportType">
                     </RadioBtnIcon>
                     <RadioBtnIcon 
                         :icon="require('@/assets/icons/depart_report.svg')" 
-                        content="Departure" 
+                        :content="$t('departure')" 
                         type="departure"
                         :active="reportType"
                         @onUpdateBtn="updateActiveReportType">
                     </RadioBtnIcon>
                     <RadioBtnIcon 
                         :icon="require('@/assets/icons/arrival_report.svg')" 
-                        content="Arrival" 
+                        :content="$t('arrival')" 
                         type="arrival"
                         :active="reportType"
                         @onUpdateBtn="updateActiveReportType">
                     </RadioBtnIcon>
                     <RadioBtnIcon 
+                        :icon="require('@/assets/icons/harbourport_report.svg')" 
+                        :content="$t('inHarbourOrPort')" 
+                        type="harbour-port"
+                        :active="reportType"
+                        @onUpdateBtn="updateActiveReportType">
+                    </RadioBtnIcon>
+                    <RadioBtnIcon 
                         :icon="require('@/assets/icons/bunker_report.svg')" 
-                        content="Bunker Delivery" 
-                        type="bdn"
+                        :content="$t('bunkerDelivery')" 
+                        type="bunker-delivery"
                         :active="reportType"
                         @onUpdateBtn="updateActiveReportType">
                     </RadioBtnIcon>
@@ -64,8 +71,8 @@
 </template>
 
 <script>
-import RadioBtnIcon from '../components/RadioBtnIcon.vue'
-import RadoioBtnDetail from '../components/RadioBtnDetail.vue'
+import RadioBtnIcon from '../components/Buttons/RadioBtnIcon.vue'
+import RadoioBtnDetail from '../components/Buttons/RadioBtnDetail.vue'
 import router from '@/router'
 
 export default {
