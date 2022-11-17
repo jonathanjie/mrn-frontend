@@ -29,12 +29,13 @@
                     </Transition>
                 </router-link>
                 <!-- temporary fix to jump to specific vessel page for demo -->
-                <!-- <router-link to="/my-vessels" class="flex py-4 px-7 space-x-3 hover:bg-blue-700/[0.24]" :class="{ 'justify-center' : collapsed } ">
+                <!-- Still in development, enabled for easier access -->
+                <router-link to="/my-vessels" class="flex py-4 px-7 space-x-3 hover:bg-blue-700/[0.24]" :class="{ 'justify-center' : collapsed } ">
                     <img src="@/assets/icons/my_vessels.svg" class="h-6 w-6"/>
                     <Transition name="fade">
-                        <span v-if="!collapsed" class="text-white text-14 font-bold">My Vessels</span>
+                        <span v-if="!collapsed" class="text-white text-14 font-bold">My Vessels View</span>
                     </Transition>
-                </router-link> -->
+                </router-link>
                 <router-link :to="{ name: 'vessel-overview', params: { vesselname: 'Marina A' , imo: '9876543' } }" class="flex py-4 px-7 space-x-3 hover:bg-blue-700/[0.24]" :class="{ 'justify-center' : collapsed }">
                     <img src="@/assets/icons/my_vessels.svg" class="h-6 w-6"/>
                     <Transition name="fade">

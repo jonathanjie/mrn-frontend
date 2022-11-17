@@ -217,6 +217,7 @@ const i18n = createI18n({
             reason: 'Reason',
             inputRemarks: 'Input remarks',
             selectAnOption: "Select an option",
+            saveDetails: "Save details",
             // Vessel Types
             vesselType: "Vessel type",
             bulkCarrier: "Bulk Carrier",
@@ -260,7 +261,16 @@ const i18n = createI18n({
             generatorEngine: "Generator Engine",
             boilerEngine: "Boiler",
             inertGasEngine: "Inert gas generator",
-
+            // MyVessels Page
+            vesselsDashboard: "Vessels Dashboard",
+            totalVessels: "Total Vessels",
+            ownedVessels: "Owned Vessels",
+            chartVessels: "Chartered Vessels",
+            etcVessels: "ETC",
+            vesselList: "Vessel List",
+            searchVessels: "Search vessels...",
+            tableFilter: "Table Filter",
+            exportCSV: "Export CSV"
         },
         // TODO: add korean translations here
         kr: {

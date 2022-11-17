@@ -3,7 +3,7 @@
     <div
       class="bg-slate-400 overflow-auto fixed inset-0 z-50 justify-center items-center flex"
     >
-      <div class="relative my-6 mx-auto w-5/12 h-5/6">
+      <div class="relative my-6 mx-auto w-4/12 h-5/6">
         <!--content-->
         <div
           class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white"
@@ -366,8 +366,7 @@
               type="button"
               v-on:click="printValues()"
             >
-              <!-- TODO: need alternate function for saving changes to backend -->
-              <template v-slot:content>{{ $t("saveChanges") }}</template>
+              <template v-slot:content>{{ $t("saveDetails") }}</template>
             </GradientButton>
           </div>
         </div>
@@ -396,8 +395,13 @@ const vesselType = ref("");
 const cargoUnit = ref("");
 
 // Need to be passed into this modal from vessel view or somewhere
-const vesselname = "Marina A";
-const imo = "9876543";
+// const vesselname = "Marina A";
+// const imo = "9876543";
+
+const props = defineProps({
+  vesselname: String,
+  imo: String
+})
 
 const printValues = () => {
   // console.log(fuelOptions);

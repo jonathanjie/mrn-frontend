@@ -16,7 +16,7 @@
             <GradientButton class="m-10" type="button" @click="showModal = true">>
                 <template v-slot:content>{{ $t("createNewVoyage") }}</template>  
             </GradientButton>
-            <AddVoyageModal ref="modal" v-show="showModal" @close-modal="showModal = false"></AddVoyageModal>
+            <AddVoyageModal ref="modal" v-show="showModal" @close-modal="showModal = false" :vesselname="vesselname" :imo="imo"></AddVoyageModal>
         </div>
         <suspense>
             <router-view :key="update"></router-view>
