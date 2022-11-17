@@ -3,7 +3,7 @@
         <div class="flex items-center">
             <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
             <span class="text-blue-700 text-16">
-                <slot></slot>
+                <slot>{{ $t("weather") }}</slot>
             </span>
         </div>
         <div class="grid grid-cols-2">
@@ -146,7 +146,7 @@
 
 <script setup>
 import { reactive } from 'vue'
-import preventNaN from '@/utils/helpers';
+import { preventNaN } from '@/utils/helpers';
 import MiniUnitDisplay from '../MiniUnitDisplay.vue'
 
 const weather_data = reactive({
