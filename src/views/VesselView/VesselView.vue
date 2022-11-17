@@ -62,7 +62,7 @@ const addVoyage = async (voyageData) => {
 </script>
 
 <script>
-import GradientButton from '../../components/GradientButton.vue'
+import GradientButton from '../../components/Buttons/GradientButton.vue'
 
 export default {
     components: {

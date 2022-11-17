@@ -53,8 +53,8 @@
 </template>
   
 <script>
-import GradientButton from './/GradientButton.vue'
-import CustomButton from './/CustomButton.vue'
+import GradientButton from './Buttons/GradientButton.vue'
+import CustomButton from './Buttons/CustomButton.vue'
 
 export default {
     name: "large-modal",

@@ -13,7 +13,7 @@
   
 <script>
 import { useAuth0 } from '@auth0/auth0-vue'
-import GradientButton from '@/components/GradientButton.vue';
+import GradientButton from '@/components/Buttons/GradientButton.vue';
 
 export default {
     components: {GradientButton},

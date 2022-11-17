@@ -54,7 +54,7 @@
 </template>  
 
 <script>
-import CustomButton from ".//CustomButton.vue";
+import CustomButton from "./Buttons/CustomButton.vue";
 import ReportCard from ".//ReportCard.vue";
 
 export default {

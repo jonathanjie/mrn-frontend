@@ -64,8 +64,8 @@
 </template>
 
 <script>
-import RadioBtnIcon from '../components/RadioBtnIcon.vue'
-import RadoioBtnDetail from '../components/RadioBtnDetail.vue'
+import RadioBtnIcon from '../components/Buttons/RadioBtnIcon.vue'
+import RadoioBtnDetail from '../components/Buttons/RadioBtnDetail.vue'
 import router from '@/router'
 
 export default {
