@@ -19,7 +19,7 @@
     <Performance></Performance>
 
     <!-- Consumption & Condition -->
-    <ConsumptionAndCondition></ConsumptionAndCondition>
+    <ConsumptionAndCondition>{{ $t("consumptionAndConditionNoonToNoon") }}</ConsumptionAndCondition>
 
     <!-- Stoppage or Reduction of RPM (at sea) -->
     <StoppageOrReductionRPM></StoppageOrReductionRPM>
