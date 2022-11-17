@@ -109,7 +109,7 @@
 			</select>
 		</div>
 
-		<div class="grid grid-cols-5 border bg-white text-14 mb-5">
+		<div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-white text-14 mb-5">
 			<div class="col-span-2 row-span-2 bg-gray-50 text-blue-700 p-3 border-r">{{ $t("status") }}</div>
 			<div class="col-span-3 flex flex-col space-y-2 p-3 text-gray-700">
 				<div class="flex align-center space-x-2">
@@ -131,7 +131,7 @@
 			</div>
 		</div>
 
-		<div class="grid grid-cols-5 border bg-gray-50 text-14 mb-5">
+		<div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50 text-14 mb-5">
 			<div class="col-span-2 row-span-2 text-blue-700 p-3 border-r">{{ $t("operationAtCurrentLocation") }}</div>
 			<div class="col-span-3 bg-white flex flex-col space-y-2 p-3 text-gray-700">
 				<!-- TODO: make dynamic -->
