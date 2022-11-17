@@ -1,13 +1,14 @@
 <template>
-    <div class="grid bg-white rounded-lg p-5 gap-4 shadow-card">
+    <div class="grid bg-white rounded-lg p-5 gap-4 shadow-card" :class="isSummary ? 'border border-yellow-500' : ''">
         <div>
             <div class="flex items-center">
-                <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
-                <span class="text-blue-700 text-16">
+                <img v-if="!isSummary" src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
+                <img v-else src="@/assets/icons/selected_yellow_gradient.svg" class="h-5 w-5"/>
+                <span class="text-16" :class="isSummary ? 'text-yellow-700' : 'text-blue-700'">
                     <slot>{{ $t("consumptionAndCondition") }}</slot>    
                 </span>
             </div>
-            <span class="text-14 text-gray-600 mt-2">{{ $t('lastReportToSbyForDeparture') }}</span>
+            <span v-if="!isSummary" class="text-14 text-gray-600 mt-2">{{ $t('lastReportToSbyForDeparture') }}</span>
         </div>
         
         <div class="grid grid-cols-30">
@@ -109,7 +110,7 @@
 
 <script setup>
 import { preventNaN } from '@/utils/helpers';
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, defineProps } from 'vue';
 import MiniUnitDisplay from '../../components/MiniUnitDisplay.vue'
 
 // TODO: incorporate receipt / debunkering to formula
@@ -198,4 +199,12 @@ const tempValues = {
     gesysPrevROB: 200,
     freshwaterPrevROB: 200
 };
+
+const props = defineProps({
+    isSummary: {
+        type: Boolean,
+        required: false,
+        default: false,
+    }
+})
 </script>
