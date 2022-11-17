@@ -44,35 +44,35 @@
                 <div class="col-span-2 row-span-2 text-blue-700 p-3 border-r">{{ $t("plannedOperation") }}</div>
                 <div class="col-span-3 bg-white flex flex-col space-y-2 p-3 text-gray-700">
                     <div class="flex align-center space-x-2">
-                        <input type="checkbox" id="cargoOpBerth" value="0" v-model="departureAndArrival.plannedOperations">
+                        <input type="checkbox" id="cargoOpBerth" value="0" v-model="data.plannedOperations">
                         <label for="cargoOpBerth">{{ $t("cargoOperationBerth") }}</label>
                     </div>
                     <div class="flex align-center space-x-2">
-                        <input type="checkbox" id="cargoOpSTSSTB" value="1" v-model="departureAndArrival.plannedOperations">
+                        <input type="checkbox" id="cargoOpSTSSTB" value="1" v-model="data.plannedOperations">
                         <label for="cargoOpSTSSTB">{{ $t("cargoOperationSTSSTB") }}</label>
                     </div>
                     <div class="flex align-center space-x-2">
-                        <input type="checkbox" id="bunkeringDebunkering" value="2" v-model="departureAndArrival.plannedOperations">
+                        <input type="checkbox" id="bunkeringDebunkering" value="2" v-model="data.plannedOperations">
                         <label for="bunkeringDebunkering">{{ $t("bunkeringDebunkering") }}</label>
                     </div>
                     <div class="flex align-center space-x-2">
-                        <input type="checkbox" id="dryDocking" value="3" v-model="departureAndArrival.plannedOperations">
+                        <input type="checkbox" id="dryDocking" value="3" v-model="data.plannedOperations">
                         <label for="dryDocking">{{ $t("dryDocking") }}</label>
                     </div>
                     <div class="flex align-center space-x-2">
-                        <input type="checkbox" id="crewChange" value="4" v-model="departureAndArrival.plannedOperations">
+                        <input type="checkbox" id="crewChange" value="4" v-model="data.plannedOperations">
                         <label for="crewChange">{{ $t("crewChange") }}</label>
                     </div>
                     <div class="flex align-center space-x-2"> 
-                        <input type="checkbox" id="receivingProvisionSpareParts" value="5" v-model="departureAndArrival.plannedOperations">
+                        <input type="checkbox" id="receivingProvisionSpareParts" value="5" v-model="data.plannedOperations">
                         <label for="receivingProvisionSpareParts">{{ $t("receivingProvisionSpareParts") }}</label>
                     </div>
                     <div class="flex align-center space-x-2">
-                        <input type="checkbox" id="survey" value="6" v-model="departureAndArrival.plannedOperations">
+                        <input type="checkbox" id="survey" value="6" v-model="data.plannedOperations">
                         <label for="survey">{{ $t("survey") }}</label>
                     </div>
                     <div class="flex align-center space-x-2">
-                        <input type="checkbox" id="others" value="7" v-model="departureAndArrival.plannedOperations">
+                        <input type="checkbox" id="others" value="7" v-model="data.plannedOperations">
                         <label for="others">{{ $t("others") }}</label>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
                 <div class="col-span-2 text-blue-700 p-3">{{ $t("others") }}</div>
                 <input class="col-span-3 p-3 text-gray-700 border-l" 
                     :placeholder="$t('inputOtherPlannedOperation')" 
-                    v-model="departureAndArrival.otherPlannedOperation"
+                    v-model="data.otherPlannedOperation"
                 />
             </div>
         </div>
@@ -101,7 +101,7 @@ const tempValues = {
     departureDateTime: '2022-06-01T04:23:00Z'
 };
 
-const departureAndArrival = reactive({
+const data = reactive({
     "plannedOperations": [],
     "otherPlannedOperation" : ''
 })
