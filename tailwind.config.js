@@ -91,6 +91,7 @@ module.exports = {
     extend: {
       gridTemplateColumns: {
         '16': 'repeat(16, minmax(0, 1fr))',
+        '30': 'repeat(30, minmax(0, 1fr))',
       },
       boxShadow: {
         'card': '0 2px 2px 2px rgba(29, 41, 57, 0.04)'
