@@ -9,7 +9,6 @@
         <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border">
             <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("name") }}</div>
             <input v-model="data.name" 
-                @keypress="preventNaN($event, data.name)" 
                 :placeholder="$t('inputName')" 
                 class="col-span-3 p-3 pl-4 border-b bg-white text-14 text-gray-700 focus:outline-0"
             />

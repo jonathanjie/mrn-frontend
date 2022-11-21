@@ -103,35 +103,31 @@
             <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border">
                 <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("purchaser") }}</div>
                 <input v-model="data.purchaser" 
-                    @keypress="preventNaN($event, data.purchaser)" 
                     placeholder="" 
                     class="col-span-3 p-3 pl-4 bg-white text-14 text-gray-700 focus:outline-0"
                 />
 
                 <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("bargeName") }}</div>
                 <input v-model="data.barge_name" 
-                    @keypress="preventNaN($event, data.bargeName)" 
                     placeholder="" 
                     class="col-span-3 p-3 pl-4 border-t bg-white text-14 text-gray-700 focus:outline-0"
                 />
 
                 <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("supplierName") }}</div>
                 <input v-model="data.supplier_name" 
-                    @keypress="preventNaN($event, data.supplierName)" 
                     placeholder="" 
                     class="col-span-3 p-3 pl-4 border-t bg-white text-14 text-gray-700 focus:outline-0"
                 />
 
                 <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("address") }}</div>
                 <input v-model="data.address" 
-                    @keypress="preventNaN($event, data.address)" 
                     placeholder="" 
                     class="col-span-3 p-3 pl-4 border-t bg-white text-14 text-gray-700 focus:outline-0"
                 />
 
                 <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("telephoneNumber") }}</div>
                 <input v-model="data.telephone_number" 
-                    @keypress="preventNaN($event, data.telephoneNumber)" 
+                    @keypress="preventNaN($event, data.telephone_number)" 
                     placeholder="" 
                     class="col-span-3 p-3 pl-4 border-t bg-white text-14 text-gray-700 focus:outline-0"
                 />
