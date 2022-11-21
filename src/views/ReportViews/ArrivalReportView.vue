@@ -1,9 +1,9 @@
 <template>
 	<TabsWrapper class="mt-5">
-		<Tab title="EOSP">
+		<Tab :title="$t('eosp')">
 			<div class="flex flex-col space-y-6 mt-6">
 				<!-- Overview -->
-				<ArrivalOverview></ArrivalOverview>
+				<Overview></Overview>
 
 				<!-- Departure and Arrival -->
 				<DepartureAndArrival></DepartureAndArrival>
@@ -43,7 +43,7 @@
 			</div>
 		</Tab>
 
-		<Tab title="F.W.E">
+		<Tab :title="$t('fwe')">
 			<div class="flex flex-col space-y-6 mt-6">
 				<!-- Finish With Engine -->
 				<FinishWithEngine></FinishWithEngine>
@@ -86,7 +86,7 @@ import Tab from '../../components/Tabs/Tab.vue'
 import GradientButton from '@/components/Buttons/GradientButton.vue'
 import CustomButton from '@/components/Buttons/CustomButton.vue'
 
-import ArrivalOverview from '../../components/ReportComponents/ArrivalOverview.vue'
+import Overview from '../../components/ReportComponents/Overview.vue'
 import DepartureAndArrival from '../../components/ReportComponents/DepartureAndArrival.vue'
 import DateTimeLatLong from '../../components/ReportComponents/DateTimeLatLong.vue'
 import Weather from '../../components/ReportComponents/Weather.vue'

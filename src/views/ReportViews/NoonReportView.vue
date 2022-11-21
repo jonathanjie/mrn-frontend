@@ -13,7 +13,7 @@
     <HeavyWeatherCondition></HeavyWeatherCondition>
 
     <!-- Distance & Time -->
-    <DistanceAndTime :hasRevolutionCount="true"></DistanceAndTime>
+    <DistanceAndTime :has-revolution-count="true"></DistanceAndTime>
 
     <!-- Performance -->
     <Performance></Performance>
