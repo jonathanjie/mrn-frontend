@@ -333,7 +333,7 @@ const i18n = createI18n({
             dragAndDrop: 'Drag and Drop',
             dropFileHere: 'Drop file here',
             or: ' or ',
-            browseFile: 'browse file'
+            browseFile: 'browse file',
             inputRemarks: 'Input remarks',
             selectAnOption: "Select an option",
             saveDetails: "Save details",
