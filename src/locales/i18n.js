@@ -330,6 +330,10 @@ const i18n = createI18n({
             telephoneNumber: 'Telephone number',
             deliveredOil: 'Delivered Oil',
             sampleSeatingNo: 'Sample Seating No.',
+            dragAndDrop: 'Drag and Drop',
+            dropFileHere: 'Drop file here',
+            or: ' or ',
+            browseFile: 'browse file'
         },
         // TODO: add korean translations here
         kr: {
