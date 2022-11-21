@@ -27,11 +27,11 @@
             <input class="hidden" type="file" id="file-input" multiple @change="onInputChange" />
         </DropZone>
 
-        <ul class="mb-6 text-14 text-gray-700 space-y-1" v-show="files.length">
+        <ul class="text-14 text-gray-700 space-y-1" v-show="files.length">
             <FilePreview v-for="file of files" :key="file.id" :file="file" @remove="removeFile"/>
         </ul>
 
-        <div class="flex items-center">
+        <div class="mt-6 flex items-center">
             <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
             <span class="text-blue-700 text-16">{{ $t("deliveredOil") }}</span>
         </div>
