@@ -7,7 +7,29 @@
             <span class="text-blue-700 text-16">{{ $t("uploadBunkerDeliveryNote") }}</span>
         </div>
 
-        <!-- Upload delivery note section -->
+        <!-- Upload delivery note section --> 
+        <DropZone class="flex drop-area border border-dashed border-sysblue-300 p-14 place-content-center rounded-lg text-16 text-gray-800" @files-dropped="addFiles" #default="{ dropZoneActive }">
+            <span v-if="dropZoneActive">
+                <span>{{ $t("dropFileHere") }}</span>
+            </span>
+            <span v-else>
+                <span>{{ $t("dragAndDrop") }}</span>
+                <span class="smaller">
+                    {{ $t('or') }} 
+                    <label for="file-input">
+                        <strong class="text-sysblue-500 cursor-pointer"><u>
+                            {{ $t("browseFile") }}
+                        </u></strong>
+                    </label> 
+                </span>
+            </span>
+
+            <input class="hidden" type="file" id="file-input" multiple @change="onInputChange" />
+        </DropZone>
+
+        <ul class="mb-6 text-14 text-gray-700 space-y-1" v-show="files.length">
+            <FilePreview v-for="file of files" :key="file.id" :file="file" @remove="removeFile"/>
+        </ul>
 
         <div class="flex items-center">
             <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
@@ -122,7 +144,11 @@
 <script setup>
 import MiniUnitDisplay from '../../components/MiniUnitDisplay.vue'
 import { preventNaN } from '../../utils/helpers.js'
+import useFileList from '../../composables/file-list'
+import DropZone from '../../components/DropZone.vue'
+import FilePreview from '../../components/FilePreview.vue'
 
+const { files, addFiles, removeFile } = useFileList()
 const data = {
     "oil": 'default',
     "density": '',
@@ -135,5 +161,10 @@ const data = {
     "ship2": '',
     "barge1": '',
     "barge2": '',
+}
+
+function onInputChange(e) {
+    addFiles(e.target.files)
+    e.target.value = null
 }
 </script>
