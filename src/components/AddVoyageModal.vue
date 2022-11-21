@@ -378,8 +378,8 @@
 
 <script setup>
 import { ref } from "vue";
-import GradientButton from "./GradientButton.vue";
-import CustomButton from "./CustomButton.vue";
+import GradientButton from "./Buttons/GradientButton.vue";
+import CustomButton from "./Buttons/CustomButton.vue";
 
 // List to export options from checkboxes
 const fuelOptions = ref([]);

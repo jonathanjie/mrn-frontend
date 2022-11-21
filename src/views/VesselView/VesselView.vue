@@ -26,7 +26,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import GradientButton from '../../components/GradientButton.vue'
+import GradientButton from '../../components/Buttons/GradientButton.vue'
 import AddVoyageModal from '@/components/AddVoyageModal.vue'
 
 let showModal = ref(false)

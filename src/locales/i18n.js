@@ -313,7 +313,25 @@ const i18n = createI18n({
             vesselList: "Vessel List",
             searchVessels: "Search vessels...",
             tableFilter: "Table Filter",
-            exportCSV: "Export CSV"
+            exportCSV: "Export CSV",
+            noVesselCreated: "No Vessel Created",
+            // Vessel List Card
+            type: "Type",
+            flag: "Flag",
+            shipSize: "Size",
+            dwt: "Dwt",
+            grossTonnage: "Gross Tonnage",
+            // Vessel Card
+            cubicCapacity: "Cubic Capacity",
+            vesselAge: "Age",
+            vesselOwnership: "Ownership",
+            mainEngineImo: "Main Engine IMO",
+            fuelType: "Fuel Type",
+            percentActive: "% Active Days",
+            percentIdle: "% Idle Days",
+            reportedEedi: "Reported EEDI",
+            bwts: "BWTS",
+            scrubber: "Scrubber"       
         },
         // TODO: add korean translations here
         kr: {
