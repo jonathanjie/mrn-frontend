@@ -82,6 +82,9 @@ module.exports = {
         50: '#FFFAEB',
         25: '#FFFCF5',
       },
+      red: {
+        500: '#F04438',
+      },
       darkgray: '#EAEEF0',
       gradientblue: '#0093B8',
       gradientgreen: '#09DBA9',
