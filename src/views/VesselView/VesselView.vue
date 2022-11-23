@@ -13,7 +13,11 @@
                     <router-link to="cancelled" class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700" :class="$route.name=='vessel-cancelled'?'border-b-2 border-blue-700 text-blue-700':''">{{ $t("cancelled") }}</router-link>
                 </div>  
             </div>
-            <GradientButton class="m-10" type="button" @click="showModal = true">>
+            <!-- Disabled modal until finilized design -->
+            <!-- <GradientButton class="m-10" type="button" @click="showModal = true">>
+                <template v-slot:content>{{ $t("createNewVoyage") }}</template>  
+            </GradientButton> -->
+            <GradientButton class="m-10" type="button" v-on:click="addVoyage(voyageData)">
                 <template v-slot:content>{{ $t("createNewVoyage") }}</template>  
             </GradientButton>
             <AddVoyageModal ref="modal" v-show="showModal" @close-modal="showModal = false" :vesselname="vesselname" :imo="imo"></AddVoyageModal>
