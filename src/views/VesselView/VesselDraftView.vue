@@ -7,14 +7,6 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import isEmpty from './/VesselView.vue'
-   
-export default {
-    setup() {
-        return {
-            isEmpty,
-        };
-    },
-};
 </script>

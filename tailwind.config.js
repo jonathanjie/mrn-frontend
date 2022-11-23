@@ -108,6 +108,7 @@ module.exports = {
       12: ['12px', '20px'], // tiny
       14: ['14px', '24px'], // base, sm
       16: ['16px', '24px'], 
+      18: ['18px', '26px'], 
       20: ['20px', '30px'] // huge
     }
   },
