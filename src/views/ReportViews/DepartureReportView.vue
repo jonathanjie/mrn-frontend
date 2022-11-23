@@ -15,10 +15,10 @@
                 <VesselConditionAtDeparture></VesselConditionAtDeparture>
 
 				<!-- Consumption & Condition (departure ver.) -->
-                <ConsumptionAndConditionDeparture></ConsumptionAndConditionDeparture>
+                <ConsumptionAndConditionFull :has-detail="true"></ConsumptionAndConditionFull>
 
 				<!-- Consumption & Condition (Harbour/In Port in Total) -->
-                <ConsumptionAndConditionDeparture :is-summary="true">{{ $t("consumptionAndConditionHarbourInPortInTotal") }}</ConsumptionAndConditionDeparture>
+                <ConsumptionAndConditionFull :is-yellow="true">{{ $t("consumptionAndConditionHarbourInPortInTotal") }}</ConsumptionAndConditionFull>
 			</div>
 
 			<!-- Save and Send -->
@@ -84,7 +84,7 @@ import Overview from  '@/components/ReportComponents/Overview.vue'
 import DepartureAndDestination from  '@/components/ReportComponents/DepartureAndDestination.vue'
 import CargoOperation from  '@/components/ReportComponents/CargoOperation.vue'
 import VesselConditionAtDeparture from  '@/components/ReportComponents/VesselConditionAtDeparture.vue'
-import ConsumptionAndConditionDeparture from  '@/components/ReportComponents/ConsumptionAndConditionDeparture.vue'
+import ConsumptionAndConditionFull from  '@/components/ReportComponents/ConsumptionAndConditionFull.vue'
 import PilotStationArrival from  '@/components/ReportComponents/PilotStationArrival.vue'
 import PilotStationDeparture from  '@/components/ReportComponents/PilotStationDeparture.vue'
 import DistanceAndTimeCOSP from  '@/components/ReportComponents/DistanceAndTimeCOSP.vue'
