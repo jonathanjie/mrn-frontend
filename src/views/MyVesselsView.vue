@@ -4,7 +4,7 @@
       <h1 class="text-xl font-bold mb-6">Vessels Dashboard</h1>
       <!-- Vessels dashboard -->
       <div class="grid xl:grid-cols-4 grid-cols-2 gap-x-5 w-full">
-        <MyVesselsDashboardIconVue>
+        <MyVesselsDashboardIcon>
           <template v-slot:itemHeader>
             <h1 class="text-gray-500 text-12">{{ $t("totalVessels") }}</h1>
           </template>
@@ -14,8 +14,8 @@
             </h2>
             <h2 v-else class="text-gray-700 text-lg">-</h2>
           </template>
-        </MyVesselsDashboardIconVue>
-        <MyVesselsDashboardIconVue>
+        </MyVesselsDashboardIcon>
+        <MyVesselsDashboardIcon>
           <template v-slot:itemHeader>
             <h1 class="text-gray-500 text-12">{{ $t("ownedVessels") }}</h1>
           </template>
@@ -25,8 +25,8 @@
             </h2>
             <h2 v-else class="text-gray-700 text-lg">-</h2>
           </template>
-        </MyVesselsDashboardIconVue>
-        <MyVesselsDashboardIconVue>
+        </MyVesselsDashboardIcon>
+        <MyVesselsDashboardIcon>
           <template v-slot:itemHeader>
             <h1 class="text-gray-500 text-12">{{ $t("chartVessels") }}</h1>
           </template>
@@ -36,8 +36,8 @@
             </h2>
             <h2 v-else class="text-gray-700 text-lg">-</h2>
           </template>
-        </MyVesselsDashboardIconVue>
-        <MyVesselsDashboardIconVue>
+        </MyVesselsDashboardIcon>
+        <MyVesselsDashboardIcon>
           <template v-slot:itemHeader>
             <h1 class="text-gray-500 text-12">{{ $t("etcVessels") }}</h1>
           </template>
@@ -47,7 +47,7 @@
             </h2>
             <h2 v-else class="text-gray-700 text-lg">-</h2>
           </template>
-        </MyVesselsDashboardIconVue>
+        </MyVesselsDashboardIcon>
       </div>
       <!-- Vessels list header -->
       <div class="flex mt-10 w-full items-center">
@@ -66,7 +66,7 @@
             />
           </div>
           <!-- Need to figure out table filter and export CSV -->
-          <CustomButtonVue
+          <CustomButton
             class="text-14 text-sm font-bold mr-4 pr-7 whitespace-nowrap text-blue-700"
             type="button"
             @click=""
@@ -77,8 +77,8 @@
                 class="w-4 h-4 mr-1.5"
             /></template>
             <template v-slot:content>{{ $t("tableFilter") }}</template>
-          </CustomButtonVue>
-          <CustomButtonVue
+          </CustomButton>
+          <CustomButton
             class="text-14 text-sm font-bold mr-4 pr-7 whitespace-nowrap text-blue-700"
             type="button"
             @click=""
@@ -87,7 +87,7 @@
               ><img src="@/assets/icons/My_Vessels/csv.svg" class="w-4 h-4 mr-1.5"
             /></template>
             <template v-slot:content>{{ $t("exportCSV") }}</template>
-          </CustomButtonVue>
+          </CustomButton>
         </div>
       </div>
     </div>
@@ -133,8 +133,8 @@
 
 <script setup>
 import { ref } from "vue";
-import MyVesselsDashboardIconVue from "@/components/MyVesselsDashboardIcon.vue";
-import CustomButtonVue from "@/components/Buttons/CustomButton.vue";
+import MyVesselsDashboardIcon from "@/components/MyVesselsDashboardIcon.vue";
+import CustomButton from "@/components/Buttons/CustomButton.vue";
 import VesselCard from "@/components/VesselCard.vue";
 
 // To be pulled from backend
