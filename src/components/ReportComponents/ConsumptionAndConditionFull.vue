@@ -1,14 +1,14 @@
 <template>
-    <div class="grid bg-white rounded-lg p-5 gap-4 shadow-card" :class="isSummary ? 'border border-yellow-500' : ''">
+    <div class="grid bg-white rounded-lg p-5 gap-4 shadow-card" :class="isYellow ? 'border border-yellow-500' : ''">
         <div>
             <div class="flex items-center">
-                <img v-if="!isSummary" src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
-                <img v-else src="@/assets/icons/selected_yellow_gradient.svg" class="h-5 w-5"/>
-                <span class="text-16" :class="isSummary ? 'text-yellow-700' : 'text-blue-700'">
+                <img v-if="isYellow" src="@/assets/icons/selected_yellow_gradient.svg" class="h-5 w-5"/>
+                <img v-else src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
+                <span class="text-16" :class="isYellow ? 'text-yellow-700' : 'text-blue-700'">
                     <slot>{{ $t("consumptionAndCondition") }}</slot>    
                 </span>
             </div>
-            <span v-if="!isSummary" class="text-14 text-gray-600 mt-2">{{ $t('lastReportToSbyForDeparture') }}</span>
+            <span v-if="hasDetail" class="text-14 text-gray-600 mt-2">{{ $t('lastReportToSbyForDeparture') }}</span>
         </div>
         
         <div class="grid grid-cols-30">
@@ -201,10 +201,15 @@ const tempValues = {
 };
 
 const props = defineProps({
-    isSummary: {
+    isYellow: {
         type: Boolean,
         required: false,
         default: false,
-    }
+    },
+    hasDetail: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
 })
 </script>
