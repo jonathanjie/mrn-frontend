@@ -1,7 +1,7 @@
 <template>
 	<TabsWrapper class="mt-5">
 		<Tab :title="$t('sbyForDeparture')">
-			<div class="flex flex-col space-y-6 mt-6">
+			<div class="flex flex-col space-y-6 my-6">
 				<!-- Overview -->
                 <Overview></Overview>
 

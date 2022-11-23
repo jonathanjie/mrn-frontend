@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col space-y-6 mt-2">
+    <div class="flex flex-col space-y-6 my-2 mb-6">
         <div class="flex text-gray-700 space-x-3 text-16">
             <span class="text-gray-500">{{ $t("arrivalPort") + ":" }}</span>
             <input type="radio" name="arrival_port" id="beforeArrival" value="0" v-model="data.arrival_port">
@@ -19,19 +19,19 @@
 
         <!-- Bunker Date and Time & Supplier -->
         <DateAndTimeBunker></DateAndTimeBunker>
-    </div>
 
-    <!-- Save and Send -->
-    <div class="flex justify-end space-x-4 my-6">
-        <CustomButton class="p-3 text-14" type="button" v-on:click="saveChanges()">
-            <!-- TODO: need alternate function for saving changes to backend -->
-            <template v-slot:content>{{ $t("saveChanges") }}</template> 
-        </CustomButton>
-        <GradientButton class="p-3 text-14" type="button" v-on:click="sendReport()">
-            <!-- TODO: need alternate function for saving changes to backend -->
-            <template v-slot:content>{{ $t("sendReport") }}</template> 
-        </GradientButton>
-    </div>
+        <!-- Save and Send -->
+        <div class="flex justify-end space-x-4 my-6">
+            <CustomButton class="p-3 text-14" type="button" v-on:click="saveChanges()">
+                <!-- TODO: need alternate function for saving changes to backend -->
+                <template v-slot:content>{{ $t("saveChanges") }}</template> 
+            </CustomButton>
+            <GradientButton class="p-3 text-14" type="button" v-on:click="sendReport()">
+                <!-- TODO: need alternate function for saving changes to backend -->
+                <template v-slot:content>{{ $t("sendReport") }}</template> 
+            </GradientButton>
+        </div>
+    </div>    
 </template>
 
 <script setup>
