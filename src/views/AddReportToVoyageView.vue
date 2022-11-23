@@ -72,13 +72,11 @@
 
 <script>
 import RadioBtnIcon from '../components/Buttons/RadioBtnIcon.vue'
-import RadoioBtnDetail from '../components/Buttons/RadioBtnDetail.vue'
 import router from '@/router'
 
 export default {
     components: {
         RadioBtnIcon,
-        RadoioBtnDetail
     }, 
     data() {
         return {
