@@ -1,5 +1,5 @@
 <template>
-  <div class="flex relative bg-white border rounded-xl w-64">
+  <div class="flex relative bg-white border rounded-xl w-auto drop-shadow">
     <div class="flex p-3.5">
       <img
         src="@/assets/icons/My_Vessels/blue_ship.svg"

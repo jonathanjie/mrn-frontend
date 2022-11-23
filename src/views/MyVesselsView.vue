@@ -2,15 +2,14 @@
   <div class="bg-gray-100 min-h-screen">
     <div class="flex flex-wrap p-12 w-full">
       <h1 class="text-xl font-bold mb-6">Vessels Dashboard</h1>
-      <!-- Box shadow need to fix -->
       <!-- Vessels dashboard -->
-      <div class="grid xl:grid-cols-4 grid-cols-2 gap-x-5">
+      <div class="grid xl:grid-cols-4 grid-cols-2 gap-x-5 w-full">
         <MyVesselsDashboardIconVue>
           <template v-slot:itemHeader>
-            <h1 class="text-gray-500 text-xs">{{ $t("totalVessels") }}</h1>
+            <h1 class="text-gray-500 text-12">{{ $t("totalVessels") }}</h1>
           </template>
           <template v-slot:numVessels>
-            <h2 v-if="totalVessels != 0" class="text-gray-700 text-lg">
+            <h2 v-if="totalVessels != 0" class="text-gray-700 text-18">
               {{ totalVessels }}
             </h2>
             <h2 v-else class="text-gray-700 text-lg">-</h2>
@@ -18,10 +17,10 @@
         </MyVesselsDashboardIconVue>
         <MyVesselsDashboardIconVue>
           <template v-slot:itemHeader>
-            <h1 class="text-gray-500 text-xs">{{ $t("ownedVessels") }}</h1>
+            <h1 class="text-gray-500 text-12">{{ $t("ownedVessels") }}</h1>
           </template>
           <template v-slot:numVessels>
-            <h2 v-if="ownedVessels != 0" class="text-gray-700 text-lg">
+            <h2 v-if="ownedVessels != 0" class="text-gray-700 text-18">
               {{ ownedVessels }}
             </h2>
             <h2 v-else class="text-gray-700 text-lg">-</h2>
@@ -29,10 +28,10 @@
         </MyVesselsDashboardIconVue>
         <MyVesselsDashboardIconVue>
           <template v-slot:itemHeader>
-            <h1 class="text-gray-500 text-xs">{{ $t("chartVessels") }}</h1>
+            <h1 class="text-gray-500 text-12">{{ $t("chartVessels") }}</h1>
           </template>
           <template v-slot:numVessels>
-            <h2 v-if="chartVessels != 0" class="text-gray-700 text-lg">
+            <h2 v-if="chartVessels != 0" class="text-gray-700 text-18">
               {{ chartVessels }}
             </h2>
             <h2 v-else class="text-gray-700 text-lg">-</h2>
@@ -40,10 +39,10 @@
         </MyVesselsDashboardIconVue>
         <MyVesselsDashboardIconVue>
           <template v-slot:itemHeader>
-            <h1 class="text-gray-500 text-xs">{{ $t("etcVessels") }}</h1>
+            <h1 class="text-gray-500 text-12">{{ $t("etcVessels") }}</h1>
           </template>
           <template v-slot:numVessels>
-            <h2 v-if="etcVessels != 0" class="text-gray-700 text-lg">
+            <h2 v-if="etcVessels != 0" class="text-gray-700 text-18">
               {{ etcVessels }}
             </h2>
             <h2 v-else class="text-gray-700 text-lg">-</h2>
@@ -61,8 +60,7 @@
           >
             <img class="w-6 m-2" src="@/assets/icons/search_icon.svg" />
             <input
-              class="w-32 text-14 text-gray-400"
-              type="search"
+              class="w-32 text-14 text-gray-400 focus:outline-none"
               :placeholder="$t('searchVessels')"
               icon="search"
             />
@@ -76,7 +74,7 @@
             <template v-slot:icon
               ><img
                 src="@/assets/icons/My_Vessels/table_filter.svg"
-                class="w-4 h-4"
+                class="w-4 h-4 mr-1.5"
             /></template>
             <template v-slot:content>{{ $t("tableFilter") }}</template>
           </CustomButtonVue>
@@ -86,7 +84,7 @@
             @click=""
           >
             <template v-slot:icon
-              ><img src="@/assets/icons/My_Vessels/csv.svg" class="w-4 h-4"
+              ><img src="@/assets/icons/My_Vessels/csv.svg" class="w-4 h-4 mr-1.5"
             /></template>
             <template v-slot:content>{{ $t("exportCSV") }}</template>
           </CustomButtonVue>

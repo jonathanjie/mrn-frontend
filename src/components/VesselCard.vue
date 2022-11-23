@@ -1,7 +1,7 @@
 <template>
   <div
     class="flex h-20 mx-12 items-center rounded-xl min-w-max z-10"
-    :class="expanded ? 'bg-blue' : 'bg-white drop-shadow-md mb-6'"
+    :class="expanded ? 'bg-blue' : 'bg-white drop-shadow mb-6'"
   >
     <img
       v-if="expanded"
@@ -153,6 +153,4 @@ defineProps({
   scrubber: String,
 });
 let expanded = ref(false);
-
-console.log("Managed to open vue card");
 </script>
