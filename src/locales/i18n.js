@@ -333,7 +333,22 @@ const i18n = createI18n({
             dragAndDrop: 'Drag and Drop',
             dropFileHere: 'Drop file here',
             or: ' or ',
-            browseFile: 'browse file'
+            browseFile: 'browse file',
+            inPortBerthingShiftingDryDocking: 'In port (Berthing, Shifting, Dry Docking)',
+            coastalWaterAnchoringDrifting: 'Coastal water (Anchoring, Drifting)',
+            consumptionAndConditionLastReportEventNoon: 'Consumption & Condition (Last Report - Event/Noon)',
+            departurePortName: 'Departure port name',
+            destinationPortName: 'Destination port name',
+            report: 'Report',
+            event: 'Event',
+            noonInHarbourPort: 'Noon in Harbour/Port',
+            status: 'Status',
+            distanceTravelled: 'Distance travelled',
+            operations: 'Operations',
+            waiting: 'Waiting',
+            cargoOperation: 'Cargo Operation',
+            bunkeringDebunkering: 'Bunkering/De-bunkering',
+            selectEvent: 'Select event',
         },
         // TODO: add korean translations here
         kr: {
