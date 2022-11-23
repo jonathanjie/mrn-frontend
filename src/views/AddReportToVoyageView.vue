@@ -49,22 +49,7 @@
                         @onUpdateBtn="updateActiveReportType">
                     </RadioBtnIcon>
                 </div>
-
-                <!-- TODO: when this page is refrehsed, it should discard any child path -->
-                <!-- NOON -->
-                    <span v-if="reportType == 'noon'" class="col-span-4 flex flex-col bg-green-25/[0.24] text-green-800 font-bold text-12 p-5 mb-6 h-min-fit min-w-fit rounded-xl inline-flex border-green-400 border">
-                        <span class="pb-3">{{ $t('sailingAtSea') }}</span>
-                        <img class="lg:hidden" src="@/assets/icons/report_subtype_sailing_at_sea.svg">
-                        <img class="hidden lg:block" src="@/assets/icons/report_subtype_sailing_at_sea_long.svg">
-                    </span>
-
-                <!-- DEPARTURE: TODO -->
-                    <!-- <span v-if="reportType == 'Departure'" class="col-span-4 text-blue pt-4">{{ $t("selectDepartureType") }}:</span> -->
                 
-                <!-- ARRIVAL: TODO -->
-                    <!-- <span v-if="reportType == 'Arrival'" class="col-span-4 text-blue pt-4">{{ $t("arrivalPort") }}:</span> -->
-                
-                <!-- Vue router -->
                 <router-view></router-view>
         </div>
     </div>
