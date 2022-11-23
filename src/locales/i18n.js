@@ -407,7 +407,6 @@ const i18n = createI18n({
     kr: {
       reporting: "리포트",
       myVessels: "나의 선박",
->>>>>>> master
     },
   },
 });
