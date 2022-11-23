@@ -4,10 +4,10 @@
     <!-- Need to make behavior for text color match for RadioBtnDetail and RadioBtnIcon -->
     <button 
         @click="updateActiveBtn" 
-        class="flex flex-col bg-white text-gray-700 font-bold text-14 py-3 px-4 h-min-fit min-w-fit rounded-xl inline-flex"
-        :class="this.content == this.active ?'border-gradientblue border-2':''">
+        class="flex flex-col bg-white text-gray-700 font-bold text-14 py-4 px-5 rounded-xl border"
+        :class="this.type == this.active ?'border-pink':'border-gray-200'">
             <div class="flex">
-                <img v-if="active==this.content" src="@/assets/icons/checked.svg">
+                <img v-if="this.active == this.type" src="@/assets/icons/checked.svg">
                 <img v-else src="@/assets/icons/unchecked.svg">
                 <span class="pl-2">{{ content }}</span>
             </div>
@@ -30,10 +30,14 @@ export default {
             type: String,
             required: true
         },
+        type: {
+            type: String,
+            required: true
+        }
     },
     methods: {
         updateActiveBtn() {
-            this.$emit('onUpdateBtn', this.content)
+            this.$emit('onUpdateBtn', this.type)
         }
     }
 }
