@@ -50,7 +50,6 @@ const i18n = createI18n({
       cargoOperationSTSSTB: "Cargo operation (STS, STB)",
       cargoTeu: "TEU",
       cargoUnit: "Cargo unit",
-      chartVessels: "Chartered Vessels",
       clickOnCreateNewVoyageAboveToBegin:
         "Click on 'Create New Voyage' above to begin",
       coastalWaterAnchoringDrifting: 'Coastal water (Anchoring, Drifting)',
@@ -213,7 +212,6 @@ const i18n = createI18n({
       or: " or ",
       others: "Others",
       overview: "Overview",
-      ownedVessels: "Owned Vessels",
       percentActive: "% Active Days",
       percentIdle: "% Idle Days",
       performance: "Performance",
@@ -398,6 +396,8 @@ const i18n = createI18n({
       wind_force_10: "10 (Storm)",
       wind_force_11: "11 (Violent storm)",
       wind_force_12: "12 (Hurricane)",
+      inPortVessels: "In Port",
+      sailingVessels: "Sailing"
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser

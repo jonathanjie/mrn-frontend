@@ -5,6 +5,12 @@
       <!-- Vessels dashboard -->
       <div class="grid xl:grid-cols-4 grid-cols-2 gap-x-5 w-full">
         <MyVesselsDashboardIcon>
+          <template v-slot:img>
+            <img
+              src="@/assets/icons/My_Vessels/total_vessels_dashboard.svg"
+              class="rounded-full bg-blue-50 h-11 w-11 p-2.5"
+            />
+          </template>
           <template v-slot:itemHeader>
             <h1 class="text-gray-500 text-12">{{ $t("totalVessels") }}</h1>
           </template>
@@ -12,32 +18,50 @@
             <h2 v-if="totalVessels != 0" class="text-gray-700 text-18">
               {{ totalVessels }}
             </h2>
-            <h2 v-else class="text-gray-700 text-lg">-</h2>
+            <h2 v-else class="text-gray-700 text-18">-</h2>
           </template>
         </MyVesselsDashboardIcon>
         <MyVesselsDashboardIcon>
+          <template v-slot:img>
+            <img
+              src="@/assets/icons/My_Vessels/sailing_dashboard.svg"
+              class="rounded-full bg-blue-50 h-11 w-11 p-2.5"
+            />
+          </template>
           <template v-slot:itemHeader>
-            <h1 class="text-gray-500 text-12">{{ $t("ownedVessels") }}</h1>
+            <h1 class="text-gray-500 text-12">{{ $t("sailingVessels") }}</h1>
           </template>
           <template v-slot:numVessels>
             <h2 v-if="ownedVessels != 0" class="text-gray-700 text-18">
-              {{ ownedVessels }}
+              {{ sailingVessels }}
             </h2>
-            <h2 v-else class="text-gray-700 text-lg">-</h2>
+            <h2 v-else class="text-gray-700 text-18">-</h2>
           </template>
         </MyVesselsDashboardIcon>
         <MyVesselsDashboardIcon>
+          <template v-slot:img>
+            <img
+              src="@/assets/icons/My_Vessels/in_port._dashboard.svg"
+              class="rounded-full bg-blue-50 h-11 w-11 p-2.5"
+            />
+          </template>
           <template v-slot:itemHeader>
-            <h1 class="text-gray-500 text-12">{{ $t("chartVessels") }}</h1>
+            <h1 class="text-gray-500 text-12">{{ $t("inPortVessels") }}</h1>
           </template>
           <template v-slot:numVessels>
             <h2 v-if="chartVessels != 0" class="text-gray-700 text-18">
-              {{ chartVessels }}
+              {{ inPortVessels }}
             </h2>
-            <h2 v-else class="text-gray-700 text-lg">-</h2>
+            <h2 v-else class="text-gray-700 text-18">-</h2>
           </template>
         </MyVesselsDashboardIcon>
         <MyVesselsDashboardIcon>
+          <template v-slot:img>
+            <img
+              src="@/assets/icons/My_Vessels/etc_dashboard.svg"
+              class="rounded-full bg-blue-50 h-11 w-11 p-2.5"
+            />
+          </template>
           <template v-slot:itemHeader>
             <h1 class="text-gray-500 text-12">{{ $t("etcVessels") }}</h1>
           </template>
@@ -45,7 +69,7 @@
             <h2 v-if="etcVessels != 0" class="text-gray-700 text-18">
               {{ etcVessels }}
             </h2>
-            <h2 v-else class="text-gray-700 text-lg">-</h2>
+            <h2 v-else class="text-gray-700 text-18">-</h2>
           </template>
         </MyVesselsDashboardIcon>
       </div>
@@ -84,7 +108,9 @@
             @click=""
           >
             <template v-slot:icon
-              ><img src="@/assets/icons/My_Vessels/csv.svg" class="w-4 h-4 mr-1.5"
+              ><img
+                src="@/assets/icons/My_Vessels/csv.svg"
+                class="w-4 h-4 mr-1.5"
             /></template>
             <template v-slot:content>{{ $t("exportCSV") }}</template>
           </CustomButton>
@@ -138,8 +164,8 @@ import VesselCard from "@/components/VesselCard.vue";
 
 // To be pulled from backend
 const totalVessels = 33;
-const ownedVessels = 20;
-const chartVessels = 13;
+const sailingVessels = 20;
+const inPortVessels = 13;
 const etcVessels = 0;
 const isEmpty = false;
 
@@ -243,8 +269,8 @@ const vessels = [
     reportedEedi: "Not Reported",
     bwts: "Fitted",
     scrubber: "-",
-  }
-]
+  },
+];
 
 // const getShips = async () => {
 //   const DUMMY_TOKEN = localStorage.getItem("jwt");
