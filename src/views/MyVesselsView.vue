@@ -1,80 +1,130 @@
 <template>
   <div class="bg-gray-100 min-h-screen">
     <div class="flex flex-wrap p-12 w-full">
-      <h1 class="text-xl font-bold mb-6">Vessels Dashboard</h1>
-      <!-- Vessels dashboard -->
-      <div class="grid xl:grid-cols-4 grid-cols-2 gap-x-5 w-full">
-        <MyVesselsDashboardIcon>
-          <template v-slot:img>
-            <img
-              src="@/assets/icons/My_Vessels/total_vessels_dashboard.svg"
-              class="rounded-full bg-blue-50 h-11 w-11 p-2.5"
-            />
-          </template>
-          <template v-slot:itemHeader>
-            <h1 class="text-gray-500 text-12">{{ $t("totalVessels") }}</h1>
-          </template>
-          <template v-slot:numVessels>
-            <h2 v-if="totalVessels != 0" class="text-gray-700 text-18">
-              {{ totalVessels }}
-            </h2>
-            <h2 v-else class="text-gray-700 text-18">-</h2>
-          </template>
-        </MyVesselsDashboardIcon>
-        <MyVesselsDashboardIcon>
-          <template v-slot:img>
-            <img
-              src="@/assets/icons/My_Vessels/sailing_dashboard.svg"
-              class="rounded-full bg-blue-50 h-11 w-11 p-2.5"
-            />
-          </template>
-          <template v-slot:itemHeader>
-            <h1 class="text-gray-500 text-12">{{ $t("sailingVessels") }}</h1>
-          </template>
-          <template v-slot:numVessels>
-            <h2 v-if="ownedVessels != 0" class="text-gray-700 text-18">
-              {{ sailingVessels }}
-            </h2>
-            <h2 v-else class="text-gray-700 text-18">-</h2>
-          </template>
-        </MyVesselsDashboardIcon>
-        <MyVesselsDashboardIcon>
-          <template v-slot:img>
-            <img
-              src="@/assets/icons/My_Vessels/in_port._dashboard.svg"
-              class="rounded-full bg-blue-50 h-11 w-11 p-2.5"
-            />
-          </template>
-          <template v-slot:itemHeader>
-            <h1 class="text-gray-500 text-12">{{ $t("inPortVessels") }}</h1>
-          </template>
-          <template v-slot:numVessels>
-            <h2 v-if="chartVessels != 0" class="text-gray-700 text-18">
-              {{ inPortVessels }}
-            </h2>
-            <h2 v-else class="text-gray-700 text-18">-</h2>
-          </template>
-        </MyVesselsDashboardIcon>
-        <MyVesselsDashboardIcon>
-          <template v-slot:img>
-            <img
-              src="@/assets/icons/My_Vessels/etc_dashboard.svg"
-              class="rounded-full bg-blue-50 h-11 w-11 p-2.5"
-            />
-          </template>
-          <template v-slot:itemHeader>
-            <h1 class="text-gray-500 text-12">{{ $t("etcVessels") }}</h1>
-          </template>
-          <template v-slot:numVessels>
-            <h2 v-if="etcVessels != 0" class="text-gray-700 text-18">
-              {{ etcVessels }}
-            </h2>
-            <h2 v-else class="text-gray-700 text-18">-</h2>
-          </template>
-        </MyVesselsDashboardIcon>
+      <div class="flex flex-wrap w-full mb-6">
+        <h1 class="text-xl font-bold mb-4">Vessels Dashboard</h1>
+        <!-- Vessels dashboard -->
+        <div class="grid xl:grid-cols-4 grid-cols-2 gap-x-5 w-full">
+          <MyVesselsDashboardIcon>
+            <template v-slot:img>
+              <img
+                src="@/assets/icons/My_Vessels/total_vessels_dashboard.svg"
+                class="rounded-full bg-blue-50 h-11 w-11 p-2.5"
+              />
+            </template>
+            <template v-slot:itemHeader>
+              <h1 class="text-gray-500 text-12">{{ $t("totalVessels") }}</h1>
+            </template>
+            <template v-slot:numVessels>
+              <h2 v-if="totalVessels != 0" class="text-gray-700 text-18">
+                {{ totalVessels }}
+              </h2>
+              <h2 v-else class="text-gray-700 text-18">-</h2>
+            </template>
+          </MyVesselsDashboardIcon>
+          <MyVesselsDashboardIcon>
+            <template v-slot:img>
+              <img
+                src="@/assets/icons/My_Vessels/sailing_dashboard.svg"
+                class="rounded-full bg-blue-50 h-11 w-11 p-2.5"
+              />
+            </template>
+            <template v-slot:itemHeader>
+              <h1 class="text-gray-500 text-12">{{ $t("sailingVessels") }}</h1>
+            </template>
+            <template v-slot:numVessels>
+              <h2 v-if="sailingVessels != 0" class="text-gray-700 text-18">
+                {{ sailingVessels }}
+              </h2>
+              <h2 v-else class="text-gray-700 text-18">-</h2>
+            </template>
+          </MyVesselsDashboardIcon>
+          <MyVesselsDashboardIcon>
+            <template v-slot:img>
+              <img
+                src="@/assets/icons/My_Vessels/in_port._dashboard.svg"
+                class="rounded-full bg-blue-50 h-11 w-11 p-2.5"
+              />
+            </template>
+            <template v-slot:itemHeader>
+              <h1 class="text-gray-500 text-12">{{ $t("inPortVessels") }}</h1>
+            </template>
+            <template v-slot:numVessels>
+              <h2 v-if="inPortVessels != 0" class="text-gray-700 text-18">
+                {{ inPortVessels }}
+              </h2>
+              <h2 v-else class="text-gray-700 text-18">-</h2>
+            </template>
+          </MyVesselsDashboardIcon>
+          <MyVesselsDashboardIcon>
+            <template v-slot:img>
+              <img
+                src="@/assets/icons/My_Vessels/etc_dashboard.svg"
+                class="rounded-full bg-blue-50 h-11 w-11 p-2.5"
+              />
+            </template>
+            <template v-slot:itemHeader>
+              <h1 class="text-gray-500 text-12">{{ $t("etcVessels") }}</h1>
+            </template>
+            <template v-slot:numVessels>
+              <h2 v-if="etcVessels != 0" class="text-gray-700 text-18">
+                {{ etcVessels }}
+              </h2>
+              <h2 v-else class="text-gray-700 text-18">-</h2>
+            </template>
+          </MyVesselsDashboardIcon>
+        </div>
+      </div>
+      <hr class="w-full bg-gray-200">
+      <div class="flex bg-white w-full h-16 rounded-xl items-center p-3.5 mt-6 justify-evenly shadow">
+        <!-- Sailing Icon -->
+        <div class="flex">
+          <img src="@/assets/icons/My_Vessels/sailing_icon.svg" 
+          class="rounded-full bg-blue-50 h-11 w-11 py-2.5 px-3">
+          <div class="my-3 ml-2" >
+            <span class="text-12 text-gray-700">{{$t("sailingVessels")}}: </span>
+            <span class="text-12 font-bold text-gray-700">{{sailingVessels}} vessels</span>
+          </div>
+        </div>
+        <!-- Cargo operation icon (Need to check background color) --> 
+        <div class="flex">
+          <img src="@/assets/icons/My_Vessels/cargo_icon.svg" 
+          class="rounded-full bg-blue-50 h-11 w-11 py-2.5 px-3">
+          <div class="my-3 ml-2" >
+            <span class="text-12 text-gray-700">{{$t("cargoOperation")}}: </span>
+            <span class="text-12 font-bold text-gray-700">{{cargoVessels}} vessels</span>
+          </div>
+        </div>
+        <!-- Bunkering Icon (Need to check background color) -->
+        <div class="flex">
+          <img src="@/assets/icons/My_Vessels/bunkering_icon.svg" 
+          class="rounded-full bg-blue-50 h-11 w-11 py-2.5 px-3">
+          <div class="my-3 ml-2" >
+            <span class="text-12 text-gray-700">{{$t("bunkering")}}: </span>
+            <span class="text-12 font-bold text-gray-700">{{bunkeringVessels}} vessels</span>
+          </div>
+        </div>
+        <!-- Waiting Icon -->
+        <div class="flex">
+          <img src="@/assets/icons/My_Vessels/waiting_icon.svg" 
+          class="rounded-full bg-yellow-25 h-11 w-11 py-2.5 px-3">
+          <div class="my-3 ml-2" >
+            <span class="text-12 text-gray-700">{{$t("waiting")}}: </span>
+            <span class="text-12 font-bold text-gray-700">{{waitingVessels}} vessels</span>
+          </div>
+        </div>
+        <!-- Etc Icon -->
+        <div class="flex">
+          <img src="@/assets/icons/My_Vessels/etc_icon.svg" 
+          class="rounded-full bg-gray-25 h-11 w-11 py-2.5 px-3">
+          <div class="my-3 ml-2" >
+            <span class="text-12 text-gray-700">{{$t("etcVessels")}}: </span>
+            <span class="text-12 font-bold text-gray-700">{{etcVessels}} vessels</span>
+          </div>
+        </div>
       </div>
       <!-- Vessels list header -->
-      <div class="flex mt-10 w-full items-center">
+      <div class="flex mt-12 w-full items-center">
         <h1 class="text-xl font-bold w-full">
           {{ $t("vesselList") }} ({{ totalVessels }})
         </h1>
@@ -134,27 +184,21 @@
     <div v-else class="flex flex-col">
       <VesselCard
         v-for="vessel in vessels"
-        :marinaName="vessel.marinaName"
-        :vesselType="vessel.vesselType"
+        :vesselStatus="vessel.vesselStatus"
+        :vesselName="vessel.vesselName"
+        :loadType="vessel.loadType"
         :flag="vessel.flag"
         :imoNo="vessel.imoNo"
         :shipSize="vessel.shipSize"
-        :dwt="vessel.dwt"
-        :grossTonnage="vessel.grossTonnage"
-        :cubicCapacity="vessel.cubicCapacity"
-        :speed="vessel.speed"
-        :vesselAge="vessel.vesselAge"
-        :vesselOwnership="vessel.vesselOwnership"
-        :mainEngineImo="vessel.mainEngineImo"
-        :fuelType="vessel.fuelType"
-        :percentActive="vessel.percentActive"
-        :percentIdle="vessel.percentIdle"
-        :reportedEedi="vessel.reportedEedi"
-        :bwts="vessel.bwts"
-        :scrubber="vessel.scrubber"
+        :loadingCondition="vessel.loadingCondition"
+        :reportStatus="vessel.reportStatus"
+        :updatedDate="vessel.updatedDate"
       ></VesselCard>
     </div>
+    <hr class="w-full bg-gray-200">
+    <!-- Pagination module -->
   </div>
+  
 </template>
 
 <script setup>
@@ -169,107 +213,86 @@ const inPortVessels = 13;
 const etcVessels = 0;
 const isEmpty = false;
 
+const cargoVessels = 0;
+const bunkeringVessels = 0;
+const waitingVessels = 0;
+
 const vessels = [
   {
-    marinaName: "MARINA A",
-    vesselType: "Oil",
+    vesselStatus: "sailing", // sailing, cargo, bunkering, waiting, etc
+    vesselName: "MARINA A",
+    loadType: "Oil",
     flag: "Panama",
     imoNo: "9876543",
     shipSize: "300,000",
-    dwt: "300,000",
-    grossTonnage: "157,000",
-    cubicCapacity: "-",
-    speed: "10.6",
-    vesselAge: "0.33",
-    vesselOwnership: "Chartered",
-    mainEngineImo: "Tier III",
-    fuelType: "Conventional",
-    percentActive: "98",
-    percentIdle: "2",
-    reportedEedi: "2.03",
-    bwts: "Fitted",
-    scrubber: "Installed",
+    loadingCondition: "Westbound",
+    reportStatus: "uploaded", // Uploaded, Error, Pending
+    updatedDate: "18 Nov 2022"
   },
   {
-    marinaName: "MARINA B",
-    vesselType: "Oil Chemical",
-    flag: "Marshall",
-    imoNo: "9876542",
-    shipSize: "12,900",
-    dwt: "12,900",
-    grossTonnage: "8,543",
-    cubicCapacity: "12,374",
-    speed: "-",
-    vesselAge: "4.2",
-    vesselOwnership: "Owned",
-    mainEngineImo: "Tier II",
-    fuelType: "Conventional",
-    percentActive: "100",
-    percentIdle: "-",
-    reportedEedi: "Not Reported",
-    bwts: "Fitted",
-    scrubber: "-",
-  },
-  {
-    marinaName: "MARINA C",
-    vesselType: "Bulk Carrier",
+    vesselStatus: "waiting", // sailing, cargo, bunkering, waiting, etc
+    vesselName: "MARINA A",
+    loadType: "Oil",
     flag: "Panama",
-    imoNo: "9876541",
-    shipSize: "177,000",
-    dwt: "177,000",
-    grossTonnage: "91,000",
-    cubicCapacity: "12,374",
-    speed: "-",
-    vesselAge: "4.2",
-    vesselOwnership: "Owned",
-    mainEngineImo: "Tier II",
-    fuelType: "Conventional",
-    percentActive: "100",
-    percentIdle: "-",
-    reportedEedi: "Not Reported",
-    bwts: "Fitted",
-    scrubber: "-",
+    imoNo: "9876543",
+    shipSize: "300,000",
+    loadingCondition: "Eastbound",
+    reportStatus: "error", // uploaded, error, pending
+    updatedDate: "18 Nov 2022"
   },
   {
-    marinaName: "MARINA D",
-    vesselType: "Container Ship",
-    flag: "Singapore",
-    imoNo: "9876540",
-    shipSize: "16,000",
-    dwt: "186,470",
-    grossTonnage: "175,343",
-    cubicCapacity: "12,374",
-    speed: "-",
-    vesselAge: "4.2",
-    vesselOwnership: "Owned",
-    mainEngineImo: "Tier II",
-    fuelType: "Conventional",
-    percentActive: "100",
-    percentIdle: "-",
-    reportedEedi: "Not Reported",
-    bwts: "Fitted",
-    scrubber: "-",
+    vesselStatus: "cargo", // sailing, cargo, bunkering, waiting, etc
+    vesselName: "MARINA A",
+    loadType: "Oil",
+    flag: "Panama",
+    imoNo: "9876543",
+    shipSize: "300,000",
+    loadingCondition: "Ballast",
+    reportStatus: "pending", // uploaded, error, pending
+    updatedDate: "18 Nov 2022"
   },
   {
-    marinaName: "MARINA E",
-    vesselType: "LNG Carrier",
-    flag: "South Korea",
-    imoNo: "9876539",
-    shipSize: "174,000",
-    dwt: "95,200",
-    grossTonnage: "113,500",
-    cubicCapacity: "-",
-    speed: "14.4",
-    vesselAge: "0.2",
-    vesselOwnership: "Owned",
-    mainEngineImo: "Tier III",
-    fuelType: "LNG DF",
-    percentActive: "93",
-    percentIdle: "7",
-    reportedEedi: "Not Reported",
-    bwts: "Fitted",
-    scrubber: "-",
+    vesselStatus: "bunkering", // sailing, cargo, bunkering, waiting, etc
+    vesselName: "MARINA A",
+    loadType: "Oil",
+    flag: "Panama",
+    imoNo: "9876543",
+    shipSize: "300,000",
+    loadingCondition: "Laden",
+    reportStatus: "uploaded", // uploaded, error, pending
+    updatedDate: "18 Nov 2022"
   },
+  {
+    vesselStatus: "etc", // sailing, cargo, bunkering, waiting, etc
+    vesselName: "MARINA A",
+    loadType: "Oil",
+    flag: "Panama",
+    imoNo: "9876543",
+    shipSize: "300,000",
+    loadingCondition: "Westbound",
+    reportStatus: "uploaded", // uploaded, error, pending
+    updatedDate: "18 Nov 2022"
+  },
+  // {
+  //   marinaName: "MARINA E",
+  //   loadType: "LNG Carrier",
+  //   flag: "South Korea",
+  //   imoNo: "9876539",
+  //   shipSize: "174,000",
+  //   dwt: "95,200",
+  //   grossTonnage: "113,500",
+  //   cubicCapacity: "-",
+  //   speed: "14.4",
+  //   vesselAge: "0.2",
+  //   vesselOwnership: "Owned",
+  //   mainEngineImo: "Tier III",
+  //   fuelType: "LNG DF",
+  //   percentActive: "93",
+  //   percentIdle: "7",
+  //   reportedEedi: "Not Reported",
+  //   bwts: "Fitted",
+  //   scrubber: "-",
+  // }
 ];
 
 // const getShips = async () => {

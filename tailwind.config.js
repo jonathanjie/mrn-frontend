@@ -83,7 +83,14 @@ module.exports = {
         25: '#FFFCF5',
       },
       red: {
+        50: '#FEF3F2',
         500: '#F04438',
+        700: '#B42318'
+      },
+      orange: { 
+        50: '#FFFAEB',
+        500: '#F79009',
+        700: '#B54708'
       },
       pink: '#ED7B84',
       darkgray: '#EAEEF0',
