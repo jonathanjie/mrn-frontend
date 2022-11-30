@@ -32,16 +32,17 @@
 import { ref } from 'vue'
 import GradientButton from '../../components/Buttons/GradientButton.vue'
 import AddVoyageModal from '@/components/AddVoyageModal.vue'
+import { stringLiteral } from '@babel/types';
 
 let showModal = ref(false)
 const update = ref(0)
 const isEmpty = true
 let voyageNum = 1
 
-// To be pulled from backend
-const vesselname = 'Marina A'
-const imo = '9876543'
-
+defineProps({
+    vesselname:String,
+    imo: String
+}) 
 // Backend Data
 const voyageData = {
     'voyage_num': voyageNum,

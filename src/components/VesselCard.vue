@@ -1,21 +1,9 @@
 <template>
-  <!-- <router-link
+  <router-link
     :to="{
       name: 'vessel-overview',
-      params: { vesselname: 'Marina A', imo: '9876543' },
+      params: { vesselname: vesselName, imo: imoNo }
     }"
-    class="flex py-4 px-7 space-x-3 hover:bg-blue-700/[0.24]"
-    :class="{ 'justify-center': collapsed }"
-  >
-    <img src="@/assets/icons/my_vessels.svg" class="h-6 w-6" />
-    <Transition name="fade">
-      <span v-if="!collapsed" class="text-white text-14 font-bold">{{
-        $t("myVessels")
-      }}</span>
-    </Transition>
-  </router-link> -->
-
-  <div
     class="flex h-20 mx-12 rounded-xl min-w-max z-10 bg-white drop-shadow mt-5 p-4"
   >
     <div class="flex mr-16 ml-0.5 items-center justify-even">
@@ -111,7 +99,7 @@
         </ul>
       </div>
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script setup>

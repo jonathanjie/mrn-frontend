@@ -51,11 +51,12 @@ const routes = [
   {
     path: '/vessels/:vesselname/:imo', 
     component: VesselView,
+    props: true,
     children: [
       {
         path: 'overview',
         name: 'vessel-overview',
-        component: VesselOverviewView
+        component: VesselOverviewView,
       },
       {
         path: 'submitted',

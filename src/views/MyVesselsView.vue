@@ -234,10 +234,10 @@ const vessels = [
   },
   {
     vesselStatus: "waiting", // sailing, cargo, bunkering, waiting, etc
-    vesselName: "MARINA A",
+    vesselName: "MARINA B",
     loadType: "Oil",
     flag: "Panama",
-    imoNo: "9876543",
+    imoNo: "12345678",
     shipSize: "300,000",
     loadingCondition: "Eastbound",
     reportStatus: "error", // uploaded, error, pending
@@ -245,10 +245,10 @@ const vessels = [
   },
   {
     vesselStatus: "cargo", // sailing, cargo, bunkering, waiting, etc
-    vesselName: "MARINA A",
+    vesselName: "MARINA C",
     loadType: "Oil",
     flag: "Panama",
-    imoNo: "9876543",
+    imoNo: "91234567",
     shipSize: "300,000",
     loadingCondition: "Ballast",
     reportStatus: "pending", // uploaded, error, pending
