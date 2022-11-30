@@ -1,6 +1,22 @@
 <template>
+  <!-- <router-link
+    :to="{
+      name: 'vessel-overview',
+      params: { vesselname: 'Marina A', imo: '9876543' },
+    }"
+    class="flex py-4 px-7 space-x-3 hover:bg-blue-700/[0.24]"
+    :class="{ 'justify-center': collapsed }"
+  >
+    <img src="@/assets/icons/my_vessels.svg" class="h-6 w-6" />
+    <Transition name="fade">
+      <span v-if="!collapsed" class="text-white text-14 font-bold">{{
+        $t("myVessels")
+      }}</span>
+    </Transition>
+  </router-link> -->
+
   <div
-    class="flex h-20 mx-12 rounded-xl min-w-max z-10 bg-white drop-shadow mb-6 p-4"
+    class="flex h-20 mx-12 rounded-xl min-w-max z-10 bg-white drop-shadow mt-5 p-4"
   >
     <div class="flex mr-16 ml-0.5 items-center justify-even">
       <!-- Sailing Icon -->
@@ -96,24 +112,6 @@
       </div>
     </div>
   </div>
-  <!-- <div
-    v-show="expanded"
-    class="min-h-fit bg-gray-50 mx-12 mb-6 rounded-xl -mt-4 p-5"
-  >
-    <VesselDetailsCard
-      :cubicCapacity="cubicCapacity"
-      :vesselSpeed="speed"
-      :vesselAge="vesselAge"
-      :vesselOwnership="vesselOwnership"
-      :mainEngineImo="mainEngineImo"
-      :fuelType="fuelType"
-      :percentActive="percentActive"
-      :percentIdle="percentIdle"
-      :reportedEedi="reportedEedi"
-      :bwts="bwts"
-      :scrubber="scrubber"
-    ></VesselDetailsCard>
-  </div> -->
 </template>
 
 <script setup>
