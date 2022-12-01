@@ -3,7 +3,8 @@ import { authGuard, useAuth0 } from '@auth0/auth0-vue'
 
 // import LoginView from '../views/LoginView.vue'
 import HomeView from '../views/HomeView.vue'
-import MyVesselsView from '../views/MyVesselsView.vue'
+import MyVesselsView from '../views/HQViews/MyVesselsView.vue'
+import SpeedGraph from '../views/HQViews/SpeedGraph.vue'
 import PlanVoyageView from '../views/PlanVoyageView.vue'
 import OverviewView from '../views/OverviewView.vue'
 import VesselView from '../views/VesselView/VesselView.vue'
@@ -17,6 +18,8 @@ import ArrivalReportView from '../views/ReportViews/ArrivalReportView.vue'
 import DepartureReportView from '../views/ReportViews/DepartureReportView.vue'
 import BunkerReportView from '../views/ReportViews/BunkerReportView.vue'
 import HarbourPortReportView from '../views/ReportViews/HarbourPortReportView.vue'
+import VesselSpec from '../views/VesselSpec.vue'
+import SpeedGraphOverview from '../views/HQViews/SpeedGraphOverview.vue'
 
 const routes = [
   // {
@@ -42,6 +45,37 @@ const routes = [
     component: MyVesselsView,
     beforeEnter: authGuard
   },
+  {
+    path: '/speed-graph/:vesselname/:imo',
+    name: 'speed-graph',
+    component: SpeedGraph,
+    props: true,
+    children: [
+      {
+        path: 'overview',
+        name: 'overview',
+        component: SpeedGraphOverview,
+        props: true,
+        beforeEnter: authGuard
+      },
+      {
+        path: 'vessel-spec',
+        name: 'vessel-spec',
+        component: VesselSpec,
+        props: true,
+        beforeEnter: authGuard
+      },
+      {
+        path: 'uploaded-reports',
+        name: 'uploaded-reports',
+        component: VesselOverviewView,
+        props: true, // To pass HQ parameter to hide Add Report Button
+        beforeEnter: authGuard
+      }
+    ],
+    beforeEnter: authGuard
+  },
+  
   {
     path: '/plan-voyage',
     name: 'plan-voyage',
@@ -108,7 +142,7 @@ const routes = [
       },
     ],
     beforeEnter: authGuard
-  }
+  },
 ]
 
 const router = createRouter({

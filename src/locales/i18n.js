@@ -391,7 +391,10 @@ const i18n = createI18n({
       loadingCondition: "Loading Condition",
       uploadedStatus: "Uploaded on",
       errorStatus: "Error",
-      pendingStatus: "Pending"
+      pendingStatus: "Pending",
+      backToMyVessel: "Back To My Vessel",
+      vesselSpec: "Vessel Specifications",
+      uploadedReports: "Uploaded Reports"
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser

@@ -1,7 +1,7 @@
 <template>
   <router-link
     :to="{
-      name: 'vessel-overview',
+      name: 'speed-graph',
       params: { vesselname: vesselName, imo: imoNo }
     }"
     class="flex h-20 mx-12 rounded-xl min-w-max z-10 bg-white drop-shadow mt-5 p-4"

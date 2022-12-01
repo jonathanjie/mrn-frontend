@@ -32,7 +32,6 @@
 import { ref } from 'vue'
 import GradientButton from '../../components/Buttons/GradientButton.vue'
 import AddVoyageModal from '@/components/AddVoyageModal.vue'
-import { stringLiteral } from '@babel/types';
 
 let showModal = ref(false)
 const update = ref(0)
