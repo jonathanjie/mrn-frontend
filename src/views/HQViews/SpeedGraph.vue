@@ -21,7 +21,7 @@
           }"
           class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
           :class="
-            $route.name == 'speed-graph'
+            $route.name == 'overview'
               ? 'border-b-2 border-blue-700 text-blue-700'
               : ''
           "
