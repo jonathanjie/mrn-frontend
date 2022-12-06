@@ -1,11 +1,18 @@
 <template>
   <div class="flex flex-col space-y-6 my-6">
-
     <!-- visual indicator -->
-    <span class="col-span-4 flex flex-col bg-green-25/[0.24] text-green-800 font-bold text-12 p-5 h-min-fit min-w-fit rounded-xl inline-flex border-green-400 border">
-        <span class="pb-3">{{ $t('sailingAtSea') }}</span>
-        <img class="lg:hidden" src="@/assets/icons/report_subtype_sailing_at_sea.svg">
-        <img class="hidden lg:block" src="@/assets/icons/report_subtype_sailing_at_sea_long.svg">
+    <span
+      class="col-span-4 flex flex-col bg-green-25/[0.24] text-green-800 font-bold text-12 p-5 h-min-fit min-w-fit rounded-xl inline-flex border-green-400 border"
+    >
+      <span class="pb-3">{{ $t("sailingAtSea") }}</span>
+      <img
+        class="lg:hidden"
+        src="@/assets/icons/report_subtype_sailing_at_sea.svg"
+      />
+      <img
+        class="hidden lg:block"
+        src="@/assets/icons/report_subtype_sailing_at_sea_long.svg"
+      />
     </span>
 
     <!-- Overview -->
@@ -27,7 +34,9 @@
     <Performance></Performance>
 
     <!-- Consumption & Condition -->
-    <ConsumptionAndCondition>{{ $t("consumptionAndConditionNoonToNoon") }}</ConsumptionAndCondition>
+    <ConsumptionAndCondition>{{
+      $t("consumptionAndConditionNoonToNoon")
+    }}</ConsumptionAndCondition>
 
     <!-- Stoppage or Reduction of RPM (at sea) -->
     <StoppageOrReductionRPM></StoppageOrReductionRPM>
@@ -73,6 +82,21 @@ import DistanceAndTime from "@/components/ReportComponents/DistanceAndTime.vue";
 import Performance from "@/components/ReportComponents/Performance.vue";
 import ConsumptionAndCondition from "@/components/ReportComponents/ConsumptionAndCondition.vue";
 import StoppageOrReductionRPM from "@/components/ReportComponents/StoppageOrReductionRPM.vue";
+
+import { useNoonReportStore } from "@/store/useNoonReportStore";
+import { storeToRefs } from "pinia";
+const store = useNoonReportStore();
+const {
+  timeZone,
+  summerTime,
+  dateTime,
+  latDir,
+  latMinutes,
+  latDegree,
+  longDir,
+  longMinutes,
+  longDegree,
+} = storeToRefs(store);
 
 // TODO: retrieve data from backend or generate as needed
 // TODO: modify DateTime display to also display UTC time next to local time
@@ -126,6 +150,10 @@ const createBunkerData = () => {
   // return bunkerDataList;
 };
 
+// imoprt useNoonReport
+// data = {.... all of noonReport}
+// Send data api
+
 const sendReport = async () => {
   // TODO: need to do form validation first
 
@@ -134,12 +162,27 @@ const sendReport = async () => {
 
   // convert fields to correct
 
+  const rawData = {
+    timeZone: timeZone.value,
+    summerTime: summerTime.value,
+    dateTime: dateTime.value,
+    latDir: latDir.value,
+    latMinutes: latMinutes.value,
+    latDegree: latDegree.value,
+    longDir: longDir.value,
+    longMinutes: longMinutes.value,
+    longDegree: longDegree.value,
+  };
+
+  console.log("data: ", rawData);
+
   const REPORT = {
+    data: rawData
     // fill out report based on backend field names and match them with values
   };
 
   const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/reports/new/",
+    "https://testapi.marinachain.io/marinanet/reports/",
     {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
@@ -151,6 +194,7 @@ const sendReport = async () => {
   );
   const data = await response.json();
   console.log(response);
+  console.log(data);
 };
 </script>
 
