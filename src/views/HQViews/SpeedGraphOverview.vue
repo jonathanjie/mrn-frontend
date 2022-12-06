@@ -117,11 +117,27 @@
         </div>
       </div>
       <!-- Port Calls -->
-      <div class="flex mt-10 pt-10">
-        <span class="text-20 text-blue-800 font-bold">Port Calls</span>
+      <div class="flex mt-10 pt-10 flex-wrap">
+        <span class="text-20 w-full text-blue-800 font-bold">Port Calls</span>
         <div class="flex flex-row">
-          <PortCard></PortCard>
-          <div class="flex"></div>
+          <div>
+            <PortCard
+              v-for="port in PortCalls"
+              :portCountry="port.portCountry"
+              :origin="port.origin"
+              :destination="port.destination"
+              :departureTime="port.departureTime"
+              :arrivalTime="port.arrivalTime"
+            ></PortCard>
+          </div>
+          <div
+            class="flex w-96 bg-white ml-6 shadow-md divide-y divide-solid flex-wrap"
+          >
+            <div class="flex py-4 pl-6 w-full">
+              <span class="text-16 text-gray-800 font-bold">Reminders</span>
+            </div>
+            <div class="flex">Notification</div>
+          </div>
         </div>
       </div>
     </div>
@@ -152,5 +168,27 @@ const message =
   "Low CII grade message goes here. [Provide action to follow up]";
 const date = "15 Jan 2023, 11:03PM";
 
-const PortCalls = {};
+const PortCalls = [
+  {
+    portCountry: "SINGAPORE",
+    origin: "Onsan, Korea",
+    destination: "Singapore",
+    departureTime: "19 May 2022, 23:15 UTC",
+    arrivalTime: "31 May 2022, 04:13 UTC",
+  },
+  {
+    portCountry: "ONSAN, KOREA",
+    origin: "Juaymah, Saudi Arabia",
+    destination: "Onsan, Korea",
+    departureTime: "27 Apr 2022, 23:15 UTC",
+    arrivalTime: "18 May 2022, 04:13 UTC",
+  },
+  {
+    portCountry: "JUAYMAH, SAUDI ARABIA",
+    origin: "Ras Tanura, Saudi Arabia",
+    destination: "Juaymah, Saudi Arabia",
+    departureTime: "26 Apr 2022, 23:15 UTC",
+    arrivalTime: "27 Apr 2022, 04:13 UTC",
+  },
+];
 </script>
