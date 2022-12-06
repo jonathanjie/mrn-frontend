@@ -75,51 +75,77 @@
           </MyVesselsDashboardIcon>
         </div>
       </div>
-      <hr class="w-full bg-gray-200">
-      <div class="flex bg-white w-full h-16 rounded-xl items-center p-3.5 mt-6 justify-evenly shadow">
+      <hr class="w-full bg-gray-200" />
+      <div
+        class="flex bg-white w-full h-16 rounded-xl items-center p-3.5 mt-6 justify-evenly shadow"
+      >
         <!-- Sailing Icon -->
         <div class="flex">
-          <img src="@/assets/icons/My_Vessels/sailing_icon.svg" 
-          class="rounded-full bg-blue-50 h-11 w-11 py-2.5 px-3">
-          <div class="my-3 ml-2" >
-            <span class="text-12 text-gray-700">{{$t("sailingVessels")}}: </span>
-            <span class="text-12 font-bold text-gray-700">{{sailingVessels}} vessels</span>
+          <img
+            src="@/assets/icons/My_Vessels/sailing_icon.svg"
+            class="rounded-full bg-blue-50 h-11 w-11 py-2.5 px-3"
+          />
+          <div class="my-3 ml-2">
+            <span class="text-12 text-gray-700"
+              >{{ $t("sailingVessels") }}:
+            </span>
+            <span class="text-12 font-bold text-gray-700"
+              >{{ sailingVessels }} vessels</span
+            >
           </div>
         </div>
-        <!-- Cargo operation icon (Need to check background color) --> 
+        <!-- Cargo operation icon (Need to check background color) -->
         <div class="flex">
-          <img src="@/assets/icons/My_Vessels/cargo_icon.svg" 
-          class="rounded-full bg-blue-50 h-11 w-11 py-2.5 px-3">
-          <div class="my-3 ml-2" >
-            <span class="text-12 text-gray-700">{{$t("cargoOperation")}}: </span>
-            <span class="text-12 font-bold text-gray-700">{{cargoVessels}} vessels</span>
+          <img
+            src="@/assets/icons/My_Vessels/cargo_icon.svg"
+            class="rounded-full bg-blue-50 h-11 w-11 py-2.5 px-3"
+          />
+          <div class="my-3 ml-2">
+            <span class="text-12 text-gray-700"
+              >{{ $t("cargoOperation") }}:
+            </span>
+            <span class="text-12 font-bold text-gray-700"
+              >{{ cargoVessels }} vessels</span
+            >
           </div>
         </div>
         <!-- Bunkering Icon (Need to check background color) -->
         <div class="flex">
-          <img src="@/assets/icons/My_Vessels/bunkering_icon.svg" 
-          class="rounded-full bg-blue-50 h-11 w-11 py-2.5 px-3">
-          <div class="my-3 ml-2" >
-            <span class="text-12 text-gray-700">{{$t("bunkering")}}: </span>
-            <span class="text-12 font-bold text-gray-700">{{bunkeringVessels}} vessels</span>
+          <img
+            src="@/assets/icons/My_Vessels/bunkering_icon.svg"
+            class="rounded-full bg-blue-50 h-11 w-11 py-2.5 px-3"
+          />
+          <div class="my-3 ml-2">
+            <span class="text-12 text-gray-700">{{ $t("bunkering") }}: </span>
+            <span class="text-12 font-bold text-gray-700"
+              >{{ bunkeringVessels }} vessels</span
+            >
           </div>
         </div>
         <!-- Waiting Icon -->
         <div class="flex">
-          <img src="@/assets/icons/My_Vessels/waiting_icon.svg" 
-          class="rounded-full bg-yellow-25 h-11 w-11 py-2.5 px-3">
-          <div class="my-3 ml-2" >
-            <span class="text-12 text-gray-700">{{$t("waiting")}}: </span>
-            <span class="text-12 font-bold text-gray-700">{{waitingVessels}} vessels</span>
+          <img
+            src="@/assets/icons/My_Vessels/waiting_icon.svg"
+            class="rounded-full bg-yellow-25 h-11 w-11 py-2.5 px-3"
+          />
+          <div class="my-3 ml-2">
+            <span class="text-12 text-gray-700">{{ $t("waiting") }}: </span>
+            <span class="text-12 font-bold text-gray-700"
+              >{{ waitingVessels }} vessels</span
+            >
           </div>
         </div>
         <!-- Etc Icon -->
         <div class="flex">
-          <img src="@/assets/icons/My_Vessels/etc_icon.svg" 
-          class="rounded-full bg-gray-25 h-11 w-11 py-2.5 px-3">
-          <div class="my-3 ml-2" >
-            <span class="text-12 text-gray-700">{{$t("etcVessels")}}: </span>
-            <span class="text-12 font-bold text-gray-700">{{etcVessels}} vessels</span>
+          <img
+            src="@/assets/icons/My_Vessels/etc_icon.svg"
+            class="rounded-full bg-gray-25 h-11 w-11 py-2.5 px-3"
+          />
+          <div class="my-3 ml-2">
+            <span class="text-12 text-gray-700">{{ $t("etcVessels") }}: </span>
+            <span class="text-12 font-bold text-gray-700"
+              >{{ etcVessels }} vessels</span
+            >
           </div>
         </div>
       </div>
@@ -195,13 +221,10 @@
         :updatedDate="vessel.updatedDate"
       ></VesselCard>
     </div>
-    <hr class="mt-6 w-full bg-gray-200">
+    <hr class="mt-6 w-full bg-gray-200" />
     <!-- Pagination module -->
-    <div class="flex justify-center">
-      12345678910
-    </div>
+    <div class="flex justify-center">12345678910</div>
   </div>
-  
 </template>
 
 <script setup>
@@ -230,7 +253,7 @@ const vessels = [
     shipSize: "300,000",
     loadingCondition: "Westbound",
     reportStatus: "uploaded", // Uploaded, Error, Pending
-    updatedDate: "18 Nov 2022"
+    updatedDate: "18 Nov 2022",
   },
   {
     vesselStatus: "waiting", // sailing, cargo, bunkering, waiting, etc
@@ -241,7 +264,7 @@ const vessels = [
     shipSize: "300,000",
     loadingCondition: "Eastbound",
     reportStatus: "error", // uploaded, error, pending
-    updatedDate: "18 Nov 2022"
+    updatedDate: "18 Nov 2022",
   },
   {
     vesselStatus: "cargo", // sailing, cargo, bunkering, waiting, etc
@@ -252,7 +275,7 @@ const vessels = [
     shipSize: "300,000",
     loadingCondition: "Ballast",
     reportStatus: "pending", // uploaded, error, pending
-    updatedDate: "18 Nov 2022"
+    updatedDate: "18 Nov 2022",
   },
   {
     vesselStatus: "bunkering", // sailing, cargo, bunkering, waiting, etc
@@ -263,7 +286,7 @@ const vessels = [
     shipSize: "300,000",
     loadingCondition: "Laden",
     reportStatus: "uploaded", // uploaded, error, pending
-    updatedDate: "18 Nov 2022"
+    updatedDate: "18 Nov 2022",
   },
   {
     vesselStatus: "etc", // sailing, cargo, bunkering, waiting, etc
@@ -274,28 +297,8 @@ const vessels = [
     shipSize: "300,000",
     loadingCondition: "Westbound",
     reportStatus: "uploaded", // uploaded, error, pending
-    updatedDate: "18 Nov 2022"
+    updatedDate: "18 Nov 2022",
   },
-  // {
-  //   marinaName: "MARINA E",
-  //   loadType: "LNG Carrier",
-  //   flag: "South Korea",
-  //   imoNo: "9876539",
-  //   shipSize: "174,000",
-  //   dwt: "95,200",
-  //   grossTonnage: "113,500",
-  //   cubicCapacity: "-",
-  //   speed: "14.4",
-  //   vesselAge: "0.2",
-  //   vesselOwnership: "Owned",
-  //   mainEngineImo: "Tier III",
-  //   fuelType: "LNG DF",
-  //   percentActive: "93",
-  //   percentIdle: "7",
-  //   reportedEedi: "Not Reported",
-  //   bwts: "Fitted",
-  //   scrubber: "-",
-  // }
 ];
 
 // const getShips = async () => {
