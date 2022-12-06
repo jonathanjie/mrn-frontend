@@ -51,15 +51,15 @@ const i18n = createI18n({
       cargoUnit: "Cargo unit",
       clickOnCreateNewVoyageAboveToBegin:
         "Click on 'Create New Voyage' above to begin",
-      coastalWaterAnchoringDrifting: 'Coastal water (Anchoring, Drifting)',
+      coastalWaterAnchoringDrifting: "Coastal water (Anchoring, Drifting)",
       combiCarrier: "Combination Carrier",
       constant: "Constant",
       consumed: "Consumed",
       consumptionAndCondition: "Consumption & Condition",
       consumptionAndConditionHarbourInPortInTotal:
         "Consumption & Condition (Harbour/In Port in Total)",
-      consumptionAndConditionLastReportEventNoon: 
-        'Consumption & Condition (Last Report - Event/Noon)',
+      consumptionAndConditionLastReportEventNoon:
+        "Consumption & Condition (Last Report - Event/Noon)",
       consumptionAndConditionNoonToNoon:
         "Consumption & Condition (Noon to Noon)",
       consumptionAndConditionNoonToSby: "Consumption & Condition (Noon - S/BY)",
@@ -151,7 +151,8 @@ const i18n = createI18n({
       imoNo: "IMO No.",
       inHarbourOrPort: "In Harbour / Port",
       inertGasEngine: "Inert gas generator",
-      inPortBerthingShiftingDryDocking: 'In port (Berthing, Shifting, Dry Docking)',
+      inPortBerthingShiftingDryDocking:
+        "In port (Berthing, Shifting, Dry Docking)",
       inputDetails: "Input details",
       inputName: "Input name",
       inputOtherPlannedOperation: "Input other planned operation",
@@ -397,7 +398,14 @@ const i18n = createI18n({
       uploadedReports: "Uploaded Reports",
       capacity: "Capacity",
       previousCII: "Previous CII Grade",
-      eexiGrade: "EEXI Grade"
+      eexiGrade: "EEXI Grade",
+      estimatedArrivalTime: "Estimated Time of Arrival:",
+      knots: "Knots",
+      focLabel: "FOC/day",
+      distanceToGo: "Distance to Go",
+      nauticalMiles: "NM",
+      weekly: "Weekly",
+      voyage: "Voyage",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser
