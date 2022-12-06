@@ -168,6 +168,7 @@ const i18n = createI18n({
       lngCarrier: "LNG Carrier",
       loadCondition: "Load condition",
       loading: "Loading",
+      loadingCondition: "Loading condition",
       logOut: "Log out",
       longitude: "Longitude",
       lpgb: "LPG-Butbane",
