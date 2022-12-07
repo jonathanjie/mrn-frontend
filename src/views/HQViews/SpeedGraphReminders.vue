@@ -1,19 +1,17 @@
 <template>
   <div
-    class="flex w-auto rounded-xl bg-white ml-6 shadow-md divide-y divide-solid flex-wrap"
+    class="flex w-auto rounded-xl bg-white ml-6 shadow-md divide-y divide-solid flex-col overflow-y-clip mb-auto"
   >
-    <div class="flex py-4 pl-6 w-full">
-      <span class="text-16 text-gray-800 font-bold">Reminders</span>
-    </div>
-    <div>
-      <ReminderCard
-        v-for="reminder in reminders"
-        :type="reminder.type"
-        :title="reminder.title"
-        :message="reminder.message"
-        :date="reminder.date"
-      ></ReminderCard>
-    </div>
+    <span class="flex py-4 pl-6 w-full text-16 text-gray-800 font-bold">{{
+      $t("reminders")
+    }}</span>
+    <ReminderCard
+      v-for="reminder in reminders"
+      :type="reminder.type"
+      :title="reminder.title"
+      :message="reminder.message"
+      :date="reminder.date"
+    ></ReminderCard>
   </div>
 </template>
 
@@ -30,7 +28,7 @@ const reminders = [
   {
     type: "arrival",
     title: "Expected Arrival",
-    message: "Vessel expected arrival in a day. EYA June 19, 03:00 LT",
+    message: "Vessel expected arrival in a day. ETA June 19, 03:00 LT",
     date: "18 June 2022",
   },
   {

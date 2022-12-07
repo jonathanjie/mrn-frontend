@@ -406,6 +406,8 @@ const i18n = createI18n({
       nauticalMiles: "NM",
       weekly: "Weekly",
       voyage: "Voyage",
+      portCalls: "Port Calls",
+      reminders: "Reminders",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser

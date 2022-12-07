@@ -118,9 +118,11 @@
       </div>
       <!-- Port Calls -->
       <div class="flex mt-10 pt-10 flex-wrap">
-        <span class="text-20 w-full text-blue-800 font-bold">Port Calls</span>
+        <span class="text-20 w-full text-blue-800 font-bold mb-4">{{
+          $t("portCalls")
+        }}</span>
         <div class="flex flex-row">
-          <div>
+          <div class="flex flex-col">
             <PortCard
               v-for="port in PortCalls"
               :portCountry="port.portCountry"
