@@ -156,7 +156,7 @@
         </h1>
         <div class="flex justify-end">
           <div
-            class="flex bg-white border border-gray-300 w-60 h-10 rounded-lg mr-4"
+            class="hidden flex bg-white border border-gray-300 w-60 h-10 rounded-lg mr-4"
           >
             <img class="w-6 m-2" src="@/assets/icons/search_icon.svg" />
             <input
@@ -167,7 +167,7 @@
           </div>
           <!-- Need to figure out table filter and export CSV -->
           <CustomButton
-            class="text-14 text-sm font-bold mr-4 pr-7 whitespace-nowrap text-blue-700"
+            class="hidden text-14 text-sm font-bold mr-4 pr-7 whitespace-nowrap text-blue-700"
             type="button"
             @click=""
           >
@@ -179,7 +179,7 @@
             <template v-slot:content>{{ $t("tableFilter") }}</template>
           </CustomButton>
           <CustomButton
-            class="text-14 text-sm font-bold mr-4 pr-7 whitespace-nowrap text-blue-700"
+            class="hidden text-14 text-sm font-bold mr-4 pr-7 whitespace-nowrap text-blue-700"
             type="button"
             @click=""
           >
@@ -223,7 +223,7 @@
     </div>
     <hr class="mt-6 w-full bg-gray-200" />
     <!-- Pagination module -->
-    <div class="flex justify-center">12345678910</div>
+    <div class="hidden flex justify-center">12345678910</div>
   </div>
 </template>
 

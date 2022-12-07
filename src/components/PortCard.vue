@@ -10,8 +10,9 @@
           portCountry
         }}</span>
       </div>
+      <!-- InPort Variable -->
       <div
-        class="bg-gradient-to-r from-gradientblue to-gradientgreen rounded-xl px-2 py-1"
+        class="hidden bg-gradient-to-r from-gradientblue to-gradientgreen rounded-xl px-2 py-1"
       >
         <span class="text-white text-10">InPort:ID</span>
       </div>

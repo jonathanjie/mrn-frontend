@@ -86,7 +86,10 @@
               }}</span>
             </div>
           </div>
-          <div class="flex h-12 bg-gray-100 rounded-lg align-center p-px">
+
+          <div
+            class="hidden flex h-12 bg-gray-100 rounded-lg align-center p-px"
+          >
             <button
               class="py-2 px-3 rounded-lg m-1"
               :class="weeklyFlag ? 'bg-white shadow-md' : 'bg-transparent'"
@@ -113,7 +116,7 @@
         </div>
         <div class="flex flex-row mt-6">
           <SpeedSideNav></SpeedSideNav>
-          <SpeedGraphPlot></SpeedGraphPlot>
+          <!-- <SpeedGraphPlot></SpeedGraphPlot> -->
         </div>
       </div>
       <!-- Port Calls -->
@@ -132,7 +135,7 @@
               :arrivalTime="port.arrivalTime"
             ></PortCard>
           </div>
-          <SpeedGraphReminders></SpeedGraphReminders>
+          <!-- <SpeedGraphReminders></SpeedGraphReminders> -->
         </div>
       </div>
     </div>

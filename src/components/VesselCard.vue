@@ -6,7 +6,7 @@
     }"
     class="flex h-20 mx-12 rounded-xl min-w-max z-10 bg-white drop-shadow mt-5 p-4"
   >
-    <div class="flex mr-16 ml-0.5 items-center justify-even">
+    <div class="flex mr-16 ml-0.5 items-center">
       <!-- Sailing Icon -->
       <img
         v-if="vesselStatus === 'sailing'"
@@ -40,6 +40,7 @@
         src="@/assets/icons/My_Vessels/etc_icon.svg"
         class="rounded-full bg-gray-25 h-11 w-11 py-2.5 px-3"
       />
+
       <div class="flex flex-col w-28 mr-4 ml-5">
         <span class="text-12 text-gray-500">{{ $t("name") }}</span>
         <span class="text-14 text-gray-700">{{ vesselName }}</span>
