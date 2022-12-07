@@ -1,86 +1,115 @@
 <template>
-    <div class="grid bg-white rounded-lg p-5 gap-4 shadow-card">
+    <div class="grid bg-white rounded-lg p-5 gap-8 shadow-card">
         <div class="flex items-center">
             <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
             <span class="text-blue-700 text-16">
                 <slot>{{ $t("consumptionAndCondition") }}</slot>    
             </span>
         </div>
-        <div class="grid grid-cols-16">
-            <div class="col-span-4 px-6 border-l border-t"></div>
-            <div class="col-span-2 flex items-center text-blue-700 px-3 py-3 h-16 border-t border-l bg-gray-50 text-14">{{ $t("me") }}</div>
-            <div class="col-span-2 flex items-center text-blue-700 px-3 py-3 h-16 border-t border-l bg-gray-50 text-14">{{ $t("ge") }}</div>
-            <div class="col-span-2 flex items-center text-blue-700 px-3 py-3 h-16 border-t border-l bg-gray-50 text-14">{{ $t("blr") }}</div>
-            <div class="col-span-2 flex items-center text-blue-700 px-3 py-3 h-16 border-t border-l bg-gray-50 text-14">{{ $t("igg") }}</div>
-            <div class="col-span-2 flex items-center text-blue-700 px-3 py-3 h-16 border-t border-l bg-gray-50 text-14">{{ $t("totalConsumption") }}</div>
-            <div class="col-span-2 flex items-center text-blue-700 px-3 py-3 h-16 border-t border-x bg-gray-50 text-14">{{ $t("remainOnBoard") }}</div>
+        <div class="grid divide-y divide-dashed gap-8">
+            <div>
+                <div class="self-center mb-4 text-16 text-gray-700">{{ $t("fuelOilInMT") }}</div>
 
-            <div class="col-span-2 row-span-2 flex p-3 border-l border-t border-green-200 bg-green-100/50">
-                <div class="self-center text-green-800 text-12">{{ $t("fuelOilInMT") }}</div>
-            </div>
-                <div class="col-span-2 text-green-800 p-3 border-t border-l border-green-100 bg-green-25 text-14">{{ $t("lsfo") }}</div>
-                <input v-model="lsfo.me_consumed" @keypress="preventNaN($event, lsfo.me_consumed)" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                <input v-model="lsfo.aux_consumed" @keypress="preventNaN($event, lsfo.aux_consumed)" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                <input v-model="lsfo.boiler_consumed" @keypress="preventNaN($event, lsfo.boiler_consumed)" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                <input v-model="lsfo.gas_generator_consumed" @keypress="preventNaN($event, lsfo.gas_generator_consumed)" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                <div class="col-span-2 text-gray-400 p-3 border-t border-l bg-gray-25 text-14">{{ lsfo_total }}</div>
-                <div class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25 text-14">{{ lsfo_rob }}</div>
-                
-                <div class="col-span-2 text-green-800 p-3 border-t border-l border-green-100 bg-green-25 text-14">{{ $t("mgo") }}</div>
-                <input v-model="mgo.me_consumed" @keypress="preventNaN($event, mgo.me_consumed)" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                <input v-model="mgo.aux_consumed" @keypress="preventNaN($event, mgo.aux_consumed)" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                <input v-model="mgo.boiler_consumed" @keypress="preventNaN($event, mgo.boiler_consumed)" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                <input v-model="mgo.gas_generator_consumed" @keypress="preventNaN($event, mgo.gas_generator_consumed)" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                <div class="col-span-2 text-gray-400 p-3 border-t border-l bg-gray-25 text-14">{{ mgo_total }}</div>
-                <div class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25 text-14">{{ mgo_rob }}</div>
+                <div class="grid grid-cols-10 mb-4 text-14">
+                    <div class="col-span-2 border-green-100 bg-green-25 px-6 border-l border-t"></div>
+                    <div class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50">{{ $t("me") }}</div>
+                    <div class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50">{{ $t("ge") }}</div>
+                    <div class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50">{{ $t("blr") }}</div>
+                    <div class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50">{{ $t("igg") }}</div>
+                    <div class="col-span-2 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50">{{ $t("totalConsumption") }}</div>
+                    <div class="col-span-2 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-x bg-gray-50">{{ $t("remainOnBoard") }}</div>
 
-            <div class="col-span-2 row-span-4 flex p-3 border-t border-l border-yellow-200 bg-yellow-100/50">
-                <div class="self-center text-yellow-800 text-12">{{ $t("lubricateOilInL") }}</div>
-            </div>
-                <div class="col-span-10 text-yellow-800 p-3 border-t border-l border-yellow-100 bg-yellow-25 text-14">{{ $t("meCylinder") }}</div>
-                    <input v-model="lubricate.mecylinder_total" @keypress="preventNaN($event, lubricate.mecylinder_total)" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                    <div class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25 text-14">{{ mecylinder_rob }}</div>
-                <div class="col-span-10 text-yellow-800 p-3 border-t border-l border-yellow-100 bg-yellow-25 text-14">{{ $t("meSystem") }}</div>
-                    <input v-model="lubricate.mesystem_total" @keypress="preventNaN($event, lubricate.mesystem_total)" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                    <div class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25 text-14">{{ mesystem_rob }}</div>
-                <div class="col-span-10 text-yellow-800 p-3 border-t border-l border-yellow-100 bg-yellow-25 text-14">{{ $t("meSump") }}</div>
-                    <input v-model="lubricate.mesump_total" @keypress="preventNaN($event, lubricate.mesump_total)" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                    <div class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25 text-14">{{ mesump_rob }}</div>
-                <div class="col-span-10 text-yellow-800 p-3 border-t border-l border-yellow-100 bg-yellow-25 text-14">{{ $t("geSystem") }}</div>
-                    <input v-model="lubricate.gesystem_total" @keypress="preventNaN($event, lubricate.gesystem_total)" placeholder="0" class="col-span-2 p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                    <div class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25 text-14">{{ gesystem_rob }}</div>
+                    <div class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50">{{ $t("lsfo") }}</div>
+                    <input v-model="lsfo.me_consumed" @keypress="preventNaN($event, lsfo.me_consumed)" placeholder="0" class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"/>
+                    <input v-model="lsfo.aux_consumed" @keypress="preventNaN($event, lsfo.aux_consumed)" placeholder="0" class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"/>
+                    <input v-model="lsfo.boiler_consumed" @keypress="preventNaN($event, lsfo.boiler_consumed)" placeholder="0" class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"/>
+                    <input v-model="lsfo.gas_generator_consumed" @keypress="preventNaN($event, lsfo.gas_generator_consumed)" placeholder="0" class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"/>
+                    <div class="col-span-2 text-gray-400 p-3 border-t border-l bg-gray-25">{{ lsfo_total }}</div>
+                    <div class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25">{{ lsfo_rob }}</div>
+                    
+                    <div class="col-span-2 p-3 text-blue-700 border-y border-l bg-gray-50">{{ $t("mgo") }}</div>
+                    <input v-model="mgo.me_consumed" @keypress="preventNaN($event, mgo.me_consumed)" placeholder="0" class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"/>
+                    <input v-model="mgo.aux_consumed" @keypress="preventNaN($event, mgo.aux_consumed)" placeholder="0" class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"/>
+                    <input v-model="mgo.boiler_consumed" @keypress="preventNaN($event, mgo.boiler_consumed)" placeholder="0" class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"/>
+                    <input v-model="mgo.gas_generator_consumed" @keypress="preventNaN($event, mgo.gas_generator_consumed)" placeholder="0" class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"/>
+                    <div class="col-span-2 text-gray-400 p-3 border-y border-l bg-gray-25">{{ mgo_total }}</div>
+                    <div class="col-span-2 text-gray-400 p-3 border bg-gray-25">{{ mgo_rob }}</div>
+                </div>
 
-            <div class="col-span-2 row-span-2 flex p-3 border-y border-l border-blue-200 bg-sysblue-100/50">
-                <div class="self-center text-sysblue-800 text-12">{{ $t("freshWaterInTon") }}</div>
+                <div class="grid grid-cols-10 border text-14">
+                    <div class="col-span-2 text-blue-700 p-3 bg-gray-50">{{ $t("correction") }}</div>
+                    <!-- TODO: make dynamic -->
+                    <select v-model="correction_fo.type" class="col-span-4 p-3 border-l focus:border-0" :class="correction_fo.type === 'default' ? 'text-gray-400' : 'text-gray-700'" >
+                        <option selected disabled value="default">{{ $t("selectType") }}</option>
+                        <option value="lsfo">{{ $t("lsfo") }}</option>
+                        <option value="mgo">{{ $t("mgo") }}</option>
+                    </select>
+                    <div class="flex col-span-4 p-3 pl-4 border-l bg-white">
+                        <input v-model="correction_fo.change" @keypress="preventNaN($event, correction_fo.change)" placeholder="00,000.00" class="w-24 text-gray-700 focus:outline-0"/>
+                        <MiniUnitDisplay>MT</MiniUnitDisplay>
+                    </div>
+                    <div class="col-span-2 row-span-2 text-blue-700 p-3 border-t bg-gray-50">{{ $t("remarks") }}</div>
+                    <textarea v-model.trim="correction_fo.remarks" placeholder="Input description here" class="col-span-8 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"></textarea>
+                </div>
             </div>
-                <div class="col-span-5 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25 text-14">{{ $t("consumed") }}</div>
-                <div class="col-span-5 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25 text-14">{{ $t("generated") }}</div>
-                <div class="col-span-2 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25 text-14">+/-</div>
-                <div class="col-span-2 text-sysblue-800 p-3 border-t border-x border-sysblue-100 bg-sysblue-25 text-14">{{ $t("rob") }}</div>
-                <input v-model="freshwater.consumed" @keypress="preventNaN($event, freshwater.consumed)" placeholder="0" class="col-span-5 p-3 pl-4 border-y border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                <input v-model="freshwater.evaporated" @keypress="preventNaN($event, freshwater.evaporated)" placeholder="0" class="col-span-5 p-3 pl-4 border-y border-l bg-white text-14 text-gray-700 focus:outline-0"/>
-                <div class="col-span-2 text-gray-400 p-3 border-y border-l bg-gray-25 text-14">{{ freshwater_change }}</div>
-                <div class="col-span-2 text-gray-400 p-3 border-y border-x bg-gray-25 text-14">{{ freshwater_rob }}</div>
-        </div>
-        
-        <div class="grid grid-cols-8 border">
-            <div class="col-span-2 text-blue-700 p-3 bg-gray-50 text-14">{{ $t("correction") }}</div>
-            <!-- TODO: make dynamic -->
-            <select v-model="correction.type" class="col-span-3 p-3 border-l text-14 focus:border-0" :class="correction.type === 'default' ? 'text-gray-400' : 'text-gray-700'" >
-                <option selected disabled value="default">{{ $t("selectType") }}</option>
-                <option value="lsfo">{{ $t("lsfo") }}</option>
-                <option value="mgo">{{ $t("mgo") }}</option>
-                <option value="mecylinder">{{ $t("mecylinder") }}</option>
-                <option value="mesystem">{{ $t("mesystem") }}</option>
-                <option value="mesump">{{ $t("mesump") }}</option>
-                <option value="gesystem">{{ $t("gesystem") }}</option>
-            </select>
-            <div class="flex col-span-3 p-3 pl-4 border-l bg-white">
-                <input v-model="correction.change" @keypress="preventNaN($event, correction.change)" placeholder="00,000.00" class="w-24 text-14 text-gray-700 focus:outline-0"/>
-                <MiniUnitDisplay>MT</MiniUnitDisplay>
+
+            <div class="pt-8">
+                <div class="self-center text-16 mb-4 text-gray-700">{{ $t("lubricateOilInL") }}</div>
+
+                <div class="grid grid-cols-10 text-14 mb-4">
+                    <div class="col-span-2 border-yellow-100 bg-yellow-25 px-6 border-l border-t"></div>
+                    <div class="col-span-4 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-l bg-gray-50">{{ $t("totalConsumption") }}</div>
+                    <div class="col-span-4 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-x bg-gray-50">{{ $t("remainOnBoard") }}</div>
+
+                    <div class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50">{{ $t("meCylinder") }}</div>
+                    <input v-model="lubricate.mecylinder_total" @keypress="preventNaN($event, lubricate.mecylinder_total)" placeholder="0" class="col-span-4 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"/>
+                    <div class="col-span-4 text-gray-400 p-3 border-t border-x bg-gray-25">{{ mecylinder_rob }}</div>
+                    
+                    <div class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50">{{ $t("meSystem") }}</div>
+                    <input v-model="lubricate.mesystem_total" @keypress="preventNaN($event, lubricate.mesystem_total)" placeholder="0" class="col-span-4 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"/>
+                    <div class="col-span-4 text-gray-400 p-3 border-t border-x bg-gray-25">{{ mesystem_rob }}</div>
+
+                    <div class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50">{{  $t("meSump")  }}</div>
+                    <input v-model="lubricate.mesump_total" @keypress="preventNaN($event, lubricate.mesump_total)" placeholder="0" class="col-span-4 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"/>
+                    <div class="col-span-4 text-gray-400 p-3 border-t border-x bg-gray-25">{{ mesump_rob }}</div>
+
+                    <div class="col-span-2 p-3 text-blue-700 border-y border-l bg-gray-50">{{ $t("geSystem") }}</div>
+                    <input v-model="lubricate.gesystem_total" @keypress="preventNaN($event, lubricate.gesystem_total)" placeholder="0" class="col-span-4 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"/>
+                    <div class="col-span-4 text-gray-400 p-3 border-y border-x bg-gray-25">{{ gesystem_rob }}</div>
+                </div>
+
+                <div class="grid grid-cols-10 border text-14">
+                    <div class="col-span-2 text-blue-700 p-3 bg-gray-50">{{ $t("correction") }}</div>
+                    <!-- TODO: make dynamic -->
+                    <select v-model="correction_lo.type" class="col-span-4 p-3 border-l focus:border-0" :class="correction_lo.type === 'default' ? 'text-gray-400' : 'text-gray-700'" >
+                        <option selected disabled value="default">{{ $t("selectType") }}</option>
+                        <option value="mecylinder">{{ $t("mecylinder") }}</option>
+                        <option value="mesystem">{{ $t("mesystem") }}</option>
+                        <option value="mesump">{{ $t("mesump") }}</option>
+                        <option value="gesystem">{{ $t("gesystem") }}</option>
+                    </select>
+                    <div class="flex col-span-4 p-3 pl-4 border-l bg-white">
+                        <input v-model="correction_lo.change" @keypress="preventNaN($event, correction_lo.change)" placeholder="00,000.00" class="w-24 text-gray-700 focus:outline-0"/>
+                        <MiniUnitDisplay>MT</MiniUnitDisplay>
+                    </div>
+                    <div class="col-span-2 row-span-2 text-blue-700 p-3 border-t bg-gray-50">{{ $t("remarks") }}</div>
+                    <textarea v-model.trim="correction_lo.remarks" placeholder="Input description here" class="col-span-8 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"></textarea>
+                </div>
             </div>
-            <div class="col-span-2 row-span-2 text-blue-700 p-3 border-t bg-gray-50 text-14">{{ $t("remarks") }}</div>
-            <textarea v-model.trim="correction.remarks" placeholder="Input description here" class="col-span-6 row-span-2 border-t border-l p-3 pl-4 bg-white text-14 text-gray-700 focus:outline-0"></textarea>
+            
+            <div class="pt-8">
+                <div class="self-center text-16 text-gray-700">{{ $t("freshWaterInTon") }}</div>
+                <div class="grid grid-cols-4 pt-8 text-14">
+                    <div class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25">{{ $t("consumed") }}</div>
+                    <div class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25">{{ $t("generated") }}</div>
+                    <div class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25">+/-</div>
+                    <div class="col-span-1 text-sysblue-800 p-3 border-t border-x border-sysblue-100 bg-sysblue-25">{{ $t("rob") }}</div>
+                    <input v-model="freshwater.consumed" @keypress="preventNaN($event, freshwater.consumed)" placeholder="0" class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"/>
+                    <input v-model="freshwater.evaporated" @keypress="preventNaN($event, freshwater.evaporated)" placeholder="0" class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"/>
+                    <div class="col-span-1 text-gray-400 p-3 border-y border-l bg-gray-25">{{ freshwater_change }}</div>
+                    <div class="col-span-1 text-gray-400 p-3 border-y border-x bg-gray-25">{{ freshwater_rob }}</div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -133,7 +162,13 @@ const lubricate = reactive({
     "gesystem_total": ''
 })
 
-const correction = reactive({
+const correction_fo = reactive({
+    "type": 'default',
+    "change": '',
+    "remarks": ''
+})
+
+const correction_lo = reactive({
     "type": 'default',
     "change": '',
     "remarks": ''
