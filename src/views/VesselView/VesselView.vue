@@ -72,6 +72,7 @@
         :imo="imo"
       ></AddVoyageModal>
     </div>
+    <!-- <router-view :key="update"></router-view> -->
     <suspense>
       <router-view :key="update"></router-view>
     </suspense>
@@ -84,6 +85,7 @@ import GradientButton from "../../components/Buttons/GradientButton.vue";
 import AddVoyageModal from "@/components/AddVoyageModal.vue";
 
 let showModal = ref(false);
+// Variable to force replacement of router-view
 const update = ref(0);
 const isEmpty = true;
 let voyageNum = 1;

@@ -130,14 +130,7 @@
               :arrivalTime="port.arrivalTime"
             ></PortCard>
           </div>
-          <div
-            class="flex w-96 bg-white ml-6 shadow-md divide-y divide-solid flex-wrap"
-          >
-            <div class="flex py-4 pl-6 w-full">
-              <span class="text-16 text-gray-800 font-bold">Reminders</span>
-            </div>
-            <div class="flex">Notification</div>
-          </div>
+          <SpeedGraphReminders></SpeedGraphReminders>
         </div>
       </div>
     </div>
@@ -149,6 +142,7 @@ import { ref } from "vue";
 import SpeedSideNav from "./SpeedSideNav.vue";
 import SpeedGraphPlot from "./SpeedGraphPlot.vue";
 import PortCard from "@/components/PortCard.vue";
+import SpeedGraphReminders from "./SpeedGraphReminders.vue";
 
 let weeklyFlag = ref(true);
 

@@ -16,12 +16,12 @@
       <div class="inset-x-0 bottom-5 space-x-8 text-gray-500 text-14 pl-11">
         <router-link
           :to="{
-            name: 'overview',
+            name: 'speed-graph-overview',
             params: { vesselname: vesselname, imo: imo },
           }"
           class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
           :class="
-            $route.name == 'overview'
+            $route.name == 'speed-graph-overview'
               ? 'border-b-2 border-blue-700 text-blue-700'
               : ''
           "
