@@ -63,7 +63,7 @@
             src="@/assets/icons/Speed_Graph/notification_divider.svg"
             class="mx-5 h-5 border-0 border-red-200"
           />
-          <div class="flex flex-row bg-transparent items-center">
+          <div class="hidden flex flex-row bg-transparent items-center">
             <img
               src="@/assets/icons/Speed_Graph/alert_icon.svg"
               class="bg-transparent w-5 h-5 mr-2"

@@ -32,7 +32,7 @@
             name: 'vessel-spec',
             params: { vesselname: vesselname, imo: imo },
           }"
-          class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
+          class="hidden pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
           :class="
             $route.name == 'vessel-spec'
               ? 'border-b-2 border-blue-700 text-blue-700'

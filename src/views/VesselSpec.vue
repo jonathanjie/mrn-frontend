@@ -1,14 +1,94 @@
 <template>
-    <!-- if there are no voyages in backend -->
-    <div v-if="isEmpty" class="flex flex-col bg-gray-100 p-24 pb-52 m-12 justify-center content-center items-center space-y-2 rounded-xl">
-        <img src="@/assets/icons/empty.svg" class="h-28 w-28"/>
-        <span class="text-lg font-bold text-gray-800 pt-3">{{ $t("noVoyageCreated") }}</span>
-        <span class="text-14 text-gray-500">{{ $t("clickOnCreateNewVoyageAboveToBegin") }}</span>
+  <div class="flex rounded-xl bg-white mx-12 mt-10 py-8 divide-y divide-solid">
+    <div class="flex relative flex-col w-full">
+      <div class="flex items-center">
+        <img src="@/assets/icons/vessel_spec_header.svg" class="absolute" />
+        <span class="text-18 text-blue-700 font-bold pl-6">Tanker</span>
+      </div>
+      <div class="grid grid-cols-3">
+        <VesselSpecCard>
+          <template v-slot:header> Overview:</template>
+        </VesselSpecCard>
+        <VesselSpecCard>
+          <template v-slot:title>IMO number</template>
+          <template v-slot:value>9449431</template>
+        </VesselSpecCard>
+        <VesselSpecCard>
+          <template v-slot:title>Owner</template>
+          <template v-slot:value>Hello</template>
+        </VesselSpecCard>
+        <VesselSpecCard></VesselSpecCard>
+        <VesselSpecCard>
+          <template v-slot:title>Commercial manager:</template>
+          <template v-slot:value>-</template>
+        </VesselSpecCard>
+        <VesselSpecCard>
+          <template v-slot:title>Technical manager:</template>
+          <template v-slot:value>-</template>
+        </VesselSpecCard>
+      </div>
     </div>
+  </div>
 </template>
 
 <script setup>
-const isEmpty = true
+import VesselSpecCard from "@/components/VesselSpecCard.vue";
+
+// const ship = {
+//   owner,
+//   commercialManager,
+//   technicalManager,
+//   yard,
+//   deliveryDate,
+//   flag,
+//   registryPort,
+//   callSign,
+//   hullNo,
+//   class1,
+//   nextDrydockDate,
+//   dimensions,
+//   draft,
+//   grossTonnage,
+//   deadweightTonnage,
+//   fullDisplacement,
+//   cargoCapacity,
+//   lightshipWeight,
+//   cruisingRange,
+//   trialSpeed,
+//   serviceSpeed,
+//   dailyFuelConsumption,
+//   ballast,
+//   load,
+//   mainEngineNo,
+//   mcr,
+//   imoTier,
+//   fuelType,
+//   generatorType,
+//   generatorRpm,
+//   generatorPower,
+//   generatorSet,
+//   boiler,
+//   cargoTanks,
+//   cargoCapacity,
+//   cargoPumpType,
+//   cargoPumpCapacity,
+//   cargoPumpSet,
+//   propellerType,
+//   propellerBlade,
+//   propellerSet,
+//   btwsIsFitted,
+//   scrubberIsInstalled,
+//   scrIsInstalled,
+//   egrIsInstalled,
+//   windlassIsInstalled,
+//   hoseHandlingCraneIsInstalled,
+//   waterBallastCapacity,
+//   hfoCapacity,
+//   mdoLsmgoCapacity,
+//   freshwaterCapacity,
+//   eexiRating,
+//   estimatedCiiRating,
+// };
 defineProps({
   vesselname: String,
   imo: String,

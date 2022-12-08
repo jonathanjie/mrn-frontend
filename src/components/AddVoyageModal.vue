@@ -244,7 +244,7 @@
                     {{ $t("geSystemOil") }}
                   </label>
                 </div>
-                <div class="flex align-center">
+                <div class="hidden flex align-center">
                   <input
                     type="checkbox"
                     id="othersOil"
@@ -262,7 +262,7 @@
                 v-model.lazy="lubricateOthers"
                 :disabled="lubricateOthersFlag"
                 placeholder="Other lubricate oil type"
-                class="w-full p-3 pl-4 border bg-white text-14 text-gray-500"
+                class="hidden w-full p-3 pl-4 border bg-white text-14 text-gray-500"
               />
             </div>
             <!-- Machinery -->
@@ -325,7 +325,7 @@
                     {{ $t("inertGasEngine") }}
                   </label>
                 </div>
-                <div class="flex align-center">
+                <div class="hidden flex align-center">
                   <input
                     type="checkbox"
                     id="othersMachinery"
@@ -346,7 +346,17 @@
                 v-model.lazy="machineryOthers"
                 :disabled="machineryOthersFlag"
                 placeholder="Other machinery"
-                class="w-full p-3 pl-4 border bg-white text-14 text-gray-500"
+                class="hidden w-full p-3 pl-4 border bg-white text-14 text-gray-500"
+              />
+            </div>
+            <div class="bg-gray-50 rounded-lg p-4 w-full">
+              <label class="text-14 text-gray-700" for="propellerPitch">{{
+                $t("propellerPitch")
+              }}</label>
+              <input
+                v-model.lazy="propellerPitch"
+                id="propellerPitch"
+                class="w-full p-3 pl-4 border bg-white text-14 text-gray-500 mt-2"
               />
             </div>
           </div>
@@ -391,36 +401,36 @@ let machineryOthersFlag = ref(true);
 const lubricateOthers = ref("");
 const machineryOthers = ref("");
 
+const propellerPitch = ref("");
+
 const vesselType = ref("");
 const cargoUnit = ref("");
 
 // Need to be passed into this modal from vessel view or somewhere
-// const vesselname = "Marina A";
-// const imo = "9876543";
 
-const props = defineProps({
+defineProps({
   vesselname: String,
-  imo: String
-})
+  imo: String,
+});
 
 const printValues = () => {
   // console.log(fuelOptions);
   // console.log(lubricateOptions);
   // console.log(machineryOptions);
-  console.log(lubricateOthersFlag)
-  console.log(machineryOthersFlag)
+  // console.log(lubricateOthersFlag);
+  // console.log(machineryOthersFlag);
 };
 
-const addVoyage = (voyageData) => {
-  const DUMMY_TOKEN = localStorage.getItem("jwt");
-  const response = fetch("https://testapi.marinachain.io/marinanet/voyages/", {
-    headers: {
-      Authorization: "Bearer " + DUMMY_TOKEN,
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify(voyageData),
-  });
-  console.log(response);
-};
+// const addVoyage = (voyageData) => {
+//   const DUMMY_TOKEN = localStorage.getItem("jwt");
+//   const response = fetch("https://testapi.marinachain.io/marinanet/voyages/", {
+//     headers: {
+//       Authorization: "Bearer " + DUMMY_TOKEN,
+//       "Content-Type": "application/json",
+//     },
+//     method: "POST",
+//     body: JSON.stringify(voyageData),
+//   });
+//   console.log(response);
+// };
 </script>
