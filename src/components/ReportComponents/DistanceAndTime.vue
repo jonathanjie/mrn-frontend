@@ -9,29 +9,29 @@
         <div class="grid grid-cols-10">
             <div class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-l border-t bg-gray-50 text-14">{{ $t("time") }}</div>
             <div class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50">
-                <input v-model="data.hours_since_noon" 
-                    @keypress="preventNaN($event, data.hours_since_noon)" 
+                <input v-model="hours_since_noon" 
+                    @keypress="preventNaN($event, hours_since_noon)" 
                     placeholder="0" 
                     disabled
-                    class="w-24 text-14 text-gray-700 focus:outline-0"
+                    class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
                 />
                 <MiniUnitDisplay>HRS</MiniUnitDisplay>
             </div>
             <div class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-b lg:border-b-0 border-l lg:border-l-0 border-t bg-gray-50 text-14">{{ $t("total") }}</div>
             <div class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-y lg:border-b-0 bg-gray-50">
-                <input v-model="data.hours_total" 
-                    @keypress="preventNaN($event, data.hours_total)" 
+                <input v-model="hours_total" 
+                    @keypress="preventNaN($event, hours_total)" 
                     placeholder="0" 
                     disabled
-                    class="w-24 text-14 text-gray-700 focus:outline-0"
+                    class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
                 />
                 <MiniUnitDisplay>HRS</MiniUnitDisplay>
             </div>
 
             <div class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-l border-t bg-gray-50 text-14">{{ $t("distanceToGo") }}</div>
             <div class="flex items-center col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t" :class="distanceToGoDisabled ? 'bg-gray-50' : 'bg-white'">
-                <input v-model="data.distance_to_go" 
-                    @keypress="preventNaN($event, data.distance_to_go)" 
+                <input v-model="distance_to_go" 
+                    @keypress="preventNaN($event, distance_to_go)" 
                     placeholder="0" 
                     :disabled="distanceToGoDisabled"
                     class="w-24 text-14 text-gray-700 focus:outline-0"
@@ -41,7 +41,7 @@
                 <MiniUnitDisplay class="ml-2">NM</MiniUnitDisplay>
             </div>
             <div class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-b lg:border-b-0 border-l lg:border-l-0 border-t bg-gray-50 text-14">{{ $t("remarksOfChanges") }}</div>
-            <input v-model="data.remarks" 
+            <input v-model="remarks" 
                 :placeholder="$t('inputRemarks')" 
                 :disabled="distanceToGoDisabled"
                 class="col-span-6 lg:col-span-3 p-3 pl-4 border-x border-t text-14 text-gray-700 focus:outline-0"
@@ -50,8 +50,8 @@
             
             <div class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-l border-t bg-gray-50 text-14">{{ $t("distanceByObservation") }}</div>
             <div class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t">
-                <input v-model="data.distance_obs_since_noon" 
-                    @keypress="preventNaN($event, data.distance_obs_since_noon)" 
+                <input v-model="distance_obs_since_noon" 
+                    @keypress="preventNaN($event, distance_obs_since_noon)" 
                     placeholder="0" 
                     class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
                 />
@@ -59,38 +59,38 @@
             </div>
             <div class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-b lg:border-b-0 border-l lg:border-l-0 border-t bg-gray-50 text-14">{{ $t("total") }}</div>
             <div class="flex col-span-6 lg:col-span-3 p-2 pl-4 border lg:border-b-0 bg-gray-50">
-                <input v-model="data.distance_obs_total" 
-                    @keypress="preventNaN($event, data.distance_obs_total)" 
+                <input v-model="distance_obs_total" 
+                    @keypress="preventNaN($event, distance_obs_total)" 
                     placeholder="0" 
                     disabled
-                    class="w-24 text-14 text-gray-700 focus:outline-0"
+                    class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
                 />
                 <MiniUnitDisplay>NM</MiniUnitDisplay>
             </div>
 
             <div class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-l border-t lg:border-y bg-gray-50 text-14">{{ $t("distanceByEngine") }}</div>
             <div class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t lg:border bg-gray-50">
-                <input v-model="data.distance_eng_since_noon" 
-                    @keypress="preventNaN($event, data.distance_eng_since_noon)" 
+                <input v-model="distance_eng_since_noon" 
+                    @keypress="preventNaN($event, distance_eng_since_noon)" 
                     placeholder="0" 
                     disabled
-                    class="w-24 text-14 text-gray-700 focus:outline-0"
+                    class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
                 />
                 <MiniUnitDisplay>NM</MiniUnitDisplay>
             </div>
-            <div class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-y border-l lg:border-l-0  bg-gray-50 text-14">{{ $t("total") }}</div>
+            <div class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-y border-l lg:border-l-0 bg-gray-50 text-14">{{ $t("total") }}</div>
             <div class="flex col-span-6 lg:col-span-3 p-2 pl-4 border bg-gray-50">
-                <input v-model="data.distance_eng_total" 
-                    @keypress="preventNaN($event, data.distance_eng_total)" 
+                <input v-model="distance_eng_total" 
+                    @keypress="preventNaN($event, distance_eng_total)" 
                     placeholder="0" 
                     disabled
-                    class="w-24 text-14 text-gray-700 focus:outline-0"
+                    class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
                 />
                 <MiniUnitDisplay>NM</MiniUnitDisplay>
             </div>
             <div class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-l border-y lg:border-t-0 bg-gray-50 text-14">{{ $t("revolutionCounter") }}</div>
-            <input v-model="data.revolution_count" 
-                @keypress="preventNaN($event, data.revolution_count)" 
+            <input v-model="revolution_count" 
+                @keypress="preventNaN($event, revolution_count)" 
                 placeholder="0" 
                 class="col-span-6 lg:col-span-3 p-3 pl-4 border-x border-y lg:border-t-0 bg-white text-14 text-gray-700 focus:outline-0"
             />
@@ -99,22 +99,35 @@
 </template>
 
 <script setup>
-import { ref, reactive, defineProps } from 'vue'
-import { preventNaN } from '../../utils/helpers.js'
-import MiniUnitDisplay from '../../components/MiniUnitDisplay.vue'
+import { ref } from "vue";
+import { preventNaN } from "../../utils/helpers.js";
+import MiniUnitDisplay from "../../components/MiniUnitDisplay.vue";
+import { useNoonReportStore } from "@/store/useNoonReportStore";
+import { storeToRefs } from "pinia";
 
+const store = useNoonReportStore();
 const distanceToGoDisabled = ref(true);
 
-const data = reactive({
-    // TODO: total distance in voyage - distance by observation? or engine?
-    "hours_since_noon": '', // Distance & Time: time
-    "hours_total": '', // Distance & Time: time total
-    "distance_to_go": '',
-    "remarksOfChanges": '',
-    "distance_obs_since_noon": '', // Distance & Time: distance by observation
-    "distance_obs_total": '', // distance observation total field missing from BE
-    "distance_eng_since_noon": '', // Distance & Time: distance by engine
-    "distance_eng_total": '', // Distance & Time: distance by engine total
-    "revolution_count": '', // only for noon report
-});
+const {
+  hoursSinceNoon: hours_since_noon,
+  hoursTotal: hours_total,
+  distancetoGo: distance_to_go,
+  remarksForChanges: remarks,
+  distanceObsSinceNoon: distance_obs_since_noon,
+  distanceObsTotal: distance_obs_total,
+  distanceEngSinceNoon: distance_eng_since_noon,
+  distanceEngTotal: distance_eng_total,
+  revolutionCount: revolution_count,
+} = storeToRefs(store);
+
+// const data = reactive({
+//   // TODO: total distance in voyage - distance by observation? or engine?
+//   hours_since_noon: "", // Distance & Time: time
+//   hours_total: "", // Distance & Time: time total
+//   distance_obs_since_noon: "", // Distance & Time: distance by observation
+//   distance_obs_total: "", // distance observation total field missing from BE
+//   distance_eng_since_noon: "", // Distance & Time: distance by engine
+//   distance_eng_total: "", // Distance & Time: distance by engine total
+//   revolution_count: "", // only for noon report
+// });
 </script>

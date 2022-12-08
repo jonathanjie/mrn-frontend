@@ -115,52 +115,82 @@
 </template>
 
 <script setup>
-import { preventNaN } from '@/utils/helpers';
-import { ref, reactive, computed } from 'vue';
-import MiniUnitDisplay from '../../components/MiniUnitDisplay.vue'
+import { preventNaN } from "@/utils/helpers";
+import {
+  // ref,
+  reactive,
+  computed,
+} from "vue";
+import MiniUnitDisplay from "../../components/MiniUnitDisplay.vue";
 
-const lsfo_total = computed(() => +(Number(lsfo.me_consumed) + Number(lsfo.aux_consumed)
-                                    + Number(lsfo.boiler_consumed) + Number(lsfo.gas_generator_consumed)));
-const lsfo_rob = computed(() => (tempValues.lsfoPrevROB - lsfo_total.value));
+const lsfo_total = computed(
+  () =>
+    +(
+      Number(lsfo.me_consumed) +
+      Number(lsfo.aux_consumed) +
+      Number(lsfo.boiler_consumed) +
+      Number(lsfo.gas_generator_consumed)
+    )
+);
+const lsfo_rob = computed(() => tempValues.lsfoPrevROB - lsfo_total.value);
 
-const mgo_total = computed(() => +(Number(mgo.me_consumed) + Number(mgo.aux_consumed) 
-                                    + Number(mgo.boiler_consumed) + Number(mgo.gas_generator_consumed)).toFixed(2));;
-const mgo_rob = computed(() => (tempValues.mgoPrevROB - mgo_total.value));
+const mgo_total = computed(
+  () =>
+    +(
+      Number(mgo.me_consumed) +
+      Number(mgo.aux_consumed) +
+      Number(mgo.boiler_consumed) +
+      Number(mgo.gas_generator_consumed)
+    ).toFixed(2)
+);
+const mgo_rob = computed(() => tempValues.mgoPrevROB - mgo_total.value);
 
-const mecylinder_rob = computed(() => +(tempValues.mecylPrevROB - lubricate.mecylinder_total).toFixed(2));
-const mesystem_rob = computed(() => +(tempValues.mesysPrevROB - lubricate.mesystem_total).toFixed(2));
-const mesump_rob = computed(() => +(tempValues.mesumpPrevROB - lubricate.mesump_total).toFixed(2));
-const gesystem_rob = computed(() => +(tempValues.gesysPrevROB - lubricate.gesystem_total).toFixed(2));
+const mecylinder_rob = computed(
+  () => +(tempValues.mecylPrevROB - lubricate.mecylinder_total).toFixed(2)
+);
+const mesystem_rob = computed(
+  () => +(tempValues.mesysPrevROB - lubricate.mesystem_total).toFixed(2)
+);
+const mesump_rob = computed(
+  () => +(tempValues.mesumpPrevROB - lubricate.mesump_total).toFixed(2)
+);
+const gesystem_rob = computed(
+  () => +(tempValues.gesysPrevROB - lubricate.gesystem_total).toFixed(2)
+);
 
-const freshwater_change = computed(() => +(freshwater.evaporated - freshwater.consumed).toFixed(2))
-const freshwater_rob = computed(() => (tempValues.freshwaterPrevROB + freshwater_change.value))
+const freshwater_change = computed(
+  () => +(freshwater.evaporated - freshwater.consumed).toFixed(2)
+);
+const freshwater_rob = computed(
+  () => tempValues.freshwaterPrevROB + freshwater_change.value
+);
 
 const lsfo = reactive({
-    "fuel_type": "LSFO", 
-    "rob": '', 
-    "me_consumed": '',
-    "aux_consumed": '',
-    "boiler_consumed": '',
-    "gas_generator_consumed": '',
-    "total_consumed": '',
+  fuel_type: "LSFO",
+  rob: "",
+  me_consumed: "",
+  aux_consumed: "",
+  boiler_consumed: "",
+  gas_generator_consumed: "",
+  total_consumed: "",
 });
 
 const mgo = reactive({
-    "fuel_type": "MGO", 
-    "rob": '', 
-    "me_consumed": '',
-    "aux_consumed": '',
-    "boiler_consumed": '',
-    "gas_generator_consumed": '',
-    "total_consumed": '',
+  fuel_type: "MGO",
+  rob: "",
+  me_consumed: "",
+  aux_consumed: "",
+  boiler_consumed: "",
+  gas_generator_consumed: "",
+  total_consumed: "",
 });
 
 const lubricate = reactive({
-    "mecylinder_total": '',
-    "mesystem_total": '',
-    "mesump_total": '',
-    "gesystem_total": ''
-})
+  mecylinder_total: "",
+  mesystem_total: "",
+  mesump_total: "",
+  gesystem_total: "",
+});
 
 const correction_fo = reactive({
     "type": 'default',
@@ -175,21 +205,21 @@ const correction_lo = reactive({
 })
 
 const freshwater = reactive({
-    "rob": '0', // tempValues.freshwaterPrevROB + freshwater_change
-    "consumed": '', // C&C: fresh water consumed
-    "evaporated": '', // C&C: fresh water generated
-    "correction": 0, // NOT NEEDED; remove from BE
-    "remarks": "NIL" // NOT NEEDED; remove from BE
+  rob: "0", // tempValues.freshwaterPrevROB + freshwater_change
+  consumed: "", // C&C: fresh water consumed
+  evaporated: "", // C&C: fresh water generated
+  correction: 0, // NOT NEEDED; remove from BE
+  remarks: "NIL", // NOT NEEDED; remove from BE
 });
 
 const tempValues = {
-    distanceLeft: 2300,
-    lsfoPrevROB: 200,
-    mgoPrevROB: 200,
-    mecylPrevROB: 200,
-    mesysPrevROB: 200,
-    mesumpPrevROB: 200,
-    gesysPrevROB: 200,
-    freshwaterPrevROB: 200
+  distanceLeft: 2300,
+  lsfoPrevROB: 200,
+  mgoPrevROB: 200,
+  mecylPrevROB: 200,
+  mesysPrevROB: 200,
+  mesumpPrevROB: 200,
+  gesysPrevROB: 200,
+  freshwaterPrevROB: 200,
 };
 </script>

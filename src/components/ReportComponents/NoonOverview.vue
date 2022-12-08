@@ -107,9 +107,11 @@
 
 <script setup>
 import { ref } from 'vue'
+import { textInputOptions, format } from "../../utils/helpers.js";
 import MiniUnitDisplay from '@/components/MiniUnitDisplay.vue'
 
 // TODO: retrieve from backend or generate as needed
+// API /reports/latest
 const tempValues = {
     reportNo: '2',
     legNo: '2',

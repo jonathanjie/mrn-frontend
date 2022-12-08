@@ -7,17 +7,17 @@
         <div class="grid col-span-2 lg:col-span-1 grid-cols-5 border text-14">
             <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50">{{ $t("totalHours") }}</div>
             <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
-                <input v-model="data.hours" @keypress="preventNaN($event, data.hours)" placeholder="00.0" class="w-24 text-gray-700 focus:outline-0"/>
+                <input v-model="hours" @keypress="preventNaN($event, hours)" placeholder="00.0" class="w-24 text-gray-700 focus:outline-0"/>
                 <MiniUnitDisplay>HRS</MiniUnitDisplay>
             </div>
             <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50">{{ $t("distanceOBS") }}</div>
             <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
-                <input v-model="data.dist" @keypress="preventNaN($event, data.dist)" placeholder="00.0" class="w-24 text-gray-700 focus:outline-0"/>
+                <input v-model="dist" @keypress="preventNaN($event, dist)" placeholder="00.0" class="w-24 text-gray-700 focus:outline-0"/>
                 <MiniUnitDisplay>NM</MiniUnitDisplay>
             </div>
             <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50">{{ $t("fuelConsumption") }}</div>
             <div class="flex col-span-3 p-2 pl-4 bg-white">
-                <input v-model="data.consumption" @keypress="preventNaN($event, data.consumption)" placeholder="00.0" class="w-24 text-14 text-gray-700 focus:outline-0"/>
+                <input v-model="consumption" @keypress="preventNaN($event, consumption)" placeholder="00.0" class="w-24 text-14 text-gray-700 focus:outline-0"/>
                 <MiniUnitDisplay>MT</MiniUnitDisplay>
             </div>
         </div>
@@ -25,7 +25,7 @@
 
         <div class="col-span-1 grid grid-cols-5 border text-14">
             <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50">{{ $t("weatherNotation") }}</div>
-            <select v-model="data.weather" class="col-span-3 p-3 focus:border-0" :class="data.weather === 'default' ? 'text-gray-400' : 'text-gray-700'">
+            <select v-model="weather" class="col-span-3 p-3 focus:border-0" :class="weather === 'default' ? 'text-gray-400' : 'text-gray-700'">
                 <option selected disabled value="default">{{ $t("select") }}</option>
                 <option value="B">{{ $t("weather_b") }}</option>
                 <option value="BC">{{ $t("weather_bc") }}</option>
@@ -53,7 +53,7 @@
         <div class="col-span-2 grid grid-cols-10 border text-14">
             <div class="col-span-10 xl:col-span-2 text-blue-700 p-3 border-b xl:border-b-0 xl:border-r bg-gray-50">{{ $t("wind") }}</div>
             <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-b xl:border-b-0 border-r bg-gray-50">{{ $t("direction") }}</div>
-            <select v-model="data.wind_direction" class="col-span-6 xl:col-span-3 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-gray-700 focus:outline-0" :class="data.wind_direction === 'default' ? 'text-gray-400' : 'text-gray-700'">
+            <select v-model="wind_direction" class="col-span-6 xl:col-span-3 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-gray-700 focus:outline-0" :class="wind_direction === 'default' ? 'text-gray-400' : 'text-gray-700'">
                 <option selected disabled value="default">{{ $t("dir_16_placeholder") }}</option>
                 <option value="N">{{ $t("dir_16_N") }}</option>
                 <option value="NNE">{{ $t("dir_16_NNE") }}</option>
@@ -74,16 +74,16 @@
             </select>
             <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-r bg-gray-50">{{ $t("force") }}</div>
             <div class="col-span-3 flex xl:col-span-2 p-2 pl-4 border-r bg-white">
-                <input v-model="data.wind_speed" @keypress="preventNaN($event, data.wind_speed)" placeholder="00.0" class="text-gray-700 focus:outline-0"/>
+                <input v-model="wind_speed" @keypress="preventNaN($event, wind_speed)" placeholder="00.0" class="text-gray-700 focus:outline-0"/>
                 <MiniUnitDisplay>KNOT</MiniUnitDisplay>
             </div>
-            <input v-model="data.wind_speed_2" @keypress="preventNaN($event, data.wind_speed_2)" placeholder="00.0" class="col-span-2 xl:col-span-1 text-gray-700 focus:outline-0 p-2 pl-4"/>
+            <input v-model="wind_speed_2" @keypress="preventNaN($event, wind_speed_2)" placeholder="00.0" class="col-span-2 xl:col-span-1 text-gray-700 focus:outline-0 p-2 pl-4"/>
         </div>
 
         <div class="col-span-2 grid grid-cols-10 border text-14">
             <div class="col-span-10 xl:col-span-2 text-blue-700 p-3 border-b xl:border-b-0 xl:border-r bg-gray-50 text-14">{{ $t("wave") }}</div>
             <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-r border-b xl:border-b-0 bg-gray-50 text-14">{{ $t("direction") }}</div>
-            <select v-model="data.wave_direction" class="col-span-6 xl:col-span-3 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0" :class="data.wave_direction === 'default' ? 'text-gray-400' : 'text-gray-700'">                
+            <select v-model="sea_direction" class="col-span-6 xl:col-span-3 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0" :class="sea_direction === 'default' ? 'text-gray-400' : 'text-gray-700'">                
                 <option selected disabled value="default">{{ $t("dir_8_placeholder") }}</option>
                 <option value="N">{{ $t("dir_8_N") }}</option>
                 <option value="NE">{{ $t("dir_8_NE") }}</option>
@@ -95,7 +95,7 @@
                 <option value="NW">{{ $t("dir_8_NW") }}</option>
             </select>
             <div class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-r bg-gray-50">{{ $t("force") }}</div>
-            <select v-model="data.wave_force" class="col-span-6 xl:col-span-3 p-3 focus:border-0" :class="data.wave_force === 'default' ? 'text-gray-400' : 'text-gray-700'">
+            <select v-model="sea_state" class="col-span-6 xl:col-span-3 p-3 focus:border-0" :class="sea_state === 'default' ? 'text-gray-400' : 'text-gray-700'">
                 <option selected disabled value="default">{{ $t("douglasScale") }}</option>
                 <option value="0">{{ $t("wave_force_0") }}</option>
                 <option value="1">{{ $t("wave_force_1") }}</option>
@@ -112,26 +112,38 @@
         
         <div class="col-span-2 row-span-2 grid grid-cols-10 text-14 border">
             <div class="col-span-2 row-span-2 text-blue-700 p-3 border-r bg-gray-50">{{ $t("remarks") }}</div>
-            <textarea v-model.trim="data.remarks" placeholder="Input description here" class="col-span-8 row-span-2 p-3 pl-4 bg-white text-gray-700 focus:outline-0"></textarea>
+            <textarea v-model.trim="remarks" placeholder="Input description here" class="col-span-8 row-span-2 p-3 pl-4 bg-white text-gray-700 focus:outline-0"></textarea>
         </div>
     </div>
 </template>
 
 <script setup>
-import { reactive } from 'vue'
-import { preventNaN } from '@/utils/helpers.js'
-import MiniUnitDisplay from '@/components/MiniUnitDisplay.vue'
+import { reactive } from "vue";
+import { preventNaN } from "@/utils/helpers.js";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { useNoonReportStore } from "@/store/useNoonReportStore";
+import { storeToRefs } from "pinia";
 
-const data = reactive({
-    "hours": '',
-    "dist": '',
-    "consumption": '',
-    "weather": "default",
-    "wind_direction": 'default',
-    "wind_speed": '',
-    "wind_speed_2": '',
-    "wave_direction" : 'default',
-    "wave_force" : 'default',
-    "remarks": '',
-});
+const store = useNoonReportStore();
+const {
+  heavyWeatherHours: hours,
+  heavyWeatherDist: dist,
+  heavyWeatherConsumption: consumption,
+  heavyWeatherNotation: weather,
+  heavyWindDirection: wind_direction,
+  heavyWindSpeed: wind_speed,
+  heavySeaDirection: sea_direction,
+  heavySeaState: sea_state,
+  heavyRemarks: remarks,
+} = storeToRefs(store);
+
+// const data = reactive({
+//   hours: "", // HWC: total hours
+//   dist: "", // HWC: distance (OBS)
+//   consumption: "", // HWC: fuel consumption
+//   wind_direction: "", // HWC: wind direction
+//   wind_speed: "0", // HWC: wind force; missing from BE
+//   max_wave_ht: "", // HWC: max wave height
+//   wave_force: "default", // missing from BE
+// });
 </script>
