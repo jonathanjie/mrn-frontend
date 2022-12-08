@@ -9,8 +9,11 @@
         : 'text-gray-700'
     "
   >
-    <img v-if="active == this.type" src="@/assets/icons/checked.svg" />
-    <img v-else src="@/assets/icons/unchecked.svg" />
+    <img
+      v-if="active == this.type"
+      src="@/assets/icons/checkboxes/checked_round.svg"
+    />
+    <img v-else src="@/assets/icons/checkboxes/unchecked_round.svg" />
     <img :src="icon" class="mx-3" />
     <span>{{ content }}</span>
   </button>

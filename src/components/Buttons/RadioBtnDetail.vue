@@ -8,8 +8,11 @@
     :class="this.type == this.active ? 'border-pink' : 'border-gray-200'"
   >
     <div class="flex">
-      <img v-if="this.active == this.type" src="@/assets/icons/checked.svg" />
-      <img v-else src="@/assets/icons/unchecked.svg" />
+      <img
+        v-if="this.active == this.type"
+        src="@/assets/icons/checkboxes/checked_round.svg"
+      />
+      <img v-else src="@/assets/icons/checkboxes/unchecked_round.svg" />
       <span class="pl-2">{{ content }}</span>
     </div>
     <img :src="icon" class="my-3 self-center" />
