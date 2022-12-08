@@ -135,6 +135,11 @@
         :class="reason === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">{{ $t("select") }}</option>
+        <option value="engineProblem">{{ $t("engineProblem") }}</option>
+        <option value="accident">{{ $t("accident") }}</option>
+        <option value="collision">{{ $t("collision") }}</option>
+        <option value="grounding">{{ $t("grounding") }}</option>
+        <option value="oilSpill">{{ $t("oilSpill") }}</option>
       </select>
       <div
         class="col-span-2 row-span-2 text-blue-700 p-3 border-t bg-gray-50 text-14"
