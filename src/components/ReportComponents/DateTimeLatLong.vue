@@ -52,6 +52,7 @@
             <DatePicker 
                 v-model="data.date_time" 
                 class="col-span-3" 
+                :class="data.time_zone==='default' || data.summer_time==='default' ? 'bg-gray-50' : ''"
                 textInput :textInputOptions="textInputOptions"
                 :format="format"
                 :disabled="data.time_zone==='default' || data.summer_time==='default'"
