@@ -59,9 +59,7 @@
       <select
         v-model="summer_time"
         class="col-span-3 p-3 border-b text-14 focus:border-0"
-        :class="
-          summer_time === 'default' ? 'text-gray-400' : 'text-gray-700'
-        "
+        :class="summer_time === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
           {{ $t("selectSummerTime") }}
@@ -151,10 +149,8 @@
 
 <script setup>
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-import { reactive } from "vue";
-import {
-  useNoonReportStore,
-} from "@/store/useNoonReportStore";
+// import { reactive } from "vue";
+import { useNoonReportStore } from "@/store/useNoonReportStore";
 import { storeToRefs } from "pinia";
 
 const store = useNoonReportStore();
@@ -170,15 +166,15 @@ const {
   longDegree: long_degree,
 } = storeToRefs(store);
 
-const data = reactive({
-  time_zone: "default",
-  summer_time: "default",
-  date_time: "",
-  lat_dir: "default",
-  lat_minutes: "",
-  lat_degree: "",
-  long_dir: "default",
-  long_minutes: "",
-  long_degree: "",
-});
+// const data = reactive({
+//   time_zone: "default",
+//   summer_time: "default",
+//   date_time: "",
+//   lat_dir: "default",
+//   lat_minutes: "",
+//   lat_degree: "",
+//   long_dir: "default",
+//   long_minutes: "",
+//   long_degree: "",
+// });
 </script>

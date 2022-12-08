@@ -29,12 +29,12 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const iceCondition = ref("default");
 
   // Heavy Weather Conditions
-  const hours = ref("");
-  const dist = ref("");
-  const consumption = ref("");
+  const heavyWeatherHours = ref("");
+  const heavyWeatherDist = ref("");
+  const heavyWeatherConsumption = ref("");
   const heavyWindDirection = ref("");
   const heavyWindSpeed = ref("");
-  const maxWaveHt = ref("");
+  const heavyMaxWaveHt = ref("");
   const heavyWaveForce = ref("");
 
   // Distance and Time
@@ -54,10 +54,22 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const rpmAvg = ref("");
   const slipAvg = ref("");
 
-  const lsfo = ref({});
+  // Stoppage or Reduction RPM
+  const stoppageBeginning = ref("");
+  const stoppageEnding = ref("");
+  const stoppageDuration = ref("");
+  const reducedRPM = ref("");
+  const stoppageReason = ref("default");
+  const stoppageRemarks = ref("");
+  const stoppageLatDir = ref("");
+  const stoppageLatDegree = ref("");
+  const stoppageLatMinutes = ref("");
+  const stoppageLongDir = ref("");
+  const stoppageLongDegree = ref("");
+  const stoppageLongMinutes = ref("");
 
   return {
-    //   DateTimeLatLong
+    // DateTimeLatLong
     timeZone,
     summerTime,
     dateTime,
@@ -81,12 +93,12 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     swellScale,
     iceCondition,
     // Heavy Weather Conditions
-    hours,
-    dist,
-    consumption,
+    heavyWeatherHours,
+    heavyWeatherDist,
+    heavyWeatherConsumption,
     heavyWindDirection,
     heavyWindSpeed,
-    maxWaveHt,
+    heavyMaxWaveHt,
     heavyWaveForce,
     // DistanceTime
     hoursSinceNoon,
@@ -103,6 +115,19 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     speedAvg,
     rpmAvg,
     slipAvg,
+    // Stoppage or Reduction RPM
+    stoppageBeginning,
+    stoppageEnding,
+    stoppageDuration,
+    reducedRPM,
+    stoppageReason,
+    stoppageRemarks,
+    stoppageLatDir,
+    stoppageLatDegree,
+    stoppageLatMinutes,
+    stoppageLongDir,
+    stoppageLongDegree,
+    stoppageLongMinutes,
   };
 });
 

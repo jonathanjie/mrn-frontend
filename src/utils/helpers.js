@@ -1,4 +1,5 @@
 import { ref } from "vue";
+import constants from "@/constants";
 
 // TODO: handle leading zeros
 export function preventNaN(event, content) {
@@ -33,7 +34,6 @@ export function convertDMSToDD(degrees, minutes, direction) {
 }
 
 export const parsePosition = ({
-  SRID,
   latDegree,
   latMinutes,
   latDir,
@@ -41,8 +41,17 @@ export const parsePosition = ({
   longMinutes,
   longDir,
 }) => {
-  const positionLat = convertDMSToDD(latDegree, latMinutes, latDir);
-  const positionLong = convertDMSToDD(longDegree, longMinutes, longDir);
+    const SRID = constants.SRID;
+  const positionLat = convertDMSToDD(
+    parseFloat(latDegree),
+    parseFloat(latMinutes),
+    latDir
+  );
+  const positionLong = convertDMSToDD(
+    parseFloat(longDegree),
+    parseFloat(longMinutes),
+    longDir
+  );
 
   return `SRID=${SRID};POINT (${positionLat} ${positionLong})`;
 };
