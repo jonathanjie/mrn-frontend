@@ -154,7 +154,6 @@ import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
 import { reactive } from "vue";
 import {
   useNoonReportStore,
-  useCounterStore,
 } from "@/store/useNoonReportStore";
 import { storeToRefs } from "pinia";
 
@@ -170,10 +169,6 @@ const {
   longMinutes: long_minutes,
   longDegree: long_degree,
 } = storeToRefs(store);
-
-const countStore = useCounterStore();
-const { counter } = storeToRefs(countStore);
-const { increment } = countStore;
 
 const data = reactive({
   time_zone: "default",

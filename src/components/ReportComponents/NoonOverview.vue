@@ -70,6 +70,7 @@ import { ref } from 'vue'
 import MiniUnitDisplay from '@/components/MiniUnitDisplay.vue'
 
 // TODO: retrieve from backend or generate as needed
+// API /reports/latest
 const tempValues = {
     reportNo: '2',
     legNo: '2',

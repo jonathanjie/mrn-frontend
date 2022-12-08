@@ -22,7 +22,7 @@
     <DateTimeLatLong>{{ $t("reportingNoon") }}</DateTimeLatLong>
 
     <!-- Weather -->
-    <Weather></Weather>
+    <Weather />
 
     <!-- Heavy Weather Condition -->
     <HeavyWeatherCondition></HeavyWeatherCondition>
@@ -71,7 +71,7 @@ import {
   textInputOptions,
   format,
   preventNaN,
-  convertDMSToDD,
+  parsePosition,
 } from "../../utils/helpers.js";
 
 import NoonOverview from "@/components/ReportComponents/NoonOverview.vue";
@@ -85,6 +85,9 @@ import StoppageOrReductionRPM from "@/components/ReportComponents/StoppageOrRedu
 
 import { useNoonReportStore } from "@/store/useNoonReportStore";
 import { storeToRefs } from "pinia";
+
+import constants, { REPORT_CONSTANTS } from "@/constants";
+
 const store = useNoonReportStore();
 const {
   timeZone,
@@ -96,6 +99,18 @@ const {
   longDir,
   longMinutes,
   longDegree,
+  weather,
+  seaState,
+  windDirection,
+  windSpeed,
+  beaufort,
+  waveDirection,
+  waveHeight,
+  waveForce,
+  swellDirection,
+  swellHeight,
+  swellScale,
+  iceCondition,
 } = storeToRefs(store);
 
 // TODO: retrieve data from backend or generate as needed
@@ -174,12 +189,144 @@ const sendReport = async () => {
     longDegree: longDegree.value,
   };
 
-  console.log("data: ", rawData);
+  // console.log("data: ", rawData);
+  const position = parsePosition({
+    SRID: constants.SRID,
+    latDir: latDir.value,
+    latMinutes: latMinutes.value,
+    latDegree: latDegree.value,
+    longDir: longDir.value,
+    longMinutes: longMinutes.value,
+    longDegree: longDegree.value,
+  });
+
+  const stoppagePosition = parsePosition({
+    SRID: constants.SRID,
+    latDir: latDir.value,
+    latMinutes: latMinutes.value,
+    latDegree: latDegree.value,
+    longDir: longDir.value,
+    longMinutes: longMinutes.value,
+    longDegree: longDegree.value,
+  });
 
   const REPORT = {
-    data: rawData
-    // fill out report based on backend field names and match them with values
+    report_type: REPORT_CONSTANTS.type.noon,
+    voyage: 1,
+    leg_num: 1,
+    report_tz: "Asia/Singapore",
+    summer_time: summerTime.value,
+    report_num: 1,
+    report_date: dateTime.value,
+    position: position,
+    route: {
+      departure_port: "SG PPT",
+      departure_date: "2022-12-01T00:00:00Z",
+      arrival_port: "KR BNP",
+      arrival_date: "2022-12-08T00:00:00Z",
+    },
+    weatherdata: {
+      weather_notation: "D",
+      visibility: 8,
+      wind_direction: "E",
+      wind_speed: "4.0",
+      sea_direction: "E",
+      sea_state: 2,
+      swell_direction: "E",
+      swell_scale: 1,
+      air_pressure: 1011,
+      air_temperature_dry: "27.0",
+      air_temperature_wet: "25.0",
+      sea_temperature: "24.0",
+      ice_condiction: "NONE",
+    },
+    heavyweatherdata: {
+      total_hours: "6.0",
+      observed_distance: "100",
+      fuel_consumption: "100.0",
+      wind_direction: "E",
+      wind_speed: "50.0",
+      sea_direction: "E",
+      sea_state: 4,
+      max_wave_height: "6.0",
+      remarks: "nil",
+    },
+    distanceperformancedata: {
+      hours_since_noon: "12.0",
+      hours_total: "12.0",
+      distance_to_go: "1000",
+      remarks_for_changes: "No change",
+      distance_obs_since_noon: "20",
+      distance_obs_total: "20",
+      distance_eng_since_noon: "21",
+      distance_eng_total: "21",
+      revolution_count: 360000,
+      speed_since_noon: "2.00",
+      rpm_since_noon: "300.0",
+      slip_since_noon: "2.00",
+      speed_avg: "2.00",
+      rpm_avg: "300.0",
+      slip_avg: "2.00",
+    },
+    consumptionconditiondata: {
+      fueloildata_set: [
+        {
+          fuel_oil_type: "HFO",
+          total_consumption: "100.00",
+          receipt: "0.00",
+          debunkering: "0.00",
+          rob: "10000.00",
+          breakdown: {
+            "G/E": 20,
+            "M/E": 80,
+          },
+        },
+        {
+          fuel_oil_type: "LSFO",
+          total_consumption: "100.00",
+          receipt: "0.00",
+          debunkering: "0.00",
+          rob: "1000.00",
+          breakdown: {
+            "G/E": 80,
+            "M/E": 20,
+          },
+        },
+      ],
+      lubricatingoildata_set: [
+        {
+          fuel_oil_type: "M/E Sump",
+          total_consumption: "100.00",
+          receipt: "0.00",
+          debunkering: "0.00",
+          rob: "1000.00",
+          lubricatingoildatacorrection: {
+            correction: "100.00",
+            remarks: "Hi",
+          },
+        },
+      ],
+      freshwaterdata: {
+        consumed: 1000,
+        evaporated: 100,
+        received: 0,
+        discharged: 100,
+        rob: 10000,
+      },
+      consumption_type: "NTON",
+    },
+    stoppagedata: {
+      start_date: "2022-12-02T06:00:00Z",
+      end_date: "2022-12-02T12:00:00Z",
+      duration: "6.0",
+      reduced_rpm: "100.0",
+      position: stoppagePosition,
+      reason: "Food",
+      remarks: "Hungryyy",
+    },
   };
+
+  console.log("data: ", REPORT);
 
   const response = await fetch(
     "https://testapi.marinachain.io/marinanet/reports/",

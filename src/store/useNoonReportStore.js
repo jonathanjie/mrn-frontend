@@ -54,6 +54,8 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const rpmAvg = ref("");
   const slipAvg = ref("");
 
+  const lsfo = ref({});
+
   return {
     //   DateTimeLatLong
     timeZone,
