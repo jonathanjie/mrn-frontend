@@ -73,12 +73,37 @@
       >
         {{ $t("direction") }}
       </div>
-      <input
+      <select
+        v-model="wind_direction"
+        class="col-span-6 xl:col-span-1 p-3 border-b xl:border-b-0 xl:border-r text-14 focus:border-0"
+        :class="
+          wind_direction === 'default' ? 'text-gray-400' : 'text-gray-700'
+        "
+      >
+        <option selected disabled value="default">{{ $t("select") }}</option>
+        <option value="N">{{ $t("north") }}</option>
+        <option value="S">{{ $t("south") }}</option>
+        <option value="E">{{ $t("east") }}</option>
+        <option value="W">{{ $t("west") }}</option>
+        <option value="NE">{{ $t("northEast") }}</option>
+        <option value="NW">{{ $t("northWest") }}</option>
+        <option value="SE">{{ $t("southEast") }}</option>
+        <option value="SW">{{ $t("southWest") }}</option>
+        <option value="NNE">{{ $t("northNorthEast") }}</option>
+        <option value="NNW">{{ $t("northNorthWest") }}</option>
+        <option value="SSE">{{ $t("southSouthEast") }}</option>
+        <option value="SSW">{{ $t("southSouthWest") }}</option>
+        <option value="ENE">{{ $t("eastNorthEast") }}</option>
+        <option value="ESE">{{ $t("eastSouthEast") }}</option>
+        <option value="WSW">{{ $t("westSouthWest") }}</option>
+        <option value="WNW">{{ $t("westNorthWest") }}</option>
+      </select>
+      <!-- <input
         v-model="wind_direction"
         @keypress="preventNaN($event, wind_direction)"
         placeholder="000 (Degrees)"
         class="col-span-6 xl:col-span-2 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"
-      />
+      /> -->
       <div
         class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-b xl:border-b-0 border-r bg-gray-50 text-14"
       >
@@ -132,12 +157,29 @@
       >
         {{ $t("direction") }}
       </div>
-      <input
+      <select
+        v-model="wave_direction"
+        class="col-span-6 xl:col-span-1 p-3 border-b xl:border-b-0 xl:border-r text-14 focus:border-0"
+        :class="
+          wave_direction === 'default' ? 'text-gray-400' : 'text-gray-700'
+        "
+      >
+        <option selected disabled value="default">{{ $t("select") }}</option>
+        <option value="N">{{ $t("north") }}</option>
+        <option value="S">{{ $t("south") }}</option>
+        <option value="E">{{ $t("east") }}</option>
+        <option value="W">{{ $t("west") }}</option>
+        <option value="NE">{{ $t("northEast") }}</option>
+        <option value="NW">{{ $t("northWest") }}</option>
+        <option value="SE">{{ $t("southEast") }}</option>
+        <option value="SW">{{ $t("southWest") }}</option>
+      </select>
+      <!-- <input
         v-model="wave_direction"
         @keypress="preventNaN($event, wave_direction)"
         placeholder="000 (Degrees)"
         class="col-span-6 xl:col-span-2 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"
-      />
+      /> -->
       <div
         class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-r border-b xl:border-b-0 bg-gray-50 text-14"
       >
@@ -186,12 +228,29 @@
       >
         {{ $t("direction") }}
       </div>
-      <input
+      <select
+        v-model="swell_direction"
+        class="col-span-6 xl:col-span-1 p-3 border-b xl:border-b-0 xl:border-r text-14 focus:border-0"
+        :class="
+          swell_direction === 'default' ? 'text-gray-400' : 'text-gray-700'
+        "
+      >
+        <option selected disabled value="default">{{ $t("select") }}</option>
+        <option value="N">{{ $t("north") }}</option>
+        <option value="S">{{ $t("south") }}</option>
+        <option value="E">{{ $t("east") }}</option>
+        <option value="W">{{ $t("west") }}</option>
+        <option value="NE">{{ $t("northEast") }}</option>
+        <option value="NW">{{ $t("northWest") }}</option>
+        <option value="SE">{{ $t("southEast") }}</option>
+        <option value="SW">{{ $t("southWest") }}</option>
+      </select>
+      <!-- <input
         v-model="swell_direction"
         @keypress="preventNaN($event, swell_direction)"
         placeholder="000 (Degrees)"
         class="col-span-6 xl:col-span-2 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"
-      />
+      /> -->
       <div
         class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-b xl:border-b-0 border-r bg-gray-50 text-14"
       >
@@ -258,6 +317,7 @@
 // import { reactive } from "vue";
 import { preventNaN } from "@/utils/helpers";
 import MiniUnitDisplay from "../MiniUnitDisplay.vue";
+import { DIRECTION_CONSTANTS } from "@/constants";
 import { useNoonReportStore } from "@/store/useNoonReportStore";
 import { storeToRefs } from "pinia";
 

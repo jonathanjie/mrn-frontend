@@ -26,7 +26,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const swellDirection = ref("");
   const swellHeight = ref("");
   const swellScale = ref("default");
-  const iceCondition = ref("default");
+  const iceCondition = ref("NONE");
 
   // Heavy Weather Conditions
   const heavyWeatherHours = ref("");
@@ -59,7 +59,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const stoppageEnding = ref("");
   const stoppageDuration = ref("");
   const reducedRPM = ref("");
-  const stoppageReason = ref("default");
+  const stoppageReason = ref("");
   const stoppageRemarks = ref("");
   const stoppageLatDir = ref("");
   const stoppageLatDegree = ref("");

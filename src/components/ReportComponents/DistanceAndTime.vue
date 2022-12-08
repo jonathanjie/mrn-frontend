@@ -98,13 +98,11 @@
         <MiniUnitDisplay>NM</MiniUnitDisplay>
       </div>
       <div
-        v-if="hasRevolutionCount"
         class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-l border-y lg:border-t-0 bg-gray-50 text-14"
       >
         {{ $t("revolutionCounter") }}
       </div>
       <input
-        v-if="hasRevolutionCount"
         v-model="revolution_count"
         @keypress="preventNaN($event, revolution_count)"
         placeholder="0"
@@ -143,11 +141,11 @@ const {
 //   revolution_count: "", // only for noon report
 // });
 
-// const props = defineProps({
-//   hasRevolutionCount: {
-//     type: Boolean,
-//     required: false,
-//     default: false,
-//   },
-// });
+const props = defineProps({
+  hasRevolutionCount: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+});
 </script>
