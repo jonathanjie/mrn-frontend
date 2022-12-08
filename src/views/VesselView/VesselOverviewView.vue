@@ -34,7 +34,7 @@ let isEmpty = ref(false);
 let portCodeToPortName = ref({
   "SG PPT": "Singapore",
   "KR USN": "Ulsan, South Korea",
-})
+});
 
 const getReports = async (voyage_uuid) => {
   const DUMMY_TOKEN = localStorage.getItem("jwt");
@@ -50,15 +50,16 @@ const getReports = async (voyage_uuid) => {
   );
 
   const json = response.json();
-//   console.log(json);
+  //   console.log(json);
 
   return json;
 };
+const imoReg = 1234567;
 
-const getVoyages = async () => {
+const getVoyages = async (imo) => {
   const DUMMY_TOKEN = localStorage.getItem("jwt");
   const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/ships/1234567/voyages/",
+    "https://testapi.marinachain.io/marinanet/ships/" + imoReg + "/voyages/",
     {
       headers: {
         Authorization: "Bearer " + DUMMY_TOKEN,
@@ -69,7 +70,7 @@ const getVoyages = async () => {
   );
 
   const json = response.json();
-//   console.log(json);
+  //   console.log(json);
 
   if (response.length == 0) {
     isEmpty = true;
@@ -78,7 +79,7 @@ const getVoyages = async () => {
   return json;
 };
 
-const voyages = await getVoyages();
+const voyages = await getVoyages(imoReg);
 const reports = {}; // uuid : arr of reports
 
 for (let i = 0; i < voyages.length; i++) {

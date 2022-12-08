@@ -1,0 +1,22 @@
+<svg width="306" height="36" viewBox="0 0 306 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="135" width="36" height="36" rx="12" fill="#CCF5FF" fill-opacity="0.08"/>
+<path d="M150.696 13.7198V11.7148C150.696 11.3088 151.026 10.9795 151.432 10.9795H154.568C154.974 10.9795 155.303 11.3088 155.303 11.7148V13.7198" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M148.394 17.4848V15.1921C148.394 14.3793 149.052 13.7207 149.865 13.7207H156.137C156.95 13.7207 157.608 14.3793 157.608 15.1921V17.4848" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M153 9.66309V10.9795" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M156.906 22.6943L158.003 20.5009L159.67 17.9999L153 16.3325L146.331 17.9999L147.998 20.5009L148.731 22.5768" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M145.497 22.5016C146.414 22.0848 147.581 22.0848 148.498 22.5016C149.415 22.9184 150.583 22.9184 151.5 22.5016C152.417 22.0848 153.584 22.0848 154.501 22.5016C155.418 22.9184 156.585 22.9184 157.502 22.5016C158.419 22.0848 159.586 22.0848 160.503 22.5016" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M148.498 25.1906C149.415 25.6074 150.582 25.6074 151.499 25.1906C152.416 24.7737 153.583 24.7737 154.501 25.1906C155.418 25.6074 156.585 25.6074 157.502 25.1906" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path opacity="0.32" d="M0 18H120" stroke="#00CCFF" stroke-width="2"/>
+<path d="M0 18H121" stroke="url(#paint0_linear_4706_97423)" stroke-width="2"/>
+<circle cx="3" cy="18" r="3" fill="#00CCFF"/>
+<path opacity="0.32" d="M186 19H306V17H186V19Z" fill="#00CCFF"/>
+<circle cx="303" cy="18" r="3" fill="#00CCFF"/>
+<path d="M59.333 21.3332L62.6663 17.9998L59.333 14.6665" stroke="#00CCFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M244.333 21.3332L247.666 17.9998L244.333 14.6665" stroke="#00CCFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<defs>
+<linearGradient id="paint0_linear_4706_97423" x1="0" y1="18" x2="121" y2="18" gradientUnits="userSpaceOnUse">
+<stop stop-color="#0093B8"/>
+<stop offset="1" stop-color="#09DBA9"/>
+</linearGradient>
+</defs>
+</svg>
