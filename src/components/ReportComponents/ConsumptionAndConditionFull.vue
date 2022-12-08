@@ -181,45 +181,65 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-14 border text-14">
-          <div class="col-span-2 text-blue-700 p-3 bg-gray-50">
-            {{ $t("correction") }}
-          </div>
-          <!-- TODO: make dynamic -->
-          <select
-            v-model="correction_fo.type"
-            class="col-span-6 p-3 border-l focus:border-0"
-            :class="
-              correction_fo.type === 'default'
-                ? 'text-gray-400'
-                : 'text-gray-700'
-            "
-          >
-            <option selected disabled value="default">
-              {{ $t("selectType") }}
-            </option>
-            <option value="lsfo">{{ $t("lsfo") }}</option>
-            <option value="mgo">{{ $t("mgo") }}</option>
-          </select>
-          <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
-            <input
-              v-model="correction_fo.change"
-              @keypress="preventNaN($event, correction_fo.change)"
-              placeholder="00,000.00"
-              class="w-24 text-gray-700 focus:outline-0"
-            />
-            <MiniUnitDisplay>MT</MiniUnitDisplay>
-          </div>
+        <div
+          v-if="!isAdditionalRemarkFuel"
+          class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
+          @click="isAdditionalRemarkFuel = !isAdditionalRemarkFuel"
+        >
+          <img src="@/assets/icons/unchecked.svg" class="pr-2" />
+          <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
+        </div>
+        <div
+          v-else
+          class="bg-gray-25 flex-col py-4 px-3 border border-gray-100"
+        >
           <div
-            class="col-span-2 row-span-2 text-blue-700 p-3 border-t bg-gray-50"
+            class="flex items-center mb-3 cursor-pointer"
+            @click="isAdditionalRemarkFuel = !isAdditionalRemarkFuel"
           >
-            {{ $t("remarks") }}
+            <img src="@/assets/icons/checked.svg" class="pr-2" />
+            <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
           </div>
-          <textarea
-            v-model.trim="correction_fo.remarks"
-            placeholder="Input description here"
-            class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
-          ></textarea>
+          <div class="grid grid-cols-14 border text-14">
+            <div class="col-span-2 text-blue-700 p-3 bg-gray-50">
+              {{ $t("correction") }}
+            </div>
+            <!-- TODO: make dynamic -->
+            <select
+              v-model="correction_fo.type"
+              class="col-span-6 p-3 border-l focus:border-0"
+              :class="
+                correction_fo.type === 'default'
+                  ? 'text-gray-400'
+                  : 'text-gray-700'
+              "
+            >
+              <option selected disabled value="default">
+                {{ $t("selectType") }}
+              </option>
+              <option value="lsfo">{{ $t("lsfo") }}</option>
+              <option value="mgo">{{ $t("mgo") }}</option>
+            </select>
+            <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
+              <input
+                v-model="correction_fo.change"
+                @keypress="preventNaN($event, correction_fo.change)"
+                placeholder="00,000.00"
+                class="w-24 text-gray-700 focus:outline-0"
+              />
+              <MiniUnitDisplay>MT</MiniUnitDisplay>
+            </div>
+            <div
+              class="col-span-2 row-span-2 text-blue-700 p-3 border-t bg-gray-50"
+            >
+              {{ $t("remarks") }}
+            </div>
+            <textarea
+              v-model.trim="correction_fo.remarks"
+              placeholder="Input description here"
+              class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
+            ></textarea>
+          </div>
         </div>
       </div>
 
@@ -312,47 +332,66 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-14 border text-14">
-          <div class="col-span-2 text-blue-700 p-3 bg-gray-50">
-            {{ $t("correction") }}
-          </div>
-          <!-- TODO: make dynamic -->
-          <select
-            v-model="correction_lo.type"
-            class="col-span-6 p-3 border-l focus:border-0"
-            :class="
-              correction_lo.type === 'default'
-                ? 'text-gray-400'
-                : 'text-gray-700'
-            "
-          >
-            <option selected disabled value="default">
-              {{ $t("selectType") }}
-            </option>
-            <option value="mecylinder">{{ $t("mecylinder") }}</option>
-            <option value="mesystem">{{ $t("mesystem") }}</option>
-            <option value="mesump">{{ $t("mesump") }}</option>
-            <option value="gesystem">{{ $t("gesystem") }}</option>
-          </select>
-          <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
-            <input
-              v-model="correction_lo.change"
-              @keypress="preventNaN($event, correction_lo.change)"
-              placeholder="00,000.00"
-              class="w-24 text-gray-700 focus:outline-0"
-            />
-            <MiniUnitDisplay>MT</MiniUnitDisplay>
-          </div>
+        <div
+          v-if="!isAdditionalRemarkLubricate"
+          class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
+          @click="isAdditionalRemarkLubricate = !isAdditionalRemarkLubricate"
+        >
+          <img src="@/assets/icons/unchecked.svg" class="pr-2" />
+          <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
+        </div>
+        <div
+          v-else
+          class="bg-gray-25 flex-col py-4 px-3 border border-gray-100"
+        >
           <div
-            class="col-span-2 row-span-2 text-blue-700 p-3 border-t bg-gray-50"
+            class="flex items-center mb-3 cursor-pointer"
+            @click="isAdditionalRemarkLubricate = !isAdditionalRemarkLubricate"
           >
-            {{ $t("remarks") }}
+            <img src="@/assets/icons/checked.svg" class="pr-2" />
+            <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
           </div>
-          <textarea
-            v-model.trim="correction_lo.remarks"
-            placeholder="Input description here"
-            class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
-          ></textarea>
+          <div class="grid grid-cols-14 border text-14">
+            <div class="col-span-2 text-blue-700 p-3 bg-gray-50">
+              {{ $t("correction") }}
+            </div>
+            <select
+              v-model="correction_lo.type"
+              class="col-span-6 p-3 border-l focus:border-0"
+              :class="
+                correction_lo.type === 'default'
+                  ? 'text-gray-400'
+                  : 'text-gray-700'
+              "
+            >
+              <option selected disabled value="default">
+                {{ $t("selectType") }}
+              </option>
+              <option value="mecylinder">{{ $t("mecylinder") }}</option>
+              <option value="mesystem">{{ $t("mesystem") }}</option>
+              <option value="mesump">{{ $t("mesump") }}</option>
+              <option value="gesystem">{{ $t("gesystem") }}</option>
+            </select>
+            <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
+              <input
+                v-model="correction_lo.change"
+                @keypress="preventNaN($event, correction_lo.change)"
+                placeholder="00,000.00"
+                class="w-24 text-gray-700 focus:outline-0"
+              />
+              <MiniUnitDisplay>MT</MiniUnitDisplay>
+            </div>
+            <div
+              class="col-span-2 row-span-2 text-blue-700 p-3 border-t bg-gray-50"
+            >
+              {{ $t("remarks") }}
+            </div>
+            <textarea
+              v-model.trim="correction_lo.remarks"
+              placeholder="Input description here"
+              class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
+            ></textarea>
+          </div>
         </div>
       </div>
 
@@ -413,6 +452,9 @@
 import { preventNaN } from "@/utils/helpers";
 import { ref, reactive, computed, defineProps } from "vue";
 import MiniUnitDisplay from "../../components/MiniUnitDisplay.vue";
+
+const isAdditionalRemarkFuel = ref(false);
+const isAdditionalRemarkLubricate = ref(false);
 
 // TODO: incorporate receipt / debunkering to formula
 const lsfo_total = computed(
