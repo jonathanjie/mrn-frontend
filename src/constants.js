@@ -12,12 +12,11 @@ export const REPORT_CONSTANTS = {
   weatherData: "weatherdata",
 };
 export const DIRECTION_CONSTANTS = {
-    n: "N",
-    s: "S",
-    e: "E",
-    w: "W",
-
-}
+  n: "N",
+  s: "S",
+  e: "E",
+  w: "W",
+};
 
 const constants = {
   SRID: "4326",

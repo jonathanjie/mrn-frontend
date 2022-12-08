@@ -4,7 +4,7 @@ import { ref } from "vue";
 
 export const useNoonReportStore = defineStore("noonReport", () => {
   //   DateTimeLatLong
-  const timeZone = ref("default");
+  const timeZone = ref("");
   const summerTime = ref("default");
   const dateTime = ref("");
   const latDir = ref("default");
@@ -39,7 +39,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const heavyWeatherNotation = ref("default");
   const heavyWindDirection = ref("default");
   const heavyWindSpeed = ref("");
-  const heavyMaxWaveHt = ref(""); 
+  const heavyMaxWaveHt = ref("");
   const heavySeaDirection = ref("default");
   const heavySeaState = ref("default");
   const heavyRemarks = ref("");

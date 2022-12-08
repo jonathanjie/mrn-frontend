@@ -41,7 +41,7 @@ export const parsePosition = ({
   longMinutes,
   longDir,
 }) => {
-    const SRID = constants.SRID;
+  const SRID = constants.SRID;
   const positionLat = convertDMSToDD(
     parseFloat(latDegree),
     parseFloat(latMinutes),
