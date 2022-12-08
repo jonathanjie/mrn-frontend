@@ -7,85 +7,83 @@
         <slot>{{ $t("performance") }}</slot>
       </span>
     </div>
-    <div class="col-span-2 lg:col-span-1">
-      <div class="pb-2 text-14">{{ $t("noonToNoon") }}</div>
-      <div class="grid grid-cols-5 border">
-        <div
-          class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
-        >
+    <div class="col-span-2 lg:col-span-1 text-14">
+      <div class="pb-2">{{ $t("noonToNoon") }}</div>
+      <div class="grid grid-cols-5 border bg-gray-50">
+        <div class="col-span-2 text-blue-700 p-3 border-r border-b">
           {{ $t("speed") }}
         </div>
-        <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
+        <div class="flex col-span-3 p-2 pl-4 border-b">
           <input
             v-model="speed_since_noon"
             @keypress="preventNaN($event, speed_since_noon)"
             placeholder="0"
-            class="w-16 text-14 text-gray-700 focus:outline-0"
+            disabled
+            class="w-16 text-gray-700 focus:outline-0 bg-gray-50"
           />
           <MiniUnitDisplay>KNOTS</MiniUnitDisplay>
         </div>
-        <div
-          class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
-        >
+        <div class="col-span-2 text-blue-700 p-3 border-r border-b">
           {{ $t("rpm") }}
         </div>
         <input
           v-model="rpm_since_noon"
           @keypress="preventNaN($event, rpm_since_noon)"
           placeholder="0"
-          class="col-span-3 p-3 pl-4 border-b bg-white text-14 text-gray-700 focus:outline-0"
+          disabled
+          class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0 bg-gray-50"
         />
-        <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
+        <div class="col-span-2 text-blue-700 p-3 border-r">
           {{ $t("slip") }}
         </div>
-        <div class="flex col-span-3 p-2 pl-4 bg-white">
+        <div class="flex col-span-3 p-2 pl-4">
           <input
             v-model="slip_since_noon"
             @keypress="preventNaN($event, slip_since_noon)"
             placeholder="0"
-            class="w-24 text-14 text-gray-700 focus:outline-0"
+            disabled
+            class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
           />
           <MiniUnitDisplay>%</MiniUnitDisplay>
         </div>
       </div>
     </div>
-    <div class="col-span-2 lg:col-span-1">
-      <div class="pb-2 text-14">{{ $t("currentVoyage") }}</div>
-      <div class="grid grid-cols-5 border">
-        <div
-          class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
-        >
+    <div class="col-span-2 lg:col-span-1 text-14">
+      <div class="pb-2">{{ $t("currentVoyage") }}</div>
+      <div class="grid grid-cols-5 border bg-gray-50">
+        <div class="col-span-2 text-blue-700 p-3 border-r border-b">
           {{ $t("averageSpeed") }}
         </div>
-        <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
+        <div class="flex col-span-3 p-2 pl-4 border-b">
           <input
             v-model="speed_avg"
             @keypress="preventNaN($event, speed_avg)"
             placeholder="0"
-            class="w-16 text-14 text-gray-700 focus:outline-0"
+            disabled
+            class="w-16 text-gray-700 focus:outline-0 bg-gray-50"
           />
           <MiniUnitDisplay>KNOTS</MiniUnitDisplay>
         </div>
-        <div
-          class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
-        >
+        <div class="col-span-2 text-blue-700 p-3 border-r border-b">
           {{ $t("averageRPM") }}
         </div>
         <input
           v-model="rpm_avg"
           @keypress="preventNaN($event, rpm_avg)"
           placeholder="0"
-          class="col-span-3 p-3 pl-4 border-b bg-white text-14 text-gray-700 focus:outline-0"
+          disabled
+          class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0 bg-gray-50"
         />
-        <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
+        <div class="col-span-2 text-blue-700 p-3 border-r">
           {{ $t("slip") }}
         </div>
-        <div class="flex col-span-3 p-2 pl-4 bg-white">
+        <div class="flex col-span-3 p-2 pl-4">
           <input
             v-model="slip_avg"
             @keypress="preventNaN($event, slip_avg)"
             placeholder="0"
-            class="w-24 text-14 text-gray-700 focus:outline-0"
+            disabled
+            class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
           />
           <MiniUnitDisplay>%</MiniUnitDisplay>
         </div>
@@ -102,6 +100,7 @@ import { useNoonReportStore } from "@/store/useNoonReportStore";
 import { storeToRefs } from "pinia";
 const store = useNoonReportStore();
 
+// TODO: need to be computed values
 const {
   speedSinceNoon: speed_since_noon,
   rpmSinceNoon: rpm_since_noon,
