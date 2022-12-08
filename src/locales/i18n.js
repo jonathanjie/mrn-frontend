@@ -5,7 +5,7 @@ const i18n = createI18n({
   locale: "en",
   messages: {
     en: {
-      dir_16_placeholder: '16 winds vine (e.g. ENE)',
+      dir_16_placeholder: "16 winds vine (e.g. ENE)",
       dir_16_N: "N",
       dir_16_NNE: "NNE",
       dir_16_NE: "NE",
@@ -22,7 +22,7 @@ const i18n = createI18n({
       dir_16_NWN: "NWN",
       dir_16_NW: "NW",
       dir_16_NNW: "NNW",
-      dir_8_placeholder: '8 directions (e.g. NE)',
+      dir_8_placeholder: "8 directions (e.g. NE)",
       dir_8_N: "N",
       dir_8_NE: "NE",
       dir_8_E: "E",
@@ -129,7 +129,7 @@ const i18n = createI18n({
       distanceOBS: "Distance (OBS)",
       distanceToGo: "Distance to go",
       distanceTravelled: "Distance travelled",
-      douglasScale: 'Douglas scale',
+      douglasScale: "Douglas scale",
       draft: "Draft",
       dragAndDrop: "Drag and Drop",
       driftingStart: "Drifting start",
@@ -481,6 +481,11 @@ const i18n = createI18n({
       cruisingRange: "Cruising range",
       fuelDailyConsumption: "Fuel daily consumption",
       propellerPitch: "Propeller Pitch",
+      engineProblem: "Engine problem",
+      accident: "Accident",
+      collision: "Collision",
+      grounding: "Grounding",
+      oilSpill: "Oil spill",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser
