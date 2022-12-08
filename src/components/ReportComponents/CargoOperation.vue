@@ -14,6 +14,10 @@
                     :class="data.load_condition === 'default' ? 'text-gray-400' : 'text-gray-700'"
                 >
                     <option selected disabled value="default">{{ $t("selectAnOption") }}</option>
+                    <option value="ballast">{{ $t("ballast") }}</option>
+                    <option value="laden">{{ $t("laden") }}</option>
+                    <option value="eastbound">{{ $t("eastbound") }}</option>
+                    <option value="westbound">{{ $t("westbound") }}</option>
                 </select>
             </div>
             <div class="grid grid-cols-5">
@@ -54,7 +58,7 @@
                         :placeholder="$t('inputDetails')" 
                         class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
                     />
-                    <MiniUnitDisplay>Hours</MiniUnitDisplay>
+                    <MiniUnitDisplay>HRS</MiniUnitDisplay>
                 </div>
             </div>
         </div>

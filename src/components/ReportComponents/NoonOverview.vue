@@ -13,7 +13,7 @@
         <div class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14">
             <div class="col-span-2 text-blue-700 p-3 border-l border-y">{{ $t("voyageNo") }}</div>
             <div class="flex col-span-3 p-3 border">
-                <input class="text-gray-700 bg-gray-50 w-12" disabled v-model="tempValues.voyageNo"/>
+                <input class="text-gray-700 bg-gray-50 w-8" disabled v-model="tempValues.voyageNo"/>
                 <!-- value here (e.g. Ballast) should be dynamic -->
                 <MiniUnitDisplay class="ml-0 mr-auto">{{ $t("ballast") }}</MiniUnitDisplay>
             </div>
@@ -41,25 +41,65 @@
             </div>
             <div class="grid grid-cols-5 border bg-gray-50 text-14 mt-4">
                 <div class="col-span-2 text-blue-700 p-3 border-r border-b">{{ $t("name") }}</div>
-                <div class="col-span-3 p-3 border-b flex" :class="dpEditable?'bg-white':'bg-gray-50'">
-                    <input 
-                        class="text-gray-700" 
-                        :disabled="!dpEditable" 
-                        v-model="tempValues.destinationPort"/>
-                    <button @click="dpEditable.value = !dpEditable.value" class="ml-auto">
-                        <img src="@/assets/icons/edit.svg"/>
-                    </button>
-                </div>
-                <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("estDateAndTime") }}</div>
-                <div class="col-span-3 p-3 flex" :class="ddtEditable?'bg-white':'bg-gray-50'">
-                    <input 
-                        class="text-gray-700" 
-                        :disabled="!ddtEditable" 
-                        v-model="tempValues.destinationDateTime"/>
-                    <button @click="ddtEditable.value = !ddtEditable.value" class="ml-auto">
-                        <img src="@/assets/icons/edit.svg"/>
-                    </button>
-                </div>
+                <select v-model="destination.port_name" 
+                    class="col-span-3 p-3 border-b text-14 focus:border-0 text-gray-600" 
+                >
+                    <option selected disabled value="default">{{ $t("selectPort") }}</option>
+                    <option value="dummy">Ras Tanura, Saudi Arabia</option> 
+                    <!-- Add port names here -->
+                </select>
+                <div class="col-span-2 text-blue-700 p-3 border-r border-b">{{ $t("estDateAndTime") }}</div>
+                <DatePicker 
+                    v-model="destination.date_time" 
+                    class="col-span-3 border-b" 
+                    textInput :textInputOptions="textInputOptions"
+                    :format="format"
+                    :modelValue="string"
+                    placeholder="Select date & time"
+                >
+                    <template #input-icon>
+                        <img src=""/>
+                    </template>
+                </DatePicker>
+                <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("timeZone") }}</div>
+                <select v-model="destination.time_zone" 
+                    class="col-span-3 p-3 border-b text-14 focus:border-0 text-gray-600" 
+                >
+                    <option selected disabled value="default">{{ $t("selectTimeZone") }}</option>
+                    <!-- TODO: select +1 or -1 timezone from previous report -->
+                    <option value="0">UTC</option>
+                    <option value="1">UTC+1:00</option>
+                    <option value="2">UTC+2:00</option>
+                    <option value="3">UTC+3:00</option>
+                    <option value="4">UTC+4:00</option>
+                    <option value="5">UTC+5:00</option>
+                    <option value="6">UTC+6:00</option>
+                    <option value="7">UTC+7:00</option>
+                    <option value="8">UTC+8:00</option>
+                    <option value="9">UTC+9:00</option>
+                    <option value="10">UTC+10:00</option>
+                    <option value="11">UTC+11:00</option>
+                    <option value="12">UTC+12:00</option>
+                    <option value="-11">UTC-11:00</option>
+                    <option value="-10">UTC-10:00</option>
+                    <option value="-9">UTC-9:00</option>
+                    <option value="-8">UTC-8:00</option>
+                    <option value="-7">UTC-7:00</option>
+                    <option value="-6">UTC-6:00</option>
+                    <option value="-5">UTC-5:00</option>
+                    <option value="-4">UTC-4:00</option>
+                    <option value="-3">UTC-3:00</option>
+                    <option value="-2">UTC-2:00</option>
+                    <option value="-1">UTC-1:00</option>
+                </select>
+                <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("summerTime") }}</div>
+                <select v-model="destination.summer_time" 
+                    class="col-span-3 p-3 text-14 focus:border-0 text-gray-600" 
+                >
+                    <option selected disabled value="default">{{ $t("selectSummerTime") }}</option>
+                    <option value="true">{{ $t("applied") }}</option>
+                    <option value="false">{{ $t("notApplied") }}</option>
+                </select>
             </div>
         </div>
     </div>
@@ -76,10 +116,21 @@ const tempValues = {
     voyageNo: '1',
     departurePort: 'Singapore, Singapore',
     departureDateTime: '2022.06.01 12:23 (LT)',
-    destinationPort: 'Ras Tanura, Saudi Arabia',
-    destinationDateTime: '2022.06.01 12:23 (LT)',
 };
+
+const destination = {
+    port_name: 'dummy',
+    date_time: '2022.06.01 12:23 (LT)',
+    time_zone: '3',
+    summer_time: 'false',
+}
 
 const dpEditable = ref(false);
 const ddtEditable = ref(false);
 </script>
+
+<style scoped>
+.dp__theme_light {
+	--dp-text-color: #667085;
+}
+</style>

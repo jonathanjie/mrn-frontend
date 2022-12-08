@@ -10,13 +10,13 @@
             <div class="col-span-2 lg:col-span-1">
                 <div class="grid grid-cols-5 border">
                     <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("totalDistanceByOBS") }}</div>
-                    <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
-                        <input v-model="data.total_distance_obs" @keypress="preventNaN($event, data.total_distance_obs)" placeholder="0" class="w-16 text-14 text-gray-700 focus:outline-0"/>
+                    <div class="flex col-span-3 p-2 pl-4 border-b bg-gray-50">
+                        <input v-model="data.total_distance_obs" @keypress="preventNaN($event, data.total_distance_obs)" placeholder="0" disabled class="w-16 text-14 text-gray-700 focus:outline-0 bg-gray-50 "/>
                         <MiniUnitDisplay>NM</MiniUnitDisplay>
                     </div>
                     <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("totalTime") }}</div>
-                    <div class="flex col-span-3 p-2 pl-4 bg-white">
-                        <input v-model="data.total_time" @keypress="preventNaN($event, data.total_time)" placeholder="0" class="w-16 text-14 text-gray-700 focus:outline-0"/>
+                    <div class="flex col-span-3 p-2 pl-4 bg-gray-50">
+                        <input v-model="data.total_time" @keypress="preventNaN($event, data.total_time)" placeholder="0" disabled class="w-16 text-14 text-gray-700 focus:outline-0 bg-gray-50"/>
                         <MiniUnitDisplay>HRS</MiniUnitDisplay>
                     </div>
                 </div>

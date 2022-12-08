@@ -8,11 +8,12 @@
         </div>
         <div class="col-span-2 lg:col-span-1 grid grid-cols-5">
             <div class="col-span-2 text-blue-700 p-3 border-l border-t bg-gray-50 text-14">{{ $t("time") }}</div>
-            <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
+            <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50">
                 <input v-model="data.hours_since_noon" 
                     @keypress="preventNaN($event, data.hours_since_noon)" 
                     placeholder="0" 
-                    class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
+                    disabled
+                    class="w-24 text-14 bg-gray-50 text-gray-700 focus:outline-0"
                 />
                 <MiniUnitDisplay>HRS</MiniUnitDisplay>
             </div>
@@ -28,11 +29,12 @@
             </div>
 
             <div class="col-span-2 text-blue-700 p-3 border-l border-t lg:border-y bg-gray-50 text-14">{{ $t("distanceByEngine") }}</div>
-            <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t lg:border">
+            <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t lg:border bg-gray-50">
                 <input v-model="data.distance_eng_since_noon" 
                     @keypress="preventNaN($event, data.distance_eng_since_noon)" 
                     placeholder="0" 
-                    class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
+                    disabled
+                    class="w-24 text-14 bg-gray-50 text-gray-700 focus:outline-0"
                 />
                 <MiniUnitDisplay>NM</MiniUnitDisplay>
             </div>

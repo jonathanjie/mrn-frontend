@@ -5,7 +5,7 @@
         <div class="grid grid-cols-2 gap-4 mb-4">
             <div class="col-span-2 flex items-center">
                 <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
-                <span class="text-blue-700 text-16">{{ $t("distanceAndTimeRupEngine") }}</span>
+                <span class="text-blue-700 text-16">{{ $t("RupEngine") }}</span>
             </div>
             <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border">
                 <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">{{ $t("dateAndTime") }}</div>
@@ -71,7 +71,7 @@
             <div class="flex items-center col-span-2 mt-4">
                 <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5"/>
                 <span class="text-blue-700 text-16">
-                    <slot>{{ $t('sbyToRupInHarbour') }}</slot>
+                    <slot>{{ $t('distanceAndTimeSbyToRup') }}</slot>
                 </span>
             </div>
             <div class="col-span-2 lg:col-span-1 grid grid-cols-5">

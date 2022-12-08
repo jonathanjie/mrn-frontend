@@ -8,7 +8,7 @@
         </div>
 
         <!-- Upload delivery note section --> 
-        <DropZone class="flex drop-area border border-dashed border-sysblue-300 p-14 place-content-center rounded-lg text-16 text-gray-800" @files-dropped="addFiles" #default="{ dropZoneActive }">
+        <DropZone class="flex drop-area border border-dashed border-sysblue-300 p-14 place-content-center rounded-lg text-16 text-gray-800 bg-gray-25" @files-dropped="addFiles" #default="{ dropZoneActive }">
             <span v-if="dropZoneActive">
                 <span>{{ $t("dropFileHere") }}</span>
             </span>
@@ -57,7 +57,7 @@
 
             <div class="flex col-span-1 text-blue-700 p-3 border-r border-b bg-gray-50">
                 {{ $t("densityAt15") }}
-                <MiniUnitDisplay>KG/M</MiniUnitDisplay>
+                <MiniUnitDisplay>KG/M<sup>3</sup></MiniUnitDisplay>
             </div>
              <input v-model="data.density" 
                 @keypress="preventNaN($event, data.density)" 
@@ -65,9 +65,18 @@
                 class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0"
             />
 
+            <div class="col-span-1 text-blue-700 p-3 border-r border-b bg-gray-50">
+                {{ $t("sgAt15") }}
+            </div>
+             <input v-model="data.sg" 
+                @keypress="preventNaN($event, data.sg)" 
+                placeholder="000.00" 
+                class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0"
+            />
+
             <div class="flex col-span-1 text-blue-700 p-3 border-r border-b bg-gray-50">
                 {{ $t("viscosityAt15") }}
-                <MiniUnitDisplay>cST</MiniUnitDisplay>
+                <MiniUnitDisplay>cSt</MiniUnitDisplay>
             </div>
              <input v-model="data.viscosity" 
                 @keypress="preventNaN($event, data.viscosity)" 
@@ -76,11 +85,11 @@
             />
 
             <div class="flex col-span-1 text-blue-700 p-3 border-r border-b bg-gray-50">
-                {{ $t("flashPointDMCC") }}
+                {{ $t("flashPoint") }}
                 <MiniUnitDisplay>°C</MiniUnitDisplay>
             </div>
-             <input v-model="data.flash_point_DMCC" 
-                @keypress="preventNaN($event, data.flash_point_DMCC)" 
+             <input v-model="data.flash_point" 
+                @keypress="preventNaN($event, data.flash_point)" 
                 placeholder="000.00" 
                 class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0"
             />
@@ -152,8 +161,9 @@ const { files, addFiles, removeFile } = useFileList()
 const data = {
     "oil": 'default',
     "density": '',
+    "sg": '',
     "viscosity": '',
-    "flash_point_DMCC": '',
+    "flash_point": '',
     "sulfur_content": '',
     "marpol1": '',
     "marpol2": '',

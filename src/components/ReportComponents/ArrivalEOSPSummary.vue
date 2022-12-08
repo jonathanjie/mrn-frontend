@@ -28,17 +28,6 @@
             </div>
             <div class="col-span-2 lg:col-span-1">
                 <div class="grid grid-cols-5 border">
-                    <div class="col-span-5 text-blue-700 p-3 border-b bg-gray-50 text-14">{{ $t("totalConsumptionAtSea") }}</div>
-                    <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("lsfo") }}</div>
-                    <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
-                        <input v-model="data.lsfo_total_at_sea" @keypress="preventNaN($event, data.lsfo_total_at_sea)" placeholder="0" class="w-16 text-14 text-gray-700 focus:outline-0"/>
-                        <MiniUnitDisplay>MT</MiniUnitDisplay>
-                    </div>
-                    <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("mgo") }}</div>
-                    <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
-                        <input v-model="data.mgo_total_at_sea" @keypress="preventNaN($event, data.mgo_total_at_sea)" placeholder="0" class="w-16 text-14 text-gray-700 focus:outline-0"/>
-                        <MiniUnitDisplay>MT</MiniUnitDisplay>
-                    </div>
                     <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14">{{ $t("averageSpeed") }}</div>
                     <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
                         <input v-model="data.avg_speed" @keypress="preventNaN($event, data.avg_speed)" placeholder="0" class="w-16 text-14 text-gray-700 focus:outline-0"/>
@@ -99,8 +88,6 @@ const data = reactive({
     "total_distance_obs": '', 
     "total_sailing_time": '', 
     "displacement": '',
-    "lsfo_total_at_sea": '', 
-    "mgo_total_at_sea": '', 
     "avg_speed": '', 
     "avg_rpm": '',
     "me_fo_consumption": '',
