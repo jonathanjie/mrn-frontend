@@ -54,7 +54,7 @@
                 class="col-span-3" 
                 textInput :textInputOptions="textInputOptions"
                 :format="format"
-                :disabled="data.date_time==='default' || data.date_time==='default'"
+                :disabled="data.time_zone==='default' || data.summer_time==='default'"
                 :modelValue="string"
                 placeholder="Select date & time"
             >
