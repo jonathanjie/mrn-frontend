@@ -186,7 +186,10 @@
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
           @click="isAdditionalRemarkFuel = !isAdditionalRemarkFuel"
         >
-          <img src="@/assets/icons/unchecked.svg" class="pr-2" />
+          <img
+            src="@/assets/icons/checkboxes/unchecked_square.svg"
+            class="mr-2 h-5 w-5"
+          />
           <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
         </div>
         <div
@@ -197,7 +200,10 @@
             class="flex items-center mb-3 cursor-pointer"
             @click="isAdditionalRemarkFuel = !isAdditionalRemarkFuel"
           >
-            <img src="@/assets/icons/checked.svg" class="pr-2" />
+            <img
+              src="@/assets/icons/checkboxes/checked_square.svg"
+              class="mr-2 h-5 w-5"
+            />
             <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
           </div>
           <div class="grid grid-cols-14 border text-14">
@@ -337,7 +343,10 @@
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
           @click="isAdditionalRemarkLubricate = !isAdditionalRemarkLubricate"
         >
-          <img src="@/assets/icons/unchecked.svg" class="pr-2" />
+          <img
+            src="@/assets/icons/checkboxes/unchecked_square.svg"
+            class="mr-2 h-5 w-5"
+          />
           <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
         </div>
         <div
@@ -348,7 +357,10 @@
             class="flex items-center mb-3 cursor-pointer"
             @click="isAdditionalRemarkLubricate = !isAdditionalRemarkLubricate"
           >
-            <img src="@/assets/icons/checked.svg" class="pr-2" />
+            <img
+              src="@/assets/icons/checkboxes/checked_square.svg"
+              class="mr-2 h-5 w-5"
+            />
             <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
           </div>
           <div class="grid grid-cols-14 border text-14">
