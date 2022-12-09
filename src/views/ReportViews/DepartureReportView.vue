@@ -117,35 +117,3 @@ import DistanceAndTimeCOSP from "@/components/ReportComponents/DistanceAndTimeCO
 import BudgetTransOcean from "@/components/ReportComponents/BudgetTransOcean.vue";
 import ConsumptionAndCondition from "@/components/ReportComponents/ConsumptionAndCondition.vue";
 </script>
-
-<style lang="scss">
-$dp__font_family: "Manrope";
-$dp__font_size: 0.875rem;
-$dp__border_radius: 0px;
-$dp__input_padding: 12px 12px;
-$dp__input_icon_padding: 14px;
-
-@import "node_modules/@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss";
-
-.dp__theme_light {
-  --dp-background-color: #ffffff;
-  --dp-text-color: #212121;
-  --dp-hover-color: #f3f3f3;
-  --dp-hover-text-color: #0093b8;
-  --dp-hover-icon-color: #0093b8;
-  --dp-primary-color: #0093b8;
-  --dp-primary-text-color: #f8f5f5;
-  --dp-secondary-color: #c0c4cc;
-  --dp-border-color: #ffffff;
-  --dp-menu-border-color: #ddd;
-  --dp-border-color-hover: #ffffff;
-  --dp-disabled-color: #f6f6f6;
-  --dp-scroll-bar-background: #f3f3f3;
-  --dp-scroll-bar-color: #959595;
-  --dp-success-color: #0093b8;
-  --dp-success-color-disabled: #a3d9b1;
-  --dp-icon-color: #959595;
-  --dp-danger-color: #ff6f60;
-  --dp-highlight-color: rgba(25, 118, 210, 0.1);
-}
-</style>

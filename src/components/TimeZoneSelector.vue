@@ -76,5 +76,6 @@ export default {
   --vs-font-size: 0.85rem;
   --vs-line-height: 1.4;
   --vs-search-input-placeholder-color: #b3bac7;
+  --vs-selected-color: #475467;
 }
 </style>

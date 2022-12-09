@@ -42,15 +42,15 @@
         class="col-span-3"
         :class="
           time_zone === 'default' || summer_time === 'default'
-            ? 'bg-gray-50'
-            : ''
+            ? 'bg-gray-50 text-gray-400'
+            : 'text-gray-700'
         "
         textInput
         :textInputOptions="textInputOptions"
         :format="format"
         :disabled="time_zone === 'default' || summer_time === 'default'"
         :modelValue="string"
-        placeholder="Select date & time"
+        :placeholder="$t('selectDateAndTime')"
       >
         <template #input-icon>
           <img src="" />
