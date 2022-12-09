@@ -53,6 +53,7 @@ const i18n = createI18n({
       barge: "BARGE",
       bargeName: "Barge name",
       barometer: "Barometer",
+      beaufort: "Beaufort",
       beforeArrival: "Before Arrival",
       beginningDateAndTime: "Beginning date & time",
       berthing: "Berthing",
