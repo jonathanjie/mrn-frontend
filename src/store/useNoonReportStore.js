@@ -28,7 +28,18 @@ const temp = {
 };
 
 export const useNoonReportStore = defineStore("noonReport", () => {
-  //   DateTimeLatLong
+  // Departure and Destination
+  // TODO: replace dummy values
+  const routeDeparturePortCountry = ref("Singapore");
+  const routeDeparturePortName = ref("Singapore");
+  const routeDepartureDate = ref("2022-12-01T00:00:00Z");
+  const routeArrivalPortCountry = ref("SA");
+  const routeArrivalPortName = ref("RTA");
+  const routeArrivalDate = ref("2022-12-21T00:00:00Z");
+  const routeArrivalTimeZone = ref("Asia/Singapore");
+  const routeArrivalSummerTime = ref("false");
+
+  // DateTimeLatLong
   const timeZone = ref("");
   const summerTime = ref("default");
   const dateTime = ref(""); // TODO: need to convert from local time to utc using timeZone and summerTime
@@ -248,6 +259,15 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const stoppageLongMinutes = ref("");
 
   return {
+    // Departure and Destination
+    routeDeparturePortCountry,
+    routeDeparturePortName,
+    routeDepartureDate,
+    routeArrivalPortCountry,
+    routeArrivalPortName,
+    routeArrivalDate,
+    routeArrivalTimeZone,
+    routeArrivalSummerTime,
     // DateTimeLatLong
     timeZone,
     summerTime,

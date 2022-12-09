@@ -12,33 +12,16 @@
         <div class="col-span-2 row-span-2 self-center text-blue-700 p-3">
           {{ $t("portName") }}
         </div>
-        <select
+        <input
           v-model="departure.port_country"
-          class="col-span-3 p-3 text-gray-700 border-l border-b"
-          :class="
-            departure.port_country === 'default'
-              ? 'text-gray-400'
-              : 'text-gray-700'
-          "
-        >
-          <!-- TODO: fill up possible timezone -->
-          <option selected disabled value="default">
-            {{ $t("selectCountry") }}
-          </option>
-        </select>
-        <select
+          :placeholder="$t('inputLocode2')"
+          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
+        />
+        <input
           v-model="departure.port_name"
-          class="col-span-3 p-3 text-gray-700 border-l"
-          :class="
-            departure.port_name === 'default'
-              ? 'text-gray-400'
-              : 'text-gray-700'
-          "
-        >
-          <option selected disabled value="default">
-            {{ $t("selectPort") }}
-          </option>
-        </select>
+          :placeholder="$t('inputLocode3')"
+          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
+        />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14 mb-5">
         <div
@@ -105,33 +88,16 @@
         <div class="col-span-2 row-span-2 self-center text-blue-700 p-3">
           {{ $t("portName") }}
         </div>
-        <select
+        <input
           v-model="destination.port_country"
-          class="col-span-3 p-3 text-gray-700 border-l border-b"
-          :class="
-            destination.port_country === 'default'
-              ? 'text-gray-400'
-              : 'text-gray-700'
-          "
-        >
-          <!-- TODO: fill up possible timezone -->
-          <option selected disabled value="default">
-            {{ $t("selectCountry") }}
-          </option>
-        </select>
-        <select
+          :placeholder="$t('inputLocode2')"
+          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
+        />
+        <input
           v-model="destination.port_name"
-          class="col-span-3 p-3 text-gray-700 border-l"
-          :class="
-            destination.port_name === 'default'
-              ? 'text-gray-400'
-              : 'text-gray-700'
-          "
-        >
-          <option selected disabled value="default">
-            {{ $t("selectPort") }}
-          </option>
-        </select>
+          :placeholder="$t('inputLocode3')"
+          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
+        />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14 mb-5">
         <div
@@ -196,16 +162,16 @@ import { reactive } from "vue";
 import TimeZoneSelector from "@/components/TimeZoneSelector.vue";
 
 const departure = reactive({
-  port_country: "default",
-  port_name: "default",
+  port_country: "",
+  port_name: "",
   time_zone: "",
   summer_time: "default",
   date_time: "",
 });
 
 const destination = reactive({
-  port_country: "default",
-  port_name: "default",
+  port_country: "",
+  port_name: "",
   time_zone: "",
   summer_time: "default",
   estimated_arrival: "",

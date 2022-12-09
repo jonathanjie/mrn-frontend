@@ -47,23 +47,39 @@
         <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
         <span class="text-blue-700">{{ $t("departurePort") }}</span>
       </div>
-      <div class="grid grid-cols-5 border bg-gray-50 text-14 mt-4">
-        <div class="col-span-2 text-blue-700 p-3 border-r border-b">
-          {{ $t("name") }}
+      <div class="grid grid-cols-5 border bg-gray-50 text-14 my-5">
+        <div class="col-span-2 row-span-2 self-center text-blue-700 p-3">
+          {{ $t("portName") }}
         </div>
         <input
-          class="col-span-3 p-3 border-b text-gray-700 bg-gray-50"
+          v-model="route_departure_port_country"
           disabled
-          v-model="tempValues.departurePort"
+          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 bg-gray-50"
         />
+        <input
+          v-model="route_departure_port_name"
+          disabled
+          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 bg-gray-50"
+        />
+      </div>
+      <div class="grid grid-cols-5 border bg-gray-50 text-14 mt-4">
         <div class="col-span-2 text-blue-700 p-3 border-r">
           {{ $t("dateAndTime") }}
         </div>
-        <input
-          class="col-span-3 p-3 text-gray-700 bg-gray-50"
+        <DatePicker
+          v-model="route_departure_date"
+          class="col-span-3 text-gray-700 bg-gray-50"
+          textInput
+          :textInputOptions="textInputOptions"
+          :format="format"
+          :modelValue="string"
           disabled
-          v-model="tempValues.departureDateTime"
-        />
+          :placeholder="$t('selectDateAndTime')"
+        >
+          <template #input-icon>
+            <img src="" />
+          </template>
+        </DatePicker>
       </div>
     </div>
 
@@ -72,31 +88,31 @@
         <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
         <span class="text-blue-700">{{ $t("destinationPort") }}</span>
       </div>
-      <div class="grid grid-cols-5 border bg-gray-50 text-14 mt-4">
-        <div class="col-span-2 text-blue-700 p-3 border-r border-b">
-          {{ $t("name") }}
+      <div class="grid grid-cols-5 border bg-gray-50 text-14 my-5">
+        <div class="col-span-2 row-span-2 self-center text-blue-700 p-3">
+          {{ $t("portName") }}
         </div>
-        <select
-          v-model="destination.port_name"
-          class="col-span-3 p-3 border-b text-14 focus:outline-0 text-gray-600"
-        >
-          <option selected disabled value="default">
-            {{ $t("selectPort") }}
-          </option>
-          <option value="dummy">Ras Tanura, Saudi Arabia</option>
-          <!-- Add port names here -->
-        </select>
+        <input
+          v-model="route_arrival_port_country"
+          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
+        />
+        <input
+          v-model="route_arrival_port_name"
+          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
+        />
+      </div>
+      <div class="grid grid-cols-5 border bg-gray-50 text-14 mt-4">
         <div class="col-span-2 text-blue-700 p-3 border-r border-b">
           {{ $t("estDateAndTime") }}
         </div>
         <DatePicker
-          v-model="destination.date_time"
+          v-model="route_arrival_date"
           class="col-span-3 border-b"
           textInput
           :textInputOptions="textInputOptions"
           :format="format"
           :modelValue="string"
-          placeholder="Select date & time"
+          :placeholder="$t('selectDateAndTime')"
         >
           <template #input-icon>
             <img src="" />
@@ -107,18 +123,18 @@
         >
           {{ $t("timeZone") }}
         </div>
-        <div class="flex col-span-3 border-b bg-white text-gray-600">
+        <div class="flex col-span-3 border-b bg-white text-gray-700">
           <TimeZoneSelector
             class="grow self-center"
-            v-model="destination.time_zone"
+            v-model="route_arrival_time_zone"
           ></TimeZoneSelector>
         </div>
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("summerTime") }}
         </div>
         <select
-          v-model="destination.summer_time"
-          class="col-span-3 p-3 text-14 focus:outline-0 text-gray-600"
+          v-model="route_arrival_summer_time"
+          class="col-span-3 p-3 text-14 focus:outline-0 text-gray-700"
         >
           <option selected disabled value="default">
             {{ $t("selectSummerTime") }}
@@ -136,6 +152,8 @@ import { ref, reactive } from "vue";
 import { textInputOptions, format } from "../../utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import TimeZoneSelector from "@/components/TimeZoneSelector.vue";
+import { useNoonReportStore } from "@/store/useNoonReportStore";
+import { storeToRefs } from "pinia";
 
 // TODO: retrieve from backend or generate as needed
 // API /reports/latest
@@ -147,19 +165,15 @@ const tempValues = {
   departureDateTime: "2022.06.01 12:23 (LT)",
 };
 
-const destination = reactive({
-  port_name: "dummy",
-  date_time: "2022.06.01 12:23 (LT)",
-  time_zone: "Asia/Singapore",
-  summer_time: "false",
-});
-
-const dpEditable = ref(false);
-const ddtEditable = ref(false);
+const store = useNoonReportStore();
+const {
+  routeDeparturePortCountry: route_departure_port_country,
+  routeDeparturePortName: route_departure_port_name,
+  routeDepartureDate: route_departure_date,
+  routeArrivalPortCountry: route_arrival_port_country,
+  routeArrivalPortName: route_arrival_port_name,
+  routeArrivalDate: route_arrival_date,
+  routeArrivalTimeZone: route_arrival_time_zone,
+  routeArrivalSummerTime: route_arrival_summer_time,
+} = storeToRefs(store);
 </script>
-
-<style scoped>
-.dp__theme_light {
-  --dp-text-color: #667085;
-}
-</style>

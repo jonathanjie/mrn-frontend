@@ -7,33 +7,20 @@
       <span class="text-blue-700 text-16">{{ $t("bunkeringPort") }}</span>
     </div>
     <div class="col-span-1">
-      <div class="grid grid-cols-5 border bg-gray-50 text-14">
+      <div class="grid grid-cols-5 border bg-gray-50 text-14 mb-5">
         <div class="col-span-2 row-span-2 self-center text-blue-700 p-3">
           {{ $t("portName") }}
         </div>
-        <select
+        <input
           v-model="data.port_country"
-          class="col-span-3 p-3 text-gray-700 border-l border-b"
-          :class="
-            data.port_country === 'default' ? 'text-gray-400' : 'text-gray-700'
-          "
-        >
-          <!-- TODO: fill up possible timezone -->
-          <option selected disabled value="default">
-            {{ $t("selectCountry") }}
-          </option>
-        </select>
-        <select
+          :placeholder="$t('inputLocode2')"
+          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
+        />
+        <input
           v-model="data.port_name"
-          class="col-span-3 p-3 text-gray-700 border-l"
-          :class="
-            data.port_name === 'default' ? 'text-gray-400' : 'text-gray-700'
-          "
-        >
-          <option selected disabled value="default">
-            {{ $t("selectPort") }}
-          </option>
-        </select>
+          :placeholder="$t('inputLocode3')"
+          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
+        />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14 mt-5">
         <div class="col-span-2 row-span-2 text-blue-700 p-3 border-r">
@@ -103,8 +90,8 @@ import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
 import { reactive } from "vue";
 
 const data = reactive({
-  port_country: "default",
-  port_name: "default",
+  port_country: "",
+  port_name: "",
   date_time: "",
   status: [],
 });
