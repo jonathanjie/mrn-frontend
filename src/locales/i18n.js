@@ -427,6 +427,7 @@ const i18n = createI18n({
       cruisingRange: "Cruising range",
       fuelDailyConsumption: "Fuel daily consumption",
       propellerPitch: "Propeller Pitch",
+      tgSystemOil: "TG system oil",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser

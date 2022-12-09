@@ -25,24 +25,6 @@
 
       <nav>
         <div class="py-2"></div>
-        <!-- <router-link to="/overview" class="flex py-4 px-7 space-x-3 hover:bg-blue-700/[0.24]" :class="{ 'justify-center' : collapsed } ">
-                    <img src="@/assets/icons/overview.svg" class="h-6 w-6"/>
-                    <Transition name="fade">
-                        <span v-if="!collapsed" class="text-white text-14 font-bold">Overview</span>
-                    </Transition>
-                </router-link> -->
-        <router-link
-          to="/"
-          class="flex py-4 px-7 space-x-3 hover:bg-blue-700/[0.24]"
-          :class="{ 'justify-center': collapsed }"
-        >
-          <img src="@/assets/icons/overview.svg" class="h-6 w-6" />
-          <Transition name="fade">
-            <span v-if="!collapsed" class="text-white text-14 font-bold">{{
-              $t("reporting")
-            }}</span>
-          </Transition>
-        </router-link>
         <!-- temporary fix to jump to specific vessel page for demo -->
         <!-- Still in development, enabled for easier access -->
         <router-link
@@ -60,7 +42,11 @@
         <router-link
           :to="{
             name: 'vessel-overview',
-            params: { vesselname: 'Marina A', imo: '9876543' },
+            params: {
+              vesselname: ship.name,
+              imo: ship.imo_reg,
+              specs: addSpec,
+            },
           }"
           class="flex py-4 px-7 space-x-3 hover:bg-blue-700/[0.24]"
           :class="{ 'justify-center': collapsed }"
@@ -72,32 +58,73 @@
             }}</span>
           </Transition>
         </router-link>
-        <!-- <router-link to="/plan-voyage" class="flex py-4 px-7 space-x-3 hover:bg-blue-700/[0.24]" :class="{ 'justify-center' : collapsed } ">
-                    <img src="@/assets/icons/plan_voyage.svg" class="h-6 w-6"/>
-                    <Transition name="fade">
-                        <span v-if="!collapsed" class="text-white text-14 font-bold">Plan Voyage</span>
-                    </Transition>
-                    TODO these should fade out when collapsed
-                </router-link> -->
+        <router-link
+          to="/"
+          class="flex py-4 px-7 space-x-3 hover:bg-blue-700/[0.24]"
+          :class="{ 'justify-center': collapsed }"
+        >
+          <img src="@/assets/icons/overview.svg" class="h-6 w-6" />
+          <Transition name="fade">
+            <span v-if="!collapsed" class="text-white text-14 font-bold">{{
+              $t("reporting")
+            }}</span>
+          </Transition>
+        </router-link>
       </nav>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
-
-export default {
-  setup() {
-    return {
-      collapsed,
-      toggleSidebar,
-      sidebarWidth,
-    };
-  },
+let userRole = "";
+const getUser = async () => {
+  const DUMMY_TOKEN = localStorage.getItem("jwt");
+  const response = await fetch(
+    `https://testapi.marinachain.io/marinanet/user`,
+    {
+      headers: {
+        Authorization: "Bearer " + DUMMY_TOKEN,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+  const user = response.json();
+  userRole = user.role;
+  return user;
 };
-</script>
 
-<style>
-/* TODO add transitions here */
-</style>
+// Check user role
+const user = await getUser();
+let addSpec = true;
+const getShip = async (userRole) => {
+  const DUMMY_TOKEN = localStorage.getItem("jwt");
+  const response = await fetch(
+    // Assuming that ships api can only provide 1 ship
+    `https://testapi.marinachain.io/marinanet/ships`,
+    {
+      headers: {
+        Authorization: "Bearer " + DUMMY_TOKEN,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+  const ship = await response.json();
+  console.log(ship[0]);
+  if (ship[0].shipspecs === null) {
+    addSpec = true;
+  } else {
+    addSpec = false;
+  }
+  return ship[0];
+  // TODO: Check if crew or manager and display accordingly
+  if (userRole === "crew") {
+  } else {
+    return undefined;
+  }
+};
+
+const ship = await getShip();
+</script>

@@ -3,10 +3,8 @@ import { authGuard, useAuth0 } from "@auth0/auth0-vue";
 
 // import LoginView from '../views/LoginView.vue'
 import HomeView from "../views/HomeView.vue";
-import MyVesselsView from "../views/HQViews/MyVesselsView.vue";
 import SpeedGraph from "../views/HQViews/SpeedGraph.vue";
 import PlanVoyageView from "../views/PlanVoyageView.vue";
-import OverviewView from "../views/OverviewView.vue";
 import VesselView from "../views/VesselView/VesselView.vue";
 import VesselOverviewView from "../views/VesselView/VesselOverviewView.vue";
 import VesselSubmittedView from "../views/VesselView/VesselSubmittedView.vue";
@@ -20,7 +18,7 @@ import BunkerReportView from "../views/ReportViews/BunkerReportView.vue";
 import HarbourPortReportView from "../views/ReportViews/HarbourPortReportView.vue";
 import VesselSpec from "../views/VesselSpec.vue";
 import SpeedGraphOverview from "../views/HQViews/SpeedGraphOverview.vue";
-
+import HQView from "../views/HQViews/HQView";
 const routes = [
   // {
   //   path: '/login',
@@ -28,21 +26,16 @@ const routes = [
   //   component: LoginView
   // },
   {
+    // Need to edit
     path: "/",
     name: "home",
     component: HomeView,
     beforeEnter: authGuard,
   },
   {
-    path: "/overview",
-    name: "overview",
-    component: OverviewView,
-    beforeEnter: authGuard,
-  },
-  {
     path: "/my-vessels",
     name: "my-vessels",
-    component: MyVesselsView,
+    component: HQView,
     beforeEnter: authGuard,
   },
   {
@@ -83,7 +76,7 @@ const routes = [
     beforeEnter: authGuard,
   },
   {
-    path: "/vessels/:vesselname/:imo",
+    path: "/vessels/:vesselname/:imo/:specs",
     component: VesselView,
     props: true,
     children: [

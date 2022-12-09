@@ -109,7 +109,7 @@ defineProps({
   vesselName: String,
   loadType: String,
   flag: String,
-  imoNo: String,
+  imoNo: Number,
   shipSize: String,
   loadingCondition: String,
   reportStatus: String,
