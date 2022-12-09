@@ -35,7 +35,7 @@
           :format="format"
           :disabled="true"
           :modelValue="string"
-          placeholder="Select date & time"
+          :placeholder="$t('selectDateAndTime')"
         >
           <template #input-icon>
             <img src="" />

@@ -242,7 +242,7 @@
             </div>
             <textarea
               v-model.trim="correction_fo.remarks"
-              placeholder="Input description here"
+              :placeholder="$t('inputDescriptionHere')"
               class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
           </div>
@@ -400,7 +400,7 @@
             </div>
             <textarea
               v-model.trim="correction_lo.remarks"
-              placeholder="Input description here"
+              :placeholder="$t('inputDescriptionHere')"
               class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
           </div>

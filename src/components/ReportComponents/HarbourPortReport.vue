@@ -49,7 +49,7 @@
         :format="format"
         :disabled="data.date_time === 'default' || data.date_time === 'default'"
         :modelValue="string"
-        placeholder="Select date & time"
+        :placeholder="$t('selectDateAndTime')"
       >
         <template #input-icon>
           <img src="" />

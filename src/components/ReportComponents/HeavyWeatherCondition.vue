@@ -220,7 +220,7 @@
       </div>
       <textarea
         v-model.trim="remarks"
-        placeholder="Input description here"
+        :placeholder="$t('inputDescriptionHere')"
         class="col-span-8 row-span-2 p-3 pl-4 bg-white text-gray-700 focus:outline-0"
       ></textarea>
     </div>

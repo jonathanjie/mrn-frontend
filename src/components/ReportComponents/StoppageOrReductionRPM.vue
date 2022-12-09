@@ -42,7 +42,7 @@
         :textInputOptions="textInputOptions"
         :format="format"
         :modelValue="string"
-        placeholder="Select date & time"
+        :placeholder="$t('selectDateAndTime')"
       >
         <template #input-icon>
           <img src="" />
@@ -58,7 +58,7 @@
         :textInputOptions="textInputOptions"
         :format="format"
         :modelValue="string"
-        placeholder="Select date & time"
+        :placeholder="$t('selectDateAndTime')"
       >
         <template #input-icon>
           <img src="" />
