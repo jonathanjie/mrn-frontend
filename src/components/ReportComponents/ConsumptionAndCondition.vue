@@ -53,33 +53,33 @@
             {{ $t("lsfo") }}
           </div>
           <input
-            v-model="lsfo.me_consumed"
-            @keypress="preventNaN($event, lsfo.me_consumed)"
+            v-model="lsfo_breakdown.me"
+            @keypress="preventNaN($event, lsfo_breakdown.me)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="lsfo.aux_consumed"
-            @keypress="preventNaN($event, lsfo.aux_consumed)"
+            v-model="lsfo_breakdown.ge"
+            @keypress="preventNaN($event, lsfo_breakdown.ge)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="lsfo.boiler_consumed"
-            @keypress="preventNaN($event, lsfo.boiler_consumed)"
+            v-model="lsfo_breakdown.blr"
+            @keypress="preventNaN($event, lsfo_breakdown.blr)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="lsfo.gas_generator_consumed"
-            @keypress="preventNaN($event, lsfo.gas_generator_consumed)"
+            v-model="lsfo_breakdown.igg"
+            @keypress="preventNaN($event, lsfo_breakdown.igg)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <div
             class="col-span-2 text-gray-400 p-3 border-t border-l bg-gray-25"
           >
-            {{ lsfo_total }}
+            {{ lsfo_total_consumption }}
           </div>
           <div
             class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25"
@@ -93,33 +93,33 @@
             {{ $t("mgo") }}
           </div>
           <input
-            v-model="mgo.me_consumed"
-            @keypress="preventNaN($event, mgo.me_consumed)"
+            v-model="mgo_breakdown.me"
+            @keypress="preventNaN($event, mgo_breakdown.me)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="mgo.aux_consumed"
-            @keypress="preventNaN($event, mgo.aux_consumed)"
+            v-model="mgo_breakdown.ge"
+            @keypress="preventNaN($event, mgo_breakdown.ge)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="mgo.boiler_consumed"
-            @keypress="preventNaN($event, mgo.boiler_consumed)"
+            v-model="mgo_breakdown.blr"
+            @keypress="preventNaN($event, mgo_breakdown.blr)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="mgo.gas_generator_consumed"
-            @keypress="preventNaN($event, mgo.gas_generator_consumed)"
+            v-model="mgo_breakdown.igg"
+            @keypress="preventNaN($event, mgo_breakdown.igg)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <div
             class="col-span-2 text-gray-400 p-3 border-y border-l bg-gray-25"
           >
-            {{ mgo_total }}
+            {{ mgo_total_consumption }}
           </div>
           <div class="col-span-2 text-gray-400 p-3 border bg-gray-25">
             {{ mgo_rob }}
@@ -156,10 +156,10 @@
               {{ $t("correction") }}
             </div>
             <select
-              v-model="correction_fo.type"
+              v-model="fuel_oil_data_correction.type"
               class="col-span-4 p-3 border-l focus:outline-0"
               :class="
-                correction_fo.type === 'default'
+                fuel_oil_data_correction.type === 'default'
                   ? 'text-gray-400'
                   : 'text-gray-700'
               "
@@ -172,8 +172,10 @@
             </select>
             <div class="flex col-span-4 p-3 pl-4 border-l bg-white">
               <input
-                v-model="correction_fo.change"
-                @keypress="preventNaN($event, correction_fo.change)"
+                v-model="fuel_oil_data_correction.correction"
+                @keypress="
+                  preventNaN($event, fuel_oil_data_correction.correction)
+                "
                 placeholder="00,000.00"
                 class="w-24 text-gray-700 focus:outline-0"
               />
@@ -185,7 +187,7 @@
               {{ $t("remarks") }}
             </div>
             <textarea
-              v-model.trim="correction_fo.remarks"
+              v-model.trim="fuel_oil_data_correction.remarks"
               placeholder="Input description here"
               class="col-span-8 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
@@ -219,8 +221,8 @@
             {{ $t("meCylinder") }}
           </div>
           <input
-            v-model="lubricate.mecylinder_total"
-            @keypress="preventNaN($event, lubricate.mecylinder_total)"
+            v-model="mecylinder_total_consumption"
+            @keypress="preventNaN($event, mecylinder_total_consumption)"
             placeholder="0"
             class="col-span-4 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
@@ -236,8 +238,8 @@
             {{ $t("meSystem") }}
           </div>
           <input
-            v-model="lubricate.mesystem_total"
-            @keypress="preventNaN($event, lubricate.mesystem_total)"
+            v-model="mesystem_total_consumption"
+            @keypress="preventNaN($event, mesystem_total_consumption)"
             placeholder="0"
             class="col-span-4 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
@@ -253,8 +255,8 @@
             {{ $t("meSump") }}
           </div>
           <input
-            v-model="lubricate.mesump_total"
-            @keypress="preventNaN($event, lubricate.mesump_total)"
+            v-model="mesump_total_consumption"
+            @keypress="preventNaN($event, mesump_total_consumption)"
             placeholder="0"
             class="col-span-4 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
@@ -270,8 +272,8 @@
             {{ $t("geSystem") }}
           </div>
           <input
-            v-model="lubricate.gesystem_total"
-            @keypress="preventNaN($event, lubricate.gesystem_total)"
+            v-model="gesystem_total_consumption"
+            @keypress="preventNaN($event, gesystem_total_consumption)"
             placeholder="0"
             class="col-span-4 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
@@ -311,10 +313,10 @@
               {{ $t("correction") }}
             </div>
             <select
-              v-model="correction_lo.type"
+              v-model="lubricating_oil_data_correction.type"
               class="col-span-4 p-3 border-l focus:outline-0"
               :class="
-                correction_lo.type === 'default'
+                lubricating_oil_data_correction.type === 'default'
                   ? 'text-gray-400'
                   : 'text-gray-700'
               "
@@ -329,8 +331,10 @@
             </select>
             <div class="flex col-span-4 p-3 pl-4 border-l bg-white">
               <input
-                v-model="correction_lo.change"
-                @keypress="preventNaN($event, correction_lo.change)"
+                v-model="lubricating_oil_data_correction.correction"
+                @keypress="
+                  preventNaN($event, lubricating_oil_data_correction.correction)
+                "
                 placeholder="00,000.00"
                 class="w-24 text-gray-700 focus:outline-0"
               />
@@ -342,7 +346,7 @@
               {{ $t("remarks") }}
             </div>
             <textarea
-              v-model.trim="correction_lo.remarks"
+              v-model.trim="lubricating_oil_data_correction.remarks"
               placeholder="Input description here"
               class="col-span-8 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
@@ -376,14 +380,14 @@
             {{ $t("rob") }}
           </div>
           <input
-            v-model="freshwater.consumed"
-            @keypress="preventNaN($event, freshwater.consumed)"
+            v-model="freshwater_consumed"
+            @keypress="preventNaN($event, freshwater_consumed)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="freshwater.evaporated"
-            @keypress="preventNaN($event, freshwater.evaporated)"
+            v-model="freshwater_evaporated"
+            @keypress="preventNaN($event, freshwater_evaporated)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
@@ -405,109 +409,35 @@
 
 <script setup>
 import { preventNaN } from "@/utils/helpers";
-import { ref, reactive, computed } from "vue";
+import { ref } from "vue";
 import MiniUnitDisplay from "../../components/MiniUnitDisplay.vue";
+import { useNoonReportStore } from "@/store/useNoonReportStore";
+import { storeToRefs } from "pinia";
 
 const isAdditionalRemarkFuel = ref(false);
 const isAdditionalRemarkLubricate = ref(false);
 
-const lsfo_total = computed(
-  () =>
-    +(
-      Number(lsfo.me_consumed) +
-      Number(lsfo.aux_consumed) +
-      Number(lsfo.boiler_consumed) +
-      Number(lsfo.gas_generator_consumed)
-    )
-);
-const lsfo_rob = computed(() => tempValues.lsfoPrevROB - lsfo_total.value);
-
-const mgo_total = computed(
-  () =>
-    +(
-      Number(mgo.me_consumed) +
-      Number(mgo.aux_consumed) +
-      Number(mgo.boiler_consumed) +
-      Number(mgo.gas_generator_consumed)
-    ).toFixed(2)
-);
-const mgo_rob = computed(() => tempValues.mgoPrevROB - mgo_total.value);
-
-const mecylinder_rob = computed(
-  () => +(tempValues.mecylPrevROB - lubricate.mecylinder_total).toFixed(2)
-);
-const mesystem_rob = computed(
-  () => +(tempValues.mesysPrevROB - lubricate.mesystem_total).toFixed(2)
-);
-const mesump_rob = computed(
-  () => +(tempValues.mesumpPrevROB - lubricate.mesump_total).toFixed(2)
-);
-const gesystem_rob = computed(
-  () => +(tempValues.gesysPrevROB - lubricate.gesystem_total).toFixed(2)
-);
-
-const freshwater_change = computed(
-  () => +(freshwater.evaporated - freshwater.consumed).toFixed(2)
-);
-const freshwater_rob = computed(
-  () => tempValues.freshwaterPrevROB + freshwater_change.value
-);
-
-const lsfo = reactive({
-  fuel_type: "LSFO",
-  rob: "",
-  me_consumed: "",
-  aux_consumed: "",
-  boiler_consumed: "",
-  gas_generator_consumed: "",
-  total_consumed: "",
-});
-
-const mgo = reactive({
-  fuel_type: "MGO",
-  rob: "",
-  me_consumed: "",
-  aux_consumed: "",
-  boiler_consumed: "",
-  gas_generator_consumed: "",
-  total_consumed: "",
-});
-
-const lubricate = reactive({
-  mecylinder_total: "",
-  mesystem_total: "",
-  mesump_total: "",
-  gesystem_total: "",
-});
-
-const correction_fo = reactive({
-  type: "default",
-  change: "",
-  remarks: "",
-});
-
-const correction_lo = reactive({
-  type: "default",
-  change: "",
-  remarks: "",
-});
-
-const freshwater = reactive({
-  rob: "0", // tempValues.freshwaterPrevROB + freshwater_change
-  consumed: "", // C&C: fresh water consumed
-  evaporated: "", // C&C: fresh water generated
-  correction: 0, // NOT NEEDED; remove from BE
-  remarks: "NIL", // NOT NEEDED; remove from BE
-});
-
-const tempValues = {
-  distanceLeft: 2300,
-  lsfoPrevROB: 200,
-  mgoPrevROB: 200,
-  mecylPrevROB: 200,
-  mesysPrevROB: 200,
-  mesumpPrevROB: 200,
-  gesysPrevROB: 200,
-  freshwaterPrevROB: 200,
-};
+const store = useNoonReportStore();
+const {
+  lsfoTotalConsumption: lsfo_total_consumption,
+  lsfoRob: lsfo_rob,
+  mgoTotalConsumption: mgo_total_consumption,
+  mgoRob: mgo_rob,
+  lsfoBreakdown: lsfo_breakdown,
+  mgoBreakdown: mgo_breakdown,
+  fuelOilDataCorrection: fuel_oil_data_correction,
+  mecylinderTotalConsumption: mecylinder_total_consumption,
+  mesystemTotalConsumption: mesystem_total_consumption,
+  mesumpTotalConsumption: mesump_total_consumption,
+  gesystemTotalConsumption: gesystem_total_consumption,
+  mecylinderRob: mecylinder_rob,
+  mesystemRob: mesystem_rob,
+  mesumpRob: mesump_rob,
+  gesystemRob: gesystem_rob,
+  lubricatingOilDataCorrection: lubricating_oil_data_correction,
+  freshwaterConsumed: freshwater_consumed,
+  freshwaterEvaporated: freshwater_evaporated,
+  freshwaterChange: freshwater_change,
+  freshwaterRob: freshwater_rob,
+} = storeToRefs(store);
 </script>

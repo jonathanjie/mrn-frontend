@@ -1,20 +1,30 @@
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
-// import { reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 
 // TODO: fetch from database
 const temp = {
+  // Distance & Time / Performance
   lastNoonReportTime: "2022-12-01T00:00:00Z",
   rupOfDeparture: "2022-11-21T00:00:00Z",
-  distanceLeft: "4000",
-  distanceObsSoFar: "1000",
-  distanceEngSoFar: "1000",
-  revolutionCountYesterday: "20000",
-  propellerPitch: "10",
-  previousNoonReportCount: "2",
-  voyageAvgSpeed: "200",
-  voyageAvgRpm: "100",
-  voyageAvgSlip: "400",
+  distanceLeft: 4000,
+  distanceObsSoFar: 1000,
+  distanceEngSoFar: 1000,
+  revolutionCountYesterday: 20000,
+  propellerPitch: 10,
+  previousNoonReportCount: 2,
+  voyageAvgSpeed: 200,
+  voyageAvgRpm: 100,
+  voyageAvgSlip: 400,
+
+  // Consumption & Condition
+  distanceLeft: 2300,
+  lsfoPrevROB: 200,
+  mgoPrevROB: 200,
+  mecylPrevROB: 200,
+  mesysPrevROB: 200,
+  mesumpPrevROB: 200,
+  gesysPrevROB: 200,
+  freshwaterPrevROB: 200,
 };
 
 export const useNoonReportStore = defineStore("noonReport", () => {
@@ -78,29 +88,24 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const distanceObsSinceNoon = ref("");
   const distanceObsTotal = computed(
     () =>
-      +(
-        Number(temp.distanceObsSoFar) + Number(distanceObsSinceNoon.value)
-      ).toFixed(2)
+      +(temp.distanceObsSoFar + Number(distanceObsSinceNoon.value)).toFixed(2)
   );
   const distanceEngSinceNoon = computed(() =>
     revolutionCount.value
       ? +(
-          (Number(revolutionCount.value) -
-            Number(temp.revolutionCountYesterday)) *
-          Number(temp.propellerPitch)
+          (Number(revolutionCount.value) - temp.revolutionCountYesterday) *
+          temp.propellerPitch
         ).toFixed(2)
       : ""
   );
   const distanceEngTotal = computed(() =>
     distanceEngSinceNoon.value
-      ? +(distanceEngSinceNoon.value + Number(temp.distanceEngSoFar)).toFixed(2)
+      ? +(distanceEngSinceNoon.value + temp.distanceEngSoFar).toFixed(2)
       : ""
   );
   const distanceToGo = computed(() =>
     distanceObsSinceNoon.value
-      ? +(
-          Number(temp.distanceLeft) - Number(distanceObsSinceNoon.value)
-        ).toFixed(2)
+      ? +(temp.distanceLeft - Number(distanceObsSinceNoon.value)).toFixed(2)
       : ""
   );
   const distanceToGoEdited = ref(""); // use distanceToGoEdited instead of distanceToGo if distanceToGoEdited.value != distanceToGo.value
@@ -116,8 +121,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const rpmSinceNoon = computed(() =>
     revolutionCount.value && hoursSinceNoon.value
       ? +(
-          (Number(revolutionCount.value) -
-            Number(temp.revolutionCountYesterday)) /
+          (Number(revolutionCount.value) - temp.revolutionCountYesterday) /
           (hoursSinceNoon.value * 60)
         ).toFixed(1)
       : ""
@@ -134,7 +138,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const speedAvg = computed(() =>
     speedSinceNoon.value
       ? +(
-          (Number(temp.voyageAvgSpeed) + speedSinceNoon.value) /
+          (temp.voyageAvgSpeed + speedSinceNoon.value) /
           (temp.previousNoonReportCount + 1)
         ).toFixed(2)
       : ""
@@ -142,7 +146,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const rpmAvg = computed(() =>
     rpmSinceNoon.value
       ? +(
-          (Number(temp.voyageAvgRpm) + rpmSinceNoon.value) /
+          (temp.voyageAvgRpm + rpmSinceNoon.value) /
           (temp.previousNoonReportCount + 1)
         ).toFixed(1)
       : ""
@@ -150,10 +154,83 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const slipAvg = computed(() =>
     slipSinceNoon.value
       ? +(
-          (Number(temp.voyageAvgSlip) + slipSinceNoon.value) /
+          (temp.voyageAvgSlip + slipSinceNoon.value) /
           (temp.previousNoonReportCount + 1)
         ).toFixed(2)
       : ""
+  );
+
+  // Consumption and Condition
+  // TODO: create for each fuel oil and lubricate oil type
+  const lsfoTotalConsumption = computed(
+    () =>
+      +(
+        Number(lsfoBreakdown.me) +
+        Number(lsfoBreakdown.ge) +
+        Number(lsfoBreakdown.blr) +
+        Number(lsfoBreakdown.igg)
+      )
+  );
+  const lsfoRob = computed(() => temp.lsfoPrevROB - lsfoTotalConsumption.value);
+  const mgoTotalConsumption = computed(
+    () =>
+      +(
+        Number(mgoBreakdown.me) +
+        Number(mgoBreakdown.ge) +
+        Number(mgoBreakdown.blr) +
+        Number(mgoBreakdown.igg)
+      ).toFixed(2)
+  );
+  const mgoRob = computed(() => temp.mgoPrevROB - mgoTotalConsumption.value);
+  const lsfoBreakdown = reactive({
+    me: "",
+    ge: "",
+    blr: "",
+    igg: "",
+  });
+  const mgoBreakdown = reactive({
+    me: "",
+    ge: "",
+    blr: "",
+    igg: "",
+  });
+  const fuelOilDataCorrection = reactive({
+    type: "default",
+    correction: "",
+    remarks: "",
+  });
+
+  const mecylinderTotalConsumption = ref("");
+  const mesystemTotalConsumption = ref("");
+  const mesumpTotalConsumption = ref("");
+  const gesystemTotalConsumption = ref("");
+  const mecylinderRob = computed(
+    () => +(temp.mecylPrevROB - mecylinderTotalConsumption.value).toFixed(2)
+  );
+  const mesystemRob = computed(
+    () => +(temp.mesysPrevROB - mesystemTotalConsumption.value).toFixed(2)
+  );
+  const mesumpRob = computed(
+    () => +(temp.mesumpPrevROB - mesumpTotalConsumption.value).toFixed(2)
+  );
+  const gesystemRob = computed(
+    () => +(temp.gesysPrevROB - gesystemTotalConsumption.value).toFixed(2)
+  );
+  const lubricatingOilDataCorrection = reactive({
+    type: "default",
+    correction: "",
+    remarks: "",
+  });
+
+  const freshwaterConsumed = ref("");
+  const freshwaterEvaporated = ref("");
+  const freshwaterReceived = ref("");
+  const freshwaterDischarged = ref("");
+  const freshwaterChange = computed(
+    () => +(freshwaterEvaporated.value - freshwaterConsumed.value).toFixed(2)
+  );
+  const freshwaterRob = computed(
+    () => temp.freshwaterPrevROB + freshwaterChange.value
   );
 
   // Stoppage or Reduction RPM
@@ -226,6 +303,29 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     speedAvg,
     rpmAvg,
     slipAvg,
+    // Consumption and Condition
+    lsfoTotalConsumption,
+    lsfoRob,
+    mgoTotalConsumption,
+    mgoRob,
+    lsfoBreakdown,
+    mgoBreakdown,
+    fuelOilDataCorrection,
+    mecylinderTotalConsumption,
+    mesystemTotalConsumption,
+    mesumpTotalConsumption,
+    gesystemTotalConsumption,
+    mecylinderRob,
+    mesystemRob,
+    mesumpRob,
+    gesystemRob,
+    lubricatingOilDataCorrection,
+    freshwaterConsumed,
+    freshwaterEvaporated,
+    freshwaterReceived,
+    freshwaterDischarged,
+    freshwaterChange,
+    freshwaterRob,
     // Stoppage or Reduction RPM
     stoppageBeginning,
     stoppageEnding,
