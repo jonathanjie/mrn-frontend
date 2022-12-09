@@ -74,7 +74,7 @@
       </div>
       <select
         v-model="weather"
-        class="col-span-3 p-3 focus:border-0"
+        class="col-span-3 p-3 focus:outline-0"
         :class="weather === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">{{ $t("select") }}</option>
@@ -153,12 +153,11 @@
         />
         <MiniUnitDisplay>KNOT</MiniUnitDisplay>
       </div>
-      <input
-        v-model="wind_speed_2"
-        @keypress="preventNaN($event, wind_speed_2)"
-        placeholder="00.0"
-        class="col-span-2 xl:col-span-1 text-gray-700 focus:outline-0 p-2 pl-4"
-      />
+      <div
+        class="col-span-3 xl:col-span-1 text-14 text-blue-700 focus:outline-0 p-2 pl-4 bg-gray-50 flex items-center"
+      >
+        {{ $t("beaufort") + " " + wind_speed_beaufort }}
+      </div>
     </div>
 
     <div class="col-span-2 grid grid-cols-10 border text-14">
@@ -196,7 +195,7 @@
       </div>
       <select
         v-model="sea_state"
-        class="col-span-6 xl:col-span-3 p-3 focus:border-0"
+        class="col-span-6 xl:col-span-3 p-3 focus:outline-0"
         :class="sea_state === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
@@ -229,11 +228,39 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, computed } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useNoonReportStore } from "@/store/useNoonReportStore";
 import { storeToRefs } from "pinia";
+
+const wind_speed_beaufort = computed(() =>
+  Number(wind_speed.value) < 1
+    ? 0
+    : Number(wind_speed.value) < 4
+    ? 1
+    : Number(wind_speed.value) < 7
+    ? 2
+    : Number(wind_speed.value) < 11
+    ? 3
+    : Number(wind_speed.value) < 17
+    ? 4
+    : Number(wind_speed.value) < 22
+    ? 5
+    : Number(wind_speed.value) < 28
+    ? 6
+    : Number(wind_speed.value) < 34
+    ? 7
+    : Number(wind_speed.value) < 41
+    ? 8
+    : Number(wind_speed.value) < 48
+    ? 9
+    : Number(wind_speed.value) < 56
+    ? 10
+    : Number(wind_speed.value) < 64
+    ? 11
+    : 12
+);
 
 const isToggled = ref(false);
 const store = useNoonReportStore();
