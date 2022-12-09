@@ -78,7 +78,7 @@
         </div>
         <select
           v-model="destination.port_name"
-          class="col-span-3 p-3 border-b text-14 focus:border-0 text-gray-600"
+          class="col-span-3 p-3 border-b text-14 focus:outline-0 text-gray-600"
         >
           <option selected disabled value="default">
             {{ $t("selectPort") }}
@@ -107,7 +107,7 @@
         >
           {{ $t("timeZone") }}
         </div>
-        <div class="flex col-span-3 border-b">
+        <div class="flex col-span-3 border-b bg-white text-gray-600">
           <TimeZoneSelector
             class="grow self-center"
             v-model="destination.time_zone"
@@ -118,7 +118,7 @@
         </div>
         <select
           v-model="destination.summer_time"
-          class="col-span-3 p-3 text-14 focus:border-0 text-gray-600"
+          class="col-span-3 p-3 text-14 focus:outline-0 text-gray-600"
         >
           <option selected disabled value="default">
             {{ $t("selectSummerTime") }}

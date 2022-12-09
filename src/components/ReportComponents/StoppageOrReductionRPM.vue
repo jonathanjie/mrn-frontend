@@ -110,7 +110,7 @@
       />
       <select
         v-model="lat_dir"
-        class="col-span-3 p-3 text-14 border-l focus:border-0 focus:outline-0"
+        class="col-span-3 p-3 text-14 border-l focus:outline-0"
         :class="lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
@@ -139,7 +139,7 @@
       />
       <select
         v-model="long_dir"
-        class="col-span-3 p-3 text-14 border-l focus:border-0"
+        class="col-span-3 p-3 text-14 border-l focus:outline-0"
         :class="long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
@@ -155,7 +155,7 @@
       </div>
       <select
         v-model="reason"
-        class="col-span-3 p-3 border-l text-14 focus:border-0"
+        class="col-span-3 p-3 border-l text-14 focus:outline-0"
         :class="reason === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">{{ $t("select") }}</option>

@@ -46,7 +46,7 @@
         />
         <select
           v-model="rupEngine.lat_dir"
-          class="col-span-3 p-3 text-14 border-l focus:border-0 focus:outline-0"
+          class="col-span-3 p-3 text-14 border-l focus:outline-0"
           :class="
             rupEngine.lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
           "
@@ -77,7 +77,7 @@
         />
         <select
           v-model="rupEngine.long_dir"
-          class="col-span-3 p-3 text-14 border-l focus:border-0"
+          class="col-span-3 p-3 text-14 border-l focus:outline-0"
           :class="
             rupEngine.long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
           "

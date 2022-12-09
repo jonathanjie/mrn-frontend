@@ -25,7 +25,7 @@
       </div>
       <select
         v-model="data.summer_time"
-        class="col-span-3 p-3 border-b text-14 focus:border-0"
+        class="col-span-3 p-3 border-b text-14 focus:outline-0"
         :class="
           data.summer_time === 'default' ? 'text-gray-400' : 'text-gray-700'
         "
@@ -75,7 +75,7 @@
       />
       <select
         v-model="data.lat_dir"
-        class="col-span-3 p-3 text-14 border-l focus:border-0 focus:outline-0"
+        class="col-span-3 p-3 text-14 border-l focus:outline-0 focus:outline-0"
         :class="data.lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
@@ -105,7 +105,7 @@
       />
       <select
         v-model="data.long_dir"
-        class="col-span-3 p-3 text-14 border-l focus:border-0"
+        class="col-span-3 p-3 text-14 border-l focus:outline-0"
         :class="data.long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">

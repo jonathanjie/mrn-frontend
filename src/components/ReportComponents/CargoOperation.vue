@@ -13,7 +13,7 @@
         </div>
         <select
           v-model="data.load_condition"
-          class="col-span-3 p-3 border-l text-14 focus:border-0"
+          class="col-span-3 p-3 border-l text-14 focus:outline-0"
           :class="
             data.load_condition === 'default'
               ? 'text-gray-400'

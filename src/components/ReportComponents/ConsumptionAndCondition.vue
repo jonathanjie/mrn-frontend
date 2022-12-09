@@ -157,7 +157,7 @@
             </div>
             <select
               v-model="correction_fo.type"
-              class="col-span-4 p-3 border-l focus:border-0"
+              class="col-span-4 p-3 border-l focus:outline-0"
               :class="
                 correction_fo.type === 'default'
                   ? 'text-gray-400'
@@ -312,7 +312,7 @@
             </div>
             <select
               v-model="correction_lo.type"
-              class="col-span-4 p-3 border-l focus:border-0"
+              class="col-span-4 p-3 border-l focus:outline-0"
               :class="
                 correction_lo.type === 'default'
                   ? 'text-gray-400'

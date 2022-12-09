@@ -59,7 +59,7 @@
         </div>
         <select
           v-model="departure.summer_time"
-          class="col-span-3 p-3 border-b text-14 focus:border-0"
+          class="col-span-3 p-3 border-b text-14 focus:outline-0"
           :class="
             departure.summer_time === 'default'
               ? 'text-gray-400'
@@ -152,7 +152,7 @@
         </div>
         <select
           v-model="destination.summer_time"
-          class="col-span-3 p-3 border-b text-14 focus:border-0"
+          class="col-span-3 p-3 border-b text-14 focus:outline-0"
           :class="
             destination.summer_time === 'default'
               ? 'text-gray-400'

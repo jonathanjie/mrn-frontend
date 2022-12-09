@@ -29,7 +29,7 @@
       </div>
       <select
         v-model="data.status"
-        class="col-span-3 p-3 border-b focus:border-0"
+        class="col-span-3 p-3 border-b focus:outline-0"
         :class="
           data.load_condition === 'default' ? 'text-gray-400' : 'text-gray-700'
         "
@@ -140,7 +140,7 @@
       />
       <select
         v-model="data.lat_dir"
-        class="col-span-3 p-3 border-l focus:border-0 focus:outline-0"
+        class="col-span-3 p-3 border-l focus:outline-0"
         :class="data.lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
@@ -171,7 +171,7 @@
       />
       <select
         v-model="data.long_dir"
-        class="col-span-3 p-3 border-l focus:border-0"
+        class="col-span-3 p-3 border-l focus:outline-0"
         :class="data.long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
