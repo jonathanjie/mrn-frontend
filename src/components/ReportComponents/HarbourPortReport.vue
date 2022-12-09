@@ -30,9 +30,7 @@
       <select
         v-model="data.status"
         class="col-span-3 p-3 border-b focus:outline-0"
-        :class="
-          data.load_condition === 'default' ? 'text-gray-400' : 'text-gray-700'
-        "
+        :class="data.status === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
           {{ $t("selectEvent") }}
