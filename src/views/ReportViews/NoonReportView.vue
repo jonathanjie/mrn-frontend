@@ -72,6 +72,7 @@ import {
   format,
   preventNaN,
   parsePosition,
+  parsePortLocode,
 } from "../../utils/helpers.js";
 
 import NoonOverview from "@/components/ReportComponents/NoonOverview.vue";
@@ -90,6 +91,15 @@ import constants, { REPORT_CONSTANTS } from "@/constants";
 
 const store = useNoonReportStore();
 const {
+  // Departure and Destination
+  routeDeparturePortCountry,
+  routeDeparturePortName,
+  routeDepartureDate,
+  routeArrivalPortCountry,
+  routeArrivalPortName,
+  routeArrivalDate,
+  routeArrivalTimeZone,
+  routeArrivalSummerTime,
   // DateTimeLatLong
   timeZone,
   summerTime,
@@ -102,28 +112,35 @@ const {
   longDegree,
   // Weather Conditions
   weather,
-  seaState,
+  visibility,
   windDirection,
   windSpeed,
-  beaufort,
-  waveDirection,
-  waveHeight,
-  waveForce,
+  seaDirection,
+  seaState,
   swellDirection,
-  swellHeight,
   swellScale,
+  airTemperatureDry,
+  airTemperatureWet,
+  airPressure,
+  seaTemperature,
   iceCondition,
   // Heavy Weather Conditions
   heavyWeatherHours,
   heavyWeatherDist,
   heavyWeatherConsumption,
+  heavyWeatherNotation,
   heavyWindDirection,
   heavyWindSpeed,
-  heavyMaxWaveHt,
-  heavyWaveForce,
+  heavySeaDirection,
+  heavySeaState,
+  heavyRemarks,
+  heavyWeatherIsActive,
   // DistanceTime
   hoursSinceNoon,
   hoursTotal,
+  distanceToGo,
+  distanceToGoEdited,
+  remarksForChanges,
   distanceObsSinceNoon,
   distanceObsTotal,
   distanceEngSinceNoon,
@@ -136,11 +153,34 @@ const {
   speedAvg,
   rpmAvg,
   slipAvg,
+  // Consumption and Condition
+  lsfoTotalConsumption,
+  lsfoRob,
+  mgoTotalConsumption,
+  mgoRob,
+  lsfoBreakdown,
+  mgoBreakdown,
+  fuelOilDataCorrection,
+  mecylinderTotalConsumption,
+  mesystemTotalConsumption,
+  mesumpTotalConsumption,
+  gesystemTotalConsumption,
+  mecylinderRob,
+  mesystemRob,
+  mesumpRob,
+  gesystemRob,
+  lubricatingOilDataCorrection,
+  freshwaterConsumed,
+  freshwaterEvaporated,
+  freshwaterReceived,
+  freshwaterDischarged,
+  freshwaterChange,
+  freshwaterRob,
   // Stoppage or Reduction RPM
   stoppageBeginning,
   stoppageEnding,
   stoppageDuration,
-  reducedRPM,
+  stoppageReducedRPM,
   stoppageReason,
   stoppageRemarks,
   stoppageLatDir,
@@ -149,33 +189,11 @@ const {
   stoppageLongDir,
   stoppageLongDegree,
   stoppageLongMinutes,
+  stoppageIsActive,
 } = storeToRefs(store);
 
 // TODO: retrieve data from backend or generate as needed
 // TODO: modify DateTime display to also display UTC time next to local time
-
-const getFuelCorrection = (fuel_type) => {
-  // should return float
-  switch (fuel_type) {
-    case "LSFO":
-      return cc_correction_type == "LSFO" ? cc_lsfo_total : "0.00";
-      break;
-    case "MGO":
-      return cc_correction_type == "MGO" ? cc_mgo_total : "0.00";
-      break;
-  }
-};
-
-const getFuelCorrectionRemarks = (fuel_type) => {
-  switch (fuel_type) {
-    case "LSFO":
-      return cc_correction_type == "LSFO" ? cc_remarks : "NIL";
-      break;
-    case "MGO":
-      return cc_correction_type == "MGO" ? cc_remarks : "NIL";
-      break;
-  }
-};
 
 const convertReportDate = (date) => {
   // TODO: consider daylight savings in calculating UTC timezone offset + display
@@ -193,41 +211,9 @@ const convertReportDate = (date) => {
   return date.toISOString();
 };
 
-// TODO: should be dynamic; get all fuels used from database and filter accordingly
-const createBunkerData = () => {
-  return [lsfo_data, mgo_data];
-
-  // for (const fuel in fuel_data) {
-  //     bunkerDataList.push(fuel);
-  // }
-  // return bunkerDataList;
-};
-
-// imoprt useNoonReport
-// data = {.... all of noonReport}
-// Send data api
-
 const sendReport = async () => {
   // TODO: need to do form validation first
 
-  // const latDD = convertDMSToDD(parseFloat(lat_degree.value), parseFloat(lat_minutes.value), lat_dir.value);
-  // const longDD = convertDMSToDD(parseFloat(long_degree.value), parseFloat(long_minutes.value), long_dir.value);
-
-  // convert fields to correct
-
-  const rawData = {
-    timeZone: timeZone.value,
-    summerTime: summerTime.value,
-    dateTime: dateTime.value,
-    latDir: latDir.value,
-    latMinutes: latMinutes.value,
-    latDegree: latDegree.value,
-    longDir: longDir.value,
-    longMinutes: longMinutes.value,
-    longDegree: longDegree.value,
-  };
-
-  // console.log("data: ", rawData);
   const position = parsePosition({
     latDir: latDir.value,
     latMinutes: latMinutes.value,
@@ -238,65 +224,70 @@ const sendReport = async () => {
   });
 
   const stoppagePosition = parsePosition({
-    latDir: latDir.value,
-    latMinutes: latMinutes.value,
-    latDegree: latDegree.value,
-    longDir: longDir.value,
-    longMinutes: longMinutes.value,
-    longDegree: longDegree.value,
+    latDir: stoppageLatDir.value,
+    latMinutes: stoppageLatMinutes.value,
+    latDegree: stoppageLatDegree.value,
+    longDir: stoppageLongDir.value,
+    longMinutes: stoppageLongMinutes.value,
+    longDegree: stoppageLongDegree.value,
   });
 
-  const REPORT = {
+  const routeDeparturePort = parsePortLocode({
+    portCountry: routeDeparturePortCountry.value,
+    portName: routeDeparturePortName.value,
+  });
+
+  const routeArrivalPort = parsePortLocode({
+    portCountry: routeArrivalPortCountry.value,
+    portName: routeArrivalPortName.value,
+  });
+
+  let REPORT = {
     report_type: REPORT_CONSTANTS.type.noon,
-    voyage: 1,
-    leg_num: 1,
-    report_tz: "Asia/Singapore",
+    voyage: 1, // TODO: fetch from db
+    leg_num: 1, // TODO: fetch from db
+    report_tz: timeZone.value,
     summer_time: summerTime.value,
-    report_num: 1,
+    report_num: 1, // TODO: fetch from db
     report_date: dateTime.value,
     position: position,
     route: {
-      departure_port: "SG PPT",
-      departure_date: "2022-12-01T00:00:00Z",
-      arrival_port: "KR BNP",
-      arrival_date: "2022-12-08T00:00:00Z",
+      departure_port: routeDeparturePort,
+      departure_date: routeDepartureDate.value,
+      arrival_port: routeArrivalPort,
+      arrival_date: routeArrivalDate.value,
     },
     weatherdata: {
-      weather_notation: "D",
-      visibility: 8,
+      weather_notation: weather.value,
+      visibility: visibility.value,
       wind_direction: windDirection.value,
       wind_speed: windSpeed.value,
-      sea_direction: "E",
+      sea_direction: seaDirection.value,
       sea_state: seaState.value,
       swell_direction: swellDirection.value,
       swell_scale: swellScale.value,
-      air_pressure: 1011,
-      air_temperature_dry: "27.0",
-      air_temperature_wet: "25.0",
-      sea_temperature: "24.0",
+      air_pressure: airPressure.value,
+      air_temperature_dry: airTemperatureDry.value,
+      air_temperature_wet: airTemperatureWet.value,
+      sea_temperature: seaTemperature.value,
       ice_condiction: iceCondition.value,
-    },
-    heavyweatherdata: {
-      total_hours: heavyWeatherHours.value,
-      observed_distance: heavyWeatherDist.value,
-      fuel_consumption: heavyWeatherConsumption.value,
-      wind_direction: heavyWindDirection.value,
-      wind_speed: heavyWindSpeed.value,
-      sea_direction: "E",
-      sea_state: 4,
-      max_wave_height: heavyMaxWaveHt.value,
-      remarks: "nil",
     },
     distanceperformancedata: {
       hours_since_noon: hoursSinceNoon.value,
       hours_total: hoursTotal.value,
-      distance_to_go: "1000",
-      remarks_for_changes: "No change",
+      distance_to_go:
+        distanceToGoEdited.value &&
+        distanceToGoEdited.value !== distanceToGo.value
+          ? distanceToGoEdited.value
+          : distanceToGo.value,
+      remarks_for_changes: remarksForChanges.value
+        ? remarksForChanges.value
+        : "NIL",
       distance_obs_since_noon: distanceObsSinceNoon.value,
       distance_obs_total: distanceObsTotal.value,
       distance_eng_since_noon: distanceEngSinceNoon.value,
       distance_eng_total: distanceEngTotal.value,
-      revolution_count: parseInt(revolutionCount.value),
+      revolution_count: revolutionCount.value,
       speed_since_noon: speedSinceNoon.value,
       rpm_since_noon: rpmSinceNoon.value,
       slip_since_noon: slipSinceNoon.value,
@@ -307,60 +298,126 @@ const sendReport = async () => {
     consumptionconditiondata: {
       fueloildata_set: [
         {
-          fuel_oil_type: "HFO",
-          total_consumption: "100.00",
-          receipt: "0.00",
-          debunkering: "0.00",
-          rob: "10000.00",
+          fuel_oil_type: "LSFO",
+          total_consumption: lsfoTotalConsumption.value,
+          receipt: "0.00", // irrelevant for noon report
+          debunkering: "0.00", // irrelevant for noon report
+          rob: lsfoRob.value,
           breakdown: {
-            "G/E": 20,
-            "M/E": 80,
+            "G/E": lsfoBreakdown.value.ge,
+            "M/E": lsfoBreakdown.value.me,
+            BLR: lsfoBreakdown.value.blr,
+            IGG: lsfoBreakdown.value.igg,
           },
         },
         {
-          fuel_oil_type: "LSFO",
-          total_consumption: "100.00",
-          receipt: "0.00",
-          debunkering: "0.00",
-          rob: "1000.00",
+          fuel_oil_type: "MGO",
+          total_consumption: mgoTotalConsumption.value,
+          receipt: "0.00", // irrelevant for noon report
+          debunkering: "0.00", // irrelevant for noon report
+          rob: mgoRob.value,
           breakdown: {
-            "G/E": 80,
-            "M/E": 20,
+            "G/E": mgoBreakdown.value.ge,
+            "M/E": mgoBreakdown.value.me,
+            BLR: mgoBreakdown.value.blr,
+            IGG: mgoBreakdown.value.igg,
           },
         },
       ],
       lubricatingoildata_set: [
         {
+          fuel_oil_type: "M/E Cylinder",
+          total_consumption: mecylinderTotalConsumption.value,
+          receipt: "0.00", // irrelevant for noon report
+          debunkering: "0.00", // irrelevant for noon report
+          rob: mecylinderRob.value,
+          lubricatingoildatacorrection:
+            lubricatingOilDataCorrection.value.type === "mecylinder"
+              ? {
+                  correction: lubricatingOilDataCorrection.value.correction,
+                  remarks: lubricatingOilDataCorrection.value.remarks,
+                }
+              : null,
+        },
+        {
+          fuel_oil_type: "M/E System",
+          total_consumption: mesystemTotalConsumption.value,
+          receipt: "0.00", // irrelevant for noon report
+          debunkering: "0.00", // irrelevant for noon report
+          rob: mesystemRob.value,
+          lubricatingoildatacorrection:
+            lubricatingOilDataCorrection.value.type === "mesystem"
+              ? {
+                  correction: lubricatingOilDataCorrection.value.correction,
+                  remarks: lubricatingOilDataCorrection.value.remarks,
+                }
+              : null,
+        },
+        {
           fuel_oil_type: "M/E Sump",
-          total_consumption: "100.00",
-          receipt: "0.00",
-          debunkering: "0.00",
-          rob: "1000.00",
-          lubricatingoildatacorrection: {
-            correction: "100.00",
-            remarks: "Hi",
-          },
+          total_consumption: mesumpTotalConsumption.value,
+          receipt: "0.00", // irrelevant for noon report
+          debunkering: "0.00", // irrelevant for noon report
+          rob: mesumpRob.value,
+          lubricatingoildatacorrection:
+            lubricatingOilDataCorrection.value.type === "mesump"
+              ? {
+                  correction: lubricatingOilDataCorrection.value.correction,
+                  remarks: lubricatingOilDataCorrection.value.remarks,
+                }
+              : null,
+        },
+        {
+          fuel_oil_type: "G/E System",
+          total_consumption: gesystemTotalConsumption.value,
+          receipt: "0.00", // irrelevant for noon report
+          debunkering: "0.00", // irrelevant for noon report
+          rob: gesystemRob.value,
+          lubricatingoildatacorrection:
+            lubricatingOilDataCorrection.value.type === "gesystem"
+              ? {
+                  correction: lubricatingOilDataCorrection.value.correction,
+                  remarks: lubricatingOilDataCorrection.value.remarks,
+                }
+              : null,
         },
       ],
       freshwaterdata: {
-        consumed: 1000,
-        evaporated: 100,
-        received: 0,
-        discharged: 100,
-        rob: 10000,
+        consumed: freshwaterConsumed.value,
+        evaporated: freshwaterEvaporated.value,
+        received: 0, // irrelevant for noon report
+        discharged: 0, // irrelevant for noon report
+        rob: freshwaterRob.value,
       },
       consumption_type: "NTON",
     },
-    stoppagedata: {
+  };
+
+  if (heavyWeatherIsActive) {
+    REPORT.heavyweatherdata = {
+      total_hours: heavyWeatherHours.value,
+      observed_distance: heavyWeatherDist.value,
+      fuel_consumption: heavyWeatherConsumption.value,
+      wind_direction: heavyWindDirection.value,
+      wind_speed: heavyWindSpeed.value,
+      sea_direction: heavySeaDirection.value,
+      sea_state: heavySeaState.value,
+      max_wave_height: 10, // TODO: X needed, remove this line once removed from backend
+      remarks: heavyRemarks.value,
+    };
+  }
+
+  if (stoppageIsActive) {
+    REPORT.stoppagedata = {
       start_date: stoppageBeginning.value,
       end_date: stoppageEnding.value,
       duration: stoppageDuration.value,
-      reduced_rpm: reducedRPM.value,
+      reduced_rpm: stoppageReducedRPM.value,
       position: stoppagePosition,
       reason: stoppageReason.value,
       remarks: stoppageRemarks.value,
-    },
-  };
+    };
+  }
 
   console.log("data: ", REPORT);
 
