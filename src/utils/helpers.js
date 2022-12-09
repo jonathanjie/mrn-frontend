@@ -55,3 +55,7 @@ export const parsePosition = ({
 
   return `SRID=${SRID};POINT (${positionLat} ${positionLong})`;
 };
+
+export const parsePortLocode = ({ portCountry, portName }) => {
+  return portCountry + " " + portName;
+};
