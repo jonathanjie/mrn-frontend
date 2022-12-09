@@ -318,7 +318,7 @@ const i18n = createI18n({
       shipSize: "Size",
       signIn: "Sign In",
       signInToYourAccount: "Sign in to your account",
-      slip: "SLIP",
+      slip: "Slip",
       south: "South",
       southEast: "Southeast",
       southWest: "Southwest",
