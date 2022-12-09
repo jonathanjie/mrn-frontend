@@ -36,6 +36,24 @@ let portCodeToPortName = ref({
   "KR USN": "Ulsan, South Korea",
 });
 
+const getShip = async () => {
+  const DUMMY_TOKEN = localStorage.getItem("jwt");
+  const response = await fetch(
+    // Assuming that ships api can only provide 1 ship
+    `https://testapi.marinachain.io/marinanet/ships`,
+    {
+      headers: {
+        Authorization: "Bearer " + DUMMY_TOKEN,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+  const ship = response.json();
+  return ship[0];
+};
+const ship = await getShip();
+
 const getReports = async (voyage_uuid) => {
   const DUMMY_TOKEN = localStorage.getItem("jwt");
   const response = await fetch(
