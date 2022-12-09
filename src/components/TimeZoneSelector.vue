@@ -2,6 +2,7 @@
   <v-select
     class="text-14 text-gray-700 pl-2"
     :options="paginated"
+    label="value"
     :filterable="false"
     :placeholder="$t('selectTimeZone')"
     :reduce="(opt) => opt.value"
