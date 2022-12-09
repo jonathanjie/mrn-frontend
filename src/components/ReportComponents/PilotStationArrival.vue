@@ -1,7 +1,7 @@
 <template>
   <div
-    v-if="!isToggled"
-    @click="isToggled = !isToggled"
+    v-if="!isActive"
+    @click="isActive = !isActive"
     class="flex items-center bg-white rounded-lg p-5 shadow-card cursor-pointer"
   >
     <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
@@ -19,7 +19,7 @@
   >
     <div
       class="col-span-2 flex items-center cursor-pointer"
-      @click="isToggled = !isToggled"
+      @click="isActive = !isActive"
     >
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
       <img
@@ -124,7 +124,7 @@
 import { preventNaN, textInputOptions, format } from "../../utils/helpers.js";
 import { ref, reactive } from "vue";
 
-const isToggled = ref(false);
+const isActive = ref(false);
 
 const data = reactive({
   name: "",

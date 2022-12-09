@@ -1,7 +1,7 @@
 <template>
   <div
-    v-if="!isToggled"
-    @click="isToggled = !isToggled"
+    v-if="!stoppage_is_active"
+    @click="stoppage_is_active = !stoppage_is_active"
     class="flex items-center bg-white rounded-lg p-5 shadow-card cursor-pointer"
   >
     <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
@@ -19,7 +19,7 @@
   >
     <div
       class="col-span-2 flex items-center cursor-pointer"
-      @click="isToggled = !isToggled"
+      @click="stoppage_is_active = !stoppage_is_active"
     >
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
       <img
@@ -83,8 +83,8 @@
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 bg-white text-14 border-l">
         <input
-          v-model="reducedRPM"
-          @keypress="preventNaN($event, reducedRPM)"
+          v-model="reduced_RPM"
+          @keypress="preventNaN($event, reduced_RPM)"
           placeholder="0"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -159,11 +159,11 @@
         :class="reason === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">{{ $t("select") }}</option>
-        <option value="engineProblem">{{ $t("engineProblem") }}</option>
-        <option value="accident">{{ $t("accident") }}</option>
-        <option value="collision">{{ $t("collision") }}</option>
-        <option value="grounding">{{ $t("grounding") }}</option>
-        <option value="oilSpill">{{ $t("oilSpill") }}</option>
+        <option value="engi">{{ $t("engineProblem") }}</option>
+        <option value="acci">{{ $t("accident") }}</option>
+        <option value="coll">{{ $t("collision") }}</option>
+        <option value="grou">{{ $t("grounding") }}</option>
+        <option value="oil">{{ $t("oilSpill") }}</option>
       </select>
       <div
         class="col-span-2 row-span-2 text-blue-700 p-3 border-t bg-gray-50 text-14"
@@ -187,14 +187,13 @@ import { textInputOptions, format, preventNaN } from "../../utils/helpers.js";
 import { useNoonReportStore } from "@/store/useNoonReportStore";
 import { storeToRefs } from "pinia";
 
-const isToggled = ref(false);
 const store = useNoonReportStore();
 
 const {
   stoppageBeginning: beginning,
   stoppageEnding: ending,
   stoppageDuration: duration,
-  reducedRPM,
+  stoppageReducedRPM: reduced_RPM,
   stoppageReason: reason,
   stoppageRemarks: remarks,
   stoppageLatDir: lat_dir,
@@ -203,20 +202,6 @@ const {
   stoppageLongDir: long_dir,
   stoppageLongDegree: long_degree,
   stoppageLongMinutes: long_minutes,
+  stoppageIsActive: stoppage_is_active,
 } = storeToRefs(store);
-
-// const data = reactive({
-//   beginning: "",
-//   ending: "",
-//   duration: "",
-//   reducedRPM: "",
-//   reason: "default",
-//   remarks: "",
-//   lat_dir: "default",
-//   lat_degree: "",
-//   lat_minutes: "",
-//   long_dir: "default",
-//   long_degree: "",
-//   long_minutes: "",
-// });
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div
-    v-if="!isToggled"
-    @click="isToggled = !isToggled"
+    v-if="!heavy_weather_is_active"
+    @click="heavy_weather_is_active = !heavy_weather_is_active"
     class="flex items-center bg-white rounded-lg p-5 shadow-card cursor-pointer"
   >
     <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
@@ -17,7 +17,7 @@
   >
     <div
       class="col-span-2 flex items-center cursor-pointer"
-      @click="isToggled = !isToggled"
+      @click="heavy_weather_is_active = !heavy_weather_is_active"
     >
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
       <img
@@ -149,7 +149,7 @@
           v-model="wind_speed"
           @keypress="preventNaN($event, wind_speed)"
           placeholder="00.0"
-          class="text-gray-700 focus:outline-0"
+          class="w-24 text-gray-700 focus:outline-0"
         />
         <MiniUnitDisplay>KNOT</MiniUnitDisplay>
       </div>
@@ -262,7 +262,6 @@ const wind_speed_beaufort = computed(() =>
     : 12
 );
 
-const isToggled = ref(false);
 const store = useNoonReportStore();
 const {
   heavyWeatherHours: hours,
@@ -274,6 +273,7 @@ const {
   heavySeaDirection: sea_direction,
   heavySeaState: sea_state,
   heavyRemarks: remarks,
+  heavyWeatherIsActive: heavy_weather_is_active,
 } = storeToRefs(store);
 
 // const data = reactive({
