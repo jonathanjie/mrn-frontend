@@ -44,9 +44,9 @@
           {{ $t("visibility") }}
         </div>
         <select
-          v-model="sea_state"
+          v-model="visibility"
           class="col-span-3 p-3 text-14 focus:outline-0"
-          :class="sea_state === 'default' ? 'text-gray-400' : 'text-gray-700'"
+          :class="visibility === 'default' ? 'text-gray-400' : 'text-gray-700'"
         >
           <option selected disabled value="default">{{ $t("select") }}</option>
           <option value="1">{{ $t("visibility_1") }}</option>
@@ -76,7 +76,7 @@
       </div>
       <select
         v-model="wind_direction"
-        class="col-span-6 xl:col-span-3 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-6 xl:col-span-3 p-3 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"
         :class="
           wind_direction === 'default' ? 'text-gray-400' : 'text-gray-700'
         "
@@ -106,7 +106,7 @@
       >
         {{ $t("force") }}
       </div>
-      <div class="col-span-3 flex xl:col-span-2 p-2 pl-4 border-r bg-white">
+      <div class="col-span-3 flex xl:col-span-2 p-3 border-r bg-white">
         <input
           v-model="wind_speed"
           @keypress="preventNaN($event, wind_speed)"
@@ -116,7 +116,7 @@
         <MiniUnitDisplay>KNOT</MiniUnitDisplay>
       </div>
       <div
-        class="col-span-3 xl:col-span-1 text-14 text-gray-600 focus:outline-0 p-2 pl-4 bg-gray-50 flex items-center"
+        class="col-span-3 xl:col-span-1 text-14 text-gray-600 focus:outline-0 p-3 bg-gray-50 flex items-center"
       >
         {{ $t("beaufort") + " " + wind_speed_beaufort }}
       </div>
@@ -134,11 +134,9 @@
         {{ $t("direction") }}
       </div>
       <select
-        v-model="wave_direction"
-        class="col-span-6 xl:col-span-3 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"
-        :class="
-          wave_direction === 'default' ? 'text-gray-400' : 'text-gray-700'
-        "
+        v-model="sea_direction"
+        class="col-span-6 xl:col-span-3 p-3 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"
+        :class="sea_direction === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
           {{ $t("dir_8_placeholder") }}
@@ -158,9 +156,9 @@
         {{ $t("force") }}
       </div>
       <select
-        v-model="wave_force"
+        v-model="sea_state"
         class="col-span-6 xl:col-span-3 p-3 text-14 focus:outline-0"
-        :class="wave_force === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="sea_state === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
           {{ $t("douglasScale") }}
@@ -191,7 +189,7 @@
       </div>
       <select
         v-model="swell_direction"
-        class="col-span-6 xl:col-span-3 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-6 xl:col-span-3 p-3 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"
         :class="
           swell_direction === 'default' ? 'text-gray-400' : 'text-gray-700'
         "
@@ -244,13 +242,13 @@
         {{ $t("dry") }}
       </div>
       <div
-        class="col-span-6 flex xl:col-span-3 xl:border-r border-b xl:border-b-0 p-2 pl-4 bg-white"
+        class="col-span-6 flex xl:col-span-3 xl:border-r border-b xl:border-b-0 p-2 bg-white"
       >
         <input
           v-model="air_temperature_dry"
           @keypress="preventNaN($event, air_temperature_dry)"
           placeholder="00.0"
-          class="text-14 w-24 text-gray-700 focus:outline-0"
+          class="text-14 w-24 pl-2 text-gray-700 focus:outline-0"
         />
         <MiniUnitDisplay>°C</MiniUnitDisplay>
       </div>
@@ -259,12 +257,12 @@
       >
         {{ $t("wet") }}
       </div>
-      <div class="col-span-6 flex xl:col-span-3 p-2 pl-4 bg-white">
+      <div class="col-span-6 flex xl:col-span-3 p-2 bg-white">
         <input
           v-model="air_temperature_wet"
           @keypress="preventNaN($event, air_temperature_wet)"
           placeholder="00.0"
-          class="text-14 w-24 text-gray-700 focus:outline-0"
+          class="text-14 w-24 pl-2 text-gray-700 focus:outline-0"
         />
         <MiniUnitDisplay>°C</MiniUnitDisplay>
       </div>
@@ -276,14 +274,12 @@
       >
         {{ $t("barometer") }}
       </div>
-      <div
-        class="col-span-6 xl:col-span-4 flex border-y border-r p-2 pl-4 bg-white"
-      >
+      <div class="col-span-6 xl:col-span-4 flex border-y border-r p-2 bg-white">
         <input
           v-model="air_pressure"
           @keypress="preventNaN($event, air_pressure)"
           placeholder="00.0"
-          class="text-14 w-24 text-gray-700 focus:outline-0"
+          class="text-14 w-24 pl-2 text-gray-700 focus:outline-0"
         />
         <MiniUnitDisplay>mbar</MiniUnitDisplay>
       </div>
@@ -295,14 +291,12 @@
       >
         {{ $t("seaWaterTemperature") }}
       </div>
-      <div
-        class="col-span-6 xl:col-span-4 flex border-y border-r p-2 pl-4 bg-white"
-      >
+      <div class="col-span-6 xl:col-span-4 flex border-y border-r p-2 bg-white">
         <input
           v-model="sea_temperature"
           @keypress="preventNaN($event, sea_temperature)"
           placeholder="00.0"
-          class="text-14 w-24 text-gray-700 focus:outline-0"
+          class="text-14 w-24 pl-2 text-gray-700 focus:outline-0"
         />
         <MiniUnitDisplay>°C</MiniUnitDisplay>
       </div>
@@ -341,15 +335,12 @@ import { storeToRefs } from "pinia";
 const store = useNoonReportStore();
 const {
   weather: weather,
-  seaState: sea_state,
+  visibility: visibility,
   windDirection: wind_direction,
   windSpeed: wind_speed,
-  // beaufort: wind_speed_beaufort,
-  waveDirection: wave_direction,
-  waveHeight: wave_height,
-  waveForce: wave_force,
+  seaDirection: sea_direction,
+  seaState: sea_state,
   swellDirection: swell_direction,
-  swellHeight: swell_height,
   swellScale: swell_scale,
   airTemperatureDry: air_temperature_dry,
   airTemperatureWet: air_temperature_wet,
@@ -385,19 +376,4 @@ const wind_speed_beaufort = computed(() =>
     ? 11
     : 12
 );
-
-// const data = reactive({
-//   weather: "default", // Weather: sky
-//   sea_state: "default", // Weather: visibility
-//   wind_direction: "", // Weather: wind dir
-//   wind_speed: "", // Weather: wind max speed
-//   beaufort: "default", // Weather: wind force
-//   wave_direction: "",
-//   wave_height: "",
-//   wave_force: "default",
-//   swell_direction: "",
-//   swell_height: "",
-//   swell_scale: "default",
-//   ice_condition: "default", // Weather: glacier ice condition
-// });
 </script>

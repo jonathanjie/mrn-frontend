@@ -161,8 +161,6 @@ const tempValues = {
   reportNo: "2",
   legNo: "2",
   voyageNo: "1",
-  departurePort: "Singapore, Singapore",
-  departureDateTime: "2022.06.01 12:23 (LT)",
 };
 
 const store = useNoonReportStore();

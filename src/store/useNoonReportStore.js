@@ -10,11 +10,11 @@ const temp = {
   distanceObsSoFar: 1000,
   distanceEngSoFar: 1000,
   revolutionCountYesterday: 20000,
-  propellerPitch: 10,
+  propellerPitch: 2,
   previousNoonReportCount: 2,
   voyageAvgSpeed: 200,
   voyageAvgRpm: 100,
-  voyageAvgSlip: 400,
+  voyageAvgSlip: 5,
 
   // Consumption & Condition
   distanceLeft: 2300,
@@ -30,8 +30,8 @@ const temp = {
 export const useNoonReportStore = defineStore("noonReport", () => {
   // Departure and Destination
   // TODO: replace dummy values
-  const routeDeparturePortCountry = ref("Singapore");
-  const routeDeparturePortName = ref("Singapore");
+  const routeDeparturePortCountry = ref("SG");
+  const routeDeparturePortName = ref("PPT");
   const routeDepartureDate = ref("2022-12-01T00:00:00Z");
   const routeArrivalPortCountry = ref("SA");
   const routeArrivalPortName = ref("RTA");
@@ -52,14 +52,12 @@ export const useNoonReportStore = defineStore("noonReport", () => {
 
   // Weather Conditions
   const weather = ref("default");
-  const seaState = ref("default");
+  const visibility = ref("default");
   const windDirection = ref("default");
   const windSpeed = ref("");
-  const waveDirection = ref("default");
-  const waveHeight = ref("");
-  const waveForce = ref("default");
+  const seaDirection = ref("default");
+  const seaState = ref("default");
   const swellDirection = ref("default");
-  const swellHeight = ref("");
   const swellScale = ref("default");
   const airTemperatureDry = ref("");
   const airTemperatureWet = ref("");
@@ -74,10 +72,10 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const heavyWeatherNotation = ref("default");
   const heavyWindDirection = ref("default");
   const heavyWindSpeed = ref("");
-  const heavyMaxWaveHt = ref("");
   const heavySeaDirection = ref("default");
   const heavySeaState = ref("default");
   const heavyRemarks = ref("");
+  const heavyWeatherIsActive = ref(false);
 
   // Distance and Time
   const hoursSinceNoon = computed(() =>
@@ -85,7 +83,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
       ? +(
           (Date.parse(dateTime.value) - Date.parse(temp.lastNoonReportTime)) /
           (1000 * 60 * 60)
-        ).toFixed(2)
+        ).toFixed(0)
       : ""
   );
   const hoursTotal = computed(() =>
@@ -93,7 +91,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
       ? +(
           (Date.parse(dateTime.value) - Date.parse(temp.rupOfDeparture)) /
           (1000 * 60 * 60)
-        ).toFixed(2)
+        ).toFixed(0)
       : ""
   );
   const distanceObsSinceNoon = ref("");
@@ -248,7 +246,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const stoppageBeginning = ref("");
   const stoppageEnding = ref("");
   const stoppageDuration = ref("");
-  const reducedRPM = ref("");
+  const stoppageReducedRPM = ref("");
   const stoppageReason = ref("default");
   const stoppageRemarks = ref("");
   const stoppageLatDir = ref("default");
@@ -257,6 +255,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const stoppageLongDir = ref("default");
   const stoppageLongDegree = ref("");
   const stoppageLongMinutes = ref("");
+  const stoppageIsActive = ref(false);
 
   return {
     // Departure and Destination
@@ -280,14 +279,12 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     longDegree,
     // Weather Conditions
     weather,
-    seaState,
+    visibility,
     windDirection,
     windSpeed,
-    waveDirection,
-    waveHeight,
-    waveForce,
+    seaDirection,
+    seaState,
     swellDirection,
-    swellHeight,
     swellScale,
     airTemperatureDry,
     airTemperatureWet,
@@ -301,10 +298,10 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     heavyWeatherNotation,
     heavyWindDirection,
     heavyWindSpeed,
-    heavyMaxWaveHt,
     heavySeaDirection,
     heavySeaState,
     heavyRemarks,
+    heavyWeatherIsActive,
     // DistanceTime
     hoursSinceNoon,
     hoursTotal,
@@ -350,7 +347,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     stoppageBeginning,
     stoppageEnding,
     stoppageDuration,
-    reducedRPM,
+    stoppageReducedRPM,
     stoppageReason,
     stoppageRemarks,
     stoppageLatDir,
@@ -359,6 +356,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     stoppageLongDir,
     stoppageLongDegree,
     stoppageLongMinutes,
+    stoppageIsActive,
   };
 });
 
