@@ -52,16 +52,25 @@
         :class="distanceToGoDisabled ? 'bg-gray-50' : 'bg-white'"
       >
         <input
+          v-if="!edited"
           v-model="distance_to_go"
           @keypress="preventNaN($event, distance_to_go)"
           placeholder="0"
+          disabled
+          class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
+        />
+        <input
+          v-else
+          v-model="distance_to_go_edited"
+          @keypress="preventNaN($event, distance_to_go_edited)"
+          :placeholder="distance_to_go"
           :disabled="distanceToGoDisabled"
-          class="w-24 text-14 text-gray-700 focus:outline-0"
+          class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
           :class="distanceToGoDisabled ? 'bg-gray-50' : 'bg-white'"
         />
         <img
           src="@/assets/icons/edit.svg"
-          @click="distanceToGoDisabled = !distanceToGoDisabled"
+          @click="toggle"
           class="ml-auto h-4 w-4 cursor-pointer"
         />
         <MiniUnitDisplay class="ml-2">NM</MiniUnitDisplay>
@@ -167,11 +176,18 @@ import { storeToRefs } from "pinia";
 
 const store = useNoonReportStore();
 const distanceToGoDisabled = ref(true);
+const edited = ref(false);
+
+const toggle = () => {
+  distanceToGoDisabled.value = !distanceToGoDisabled.value;
+  edited.value = true;
+};
 
 const {
   hoursSinceNoon: hours_since_noon,
   hoursTotal: hours_total,
-  distancetoGo: distance_to_go,
+  distanceToGo: distance_to_go,
+  distanceToGoEdited: distance_to_go_edited,
   remarksForChanges: remarks,
   distanceObsSinceNoon: distance_obs_since_noon,
   distanceObsTotal: distance_obs_total,
