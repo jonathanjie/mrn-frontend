@@ -1,4 +1,4 @@
-import { list } from "postcss";
+// import { list } from "postcss";
 import { createI18n } from "vue-i18n";
 
 const i18n = createI18n({
@@ -447,7 +447,6 @@ const i18n = createI18n({
       inPortVessels: "In Port",
       sailingVessels: "Sailing",
       bunkering: "Bunkering",
-      loadingCondition: "Loading Condition",
       uploadedStatus: "Uploaded on",
       errorStatus: "Error",
       pendingStatus: "Pending",
@@ -460,7 +459,6 @@ const i18n = createI18n({
       estimatedArrivalTime: "Estimated Time of Arrival:",
       knots: "Knots",
       focLabel: "FOC/day",
-      distanceToGo: "Distance to go",
       nauticalMiles: "NM",
       weekly: "Weekly",
       voyage: "Voyage",
