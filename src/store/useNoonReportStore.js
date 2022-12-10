@@ -17,7 +17,6 @@ const temp = {
   voyageAvgSlip: 5,
 
   // Consumption & Condition
-  distanceLeft: 2300,
   lsfoPrevROB: 200,
   mgoPrevROB: 200,
   mecylPrevROB: 200,
