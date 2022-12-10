@@ -66,11 +66,11 @@
 <script setup>
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+// import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import {
-  textInputOptions,
-  format,
-  preventNaN,
+  // textInputOptions,
+  // format,
+  // preventNaN,
   parsePosition,
   parsePortLocode,
 } from "../../utils/helpers.js";
@@ -87,7 +87,7 @@ import StoppageOrReductionRPM from "@/components/ReportComponents/StoppageOrRedu
 import { useNoonReportStore } from "@/store/useNoonReportStore";
 import { storeToRefs } from "pinia";
 
-import constants, { REPORT_CONSTANTS } from "@/constants";
+import { REPORT_CONSTANTS } from "@/constants";
 
 const store = useNoonReportStore();
 const {
@@ -98,8 +98,8 @@ const {
   routeArrivalPortCountry,
   routeArrivalPortName,
   routeArrivalDate,
-  routeArrivalTimeZone,
-  routeArrivalSummerTime,
+  // routeArrivalTimeZone,
+  // routeArrivalSummerTime,
   // DateTimeLatLong
   timeZone,
   summerTime,
