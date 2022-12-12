@@ -9,15 +9,15 @@
 
     <div class="col-span-2 flex space-x-5 text-gray-700 text-14">
       <div class="flex align-center space-x-2">
-        <input type="radio" id="event" value="0" v-model="data.type" />
+        <input type="radio" id="event" value="event" v-model="type" />
         <label for="event">{{ $t("event") }}</label>
       </div>
       <div class="flex align-center space-x-2">
         <input
           type="radio"
           id="noonInHarbourPort"
-          value="1"
-          v-model="data.type"
+          value="noonInHarbourPort"
+          v-model="type"
         />
         <label for="noonInHarbourPort">{{ $t("noonInHarbourPort") }}</label>
       </div>
@@ -28,9 +28,9 @@
         {{ $t("status") }}
       </div>
       <select
-        v-model="data.status"
+        v-model="status"
         class="col-span-3 p-3 border-b focus:outline-0"
-        :class="data.status === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="status === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
           {{ $t("selectEvent") }}
@@ -40,12 +40,12 @@
         {{ $t("dateAndTime") }}
       </div>
       <DatePicker
-        v-model="data.date_time"
+        v-model="date_time"
         class="col-span-3 border-b"
         textInput
         :textInputOptions="textInputOptions"
         :format="format"
-        :disabled="data.date_time === 'default' || data.date_time === 'default'"
+        :disabled="date_time === 'default' || date_time === 'default'"
         :modelValue="string"
         :placeholder="$t('selectDateAndTime')"
       >
@@ -58,8 +58,8 @@
       </div>
       <div class="flex col-span-3 p-2 pl-4 bg-white">
         <input
-          v-model="data.distance_travelled"
-          @keypress="preventNaN($event, data.distance_travelled)"
+          v-model="distance_travelled"
+          @keypress="preventNaN($event, distance_travelled)"
           placeholder="0"
           class="w-16 text-14 text-gray-700 focus:outline-0"
         />
@@ -81,8 +81,8 @@
           <input
             type="checkbox"
             id="waiting"
-            value="0"
-            v-model="data.operations"
+            value="waiting"
+            v-model="operations"
           />
           <label for="waiting">{{ $t("waiting") }}</label>
         </div>
@@ -90,8 +90,8 @@
           <input
             type="checkbox"
             id="cargoOperation"
-            value="1"
-            v-model="data.operations"
+            value="cargoOperation"
+            v-model="operations"
           />
           <label for="cargoOperation">{{ $t("cargoOperation") }}</label>
         </div>
@@ -99,8 +99,8 @@
           <input
             type="checkbox"
             id="bunkeringDebunkering"
-            value="2"
-            v-model="data.operations"
+            value="bunkeringDebunkering"
+            v-model="operations"
           />
           <label for="bunkeringDebunkering">{{
             $t("bunkeringDebunkering")
@@ -110,8 +110,8 @@
           <input
             type="checkbox"
             id="others"
-            value="3"
-            v-model="data.operations"
+            value="others"
+            v-model="operations"
           />
           <label for="others">{{ $t("others") }}</label>
         </div>
@@ -125,21 +125,21 @@
         $t("latitude")
       }}</span>
       <input
-        v-model="data.lat_degree"
-        @keypress="preventNaN($event, data.lat_degree)"
+        v-model="lat_degree"
+        @keypress="preventNaN($event, lat_degree)"
         placeholder="000 (Degree)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-gray-700 focus:outline-0"
       />
       <input
-        v-model="data.lat_minutes"
-        @keypress="preventNaN($event, data.lat_minutes)"
+        v-model="lat_minutes"
+        @keypress="preventNaN($event, lat_minutes)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-gray-700 focus:outline-0"
       />
       <select
-        v-model="data.lat_dir"
+        v-model="lat_dir"
         class="col-span-3 p-3 border-l focus:outline-0"
-        :class="data.lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
           {{ $t("southAndNorth") }}
@@ -156,21 +156,21 @@
         $t("longitude")
       }}</span>
       <input
-        v-model="data.long_degree"
-        @keypress="preventNaN($event, data.long_degree)"
+        v-model="long_degree"
+        @keypress="preventNaN($event, long_degree)"
         placeholder="000 (Degree)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-gray-700 focus:outline-0"
       />
       <input
-        v-model="data.long_minutes"
-        @keypress="preventNaN($event, data.long_minutes)"
+        v-model="long_minutes"
+        @keypress="preventNaN($event, long_minutes)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-gray-700 focus:outline-0"
       />
       <select
-        v-model="data.long_dir"
+        v-model="long_dir"
         class="col-span-3 p-3 border-l focus:outline-0"
-        :class="data.long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
           {{ $t("eastAndWest") }}
@@ -185,19 +185,22 @@
 <script setup>
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-import { reactive } from "vue";
+import { refs, reactive } from "vue";
+import { useHarbourPortReportStore } from "@/store/useHarbourPortReportStore";
+import { storeToRefs } from "pinia";
 
-const data = reactive({
-  type: "",
-  status: "default",
-  date_time: "",
-  distance_travelled: "",
-  lat_dir: "default",
-  lat_minutes: "",
-  lat_degree: "",
-  long_dir: "default",
-  long_minutes: "",
-  long_degree: "",
-  operations: [],
-});
+const store = useHarbourPortReportStore();
+const {
+  type: type,
+  status: status,
+  dateTime: date_time,
+  distanceTravelled: distance_travelled,
+  latDir: lat_dir,
+  latMinutes: lat_minutes,
+  latDegree: lat_degree,
+  longDir: long_dir,
+  longMinutes: long_minutes,
+  longDegree: long_degree,
+  operations: operations,
+} = storeToRefs(store);
 </script>

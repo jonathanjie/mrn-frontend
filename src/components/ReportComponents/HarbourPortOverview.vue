@@ -13,13 +13,13 @@
       <input
         class="col-span-3 p-3 border-b text-gray-700 bg-gray-50"
         disabled
-        v-model="tempValues.reportNo"
+        v-model="report_no"
       />
       <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("legNo") }}</div>
       <input
         class="col-span-3 p-3 text-gray-700 bg-gray-50"
         disabled
-        v-model="tempValues.legNo"
+        v-model="leg_no"
       />
     </div>
     <div
@@ -32,7 +32,7 @@
         <input
           class="text-gray-700 bg-gray-50 w-12"
           disabled
-          v-model="tempValues.voyageNo"
+          v-model="voyage_no"
         />
         <!-- value here (e.g. Ballast) should be dynamic -->
         <MiniUnitDisplay class="ml-0 mr-auto">{{
@@ -52,12 +52,12 @@
       <input
         class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b"
         disabled
-        v-model="tempValues.departurePortCountry"
+        v-model="departure_port_country"
       />
       <input
         class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l"
         disabled
-        v-model="tempValues.departurePortName"
+        v-model="departure_port_name"
       />
     </div>
     <div
@@ -69,12 +69,12 @@
       <input
         class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b"
         disabled
-        v-model="tempValues.destinationPortCountry"
+        v-model="destination_port_country"
       />
       <input
         class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l"
         disabled
-        v-model="tempValues.destinationPortName"
+        v-model="destination_port_name"
       />
     </div>
   </div>
@@ -82,15 +82,17 @@
 
 <script setup>
 import MiniUnitDisplay from "../../components/MiniUnitDisplay.vue";
+import { useHarbourPortReportStore } from "@/store/useHarbourPortReportStore";
+import { storeToRefs } from "pinia";
 
-// TODO: retrieve from backend or generate as needed
-const tempValues = {
-  reportNo: "2",
-  legNo: "2",
-  voyageNo: "2",
-  departurePortCountry: "Country A",
-  departurePortName: "Port A",
-  destinationPortCountry: "Country A",
-  destinationPortName: "Port A",
-};
+const store = useHarbourPortReportStore();
+const {
+  reportNo: report_no,
+  legNo: leg_no,
+  voyageNo: voyage_no,
+  departurePortCountry: departure_port_country,
+  departurePortName: departure_port_name,
+  destinationPortCountry: destination_port_country,
+  destinationPortName: destination_port_name,
+} = storeToRefs(store);
 </script>
