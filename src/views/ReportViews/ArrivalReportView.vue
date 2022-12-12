@@ -55,6 +55,9 @@
 
     <Tab :title="$t('fwe')">
       <div class="flex flex-col space-y-6 mt-6">
+        <!-- Overview -->
+        <Overview></Overview>
+
         <!-- Finish With Engine -->
         <FinishWithEngine></FinishWithEngine>
 
