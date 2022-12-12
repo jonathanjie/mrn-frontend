@@ -19,27 +19,27 @@
     <NoonOverview />
 
     <!-- Reporting Noon -->
-    <DateTimeLatLong>{{ $t("reportingNoon") }}</DateTimeLatLong>
+    <NoonDetails>{{ $t("reportingNoon") }}</NoonDetails>
 
     <!-- Weather -->
-    <Weather />
+    <NoonWeather />
 
     <!-- Heavy Weather Condition -->
-    <HeavyWeatherCondition />
+    <NoonHeavyWeather />
 
     <!-- Distance & Time -->
-    <DistanceAndTime />
+    <NoonDistanceAndTime />
 
     <!-- Performance -->
-    <Performance />
+    <NoonPerformance />
 
     <!-- Consumption & Condition -->
-    <ConsumptionAndCondition>{{
+    <NoonConsumption>{{
       $t("consumptionAndConditionNoonToNoon")
-    }}</ConsumptionAndCondition>
+    }}</NoonConsumption>
 
     <!-- Stoppage or Reduction of RPM (at sea) -->
-    <StoppageOrReductionRPM />
+    <NoonStoppage />
 
     <!-- Save and Send -->
     <div class="flex justify-end space-x-4">
@@ -75,16 +75,16 @@ import {
   parsePortLocode,
 } from "../../utils/helpers.js";
 
-import NoonOverview from "@/components/ReportComponents/NoonOverview.vue";
-import DateTimeLatLong from "@/components/ReportComponents/DateTimeLatLong.vue";
-import Weather from "@/components/ReportComponents/Weather.vue";
-import HeavyWeatherCondition from "@/components/ReportComponents/HeavyWeatherCondition.vue";
-import DistanceAndTime from "@/components/ReportComponents/DistanceAndTime.vue";
-import Performance from "@/components/ReportComponents/Performance.vue";
-import ConsumptionAndCondition from "@/components/ReportComponents/ConsumptionAndCondition.vue";
-import StoppageOrReductionRPM from "@/components/ReportComponents/StoppageOrReductionRPM.vue";
+import NoonOverview from "@/components/Reports/NoonReport/NoonOverview.vue";
+import NoonDetails from "@/components/Reports/NoonReport/NoonDetails.vue";
+import NoonWeather from "@/components/Reports/NoonReport/NoonWeather.vue";
+import NoonHeavyWeather from "@/components/Reports/NoonReport/NoonHeavyWeather.vue";
+import NoonDistanceAndTime from "@/components/Reports/NoonReport/NoonDistanceAndTime.vue";
+import NoonPerformance from "@/components/Reports/NoonReport/NoonPerformance.vue";
+import NoonConsumption from "@/components/Reports/NoonReport/NoonConsumption.vue";
+import NoonStoppage from "@/components/Reports/NoonReport/NoonStoppage.vue";
 
-import { useNoonReportStore } from "@/store/useNoonReportStore";
+import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
 
 import { REPORT_CONSTANTS } from "@/constants";

@@ -19,7 +19,7 @@ import SideNav from "./components/SideNav/SideNav.vue";
 import WebHeader from "./components/WebHeader.vue";
 import { collapsed } from "./components/SideNav/state.js";
 import { useAuth0 } from "@auth0/auth0-vue";
-import { useAuthStore } from "./store/auth.store.js";
+import { useAuthStore } from "./stores/auth.store.js";
 // import { useRouter } from 'vue-router'
 import { onMounted } from "vue";
 

@@ -3,26 +3,24 @@
     <Tab :title="$t('sbyForDeparture')">
       <div class="flex flex-col space-y-6 my-6">
         <!-- Overview -->
-        <Overview />
+        <DepartureSBYOverview />
 
         <!-- Departure and Destination -->
         <DepartureAndDestination />
 
         <!-- Cargo Operation -->
-        <CargoOperation />
+        <DepartureCargoOperation />
 
         <!-- Vessel Condition at Departure -->
-        <VesselConditionAtDeparture />
+        <DepartureVesselCondition />
 
         <!-- Consumption & Condition (departure ver.) -->
-        <ConsumptionAndConditionFull
-          :has-detail="true"
-        ></ConsumptionAndConditionFull>
+        <DepartureSBYConsumption :has-detail="true"></DepartureSBYConsumption>
 
         <!-- Consumption & Condition (Harbour/In Port in Total) -->
-        <ConsumptionAndConditionFull :is-yellow="true">{{
+        <DepartureSBYTotalConsumption :is-yellow="true">{{
           $t("consumptionAndConditionHarbourInPortInTotal")
-        }}</ConsumptionAndConditionFull>
+        }}</DepartureSBYTotalConsumption>
       </div>
 
       <!-- Save and Send -->
@@ -49,31 +47,31 @@
     <Tab :title="$t('cosp')">
       <div class="flex flex-col space-y-6 mt-6">
         <!-- Overview -->
-        <Overview />
+        <DepartureCOSPOverview />
 
         <!-- Departure and Destination TODO: may need to disable some fields -->
         <DepartureAndDestination />
 
-        <!-- Pilot Station - Departure (same format as arrival report's pilot arrival)-->
-        <PilotStationArrival>{{
+        <!-- Pilot Station - Departure -->
+        <DeparturePilotStationDeparture>{{
           $t("pilotStationDeparture")
-        }}</PilotStationArrival>
+        }}</DeparturePilotStationDeparture>
 
-        <!-- Pilot Station - Arrival (component name is purposefully flipped)-->
-        <PilotStationDeparture>{{
+        <!-- Pilot Station - Arrival -->
+        <DeparturePilotStationArrival>{{
           $t("pilotStationArrival")
-        }}</PilotStationDeparture>
+        }}</DeparturePilotStationArrival>
 
         <!-- Distance & Time (R/UP Engine) & S/BY to R/UP (In Harbour)-->
-        <DistanceAndTimeCOSP />
+        <DepartureDistanceAndTime />
 
         <!-- Budget Trans Ocean (Pilot to Pilot) -->
-        <BudgetTransOcean />
+        <DepartureBudgetTransOcean />
 
         <!-- Consumption & Condition (S/BY to R/UP) -->
-        <ConsumptionAndCondition>{{
+        <DepartureCOSPConsumption>{{
           $t("consumptionAndConditionSbyToRup")
-        }}</ConsumptionAndCondition>
+        }}</DepartureCOSPConsumption>
       </div>
 
       <!-- Save and Send -->
@@ -106,14 +104,16 @@ import Tab from "../../components/Tabs/Tab.vue";
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 
-import Overview from "@/components/ReportComponents/Overview.vue";
-import DepartureAndDestination from "@/components/ReportComponents/DepartureAndDestination.vue";
-import CargoOperation from "@/components/ReportComponents/CargoOperation.vue";
-import VesselConditionAtDeparture from "@/components/ReportComponents/VesselConditionAtDeparture.vue";
-import ConsumptionAndConditionFull from "@/components/ReportComponents/ConsumptionAndConditionFull.vue";
-import PilotStationArrival from "@/components/ReportComponents/PilotStationArrival.vue";
-import PilotStationDeparture from "@/components/ReportComponents/PilotStationDeparture.vue";
-import DistanceAndTimeCOSP from "@/components/ReportComponents/DistanceAndTimeCOSP.vue";
-import BudgetTransOcean from "@/components/ReportComponents/BudgetTransOcean.vue";
-import ConsumptionAndCondition from "@/components/ReportComponents/ConsumptionAndCondition.vue";
+import DepartureAndDestination from "@/components/Reports/DepartureReport/DepartureAndDestination.vue";
+import DepartureCargoOperation from "@/components/Reports/DepartureReport/DepartureCargoOperation.vue";
+import DepartureVesselCondition from "@/components/Reports/DepartureReport/DepartureVesselCondition.vue";
+import DepartureCOSPConsumption from "@/components/Reports/DepartureReport/DepartureCOSPConsumption.vue";
+import DepartureSBYTotalConsumption from "@/components/Reports/DepartureReport/DepartureSBYTotalConsumption.vue";
+import DepartureSBYConsumption from "@/components/Reports/DepartureReport/DepartureSBYConsumption.vue";
+import DeparturePilotStationArrival from "@/components/Reports/DepartureReport/DeparturePilotStationArrival.vue";
+import DeparturePilotStationDeparture from "@/components/Reports/DepartureReport/DeparturePilotStationDeparture.vue";
+import DepartureDistanceAndTime from "@/components/Reports/DepartureReport/DepartureDistanceAndTime.vue";
+import DepartureBudgetTransOcean from "@/components/Reports/DepartureReport/DepartureBudgetTransOcean.vue";
+import DepartureSBYOverview from "@/components/Reports/DepartureReport/DepartureSBYOverview.vue";
+import DepartureCOSPOverview from "@/components/Reports/DepartureReport/DepartureCOSPOverview.vue";
 </script>

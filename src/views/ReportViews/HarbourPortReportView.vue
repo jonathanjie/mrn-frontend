@@ -20,15 +20,15 @@
     </div>
 
     <!-- Overview -->
-    <HarbourPortOverview></HarbourPortOverview>
+    <HarbourPortOverview />
 
     <!-- Report -->
-    <HarbourPortReport></HarbourPortReport>
+    <HarbourPortReport />
 
     <!-- Consumption & Condition -->
-    <ConsumptionAndConditionFull>{{
+    <HarbourPortConsumption>{{
       $t("consumptionAndConditionLastReportEventNoon")
-    }}</ConsumptionAndConditionFull>
+    }}</HarbourPortConsumption>
 
     <!-- Save and Send -->
     <div class="flex justify-end space-x-4 my-6">
@@ -53,15 +53,15 @@
 </template>
 
 <script setup>
-import RadioBtnDetail from "../../components/Buttons/RadioBtnDetail.vue";
-import HarbourPortOverview from "../../components/ReportComponents/HarbourPortOverview.vue";
-import HarbourPortReport from "../../components/ReportComponents/HarbourPortReport.vue";
-import ConsumptionAndConditionFull from "../../components/ReportComponents/ConsumptionAndConditionFull.vue";
-import CustomButton from "../../components/Buttons/CustomButton.vue";
-import GradientButton from "../../components/Buttons/GradientButton.vue";
-import { useHarbourPortReportStore } from "@/store/useHarbourPortReportStore";
-import { storeToRefs } from "pinia";
+import HarbourPortOverview from "@/components/Reports/HarbourPortReport/HarbourPortOverview.vue";
+import HarbourPortReport from "@/components/Reports/HarbourPortReport/HarbourPortReport.vue";
+import HarbourPortConsumption from "@/components/Reports/HarbourPortReport/HarbourPortConsumption.vue";
+import RadioBtnDetail from "@/components/Buttons/RadioBtnDetail.vue";
+import CustomButton from "@/components/Buttons/CustomButton.vue";
+import GradientButton from "@/components/Buttons/GradientButton.vue";
 import { REPORT_CONSTANTS } from "@/constants";
+import { useHarbourPortReportStore } from "@/stores/useHarbourPortReportStore";
+import { storeToRefs } from "pinia";
 
 const store = useHarbourPortReportStore();
 const {
@@ -79,6 +79,8 @@ const {
   type,
   status,
   dateTime,
+  timeZone,
+  summerTime,
   distanceTravelled,
   latDir,
   latMinutes,
