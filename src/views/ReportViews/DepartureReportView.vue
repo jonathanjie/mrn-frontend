@@ -15,10 +15,10 @@
         <DepartureVesselCondition />
 
         <!-- Consumption & Condition (departure ver.) -->
-        <DepartureSBYConsumption :has-detail="true"></DepartureSBYConsumption>
+        <DepartureSBYConsumption></DepartureSBYConsumption>
 
         <!-- Consumption & Condition (Harbour/In Port in Total) -->
-        <DepartureSBYTotalConsumption :is-yellow="true">{{
+        <DepartureSBYTotalConsumption>{{
           $t("consumptionAndConditionHarbourInPortInTotal")
         }}</DepartureSBYTotalConsumption>
       </div>

@@ -1,13 +1,28 @@
 <template>
-  <div class="grid bg-white rounded-lg p-5 gap-4 shadow-card">
+  <div
+    class="grid bg-white rounded-lg p-5 gap-4 shadow-card"
+    :class="isYellow ? 'border border-yellow-500' : ''"
+  >
     <div>
       <div class="flex items-center">
-        <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
-        <span class="text-16 text-blue-700">
+        <img
+          v-if="isYellow"
+          src="@/assets/icons/selected_yellow_gradient.svg"
+          class="h-5 w-5"
+        />
+        <img
+          v-else
+          src="@/assets/icons/selected_blue_gradient.svg"
+          class="h-5 w-5"
+        />
+        <span
+          class="text-16"
+          :class="isYellow ? 'text-yellow-700' : 'text-blue-700'"
+        >
           <slot>{{ $t("consumptionAndCondition") }}</slot>
         </span>
       </div>
-      <span class="text-14 text-gray-600 mt-2">{{
+      <span v-if="hasDetail" class="text-14 text-gray-600 mt-2">{{
         $t("lastReportToSbyForDeparture")
       }}</span>
     </div>
@@ -534,7 +549,7 @@
 <script setup>
 import { preventNaN } from "@/utils/helpers";
 import { ref, reactive, computed, defineProps } from "vue";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import MiniUnitDisplay from "../../components/MiniUnitDisplay.vue";
 import { useHarbourPortReportStore } from "@/stores/useHarbourPortReportStore";
 import { storeToRefs } from "pinia";
 
@@ -569,4 +584,17 @@ const {
   freshwaterDischarging: freshwater_discharging,
   freshwaterRob: freshwater_rob,
 } = storeToRefs(store);
+
+const props = defineProps({
+  isYellow: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  hasDetail: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+});
 </script>
