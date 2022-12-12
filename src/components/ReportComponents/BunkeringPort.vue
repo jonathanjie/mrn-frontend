@@ -12,12 +12,12 @@
           {{ $t("portName") }}
         </div>
         <input
-          v-model="data.port_country"
+          v-model="port_country"
           :placeholder="$t('inputLocode2')"
           class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
         />
         <input
-          v-model="data.port_name"
+          v-model="port_name"
           :placeholder="$t('inputLocode3')"
           class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
         />
@@ -33,8 +33,8 @@
             <input
               type="checkbox"
               id="anchoringOutLimit"
-              value="0"
-              v-model="data.status"
+              value="anchoringOutLimit"
+              v-model="status"
             />
             <label for="anchoringOutLimit">{{ $t("anchoringOutLimit") }}</label>
           </div>
@@ -42,8 +42,8 @@
             <input
               type="checkbox"
               id="anchoringInnerLimit"
-              value="1"
-              v-model="data.status"
+              value="anchoringInnerLimit"
+              v-model="status"
             />
             <label for="anchoringInnerLimit">{{
               $t("anchoringInnerLimit")
@@ -53,8 +53,8 @@
             <input
               type="checkbox"
               id="berthing"
-              value="2"
-              v-model="data.status"
+              value="berthing"
+              v-model="status"
             />
             <label for="berthing">{{ $t("berthing") }}</label>
           </div>
@@ -68,7 +68,7 @@
           {{ $t("dateAndTime") }}
         </div>
         <DatePicker
-          v-model="data.date_time"
+          v-model="date_time"
           class="col-span-3"
           textInput
           :textInputOptions="textInputOptions"
@@ -86,13 +86,15 @@
 </template>
 
 <script setup>
-import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-import { reactive } from "vue";
+import { textInputOptions, format } from "@/utils/helpers.js";
+import { useBunkerReportStore } from "@/store/useBunkerReportStore";
+import { storeToRefs } from "pinia";
 
-const data = reactive({
-  port_country: "",
-  port_name: "",
-  date_time: "",
-  status: [],
-});
+const store = useBunkerReportStore();
+const {
+  portCountry: port_country,
+  portName: port_name,
+  dateTime: date_time,
+  status: status,
+} = storeToRefs(store);
 </script>

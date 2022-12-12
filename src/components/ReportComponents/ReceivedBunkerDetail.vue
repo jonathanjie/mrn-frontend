@@ -12,7 +12,7 @@
     <!-- Upload delivery note section -->
     <DropZone
       class="flex drop-area border border-dashed border-sysblue-300 p-14 place-content-center rounded-lg text-16 text-gray-800 bg-gray-25"
-      @files-dropped="addFiles"
+      @files-dropped="addFilesAndEmit"
       #default="{ dropZoneActive }"
     >
       <span v-if="dropZoneActive">
@@ -46,7 +46,7 @@
         v-for="file of files"
         :key="file.id"
         :file="file"
-        @remove="removeFile"
+        @remove="removeFileAndEmit"
       />
     </ul>
 
@@ -60,12 +60,33 @@
         {{ $t("productType") }}
       </div>
       <select
-        v-model="data.oil"
+        v-model="oil"
         class="col-span-3 p-3 text-gray-700 border-b"
-        :class="data.oil === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="oil === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
           {{ $t("selectionOfOil") }}
+        </option>
+        <option value="mdo">
+          {{ $t("mdo") }}
+        </option>
+        <option value="mgo">
+          {{ $t("mgo") }}
+        </option>
+        <option value="lsfo">
+          {{ $t("lsfo") }}
+        </option>
+        <option value="hfo">
+          {{ $t("hfo") }}
+        </option>
+        <option value="propane">
+          {{ $t("lpgp") }}
+        </option>
+        <option value="butane">
+          {{ $t("lpgb") }}
+        </option>
+        <option value="lng">
+          {{ $t("lng") }}
         </option>
       </select>
 
@@ -76,8 +97,8 @@
         <MiniUnitDisplay>MT.LTR</MiniUnitDisplay>
       </div>
       <input
-        v-model="data.quantity"
-        @keypress="preventNaN($event, data.quantity)"
+        v-model="quantity"
+        @keypress="preventNaN($event, quantity)"
         placeholder="000.00"
         class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0"
       />
@@ -89,8 +110,8 @@
         <MiniUnitDisplay>KG/M<sup>3</sup></MiniUnitDisplay>
       </div>
       <input
-        v-model="data.density"
-        @keypress="preventNaN($event, data.density)"
+        v-model="density"
+        @keypress="preventNaN($event, density)"
         placeholder="000.00"
         class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0"
       />
@@ -99,8 +120,8 @@
         {{ $t("sgAt15") }}
       </div>
       <input
-        v-model="data.sg"
-        @keypress="preventNaN($event, data.sg)"
+        v-model="sg"
+        @keypress="preventNaN($event, sg)"
         placeholder="000.00"
         class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0"
       />
@@ -112,8 +133,8 @@
         <MiniUnitDisplay>cSt</MiniUnitDisplay>
       </div>
       <input
-        v-model="data.viscosity"
-        @keypress="preventNaN($event, data.viscosity)"
+        v-model="viscosity"
+        @keypress="preventNaN($event, viscosity)"
         placeholder="000.00"
         class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0"
       />
@@ -125,8 +146,8 @@
         <MiniUnitDisplay>°C</MiniUnitDisplay>
       </div>
       <input
-        v-model="data.flash_point"
-        @keypress="preventNaN($event, data.flash_point)"
+        v-model="flash_point"
+        @keypress="preventNaN($event, flash_point)"
         placeholder="000.00"
         class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0"
       />
@@ -136,8 +157,8 @@
         <MiniUnitDisplay>%M/M</MiniUnitDisplay>
       </div>
       <input
-        v-model="data.sulfur_content"
-        @keypress="preventNaN($event, data.sulfur_content)"
+        v-model="sulfur_content"
+        @keypress="preventNaN($event, sulfur_content)"
         placeholder="000.00"
         class="col-span-3 p-3 pl-4 text-gray-700 focus:outline-0"
       />
@@ -153,14 +174,14 @@
         {{ $t("marpol") }}
       </div>
       <input
-        v-model="data.marpol1"
-        @keypress="preventNaN($event, data.marpol1)"
+        v-model="marpol1"
+        @keypress="preventNaN($event, marpol1)"
         placeholder="000.00"
         class="col-span-3 p-3 pl-4 border-r text-gray-700 focus:outline-0"
       />
       <input
-        v-model="data.marpol2"
-        @keypress="preventNaN($event, data.marpol2)"
+        v-model="marpol2"
+        @keypress="preventNaN($event, marpol2)"
         placeholder="000.00"
         class="col-span-3 p-3 pl-4 text-gray-700 focus:outline-0"
       />
@@ -169,14 +190,14 @@
         {{ $t("ship") }}
       </div>
       <input
-        v-model="data.ship1"
-        @keypress="preventNaN($event, data.ship1)"
+        v-model="ship1"
+        @keypress="preventNaN($event, ship1)"
         placeholder="000.00"
         class="col-span-3 p-3 pl-4 border-r border-t text-gray-700 focus:outline-0"
       />
       <input
-        v-model="data.ship2"
-        @keypress="preventNaN($event, data.ship2)"
+        v-model="ship2"
+        @keypress="preventNaN($event, ship2)"
         placeholder="000.00"
         class="col-span-3 p-3 pl-4 border-t text-gray-700 focus:outline-0"
       />
@@ -185,14 +206,14 @@
         {{ $t("barge") }}
       </div>
       <input
-        v-model="data.barge1"
-        @keypress="preventNaN($event, data.barge1)"
+        v-model="barge1"
+        @keypress="preventNaN($event, barge1)"
         placeholder="000.00"
         class="col-span-3 p-3 pl-4 border-r border-t text-gray-700 focus:outline-0"
       />
       <input
-        v-model="data.barge2"
-        @keypress="preventNaN($event, data.barge2)"
+        v-model="barge2"
+        @keypress="preventNaN($event, barge2)"
         placeholder="000.00"
         class="col-span-3 p-3 pl-4 border-t text-gray-700 focus:outline-0"
       />
@@ -206,25 +227,44 @@ import { preventNaN } from "../../utils/helpers.js";
 import useFileList from "../../composables/file-list";
 import DropZone from "../../components/DropZone.vue";
 import FilePreview from "../../components/FilePreview.vue";
+import { useBunkerReportStore } from "@/store/useBunkerReportStore";
+import { storeToRefs } from "pinia";
+import { defineEmits } from "vue";
 
 const { files, addFiles, removeFile } = useFileList();
-const data = {
-  oil: "default",
-  density: "",
-  sg: "",
-  viscosity: "",
-  flash_point: "",
-  sulfur_content: "",
-  marpol1: "",
-  marpol2: "",
-  ship1: "",
-  ship2: "",
-  barge1: "",
-  barge2: "",
+
+const store = useBunkerReportStore();
+const {
+  oil: oil,
+  quantity: quantity,
+  density: density,
+  sg: sg,
+  viscosity: viscosity,
+  flashPoint: flash_point,
+  sulfurContent: sulfur_content,
+  marpol1: marpol1,
+  marpol2: marpol2,
+  ship1: ship1,
+  ship2: ship2,
+  barge1: barge1,
+  barge2: barge2,
+} = storeToRefs(store);
+
+const emit = defineEmits(["fileChange"]);
+
+const addFilesAndEmit = (newFiles) => {
+  addFiles(newFiles);
+  emit("fileChange", files);
 };
 
-function onInputChange(e) {
+const removeFileAndEmit = (file) => {
+  removeFile(file);
+  emit("fileChange", files);
+};
+
+const onInputChange = (e) => {
   addFiles(e.target.files);
   e.target.value = null;
-}
+  emit("fileChange", files);
+};
 </script>

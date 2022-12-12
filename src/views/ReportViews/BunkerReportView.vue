@@ -7,7 +7,7 @@
         name="arrival_port"
         id="beforeArrival"
         value="0"
-        v-model="data.arrival_port"
+        v-model="arrival_port"
       />
       <label for="beforeArrival" class="mr-1">{{ $t("beforeArrival") }}</label>
       <input
@@ -15,7 +15,7 @@
         name="arrival_port"
         id="afterArrival"
         value="1"
-        v-model="data.arrival_port"
+        v-model="arrival_port"
       />
       <label for="afterArrival">{{ $t("afterArrival") }}</label>
     </div>
@@ -27,7 +27,7 @@
     <BunkeringPort></BunkeringPort>
 
     <!-- Received Bunker Detail -->
-    <ReceivedBunkerDetail></ReceivedBunkerDetail>
+    <ReceivedBunkerDetail @file-change="updateFiles"></ReceivedBunkerDetail>
 
     <!-- Bunker Date and Time & Supplier -->
     <DateAndTimeBunker></DateAndTimeBunker>
@@ -57,13 +57,90 @@
 <script setup>
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
-
 import Overview from "@/components/ReportComponents/Overview.vue";
 import BunkeringPort from "@/components/ReportComponents/BunkeringPort.vue";
 import ReceivedBunkerDetail from "@/components/ReportComponents/ReceivedBunkerDetail.vue";
 import DateAndTimeBunker from "@/components/ReportComponents/DateAndTimeBunker.vue";
+import { useBunkerReportStore } from "@/store/useBunkerReportStore";
+import { storeToRefs } from "pinia";
+import { REPORT_CONSTANTS } from "@/constants";
 
-const data = {
-  arrival_port: "",
+// TODO: less hacky
+let files = [];
+const updateFiles = (f) => {
+  files = f;
+  console.log("updatefiles");
+};
+
+const store = useBunkerReportStore();
+const {
+  // status var
+  arrivalPort: arrival_port,
+  // Overview
+  reportNo,
+  legNo,
+  voyageNo,
+  // Bunkering Port
+  portCountry,
+  portName,
+  dateTime,
+  status,
+  // Received Bunker Detail
+  oil,
+  density,
+  sg,
+  viscosity,
+  flashPoint,
+  sulfurContent,
+  marpol1,
+  marpol2,
+  ship1,
+  ship2,
+  barge1,
+  barge2,
+  // Date and Time Bunker
+  alongside,
+  hoseConnection,
+  pumpStart,
+  pumpStop,
+  hoseDisconnection,
+  awayside,
+  purchaser,
+  bargeName,
+  supplierName,
+  address,
+  telephoneNumber,
+} = storeToRefs(store);
+
+const sendReport = async () => {
+  let REPORT = {
+    report_type: REPORT_CONSTANTS.type.bunker,
+    voyage: 1, // TODO: fetch from db
+    leg_num: 1, // TODO: fetch from db
+    report_tz: timeZone.value, // FIND TIMEZONE FROM PORT
+    summer_time: summerTime.value, // FIND SUMMERTIME FROM PORT
+    report_num: 1, // TODO: fetch from db
+    report_date: dateTime.value,
+    position: null, // no pos for bunker report
+    // TODO: MORE BELOW, when backend is done
+    reports: files,
+  };
+
+  console.log("data: ", REPORT);
+
+  const response = await fetch(
+    "https://testapi.marinachain.io/marinanet/reports/",
+    {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(REPORT),
+    }
+  );
+  const data = await response.json();
+  console.log(response);
+  console.log(data);
 };
 </script>

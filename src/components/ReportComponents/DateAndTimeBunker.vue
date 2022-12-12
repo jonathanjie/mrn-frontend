@@ -15,7 +15,7 @@
           {{ $t("alongside") }}
         </div>
         <DatePicker
-          v-model="data.alongside"
+          v-model="alongside"
           class="col-span-3 border-b"
           textInput
           :textInputOptions="textInputOptions"
@@ -34,7 +34,7 @@
           {{ $t("hoseConnection") }}
         </div>
         <DatePicker
-          v-model="data.hose_connection"
+          v-model="hose_connection"
           class="col-span-3 border-b"
           textInput
           :textInputOptions="textInputOptions"
@@ -53,7 +53,7 @@
           {{ $t("pumpStart") }}
         </div>
         <DatePicker
-          v-model="data.pump_start"
+          v-model="pump_start"
           class="col-span-3 border-b"
           textInput
           :textInputOptions="textInputOptions"
@@ -72,7 +72,7 @@
           {{ $t("pumpStop") }}
         </div>
         <DatePicker
-          v-model="data.pump_stop"
+          v-model="pump_stop"
           class="col-span-3 border-b"
           textInput
           :textInputOptions="textInputOptions"
@@ -91,7 +91,7 @@
           {{ $t("hoseDisconnection") }}
         </div>
         <DatePicker
-          v-model="data.hose_disconnection"
+          v-model="hose_disconnection"
           class="col-span-3 border-b"
           textInput
           :textInputOptions="textInputOptions"
@@ -108,7 +108,7 @@
           {{ $t("awayside") }}
         </div>
         <DatePicker
-          v-model="data.awayside"
+          v-model="awayside"
           class="col-span-3"
           textInput
           :textInputOptions="textInputOptions"
@@ -136,7 +136,7 @@
           {{ $t("purchaser") }}
         </div>
         <input
-          v-model="data.purchaser"
+          v-model="purchaser"
           placeholder=""
           class="col-span-3 p-3 pl-4 bg-white text-14 text-gray-700 focus:outline-0"
         />
@@ -147,7 +147,7 @@
           {{ $t("bargeName") }}
         </div>
         <input
-          v-model="data.barge_name"
+          v-model="barge_name"
           placeholder=""
           class="col-span-3 p-3 pl-4 border-t bg-white text-14 text-gray-700 focus:outline-0"
         />
@@ -158,7 +158,7 @@
           {{ $t("supplierName") }}
         </div>
         <input
-          v-model="data.supplier_name"
+          v-model="supplier_name"
           placeholder=""
           class="col-span-3 p-3 pl-4 border-t bg-white text-14 text-gray-700 focus:outline-0"
         />
@@ -169,7 +169,7 @@
           {{ $t("address") }}
         </div>
         <input
-          v-model="data.address"
+          v-model="address"
           placeholder=""
           class="col-span-3 p-3 pl-4 border-t bg-white text-14 text-gray-700 focus:outline-0"
         />
@@ -178,8 +178,8 @@
           {{ $t("telephoneNumber") }}
         </div>
         <input
-          v-model="data.telephone_number"
-          @keypress="preventNaN($event, data.telephone_number)"
+          v-model="telephone_number"
+          @keypress="preventNaN($event, telephone_number)"
           placeholder=""
           class="col-span-3 p-3 pl-4 border-t bg-white text-14 text-gray-700 focus:outline-0"
         />
@@ -191,18 +191,21 @@
 <script setup>
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
 import { reactive } from "vue";
+import { useBunkerReportStore } from "@/store/useBunkerReportStore";
+import { storeToRefs } from "pinia";
 
-const data = reactive({
-  alongside: "",
-  hose_connection: "",
-  pump_start: "",
-  pump_stop: "",
-  hose_disconnection: "",
-  awayside: "",
-  purchaser: "",
-  barge_name: "",
-  supplier_name: "",
-  address: "",
-  telephone_number: "",
-});
+const store = useBunkerReportStore();
+const {
+  alongside: alongside,
+  hoseConnection: hose_connection,
+  pumpStart: pump_start,
+  pumpStop: pump_stop,
+  hoseDisconnection: hose_disconnection,
+  awayside: awayside,
+  purchaser: purchaser,
+  bargeName: barge_name,
+  supplierName: supplier_name,
+  address: address,
+  telephoneNumber: telephone_number,
+} = storeToRefs(store);
 </script>
