@@ -3,16 +3,16 @@
     <Tab :title="$t('sbyForDeparture')">
       <div class="flex flex-col space-y-6 my-6">
         <!-- Overview -->
-        <Overview></Overview>
+        <Overview />
 
         <!-- Departure and Destination -->
-        <DepartureAndDestination></DepartureAndDestination>
+        <DepartureAndDestination />
 
         <!-- Cargo Operation -->
-        <CargoOperation></CargoOperation>
+        <CargoOperation />
 
         <!-- Vessel Condition at Departure -->
-        <VesselConditionAtDeparture></VesselConditionAtDeparture>
+        <VesselConditionAtDeparture />
 
         <!-- Consumption & Condition (departure ver.) -->
         <ConsumptionAndConditionFull
@@ -49,10 +49,10 @@
     <Tab :title="$t('cosp')">
       <div class="flex flex-col space-y-6 mt-6">
         <!-- Overview -->
-        <Overview></Overview>
+        <Overview />
 
         <!-- Departure and Destination TODO: may need to disable some fields -->
-        <DepartureAndDestination></DepartureAndDestination>
+        <DepartureAndDestination />
 
         <!-- Pilot Station - Departure (same format as arrival report's pilot arrival)-->
         <PilotStationArrival>{{
@@ -65,10 +65,10 @@
         }}</PilotStationDeparture>
 
         <!-- Distance & Time (R/UP Engine) & S/BY to R/UP (In Harbour)-->
-        <DistanceAndTimeCOSP></DistanceAndTimeCOSP>
+        <DistanceAndTimeCOSP />
 
         <!-- Budget Trans Ocean (Pilot to Pilot) -->
-        <BudgetTransOcean></BudgetTransOcean>
+        <BudgetTransOcean />
 
         <!-- Consumption & Condition (S/BY to R/UP) -->
         <ConsumptionAndCondition>{{
