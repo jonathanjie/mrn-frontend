@@ -35,8 +35,61 @@
         <option selected disabled value="default">
           {{ $t("selectEvent") }}
         </option>
+        <option value="anchoringStartOutside">
+          {{ $t("anchoringStartOutside") }}
+        </option>
+        <option value="anchoringEndOutside">
+          {{ $t("anchoringEndOutside") }}
+        </option>
+        <option value="anchoringStartInside">
+          {{ $t("anchoringStartInside") }}
+        </option>
+        <option value="anchoringEndInside">
+          {{ $t("anchoringEndInside") }}
+        </option>
+        <option value="driftingStart">
+          {{ $t("driftingStart") }}
+        </option>
+        <option value="driftingEnd">
+          {{ $t("driftingEnd") }}
+        </option>
+        <option value="driftingStart">
+          {{ $t("shiftingStart") }}
+        </option>
+        <option value="driftingEnd">
+          {{ $t("shiftingEnd") }}
+        </option>
       </select>
-      <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50">
+      <div
+        class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
+      >
+        {{ $t("timeZone") }}
+      </div>
+      <div class="flex col-span-3 border-b bg-white">
+        <TimeZoneSelector
+          class="grow self-center"
+          v-model="time_zone"
+        ></TimeZoneSelector>
+      </div>
+      <div
+        class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
+      >
+        {{ $t("summerTime") }}
+      </div>
+      <select
+        v-model="summer_time"
+        class="col-span-3 p-3 border-b text-14 focus:outline-0"
+        :class="summer_time === 'default' ? 'text-gray-400' : 'text-gray-700'"
+      >
+        <option selected disabled value="default">
+          {{ $t("selectSummerTime") }}
+        </option>
+        <option value="true">{{ $t("applied") }}</option>
+        <option value="false">{{ $t("notApplied") }}</option>
+      </select>
+      <div
+        class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
+      >
         {{ $t("dateAndTime") }}
       </div>
       <DatePicker
@@ -45,7 +98,7 @@
         textInput
         :textInputOptions="textInputOptions"
         :format="format"
-        :disabled="date_time === 'default' || date_time === 'default'"
+        :disabled="time_zone === 'default' || summer_time === 'default'"
         :modelValue="string"
         :placeholder="$t('selectDateAndTime')"
       >
@@ -68,14 +121,12 @@
     </div>
 
     <div
-      class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50 text-14"
+      class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-white text-14"
     >
-      <div class="col-span-2 row-span-2 text-blue-700 p-3 border-r">
+      <div class="col-span-2 row-span-2 text-blue-700 p-3 border-r bg-gray-50">
         {{ $t("operations") }}
       </div>
-      <div
-        class="col-span-3 bg-white flex flex-col space-y-2 p-3 text-gray-700"
-      >
+      <div class="col-span-3 flex flex-col space-y-2 p-3 text-gray-700">
         <!-- TODO: make dynamic -->
         <div class="flex align-center space-x-2">
           <input
@@ -188,12 +239,15 @@ import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
 import { refs, reactive } from "vue";
 import { useHarbourPortReportStore } from "@/store/useHarbourPortReportStore";
 import { storeToRefs } from "pinia";
+import TimeZoneSelector from "../TimeZoneSelector.vue";
 
 const store = useHarbourPortReportStore();
 const {
   type: type,
   status: status,
   dateTime: date_time,
+  timeZone: time_zone,
+  summerTime: summer_time,
   distanceTravelled: distance_travelled,
   latDir: lat_dir,
   latMinutes: lat_minutes,

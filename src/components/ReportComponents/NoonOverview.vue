@@ -13,13 +13,13 @@
       <input
         class="col-span-3 p-3 border-b text-gray-700 bg-gray-50"
         disabled
-        v-model="tempValues.reportNo"
+        v-model="report_no"
       />
       <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("legNo") }}</div>
       <input
         class="col-span-3 p-3 text-gray-700 bg-gray-50"
         disabled
-        v-model="tempValues.legNo"
+        v-model="leg_no"
       />
     </div>
     <div
@@ -32,7 +32,7 @@
         <input
           class="text-gray-700 bg-gray-50 w-8"
           disabled
-          v-model="tempValues.voyageNo"
+          v-model="voyage_no"
         />
         <!-- value here (e.g. Ballast) should be dynamic -->
         <MiniUnitDisplay class="ml-0 mr-auto">{{
@@ -155,16 +155,11 @@ import TimeZoneSelector from "@/components/TimeZoneSelector.vue";
 import { useNoonReportStore } from "@/store/useNoonReportStore";
 import { storeToRefs } from "pinia";
 
-// TODO: retrieve from backend or generate as needed
-// API /reports/latest
-const tempValues = {
-  reportNo: "2",
-  legNo: "2",
-  voyageNo: "1",
-};
-
 const store = useNoonReportStore();
 const {
+  reportNo: report_no,
+  legNo: leg_no,
+  voyageNo: voyage_no,
   routeDeparturePortCountry: route_departure_port_country,
   routeDeparturePortName: route_departure_port_name,
   routeDepartureDate: route_departure_date,
