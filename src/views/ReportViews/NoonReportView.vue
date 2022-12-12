@@ -16,7 +16,7 @@
     </span>
 
     <!-- Overview -->
-    <NoonOverview></NoonOverview>
+    <NoonOverview />
 
     <!-- Reporting Noon -->
     <DateTimeLatLong>{{ $t("reportingNoon") }}</DateTimeLatLong>
@@ -25,13 +25,13 @@
     <Weather />
 
     <!-- Heavy Weather Condition -->
-    <HeavyWeatherCondition></HeavyWeatherCondition>
+    <HeavyWeatherCondition />
 
     <!-- Distance & Time -->
-    <DistanceAndTime></DistanceAndTime>
+    <DistanceAndTime />
 
     <!-- Performance -->
-    <Performance></Performance>
+    <Performance />
 
     <!-- Consumption & Condition -->
     <ConsumptionAndCondition>{{
@@ -39,7 +39,7 @@
     }}</ConsumptionAndCondition>
 
     <!-- Stoppage or Reduction of RPM (at sea) -->
-    <StoppageOrReductionRPM></StoppageOrReductionRPM>
+    <StoppageOrReductionRPM />
 
     <!-- Save and Send -->
     <div class="flex justify-end space-x-4">
