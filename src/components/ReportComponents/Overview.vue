@@ -7,32 +7,46 @@
     <div
       class="col-span-2 xl:col-span-1 grid grid-cols-5 border bg-gray-50 text-14"
     >
-      <div class="col-span-2 text-blue-700 p-3 border-r">
+      <div class="col-span-2 text-blue-700 p-3 border-r border-b">
         {{ $t("reportNo") }}
       </div>
       <input
-        class="col-span-3 p-3 text-gray-700 bg-gray-50"
+        class="col-span-3 p-3 border-b text-gray-700 bg-gray-50"
         disabled
-        v-model="tempValues.reportNo"
+        v-model="report_no"
       />
-    </div>
-    <div
-      class="col-span-2 xl:col-span-1 grid grid-cols-5 border bg-gray-50 text-14"
-    >
       <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("legNo") }}</div>
       <input
         class="col-span-3 p-3 text-gray-700 bg-gray-50"
         disabled
-        v-model="tempValues.legNo"
+        v-model="leg_no"
       />
+    </div>
+    <div
+      class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14"
+    >
+      <div class="col-span-2 text-blue-700 p-3 border-l border-y">
+        {{ $t("voyageNo") }}
+      </div>
+      <input
+        class="flex col-span-3 p-3 border text-gray-700 bg-gray-50"
+        disabled
+        v-model="voyage_no"
+      />
+      <div class="hidden xl:block bg-white col-span-2 row-span-1"></div>
+      <input class="hidden xl:block bg-white col-span-3 p-3" disabled />
     </div>
   </div>
 </template>
 
 <script setup>
-// TODO: retrieve from backend or generate as needed
-const tempValues = {
-  reportNo: "2",
-  legNo: "2",
-};
+import { useBunkerReportStore } from "@/store/useBunkerReportStore";
+import { storeToRefs } from "pinia";
+
+const store = useBunkerReportStore();
+const {
+  reportNo: report_no,
+  legNo: leg_no,
+  voyageNo: voyage_no,
+} = storeToRefs(store);
 </script>
