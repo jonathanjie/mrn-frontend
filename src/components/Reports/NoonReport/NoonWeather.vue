@@ -116,7 +116,7 @@
         <MiniUnitDisplay>KNOT</MiniUnitDisplay>
       </div>
       <div
-        class="col-span-3 xl:col-span-1 text-14 text-gray-600 focus:outline-0 p-3 bg-gray-50 flex items-center"
+        class="col-span-3 xl:col-span-1 text-14 text-blue-700 focus:outline-0 p-3 bg-gray-50 flex items-center"
       >
         {{ $t("beaufort") + " " + wind_speed_beaufort }}
       </div>
