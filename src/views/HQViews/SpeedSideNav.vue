@@ -59,8 +59,15 @@ import SpeedGraphNavItemVue from "./SpeedGraphNavItem.vue";
 
 // Need to change if there are more than 2 graphs
 let selected_speed = ref(true);
-const speed = "14.57";
-const focDay = "63.4";
-const distanceToGo = "10.367";
-const remainOnBoard = "0,000.0";
+// const speed = "14.57";
+// const focDay = "63.4";
+// const distanceToGo = "10.367";
+// const remainOnBoard = "0,000.0";
+
+defineProps({
+  speed: String,
+  focDay: String,
+  distanceToGo: String,
+  remainOnBoard: String,
+});
 </script>

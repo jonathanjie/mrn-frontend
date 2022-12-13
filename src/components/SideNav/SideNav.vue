@@ -78,7 +78,7 @@
 </template>
 
 <script setup>
-import { useAuthStore } from "@/store/auth.store";
+import { useAuthStore } from "@/stores/auth.store";
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
 let addSpec = true;
 const auth = useAuthStore();

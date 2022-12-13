@@ -21,12 +21,10 @@ export const useAuthStore = defineStore({
     updateUser(user) {
       this.user = user;
       localStorage.setItem("user", JSON.stringify(user));
-      console.log("USER: ", JSON.parse(localStorage.getItem("user")));
     },
     updateRole(role) {
       this.role = role;
       localStorage.setItem("role", role);
-      console.log("Role: ", localStorage.getItem("role"));
     },
     logout() {
       this.user = null;

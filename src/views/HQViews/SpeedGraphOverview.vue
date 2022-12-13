@@ -115,7 +115,12 @@
           </div>
         </div>
         <div class="flex flex-row mt-6">
-          <SpeedSideNav></SpeedSideNav>
+          <SpeedSideNav
+            :speed="speed"
+            :focDay="focDay"
+            :distanceToGo="distanceToGo"
+            :remainOnBoard="remainOnBoard"
+          ></SpeedSideNav>
           <!-- <SpeedGraphPlot></SpeedGraphPlot> -->
         </div>
       </div>
@@ -127,12 +132,12 @@
         <div class="flex flex-row">
           <div class="flex flex-col">
             <PortCard
-              v-for="port in PortCalls"
-              :portCountry="port.portCountry"
-              :origin="port.origin"
-              :destination="port.destination"
-              :departureTime="port.departureTime"
-              :arrivalTime="port.arrivalTime"
+              v-for="port in portCalls"
+              :portCountry="port.arrival_port"
+              :origin="port.departure_port"
+              :destination="port.arrival_port"
+              :departureTime="port.departure_date"
+              :arrivalTime="port.arrival_date"
             ></PortCard>
           </div>
           <!-- <SpeedGraphReminders></SpeedGraphReminders> -->
@@ -147,17 +152,17 @@ import { ref } from "vue";
 import SpeedSideNav from "./SpeedSideNav.vue";
 import SpeedGraphPlot from "./SpeedGraphPlot.vue";
 import PortCard from "@/components/PortCard.vue";
+import { useAuthStore } from "@/stores/auth.store";
 import SpeedGraphReminders from "./SpeedGraphReminders.vue";
 
 let weeklyFlag = ref(true);
-const imoReg = 1234567;
-// Variables to be changed
+
 const props = defineProps({
   vesselname: String,
   imo: String,
 });
+const auth = useAuthStore();
 
-const payloadType = "Oil";
 const shipCapacity = "300,000";
 const shipFlag = "Panama";
 const previousCIIGrade = "A";
@@ -167,58 +172,50 @@ const message =
   "Low CII grade message goes here. [Provide action to follow up]";
 const date = "15 Jan 2023, 11:03PM";
 
-const PortCalls = [
-  {
-    portCountry: "SINGAPORE",
-    origin: "Onsan, Korea",
-    destination: "Singapore",
-    departureTime: "19 May 2022, 23:15 UTC",
-    arrivalTime: "31 May 2022, 04:13 UTC",
-  },
-  {
-    portCountry: "ONSAN, KOREA",
-    origin: "Juaymah, Saudi Arabia",
-    destination: "Onsan, Korea",
-    departureTime: "27 Apr 2022, 23:15 UTC",
-    arrivalTime: "18 May 2022, 04:13 UTC",
-  },
-  {
-    portCountry: "JUAYMAH, SAUDI ARABIA",
-    origin: "Ras Tanura, Saudi Arabia",
-    destination: "Juaymah, Saudi Arabia",
-    departureTime: "26 Apr 2022, 23:15 UTC",
-    arrivalTime: "27 Apr 2022, 04:13 UTC",
-  },
-];
+// const PortCalls = [
+//   {
+//     portCountry: "SINGAPORE",
+//     origin: "Onsan, Korea",
+//     destination: "Singapore",
+//     departureTime: "19 May 2022, 23:15 UTC",
+//     arrivalTime: "31 May 2022, 04:13 UTC",
+//   },
+//   {
+//     portCountry: "ONSAN, KOREA",
+//     origin: "Juaymah, Saudi Arabia",
+//     destination: "Onsan, Korea",
+//     departureTime: "27 Apr 2022, 23:15 UTC",
+//     arrivalTime: "18 May 2022, 04:13 UTC",
+//   },
+//   {
+//     portCountry: "JUAYMAH, SAUDI ARABIA",
+//     origin: "Ras Tanura, Saudi Arabia",
+//     destination: "Juaymah, Saudi Arabia",
+//     departureTime: "26 Apr 2022, 23:15 UTC",
+//     arrivalTime: "27 Apr 2022, 04:13 UTC",
+//   },
+// ];
 
-const getVoyages = async () => {
-  const DUMMY_TOKEN = localStorage.getItem("jwt");
-  const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/ships/" + imoReg + "/voyages/",
-    {
-      headers: {
-        Authorization: "Bearer " + DUMMY_TOKEN,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-  const voyages = await response.json();
-  return voyages;
-
-  // Can be used to sort the voyages based on their numbers
-  // return voyages.sort(function (a, b) {
-  //   return b.voyage_num - a.voyage_num;
-  // });
+const shipRef = {
+  BULK: "Bulk Carrier",
+  GAS: "Gas Carrier",
+  OIL: "Oil Tanker",
+  CNTR: "Container Ship",
+  RORO: "Ro-Ro Cargo Ship",
+  GCGO: "General Cargo Ship",
+  REFC: "Refrigerated Cargo Carrier",
+  COMB: "Combination Carrier",
+  LNGC: "LNG Carrier",
+  RORV: "Ro-Ro Cargo Ship (Vehicle Carrier)",
+  RORP: "Ro-Ro Passenger Ship",
+  CRUZ: "Cruise Passenger Ship",
 };
-
-const getReports = async (voyage_uuid) => {
-  const DUMMY_TOKEN = localStorage.getItem("jwt");
+const getShip = async () => {
   const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/voyages/${voyage_uuid}/reports`,
+    `https://testapi.marinachain.io/marinanet/ships/${props.imo}`,
     {
       headers: {
-        Authorization: "Bearer " + DUMMY_TOKEN,
+        Authorization: "Bearer " + auth.jwt,
         "Content-Type": "application/json",
       },
       method: "GET",
@@ -226,18 +223,47 @@ const getReports = async (voyage_uuid) => {
   );
 
   const json = await response.json();
-
   return json;
-  // Need to figure out api call for all of this data
-  // return json.sort(function (a, b) {
-  //   return new Date(b.created_at) - new Date(a.created_at)
-  // return new Date(b.report_date) - new Date(a.report_date)
-  // })
 };
-const voyages = await getVoyages();
-const latestReports = await getReports(voyages[0].uuid);
-console.log(latestReports);
-// reports.sort(function (a, b) {
-//   return new Date(b.date) - new Date(a.date)
-// })
+
+const getLatest = async () => {
+  const response = await fetch(
+    `https://testapi.marinachain.io/marinanet/ships/${props.imo}/latest-report`,
+    {
+      headers: {
+        Authorization: "Bearer " + auth.jwt,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+
+  const json = await response.json();
+  return json;
+};
+
+const getPortCalls = async () => {
+  const response = await fetch(
+    `https://testapi.marinachain.io/marinanet/ships/${props.imo}/most-recent-distinct-routes/`,
+    {
+      headers: {
+        Authorization: "Bearer " + auth.jwt,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+
+  const portCalls = await response.json();
+  return portCalls;
+};
+
+const portCalls = await getPortCalls();
+const latestSubmission = await getLatest();
+const ship = await getShip();
+const payloadType = shipRef[ship.ship_type];
+const speed = latestSubmission.distanceperformancedata.speed_avg;
+const distanceToGo = latestSubmission.distanceperformancedata.distance_to_go;
+const focDay = "99.99";
+const remainOnBoard = "0,000.0";
 </script>

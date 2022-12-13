@@ -276,7 +276,6 @@ const shipRef = {
 const vessel = {
   vesselStatus: "sailing", // sailing, cargo, bunkering, waiting, etc
   flag: "Panama",
-  imoNo: "9876543",
   shipSize: "300,000",
   loadingCondition: "Westbound",
   reportStatus: "uploaded", // Uploaded, Error, Pending
