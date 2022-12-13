@@ -112,7 +112,7 @@ const routes = [
   },
   {
     path: "/vessels/:vesselname/:imo/add-report",
-    name: "vessel-report",
+    name: "add-report",
     component: AddReportToVoyageView,
     children: [
       {
