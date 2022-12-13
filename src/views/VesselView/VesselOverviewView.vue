@@ -95,7 +95,7 @@ for (let i = 0; i < voyages.length; i++) {
     ret["departure"] = "Singapore"; // TODO: dynamic
     ret["arrival"] = "Ulsan"; // TODO: dynamic
     ret["loading_condition"] = "Westbound"; // TODO: dynamic; unclear where to fetch loading condition
-    ret["date_of_submission"] = j.report_date.slice(0, 10) + ", 4:08 PM"; // TODO: dynamic; separate parse function / modified vs created date?
+    ret["date_of_report"] = j.report_date.slice(0, 10) + ", 4:08 PM"; // TODO: dynamic; separate parse function / modified vs created date?
 
     reports[uuid].push(ret);
   }
