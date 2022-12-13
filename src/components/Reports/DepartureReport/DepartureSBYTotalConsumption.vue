@@ -7,9 +7,6 @@
           <slot>{{ $t("consumptionAndCondition") }}</slot>
         </span>
       </div>
-      <span class="text-14 text-gray-600 mt-2">{{
-        $t("lastReportToSbyForDeparture")
-      }}</span>
     </div>
 
     <div class="grid divide-y divide-dashed gap-8">
