@@ -15,32 +15,27 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { useAuth0 } from "@auth0/auth0-vue";
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 
-export default {
-  components: { GradientButton },
-  setup() {
-    const { loginWithRedirect, user, getAccessTokenSilently } = useAuth0();
+const { loginWithRedirect, user, getAccessTokenSilently } = useAuth0();
 
-    return {
-      login: () => {
-        loginWithRedirect();
-        // loginWithRedirect({
-        //     appState: { target: '/' }
-        // })
-      },
-      //   doSomethingWithToken: async() => {
-      //     const token = await getAccessTokenSilently();
-      //     const response = await fetch('https://django-jwt-test-dan/api/posts', {
-      //       headers: {
-      //         Authorization: 'Bearer ' + token
-      //       }
-      //     });
-      //     // const data = await response.json();
-      //   },
-    };
-  },
+const login = () => {
+  loginWithRedirect({
+    authorizationParams: {
+      redirect_url: "http://localhost:8080/my-vessels",
+    },
+  });
 };
+
+//   doSomethingWithToken: async() => {
+//     const token = await getAccessTokenSilently();
+//     const response = await fetch('https://django-jwt-test-dan/api/posts', {
+//       headers: {
+//         Authorization: 'Bearer ' + token
+//       }
+//     });
+//     // const data = await response.json();
+//   },
 </script>

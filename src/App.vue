@@ -1,10 +1,11 @@
 <template>
   <!-- TODO: router view for login page -->
   <!-- <router-view v-if="!isAuthenticated" class="bg-gray-50 min-h-screen"></router-view> -->
-
   <div v-if="isAuthenticated" class="flex items-start items-stretch">
     <div class="z-50 fixed">
-      <SideNav />
+      <Suspense>
+        <SideNav />
+      </Suspense>
     </div>
     <div class="grow h-screen" :class="collapsed ? 'ml-20' : 'ml-64'">
       <!-- TODO: change to fixed, not sticky -->

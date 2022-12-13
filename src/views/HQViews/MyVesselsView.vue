@@ -30,7 +30,9 @@
               />
             </template>
             <template v-slot:itemHeader>
-              <h1 class="text-gray-500 text-12">{{ $t("sailingVessels") }}</h1>
+              <h1 class="text-gray-500 text-12">
+                {{ $t("sailingVessels") }}
+              </h1>
             </template>
             <template v-slot:numVessels>
               <h2 v-if="sailingVessels != 0" class="text-gray-700 text-18">
@@ -209,6 +211,19 @@
     </div>
     <div v-else class="flex flex-col">
       <VesselCard
+        v-for="ship in ships"
+        :vesselName="ship.name"
+        :loadType="shipRef[ship.ship_type]"
+        :imoNo="ship.imo_reg"
+        :vesselStatus="vessel.vesselStatus"
+        :flag="vessel.flag"
+        :shipSize="vessel.shipSize"
+        :loadingCondition="vessel.loadingCondition"
+        :reportStatus="vessel.reportStatus"
+        :updatedDate="vessel.updatedDate"
+      ></VesselCard>
+      <!-- To be used to test VesselCard
+      <VesselCard
         v-for="vessel in vessels"
         :vesselStatus="vessel.vesselStatus"
         :vesselName="vessel.vesselName"
@@ -219,7 +234,7 @@
         :loadingCondition="vessel.loadingCondition"
         :reportStatus="vessel.reportStatus"
         :updatedDate="vessel.updatedDate"
-      ></VesselCard>
+      ></VesselCard> -->
     </div>
     <hr class="mt-6 w-full bg-gray-200" />
     <!-- Pagination module -->
@@ -243,80 +258,105 @@ const cargoVessels = 0;
 const bunkeringVessels = 0;
 const waitingVessels = 0;
 
-const vessels = [
-  {
-    vesselStatus: "sailing", // sailing, cargo, bunkering, waiting, etc
-    vesselName: "MARINA A",
-    loadType: "Oil",
-    flag: "Panama",
-    imoNo: "9876543",
-    shipSize: "300,000",
-    loadingCondition: "Westbound",
-    reportStatus: "uploaded", // Uploaded, Error, Pending
-    updatedDate: "18 Nov 2022",
-  },
-  {
-    vesselStatus: "waiting", // sailing, cargo, bunkering, waiting, etc
-    vesselName: "MARINA B",
-    loadType: "Oil",
-    flag: "Panama",
-    imoNo: "12345678",
-    shipSize: "300,000",
-    loadingCondition: "Eastbound",
-    reportStatus: "error", // uploaded, error, pending
-    updatedDate: "18 Nov 2022",
-  },
-  {
-    vesselStatus: "cargo", // sailing, cargo, bunkering, waiting, etc
-    vesselName: "MARINA C",
-    loadType: "Oil",
-    flag: "Panama",
-    imoNo: "91234567",
-    shipSize: "300,000",
-    loadingCondition: "Ballast",
-    reportStatus: "pending", // uploaded, error, pending
-    updatedDate: "18 Nov 2022",
-  },
-  {
-    vesselStatus: "bunkering", // sailing, cargo, bunkering, waiting, etc
-    vesselName: "MARINA A",
-    loadType: "Oil",
-    flag: "Panama",
-    imoNo: "9876543",
-    shipSize: "300,000",
-    loadingCondition: "Laden",
-    reportStatus: "uploaded", // uploaded, error, pending
-    updatedDate: "18 Nov 2022",
-  },
-  {
-    vesselStatus: "etc", // sailing, cargo, bunkering, waiting, etc
-    vesselName: "MARINA A",
-    loadType: "Oil",
-    flag: "Panama",
-    imoNo: "9876543",
-    shipSize: "300,000",
-    loadingCondition: "Westbound",
-    reportStatus: "uploaded", // uploaded, error, pending
-    updatedDate: "18 Nov 2022",
-  },
-];
+const shipRef = {
+  BULK: "Bulk Carrier",
+  GAS: "Gas Carrier",
+  OIL: "Oil Tanker",
+  CNTR: "Container Ship",
+  RORO: "Ro-Ro Cargo Ship",
+  GCGO: "General Cargo Ship",
+  REFC: "Refrigerated Cargo Carrier",
+  COMB: "Combination Carrier",
+  LNGC: "LNG Carrier",
+  RORV: "Ro-Ro Cargo Ship (Vehicle Carrier)",
+  RORP: "Ro-Ro Passenger Ship",
+  CRUZ: "Cruise Passenger Ship",
+};
 
-// const getShips = async () => {
-//   const DUMMY_TOKEN = localStorage.getItem("jwt");
-//   // console.log(DUMMY_TOKEN)
-//   const response = await fetch(
-//     "https://testapi.marinachain.io/marinanet/ships/",
-//     {
-//       headers: {
-//         Authorization: "Bearer " + DUMMY_TOKEN,
-//         "Content-Type": "application/json",
-//       },
-//       method: "GET",
-//     }
-//   );
+const vessel = {
+  vesselStatus: "sailing", // sailing, cargo, bunkering, waiting, etc
+  flag: "Panama",
+  imoNo: "9876543",
+  shipSize: "300,000",
+  loadingCondition: "Westbound",
+  reportStatus: "uploaded", // Uploaded, Error, Pending
+  updatedDate: "18 Nov 2022",
+};
 
-//   const ships = await response.json();
-//   console.log("SHIPS: ", ships);
-//   return ships;
-// };
+// const vessels = [
+//   {
+//     vesselStatus: "sailing", // sailing, cargo, bunkering, waiting, etc
+//     vesselName: "MARINA A",
+//     loadType: "Oil",
+//     flag: "Panama",
+//     imoNo: "9876543",
+//     shipSize: "300,000",
+//     loadingCondition: "Westbound",
+//     reportStatus: "uploaded", // Uploaded, Error, Pending
+//     updatedDate: "18 Nov 2022",
+//   },
+//   {
+//     vesselStatus: "waiting", // sailing, cargo, bunkering, waiting, etc
+//     vesselName: "MARINA B",
+//     loadType: "Oil",
+//     flag: "Panama",
+//     imoNo: "12345678",
+//     shipSize: "300,000",
+//     loadingCondition: "Eastbound",
+//     reportStatus: "error", // uploaded, error, pending
+//     updatedDate: "18 Nov 2022",
+//   },
+//   {
+//     vesselStatus: "cargo", // sailing, cargo, bunkering, waiting, etc
+//     vesselName: "MARINA C",
+//     loadType: "Oil",
+//     flag: "Panama",
+//     imoNo: "91234567",
+//     shipSize: "300,000",
+//     loadingCondition: "Ballast",
+//     reportStatus: "pending", // uploaded, error, pending
+//     updatedDate: "18 Nov 2022",
+//   },
+//   {
+//     vesselStatus: "bunkering", // sailing, cargo, bunkering, waiting, etc
+//     vesselName: "MARINA A",
+//     loadType: "Oil",
+//     flag: "Panama",
+//     imoNo: "9876543",
+//     shipSize: "300,000",
+//     loadingCondition: "Laden",
+//     reportStatus: "uploaded", // uploaded, error, pending
+//     updatedDate: "18 Nov 2022",
+//   },
+//   {
+//     vesselStatus: "etc", // sailing, cargo, bunkering, waiting, etc
+//     vesselName: "MARINA A",
+//     loadType: "Oil",
+//     flag: "Panama",
+//     imoNo: "9876543",
+//     shipSize: "300,000",
+//     loadingCondition: "Westbound",
+//     reportStatus: "uploaded", // uploaded, error, pending
+//     updatedDate: "18 Nov 2022",
+//   },
+// ];
+
+const getShips = async () => {
+  const DUMMY_TOKEN = localStorage.getItem("jwt");
+  const response = await fetch(
+    "https://testapi.marinachain.io/marinanet/ships/",
+    {
+      headers: {
+        Authorization: "Bearer " + DUMMY_TOKEN,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+
+  const ships = response.json();
+  return ships;
+};
+
+const ships = await getShips();
 </script>

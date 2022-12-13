@@ -31,7 +31,7 @@
                 <input
                   class="w-full bg-gray-50 px-3 py-3 rounded border border-gray-300 text-gray-500"
                   :disabled="true"
-                  :placeholder="vesselname"
+                  :placeholder="props.vesselname"
                 />
               </div>
               <div>
@@ -41,7 +41,7 @@
                 <input
                   class="w-full bg-gray-50 px-3 py-3 rounded border border-gray-300 text-gray-500"
                   :disabled="true"
-                  :placeholder="imo"
+                  :placeholder="props.imo"
                 />
               </div>
             </div>
@@ -53,29 +53,29 @@
                 </p>
                 <select
                   class="w-full bg-gray-0 px-3 py-3 rounded border border-gray-300 text-gray-500"
-                  v-model="vesselType"
+                  v-model="ship_type"
                 >
                   <option value="" selected hidden>
                     {{ $t("selectAnOption") }}
                   </option>
-                  <option value="bulkCarrier">{{ $t("bulkCarrier") }}</option>
-                  <option value="gasCarrier">{{ $t("gasCarrier") }}</option>
-                  <option value="tanker">{{ $t("tanker") }}</option>
-                  <option value="container">{{ $t("container") }}</option>
-                  <option value="generalCargo">{{ $t("generalCargo") }}</option>
-                  <option value="refrigeratedCargo">
+                  <option value="BULK">{{ $t("bulkCarrier") }}</option>
+                  <option value="GAS">{{ $t("gasCarrier") }}</option>
+                  <option value="OIL">{{ $t("tanker") }}</option>
+                  <option value="CNTR">{{ $t("container") }}</option>
+                  <option value="GCGO">{{ $t("generalCargo") }}</option>
+                  <option value="REFC">
                     {{ $t("refrigeratedCargo") }}
                   </option>
-                  <option value="combiCarrier">{{ $t("combiCarrier") }}</option>
-                  <option value="lngCarrier">{{ $t("lngCarrier") }}</option>
-                  <option value="roroCargoVehicle">
+                  <option value="COMB">{{ $t("combiCarrier") }}</option>
+                  <option value="LNGC">{{ $t("lngCarrier") }}</option>
+                  <option value="RORV">
                     {{ $t("roroCargoVehicle") }}
                   </option>
-                  <option value="roroCargo">{{ $t("roroCargo") }}</option>
-                  <option value="roroPassenger">
+                  <option value="RORO">{{ $t("roroCargo") }}</option>
+                  <option value="RORP">
                     {{ $t("roroPassenger") }}
                   </option>
-                  <option value="cruisePassenger">
+                  <option value="CRUZ">
                     {{ $t("cruisePassenger") }}
                   </option>
                 </select>
@@ -86,7 +86,7 @@
                 </p>
                 <select
                   class="w-full bg-gray-0 px-3 py-3 rounded border border-gray-300 text-gray-500"
-                  v-model="cargoUnit"
+                  v-model="cargo_unit"
                 >
                   <option value="" selected hidden>
                     {{ $t("selectAnOption") }}
@@ -106,7 +106,7 @@
               <div class="grid grid-cols-3 gap-2">
                 <div class="flex align-center">
                   <input
-                    v-model="fuelOptions"
+                    v-model="fuel_options.mdo"
                     type="checkbox"
                     id="mdo"
                     name="mdo"
@@ -118,7 +118,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="fuelOptions"
+                    v-model="fuel_options.mgo"
                     type="checkbox"
                     id="mgo"
                     name="mgo"
@@ -130,7 +130,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="fuelOptions"
+                    v-model="fuel_options.lsfo"
                     type="checkbox"
                     id="lsfo"
                     name="lsfo"
@@ -142,7 +142,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="fuelOptions"
+                    v-model="fuel_options.hfo"
                     type="checkbox"
                     id="hfo"
                     name="hfo"
@@ -154,7 +154,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="fuelOptions"
+                    v-model="fuel_options.lpgPropane"
                     type="checkbox"
                     id="lpgp"
                     name="lpgp"
@@ -166,7 +166,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="fuelOptions"
+                    v-model="fuel_options.lpg_butane"
                     type="checkbox"
                     id="lpgb"
                     name="lpgb"
@@ -178,7 +178,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="fuelOptions"
+                    v-model="fuel_options.lng"
                     type="checkbox"
                     id="lng"
                     name="lng"
@@ -198,7 +198,7 @@
               <div class="grid grid-cols-3 gap-5">
                 <div class="flex align-center">
                   <input
-                    v-model="lubricateOptions"
+                    v-model="lubricating_oil_options.me_cylinder_oil"
                     type="checkbox"
                     id="mec"
                     name="mec"
@@ -210,19 +210,19 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="lubricateOptions"
+                    v-model="lubricating_oil_options.me_system_oil"
                     type="checkbox"
-                    id="mgo"
-                    name="mgo"
-                    value="mgo"
+                    id="meSys"
+                    name="meSys"
+                    value="meSys"
                   />
-                  <label class="ml-2 text-14 text-gray-700" for="mgo">
+                  <label class="ml-2 text-14 text-gray-700" for="meSys">
                     {{ $t("meSystemOil") }}
                   </label>
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="lubricateOptions"
+                    v-model="lubricating_oil_options.me_sump_tank"
                     type="checkbox"
                     id="mesp"
                     name="mesp"
@@ -234,7 +234,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="lubricateOptions"
+                    v-model="lubricating_oil_options.ge_system_oil"
                     type="checkbox"
                     id="geso"
                     name="geso"
@@ -242,6 +242,18 @@
                   />
                   <label class="ml-2 text-14 text-gray-700" for="geso">
                     {{ $t("geSystemOil") }}
+                  </label>
+                </div>
+                <div class="flex align-center">
+                  <input
+                    v-model="lubricating_oil_options.tg_system_oil"
+                    type="checkbox"
+                    id="tgso"
+                    name="tgso"
+                    value="tgso"
+                  />
+                  <label class="ml-2 text-14 text-gray-700" for="tgso">
+                    {{ $t("tgSystemOil") }}
                   </label>
                 </div>
                 <div class="hidden flex align-center">
@@ -273,7 +285,7 @@
               <div class="grid grid-cols-3 gap-5">
                 <div class="flex align-center">
                   <input
-                    v-model="machineryOptions"
+                    v-model="machinery_options.main_engine"
                     type="checkbox"
                     id="mainEngine"
                     name="mainEngine"
@@ -285,7 +297,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="machineryOptions"
+                    v-model="machinery_options.generator_engine"
                     type="checkbox"
                     id="generatorEngine"
                     name="generatorEngine"
@@ -300,7 +312,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="machineryOptions"
+                    v-model="machinery_options.boiler"
                     type="checkbox"
                     id="boilerEngine"
                     name="boilerEngine"
@@ -312,7 +324,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="machineryOptions"
+                    v-model="machinery_options.inert_gas_generator"
                     type="checkbox"
                     id="inertGasEngine"
                     name="inertGasEngine"
@@ -354,8 +366,10 @@
                 $t("propellerPitch")
               }}</label>
               <input
-                v-model.lazy="propellerPitch"
+                input="number"
+                v-model.lazy="propeller_pitch"
                 id="propellerPitch"
+                placeholder="Input number"
                 class="w-full p-3 pl-4 border bg-white text-14 text-gray-500 mt-2"
               />
             </div>
@@ -374,7 +388,7 @@
             <GradientButton
               class="px-6 py-2 text-14 mr-1 mb-1"
               type="button"
-              v-on:click="printValues()"
+              v-on:click="addSettings()"
             >
               <template v-slot:content>{{ $t("saveDetails") }}</template>
             </GradientButton>
@@ -390,47 +404,75 @@
 import { ref } from "vue";
 import GradientButton from "./Buttons/GradientButton.vue";
 import CustomButton from "./Buttons/CustomButton.vue";
-
+import { defineEmits } from "vue";
 // List to export options from checkboxes
-const fuelOptions = ref([]);
-const lubricateOptions = ref([]);
-const machineryOptions = ref([]);
 let lubricateOthersFlag = ref(true);
 let machineryOthersFlag = ref(true);
-
 const lubricateOthers = ref("");
 const machineryOthers = ref("");
 
-const propellerPitch = ref("");
+const propeller_pitch = ref(0);
+const flag = "Panama";
+const deadweight_tonnage = "2000.00";
+const ship_type = ref("");
+const cargo_unit = ref("");
+const fuel_options = ref({
+  mdo: false,
+  mgo: false,
+  lsfo: false,
+  hfo: false,
+  lpg_propane: false,
+  lpg_butane: false,
+  lng: false,
+});
 
-const vesselType = ref("");
-const cargoUnit = ref("");
+const lubricating_oil_options = ref({
+  me_cylinder_oil: false,
+  me_system_oil: false,
+  me_sump_tank: false,
+  ge_system_oil: false,
+  tg_system_oil: false,
+});
 
-// Need to be passed into this modal from vessel view or somewhere
+const machinery_options = ref({
+  main_engine: false,
+  generator_engine: false,
+  boiler: false,
+  ge_system_oil: false,
+  inert_gas_generator: false,
+});
 
-defineProps({
+const props = defineProps({
   vesselname: String,
   imo: String,
 });
 
-const printValues = () => {
-  // console.log(fuelOptions);
-  // console.log(lubricateOptions);
-  // console.log(machineryOptions);
-  // console.log(lubricateOthersFlag);
-  // console.log(machineryOthersFlag);
-};
+const emit = defineEmits(["close-modal"]);
 
-// const addVoyage = (voyageData) => {
-//   const DUMMY_TOKEN = localStorage.getItem("jwt");
-//   const response = fetch("https://testapi.marinachain.io/marinanet/voyages/", {
-//     headers: {
-//       Authorization: "Bearer " + DUMMY_TOKEN,
-//       "Content-Type": "application/json",
-//     },
-//     method: "POST",
-//     body: JSON.stringify(voyageData),
-//   });
-//   console.log(response);
-// };
+const addSettings = () => {
+  const settings = {
+    flag,
+    deadweight_tonnage,
+    ship_type: ship_type.value,
+    cargo_unit: cargo_unit.value,
+    fuel_options: fuel_options.value,
+    lubricating_oil_options: lubricating_oil_options.value,
+    machinery_options: machinery_options.value,
+    propeller_pitch: propeller_pitch.value,
+  };
+  const DUMMY_TOKEN = localStorage.getItem("jwt");
+  const response = fetch(
+    "https://testapi.marinachain.io/marinanet/ships/" + props.imo + "/specs/",
+    {
+      headers: {
+        Authorization: "Bearer " + DUMMY_TOKEN,
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(settings),
+    }
+  );
+  console.log(settings);
+  emit("close-modal");
+};
 </script>

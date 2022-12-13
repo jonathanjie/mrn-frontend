@@ -74,7 +74,7 @@
     </div>
     <!-- <router-view :key="update"></router-view> -->
     <suspense>
-      <router-view :key="update"></router-view>
+      <router-view></router-view>
     </suspense>
   </div>
 </template>
@@ -84,16 +84,18 @@ import { ref } from "vue";
 import GradientButton from "../../components/Buttons/GradientButton.vue";
 import AddVoyageModal from "@/components/AddVoyageModal.vue";
 
-let showModal = ref(false);
 // Variable to force replacement of router-view
-const update = ref(0);
 const isEmpty = true;
 let voyageNum = 1;
 
-defineProps({
+const props = defineProps({
   vesselname: String,
   imo: String,
+  specs: String,
 });
+
+let showModal = ref(props.specs === "true");
+
 // Backend Data
 const voyageData = {
   voyage_num: voyageNum,

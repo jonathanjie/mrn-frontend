@@ -56,7 +56,7 @@
       </div>
     </div>
     <suspense>
-      <router-view :key="update"></router-view>
+      <router-view></router-view>
     </suspense>
   </div>
 </template>
