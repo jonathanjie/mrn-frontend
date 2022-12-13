@@ -80,14 +80,13 @@ const {
   routeDeparturePortCountry,
   routeDeparturePortName,
   routeDepartureDate,
+  routeDepartureTimeZone,
   routeArrivalPortCountry,
   routeArrivalPortName,
   routeArrivalDate,
-  // routeArrivalTimeZone,
-  // routeArrivalSummerTime,
+  routeArrivalTimeZone,
   // DateTimeLatLong
   timeZone,
-  summerTime,
   dateTime,
   latDir,
   latMinutes,
@@ -180,21 +179,21 @@ const {
 // TODO: retrieve data from backend or generate as needed
 // TODO: modify DateTime display to also display UTC time next to local time
 
-const convertReportDate = (date) => {
-  // TODO: consider daylight savings in calculating UTC timezone offset + display
-  const userOffset = parseInt(reporting_time_zone.value) * -60;
-  const calcOffset = date.getTimezoneOffset();
+// const convertReportDate = (date) => {
+//   // TODO: consider daylight savings in calculating UTC timezone offset + display
+//   const userOffset = parseInt(reporting_time_zone.value) * -60;
+//   const calcOffset = date.getTimezoneOffset();
 
-  // calculate based on timezone input
-  if (userOffset !== calcOffset) {
-    date = new Date(
-      date.getTime() +
-        3600000 * (parseInt(reporting_time_zone.value) + calcOffset / 60)
-    );
-  }
+//   // calculate based on timezone input
+//   if (userOffset !== calcOffset) {
+//     date = new Date(
+//       date.getTime() +
+//         3600000 * (parseInt(reporting_time_zone.value) + calcOffset / 60)
+//     );
+//   }
 
-  return date.toISOString();
-};
+//   return date.toISOString();
+// };
 
 const sendReport = async () => {
   // TODO: need to do form validation first
@@ -232,7 +231,6 @@ const sendReport = async () => {
     voyage: 1, // TODO: fetch from db
     leg_num: 1, // TODO: fetch from db
     report_tz: timeZone.value,
-    summer_time: summerTime.value,
     report_num: 1, // TODO: fetch from db
     report_date: dateTime.value,
     position: position,

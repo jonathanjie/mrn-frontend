@@ -42,7 +42,6 @@ export const useHarbourPortReportStore = defineStore(
     const status = ref("default");
     const dateTime = ref("");
     const timeZone = ref("default");
-    const summerTime = ref("default");
     const distanceTravelled = ref("");
     const latDir = ref("default");
     const latMinutes = ref("");
@@ -200,7 +199,6 @@ export const useHarbourPortReportStore = defineStore(
       status,
       dateTime,
       timeZone,
-      summerTime,
       distanceTravelled,
       latDir,
       latMinutes,
