@@ -20,7 +20,7 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
   const portCountry = ref("");
   const portName = ref("");
   const dateTime = ref("");
-  const timeZone = ref("");
+  const timeZone = ref("default");
   const summerTime = ref("default");
   const status = ref([]);
 

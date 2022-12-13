@@ -47,7 +47,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const routeArrivalPortCountry = ref("SA");
   const routeArrivalPortName = ref("RTA");
   const routeArrivalDate = ref("2022-12-21T00:00:00Z");
-  const routeArrivalTimeZone = ref("Asia/Singapore");
+  const routeArrivalTimeZone = ref("8");
   const routeArrivalSummerTime = ref("false");
 
   // DateTimeLatLong
