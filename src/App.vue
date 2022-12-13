@@ -1,7 +1,6 @@
 <template>
   <!-- TODO: router view for login page -->
   <!-- <router-view v-if="!isAuthenticated" class="bg-gray-50 min-h-screen"></router-view> -->
-
   <div v-if="isAuthenticated" class="flex items-start items-stretch">
     <div class="z-50 fixed">
       <Suspense>
@@ -9,9 +8,7 @@
       </Suspense>
     </div>
     <div class="grow h-screen" :class="collapsed ? 'ml-20' : 'ml-64'">
-    <div class="grow h-screen" :class="collapsed ? 'ml-20' : 'ml-64'">
       <!-- TODO: change to fixed, not sticky -->
-      <WebHeader class="sticky top-0 z-40" />
       <WebHeader class="sticky top-0 z-40" />
       <router-view class="bg-gray-50 min-h-screen" />
     </div>
@@ -25,9 +22,11 @@ import { collapsed } from "./components/SideNav/state.js";
 import { useAuth0 } from "@auth0/auth0-vue";
 import { useAuthStore } from "./store/auth.store.js";
 import { onMounted } from "vue";
+import { useRouter } from "vue-router";
 
+const { isAuthenticated } = useAuth0();
 let addSpec = true;
-
+const router = useRouter();
 onMounted(async () => {
   const authStore = useAuthStore();
   // check not if token exists but if token is expired
@@ -49,7 +48,6 @@ onMounted(async () => {
         }
       );
       const ship = await response.json();
-      // console.log(ship[0]);
       if (ship[0].shipspecs === null) {
         addSpec = true;
       } else {
@@ -69,8 +67,8 @@ onMounted(async () => {
           method: "GET",
         }
       );
-      const user = await response.json();
-      const userRole = user.role;
+      const reply = await response.json();
+      const userRole = reply.role;
       return userRole;
     };
     const role = await getUserRole();
@@ -84,7 +82,6 @@ onMounted(async () => {
     }
   }
 });
-
 </script>
 
 <style lang="scss">

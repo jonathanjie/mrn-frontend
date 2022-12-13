@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { defineStore } from "pinia";
 
 export const useAuthStore = defineStore({
   id: "auth",
