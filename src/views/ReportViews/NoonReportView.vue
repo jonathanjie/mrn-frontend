@@ -1,20 +1,5 @@
 <template>
   <div class="flex flex-col space-y-6 my-6">
-    <!-- visual indicator -->
-    <span
-      class="col-span-4 flex flex-col bg-green-25/[0.24] text-green-800 font-bold text-12 p-5 h-min-fit min-w-fit rounded-xl inline-flex border-green-400 border"
-    >
-      <span class="pb-3">{{ $t("sailingAtSea") }}</span>
-      <img
-        class="lg:hidden"
-        src="@/assets/icons/report_subtype_sailing_at_sea.svg"
-      />
-      <img
-        class="hidden lg:block"
-        src="@/assets/icons/report_subtype_sailing_at_sea_long.svg"
-      />
-    </span>
-
     <!-- Overview -->
     <NoonOverview />
 
