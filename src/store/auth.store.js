@@ -1,34 +1,43 @@
-import { defineStore } from 'pinia';
+import { defineStore } from "pinia";
 
 export const useAuthStore = defineStore({
-    id: 'auth',
-    state: () => ({
-        user: JSON.parse(localStorage.getItem('user')),
-        jwt: localStorage.getItem('jwt'),
-    }),
-    actions: {
-        updateUserAndToken(user, token) {
-            this.updateUser(user)
-            this.updateToken(token)
-        },
-        updateToken(token) {
-            this.jwt = token;
-            localStorage.setItem('jwt', token);
-            console.log("TOKEN: ", localStorage.getItem('jwt'));
-        },
-        updateUser(user) {
-            this.user = user;
-            localStorage.setItem('user', JSON.stringify(user));
-            console.log("USER: ", JSON.parse(localStorage.getItem('user')));
-        },
-        logout() {
-            this.user = null;
-            this.jwt = null;
-
-            localStorage.removeItem('user');
-            localStorage.removeItem('jwt');
-
-            // router.push('/login'); TODO: uncomment when login page is ready
-        }
+  id: "auth",
+  state: () => ({
+    user: JSON.parse(localStorage.getItem("user")),
+    role: localStorage.getItem("role"),
+    jwt: localStorage.getItem("jwt"),
+  }),
+  actions: {
+    updateUserRoleToken(user, role, token) {
+      this.updateUser(user);
+      this.updateRole(role);
+      this.updateToken(token);
     },
+    updateToken(token) {
+      this.jwt = token;
+      localStorage.setItem("jwt", token);
+      console.log("TOKEN: ", localStorage.getItem("jwt"));
+    },
+    updateUser(user) {
+      this.user = user;
+      localStorage.setItem("user", JSON.stringify(user));
+      console.log("USER: ", JSON.parse(localStorage.getItem("user")));
+    },
+    updateRole(role) {
+      this.role = role;
+      localStorage.setItem("role", role);
+      console.log("Role: ", localStorage.getItem("role"));
+    },
+    logout() {
+      this.user = null;
+      this.jwt = null;
+      this.role = null;
+
+      localStorage.removeItem("user");
+      localStorage.removeItem("jwt");
+      localStorage.removeItem("role");
+      // logout({ returnTo: window.location.origin });
+      // router.push('/login'); TODO: uncomment when login page is ready
+    },
+  },
 });

@@ -28,6 +28,7 @@
         <!-- temporary fix to jump to specific vessel page for demo -->
         <!-- Still in development, enabled for easier access -->
         <router-link
+          v-if="manager"
           to="/my-vessels"
           class="flex py-4 px-7 space-x-3 hover:bg-blue-700/[0.24]"
           :class="{ 'justify-center': collapsed }"
@@ -40,6 +41,7 @@
           </Transition>
         </router-link>
         <router-link
+          v-if="manager"
           :to="{
             name: 'vessel-overview',
             params: {
@@ -76,36 +78,18 @@
 </template>
 
 <script setup>
+import { useAuthStore } from "@/store/auth.store";
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
-let userRole = "";
-const getUser = async () => {
-  const DUMMY_TOKEN = localStorage.getItem("jwt");
-  const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/user`,
-    {
-      headers: {
-        Authorization: "Bearer " + DUMMY_TOKEN,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-  const user = response.json();
-  userRole = user.role;
-  return user;
-};
-
-// Check user role
-const user = await getUser();
 let addSpec = true;
-const getShip = async (userRole) => {
-  const DUMMY_TOKEN = localStorage.getItem("jwt");
+const auth = useAuthStore();
+const manager = auth.role.localeCompare("manager") == 0;
+const getShip = async () => {
   const response = await fetch(
     // Assuming that ships api can only provide 1 ship
     `https://testapi.marinachain.io/marinanet/ships`,
     {
       headers: {
-        Authorization: "Bearer " + DUMMY_TOKEN,
+        Authorization: "Bearer " + auth.jwt,
         "Content-Type": "application/json",
       },
       method: "GET",
@@ -119,11 +103,6 @@ const getShip = async (userRole) => {
     addSpec = false;
   }
   return ship[0];
-  // TODO: Check if crew or manager and display accordingly
-  if (userRole === "crew") {
-  } else {
-    return undefined;
-  }
 };
 
 const ship = await getShip();
