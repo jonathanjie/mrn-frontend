@@ -3,33 +3,35 @@
     <Tab :title="$t('eosp')">
       <div class="flex flex-col space-y-6 my-6">
         <!-- Overview -->
-        <Overview></Overview>
+        <ArrivalEOSPOverview />
 
         <!-- Departure and Arrival -->
-        <DepartureAndArrival></DepartureAndArrival>
+        <ArrivalAndDeparture />
 
         <!-- S/BY for EOSP -->
-        <DateTimeLatLong>{{ $t("sbyForEOSP") }}</DateTimeLatLong>
+        <ArrivalDetails>{{ $t("sbyForEOSP") }}</ArrivalDetails>
 
         <!-- Weather (Noon to S/BY) -->
-        <Weather>{{ $t("weatherNoonToSby") }}</Weather>
+        <ArrivalWeather>{{ $t("weatherNoonToSby") }}</ArrivalWeather>
 
         <!-- Distance & Time (Noon to S/BY) -->
-        <DistanceAndTime>{{ $t("distanceAndTimeNoonToSby") }}</DistanceAndTime>
+        <ArrivalEOSPDistanceAndTime>{{
+          $t("distanceAndTimeNoonToSby")
+        }}</ArrivalEOSPDistanceAndTime>
 
         <!-- Performance -->
-        <Performance>{{ $t("performance") }}</Performance>
+        <ArrivalPerformance>{{ $t("performance") }}</ArrivalPerformance>
 
         <!-- Pilot Station - Arrival -->
-        <PilotStationArrival></PilotStationArrival>
+        <ArrivalEOSPPilotStation />
 
         <!-- Consumption & Condition (Noon - S/BY) -->
-        <ConsumptionAndCondition>{{
+        <ArrivalConsumption>{{
           $t("consumptionAndConditionNoonToSby")
-        }}</ConsumptionAndCondition>
+        }}</ArrivalConsumption>
 
         <!-- Actual Performance at Sea / Total Consumption (Pilot to Pilot) -->
-        <ArrivalEOSPSummary></ArrivalEOSPSummary>
+        <ArrivalEOSPSummary />
       </div>
 
       <!-- Save and Send -->
@@ -55,25 +57,28 @@
 
     <Tab :title="$t('fwe')">
       <div class="flex flex-col space-y-6 mt-6">
+        <!-- Overview -->
+        <ArrivalFWEOverview />
+
         <!-- Finish With Engine -->
-        <FinishWithEngine></FinishWithEngine>
+        <ArrivalFinishWithEngine></ArrivalFinishWithEngine>
 
         <!-- Pilot station - arrival -->
-        <PilotStationArrival></PilotStationArrival>
+        <ArrivalFWEPilotStation />
 
         <!-- Vessel condition -->
-        <VesselCondition></VesselCondition>
+        <ArrivalVesselCondition></ArrivalVesselCondition>
 
         <!-- Distance & Time (S/BY to F.W.E) -->
-        <DistanceAndTimeFWE></DistanceAndTimeFWE>
+        <ArrivalFWEDistanceAndTime />
 
         <!-- Consumption & Condition (S/BY - F.W.E) -->
-        <ConsumptionAndCondition>{{
+        <ArrivalFWEConsumption>{{
           $t("consumptionAndConditionSbyToFwe")
-        }}</ConsumptionAndCondition>
+        }}</ArrivalFWEConsumption>
 
         <!-- ArrivalFWESummary: Actual Performance (Port to Port) & Total Consumption (Pilot to Pilot) -->
-        <ArrivalFWESummary></ArrivalFWESummary>
+        <ArrivalFWESummary />
       </div>
 
       <!-- Save and Send -->
@@ -100,23 +105,24 @@
 </template>
 
 <script setup>
-import TabsWrapper from "../../components/Tabs/TabsWrapper.vue";
-import Tab from "../../components/Tabs/Tab.vue";
-
+import TabsWrapper from "@/components/Tabs/TabsWrapper.vue";
+import Tab from "@/components/Tabs/Tab.vue";
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 
-import Overview from "../../components/ReportComponents/Overview.vue";
-import DepartureAndArrival from "../../components/ReportComponents/DepartureAndArrival.vue";
-import DateTimeLatLong from "../../components/ReportComponents/DateTimeLatLong.vue";
-import Weather from "../../components/ReportComponents/Weather.vue";
-import DistanceAndTime from "../../components/ReportComponents/DistanceAndTime.vue";
-import Performance from "../../components/ReportComponents/Performance.vue";
-import PilotStationArrival from "@/components/ReportComponents/PilotStationArrival.vue";
-import ConsumptionAndCondition from "@/components/ReportComponents/ConsumptionAndCondition.vue";
-import ArrivalEOSPSummary from "@/components/ReportComponents/ArrivalEOSPSummary.vue";
-import FinishWithEngine from "@/components/ReportComponents/FinishWithEngine.vue";
-import VesselCondition from "@/components/ReportComponents/VesselCondition.vue";
-import DistanceAndTimeFWE from "@/components/ReportComponents/DistanceAndTimeFWE.vue";
-import ArrivalFWESummary from "@/components/ReportComponents/ArrivalFWESummary.vue";
+import ArrivalAndDeparture from "@/components/Reports/ArrivalReport/ArrivalAndDeparture.vue";
+import ArrivalDetails from "@/components/Reports/ArrivalReport/ArrivalDetails.vue";
+import ArrivalWeather from "@/components/Reports/ArrivalReport/ArrivalWeather.vue";
+import ArrivalEOSPDistanceAndTime from "@/components/Reports/ArrivalReport/ArrivalEOSPDistanceAndTime.vue";
+import ArrivalFWEDistanceAndTime from "@/components/Reports/ArrivalReport/ArrivalFWEDistanceAndTime.vue";
+import ArrivalPerformance from "@/components/Reports/ArrivalReport/ArrivalPerformance.vue";
+import ArrivalPilotStation from "@/components/Reports/ArrivalReport/ArrivalPilotStation.vue";
+import ArrivalEOSPConsumption from "@/components/Reports/ArrivalReport/ArrivalEOSPConsumption.vue";
+import ArrivalFWEConsumption from "@/components/Reports/ArrivalReport/ArrivalFWEConsumption.vue";
+import ArrivalFinishWithEngine from "@/components/Reports/ArrivalReport/ArrivalFinishWithEngine.vue";
+import ArrivalVesselCondition from "@/components/Reports/ArrivalReport/ArrivalVesselCondition.vue";
+import ArrivalEOSPSummary from "@/components/Reports/ArrivalReport/ArrivalEOSPSummary.vue";
+import ArrivalFWESummary from "@/components/Reports/ArrivalReport/ArrivalFWESummary.vue";
+import ArrivalEOSPOverview from "@/components/Reports/ArrivalReport/ArrivalEOSPOverview.vue";
+import ArrivalFWEOverview from "@/components/Reports/ArrivalReport/ArrivalFWEOverview.vue";
 </script>

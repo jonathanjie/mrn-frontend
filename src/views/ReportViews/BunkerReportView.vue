@@ -21,16 +21,16 @@
     </div>
 
     <!-- Overview -->
-    <Overview></Overview>
+    <BunkerOverview />
 
     <!-- Bunkering Port -->
-    <BunkeringPort></BunkeringPort>
+    <BunkeringPort />
 
     <!-- Received Bunker Detail -->
-    <ReceivedBunkerDetail @file-change="updateFiles"></ReceivedBunkerDetail>
+    <BunkerReceivedDetail @file-change="updateFiles"></BunkerReceivedDetail>
 
     <!-- Bunker Date and Time & Supplier -->
-    <DateAndTimeBunker></DateAndTimeBunker>
+    <BunkerDateAndTime />
 
     <!-- Save and Send -->
     <div class="flex justify-end space-x-4 my-6">
@@ -57,11 +57,11 @@
 <script setup>
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
-import Overview from "@/components/ReportComponents/Overview.vue";
-import BunkeringPort from "@/components/ReportComponents/BunkeringPort.vue";
-import ReceivedBunkerDetail from "@/components/ReportComponents/ReceivedBunkerDetail.vue";
-import DateAndTimeBunker from "@/components/ReportComponents/DateAndTimeBunker.vue";
-import { useBunkerReportStore } from "@/store/useBunkerReportStore";
+import BunkerOverview from "@/components/Reports/BunkerReport/BunkerOverview.vue";
+import BunkeringPort from "@/components/Reports/BunkerReport/BunkeringPort.vue";
+import BunkerReceivedDetail from "@/components/Reports/BunkerReport/BunkerReceivedDetail.vue";
+import BunkerDateAndTime from "@/components/Reports/BunkerReport/BunkerDateAndTime.vue";
+import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
 import { storeToRefs } from "pinia";
 import { REPORT_CONSTANTS } from "@/constants";
 
@@ -84,6 +84,8 @@ const {
   portCountry,
   portName,
   dateTime,
+  timeZone,
+  summerTime,
   status,
   // Received Bunker Detail
   oil,
