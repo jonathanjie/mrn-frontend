@@ -146,10 +146,10 @@ const {
   lsfoBreakdown,
   mgoBreakdown,
   fuelOilDataCorrection,
-  mecylinderTotalConsumption,
-  mesystemTotalConsumption,
-  mesumpTotalConsumption,
-  gesystemTotalConsumption,
+  mecylinderBreakdown,
+  mesystemBreakdown,
+  mesumpBreakdown,
+  gesystemBreakdown,
   mecylinderRob,
   mesystemRob,
   mesumpRob,
@@ -312,9 +312,9 @@ const sendReport = async () => {
       lubricatingoildata_set: [
         {
           fuel_oil_type: "M/E Cylinder",
-          total_consumption: mecylinderTotalConsumption.value,
-          receipt: "0.00", // irrelevant for noon report
-          debunkering: "0.00", // irrelevant for noon report
+          total_consumption: mecylinderBreakdown.value.total_consumption,
+          receipt: mecylinderBreakdown.value.receipt,
+          debunkering: mecylinderBreakdown.value.debunkering,
           rob: mecylinderRob.value,
           lubricatingoildatacorrection:
             lubricatingOilDataCorrection.value.type === "mecylinder"
@@ -326,9 +326,9 @@ const sendReport = async () => {
         },
         {
           fuel_oil_type: "M/E System",
-          total_consumption: mesystemTotalConsumption.value,
-          receipt: "0.00", // irrelevant for noon report
-          debunkering: "0.00", // irrelevant for noon report
+          total_consumption: mesystemBreakdown.value.total_consumption,
+          receipt: mesystemBreakdown.value.receipt,
+          debunkering: mesystemBreakdown.value.debunkering,
           rob: mesystemRob.value,
           lubricatingoildatacorrection:
             lubricatingOilDataCorrection.value.type === "mesystem"
@@ -340,9 +340,9 @@ const sendReport = async () => {
         },
         {
           fuel_oil_type: "M/E Sump",
-          total_consumption: mesumpTotalConsumption.value,
-          receipt: "0.00", // irrelevant for noon report
-          debunkering: "0.00", // irrelevant for noon report
+          total_consumption: mesumpBreakdown.value.total_consumption,
+          receipt: mesumpBreakdown.value.receipt,
+          debunkering: mesumpBreakdown.value.debunkering,
           rob: mesumpRob.value,
           lubricatingoildatacorrection:
             lubricatingOilDataCorrection.value.type === "mesump"
@@ -354,9 +354,9 @@ const sendReport = async () => {
         },
         {
           fuel_oil_type: "G/E System",
-          total_consumption: gesystemTotalConsumption.value,
-          receipt: "0.00", // irrelevant for noon report
-          debunkering: "0.00", // irrelevant for noon report
+          total_consumption: gesystemBreakdown.value.total_consumption,
+          receipt: gesystemBreakdown.value.receipt,
+          debunkering: gesystemBreakdown.value.debunkering,
           rob: gesystemRob.value,
           lubricatingoildatacorrection:
             lubricatingOilDataCorrection.value.type === "gesystem"
