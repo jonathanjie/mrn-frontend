@@ -86,25 +86,18 @@ for (let i = 0; i < voyages.length; i++) {
   const uuid = voyages[i].uuid;
   const json = await getReports(uuid);
   reports[uuid] = [];
-  let distance = 1003; // TODO: REMOVE THIS HACK AFTER DEMO
 
   for (let j of json.reverse()) {
     const ret = {};
-    distance += 300;
-
-    // console.log(j);
 
     ret["report_type"] = j.report_type;
     ret["report_no"] = j.report_type + " " + j.report_num;
     ret["departure"] = "Singapore"; // TODO: dynamic
     ret["arrival"] = "Ulsan"; // TODO: dynamic
-    ret["status"] = "Sailing"; // TODO: dynamic
-    ret["cargold"] = "Ballast"; // TODO: dynamic
-    ret["distance_to_go"] = distance + ""; // TODO: dynamic; some info needs to be pulled from actual report object, not just the report header
-    ret["date_of_submission"] = j.report_date.slice(0, 10); // TODO: parse? modified vs created date?
+    ret["loading_condition"] = "Westbound"; // TODO: dynamic; unclear where to fetch loading condition
+    ret["date_of_submission"] = j.report_date.slice(0, 10) + ", 4:08 PM"; // TODO: dynamic; separate parse function / modified vs created date?
 
     reports[uuid].push(ret);
   }
 }
-// console.log(reports);
 </script>

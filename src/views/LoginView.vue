@@ -13,6 +13,20 @@
       </GradientButton>
     </div>
   </div>
+  <div class="flex">
+    <img src="@/assets/login.svg" class="max-h-screen" />
+    <div class="flex flex-col place-content-center ml-32 mr-auto">
+      <span class="text-blue-700 text-[30px] pb-2">{{
+        $t("signInToYourAccount")
+      }}</span>
+      <span class="text-gray-600 text-[18px] pb-8">{{
+        $t("welcomeBack")
+      }}</span>
+      <GradientButton @click="login" class="w-full h-12 items-center mb-44">
+        <template v-slot:content>{{ $t("signIn") }}</template>
+      </GradientButton>
+    </div>
+  </div>
 </template>
 
 <script setup>

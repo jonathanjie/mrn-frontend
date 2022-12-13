@@ -1,11 +1,18 @@
 <template>
   <div class="flex flex-col space-y-6 my-6">
-
     <!-- visual indicator -->
-    <span class="col-span-4 flex flex-col bg-green-25/[0.24] text-green-800 font-bold text-12 p-5 h-min-fit min-w-fit rounded-xl inline-flex border-green-400 border">
-        <span class="pb-3">{{ $t('sailingAtSea') }}</span>
-        <img class="lg:hidden" src="@/assets/icons/report_subtype_sailing_at_sea.svg">
-        <img class="hidden lg:block" src="@/assets/icons/report_subtype_sailing_at_sea_long.svg">
+    <span
+      class="col-span-4 flex flex-col bg-green-25/[0.24] text-green-800 font-bold text-12 p-5 h-min-fit min-w-fit rounded-xl inline-flex border-green-400 border"
+    >
+      <span class="pb-3">{{ $t("sailingAtSea") }}</span>
+      <img
+        class="lg:hidden"
+        src="@/assets/icons/report_subtype_sailing_at_sea.svg"
+      />
+      <img
+        class="hidden lg:block"
+        src="@/assets/icons/report_subtype_sailing_at_sea_long.svg"
+      />
     </span>
 
     <!-- Overview -->
@@ -15,19 +22,21 @@
     <DateTimeLatLong>{{ $t("reportingNoon") }}</DateTimeLatLong>
 
     <!-- Weather -->
-    <Weather></Weather>
+    <Weather />
 
     <!-- Heavy Weather Condition -->
     <HeavyWeatherCondition></HeavyWeatherCondition>
 
     <!-- Distance & Time -->
-    <DistanceAndTime :has-revolution-count="true"></DistanceAndTime>
+    <DistanceAndTime></DistanceAndTime>
 
     <!-- Performance -->
     <Performance></Performance>
 
     <!-- Consumption & Condition -->
-    <ConsumptionAndCondition>{{ $t("consumptionAndConditionNoonToNoon") }}</ConsumptionAndCondition>
+    <ConsumptionAndCondition>{{
+      $t("consumptionAndConditionNoonToNoon")
+    }}</ConsumptionAndCondition>
 
     <!-- Stoppage or Reduction of RPM (at sea) -->
     <StoppageOrReductionRPM></StoppageOrReductionRPM>
@@ -57,12 +66,13 @@
 <script setup>
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+// import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import {
-  textInputOptions,
-  format,
-  preventNaN,
-  convertDMSToDD,
+  // textInputOptions,
+  // format,
+  // preventNaN,
+  parsePosition,
+  parsePortLocode,
 } from "../../utils/helpers.js";
 
 import NoonOverview from "@/components/ReportComponents/NoonOverview.vue";
@@ -74,31 +84,116 @@ import Performance from "@/components/ReportComponents/Performance.vue";
 import ConsumptionAndCondition from "@/components/ReportComponents/ConsumptionAndCondition.vue";
 import StoppageOrReductionRPM from "@/components/ReportComponents/StoppageOrReductionRPM.vue";
 
+import { useNoonReportStore } from "@/store/useNoonReportStore";
+import { storeToRefs } from "pinia";
+
+import { REPORT_CONSTANTS } from "@/constants";
+
+const store = useNoonReportStore();
+const {
+  // Departure and Destination
+  routeDeparturePortCountry,
+  routeDeparturePortName,
+  routeDepartureDate,
+  routeArrivalPortCountry,
+  routeArrivalPortName,
+  routeArrivalDate,
+  // routeArrivalTimeZone,
+  // routeArrivalSummerTime,
+  // DateTimeLatLong
+  timeZone,
+  summerTime,
+  dateTime,
+  latDir,
+  latMinutes,
+  latDegree,
+  longDir,
+  longMinutes,
+  longDegree,
+  // Weather Conditions
+  weather,
+  visibility,
+  windDirection,
+  windSpeed,
+  seaDirection,
+  seaState,
+  swellDirection,
+  swellScale,
+  airTemperatureDry,
+  airTemperatureWet,
+  airPressure,
+  seaTemperature,
+  iceCondition,
+  // Heavy Weather Conditions
+  heavyWeatherHours,
+  heavyWeatherDist,
+  heavyWeatherConsumption,
+  heavyWeatherNotation,
+  heavyWindDirection,
+  heavyWindSpeed,
+  heavySeaDirection,
+  heavySeaState,
+  heavyRemarks,
+  heavyWeatherIsActive,
+  // DistanceTime
+  hoursSinceNoon,
+  hoursTotal,
+  distanceToGo,
+  distanceToGoEdited,
+  remarksForChanges,
+  distanceObsSinceNoon,
+  distanceObsTotal,
+  distanceEngSinceNoon,
+  distanceEngTotal,
+  revolutionCount,
+  // Performance
+  speedSinceNoon,
+  rpmSinceNoon,
+  slipSinceNoon,
+  speedAvg,
+  rpmAvg,
+  slipAvg,
+  // Consumption and Condition
+  lsfoTotalConsumption,
+  lsfoRob,
+  mgoTotalConsumption,
+  mgoRob,
+  lsfoBreakdown,
+  mgoBreakdown,
+  fuelOilDataCorrection,
+  mecylinderTotalConsumption,
+  mesystemTotalConsumption,
+  mesumpTotalConsumption,
+  gesystemTotalConsumption,
+  mecylinderRob,
+  mesystemRob,
+  mesumpRob,
+  gesystemRob,
+  lubricatingOilDataCorrection,
+  freshwaterConsumed,
+  freshwaterEvaporated,
+  freshwaterReceived,
+  freshwaterDischarged,
+  freshwaterChange,
+  freshwaterRob,
+  // Stoppage or Reduction RPM
+  stoppageBeginning,
+  stoppageEnding,
+  stoppageDuration,
+  stoppageReducedRPM,
+  stoppageReason,
+  stoppageRemarks,
+  stoppageLatDir,
+  stoppageLatDegree,
+  stoppageLatMinutes,
+  stoppageLongDir,
+  stoppageLongDegree,
+  stoppageLongMinutes,
+  stoppageIsActive,
+} = storeToRefs(store);
+
 // TODO: retrieve data from backend or generate as needed
 // TODO: modify DateTime display to also display UTC time next to local time
-
-const getFuelCorrection = (fuel_type) => {
-  // should return float
-  switch (fuel_type) {
-    case "LSFO":
-      return cc_correction_type == "LSFO" ? cc_lsfo_total : "0.00";
-      break;
-    case "MGO":
-      return cc_correction_type == "MGO" ? cc_mgo_total : "0.00";
-      break;
-  }
-};
-
-const getFuelCorrectionRemarks = (fuel_type) => {
-  switch (fuel_type) {
-    case "LSFO":
-      return cc_correction_type == "LSFO" ? cc_remarks : "NIL";
-      break;
-    case "MGO":
-      return cc_correction_type == "MGO" ? cc_remarks : "NIL";
-      break;
-  }
-};
 
 const convertReportDate = (date) => {
   // TODO: consider daylight savings in calculating UTC timezone offset + display
@@ -116,30 +211,218 @@ const convertReportDate = (date) => {
   return date.toISOString();
 };
 
-// TODO: should be dynamic; get all fuels used from database and filter accordingly
-const createBunkerData = () => {
-  return [lsfo_data, mgo_data];
-
-  // for (const fuel in fuel_data) {
-  //     bunkerDataList.push(fuel);
-  // }
-  // return bunkerDataList;
-};
-
 const sendReport = async () => {
   // TODO: need to do form validation first
 
-  // const latDD = convertDMSToDD(parseFloat(lat_degree.value), parseFloat(lat_minutes.value), lat_dir.value);
-  // const longDD = convertDMSToDD(parseFloat(long_degree.value), parseFloat(long_minutes.value), long_dir.value);
+  const position = parsePosition({
+    latDir: latDir.value,
+    latMinutes: latMinutes.value,
+    latDegree: latDegree.value,
+    longDir: longDir.value,
+    longMinutes: longMinutes.value,
+    longDegree: longDegree.value,
+  });
 
-  // convert fields to correct
+  const stoppagePosition = parsePosition({
+    latDir: stoppageLatDir.value,
+    latMinutes: stoppageLatMinutes.value,
+    latDegree: stoppageLatDegree.value,
+    longDir: stoppageLongDir.value,
+    longMinutes: stoppageLongMinutes.value,
+    longDegree: stoppageLongDegree.value,
+  });
 
-  const REPORT = {
-    // fill out report based on backend field names and match them with values
+  const routeDeparturePort = parsePortLocode({
+    portCountry: routeDeparturePortCountry.value,
+    portName: routeDeparturePortName.value,
+  });
+
+  const routeArrivalPort = parsePortLocode({
+    portCountry: routeArrivalPortCountry.value,
+    portName: routeArrivalPortName.value,
+  });
+
+  let REPORT = {
+    report_type: REPORT_CONSTANTS.type.noon,
+    voyage: 1, // TODO: fetch from db
+    leg_num: 1, // TODO: fetch from db
+    report_tz: timeZone.value,
+    summer_time: summerTime.value,
+    report_num: 1, // TODO: fetch from db
+    report_date: dateTime.value,
+    position: position,
+    route: {
+      departure_port: routeDeparturePort,
+      departure_date: routeDepartureDate.value,
+      arrival_port: routeArrivalPort,
+      arrival_date: routeArrivalDate.value,
+    },
+    weatherdata: {
+      weather_notation: weather.value,
+      visibility: visibility.value,
+      wind_direction: windDirection.value,
+      wind_speed: windSpeed.value,
+      sea_direction: seaDirection.value,
+      sea_state: seaState.value,
+      swell_direction: swellDirection.value,
+      swell_scale: swellScale.value,
+      air_pressure: airPressure.value,
+      air_temperature_dry: airTemperatureDry.value,
+      air_temperature_wet: airTemperatureWet.value,
+      sea_temperature: seaTemperature.value,
+      ice_condiction: iceCondition.value,
+    },
+    distanceperformancedata: {
+      hours_since_noon: hoursSinceNoon.value,
+      hours_total: hoursTotal.value,
+      distance_to_go:
+        distanceToGoEdited.value &&
+        distanceToGoEdited.value !== distanceToGo.value
+          ? distanceToGoEdited.value
+          : distanceToGo.value,
+      remarks_for_changes: remarksForChanges.value
+        ? remarksForChanges.value
+        : "NIL",
+      distance_obs_since_noon: distanceObsSinceNoon.value,
+      distance_obs_total: distanceObsTotal.value,
+      distance_eng_since_noon: distanceEngSinceNoon.value,
+      distance_eng_total: distanceEngTotal.value,
+      revolution_count: revolutionCount.value,
+      speed_since_noon: speedSinceNoon.value,
+      rpm_since_noon: rpmSinceNoon.value,
+      slip_since_noon: slipSinceNoon.value,
+      speed_avg: speedAvg.value,
+      rpm_avg: rpmAvg.value,
+      slip_avg: slipAvg.value,
+    },
+    consumptionconditiondata: {
+      fueloildata_set: [
+        {
+          fuel_oil_type: "LSFO",
+          total_consumption: lsfoTotalConsumption.value,
+          receipt: "0.00", // irrelevant for noon report
+          debunkering: "0.00", // irrelevant for noon report
+          rob: lsfoRob.value,
+          breakdown: {
+            "G/E": lsfoBreakdown.value.ge,
+            "M/E": lsfoBreakdown.value.me,
+            BLR: lsfoBreakdown.value.blr,
+            IGG: lsfoBreakdown.value.igg,
+          },
+        },
+        {
+          fuel_oil_type: "MGO",
+          total_consumption: mgoTotalConsumption.value,
+          receipt: "0.00", // irrelevant for noon report
+          debunkering: "0.00", // irrelevant for noon report
+          rob: mgoRob.value,
+          breakdown: {
+            "G/E": mgoBreakdown.value.ge,
+            "M/E": mgoBreakdown.value.me,
+            BLR: mgoBreakdown.value.blr,
+            IGG: mgoBreakdown.value.igg,
+          },
+        },
+      ],
+      lubricatingoildata_set: [
+        {
+          fuel_oil_type: "M/E Cylinder",
+          total_consumption: mecylinderTotalConsumption.value,
+          receipt: "0.00", // irrelevant for noon report
+          debunkering: "0.00", // irrelevant for noon report
+          rob: mecylinderRob.value,
+          lubricatingoildatacorrection:
+            lubricatingOilDataCorrection.value.type === "mecylinder"
+              ? {
+                  correction: lubricatingOilDataCorrection.value.correction,
+                  remarks: lubricatingOilDataCorrection.value.remarks,
+                }
+              : null,
+        },
+        {
+          fuel_oil_type: "M/E System",
+          total_consumption: mesystemTotalConsumption.value,
+          receipt: "0.00", // irrelevant for noon report
+          debunkering: "0.00", // irrelevant for noon report
+          rob: mesystemRob.value,
+          lubricatingoildatacorrection:
+            lubricatingOilDataCorrection.value.type === "mesystem"
+              ? {
+                  correction: lubricatingOilDataCorrection.value.correction,
+                  remarks: lubricatingOilDataCorrection.value.remarks,
+                }
+              : null,
+        },
+        {
+          fuel_oil_type: "M/E Sump",
+          total_consumption: mesumpTotalConsumption.value,
+          receipt: "0.00", // irrelevant for noon report
+          debunkering: "0.00", // irrelevant for noon report
+          rob: mesumpRob.value,
+          lubricatingoildatacorrection:
+            lubricatingOilDataCorrection.value.type === "mesump"
+              ? {
+                  correction: lubricatingOilDataCorrection.value.correction,
+                  remarks: lubricatingOilDataCorrection.value.remarks,
+                }
+              : null,
+        },
+        {
+          fuel_oil_type: "G/E System",
+          total_consumption: gesystemTotalConsumption.value,
+          receipt: "0.00", // irrelevant for noon report
+          debunkering: "0.00", // irrelevant for noon report
+          rob: gesystemRob.value,
+          lubricatingoildatacorrection:
+            lubricatingOilDataCorrection.value.type === "gesystem"
+              ? {
+                  correction: lubricatingOilDataCorrection.value.correction,
+                  remarks: lubricatingOilDataCorrection.value.remarks,
+                }
+              : null,
+        },
+      ],
+      freshwaterdata: {
+        consumed: freshwaterConsumed.value,
+        evaporated: freshwaterEvaporated.value,
+        received: 0, // irrelevant for noon report
+        discharged: 0, // irrelevant for noon report
+        rob: freshwaterRob.value,
+      },
+      consumption_type: "NTON",
+    },
   };
 
+  if (heavyWeatherIsActive) {
+    REPORT.heavyweatherdata = {
+      total_hours: heavyWeatherHours.value,
+      observed_distance: heavyWeatherDist.value,
+      fuel_consumption: heavyWeatherConsumption.value,
+      wind_direction: heavyWindDirection.value,
+      wind_speed: heavyWindSpeed.value,
+      sea_direction: heavySeaDirection.value,
+      sea_state: heavySeaState.value,
+      max_wave_height: 10, // TODO: X needed, remove this line once removed from backend
+      remarks: heavyRemarks.value,
+    };
+  }
+
+  if (stoppageIsActive) {
+    REPORT.stoppagedata = {
+      start_date: stoppageBeginning.value,
+      end_date: stoppageEnding.value,
+      duration: stoppageDuration.value,
+      reduced_rpm: stoppageReducedRPM.value,
+      position: stoppagePosition,
+      reason: stoppageReason.value,
+      remarks: stoppageRemarks.value,
+    };
+  }
+
+  console.log("data: ", REPORT);
+
   const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/reports/new/",
+    "https://testapi.marinachain.io/marinanet/reports/",
     {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
@@ -151,37 +434,6 @@ const sendReport = async () => {
   );
   const data = await response.json();
   console.log(response);
+  console.log(data);
 };
 </script>
-
-<style lang="scss">
-$dp__font_family: "Manrope";
-$dp__font_size: 0.875rem;
-$dp__border_radius: 0px;
-$dp__input_padding: 12px 12px;
-$dp__input_icon_padding: 14px;
-
-@import "node_modules/@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss";
-
-.dp__theme_light {
-  --dp-background-color: #ffffff;
-  --dp-text-color: #212121;
-  --dp-hover-color: #f3f3f3;
-  --dp-hover-text-color: #0093b8;
-  --dp-hover-icon-color: #0093b8;
-  --dp-primary-color: #0093b8;
-  --dp-primary-text-color: #f8f5f5;
-  --dp-secondary-color: #c0c4cc;
-  --dp-border-color: #ffffff;
-  --dp-menu-border-color: #ddd;
-  --dp-border-color-hover: #ffffff;
-  --dp-disabled-color: #f6f6f6;
-  --dp-scroll-bar-background: #f3f3f3;
-  --dp-scroll-bar-color: #959595;
-  --dp-success-color: #0093b8;
-  --dp-success-color-disabled: #a3d9b1;
-  --dp-icon-color: #959595;
-  --dp-danger-color: #ff6f60;
-  --dp-highlight-color: rgba(25, 118, 210, 0.1);
-}
-</style>
