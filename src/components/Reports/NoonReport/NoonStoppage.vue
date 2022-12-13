@@ -164,6 +164,7 @@
         <option value="coll">{{ $t("collision") }}</option>
         <option value="grou">{{ $t("grounding") }}</option>
         <option value="oil">{{ $t("oilSpill") }}</option>
+        <option value="othe">{{ $t("other") }}</option>
       </select>
       <div
         class="col-span-2 row-span-2 text-blue-700 p-3 border-t bg-gray-50 text-14"
