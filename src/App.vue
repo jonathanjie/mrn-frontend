@@ -4,7 +4,7 @@
   <div v-if="isAuthenticated" class="flex items-start items-stretch">
     <div class="z-50 fixed">
       <Suspense>
-        <SideNav></SideNav>
+        <SideNav />
       </Suspense>
     </div>
     <div class="grow h-screen" :class="collapsed ? 'ml-20' : 'ml-64'">
