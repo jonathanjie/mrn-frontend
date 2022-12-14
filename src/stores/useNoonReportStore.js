@@ -44,16 +44,15 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const routeDeparturePortCountry = ref("SG");
   const routeDeparturePortName = ref("PPT");
   const routeDepartureDate = ref("2022-12-01T00:00:00Z");
+  const routeDepartureTimeZone = ref("8");
   const routeArrivalPortCountry = ref("SA");
   const routeArrivalPortName = ref("RTA");
   const routeArrivalDate = ref("2022-12-21T00:00:00Z");
-  const routeArrivalTimeZone = ref("8");
-  const routeArrivalSummerTime = ref("false");
+  const routeArrivalTimeZone = ref("3");
 
   // DateTimeLatLong
-  const timeZone = ref("");
-  const summerTime = ref("default");
-  const dateTime = ref(""); // TODO: need to convert from local time to utc using timeZone and summerTime
+  const timeZone = ref("default");
+  const dateTime = ref("");
   const latDir = ref("default");
   const latMinutes = ref("");
   const latDegree = ref("");
@@ -317,14 +316,13 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     routeDeparturePortCountry,
     routeDeparturePortName,
     routeDepartureDate,
+    routeDepartureTimeZone,
     routeArrivalPortCountry,
     routeArrivalPortName,
     routeArrivalDate,
     routeArrivalTimeZone,
-    routeArrivalSummerTime,
     // DateTimeLatLong
     timeZone,
-    summerTime,
     dateTime,
     latDir,
     latMinutes,

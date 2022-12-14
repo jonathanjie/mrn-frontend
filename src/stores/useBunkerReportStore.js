@@ -21,7 +21,6 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
   const portName = ref("");
   const dateTime = ref("");
   const timeZone = ref("default");
-  const summerTime = ref("default");
   const status = ref([]);
 
   // Received Bunker Detail
@@ -62,7 +61,6 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
     portName,
     dateTime,
     timeZone,
-    summerTime,
     status,
     // Received Bunker Detail
     oil,

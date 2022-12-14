@@ -54,6 +54,7 @@ $dp__input_icon_padding: 14px;
 
 @import "node_modules/@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss";
 
+// TODO: no option to change placeholder color for DatePicker; if possible, set to #B3BAC7
 .dp__theme_light {
   --dp-background-color: #ffffff;
   --dp-text-color: #475467;

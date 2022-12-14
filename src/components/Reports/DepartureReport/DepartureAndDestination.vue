@@ -82,26 +82,6 @@
             <option value="14">UTC+14:00</option>
           </select>
         </div>
-        <div
-          class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
-        >
-          {{ $t("summerTime") }}
-        </div>
-        <select
-          v-model="departure.summer_time"
-          class="col-span-3 p-3 border-b text-14 focus:outline-0"
-          :class="
-            departure.summer_time === 'default'
-              ? 'text-gray-400'
-              : 'text-gray-700'
-          "
-        >
-          <option selected disabled value="default">
-            {{ $t("selectSummerTime") }}
-          </option>
-          <option value="true">{{ $t("applied") }}</option>
-          <option value="false">{{ $t("notApplied") }}</option>
-        </select>
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("dateAndTime") }}
         </div>
@@ -111,10 +91,6 @@
           textInput
           :textInputOptions="textInputOptions"
           :format="format"
-          :disabled="
-            departure.time_zone === 'default' ||
-            departure.summer_time === 'default'
-          "
           :modelValue="string"
           :placeholder="$t('selectDateAndTime')"
         >
@@ -205,26 +181,6 @@
             <option value="14">UTC+14:00</option>
           </select>
         </div>
-        <div
-          class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
-        >
-          {{ $t("summerTime") }}
-        </div>
-        <select
-          v-model="destination.summer_time"
-          class="col-span-3 p-3 border-b text-14 focus:outline-0"
-          :class="
-            destination.summer_time === 'default'
-              ? 'text-gray-400'
-              : 'text-gray-700'
-          "
-        >
-          <option selected disabled value="default">
-            {{ $t("selectSummerTime") }}
-          </option>
-          <option value="true">{{ $t("applied") }}</option>
-          <option value="false">{{ $t("notApplied") }}</option>
-        </select>
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("estimatedTimeOfArrival") }}
         </div>
@@ -234,10 +190,6 @@
           textInput
           :textInputOptions="textInputOptions"
           :format="format"
-          :disabled="
-            destination.time_zone === 'default' ||
-            destination.summer_time === 'default'
-          "
           :modelValue="string"
           :placeholder="$t('selectDateAndTime')"
         >
@@ -258,7 +210,6 @@ const departure = reactive({
   port_country: "",
   port_name: "",
   time_zone: "",
-  summer_time: "default",
   date_time: "",
 });
 
@@ -266,7 +217,6 @@ const destination = reactive({
   port_country: "",
   port_name: "",
   time_zone: "",
-  summer_time: "default",
   estimated_arrival: "",
 });
 </script>
