@@ -64,14 +64,10 @@
         @mouseenter="mouseEnter"
       >
         <div class="flex flex-col">
-          <!-- <button @click="getToken" class="h-10 w-40 bg-white">
-            {{ $t("getToken") }}
-          </button> -->
           <button @click="logout" class="h-10 w-40 bg-white rounded-b-lg">
             {{ $t("logOut") }}
           </button>
         </div>
-        <!-- TODO: adjust width based on profile length? -->
       </div>
     </div>
   </div>
