@@ -89,7 +89,6 @@ const jwt = await getAccessTokenSilently();
 
 const asyncStore = useAsyncStore();
 const auth = useAuthStore();
-
 const getShip = async () => {
   const response = await fetch(
     // Assuming that ships api can only provide 1 ship
