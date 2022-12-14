@@ -80,6 +80,7 @@ const {
   status,
   dateTime,
   timeZone,
+  summerTime,
   distanceTravelled,
   latDir,
   latMinutes,
@@ -123,6 +124,7 @@ const sendReport = async () => {
     voyage: 1, // TODO: fetch from db
     leg_num: 1, // TODO: fetch from db
     report_tz: timeZone.value, // FIND TIMEZONE FROM PORT
+    summer_time: summerTime.value, // FIND SUMMERTIME FROM PORT
     report_num: 1, // TODO: fetch from db
     report_date: dateTime.value,
     position: null, // no pos for bunker report

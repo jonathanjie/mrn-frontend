@@ -63,12 +63,12 @@
         />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14 mt-4">
-        <div class="col-span-2 text-blue-700 border-b p-3 border-r">
+        <div class="col-span-2 text-blue-700 p-3 border-r">
           {{ $t("dateAndTime") }}
         </div>
         <DatePicker
           v-model="route_departure_date"
-          class="col-span-3 text-gray-700 bg-gray-50 border-b"
+          class="col-span-3 text-gray-700 bg-gray-50"
           textInput
           :textInputOptions="textInputOptions"
           :format="format"
@@ -80,58 +80,6 @@
             <img src="" />
           </template>
         </DatePicker>
-        <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
-          {{ $t("timeZone") }}
-        </div>
-        <div class="flex col-span-3 bg-white">
-          <select
-            class="grow self-center p-3 text-14 text-gray-900 bg-gray-50 focus:outline-0"
-            disabled
-            v-model="route_departure_time_zone"
-          >
-            <option selected disabled value="default">
-              {{ $t("select") }}
-            </option>
-            <option value="-12">UTC-12:00</option>
-            <option value="-11">UTC-11:00</option>
-            <option value="-10">UTC-10:00</option>
-            <option value="-9.5">UTC-9:30</option>
-            <option value="-9">UTC-9:00</option>
-            <option value="-8">UTC-8:00</option>
-            <option value="-7">UTC-7:00</option>
-            <option value="-6">UTC-6:00</option>
-            <option value="-5">UTC-5:00</option>
-            <option value="-4">UTC-4:00</option>
-            <option value="-3.5">UTC-3:30</option>
-            <option value="-3">UTC-3:00</option>
-            <option value="-2">UTC-2:00</option>
-            <option value="-1">UTC-1:00</option>
-            <option value="0">UTC</option>
-            <option value="1">UTC+1:00</option>
-            <option value="2">UTC+2:00</option>
-            <option value="3">UTC+3:00</option>
-            <option value="3.5">UTC+3:30</option>
-            <option value="4">UTC+4:00</option>
-            <option value="4.5">UTC+4:30</option>
-            <option value="5">UTC+5:00</option>
-            <option value="5.5">UTC+5:30</option>
-            <option value="5.75">UTC+5:45</option>
-            <option value="6">UTC+6:00</option>
-            <option value="6.5">UTC+6:30</option>
-            <option value="7">UTC+7:00</option>
-            <option value="8">UTC+8:00</option>
-            <option value="8.75">UTC+8:45</option>
-            <option value="9">UTC+9:00</option>
-            <option value="9.5">UTC+9:30</option>
-            <option value="10">UTC+10:00</option>
-            <option value="10.5">UTC+10:30</option>
-            <option value="11">UTC+11:00</option>
-            <option value="12">UTC+12:00</option>
-            <option value="12.75">UTC+12:45</option>
-            <option value="13">UTC+13:00</option>
-            <option value="14">UTC+14:00</option>
-          </select>
-        </div>
       </div>
     </div>
 
@@ -170,15 +118,17 @@
             <img src="" />
           </template>
         </DatePicker>
-        <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
+        <div
+          class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
+        >
           {{ $t("timeZone") }}
         </div>
-        <div class="flex col-span-3 bg-white text-gray-700">
+        <div class="flex col-span-3 border-b bg-white text-gray-700">
           <select
             class="grow self-center p-3 text-14 focus:outline-0"
             :class="
               route_arrival_time_zone === 'default'
-                ? 'text-gray-400'
+                ? 'text-gray-500'
                 : 'text-gray-700'
             "
             v-model="route_arrival_time_zone"
@@ -226,6 +176,19 @@
             <option value="14">UTC+14:00</option>
           </select>
         </div>
+        <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
+          {{ $t("summerTime") }}
+        </div>
+        <select
+          v-model="route_arrival_summer_time"
+          class="col-span-3 p-3 text-14 focus:outline-0 text-gray-700"
+        >
+          <option selected disabled value="default">
+            {{ $t("selectSummerTime") }}
+          </option>
+          <option value="true">{{ $t("applied") }}</option>
+          <option value="false">{{ $t("notApplied") }}</option>
+        </select>
       </div>
     </div>
   </div>
@@ -246,10 +209,10 @@ const {
   routeDeparturePortCountry: route_departure_port_country,
   routeDeparturePortName: route_departure_port_name,
   routeDepartureDate: route_departure_date,
-  routeDepartureTimeZone: route_departure_time_zone,
   routeArrivalPortCountry: route_arrival_port_country,
   routeArrivalPortName: route_arrival_port_name,
   routeArrivalDate: route_arrival_date,
   routeArrivalTimeZone: route_arrival_time_zone,
+  routeArrivalSummerTime: route_arrival_summer_time,
 } = storeToRefs(store);
 </script>

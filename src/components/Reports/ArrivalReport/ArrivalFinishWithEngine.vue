@@ -63,6 +63,24 @@
           <option value="14">UTC+14:00</option>
         </select>
       </div>
+      <div
+        class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
+      >
+        {{ $t("summerTime") }}
+      </div>
+      <select
+        v-model="data.summer_time"
+        class="col-span-3 p-3 border-b text-14 focus:outline-0"
+        :class="
+          data.summer_time === 'default' ? 'text-gray-400' : 'text-gray-700'
+        "
+      >
+        <option selected disabled value="default">
+          {{ $t("selectSummerTime") }}
+        </option>
+        <option value="true">{{ $t("applied") }}</option>
+        <option value="false">{{ $t("notApplied") }}</option>
+      </select>
       <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
         {{ $t("dateAndTime") }}
       </div>
@@ -72,6 +90,7 @@
         textInput
         :textInputOptions="textInputOptions"
         :format="format"
+        :disabled="data.date_time === 'default' || data.date_time === 'default'"
         :modelValue="string"
         :placeholder="$t('selectDateAndTime')"
       >
@@ -289,6 +308,7 @@ import { reactive } from "vue";
 
 const data = reactive({
   time_zone: "",
+  summer_time: "default",
   date_time: "",
   lat_dir: "default",
   lat_minutes: "",

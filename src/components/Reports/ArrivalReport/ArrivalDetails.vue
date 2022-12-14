@@ -61,15 +61,37 @@
           <option value="14">UTC+14:00</option>
         </select>
       </div>
+      <div
+        class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
+      >
+        {{ $t("summerTime") }}
+      </div>
+      <select
+        v-model="summer_time"
+        class="col-span-3 p-3 border-b text-14 focus:outline-0"
+        :class="summer_time === 'default' ? 'text-gray-400' : 'text-gray-700'"
+      >
+        <option selected disabled value="default">
+          {{ $t("selectSummerTime") }}
+        </option>
+        <option value="true">{{ $t("applied") }}</option>
+        <option value="false">{{ $t("notApplied") }}</option>
+      </select>
       <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
         {{ $t("dateAndTime") }}
       </div>
       <DatePicker
         v-model="date_time"
         class="col-span-3"
+        :class="
+          time_zone === 'default' || summer_time === 'default'
+            ? 'bg-gray-50 text-gray-400'
+            : 'text-gray-700'
+        "
         textInput
         :textInputOptions="textInputOptions"
         :format="format"
+        :disabled="time_zone === 'default' || summer_time === 'default'"
         :modelValue="string"
         :placeholder="$t('selectDateAndTime')"
       >
@@ -149,6 +171,7 @@ import { storeToRefs } from "pinia";
 const store = useArrivalEOSPReportStore();
 const {
   timeZone: time_zone,
+  summerTime: summer_time,
   dateTime: date_time,
   latDir: lat_dir,
   latMinutes: lat_minutes,
@@ -160,6 +183,7 @@ const {
 
 // const data = reactive({
 //   time_zone: "default",
+//   summer_time: "default",
 //   date_time: "",
 //   lat_dir: "default",
 //   lat_minutes: "",

@@ -117,6 +117,22 @@
       <div
         class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
       >
+        {{ $t("summerTime") }}
+      </div>
+      <select
+        v-model="summer_time"
+        class="col-span-3 p-3 border-b text-14 focus:outline-0"
+        :class="summer_time === 'default' ? 'text-gray-400' : 'text-gray-700'"
+      >
+        <option selected disabled value="default">
+          {{ $t("selectSummerTime") }}
+        </option>
+        <option value="true">{{ $t("applied") }}</option>
+        <option value="false">{{ $t("notApplied") }}</option>
+      </select>
+      <div
+        class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
+      >
         {{ $t("dateAndTime") }}
       </div>
       <DatePicker
@@ -125,6 +141,7 @@
         textInput
         :textInputOptions="textInputOptions"
         :format="format"
+        :disabled="time_zone === 'default' || summer_time === 'default'"
         :modelValue="string"
         :placeholder="$t('selectDateAndTime')"
       >
@@ -272,6 +289,7 @@ const {
   status: status,
   dateTime: date_time,
   timeZone: time_zone,
+  summerTime: summer_time,
   distanceTravelled: distance_travelled,
   latDir: lat_dir,
   latMinutes: lat_minutes,
