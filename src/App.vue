@@ -78,7 +78,9 @@ onMounted(async () => {
       console.log("Did the code reach here?");
       router.push({ path: "/my-vessels" });
     } else {
-      router.push({ path: `/vessels/${ship.name}/${ship.imo_reg}/${addSpec}` });
+      router.push({
+        path: `/vessels/${ship.name}/${ship.imo_reg}/${addSpec}/overview`,
+      });
     }
   }
 });

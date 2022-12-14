@@ -79,7 +79,7 @@
         {{ $t("bunkerDelivery") }}
       </button>
       <CustomButton
-        @click="$router.push('add-report')"
+        @click="$router.push({ name: 'add-report' })"
         class="h-9 text-14 text-blue-700 rounded-xl ml-auto"
       >
         <template v-slot:content>+{{ $t("addNewReport") }}</template>
