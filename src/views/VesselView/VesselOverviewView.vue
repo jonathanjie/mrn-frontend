@@ -29,20 +29,28 @@
 <script setup>
 import { ref } from "vue";
 import VoyageCard from "../../components/VoyageCard.vue";
+import { useAuthStore } from "@/stores/auth.store";
 
+const auth = useAuthStore();
 let isEmpty = ref(false);
+let isLoading = false;
+
+// defineEmits({
+//   isLoading: Boolean,
+// });
+
 let portCodeToPortName = ref({
   "SG PPT": "Singapore",
   "KR USN": "Ulsan, South Korea",
 });
 
 const getReports = async (voyage_uuid) => {
-  const DUMMY_TOKEN = localStorage.getItem("jwt");
+  isLoading = true;
   const response = await fetch(
     `https://testapi.marinachain.io/marinanet/voyages/${voyage_uuid}/reports`,
     {
       headers: {
-        Authorization: "Bearer " + DUMMY_TOKEN,
+        Authorization: "Bearer " + auth.jwt,
         "Content-Type": "application/json",
       },
       method: "GET",
@@ -50,8 +58,7 @@ const getReports = async (voyage_uuid) => {
   );
 
   const json = response.json();
-  //   console.log(json);
-
+  isLoading = false;
   return json;
 };
 const imoReg = 1234567;

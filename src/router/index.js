@@ -19,7 +19,7 @@ import HarbourPortReportView from "../views/ReportViews/HarbourPortReportView.vu
 import VesselSpec from "../views/VesselSpec.vue";
 import SpeedGraphOverview from "../views/HQViews/SpeedGraphOverview.vue";
 import HQView from "../views/HQViews/HQView";
-import Forbidden from "../views/Forbidden.vue";
+import NotFound from "../views/NotFound.vue";
 
 const routes = [
   // {
@@ -27,12 +27,7 @@ const routes = [
   //   name: 'login',
   //   component: LoginView
   // },
-  {
-    path: "/forbidden",
-    name: "forbidden",
-    component: Forbidden,
-    beforeEnter: authGuard,
-  },
+
   {
     // Need to edit
     path: "/",
@@ -142,6 +137,11 @@ const routes = [
       },
     ],
     beforeEnter: authGuard,
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    component: NotFound,
   },
 ];
 

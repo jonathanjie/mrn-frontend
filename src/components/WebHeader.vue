@@ -7,7 +7,7 @@
           src="@/assets/icons/search_icon.svg"
         />
         <input
-          class="bg-gray-50 h-10 w-80 pl-11 pr-3 rounded-lg text-14 focus:outline-none"
+          class="hidden bg-gray-50 h-10 w-80 pl-11 pr-3 rounded-lg text-14 focus:outline-none"
           type="search"
           name="search"
           :placeholder="$t('typeToSearch')"
@@ -17,10 +17,13 @@
     </div>
     <ul class="flex items-center">
       <li class="mx-3">
-        <img src="@/assets/icons/message.svg" class="h-6 w-6" />
+        <img src="@/assets/icons/message.svg" class="hidden h-6 w-6" />
       </li>
       <li class="mx-3">
-        <img src="@/assets/icons/bell_notification.svg" class="h-6 w-6" />
+        <img
+          src="@/assets/icons/bell_notification.svg"
+          class="hidden h-6 w-6"
+        />
       </li>
       <li>
         <img
@@ -60,15 +63,12 @@
       <img src="@/assets/icons/down_arrow.svg" class="h-1.5 w-3 mx-3" />
       <div
         v-show="isExpanded"
-        class="absolute -bottom-20 right-0"
+        class="absolute mt-24 right-0"
         @mouseenter="mouseEnter"
       >
         <div class="flex flex-col">
-          <button @click="getToken" class="h-10 w-40 bg-white">
-            {{ $t("getToken") }}
-          </button>
-          <button @click="logout" class="h-10 w-40 bg-white rounded-b-lg">
-            {{ $t("logOut") }}
+          <button @click="logout" class="h-12 w-40 bg-white rounded-b-lg">
+            <span class="mt-2">{{ $t("logOut") }}</span>
           </button>
         </div>
         <!-- TODO: adjust width based on profile length? -->

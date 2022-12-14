@@ -75,7 +75,6 @@ onMounted(async () => {
     const ship = await getShip();
     authStore.updateUserRoleToken(user, role, jwt);
     if (role === "manager") {
-      console.log("Did the code reach here?");
       router.push({ path: "/my-vessels" });
     } else {
       router.push({ path: `/vessels/${ship.name}/${ship.imo_reg}/${addSpec}` });
