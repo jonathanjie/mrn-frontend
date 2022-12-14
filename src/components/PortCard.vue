@@ -19,25 +19,30 @@
     </div>
     <!-- TODO: alignment for svg needs to be fixed -->
     <div
-      class="flex items-center mt-3 p-3.5 rounded-xl bg-blue-700 text-14 text-white font-bold w-full justify-between"
+      class="flex relative items-center mt-3 p-3.5 rounded-xl bg-blue-700 text-14 text-white font-bold w-full justify-between"
     >
       <span>{{ origin }}</span>
-      <img src="@/assets/icons/Speed_Graph/port_timeline.svg" />
+      <div class="flex absolute w-full justify-center">
+        <img src="@/assets/icons/Speed_Graph/port_timeline.svg" />
+      </div>
       <span>{{ destination }}</span>
     </div>
     <div class="flex mt-3.5 w-full justify-between text-12 text-gray-500">
-      <span>{{ departureTime }}</span>
-      <span>{{ arrivalTime }}</span>
+      <span>{{ depart }}</span>
+      <span>{{ arrive }}</span>
     </div>
   </div>
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   portCountry: String,
   origin: String,
   destination: String,
   departureTime: String,
   arrivalTime: String,
 });
+
+const depart = new Date(props.departureTime).toUTCString();
+const arrive = new Date(props.arrivalTime).toUTCString();
 </script>

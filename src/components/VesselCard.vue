@@ -6,7 +6,7 @@
     }"
     class="flex h-20 mx-12 rounded-xl min-w-max z-10 bg-white drop-shadow mt-5 p-4"
   >
-    <div class="flex mr-16 ml-0.5 items-center">
+    <div class="flex w-full mr-16 ml-0.5 items-center justify-between">
       <!-- Sailing Icon -->
       <img
         v-if="vesselStatus === 'sailing'"
@@ -41,27 +41,27 @@
         class="rounded-full bg-gray-25 h-11 w-11 py-2.5 px-3"
       />
 
-      <div class="flex flex-col w-28 mr-4 ml-5">
+      <div class="flex flex-col w-28">
         <span class="text-12 text-gray-500">{{ $t("name") }}</span>
         <span class="text-14 text-gray-700">{{ vesselName }}</span>
       </div>
-      <div class="flex flex-col w-28 mr-4">
+      <div class="flex flex-col w-28">
         <span class="text-12 text-gray-500">{{ $t("type") }}</span>
         <span class="text-14 text-gray-700">{{ loadType }}</span>
       </div>
-      <div class="flex flex-col w-28 mr-4">
+      <div class="flex flex-col w-28">
         <span class="text-12 text-gray-500">{{ $t("flag") }}</span>
         <span class="text-14 text-gray-700">{{ flag }}</span>
       </div>
-      <div class="flex flex-col w-28 mr-4">
+      <div class="flex flex-col w-28">
         <span class="text-12 text-gray-500">{{ $t("imoNo") }}</span>
         <span class="text-14 text-gray-700">{{ imoNo }}</span>
       </div>
-      <div class="flex flex-col w-28 mr-4">
+      <div class="flex flex-col w-28">
         <span class="text-12 text-gray-500">{{ $t("shipSize") }}</span>
         <span class="text-14 text-gray-700">{{ shipSize }} DWT</span>
       </div>
-      <div class="flex flex-col w-28 mr-4">
+      <div class="flex flex-col w-28">
         <span class="text-12 text-gray-500">{{ $t("loadingCondition") }}</span>
         <span class="text-14 text-gray-700">{{ loadingCondition }}</span>
       </div>
@@ -69,7 +69,7 @@
         v-if="reportStatus === 'uploaded'"
         class="flex rounded-xl h-7 w-auto bg-green-50"
       >
-        <ul class="list-disc p-0.5 ml-6 text-14 mr-2.5">
+        <ul class="list-disc p-0.5 text-14">
           <li class="text-green-500">
             <span class="text-green-700"
               >{{ $t("uploadedStatus") }}: {{ updatedDate }}</span
@@ -81,7 +81,7 @@
         v-if="reportStatus === 'error'"
         class="flex rounded-xl h-7 w-auto bg-red-50"
       >
-        <ul class="list-disc p-0.5 ml-6 text-14 mr-2.5">
+        <ul class="list-disc p-0.5 text-14">
           <li class="text-red-500">
             <span class="text-red-700"
               >{{ $t("errorStatus") }}: {{ updatedDate }}</span
@@ -93,7 +93,7 @@
         v-if="reportStatus === 'pending'"
         class="flex rounded-xl h-7 w-auto bg-orange-50"
       >
-        <ul class="list-disc p-0.5 ml-6 text-14 mr-2.5">
+        <ul class="list-disc p-0.5 text-14">
           <li class="text-orange-500">
             <span class="text-orange-700">{{ $t("pendingStatus") }}</span>
           </li>
