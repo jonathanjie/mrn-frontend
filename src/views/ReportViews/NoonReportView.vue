@@ -385,7 +385,6 @@ const sendReport = async () => {
       wind_speed: heavyWindSpeed.value,
       sea_direction: heavySeaDirection.value,
       sea_state: heavySeaState.value,
-      max_wave_height: 10, // TODO: X needed, remove this line once removed from backend
       remarks: heavyRemarks.value,
     };
   }
