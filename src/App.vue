@@ -24,7 +24,7 @@ import { useAuthStore } from "./stores/auth.store.js";
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 
-const { isAuthenticated } = useAuth0();
+const { isAuthenticated, logout } = useAuth0();
 let addSpec = true;
 const router = useRouter();
 onMounted(async () => {
@@ -77,7 +77,9 @@ onMounted(async () => {
     if (role === "manager") {
       router.push({ path: "/my-vessels" });
     } else {
-      router.push({ path: `/vessels/${ship.name}/${ship.imo_reg}/${addSpec}` });
+      router.push({
+        path: `/vessels/${ship.name}/${ship.imo_reg}/${addSpec}/overview`,
+      });
     }
   }
 });

@@ -83,7 +83,6 @@ import { collapsed, toggleSidebar, sidebarWidth } from "./state";
 let addSpec = true;
 const auth = useAuthStore();
 const manager = auth.role === "manager";
-console.log(manager);
 const getShip = async () => {
   const response = await fetch(
     // Assuming that ships api can only provide 1 ship

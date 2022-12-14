@@ -34,6 +34,7 @@ export const useAuthStore = defineStore({
       localStorage.removeItem("user");
       localStorage.removeItem("jwt");
       localStorage.removeItem("role");
+      console.log(localStorage.getItem("role"));
       // logout({ returnTo: window.location.origin });
       // router.push('/login'); TODO: uncomment when login page is ready
     },
