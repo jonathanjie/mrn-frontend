@@ -82,7 +82,8 @@ import { useAuthStore } from "@/stores/auth.store";
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
 let addSpec = true;
 const auth = useAuthStore();
-const manager = auth.role.localeCompare("manager") == 0;
+// const manager = auth.role.localeCompare("manager") == 0;
+const manager = true;
 const getShip = async () => {
   const response = await fetch(
     // Assuming that ships api can only provide 1 ship
