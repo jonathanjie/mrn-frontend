@@ -13,7 +13,7 @@
           {{ $t("dateAndTime") }}
         </div>
         <DatePicker
-          v-model="rupEngine.date_time"
+          v-model="store.rupEngine.date_time"
           class="col-span-3"
           textInput
           :textInputOptions="textInputOptions"
@@ -33,22 +33,22 @@
           >{{ $t("latitude") }}</span
         >
         <input
-          v-model="rupEngine.lat_degree"
-          @keypress="preventNaN($event, rupEngine.lat_degree)"
+          v-model="store.rupEngine.lat_degree"
+          @keypress="preventNaN($event, store.rupEngine.lat_degree)"
           placeholder="000 (Degree)"
           class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
         />
         <input
-          v-model="rupEngine.lat_minutes"
-          @keypress="preventNaN($event, rupEngine.lat_minutes)"
+          v-model="store.rupEngine.lat_minutes"
+          @keypress="preventNaN($event, store.rupEngine.lat_minutes)"
           placeholder="000 (Minutes)"
           class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
         />
         <select
-          v-model="rupEngine.lat_dir"
+          v-model="store.rupEngine.lat_dir"
           class="col-span-3 p-3 text-14 border-l focus:outline-0"
           :class="
-            rupEngine.lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
+            store.rupEngine.lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
           "
         >
           <option selected disabled value="default">
@@ -64,22 +64,22 @@
           >{{ $t("longitude") }}</span
         >
         <input
-          v-model="rupEngine.long_degree"
-          @keypress="preventNaN($event, rupEngine.long_degree)"
+          v-model="store.rupEngine.long_degree"
+          @keypress="preventNaN($event, store.rupEngine.long_degree)"
           placeholder="000 (Degree)"
           class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
         />
         <input
-          v-model="rupEngine.long_minutes"
-          @keypress="preventNaN($event, rupEngine.long_minutes)"
+          v-model="store.rupEngine.long_minutes"
+          @keypress="preventNaN($event, store.rupEngine.long_minutes)"
           placeholder="000 (Minutes)"
           class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
         />
         <select
-          v-model="rupEngine.long_dir"
+          v-model="store.rupEngine.long_dir"
           class="col-span-3 p-3 text-14 border-l focus:outline-0"
           :class="
-            rupEngine.long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
+            store.rupEngine.long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
           "
         >
           <option selected disabled value="default">
@@ -107,8 +107,8 @@
         </div>
         <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
           <input
-            v-model="inHarbour.time"
-            @keypress="preventNaN($event, inHarbour.time)"
+            v-model="store.inHarbour.time"
+            @keypress="preventNaN($event, store.inHarbour.time)"
             placeholder="000"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
@@ -122,8 +122,8 @@
         </div>
         <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
           <input
-            v-model="inHarbour.distance_by_observation"
-            @keypress="preventNaN($event, inHarbour.distance_by_observation)"
+            v-model="store.inHarbour.distance_by_observation"
+            @keypress="preventNaN($event, store.inHarbour.distance_by_observation)"
             placeholder="000"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
@@ -139,8 +139,8 @@
           class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t lg:border"
         >
           <input
-            v-model="inHarbour.distance_by_engine"
-            @keypress="preventNaN($event, inHarbour.distance_by_engine)"
+            v-model="store.inHarbour.distance_by_engine"
+            @keypress="preventNaN($event, store.inHarbour.distance_by_engine)"
             placeholder="000"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
@@ -153,8 +153,8 @@
           {{ $t("revolutionCounter") }}
         </div>
         <input
-          v-model="inHarbour.revolution_counter"
-          @keypress="preventNaN($event, inHarbour.revolution_counter)"
+          v-model="store.inHarbour.revolution_counter"
+          @keypress="preventNaN($event, store.inHarbour.revolution_counter)"
           placeholder="000"
           class="col-span-3 lg:col-span-3 p-3 pl-4 border-x border-t lg:border-t-0 bg-white text-14 text-gray-700 focus:outline-0"
         />
@@ -168,8 +168,8 @@
           class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t lg:border"
         >
           <input
-            v-model="inHarbour.setRPMofME"
-            @keypress="preventNaN($event, inHarbour.setRPMofME)"
+            v-model="store.inHarbour.setRPMofME"
+            @keypress="preventNaN($event, store.inHarbour.setRPMofME)"
             placeholder="000.0"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
@@ -181,26 +181,30 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, watch } from "vue";
 import { textInputOptions, format, preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
+
+const store = useDepartureCOSPReportStore();
+
 
 // TODO: make reactive
-const rupEngine = reactive({
-  date_time: "",
-  lat_degree: "",
-  lat_minutes: "",
-  lat_dir: "default",
-  long_degree: "",
-  long_minute: "",
-  long_dir: "default",
-});
+// const rupEngine = reactive({
+//   date_time: "",
+//   lat_degree: "",
+//   lat_minutes: "",
+//   lat_dir: "default",
+//   long_degree: "",
+//   long_minute: "",
+//   long_dir: "default",
+// });
 
-const inHarbour = reactive({
-  time: "",
-  distance_by_observation: "",
-  distance_by_engine: "",
-  revolution_counter: "",
-  setRPMofME: "",
-});
+// const inHarbour = reactive({
+//   time: "",
+//   distance_by_observation: "",
+//   distance_by_engine: "",
+//   revolution_counter: "",
+//   setRPMofME: "",
+// });
 </script>
