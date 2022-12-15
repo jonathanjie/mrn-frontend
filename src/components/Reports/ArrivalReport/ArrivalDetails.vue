@@ -13,42 +13,63 @@
         {{ $t("timeZone") }}
       </div>
       <div class="flex col-span-3 border-b">
-        <TimeZoneSelector
-          class="grow self-center"
+        <select
+          class="grow self-center p-3 text-14 focus:outline-0"
+          :class="time_zone === 'default' ? 'text-gray-400' : 'text-gray-700'"
           v-model="time_zone"
-        ></TimeZoneSelector>
+        >
+          <option selected disabled value="default">
+            {{ $t("selectTimeZone") }}
+          </option>
+          <option value="-12">UTC-12:00</option>
+          <option value="-11">UTC-11:00</option>
+          <option value="-10">UTC-10:00</option>
+          <option value="-9.5">UTC-9:30</option>
+          <option value="-9">UTC-9:00</option>
+          <option value="-8">UTC-8:00</option>
+          <option value="-7">UTC-7:00</option>
+          <option value="-6">UTC-6:00</option>
+          <option value="-5">UTC-5:00</option>
+          <option value="-4">UTC-4:00</option>
+          <option value="-3.5">UTC-3:30</option>
+          <option value="-3">UTC-3:00</option>
+          <option value="-2">UTC-2:00</option>
+          <option value="-1">UTC-1:00</option>
+          <option value="0">UTC</option>
+          <option value="1">UTC+1:00</option>
+          <option value="2">UTC+2:00</option>
+          <option value="3">UTC+3:00</option>
+          <option value="3.5">UTC+3:30</option>
+          <option value="4">UTC+4:00</option>
+          <option value="4.5">UTC+4:30</option>
+          <option value="5">UTC+5:00</option>
+          <option value="5.5">UTC+5:30</option>
+          <option value="5.75">UTC+5:45</option>
+          <option value="6">UTC+6:00</option>
+          <option value="6.5">UTC+6:30</option>
+          <option value="7">UTC+7:00</option>
+          <option value="8">UTC+8:00</option>
+          <option value="8.75">UTC+8:45</option>
+          <option value="9">UTC+9:00</option>
+          <option value="9.5">UTC+9:30</option>
+          <option value="10">UTC+10:00</option>
+          <option value="10.5">UTC+10:30</option>
+          <option value="11">UTC+11:00</option>
+          <option value="12">UTC+12:00</option>
+          <option value="12.75">UTC+12:45</option>
+          <option value="13">UTC+13:00</option>
+          <option value="14">UTC+14:00</option>
+        </select>
       </div>
-      <div
-        class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
-      >
-        {{ $t("summerTime") }}
-      </div>
-      <select
-        v-model="summer_time"
-        class="col-span-3 p-3 border-b text-14 focus:outline-0"
-        :class="summer_time === 'default' ? 'text-gray-400' : 'text-gray-700'"
-      >
-        <option selected disabled value="default">
-          {{ $t("selectSummerTime") }}
-        </option>
-        <option value="true">{{ $t("applied") }}</option>
-        <option value="false">{{ $t("notApplied") }}</option>
-      </select>
       <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
         {{ $t("dateAndTime") }}
       </div>
       <DatePicker
         v-model="date_time"
         class="col-span-3"
-        :class="
-          time_zone === 'default' || summer_time === 'default'
-            ? 'bg-gray-50 text-gray-400'
-            : 'text-gray-700'
-        "
         textInput
         :textInputOptions="textInputOptions"
         :format="format"
-        :disabled="time_zone === 'default' || summer_time === 'default'"
         :modelValue="string"
         :placeholder="$t('selectDateAndTime')"
       >
@@ -124,12 +145,10 @@ import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
 // import { reactive } from "vue";
 import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
 import { storeToRefs } from "pinia";
-import TimeZoneSelector from "@/components/TimeZoneSelector.vue";
 
 const store = useArrivalEOSPReportStore();
 const {
   timeZone: time_zone,
-  summerTime: summer_time,
   dateTime: date_time,
   latDir: lat_dir,
   latMinutes: lat_minutes,
@@ -141,7 +160,6 @@ const {
 
 // const data = reactive({
 //   time_zone: "default",
-//   summer_time: "default",
 //   date_time: "",
 //   lat_dir: "default",
 //   lat_minutes: "",

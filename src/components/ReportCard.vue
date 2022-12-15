@@ -45,8 +45,8 @@
       <span class="text-14 text-gray-700">{{ loading_condition }}</span>
     </div>
     <div class="flex flex-col w-36 mr-2">
-      <span class="text-12 text-gray-400">{{ $t("dateOfSubmission") }}</span>
-      <span class="text-14 text-gray-700">{{ date_of_submission }}</span>
+      <span class="text-12 text-gray-400">{{ $t("dateOfReport") }}</span>
+      <span class="text-14 text-gray-700">{{ date_of_report }}</span>
     </div>
 
     <img
@@ -87,7 +87,7 @@ const props = defineProps({
     required: false,
     default: "WESTBOUND",
   },
-  date_of_submission: {
+  date_of_report: {
     type: String, // TODO: enum - change to Date after backend
     required: false,
     default: "DATE",

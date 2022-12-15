@@ -1,20 +1,5 @@
 <template>
   <div class="flex flex-col space-y-6 my-6">
-    <!-- visual indicator -->
-    <span
-      class="col-span-4 flex flex-col bg-green-25/[0.24] text-green-800 font-bold text-12 p-5 h-min-fit min-w-fit rounded-xl inline-flex border-green-400 border"
-    >
-      <span class="pb-3">{{ $t("sailingAtSea") }}</span>
-      <img
-        class="lg:hidden"
-        src="@/assets/icons/report_subtype_sailing_at_sea.svg"
-      />
-      <img
-        class="hidden lg:block"
-        src="@/assets/icons/report_subtype_sailing_at_sea_long.svg"
-      />
-    </span>
-
     <!-- Overview -->
     <NoonOverview />
 
@@ -95,14 +80,13 @@ const {
   routeDeparturePortCountry,
   routeDeparturePortName,
   routeDepartureDate,
+  routeDepartureTimeZone,
   routeArrivalPortCountry,
   routeArrivalPortName,
   routeArrivalDate,
-  // routeArrivalTimeZone,
-  // routeArrivalSummerTime,
+  routeArrivalTimeZone,
   // DateTimeLatLong
   timeZone,
-  summerTime,
   dateTime,
   latDir,
   latMinutes,
@@ -161,10 +145,10 @@ const {
   lsfoBreakdown,
   mgoBreakdown,
   fuelOilDataCorrection,
-  mecylinderTotalConsumption,
-  mesystemTotalConsumption,
-  mesumpTotalConsumption,
-  gesystemTotalConsumption,
+  mecylinderBreakdown,
+  mesystemBreakdown,
+  mesumpBreakdown,
+  gesystemBreakdown,
   mecylinderRob,
   mesystemRob,
   mesumpRob,
@@ -195,21 +179,21 @@ const {
 // TODO: retrieve data from backend or generate as needed
 // TODO: modify DateTime display to also display UTC time next to local time
 
-const convertReportDate = (date) => {
-  // TODO: consider daylight savings in calculating UTC timezone offset + display
-  const userOffset = parseInt(reporting_time_zone.value) * -60;
-  const calcOffset = date.getTimezoneOffset();
+// const convertReportDate = (date) => {
+//   // TODO: consider daylight savings in calculating UTC timezone offset + display
+//   const userOffset = parseInt(reporting_time_zone.value) * -60;
+//   const calcOffset = date.getTimezoneOffset();
 
-  // calculate based on timezone input
-  if (userOffset !== calcOffset) {
-    date = new Date(
-      date.getTime() +
-        3600000 * (parseInt(reporting_time_zone.value) + calcOffset / 60)
-    );
-  }
+//   // calculate based on timezone input
+//   if (userOffset !== calcOffset) {
+//     date = new Date(
+//       date.getTime() +
+//         3600000 * (parseInt(reporting_time_zone.value) + calcOffset / 60)
+//     );
+//   }
 
-  return date.toISOString();
-};
+//   return date.toISOString();
+// };
 
 const sendReport = async () => {
   // TODO: need to do form validation first
@@ -247,7 +231,6 @@ const sendReport = async () => {
     voyage: 1, // TODO: fetch from db
     leg_num: 1, // TODO: fetch from db
     report_tz: timeZone.value,
-    summer_time: summerTime.value,
     report_num: 1, // TODO: fetch from db
     report_date: dateTime.value,
     position: position,
@@ -327,9 +310,9 @@ const sendReport = async () => {
       lubricatingoildata_set: [
         {
           fuel_oil_type: "M/E Cylinder",
-          total_consumption: mecylinderTotalConsumption.value,
-          receipt: "0.00", // irrelevant for noon report
-          debunkering: "0.00", // irrelevant for noon report
+          total_consumption: mecylinderBreakdown.value.total_consumption,
+          receipt: mecylinderBreakdown.value.receipt,
+          debunkering: mecylinderBreakdown.value.debunkering,
           rob: mecylinderRob.value,
           lubricatingoildatacorrection:
             lubricatingOilDataCorrection.value.type === "mecylinder"
@@ -341,9 +324,9 @@ const sendReport = async () => {
         },
         {
           fuel_oil_type: "M/E System",
-          total_consumption: mesystemTotalConsumption.value,
-          receipt: "0.00", // irrelevant for noon report
-          debunkering: "0.00", // irrelevant for noon report
+          total_consumption: mesystemBreakdown.value.total_consumption,
+          receipt: mesystemBreakdown.value.receipt,
+          debunkering: mesystemBreakdown.value.debunkering,
           rob: mesystemRob.value,
           lubricatingoildatacorrection:
             lubricatingOilDataCorrection.value.type === "mesystem"
@@ -355,9 +338,9 @@ const sendReport = async () => {
         },
         {
           fuel_oil_type: "M/E Sump",
-          total_consumption: mesumpTotalConsumption.value,
-          receipt: "0.00", // irrelevant for noon report
-          debunkering: "0.00", // irrelevant for noon report
+          total_consumption: mesumpBreakdown.value.total_consumption,
+          receipt: mesumpBreakdown.value.receipt,
+          debunkering: mesumpBreakdown.value.debunkering,
           rob: mesumpRob.value,
           lubricatingoildatacorrection:
             lubricatingOilDataCorrection.value.type === "mesump"
@@ -369,9 +352,9 @@ const sendReport = async () => {
         },
         {
           fuel_oil_type: "G/E System",
-          total_consumption: gesystemTotalConsumption.value,
-          receipt: "0.00", // irrelevant for noon report
-          debunkering: "0.00", // irrelevant for noon report
+          total_consumption: gesystemBreakdown.value.total_consumption,
+          receipt: gesystemBreakdown.value.receipt,
+          debunkering: gesystemBreakdown.value.debunkering,
           rob: gesystemRob.value,
           lubricatingoildatacorrection:
             lubricatingOilDataCorrection.value.type === "gesystem"
@@ -402,7 +385,6 @@ const sendReport = async () => {
       wind_speed: heavyWindSpeed.value,
       sea_direction: heavySeaDirection.value,
       sea_state: heavySeaState.value,
-      max_wave_height: 10, // TODO: X needed, remove this line once removed from backend
       remarks: heavyRemarks.value,
     };
   }

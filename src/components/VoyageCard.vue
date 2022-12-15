@@ -79,7 +79,7 @@
         {{ $t("bunkerDelivery") }}
       </button>
       <CustomButton
-        @click="$router.push('add-report')"
+        @click="$router.push({ name: 'add-report' })"
         class="h-9 text-14 text-blue-700 rounded-xl ml-auto"
       >
         <template v-slot:content>+{{ $t("addNewReport") }}</template>
@@ -95,7 +95,7 @@
           :departure="report.departure"
           :arrival="report.arrival"
           :loading_condition="report.loading_condition"
-          :date_of_submission="report.date_of_submission"
+          :date_of_report="report.date_of_report"
         ></ReportCard>
       </div>
       <ReportCard
@@ -104,11 +104,11 @@
         departure="Singapore"
         arrival="Ulsan"
         loading_condition="Westbound"
-        date_of_submission="2022-10-19, 4:08 PM"
+        date_of_report="2022-10-19, 4:08 PM"
       ></ReportCard>
       <!-- TEST ITEMS -->
-      <!-- <ReportCard :report_no="'ARRIVAL'" :report_type="'ARRIVAL'" :departure="'Singapore'" :arrival="'Ulsan'" :status="'Anchoring'" :cargold="'Ballast'" :distance_to_go="'2503'" :date_of_submission="'2022-10-19'"></ReportCard>
-                <ReportCard :report_no="'NOON'" :report_type="'NOON'" :departure="'Singapore'" :arrival="'Ulsan'" :status="'Anchoring'" :cargold="'Ballast'" :distance_to_go="'2503'" :date_of_submission="'2022-10-19'"></ReportCard> -->
+      <!-- <ReportCard :report_no="'ARRIVAL'" :report_type="'ARRIVAL'" :departure="'Singapore'" :arrival="'Ulsan'" :status="'Anchoring'" :cargold="'Ballast'" :distance_to_go="'2503'" :date_of_report="'2022-10-19'"></ReportCard>
+                <ReportCard :report_no="'NOON'" :report_type="'NOON'" :departure="'Singapore'" :arrival="'Ulsan'" :status="'Anchoring'" :cargold="'Ballast'" :distance_to_go="'2503'" :date_of_report="'2022-10-19'"></ReportCard> -->
     </div>
   </div>
 </template>

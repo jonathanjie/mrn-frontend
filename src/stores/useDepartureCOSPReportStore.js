@@ -18,13 +18,11 @@ export const useDepartureCOSPReportStore = defineStore(
     // Departure and Destination
     const departurePortCountry = ref("");
     const departurePortName = ref("");
-    const departureTimeZone = ref("");
-    const departureSummerTime = ref("default");
+    const departureTimeZone = ref("default");
     const departureDateTime = ref("");
     const destinationPortCountry = ref("");
     const destinationPortName = ref("");
-    const destinationTimeZone = ref("");
-    const destinationSummerTime = ref("default");
+    const destinationTimeZone = ref("default");
     const destinationEstimatedArrival = ref("");
   }
 );

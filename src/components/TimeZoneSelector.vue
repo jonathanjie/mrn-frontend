@@ -1,3 +1,4 @@
+<!-- Deprecated -->
 <template>
   <v-select
     class="text-14 text-gray-700 pl-2"

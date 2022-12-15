@@ -4,7 +4,7 @@
   <div v-if="isAuthenticated" class="flex items-start items-stretch">
     <div class="z-50 fixed">
       <Suspense>
-        <SideNav></SideNav>
+        <SideNav />
       </Suspense>
     </div>
     <div class="grow h-screen" :class="collapsed ? 'ml-20' : 'ml-64'">
@@ -99,6 +99,7 @@ $dp__input_icon_padding: 14px;
 
 @import "node_modules/@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss";
 
+// TODO: no option to change placeholder color for DatePicker; if possible, set to #B3BAC7
 .dp__theme_light {
   --dp-background-color: #ffffff;
   --dp-text-color: #475467;

@@ -26,9 +26,9 @@
         <ArrivalEOSPPilotStation />
 
         <!-- Consumption & Condition (Noon - S/BY) -->
-        <ArrivalConsumption>{{
+        <ArrivalEOSPConsumption>{{
           $t("consumptionAndConditionNoonToSby")
-        }}</ArrivalConsumption>
+        }}</ArrivalEOSPConsumption>
 
         <!-- Actual Performance at Sea / Total Consumption (Pilot to Pilot) -->
         <ArrivalEOSPSummary />
@@ -116,7 +116,8 @@ import ArrivalWeather from "@/components/Reports/ArrivalReport/ArrivalWeather.vu
 import ArrivalEOSPDistanceAndTime from "@/components/Reports/ArrivalReport/ArrivalEOSPDistanceAndTime.vue";
 import ArrivalFWEDistanceAndTime from "@/components/Reports/ArrivalReport/ArrivalFWEDistanceAndTime.vue";
 import ArrivalPerformance from "@/components/Reports/ArrivalReport/ArrivalPerformance.vue";
-import ArrivalPilotStation from "@/components/Reports/ArrivalReport/ArrivalPilotStation.vue";
+import ArrivalEOSPPilotStation from "@/components/Reports/ArrivalReport/ArrivalEOSPPilotStation.vue";
+import ArrivalFWEPilotStation from "@/components/Reports/ArrivalReport/ArrivalFWEPilotStation.vue";
 import ArrivalEOSPConsumption from "@/components/Reports/ArrivalReport/ArrivalEOSPConsumption.vue";
 import ArrivalFWEConsumption from "@/components/Reports/ArrivalReport/ArrivalFWEConsumption.vue";
 import ArrivalFinishWithEngine from "@/components/Reports/ArrivalReport/ArrivalFinishWithEngine.vue";

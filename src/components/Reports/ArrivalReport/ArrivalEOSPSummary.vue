@@ -10,7 +10,7 @@
           class="h-5 w-5"
         />
         <span class="text-yellow-700 text-16">{{
-          $t("actualPerformanceAtSea")
+          $t("actualPerformancePilotToPilot")
         }}</span>
       </div>
       <div class="col-span-2 lg:col-span-1">

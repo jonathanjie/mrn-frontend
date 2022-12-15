@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white text-black py-4 px-6 flex">
-    <div class="flex overflow-hidden pl-6 mr-auto">
+    <!-- <div class="flex overflow-hidden pl-6 mr-auto">
       <div class="relative mx-auto text-gray-600">
         <img
           class="absolute mr-2 w-10 px-2 py-2"
@@ -14,8 +14,8 @@
           icon="search"
         />
       </div>
-    </div>
-    <ul class="flex items-center">
+    </div> -->
+    <!-- <ul class="flex items-center">
       <li class="mx-3">
         <img src="@/assets/icons/message.svg" class="hidden h-6 w-6" />
       </li>
@@ -31,9 +31,9 @@
           class="flex h-5 w-6 md:items-center md:visible"
         />
       </li>
-    </ul>
+    </ul> -->
     <div
-      class="flex items-center relative"
+      class="flex items-center relative ml-auto"
       @mouseenter="mouseEnter"
       @mouseleave="mouseLeave"
     >
@@ -63,15 +63,23 @@
       <img src="@/assets/icons/down_arrow.svg" class="h-1.5 w-3 mx-3" />
       <div
         v-show="isExpanded"
+<<<<<<< HEAD
         class="absolute mt-24 right-0"
         @mouseenter="mouseEnter"
       >
         <div class="flex flex-col">
           <button @click="logout" class="h-12 w-40 bg-white rounded-b-lg">
             <span class="mt-2">{{ $t("logOut") }}</span>
+=======
+        class="absolute -bottom-10 right-0"
+        @mouseenter="mouseEnter"
+      >
+        <div class="flex flex-col">
+          <button @click="logout" class="h-10 w-40 bg-white rounded-b-lg">
+            {{ $t("logOut") }}
+>>>>>>> 5371771f7554015dae4c4248efd554c88e659119
           </button>
         </div>
-        <!-- TODO: adjust width based on profile length? -->
       </div>
     </div>
   </div>
@@ -95,12 +103,10 @@ function mouseLeave() {
   isExpanded.value = false;
 }
 
-console.log(user);
+// async function getToken() {
+//   const authStore = useAuthStore();
+//   const jwt = await getAccessTokenSilently();
 
-async function getToken() {
-  const authStore = useAuthStore();
-  const jwt = await getAccessTokenSilently();
-
-  authStore.updateToken(jwt);
-}
+//   authStore.updateToken(jwt);
+// }
 </script>

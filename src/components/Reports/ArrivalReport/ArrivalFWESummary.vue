@@ -55,7 +55,7 @@
           class="h-5 w-5"
         />
         <span class="text-yellow-700 text-16">{{
-          $t("totalConsumptionPilotToPilot")
+          $t("totalConsumptionPortToPort")
         }}</span>
       </div>
       <div class="grid grid-cols-6 border bg-gray-25 text-14">

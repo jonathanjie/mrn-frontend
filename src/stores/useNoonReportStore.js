@@ -44,16 +44,15 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const routeDeparturePortCountry = ref("SG");
   const routeDeparturePortName = ref("PPT");
   const routeDepartureDate = ref("2022-12-01T00:00:00Z");
+  const routeDepartureTimeZone = ref("8");
   const routeArrivalPortCountry = ref("SA");
   const routeArrivalPortName = ref("RTA");
   const routeArrivalDate = ref("2022-12-21T00:00:00Z");
-  const routeArrivalTimeZone = ref("Asia/Singapore");
-  const routeArrivalSummerTime = ref("false");
+  const routeArrivalTimeZone = ref("3");
 
   // DateTimeLatLong
-  const timeZone = ref("");
-  const summerTime = ref("default");
-  const dateTime = ref(""); // TODO: need to convert from local time to utc using timeZone and summerTime
+  const timeZone = ref("default");
+  const dateTime = ref("");
   const latDir = ref("default");
   const latMinutes = ref("");
   const latDegree = ref("");
@@ -220,21 +219,61 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     remarks: "",
   });
 
-  const mecylinderTotalConsumption = ref("");
-  const mesystemTotalConsumption = ref("");
-  const mesumpTotalConsumption = ref("");
-  const gesystemTotalConsumption = ref("");
+  const mecylinderBreakdown = reactive({
+    total_consumption: "",
+    receipt: "",
+    debunkering: "",
+  });
+  const mesystemBreakdown = reactive({
+    total_consumption: "",
+    receipt: "",
+    debunkering: "",
+  });
+  const mesumpBreakdown = reactive({
+    total_consumption: "",
+    receipt: "",
+    debunkering: "",
+  });
+  const gesystemBreakdown = reactive({
+    total_consumption: "",
+    receipt: "",
+    debunkering: "",
+  });
   const mecylinderRob = computed(
-    () => +(temp.mecylPrevROB - mecylinderTotalConsumption.value).toFixed(2)
+    () =>
+      +(
+        temp.mecylPrevROB -
+        Number(mecylinderBreakdown.total_consumption) +
+        Number(mecylinderBreakdown.receipt) -
+        Number(mecylinderBreakdown.debunkering)
+      ).toFixed(2)
   );
   const mesystemRob = computed(
-    () => +(temp.mesysPrevROB - mesystemTotalConsumption.value).toFixed(2)
+    () =>
+      +(
+        temp.mesysPrevROB -
+        Number(mesystemBreakdown.total_consumption) +
+        Number(mesystemBreakdown.receipt) -
+        Number(mesystemBreakdown.debunkering)
+      ).toFixed(2)
   );
   const mesumpRob = computed(
-    () => +(temp.mesumpPrevROB - mesumpTotalConsumption.value).toFixed(2)
+    () =>
+      +(
+        temp.mesumpPrevROB -
+        Number(mesumpBreakdown.total_consumption) +
+        Number(mesumpBreakdown.receipt) -
+        Number(mesumpBreakdown.debunkering)
+      ).toFixed(2)
   );
   const gesystemRob = computed(
-    () => +(temp.gesysPrevROB - gesystemTotalConsumption.value).toFixed(2)
+    () =>
+      +(
+        temp.gesysPrevROB -
+        Number(gesystemBreakdown.total_consumption) +
+        Number(gesystemBreakdown.receipt) -
+        Number(gesystemBreakdown.debunkering)
+      ).toFixed(2)
   );
   const lubricatingOilDataCorrection = reactive({
     type: "default",
@@ -277,14 +316,13 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     routeDeparturePortCountry,
     routeDeparturePortName,
     routeDepartureDate,
+    routeDepartureTimeZone,
     routeArrivalPortCountry,
     routeArrivalPortName,
     routeArrivalDate,
     routeArrivalTimeZone,
-    routeArrivalSummerTime,
     // DateTimeLatLong
     timeZone,
-    summerTime,
     dateTime,
     latDir,
     latMinutes,
@@ -343,10 +381,10 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     lsfoBreakdown,
     mgoBreakdown,
     fuelOilDataCorrection,
-    mecylinderTotalConsumption,
-    mesystemTotalConsumption,
-    mesumpTotalConsumption,
-    gesystemTotalConsumption,
+    mecylinderBreakdown,
+    mesystemBreakdown,
+    mesumpBreakdown,
+    gesystemBreakdown,
     mecylinderRob,
     mesystemRob,
     mesumpRob,
