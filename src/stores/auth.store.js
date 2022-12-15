@@ -25,6 +25,7 @@ export const useAuthStore = defineStore({
     updateRole(role) {
       this.role = role;
       localStorage.setItem("role", role);
+      console.log("Role updated with: " + role);
     },
     logout() {
       this.user = null;

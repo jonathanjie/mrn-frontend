@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen" :style="{ width: sidebarWidth }">
+  <div class="flex min-h-screen z-50 fixed" :style="{ width: sidebarWidth }">
     <div
       class="bg-blue text-cyan-100 w-64 relative -translate-x-0 inset-y-0 left-0 transition all ease-in-out delay-150 duration-200"
     >
@@ -60,7 +60,7 @@
             }}</span>
           </Transition>
         </router-link>
-        <router-link
+        <!-- <router-link
           to="/"
           class="flex py-4 px-7 space-x-3 hover:bg-blue-700/[0.24]"
           :class="{ 'justify-center': collapsed }"
@@ -71,25 +71,32 @@
               $t("reporting")
             }}</span>
           </Transition>
-        </router-link>
+        </router-link> -->
       </nav>
     </div>
   </div>
 </template>
 
 <script setup>
-import { useAuthStore } from "@/stores/auth.store";
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
-let addSpec = true;
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/auth.store";
+import { useAuth0 } from "@auth0/auth0-vue";
+
+console.log("Sidenav loads");
 const auth = useAuthStore();
-const manager = auth.role === "manager";
+const router = useRouter();
+const { user, getAccessTokenSilently } = useAuth0();
+const jwt = await getAccessTokenSilently();
+let addSpec = false;
+
 const getShip = async () => {
   const response = await fetch(
     // Assuming that ships api can only provide 1 ship
     `https://testapi.marinachain.io/marinanet/ships`,
     {
       headers: {
-        Authorization: "Bearer " + auth.jwt,
+        Authorization: "Bearer " + jwt,
         "Content-Type": "application/json",
       },
       method: "GET",
@@ -102,8 +109,39 @@ const getShip = async () => {
   } else {
     addSpec = false;
   }
+  console.log("getSHip in App.vue");
   return ship[0];
 };
 
+const getUserRole = async () => {
+  const response = await fetch(
+    `https://testapi.marinachain.io/marinanet/user`,
+    {
+      headers: {
+        Authorization: "Bearer " + jwt,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+  const reply = await response.json();
+  const userRole = reply.role;
+  console.log("getUserRole in App.vue");
+  return userRole;
+};
+const home = "";
+const role = await getUserRole();
+const manager = role === "manager";
+auth.updateUserRoleToken(user, role, jwt);
+console.log("Auth store is updated here");
 const ship = await getShip();
+if (role === "manager") {
+  router.push({ path: "/my-vessels" });
+  home = "/my-vessels";
+} else {
+  router.push({
+    path: `/vessels/${ship.name}/${ship.imo_reg}/${addSpec}/overview`,
+  });
+  home = `/vessels/${ship.name}/${ship.imo_reg}/${addSpec}/overview`;
+}
 </script>
