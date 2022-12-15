@@ -13,14 +13,14 @@
         </button>
       </div>
       <div class="flex items-center justify-center py-5 bg-blue-700/[0.24]">
-        <router-link to="/">
+        <button @click="home">
           <img
             v-if="collapsed"
             src="@/assets/logomark_white.svg"
             class="h-8 px-6"
           />
           <img v-else src="@/assets/marina_logo.svg" class="w-100" />
-        </router-link>
+        </button>
       </div>
 
       <nav>
@@ -109,7 +109,6 @@ const getShip = async () => {
   } else {
     addSpec = false;
   }
-  console.log("getSHip in App.vue");
   return ship[0];
 };
 
@@ -126,10 +125,8 @@ const getUserRole = async () => {
   );
   const reply = await response.json();
   const userRole = reply.role;
-  console.log("getUserRole in App.vue");
   return userRole;
 };
-const home = "";
 const role = await getUserRole();
 const manager = role === "manager";
 auth.updateUserRoleToken(user, role, jwt);
@@ -137,11 +134,19 @@ console.log("Auth store is updated here");
 const ship = await getShip();
 if (role === "manager") {
   router.push({ path: "/my-vessels" });
-  home = "/my-vessels";
 } else {
   router.push({
     path: `/vessels/${ship.name}/${ship.imo_reg}/${addSpec}/overview`,
   });
-  home = `/vessels/${ship.name}/${ship.imo_reg}/${addSpec}/overview`;
 }
+
+const home = () => {
+  if (role === "manager") {
+    router.push({ path: "/my-vessels" });
+  } else {
+    router.push({
+      path: `/vessels/${ship.name}/${ship.imo_reg}/${addSpec}/overview`,
+    });
+  }
+};
 </script>
