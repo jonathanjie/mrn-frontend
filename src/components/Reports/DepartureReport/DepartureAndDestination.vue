@@ -208,7 +208,7 @@ import { reactive } from "vue";
 import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 import { storeToRefs } from "pinia";
 
-const store = useDepartureSBYReportStore;
+const store = useDepartureSBYReportStore();
 
 const {
   departurePortCountry,

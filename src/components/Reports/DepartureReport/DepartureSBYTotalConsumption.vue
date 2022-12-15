@@ -532,13 +532,13 @@
 import { preventNaN } from "@/utils/helpers";
 import { ref, reactive, computed, defineProps } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useHarbourPortReportStore } from "@/stores/useHarbourPortReportStore";
+import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 import { storeToRefs } from "pinia";
 
 const isAdditionalRemarkFuel = ref(false);
 const isAdditionalRemarkLubricate = ref(false);
 
-const store = useHarbourPortReportStore();
+const store = useDepartureSBYReportStore();
 const {
   // fuel oil
   lsfoTotalConsumption: lsfo_total_consumption,

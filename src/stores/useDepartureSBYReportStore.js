@@ -15,6 +15,11 @@ const temp = {
 export const useDepartureSBYReportStore = defineStore(
   "departureReportSBY",
   () => {
+    // Overview
+    const reportNo = ref("2");
+    const legNo = ref("2");
+    const voyageNo = ref("2");
+
     // Departure and Destination
     const departurePortCountry = ref("");
     const departurePortName = ref("");
@@ -41,11 +46,144 @@ export const useDepartureSBYReportStore = defineStore(
     const ballast = ref("");
     const displacement = ref("");
 
-    // Departure SBY Consumption and Condition
+    // Consumption and Condition
+    const lsfoTotalConsumption = computed(
+      () =>
+        +(
+          Number(lsfoBreakdown.me) +
+          Number(lsfoBreakdown.ge) +
+          Number(lsfoBreakdown.blr) +
+          Number(lsfoBreakdown.igg)
+        )
+    );
+    const lsfoRob = computed(
+      () =>
+        temp.lsfoPrevROB -
+        lsfoTotalConsumption.value +
+        Number(lsfoBreakdown.receipt) -
+        Number(lsfoBreakdown.debunkering)
+    );
+    const mgoTotalConsumption = computed(
+      () =>
+        +(
+          Number(mgoBreakdown.me) +
+          Number(mgoBreakdown.ge) +
+          Number(mgoBreakdown.blr) +
+          Number(mgoBreakdown.igg)
+        ).toFixed(2)
+    );
+    const mgoRob = computed(
+      () =>
+        temp.mgoPrevROB -
+        mgoTotalConsumption.value +
+        Number(mgoBreakdown.receipt) -
+        Number(mgoBreakdown.debunkering)
+    );
+    const lsfoBreakdown = reactive({
+      me: "",
+      ge: "",
+      blr: "",
+      igg: "",
+      receipt: "",
+      debunkering: "",
+    });
+    const mgoBreakdown = reactive({
+      me: "",
+      ge: "",
+      blr: "",
+      igg: "",
+      receipt: "",
+      debunkering: "",
+    });
+    const fuelOilDataCorrection = reactive({
+      type: "default",
+      correction: "",
+      remarks: "",
+    });
 
-    // Departure COSP Consumption and Condition
+    const mecylinderBreakdown = reactive({
+      total_consumption: "",
+      receipt: "",
+      debunkering: "",
+    });
+    const mesystemBreakdown = reactive({
+      total_consumption: "",
+      receipt: "",
+      debunkering: "",
+    });
+    const mesumpBreakdown = reactive({
+      total_consumption: "",
+      receipt: "",
+      debunkering: "",
+    });
+    const gesystemBreakdown = reactive({
+      total_consumption: "",
+      receipt: "",
+      debunkering: "",
+    });
+    const mecylinderRob = computed(
+      () =>
+        +(
+          temp.mecylPrevROB -
+          Number(mecylinderBreakdown.total_consumption) +
+          Number(mecylinderBreakdown.receipt) -
+          Number(mecylinderBreakdown.debunkering)
+        ).toFixed(2)
+    );
+    const mesystemRob = computed(
+      () =>
+        +(
+          temp.mesysPrevROB -
+          Number(mesystemBreakdown.total_consumption) +
+          Number(mesystemBreakdown.receipt) -
+          Number(mesystemBreakdown.debunkering)
+        ).toFixed(2)
+    );
+    const mesumpRob = computed(
+      () =>
+        +(
+          temp.mesumpPrevROB -
+          Number(mesumpBreakdown.total_consumption) +
+          Number(mesumpBreakdown.receipt) -
+          Number(mesumpBreakdown.debunkering)
+        ).toFixed(2)
+    );
+    const gesystemRob = computed(
+      () =>
+        +(
+          temp.gesysPrevROB -
+          Number(gesystemBreakdown.total_consumption) +
+          Number(gesystemBreakdown.receipt) -
+          Number(gesystemBreakdown.debunkering)
+        ).toFixed(2)
+    );
+    const lubricatingOilDataCorrection = reactive({
+      type: "default",
+      correction: "",
+      remarks: "",
+    });
+
+    const freshwaterConsumed = ref("");
+    const freshwaterEvaporated = ref("");
+    const freshwaterReceiving = ref("");
+    const freshwaterDischarging = ref("");
+    const freshwaterChange = computed(
+      () => +(freshwaterEvaporated.value - freshwaterConsumed.value).toFixed(2)
+    );
+    const freshwaterRob = computed(
+      () =>
+        temp.freshwaterPrevROB +
+        Number(freshwaterReceiving.value) -
+        Number(freshwaterDischarging.value) +
+        freshwaterChange.value
+    );
 
     return {
+      // Overview
+      reportNo,
+      legNo,
+      voyageNo,
+
       // Departure and Destination
       departurePortCountry,
       departurePortName,
@@ -69,6 +207,29 @@ export const useDepartureSBYReportStore = defineStore(
       gm,
       ballast,
       displacement,
+      // Consumption and Condition
+      lsfoTotalConsumption,
+      lsfoRob,
+      mgoTotalConsumption,
+      mgoRob,
+      lsfoBreakdown,
+      mgoBreakdown,
+      fuelOilDataCorrection,
+      mecylinderBreakdown,
+      mesystemBreakdown,
+      mesumpBreakdown,
+      gesystemBreakdown,
+      mecylinderRob,
+      mesystemRob,
+      mesumpRob,
+      gesystemRob,
+      lubricatingOilDataCorrection,
+      freshwaterConsumed,
+      freshwaterEvaporated,
+      freshwaterReceiving,
+      freshwaterDischarging,
+      freshwaterChange,
+      freshwaterRob,
     };
   }
 );

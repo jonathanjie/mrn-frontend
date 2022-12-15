@@ -14,8 +14,8 @@
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-white">
         <input
-          v-model="data.distance"
-          @keypress="preventNaN($event, data.distance)"
+          v-model="store.budgetTransOcean.distance"
+          @keypress="preventNaN($event, store.budgetTransOcean.distance)"
           placeholder="00000"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -26,8 +26,8 @@
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 border-l bg-white">
         <input
-          v-model="data.speed"
-          @keypress="preventNaN($event, data.speed)"
+          v-model="store.budgetTransOcean.speed"
+          @keypress="preventNaN($event, store.budgetTransOcean.speed)"
           placeholder="00.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -42,8 +42,8 @@
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-white">
         <input
-          v-model="data.daily_FO_cons"
-          @keypress="preventNaN($event, data.daily_FO_cons)"
+          v-model="store.budgetTransOcean.daily_FO_cons"
+          @keypress="preventNaN($event, store.budgetTransOcean.daily_FO_cons)"
           placeholder="000.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -54,8 +54,8 @@
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 border-l bg-white">
         <input
-          v-model="data.rpm"
-          @keypress="preventNaN($event, data.rpm)"
+          v-model="store.budgetTransOcean.rpm"
+          @keypress="preventNaN($event, store.budgetTransOcean.rpm)"
           placeholder="000.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -69,11 +69,14 @@
 import { preventNaN } from "@/utils/helpers.js";
 import { reactive } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
 
-const data = reactive({
-  distance: "",
-  speed: "",
-  daily_FO_cons: "",
-  rpm: "",
-});
+const store = useDepartureCOSPReportStore();
+
+// const data = reactive({
+//   distance: "",
+//   speed: "",
+//   daily_FO_cons: "",
+//   rpm: "",
+// });
 </script>
