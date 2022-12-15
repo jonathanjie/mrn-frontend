@@ -63,21 +63,12 @@
       <img src="@/assets/icons/down_arrow.svg" class="h-1.5 w-3 mx-3" />
       <div
         v-show="isExpanded"
-<<<<<<< HEAD
-        class="absolute mt-24 right-0"
-        @mouseenter="mouseEnter"
-      >
-        <div class="flex flex-col">
-          <button @click="logout" class="h-12 w-40 bg-white rounded-b-lg">
-            <span class="mt-2">{{ $t("logOut") }}</span>
-=======
         class="absolute -bottom-10 right-0"
         @mouseenter="mouseEnter"
       >
         <div class="flex flex-col">
           <button @click="logout" class="h-10 w-40 bg-white rounded-b-lg">
             {{ $t("logOut") }}
->>>>>>> 5371771f7554015dae4c4248efd554c88e659119
           </button>
         </div>
       </div>
