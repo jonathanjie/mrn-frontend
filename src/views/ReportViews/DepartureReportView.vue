@@ -15,7 +15,7 @@
         <DepartureVesselCondition />
 
         <!-- Consumption & Condition (departure ver.) -->
-        <DepartureSBYConsumption></DepartureSBYConsumption>
+        <DepartureSBYConsumption />
 
         <!-- Consumption & Condition (Harbour/In Port in Total) -->
         <DepartureSBYTotalConsumption>{{

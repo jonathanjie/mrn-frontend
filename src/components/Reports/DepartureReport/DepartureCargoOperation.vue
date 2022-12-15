@@ -12,12 +12,10 @@
           {{ $t("loadCondition") }}
         </div>
         <select
-          v-model="data.load_condition"
+          v-model="loadCondition"
           class="col-span-3 p-3 border-l text-14 focus:outline-0"
           :class="
-            data.load_condition === 'default'
-              ? 'text-gray-400'
-              : 'text-gray-700'
+            loadCondition === 'default' ? 'text-gray-400' : 'text-gray-700'
           "
         >
           <option selected disabled value="default">
@@ -37,8 +35,8 @@
         </div>
         <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
           <input
-            v-model="data.loading"
-            @keypress="preventNaN($event, data.loading)"
+            v-model="loading"
+            @keypress="preventNaN($event, loading)"
             :placeholder="$t('inputDetails')"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
@@ -52,8 +50,8 @@
         </div>
         <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
           <input
-            v-model="data.unloading"
-            @keypress="preventNaN($event, data.unloading)"
+            v-model="unloading"
+            @keypress="preventNaN($event, loading)"
             :placeholder="$t('inputDetails')"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
@@ -67,8 +65,8 @@
         </div>
         <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
           <input
-            v-model="data.total_amount"
-            @keypress="preventNaN($event, data.total_amount)"
+            v-model="totalAmount"
+            @keypress="preventNaN($event, totalAmount)"
             :placeholder="$t('inputDetails')"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
@@ -82,8 +80,8 @@
         </div>
         <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border">
           <input
-            v-model="data.time"
-            @keypress="preventNaN($event, data.time)"
+            v-model="time"
+            @keypress="preventNaN($event, time)"
             :placeholder="$t('inputDetails')"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
@@ -98,12 +96,19 @@
 import { reactive } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
+import { storeToRefs } from "pinia";
 
-const data = reactive({
-  load_condition: "default",
-  loading: "",
-  unloading: "",
-  total_amount: "",
-  time: "",
-});
+const store = useDepartureSBYReportStore;
+
+const { loadCondition, loading, unloading, totalAmount, time } =
+  storeToRefs(store);
+
+// const data = reactive({
+//   load_condition: "default",
+//   loading: "",
+//   unloading: "",
+//   total_amount: "",
+//   time: "",
+// });
 </script>

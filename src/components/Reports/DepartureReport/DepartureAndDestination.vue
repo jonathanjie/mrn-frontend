@@ -13,12 +13,12 @@
           {{ $t("portName") }}
         </div>
         <input
-          v-model="departure.port_country"
-          :placeholder="$t('inputLocode2')"
+          v-model="departurePortCountry"
+          :placeholder="$t('inputCountryCode')"
           class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
         />
         <input
-          v-model="departure.port_name"
+          v-model="departurePortName"
           :placeholder="$t('inputLocode3')"
           class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
         />
@@ -33,11 +33,11 @@
           <select
             class="grow self-center p-3 text-14 focus:outline-0"
             :class="
-              departure.time_zone === 'default'
+              departureTimeZone === 'default'
                 ? 'text-gray-400'
                 : 'text-gray-700'
             "
-            v-model="departure.time_zone"
+            v-model="departureTimeZone"
           >
             <option selected disabled value="default">
               {{ $t("selectTimeZone") }}
@@ -86,7 +86,7 @@
           {{ $t("dateAndTime") }}
         </div>
         <DatePicker
-          v-model="departure.date_time"
+          v-model="departureDateTime"
           class="col-span-3"
           textInput
           :textInputOptions="textInputOptions"
@@ -112,12 +112,12 @@
           {{ $t("portName") }}
         </div>
         <input
-          v-model="destination.port_country"
-          :placeholder="$t('inputLocode2')"
+          v-model="destinationPortCountry"
+          :placeholder="$t('inputCountryCode')"
           class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
         />
         <input
-          v-model="destination.port_name"
+          v-model="destinationPortName"
           :placeholder="$t('inputLocode3')"
           class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
         />
@@ -132,11 +132,11 @@
           <select
             class="grow self-center p-3 text-14 focus:outline-0"
             :class="
-              destination.time_zone === 'default'
+              destinationTimeZone === 'default'
                 ? 'text-gray-400'
                 : 'text-gray-700'
             "
-            v-model="destination.time_zone"
+            v-model="destinationTimeZone"
           >
             <option selected disabled value="default">
               {{ $t("selectTimeZone") }}
@@ -185,7 +185,7 @@
           {{ $t("estimatedTimeOfArrival") }}
         </div>
         <DatePicker
-          v-model="destination.estimated_arrival"
+          v-model="destinationEstimatedArrival"
           class="col-span-3"
           textInput
           :textInputOptions="textInputOptions"
@@ -205,18 +205,33 @@
 <script setup>
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
 import { reactive } from "vue";
+import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
+import { storeToRefs } from "pinia";
 
-const departure = reactive({
-  port_country: "",
-  port_name: "",
-  time_zone: "",
-  date_time: "",
-});
+const store = useDepartureSBYReportStore;
 
-const destination = reactive({
-  port_country: "",
-  port_name: "",
-  time_zone: "",
-  estimated_arrival: "",
-});
+const {
+  departurePortCountry,
+  departurePortName,
+  departureTimeZone,
+  departureDateTime,
+  destinationPortCountry,
+  destinationPortName,
+  destinationTimeZone,
+  destinationEstimatedArrival,
+} = storeToRefs(store);
+
+// const departure = reactive({
+//   port_country: "",
+//   port_name: "",
+//   time_zone: "",
+//   date_time: "",
+// });
+
+// const destination = reactive({
+//   port_country: "",
+//   port_name: "",
+//   time_zone: "",
+//   estimated_arrival: "",
+// });
 </script>

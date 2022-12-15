@@ -41,7 +41,9 @@ export const useDepartureSBYReportStore = defineStore(
     const ballast = ref("");
     const displacement = ref("");
 
-    // Consumption and Condition (TODO: solving shared parent component issue)
+    // Departure SBY Consumption and Condition
+
+    // Departure COSP Consumption and Condition
 
     return {
       // Departure and Destination
