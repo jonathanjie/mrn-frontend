@@ -1,10 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { authGuard, useAuth0 } from "@auth0/auth0-vue";
 
-// import LoginView from '../views/LoginView.vue'
-import HomeView from "../views/HomeView.vue";
-import SpeedGraph from "../views/HQViews/SpeedGraph.vue";
-import PlanVoyageView from "../views/PlanVoyageView.vue";
+// import LoginView from '../views/LoginView.vue'from ;
 import VesselView from "../views/VesselView/VesselView.vue";
 import VesselOverviewView from "../views/VesselView/VesselOverviewView.vue";
 import VesselSubmittedView from "../views/VesselView/VesselSubmittedView.vue";
@@ -16,9 +13,6 @@ import ArrivalReportView from "../views/ReportViews/ArrivalReportView.vue";
 import DepartureReportView from "../views/ReportViews/DepartureReportView.vue";
 import BunkerReportView from "../views/ReportViews/BunkerReportView.vue";
 import HarbourPortReportView from "../views/ReportViews/HarbourPortReportView.vue";
-import VesselSpec from "../views/VesselSpec.vue";
-import SpeedGraphOverview from "../views/HQViews/SpeedGraphOverview.vue";
-import HQView from "../views/HQViews/HQView";
 import NotFound from "../views/NotFound.vue";
 
 const routes = [
@@ -32,49 +26,43 @@ const routes = [
     // Need to edit
     path: "/",
     name: "home",
-    component: HomeView,
+    component: () => import("../views/HomeView.vue"),
     beforeEnter: authGuard,
   },
   {
     path: "/my-vessels",
     name: "my-vessels",
-    component: HQView,
+    component: () => import("../views/HQViews/HQView"),
     beforeEnter: authGuard,
   },
   {
     path: "/speed-graph/:vesselname/:imo",
     name: "speed-graph",
-    component: SpeedGraph,
+    component: () => import("../views/HQViews/SpeedGraph.vue"),
     props: true,
     children: [
       {
         path: "overview",
         name: "speed-graph-overview",
-        component: SpeedGraphOverview,
+        component: () => import("../views/HQViews/SpeedGraphOverview.vue"),
         props: true,
         beforeEnter: authGuard,
       },
       {
         path: "vessel-spec",
         name: "vessel-spec",
-        component: VesselSpec,
+        component: () => import("../views/VesselSpec.vue"),
         props: true,
         beforeEnter: authGuard,
       },
       {
         path: "uploaded-reports",
         name: "uploaded-reports",
-        component: VesselOverviewView,
+        component: () => import("../views/VesselView/VesselOverviewView.vue"),
         props: true, // To pass HQ parameter to hide Add Report Button
         beforeEnter: authGuard,
       },
     ],
-    beforeEnter: authGuard,
-  },
-  {
-    path: "/plan-voyage",
-    name: "plan-voyage",
-    component: PlanVoyageView,
     beforeEnter: authGuard,
   },
   {
@@ -106,7 +94,7 @@ const routes = [
     beforeEnter: authGuard,
   },
   {
-    path: "/vessels/:vesselname/:imo/add-report",
+    path: "/vessels/:vesselname/:imo/:specs/add-report",
     name: "add-report",
     component: AddReportToVoyageView,
     children: [
