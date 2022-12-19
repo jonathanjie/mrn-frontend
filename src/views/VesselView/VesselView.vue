@@ -15,31 +15,21 @@
             to="overview"
             class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
             :class="
-              $route.name == 'vessel-overview'
+              $route.name == 'overview'
                 ? 'border-b-2 border-blue-700 text-blue-700'
                 : ''
             "
-            >{{ $t("overview") }}</router-link
+            >{{ $t("report") }}</router-link
           >
           <router-link
-            to="submitted"
+            to="vessel-spec"
             class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
             :class="
-              $route.name == 'vessel-submitted'
+              $route.name == 'vessel-spec'
                 ? 'border-b-2 border-blue-700 text-blue-700'
                 : ''
             "
-            >{{ $t("submitted") }}</router-link
-          >
-          <router-link
-            to="draft"
-            class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
-            :class="
-              $route.name == 'vessel-draft'
-                ? 'border-b-2 border-blue-700 text-blue-700'
-                : ''
-            "
-            >{{ $t("draft") }}</router-link
+            >{{ $t("vesselSpec") }}</router-link
           >
         </div>
       </div>

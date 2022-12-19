@@ -4,9 +4,6 @@ import { authGuard, useAuth0 } from "@auth0/auth0-vue";
 // import LoginView from '../views/LoginView.vue'from ;
 import VesselView from "../views/VesselView/VesselView.vue";
 import VesselOverviewView from "../views/VesselView/VesselOverviewView.vue";
-import VesselSubmittedView from "../views/VesselView/VesselSubmittedView.vue";
-import VesselDraftView from "../views/VesselView/VesselDraftView.vue";
-import VesselCancelledView from "../views/VesselView/VesselCancelledView.vue";
 import AddReportToVoyageView from "../views/AddReportToVoyageView.vue";
 import NoonReportView from "../views/ReportViews/NoonReportView.vue";
 import ArrivalReportView from "../views/ReportViews/ArrivalReportView.vue";
@@ -42,7 +39,7 @@ const routes = [
     props: true,
     children: [
       {
-        path: "overview",
+        path: "speed-graph-overview",
         name: "speed-graph-overview",
         component: () => import("../views/HQViews/SpeedGraphOverview.vue"),
         props: true,
@@ -59,7 +56,6 @@ const routes = [
         path: "uploaded-reports",
         name: "uploaded-reports",
         component: () => import("../views/VesselView/VesselOverviewView.vue"),
-        props: true, // To pass HQ parameter to hide Add Report Button
         beforeEnter: authGuard,
       },
     ],
@@ -76,19 +72,9 @@ const routes = [
         component: VesselOverviewView,
       },
       {
-        path: "submitted",
-        name: "vessel-submitted",
-        component: VesselSubmittedView,
-      },
-      {
-        path: "draft",
-        name: "vessel-draft",
-        component: VesselDraftView,
-      },
-      {
-        path: "cancelled",
-        name: "vessel-cancelled",
-        component: VesselCancelledView,
+        path: "vessel-spec",
+        name: "vessel-spec",
+        component: () => import("../views/VesselSpec.vue"),
       },
     ],
     beforeEnter: authGuard,
