@@ -6,7 +6,7 @@
         <DepartureSBYOverview />
 
         <!-- Departure and Destination -->
-        <DepartureAndDestination />
+        <DepartureAndDestinationSBY />
 
         <!-- Cargo Operation -->
         <DepartureCargoOperation />
@@ -15,7 +15,7 @@
         <DepartureVesselCondition />
 
         <!-- Consumption & Condition (departure ver.) -->
-        <DepartureSBYConsumption></DepartureSBYConsumption>
+        <DepartureSBYConsumption />
 
         <!-- Consumption & Condition (Harbour/In Port in Total) -->
         <DepartureSBYTotalConsumption>{{
@@ -50,17 +50,13 @@
         <DepartureCOSPOverview />
 
         <!-- Departure and Destination TODO: may need to disable some fields -->
-        <DepartureAndDestination />
+        <DepartureAndDestinationCOSP />
 
         <!-- Pilot Station - Departure -->
-        <DeparturePilotStationDeparture>{{
-          $t("pilotStationDeparture")
-        }}</DeparturePilotStationDeparture>
+        <DeparturePilotStationDeparture />
 
         <!-- Pilot Station - Arrival -->
-        <DeparturePilotStationArrival>{{
-          $t("pilotStationArrival")
-        }}</DeparturePilotStationArrival>
+        <DeparturePilotStationArrival />
 
         <!-- Distance & Time (R/UP Engine) & S/BY to R/UP (In Harbour)-->
         <DepartureDistanceAndTime />
@@ -104,7 +100,8 @@ import Tab from "../../components/Tabs/Tab.vue";
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 
-import DepartureAndDestination from "@/components/Reports/DepartureReport/DepartureAndDestination.vue";
+import DepartureAndDestinationSBY from "@/components/Reports/DepartureReport/DepartureAndDestinationSBY.vue";
+import DepartureAndDestinationCOSP from "@/components/Reports/DepartureReport/DepartureAndDestinationCOSP.vue";
 import DepartureCargoOperation from "@/components/Reports/DepartureReport/DepartureCargoOperation.vue";
 import DepartureVesselCondition from "@/components/Reports/DepartureReport/DepartureVesselCondition.vue";
 import DepartureCOSPConsumption from "@/components/Reports/DepartureReport/DepartureCOSPConsumption.vue";
