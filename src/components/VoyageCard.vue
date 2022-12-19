@@ -2,7 +2,7 @@
   <!-- need to put below two components under one big div and then set min width to child -->
   <div
     class="flex h-20 mx-12 items-center rounded-xl min-w-max z-10"
-    :class="expanded ? 'bg-blue' : 'bg-white drop-shadow-md mb-6'"
+    :class="isExpanded ? 'bg-blue' : 'bg-white drop-shadow-md mb-6'"
   >
     <img
       src="@/assets/icons/selected_blue_gradient.svg"
@@ -10,8 +10,8 @@
     />
     <span
       class="text-14 font-bold px-1 min-w-fit"
-      :class="expanded ? 'text-white' : 'text-gray-700'"
-      >{{ $t("voyageNo") }} {{ num }}</span
+      :class="isExpanded ? 'text-white' : 'text-gray-700'"
+      >{{ $t("voyageNoCaps") }} {{ num }}</span
     >
     <div
       class="flex bg-gray-50 h-12 m-3 items-center rounded-xl w-full min-w-fit ml-20"
@@ -20,21 +20,20 @@
         class="flex justify-between items-center h-px bg-sysblue-800 ml-5 w-full mx-4 my-3"
       >
         <!-- TODO: need to add light blue "already traveled" indicator -->
-        <!-- BUG: one voyage card has a thinner line; doesn't look like h-px although all of them have the same h -->
         <CustomButton
-          class="p-1 h-7 text-12 text-blue-800 min-w-fit rounded-xl z-10"
+          class="p-1 h-7 text-12 text-blue min-w-fit rounded-xl z-10"
         >
           <template v-slot:content>{{ start }}</template>
         </CustomButton>
         <img src="@/assets/icons/forward.svg" class="h-4 w-4 z-10" />
         <CustomButton
-          class="p-1 h-7 text-12 text-blue-800 min-w-fit rounded-xl z-10"
+          class="p-1 h-7 text-12 text-blue min-w-fit rounded-xl z-10"
         >
           <template v-slot:content>{{ mid }}</template>
         </CustomButton>
         <img src="@/assets/icons/forward.svg" class="h-4 w-4 z-10" />
         <CustomButton
-          class="p-1 h-7 text-12 text-blue-800 min-w-fit rounded-xl z-10"
+          class="p-1 h-7 text-12 text-blue min-w-fit rounded-xl z-10"
         >
           <template v-slot:content>{{ dest }}</template>
         </CustomButton>
@@ -44,39 +43,27 @@
         $t("viewJourney")
       }}</span>
     </div>
-    <button @click="expanded = !expanded" class="ml-3 mr-4">
+    <button @click="isExpanded = !isExpanded" class="ml-3 mr-4">
       <img src="@/assets/icons/dropdown.svg" />
     </button>
   </div>
   <div
-    v-show="expanded"
+    v-show="isExpanded"
     class="min-h-fit bg-darkgray mx-12 mb-6 rounded-xl -mt-4 p-5"
   >
     <div class="flex items-center py-5">
       <button
-        class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14"
+        v-for="category in categories"
+        :key="category"
+        class="rounded-xl h-7 px-2 mr-4 text-14"
+        :class="
+          filter === category
+            ? 'border border-gradientblue bg-blue-50 text-blue-700'
+            : 'bg-gray-100 text-gray-700'
+        "
+        @click="filter = category"
       >
-        {{ $t("allReports") }}
-      </button>
-      <button
-        class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14"
-      >
-        {{ $t("departure") }}
-      </button>
-      <button
-        class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14"
-      >
-        {{ $t("arrival") }}
-      </button>
-      <button
-        class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14"
-      >
-        {{ $t("noon") }}
-      </button>
-      <button
-        class="bg-gray-100 rounded-xl h-7 px-2 mr-4 text-gray-700 text-14"
-      >
-        {{ $t("bunkerDelivery") }}
+        {{ $t(category) }}
       </button>
       <CustomButton
         @click="$router.push({ name: 'add-report' })"
@@ -86,9 +73,9 @@
       </CustomButton>
     </div>
 
-    <!-- TODO: restrict upto 5 most recent reports? -->
+    <!-- TODO: pagination + different start/dest depending on report type -->
     <div class="flex flex-col space-y-4">
-      <div v-for="(report, index) in reports" :key="index">
+      <div v-for="(report, index) in filteredData" :key="index">
         <ReportCard
           :report_no="report.report_no"
           :report_type="report.report_type"
@@ -98,62 +85,76 @@
           :date_of_report="report.date_of_report"
         ></ReportCard>
       </div>
-      <ReportCard
-        report_no="DEPARTURE"
-        report_type="DEPART"
-        departure="Singapore"
-        arrival="Ulsan"
-        loading_condition="Westbound"
-        date_of_report="2022-10-19, 4:08 PM"
-      ></ReportCard>
-      <!-- TEST ITEMS -->
-      <!-- <ReportCard :report_no="'ARRIVAL'" :report_type="'ARRIVAL'" :departure="'Singapore'" :arrival="'Ulsan'" :status="'Anchoring'" :cargold="'Ballast'" :distance_to_go="'2503'" :date_of_report="'2022-10-19'"></ReportCard>
-                <ReportCard :report_no="'NOON'" :report_type="'NOON'" :departure="'Singapore'" :arrival="'Ulsan'" :status="'Anchoring'" :cargold="'Ballast'" :distance_to_go="'2503'" :date_of_report="'2022-10-19'"></ReportCard> -->
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import CustomButton from "./Buttons/CustomButton.vue";
 import ReportCard from ".//ReportCard.vue";
+import { defineProps, computed, ref } from "vue";
 
-export default {
-  name: "VoyageCard",
-  props: {
-    num: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
-    start: {
-      type: String,
-      required: true,
-      default: "Singapore",
-    },
-    mid: {
-      type: String,
-      required: true,
-      default: "Singapore",
-    },
-    dest: {
-      type: String,
-      required: true,
-      default: "Ulsan, Korea",
-    },
-    expanded: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    reports: {
-      type: Object,
-      required: true,
-      default: {},
-    },
+const props = defineProps({
+  num: {
+    type: Number,
+    required: true,
+    default: 0,
   },
-  components: {
-    CustomButton,
-    ReportCard,
+  start: {
+    type: String,
+    required: true,
+    default: "Singapore",
   },
+  mid: {
+    type: String,
+    required: true,
+    default: "Singapore",
+  },
+  dest: {
+    type: String,
+    required: true,
+    default: "Ulsan, Korea",
+  },
+  isInitiallyOpen: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  reports: {
+    type: Array,
+    required: true,
+    default: [],
+  },
+});
+
+const isExpanded = ref(props.isInitiallyOpen);
+const filter = ref("allReports");
+
+const filteredData = computed(() => {
+  if (!filter.value || filter.value == "allReports") {
+    return props.reports;
+  }
+  return props.reports.filter(
+    (p) => reportTypeEnumToString[p.report_type] === filter.value
+  );
+});
+
+const reportTypeEnumToString = {
+  NOON: "noon",
+  DSBY: "departure",
+  DCSP: "departure",
+  ASBY: "arrival",
+  AFWE: "arrival",
+  BDN: "bunkerDelivery",
+  EVNT: "inHarbourOrPort",
 };
+
+const categories = [
+  "allReports",
+  "departure",
+  "arrival",
+  "noon",
+  "bunkerDelivery",
+  "inHarbourOrPort",
+];
 </script>
