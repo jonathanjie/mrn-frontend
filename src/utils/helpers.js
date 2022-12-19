@@ -23,14 +23,26 @@ export function format(date) {
   return `${year}.${month}.${day} ${hour}:${minute} (LT)`;
 }
 
-export function convertDMSToDD(degrees, minutes, direction) {
-  var dd = degrees + minutes / 60;
+export function readableUTCDate(date) {
+  // 1 --> Jan, 2 --> Feb etc.
+  function getMonthName(monthNumber) {
+    const d = new Date();
+    d.setMonth(monthNumber - 1);
 
-  if (direction == "S" || direction == "E") {
-    dd = dd * -1;
-  } // Don't do anything for N or W
+    return d.toLocaleString("en-US", { month: "short" });
+  }
 
-  return dd;
+  const day = date.getUTCDate();
+  const month = getMonthName(date.getUTCMonth() + 1);
+  const year = date.getUTCFullYear();
+  const hour = date.getUTCHours();
+  const minute = ("0" + date.getUTCMinutes()).slice(-2);
+
+  let meridiemTime =
+    (hour >= 12 && (hour - 12 || 12) + ":" + minute + " PM") ||
+    (Number(hour) || 12) + ":" + minute + " AM";
+
+  return `${day} ${month} ${year}, ${meridiemTime}`;
 }
 
 export const parsePosition = ({

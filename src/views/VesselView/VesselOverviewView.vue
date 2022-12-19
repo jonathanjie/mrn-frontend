@@ -30,14 +30,10 @@
 import { ref } from "vue";
 import VoyageCard from "../../components/VoyageCard.vue";
 import { useAuthStore } from "@/stores/auth.store";
+import { readableUTCDate } from "@/utils/helpers";
 
 const auth = useAuthStore();
 let isEmpty = ref(false);
-let isLoading = false;
-
-// defineEmits({
-//   isLoading: Boolean,
-// });
 
 let portCodeToPortName = ref({
   "SG PPT": "Singapore",
@@ -45,7 +41,6 @@ let portCodeToPortName = ref({
 });
 
 const getReports = async (voyage_uuid) => {
-  isLoading = true;
   const response = await fetch(
     `https://testapi.marinachain.io/marinanet/voyages/${voyage_uuid}/reports`,
     {
@@ -58,7 +53,6 @@ const getReports = async (voyage_uuid) => {
   );
 
   const json = response.json();
-  isLoading = false;
   return json;
 };
 const imoReg = 1234567;
@@ -77,7 +71,7 @@ const getVoyages = async (imo) => {
   );
 
   const json = response.json();
-  //   console.log(json);
+  // console.log(json);
 
   if (response.length == 0) {
     isEmpty = true;
@@ -102,7 +96,7 @@ for (let i = 0; i < voyages.length; i++) {
     ret["departure"] = "Singapore"; // TODO: dynamic
     ret["arrival"] = "Ulsan"; // TODO: dynamic
     ret["loading_condition"] = "Westbound"; // TODO: dynamic; unclear where to fetch loading condition
-    ret["date_of_report"] = j.report_date.slice(0, 10) + ", 4:08 PM"; // TODO: dynamic; separate parse function / modified vs created date?
+    ret["date_of_report"] = readableUTCDate(new Date(j.report_date));
 
     reports[uuid].push(ret);
   }
