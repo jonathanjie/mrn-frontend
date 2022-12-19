@@ -15,6 +15,8 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
   const reportNo = ref(temp.reportNo);
   const legNo = ref(temp.legNo);
   const voyageNo = ref(temp.voyageNo);
+  const reportingDate = ref("");
+  const reportingTimeZone = ref("default");
 
   // Bunkering Port
   const portCountry = ref("");
@@ -56,6 +58,8 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
     reportNo,
     legNo,
     voyageNo,
+    reportingDate,
+    reportingTimeZone,
     // Bunkering Port
     portCountry,
     portName,
