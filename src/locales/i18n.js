@@ -394,6 +394,7 @@ const i18n = createI18n({
       visibility_9: "9 (20-50 km)",
       visibility_10: "10 (50+ km)",
       voyageNo: "Voyage no.",
+      voyageNoCaps: "VOYAGE NO",
       waiting: "Waiting",
       wave: "Wave",
       wave_force_0: "0 (Calm, Glassy)",
