@@ -9,9 +9,7 @@
       src="@/assets/icons/checkboxes/unchecked_square.svg"
       class="mr-2 h-5 w-5"
     />
-    <span class="text-blue-700 text-16"
-      ><slot>{{ $t("pilotStationArrival") }}</slot></span
-    >
+    <span class="text-blue-700 text-16">{{ $t("pilotStationDeparture") }}</span>
   </div>
   <div
     v-else
@@ -27,7 +25,7 @@
         class="mr-2 h-5 w-5"
       />
       <span class="text-blue-700 text-16">
-        <slot>{{ $t("pilotStationArrival") }}</slot>
+        {{ $t("pilotStationDeparture") }}
       </span>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border">
@@ -37,7 +35,7 @@
         {{ $t("name") }}
       </div>
       <input
-        v-model="data.name"
+        v-model="pilot_dep_name"
         :placeholder="$t('inputName')"
         class="col-span-3 p-3 pl-4 border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
@@ -45,7 +43,7 @@
         {{ $t("dateAndTime") }}
       </div>
       <DatePicker
-        v-model="data.date_time"
+        v-model="pilot_dep_date"
         class="col-span-3"
         textInput
         :textInputOptions="textInputOptions"
@@ -65,21 +63,23 @@
         >{{ $t("latitude") }}</span
       >
       <input
-        v-model="data.lat_degree"
-        @keypress="preventNaN($event, data.lat_degree)"
+        v-model="pilot_dep_lat_degree"
+        @keypress="preventNaN($event, pilot_dep_lat_degree)"
         placeholder="000 (Degree)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="data.lat_minutes"
-        @keypress="preventNaN($event, data.lat_minutes)"
+        v-model="pilot_dep_lat_minute"
+        @keypress="preventNaN($event, pilot_dep_lat_minute)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
-        v-model="data.lat_dir"
+        v-model="pilot_dep_lat_dir"
         class="col-span-3 p-3 text-14 border-l focus:outline-0 focus:outline-0"
-        :class="data.lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="
+          pilot_dep_lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
+        "
       >
         <option selected disabled value="default">
           {{ $t("southAndNorth") }}
@@ -94,21 +94,23 @@
         >{{ $t("longitude") }}</span
       >
       <input
-        v-model="data.long_degree"
-        @keypress="preventNaN($event, data.long_degree)"
+        v-model="pilot_dep_long_degree"
+        @keypress="preventNaN($event, pilot_dep_long_degree)"
         placeholder="000 (Degree)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="data.long_minutes"
-        @keypress="preventNaN($event, data.long_minutes)"
+        v-model="pilot_dep_long_minute"
+        @keypress="preventNaN($event, pilot_dep_long_minute)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
-        v-model="data.long_dir"
+        v-model="pilot_dep_long_dir"
         class="col-span-3 p-3 text-14 border-l focus:outline-0"
-        :class="data.long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="
+          pilot_dep_long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
+        "
       >
         <option selected disabled value="default">
           {{ $t("eastAndWest") }}
@@ -122,18 +124,21 @@
 
 <script setup>
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-import { ref, reactive } from "vue";
+import { ref } from "vue";
+import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
+import { storeToRefs } from "pinia";
 
 const isActive = ref(false);
 
-const data = reactive({
-  name: "",
-  date_time: "",
-  lat_dir: "default",
-  lat_degree: "",
-  lat_minutes: "",
-  long_dir: "default",
-  long_degree: "",
-  long_minutes: "",
-});
+const store = useDepartureCOSPReportStore();
+const {
+  pilotDepName: pilot_dep_name,
+  pilotDepDate: pilot_dep_date,
+  pilotDepLatDir: pilot_dep_lat_dir,
+  pilotDepLatDegree: pilot_dep_lat_degree,
+  pilotDepLatMinute: pilot_dep_lat_minute,
+  pilotDepLongDir: pilot_dep_long_dir,
+  pilotDepLongDegree: pilot_dep_long_degree,
+  pilotDepLongMinute: pilot_dep_long_minute,
+} = storeToRefs(store);
 </script>

@@ -14,8 +14,8 @@
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-white">
         <input
-          v-model="data.distance"
-          @keypress="preventNaN($event, data.distance)"
+          v-model="budget_distance"
+          @keypress="preventNaN($event, budget_distance)"
           placeholder="00000"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -26,8 +26,8 @@
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 border-l bg-white">
         <input
-          v-model="data.speed"
-          @keypress="preventNaN($event, data.speed)"
+          v-model="budget_speed"
+          @keypress="preventNaN($event, budget_speed)"
           placeholder="00.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -42,8 +42,8 @@
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-white">
         <input
-          v-model="data.daily_FO_cons"
-          @keypress="preventNaN($event, data.daily_FO_cons)"
+          v-model="me_daily"
+          @keypress="preventNaN($event, me_daily)"
           placeholder="000.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -54,8 +54,8 @@
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 border-l bg-white">
         <input
-          v-model="data.rpm"
-          @keypress="preventNaN($event, data.rpm)"
+          v-model="me_rpm"
+          @keypress="preventNaN($event, me_rpm)"
           placeholder="000.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -67,13 +67,15 @@
 
 <script setup>
 import { preventNaN } from "@/utils/helpers.js";
-import { reactive } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
+import { storeToRefs } from "pinia";
 
-const data = reactive({
-  distance: "",
-  speed: "",
-  daily_FO_cons: "",
-  rpm: "",
-});
+const store = useDepartureCOSPReportStore();
+const {
+  budgetDistance: budget_distance,
+  budgetSpeed: budget_speed,
+  meDaily: me_daily,
+  meRPM: me_rpm,
+} = storeToRefs(store);
 </script>

@@ -3,7 +3,7 @@
     <div class="col-span-2 flex items-center">
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
       <span class="text-blue-700 text-16">
-        <slot>{{ $t("pilotStationDeparture") }}</slot>
+        {{ $t("pilotStationArrival") }}
       </span>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border">
@@ -13,7 +13,7 @@
         {{ $t("name") }}
       </div>
       <input
-        v-model="data.name"
+        v-model="pilot_arr_name"
         :placeholder="$t('inputName')"
         class="col-span-3 p-3 pl-4 border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
@@ -21,7 +21,7 @@
         {{ $t("requiredTimeOfArrival") }}
       </div>
       <DatePicker
-        v-model="data.date_time"
+        v-model="pilot_arr_date"
         class="col-span-3"
         textInput
         :textInputOptions="textInputOptions"
@@ -42,8 +42,8 @@
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-white">
         <input
-          v-model="data.draft_fwd"
-          @keypress="preventNaN($event, data.draft_fwd)"
+          v-model="pilot_arr_draft_fwd"
+          @keypress="preventNaN($event, pilot_arr_draft_fwd)"
           placeholder="00.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -51,8 +51,8 @@
       </div>
       <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-white">
         <input
-          v-model="data.draft_mid"
-          @keypress="preventNaN($event, data.draft_mid)"
+          v-model="pilot_arr_draft_mid"
+          @keypress="preventNaN($event, pilot_arr_draft_mid)"
           placeholder="00.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -60,8 +60,8 @@
       </div>
       <div class="flex col-span-3 p-2 pl-4 border-l bg-white">
         <input
-          v-model="data.draft_aft"
-          @keypress="preventNaN($event, data.draft_aft)"
+          v-model="pilot_arr_draft_aft"
+          @keypress="preventNaN($event, pilot_arr_draft_aft)"
           placeholder="00.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -74,21 +74,23 @@
         >{{ $t("latitude") }}</span
       >
       <input
-        v-model="data.lat_degree"
-        @keypress="preventNaN($event, data.lat_degree)"
+        v-model="pilot_arr_lat_degree"
+        @keypress="preventNaN($event, pilot_arr_lat_degree)"
         placeholder="000 (Degree)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="data.lat_minutes"
-        @keypress="preventNaN($event, data.lat_minutes)"
+        v-model="pilot_arr_lat_minute"
+        @keypress="preventNaN($event, pilot_arr_lat_minute)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
-        v-model="data.lat_dir"
+        v-model="pilot_arr_lat_dir"
         class="col-span-3 p-3 text-14 border-l focus:outline-0"
-        :class="data.lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="
+          pilot_arr_lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
+        "
       >
         <option selected disabled value="default">
           {{ $t("southAndNorth") }}
@@ -103,21 +105,23 @@
         >{{ $t("longitude") }}</span
       >
       <input
-        v-model="data.long_degree"
-        @keypress="preventNaN($event, data.long_degree)"
+        v-model="pilot_arr_long_degree"
+        @keypress="preventNaN($event, pilot_arr_long_degree)"
         placeholder="000 (Degree)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="data.long_minutes"
-        @keypress="preventNaN($event, data.long_minutes)"
+        v-model="pilot_arr_long_minute"
+        @keypress="preventNaN($event, pilot_arr_long_minute)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
-        v-model="data.long_dir"
+        v-model="pilot_arr_long_dir"
         class="col-span-3 p-3 text-14 border-l focus:outline-0"
-        :class="data.long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="
+          pilot_arr_long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
+        "
       >
         <option selected disabled value="default">
           {{ $t("eastAndWest") }}
@@ -131,20 +135,22 @@
 
 <script setup>
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-import { reactive } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
+import { storeToRefs } from "pinia";
 
-const data = reactive({
-  name: "",
-  date_time: "",
-  lat_dir: "default",
-  lat_degree: "",
-  lat_minutes: "",
-  long_dir: "default",
-  long_degree: "",
-  long_minutes: "",
-  draft_fwd: "",
-  draft_mid: "",
-  draft_aft: "",
-});
+const store = useDepartureCOSPReportStore();
+const {
+  pilotArrName: pilot_arr_name,
+  pilotArrDate: pilot_arr_date,
+  pilotArrDraftFwd: pilot_arr_draft_fwd,
+  pilotArrDraftMid: pilot_arr_draft_mid,
+  pilotArrDraftAft: pilot_arr_draft_aft,
+  pilotArrLatDir: pilot_arr_lat_dir,
+  pilotArrLatDegree: pilot_arr_lat_degree,
+  pilotArrLatMinute: pilot_arr_lat_minute,
+  pilotArrLongDir: pilot_arr_long_dir,
+  pilotArrLongDegree: pilot_arr_long_degree,
+  pilotArrLongMinute: pilot_arr_long_minute,
+} = storeToRefs(store);
 </script>
