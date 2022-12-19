@@ -143,7 +143,7 @@
     </div>
 
     <div
-      class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-white text-14 mb-5"
+      class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-white text-14"
     >
       <div class="col-span-2 row-span-2 bg-gray-50 text-blue-700 p-3 border-r">
         {{ $t("status") }}
@@ -193,7 +193,7 @@
     </div>
 
     <div
-      class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50 text-14 mb-5"
+      class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50 text-14"
     >
       <div class="col-span-2 row-span-2 text-blue-700 p-3 border-r">
         {{ $t("operationAtCurrentLocation") }}

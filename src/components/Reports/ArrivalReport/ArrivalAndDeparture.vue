@@ -23,7 +23,7 @@
           v-model="tempValues.departurePortName"
         />
       </div>
-      <div class="grid grid-cols-5 border bg-gray-50 text-14 mb-5">
+      <div class="grid grid-cols-5 border bg-gray-50 text-14">
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("dateAndTime") }}
         </div>
@@ -65,7 +65,7 @@
           v-model="tempValues.arrivalPortName"
         />
       </div>
-      <div class="grid grid-cols-5 border bg-gray-50 text-14 mb-5">
+      <div class="grid grid-cols-5 border bg-gray-50 text-14">
         <div class="col-span-2 row-span-2 text-blue-700 p-3 border-r">
           {{ $t("plannedOperation") }}
         </div>
