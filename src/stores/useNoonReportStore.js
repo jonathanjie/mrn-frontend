@@ -38,6 +38,8 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const reportNo = ref(temp.reportNo);
   const legNo = ref(temp.legNo);
   const voyageNo = ref(temp.voyageNo);
+  const reportingDate = ref("");
+  const reportingTimeZone = ref("default");
 
   // Departure and Destination
   // TODO: replace dummy values
@@ -181,6 +183,18 @@ export const useNoonReportStore = defineStore("noonReport", () => {
 
   // Consumption and Condition
   // TODO: create for each fuel oil and lubricate oil type
+  const lsfoBreakdown = reactive({
+    me: "",
+    ge: "",
+    blr: "",
+    igg: "",
+  });
+  const mgoBreakdown = reactive({
+    me: "",
+    ge: "",
+    blr: "",
+    igg: "",
+  });
   const lsfoTotalConsumption = computed(
     () =>
       +(
@@ -201,18 +215,6 @@ export const useNoonReportStore = defineStore("noonReport", () => {
       ).toFixed(2)
   );
   const mgoRob = computed(() => temp.mgoPrevROB - mgoTotalConsumption.value);
-  const lsfoBreakdown = reactive({
-    me: "",
-    ge: "",
-    blr: "",
-    igg: "",
-  });
-  const mgoBreakdown = reactive({
-    me: "",
-    ge: "",
-    blr: "",
-    igg: "",
-  });
   const fuelOilDataCorrection = reactive({
     type: "default",
     correction: "",
@@ -312,6 +314,8 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     reportNo,
     legNo,
     voyageNo,
+    reportingDate,
+    reportingTimeZone,
     // Departure and Destination
     routeDeparturePortCountry,
     routeDeparturePortName,

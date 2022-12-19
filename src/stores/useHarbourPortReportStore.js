@@ -32,6 +32,8 @@ export const useHarbourPortReportStore = defineStore(
     const reportNo = ref(temp.reportNo);
     const legNo = ref(temp.legNo);
     const voyageNo = ref(temp.voyageNo);
+    const reportingDate = ref("");
+    const reportingTimeZone = ref("default");
     const departurePortCountry = ref(temp.departurePortCountry);
     const departurePortName = ref(temp.departurePortName);
     const destinationPortCountry = ref(temp.destinationPortCountry);
@@ -52,6 +54,22 @@ export const useHarbourPortReportStore = defineStore(
     const operations = ref([]);
 
     // Consumption And Condition Full
+    const lsfoBreakdown = reactive({
+      me: "",
+      ge: "",
+      blr: "",
+      igg: "",
+      receipt: "",
+      debunkering: "",
+    });
+    const mgoBreakdown = reactive({
+      me: "",
+      ge: "",
+      blr: "",
+      igg: "",
+      receipt: "",
+      debunkering: "",
+    });
     const lsfoTotalConsumption = computed(
       () =>
         +(
@@ -84,22 +102,6 @@ export const useHarbourPortReportStore = defineStore(
         Number(mgoBreakdown.receipt) -
         Number(mgoBreakdown.debunkering)
     );
-    const lsfoBreakdown = reactive({
-      me: "",
-      ge: "",
-      blr: "",
-      igg: "",
-      receipt: "",
-      debunkering: "",
-    });
-    const mgoBreakdown = reactive({
-      me: "",
-      ge: "",
-      blr: "",
-      igg: "",
-      receipt: "",
-      debunkering: "",
-    });
     const fuelOilDataCorrection = reactive({
       type: "default",
       correction: "",
@@ -190,6 +192,8 @@ export const useHarbourPortReportStore = defineStore(
       reportNo,
       legNo,
       voyageNo,
+      reportingDate,
+      reportingTimeZone,
       departurePortCountry,
       departurePortName,
       destinationPortCountry,
