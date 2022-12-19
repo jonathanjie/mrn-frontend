@@ -246,6 +246,9 @@
 import MyVesselsDashboardIcon from "@/components/MyVesselsDashboardIcon.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 import VesselCard from "@/components/VesselCard.vue";
+import { useAuthStore } from "@/stores/auth.store";
+
+const auth = useAuthStore();
 
 // To be pulled from backend
 const totalVessels = 33;
@@ -341,12 +344,11 @@ const vessel = {
 // ];
 
 const getShips = async () => {
-  const DUMMY_TOKEN = localStorage.getItem("jwt");
   const response = await fetch(
     "https://testapi.marinachain.io/marinanet/ships/",
     {
       headers: {
-        Authorization: "Bearer " + DUMMY_TOKEN,
+        Authorization: "Bearer " + auth.jwt,
         "Content-Type": "application/json",
       },
       method: "GET",

@@ -405,6 +405,10 @@ import { ref } from "vue";
 import GradientButton from "./Buttons/GradientButton.vue";
 import CustomButton from "./Buttons/CustomButton.vue";
 import { defineEmits } from "vue";
+import { useAuthStore } from "@/stores/auth.store";
+
+const auth = useAuthStore();
+
 // List to export options from checkboxes
 let lubricateOthersFlag = ref(true);
 let machineryOthersFlag = ref(true);
@@ -460,12 +464,11 @@ const addSettings = () => {
     machinery_options: machinery_options.value,
     propeller_pitch: propeller_pitch.value,
   };
-  const DUMMY_TOKEN = localStorage.getItem("jwt");
   const response = fetch(
     "https://testapi.marinachain.io/marinanet/ships/" + props.imo + "/specs/",
     {
       headers: {
-        Authorization: "Bearer " + DUMMY_TOKEN,
+        Authorization: "Bearer " + auth.jwt,
         "Content-Type": "application/json",
       },
       method: "POST",

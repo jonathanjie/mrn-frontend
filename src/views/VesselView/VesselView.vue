@@ -73,6 +73,9 @@
 import { ref } from "vue";
 import GradientButton from "../../components/Buttons/GradientButton.vue";
 import AddVoyageModal from "@/components/AddVoyageModal.vue";
+import { useAuthStore } from "@/stores/auth.store";
+
+const auth = useAuthStore();
 
 // Variable to force replacement of router-view
 const isEmpty = true;
@@ -95,12 +98,11 @@ const voyageData = {
 // POST request to add in a new voyage
 const addVoyage = async (voyageData) => {
   voyageNum += 1;
-  const DUMMY_TOKEN = localStorage.getItem("jwt");
   const response = await fetch(
     "https://testapi.marinachain.io/marinanet/voyages/",
     {
       headers: {
-        Authorization: "Bearer " + DUMMY_TOKEN,
+        Authorization: "Bearer " + auth.jwt,
         "Content-Type": "application/json",
       },
       method: "POST",
