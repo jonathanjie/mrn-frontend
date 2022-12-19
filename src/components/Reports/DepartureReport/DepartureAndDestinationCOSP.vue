@@ -13,17 +13,17 @@
           {{ $t("portName") }}
         </div>
         <input
-          v-model="departure.port_country"
+          v-model="departure_port_country"
           :placeholder="$t('inputLocode2')"
           class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
         />
         <input
-          v-model="departure.port_name"
+          v-model="departure_port_name"
           :placeholder="$t('inputLocode3')"
           class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
         />
       </div>
-      <div class="grid grid-cols-5 border bg-gray-50 text-14 mb-5">
+      <div class="grid grid-cols-5 border bg-gray-50 text-14">
         <div
           class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
         >
@@ -33,11 +33,11 @@
           <select
             class="grow self-center p-3 text-14 focus:outline-0"
             :class="
-              departure.time_zone === 'default'
+              departure_time_zone === 'default'
                 ? 'text-gray-400'
                 : 'text-gray-700'
             "
-            v-model="departure.time_zone"
+            v-model="departure_time_zone"
           >
             <option selected disabled value="default">
               {{ $t("selectTimeZone") }}
@@ -86,7 +86,7 @@
           {{ $t("dateAndTime") }}
         </div>
         <DatePicker
-          v-model="departure.date_time"
+          v-model="departure_date_time"
           class="col-span-3"
           textInput
           :textInputOptions="textInputOptions"
@@ -112,17 +112,17 @@
           {{ $t("portName") }}
         </div>
         <input
-          v-model="destination.port_country"
+          v-model="destination_port_country"
           :placeholder="$t('inputLocode2')"
           class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
         />
         <input
-          v-model="destination.port_name"
+          v-model="destination_port_name"
           :placeholder="$t('inputLocode3')"
           class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
         />
       </div>
-      <div class="grid grid-cols-5 border bg-gray-50 text-14 mb-5">
+      <div class="grid grid-cols-5 border bg-gray-50 text-14">
         <div
           class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
         >
@@ -132,11 +132,11 @@
           <select
             class="grow self-center p-3 text-14 focus:outline-0"
             :class="
-              destination.time_zone === 'default'
+              destination_time_zone === 'default'
                 ? 'text-gray-400'
                 : 'text-gray-700'
             "
-            v-model="destination.time_zone"
+            v-model="destination_time_zone"
           >
             <option selected disabled value="default">
               {{ $t("selectTimeZone") }}
@@ -185,7 +185,7 @@
           {{ $t("estimatedTimeOfArrival") }}
         </div>
         <DatePicker
-          v-model="destination.estimated_arrival"
+          v-model="destination_estimated_arrival"
           class="col-span-3"
           textInput
           :textInputOptions="textInputOptions"
@@ -204,19 +204,18 @@
 
 <script setup>
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-import { reactive } from "vue";
+import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
+import { storeToRefs } from "pinia";
 
-const departure = reactive({
-  port_country: "",
-  port_name: "",
-  time_zone: "",
-  date_time: "",
-});
-
-const destination = reactive({
-  port_country: "",
-  port_name: "",
-  time_zone: "",
-  estimated_arrival: "",
-});
+const store = useDepartureCOSPReportStore();
+const {
+  departurePortCountry: departure_port_country,
+  departurePortName: departure_port_name,
+  departureTimeZone: departure_time_zone,
+  departureDateTime: departure_date_time,
+  destinationPortCountry: destination_port_country,
+  destinationPortName: destination_port_name,
+  destinationTimeZone: destination_time_zone,
+  destinationEstimatedArrival: destination_estimated_arrival,
+} = storeToRefs(store);
 </script>
