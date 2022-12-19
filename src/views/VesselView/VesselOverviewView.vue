@@ -21,7 +21,7 @@
       :mid="'At Sea'"
       :dest="portCodeToPortName[voyage.arrival_port]"
       :reports="reports[voyage.uuid]"
-      :expanded="index == 0"
+      :isInitiallyOpen="index == 0"
     ></VoyageCard>
   </div>
 </template>
@@ -34,11 +34,7 @@ import { readableUTCDate } from "@/utils/helpers";
 
 const auth = useAuthStore();
 let isEmpty = ref(false);
-
-let portCodeToPortName = ref({
-  "SG PPT": "Singapore",
-  "KR USN": "Ulsan, South Korea",
-});
+const imoReg = 1234567;
 
 const getReports = async (voyage_uuid) => {
   const response = await fetch(
@@ -55,15 +51,13 @@ const getReports = async (voyage_uuid) => {
   const json = response.json();
   return json;
 };
-const imoReg = 1234567;
 
 const getVoyages = async (imo) => {
-  const DUMMY_TOKEN = localStorage.getItem("jwt");
   const response = await fetch(
     "https://testapi.marinachain.io/marinanet/ships/" + imoReg + "/voyages/",
     {
       headers: {
-        Authorization: "Bearer " + DUMMY_TOKEN,
+        Authorization: "Bearer " + auth.jwt,
         "Content-Type": "application/json",
       },
       method: "GET",
@@ -71,7 +65,7 @@ const getVoyages = async (imo) => {
   );
 
   const json = response.json();
-  // console.log(json);
+  console.log(json);
 
   if (response.length == 0) {
     isEmpty = true;
@@ -80,25 +74,55 @@ const getVoyages = async (imo) => {
   return json;
 };
 
+const getLoadCondition = async (uuid) => {
+  const response = await fetch(
+    "https://testapi.marinachain.io/marinanet/reports/" + uuid,
+    {
+      headers: {
+        Authorization: "Bearer " + auth.jwt,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+
+  const json = response.json();
+  // console.log("loadcondition", json);
+
+  return json.load_condition;
+};
+
 const voyages = await getVoyages(imoReg);
 const reports = {}; // uuid : arr of reports
 
 for (let i = 0; i < voyages.length; i++) {
   const uuid = voyages[i].uuid;
   const json = await getReports(uuid);
+  let load_condition = "";
   reports[uuid] = [];
 
   for (let j of json.reverse()) {
     const ret = {};
 
+    if (j.report_type === "DEP_SBY") {
+      // update load condition for every departure sby (new leg)
+      load_condition = await getLoadCondition(uuid);
+    }
+
     ret["report_type"] = j.report_type;
     ret["report_no"] = j.report_type + " " + j.report_num;
-    ret["departure"] = "Singapore"; // TODO: dynamic
-    ret["arrival"] = "Ulsan"; // TODO: dynamic
-    ret["loading_condition"] = "Westbound"; // TODO: dynamic; unclear where to fetch loading condition
+    ret["departure"] = j.route.departure_port || "N/A";
+    ret["arrival"] = j.route.arrival_port || "N/A";
+    ret["loading_condition"] = load_condition || "N/A";
     ret["date_of_report"] = readableUTCDate(new Date(j.report_date));
 
     reports[uuid].push(ret);
   }
 }
+
+// TODO: replace with helper conversion method
+const portCodeToPortName = ref({
+  "SG PPT": "Singapore",
+  "KR USN": "Ulsan, South Korea",
+});
 </script>
