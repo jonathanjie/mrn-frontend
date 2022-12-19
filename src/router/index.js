@@ -13,12 +13,6 @@ import HarbourPortReportView from "../views/ReportViews/HarbourPortReportView.vu
 import NotFound from "../views/NotFound.vue";
 
 const routes = [
-  // {
-  //   path: '/login',
-  //   name: 'login',
-  //   component: LoginView
-  // },
-
   {
     // Need to edit
     path: "/",
@@ -62,7 +56,7 @@ const routes = [
     beforeEnter: authGuard,
   },
   {
-    path: "/vessels/:vesselname/:imo/:specs",
+    path: "/vessels/:vesselname/:imo",
     component: VesselView,
     props: true,
     children: [

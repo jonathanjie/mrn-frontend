@@ -20,7 +20,7 @@
       :start="portCodeToPortName[voyage.departure_port]"
       :mid="'At Sea'"
       :dest="portCodeToPortName[voyage.arrival_port]"
-      :reports="reports[voyage.uuid]"
+      :reports="output[voyage.uuid]"
       :expanded="index == 0"
     ></VoyageCard>
   </div>
@@ -30,24 +30,20 @@
 import { ref } from "vue";
 import VoyageCard from "../../components/VoyageCard.vue";
 import { useAuthStore } from "@/stores/auth.store";
+import { useAsyncStore } from "@/stores/asyncStore";
 
+const asyncStore = useAsyncStore();
 const auth = useAuthStore();
 let isEmpty = ref(false);
-let isLoading = false;
-
-// defineEmits({
-//   isLoading: Boolean,
-// });
 
 let portCodeToPortName = ref({
   "SG PPT": "Singapore",
   "KR USN": "Ulsan, South Korea",
 });
 
-const getReports = async (voyage_uuid) => {
-  isLoading = true;
+const getReports = async (imo) => {
   const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/voyages/${voyage_uuid}/reports`,
+    `https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`,
     {
       headers: {
         Authorization: "Bearer " + auth.jwt,
@@ -58,15 +54,13 @@ const getReports = async (voyage_uuid) => {
   );
 
   const json = response.json();
-  isLoading = false;
   return json;
 };
-const imoReg = 1234567;
 
 const getVoyages = async (imo) => {
-  const DUMMY_TOKEN = localStorage.getItem("jwt");
+  const DUMMY_TOKEN = auth.jwt;
   const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/ships/" + imoReg + "/voyages/",
+    "https://testapi.marinachain.io/marinanet/ships/" + imo + "/voyages/",
     {
       headers: {
         Authorization: "Bearer " + DUMMY_TOKEN,
@@ -85,26 +79,15 @@ const getVoyages = async (imo) => {
   }
   return json;
 };
-
+const imoReg = 1234567;
 const voyages = await getVoyages(imoReg);
-const reports = {}; // uuid : arr of reports
-
-for (let i = 0; i < voyages.length; i++) {
-  const uuid = voyages[i].uuid;
-  const json = await getReports(uuid);
-  reports[uuid] = [];
-
-  for (let j of json.reverse()) {
-    const ret = {};
-
-    ret["report_type"] = j.report_type;
-    ret["report_no"] = j.report_type + " " + j.report_num;
-    ret["departure"] = "Singapore"; // TODO: dynamic
-    ret["arrival"] = "Ulsan"; // TODO: dynamic
-    ret["loading_condition"] = "Westbound"; // TODO: dynamic; unclear where to fetch loading condition
-    ret["date_of_report"] = j.report_date.slice(0, 10) + ", 4:08 PM"; // TODO: dynamic; separate parse function / modified vs created date?
-
-    reports[uuid].push(ret);
+const reports = await getReports(imoReg); // uuid : arr of reports
+let output = {};
+for (let i of reports) {
+  for (let j of voyages) {
+    if (i.uuid == j.uuid) {
+      output[i.uuid] = i.reports.reverse();
+    }
   }
 }
 </script>

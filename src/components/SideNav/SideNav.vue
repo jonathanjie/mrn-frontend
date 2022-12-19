@@ -47,7 +47,6 @@
             params: {
               vesselname: ship.name,
               imo: ship.imo_reg,
-              specs: addSpec,
             },
           }"
           class="flex py-4 px-7 space-x-3 hover:bg-blue-700/[0.24]"
@@ -81,14 +80,15 @@
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth.store";
+import { useAsyncStore } from "@/stores/asyncStore";
 import { useAuth0 } from "@auth0/auth0-vue";
 
-console.log("Sidenav loads");
-const auth = useAuthStore();
 const router = useRouter();
 const { user, getAccessTokenSilently } = useAuth0();
 const jwt = await getAccessTokenSilently();
-let addSpec = false;
+
+const asyncStore = useAsyncStore();
+const auth = useAuthStore();
 
 const getShip = async () => {
   const response = await fetch(
@@ -103,12 +103,6 @@ const getShip = async () => {
     }
   );
   const ship = await response.json();
-  console.log(ship[0]);
-  if (ship[0].shipspecs === null) {
-    addSpec = true;
-  } else {
-    addSpec = false;
-  }
   return ship[0];
 };
 
@@ -127,26 +121,76 @@ const getUserRole = async () => {
   const userRole = reply.role;
   return userRole;
 };
-const role = await getUserRole();
-const manager = role === "manager";
-auth.updateUserRoleToken(user, role, jwt);
-console.log("Auth store is updated here");
-const ship = await getShip();
-if (role === "manager") {
-  router.push({ path: "/my-vessels" });
-} else {
-  router.push({
-    path: `/vessels/${ship.name}/${ship.imo_reg}/${addSpec}/overview`,
-  });
-}
 
+const getVoyages = async (imo) => {
+  const imoReg = 1234567; // To remove
+  const DUMMY_TOKEN = auth.jwt;
+  const response = await fetch(
+    "https://testapi.marinachain.io/marinanet/ships/" + imoReg + "/voyages/",
+    {
+      headers: {
+        Authorization: "Bearer " + DUMMY_TOKEN,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+
+  const json = response.json();
+  //   console.log(json);
+
+  if (response.length == 0) {
+    isEmpty = true;
+    console.log("NO DATA");
+  }
+  return json;
+};
+
+const getReports = async (imo_reg) => {
+  const imoReg = 1234567; // To remove
+  const response = await fetch(
+    `https://testapi.marinachain.io/marinanet/ships/${imoReg}/reports/`,
+    {
+      headers: {
+        Authorization: "Bearer " + auth.jwt,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+
+  const json = response.json();
+  return json;
+};
+
+// Home Button
 const home = () => {
-  if (role === "manager") {
+  if (manager) {
     router.push({ path: "/my-vessels" });
   } else {
     router.push({
-      path: `/vessels/${ship.name}/${ship.imo_reg}/${addSpec}/overview`,
+      path: `/vessels/${ship.name}/${ship.imo_reg}/overview`,
     });
   }
 };
+
+const role = await getUserRole();
+const manager = role === "manager";
+auth.updateUserRoleToken(user, role, jwt);
+const ship = await getShip();
+
+// console.log(asyncStore.voyages);
+// asyncStore.voyages = await getVoyages(ship.imo_reg);
+// console.log("Updated Voyages");
+// console.log(asyncStore.voyages);
+// asyncStore.reports = await getReports(ship.imo_reg); // uuid : arr of reports
+
+if (manager) {
+  router.push({ path: "/my-vessels" });
+} else {
+  localStorage.setItem("addSpec", ship.shipspecs === null);
+  router.push({
+    path: `/vessels/${ship.name}/${ship.imo_reg}/overview`,
+  });
+}
 </script>

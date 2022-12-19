@@ -15,7 +15,7 @@
             to="overview"
             class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
             :class="
-              $route.name == 'overview'
+              $route.name == 'vessel-overview'
                 ? 'border-b-2 border-blue-700 text-blue-700'
                 : ''
             "
@@ -23,7 +23,7 @@
           >
           <router-link
             to="vessel-spec"
-            class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
+            class="hidden pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
             :class="
               $route.name == 'vessel-spec'
                 ? 'border-b-2 border-blue-700 text-blue-700'
@@ -46,7 +46,7 @@
       </GradientButton>
       <AddVoyageModal
         ref="modal"
-        v-show="showModal"
+        v-if="showModal"
         @close-modal="showModal = false"
         :vesselname="vesselname"
         :imo="imo"
@@ -71,10 +71,10 @@ let voyageNum = 1;
 const props = defineProps({
   vesselname: String,
   imo: String,
-  specs: String,
 });
 
-let showModal = ref(props.specs === "true");
+let showModal = localStorage.getItem("addSpec") == true;
+console.log(showModal);
 
 // Backend Data
 const voyageData = {
