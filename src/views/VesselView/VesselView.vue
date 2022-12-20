@@ -102,6 +102,39 @@ const addVoyage = async (voyageData) => {
   console.log(response);
   update.value += 1;
 };
+
+const getVoyages = async (imo) => {
+  const DUMMY_TOKEN = auth.jwt;
+  const response = await fetch(
+    `https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`,
+    {
+      headers: {
+        Authorization: "Bearer " + DUMMY_TOKEN,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+
+  const json = response.json();
+  return json;
+};
+
+const getReports = async (imo) => {
+  const response = await fetch(
+    `https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`,
+    {
+      headers: {
+        Authorization: "Bearer " + auth.jwt,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+
+  const json = response.json();
+  return json;
+};
 const reports = async () => {
   const voyages = await getVoyages(props.imo);
   const reports = await getReports(props.imo);
