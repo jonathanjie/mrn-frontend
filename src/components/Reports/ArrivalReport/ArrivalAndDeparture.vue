@@ -15,12 +15,12 @@
         <input
           class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b"
           disabled
-          v-model="tempValues.departurePortCountry"
+          v-model="departure_port_country"
         />
         <input
           class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l"
           disabled
-          v-model="tempValues.departurePortName"
+          v-model="departure_port_name"
         />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14">
@@ -28,7 +28,7 @@
           {{ $t("dateAndTime") }}
         </div>
         <DatePicker
-          v-model="tempValues.departureDateTime"
+          v-model="departure_date_time"
           class="col-span-3"
           textInput
           :textInputOptions="textInputOptions"
@@ -57,12 +57,12 @@
         <input
           class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b"
           disabled
-          v-model="tempValues.arrivalPortCountry"
+          v-model="arrival_port_country"
         />
         <input
           class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l"
           disabled
-          v-model="tempValues.arrivalPortName"
+          v-model="arrival_port_name"
         />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14">
@@ -77,7 +77,7 @@
               type="checkbox"
               id="cargoOpBerth"
               value="0"
-              v-model="data.plannedOperations"
+              v-model="planned_operation"
             />
             <label for="cargoOpBerth">{{ $t("cargoOperationBerth") }}</label>
           </div>
@@ -86,7 +86,7 @@
               type="checkbox"
               id="cargoOpSTSSTB"
               value="1"
-              v-model="data.plannedOperations"
+              v-model="planned_operation"
             />
             <label for="cargoOpSTSSTB">{{ $t("cargoOperationSTSSTB") }}</label>
           </div>
@@ -95,7 +95,7 @@
               type="checkbox"
               id="bunkeringDebunkering"
               value="2"
-              v-model="data.plannedOperations"
+              v-model="planned_operation"
             />
             <label for="bunkeringDebunkering">{{
               $t("bunkeringDebunkering")
@@ -106,7 +106,7 @@
               type="checkbox"
               id="dryDocking"
               value="3"
-              v-model="data.plannedOperations"
+              v-model="planned_operation"
             />
             <label for="dryDocking">{{ $t("dryDocking") }}</label>
           </div>
@@ -115,7 +115,7 @@
               type="checkbox"
               id="crewChange"
               value="4"
-              v-model="data.plannedOperations"
+              v-model="planned_operation"
             />
             <label for="crewChange">{{ $t("crewChange") }}</label>
           </div>
@@ -124,7 +124,7 @@
               type="checkbox"
               id="receivingProvisionSpareParts"
               value="5"
-              v-model="data.plannedOperations"
+              v-model="planned_operation"
             />
             <label for="receivingProvisionSpareParts">{{
               $t("receivingProvisionSpareParts")
@@ -135,7 +135,7 @@
               type="checkbox"
               id="survey"
               value="6"
-              v-model="data.plannedOperations"
+              v-model="planned_operation"
             />
             <label for="survey">{{ $t("survey") }}</label>
           </div>
@@ -144,7 +144,7 @@
               type="checkbox"
               id="others"
               value="7"
-              v-model="data.plannedOperations"
+              v-model="planned_operation"
             />
             <label for="others">{{ $t("others") }}</label>
           </div>
@@ -155,7 +155,7 @@
         <input
           class="col-span-3 p-3 text-gray-700 border-l"
           :placeholder="$t('inputOtherPlannedOperation')"
-          v-model="data.otherPlannedOperation"
+          v-model="other_planned_operation"
         />
       </div>
     </div>
@@ -163,20 +163,18 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
 import { textInputOptions, format } from "@/utils/helpers.js";
+import { storeToRefs } from "pinia";
+import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
 
-// TODO: retrieve from backend or generate as needed
-const tempValues = {
-  departurePortCountry: "Country A",
-  departurePortName: "Port A",
-  arrivalPortCountry: "Country A",
-  arrivalPortName: "Port A",
-  departureDateTime: "2022-06-01T04:23:00Z",
-};
-
-const data = reactive({
-  plannedOperations: [],
-  otherPlannedOperation: "",
-});
+const store = useArrivalEOSPReportStore();
+const {
+  departurePortCountry: departure_port_country,
+  departurePortName: departure_port_name,
+  departureDateTime: departure_date_time,
+  arrivalPortCountry: arrival_port_country,
+  arrivalPortName: arrival_port_name,
+  plannedOperation: planned_operation,
+  otherPlannedOperation: other_planned_operation,
+} = storeToRefs(store);
 </script>

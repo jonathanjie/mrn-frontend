@@ -93,11 +93,11 @@
 </template>
 
 <script setup>
-// import { reactive } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
 import { storeToRefs } from "pinia";
+
 const store = useArrivalEOSPReportStore();
 
 // TODO: need to be computed values

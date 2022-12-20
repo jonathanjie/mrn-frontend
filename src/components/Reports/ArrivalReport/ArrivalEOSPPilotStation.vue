@@ -37,7 +37,7 @@
         {{ $t("name") }}
       </div>
       <input
-        v-model="data.name"
+        v-model="pilot_arr_name"
         :placeholder="$t('inputName')"
         class="col-span-3 p-3 pl-4 border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
@@ -45,7 +45,7 @@
         {{ $t("dateAndTime") }}
       </div>
       <DatePicker
-        v-model="data.date_time"
+        v-model="pilot_arr_date"
         class="col-span-3"
         textInput
         :textInputOptions="textInputOptions"
@@ -65,21 +65,23 @@
         >{{ $t("latitude") }}</span
       >
       <input
-        v-model="data.lat_degree"
-        @keypress="preventNaN($event, data.lat_degree)"
+        v-model="pilot_arr_lat_degree"
+        @keypress="preventNaN($event, pilot_arr_lat_degree)"
         placeholder="000 (Degree)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="data.lat_minutes"
-        @keypress="preventNaN($event, data.lat_minutes)"
+        v-model="pilot_arr_lat_minute"
+        @keypress="preventNaN($event, pilot_arr_lat_minute)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
-        v-model="data.lat_dir"
+        v-model="pilot_arr_lat_dir"
         class="col-span-3 p-3 text-14 border-l focus:outline-0 focus:outline-0"
-        :class="data.lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="
+          pilot_arr_lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
+        "
       >
         <option selected disabled value="default">
           {{ $t("southAndNorth") }}
@@ -94,21 +96,23 @@
         >{{ $t("longitude") }}</span
       >
       <input
-        v-model="data.long_degree"
-        @keypress="preventNaN($event, data.long_degree)"
+        v-model="pilot_arr_long_degree"
+        @keypress="preventNaN($event, pilot_arr_long_degree)"
         placeholder="000 (Degree)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="data.long_minutes"
-        @keypress="preventNaN($event, data.long_minutes)"
+        v-model="pilot_arr_long_minute"
+        @keypress="preventNaN($event, pilot_arr_long_minute)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
-        v-model="data.long_dir"
+        v-model="pilot_arr_long_dir"
         class="col-span-3 p-3 text-14 border-l focus:outline-0"
-        :class="data.long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="
+          pilot_arr_long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
+        "
       >
         <option selected disabled value="default">
           {{ $t("eastAndWest") }}
@@ -122,18 +126,22 @@
 
 <script setup>
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-import { ref, reactive } from "vue";
+import { ref } from "vue";
+import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
+import { storeToRefs } from "pinia";
 
 const isActive = ref(false);
+const store = useArrivalEOSPReportStore();
 
-const data = reactive({
-  name: "",
-  date_time: "",
-  lat_dir: "default",
-  lat_degree: "",
-  lat_minutes: "",
-  long_dir: "default",
-  long_degree: "",
-  long_minutes: "",
-});
+// TODO: need to be computed values
+const {
+  pilotArrName: pilot_arr_name,
+  pilotArrDate: pilot_arr_date,
+  pilotArrLatDir: pilot_arr_lat_dir,
+  pilotArrLatDegree: pilot_arr_lat_degree,
+  pilotArrLatMinute: pilot_arr_lat_minute,
+  pilotArrLongDir: pilot_arr_long_dir,
+  pilotArrLongDegree: pilot_arr_long_degree,
+  pilotArrLongMinute: pilot_arr_long_minute,
+} = storeToRefs(store);
 </script>
