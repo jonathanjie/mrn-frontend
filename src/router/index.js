@@ -74,7 +74,7 @@ const routes = [
     beforeEnter: authGuard,
   },
   {
-    path: "/vessels/:vesselname/:imo/:specs/add-report",
+    path: "/vessels/:vesselname/:imo/add-report",
     name: "add-report",
     component: AddReportToVoyageView,
     children: [

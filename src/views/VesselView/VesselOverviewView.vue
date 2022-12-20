@@ -29,11 +29,7 @@
 <script setup>
 import { ref } from "vue";
 import VoyageCard from "../../components/VoyageCard.vue";
-import { useAuthStore } from "@/stores/auth.store";
-import { useAsyncStore } from "@/stores/asyncStore";
 
-const asyncStore = useAsyncStore();
-const auth = useAuthStore();
 let isEmpty = ref(false);
 
 let portCodeToPortName = ref({
@@ -41,53 +37,6 @@ let portCodeToPortName = ref({
   "KR USN": "Ulsan, South Korea",
 });
 
-const getReports = async (imo) => {
-  const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`,
-    {
-      headers: {
-        Authorization: "Bearer " + auth.jwt,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-
-  const json = response.json();
-  return json;
-};
-
-const getVoyages = async (imo) => {
-  const DUMMY_TOKEN = auth.jwt;
-  const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/ships/" + imo + "/voyages/",
-    {
-      headers: {
-        Authorization: "Bearer " + DUMMY_TOKEN,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-
-  const json = response.json();
-  //   console.log(json);
-
-  if (response.length == 0) {
-    isEmpty = true;
-    console.log("NO DATA");
-  }
-  return json;
-};
-const imoReg = 1234567;
-const voyages = await getVoyages(imoReg);
-const reports = await getReports(imoReg); // uuid : arr of reports
-let output = {};
-for (let i of reports) {
-  for (let j of voyages) {
-    if (i.uuid == j.uuid) {
-      output[i.uuid] = i.reports.reverse();
-    }
-  }
-}
+const voyages = JSON.parse(localStorage.getItem("voyages"));
+const output = JSON.parse(localStorage.getItem("output"));
 </script>
