@@ -11,16 +11,17 @@
         >
           <!-- TODO: need to change focus to actual onclick events -->
           <!-- TODO: don't make these router-links; they shouldn't be separate URIs, just tabs -->
-          <router-link
-            to="overview"
+          <button
             class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
+            @click="reports"
             :class="
               $route.name == 'vessel-overview'
                 ? 'border-b-2 border-blue-700 text-blue-700'
                 : ''
             "
-            >{{ $t("report") }}</router-link
           >
+            {{ $t("report") }}
+          </button>
           <router-link
             to="vessel-spec"
             class="hidden pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
@@ -100,5 +101,23 @@ const addVoyage = async (voyageData) => {
 
   console.log(response);
   update.value += 1;
+};
+const reports = async () => {
+  const voyages = await getVoyages(props.imo);
+  const reports = await getReports(props.imo);
+  localStorage.setItem("voyages", JSON.stringify(voyages));
+  let output = {};
+  for (let i of reports) {
+    for (let j of voyages) {
+      if (i.uuid == j.uuid) {
+        output[i.uuid] = i.reports.reverse();
+      }
+    }
+  }
+  localStorage.setItem("output", JSON.stringify(output));
+  router.push({
+    name: "uploaded-reports",
+    params: { vesselname: props.vesselname, imo: props.imo },
+  });
 };
 </script>

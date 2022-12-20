@@ -123,10 +123,9 @@ const getUserRole = async () => {
 };
 
 const getVoyages = async (imo) => {
-  const imoReg = 1234567; // To remove
   const DUMMY_TOKEN = auth.jwt;
   const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/ships/" + imoReg + "/voyages/",
+    `https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`,
     {
       headers: {
         Authorization: "Bearer " + DUMMY_TOKEN,
@@ -137,19 +136,12 @@ const getVoyages = async (imo) => {
   );
 
   const json = response.json();
-  //   console.log(json);
-
-  if (response.length == 0) {
-    isEmpty = true;
-    console.log("NO DATA");
-  }
   return json;
 };
 
-const getReports = async (imo_reg) => {
-  const imoReg = 1234567; // To remove
+const getReports = async (imo) => {
   const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/ships/${imoReg}/reports/`,
+    `https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`,
     {
       headers: {
         Authorization: "Bearer " + auth.jwt,
@@ -189,6 +181,18 @@ if (manager) {
   router.push({ path: "/my-vessels" });
 } else {
   localStorage.setItem("addSpec", ship.shipspecs === null);
+  const voyages = await getVoyages(ship.imo_reg);
+  const reports = await getReports(ship.imo_reg);
+  localStorage.setItem("voyages", JSON.stringify(voyages));
+  let output = {};
+  for (let i of reports) {
+    for (let j of voyages) {
+      if (i.uuid == j.uuid) {
+        output[i.uuid] = i.reports.reverse();
+      }
+    }
+  }
+  localStorage.setItem("output", JSON.stringify(output));
   router.push({
     path: `/vessels/${ship.name}/${ship.imo_reg}/overview`,
   });

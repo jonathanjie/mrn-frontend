@@ -115,12 +115,13 @@
           </div>
         </div>
         <div class="flex flex-row mt-6">
-          <SpeedSideNav
+          <TableOveview />
+          <!-- <SpeedSideNav
             :speed="speed"
             :focDay="focDay"
             :distanceToGo="distanceToGo"
             :remainOnBoard="remainOnBoard"
-          ></SpeedSideNav>
+          ></SpeedSideNav> -->
           <!-- <SpeedGraphPlot></SpeedGraphPlot> -->
         </div>
       </div>
@@ -151,6 +152,7 @@
 import { ref } from "vue";
 import SpeedSideNav from "./SpeedSideNav.vue";
 import SpeedGraphPlot from "./SpeedGraphPlot.vue";
+import { TableOveview } from "@/components/TableOverview.vue";
 import PortCard from "@/components/PortCard.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 import SpeedGraphReminders from "./SpeedGraphReminders.vue";
