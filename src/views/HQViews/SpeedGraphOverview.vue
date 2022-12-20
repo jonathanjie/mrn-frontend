@@ -152,7 +152,7 @@ import { ref } from "vue";
 import SpeedSideNav from "./SpeedSideNav.vue";
 import SpeedGraphPlot from "./SpeedGraphPlot.vue";
 import PortCard from "@/components/PortCard.vue";
-import { useAuthStore } from "@/stores/auth.store";
+import { useAuthStore } from "@/stores/useAuthStore";
 import SpeedGraphReminders from "./SpeedGraphReminders.vue";
 
 let weeklyFlag = ref(true);

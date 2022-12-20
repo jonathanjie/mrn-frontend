@@ -79,8 +79,8 @@
 <script setup>
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
 import { useRouter } from "vue-router";
-import { useAuthStore } from "@/stores/auth.store";
-import { useAsyncStore } from "@/stores/asyncStore";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useAsyncStore } from "@/stores/useAsyncStore";
 import { useAuth0 } from "@auth0/auth0-vue";
 
 const router = useRouter();
