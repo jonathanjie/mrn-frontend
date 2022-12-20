@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed, reactive } from "vue";
+import { useReportStore } from "./useReportStore";
 
 const temp = {
   // Overview
@@ -22,16 +23,19 @@ const temp = {
   gesysPrevROB: 200,
   freshwaterPrevROB: 200,
 };
+
 export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
+  const store = useReportStore();
+
   // Overview
-  const reportNo = ref(temp.reportNo);
-  const legNo = ref(temp.legNo);
-  const voyageNo = ref(temp.voyageNo);
+  const reportNo = ref(store.reportNo);
+  const legNo = ref(store.legNo);
+  const voyageNo = ref(store.voyageNo);
   const reportingDate = ref("");
   const reportingTimeZone = ref("default");
 
   // Finish With Engine
-  const timeZone = ref("");
+  const timeZone = ref("default");
   const dateTime = ref("");
   const latDir = ref("default");
   const latMinutes = ref("");
