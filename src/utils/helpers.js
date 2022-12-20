@@ -45,6 +45,16 @@ export function readableUTCDate(date) {
   return `${day} ${month} ${year}, ${meridiemTime}`;
 }
 
+export function convertDMSToDD(degrees, minutes, direction) {
+  var dd = degrees + minutes / 60;
+
+  if (direction == "S" || direction == "E") {
+    dd = dd * -1;
+  } // Don't do anything for N or W
+
+  return dd;
+}
+
 export const parsePosition = ({
   latDegree,
   latMinutes,
