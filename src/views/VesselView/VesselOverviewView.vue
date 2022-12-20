@@ -31,6 +31,7 @@ import { ref } from "vue";
 import VoyageCard from "../../components/VoyageCard.vue";
 import { useAuthStore } from "@/stores/auth.store";
 import { readableUTCDate } from "@/utils/helpers";
+import { ENUM_TO_REPORT_TYPE } from "@/constants";
 
 const auth = useAuthStore();
 let isEmpty = ref(false);
@@ -110,7 +111,7 @@ for (let i = 0; i < voyages.length; i++) {
     }
 
     ret["report_type"] = j.report_type;
-    ret["report_no"] = j.report_type + " " + j.report_num;
+    ret["report_no"] = ENUM_TO_REPORT_TYPE[j.report_type] + " " + j.report_num;
     ret["departure"] = j.route.departure_port || "N/A";
     ret["arrival"] = j.route.arrival_port || "N/A";
     ret["loading_condition"] = load_condition || "N/A";

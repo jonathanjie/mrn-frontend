@@ -11,6 +11,22 @@ export const REPORT_CONSTANTS = {
   route: "route",
   weatherData: "weatherdata",
 };
+
+// temporary fix: for displaying report type (report no.) for each report in voyage card
+export const ENUM_TO_REPORT_TYPE = {
+  NOON: "NOON",
+  DSBY: "DEPS",
+  DCSP: "DEPR",
+  ASBY: "ARRS",
+  AFWE: "ARRF",
+  BDN: "BDN",
+  EVNT: "EVNT", // TODO: replace with 4 subtypes below
+  EVNTP: "EVNTP",
+  EVNTC: "EVNTC",
+  NOONP: "NOONP",
+  NOONC: "NOONC",
+};
+
 export const DIRECTION_CONSTANTS = {
   n: "N",
   s: "S",

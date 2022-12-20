@@ -70,7 +70,7 @@ const props = defineProps({
   report_no: {
     type: String,
     required: true,
-    default: "REPORT",
+    default: "REPORT 0",
   },
   departure: {
     type: String,
