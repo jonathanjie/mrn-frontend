@@ -129,7 +129,7 @@
         {{ $t("wave") }}
       </div>
       <div
-        class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-r border-b xl:border-b-0 bg-gray-50 text-14"
+        class="col-span-4 xl:col-span-1 text-blue-700 p-3 border-b xl:border-b-0 border-r bg-gray-50 text-14"
       >
         {{ $t("direction") }}
       </div>
