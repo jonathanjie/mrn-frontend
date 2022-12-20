@@ -15,10 +15,8 @@
       <div class="flex col-span-3 border-b">
         <select
           class="grow self-center p-3 text-14 focus:outline-0"
-          :class="
-            data.time_zone === 'default' ? 'text-gray-400' : 'text-gray-700'
-          "
-          v-model="data.time_zone"
+          :class="time_zone === 'default' ? 'text-gray-400' : 'text-gray-700'"
+          v-model="time_zone"
         >
           <option selected disabled value="default">
             {{ $t("selectTimeZone") }}
@@ -67,7 +65,7 @@
         {{ $t("dateAndTime") }}
       </div>
       <DatePicker
-        v-model="data.date_time"
+        v-model="date_time"
         class="col-span-3"
         textInput
         :textInputOptions="textInputOptions"
@@ -88,21 +86,21 @@
         >{{ $t("latitude") }}</span
       >
       <input
-        v-model="data.lat_degree"
-        @keypress="preventNaN($event, data.lat_degree)"
+        v-model="lat_degree"
+        @keypress="preventNaN($event, lat_degree)"
         placeholder="000 (Degree)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="data.lat_minutes"
-        @keypress="preventNaN($event, data.lat_minutes)"
+        v-model="lat_minute"
+        @keypress="preventNaN($event, lat_minute)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
-        v-model="data.lat_dir"
+        v-model="lat_dir"
         class="col-span-3 p-3 text-14 border-l focus:outline-0 focus:outline-0"
-        :class="data.lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
           {{ $t("southAndNorth") }}
@@ -118,21 +116,21 @@
         >{{ $t("longitude") }}</span
       >
       <input
-        v-model="data.long_degree"
-        @keypress="preventNaN($event, data.long_degree)"
+        v-model="long_degree"
+        @keypress="preventNaN($event, long_degree)"
         placeholder="000 (Degree)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="data.long_minutes"
-        @keypress="preventNaN($event, data.long_minutes)"
+        v-model="long_minutes"
+        @keypress="preventNaN($event, long_minutes)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
-        v-model="data.long_dir"
+        v-model="long_dir"
         class="col-span-3 p-3 text-14 border-l focus:outline-0"
-        :class="data.long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
           {{ $t("eastAndWest") }}
@@ -154,7 +152,7 @@
             type="radio"
             id="anchoringStartOutside"
             value="0"
-            v-model="data.status"
+            v-model="status"
           />
           <label for="anchoringStartOutside">{{
             $t("anchoringStartOutside")
@@ -165,28 +163,18 @@
             type="radio"
             id="anchoringStartInside"
             value="1"
-            v-model="data.status"
+            v-model="status"
           />
           <label for="anchoringStartInside">{{
             $t("anchoringStartInside")
           }}</label>
         </div>
         <div class="flex align-center space-x-2">
-          <input
-            type="radio"
-            id="driftingStart"
-            value="2"
-            v-model="data.status"
-          />
+          <input type="radio" id="driftingStart" value="2" v-model="status" />
           <label for="driftingStart">{{ $t("driftingStart") }}</label>
         </div>
         <div class="flex align-center space-x-2">
-          <input
-            type="radio"
-            id="berthingStart"
-            value="3"
-            v-model="data.status"
-          />
+          <input type="radio" id="berthingStart" value="3" v-model="status" />
           <label for="berthingStart">{{ $t("berthingStart") }}</label>
         </div>
       </div>
@@ -207,7 +195,7 @@
             type="checkbox"
             id="cargoOpBerth"
             value="0"
-            v-model="data.plannedOperations"
+            v-model="planned_operations"
           />
           <label for="cargoOpBerth">{{ $t("cargoOperationBerth") }}</label>
         </div>
@@ -216,7 +204,7 @@
             type="checkbox"
             id="cargoOpSTSSTB"
             value="1"
-            v-model="data.plannedOperations"
+            v-model="planned_operations"
           />
           <label for="cargoOpSTSSTB">{{ $t("cargoOperationSTSSTB") }}</label>
         </div>
@@ -225,7 +213,7 @@
             type="checkbox"
             id="bunkeringDebunkering"
             value="2"
-            v-model="data.plannedOperations"
+            v-model="planned_operations"
           />
           <label for="bunkeringDebunkering">{{
             $t("bunkeringDebunkering")
@@ -236,7 +224,7 @@
             type="checkbox"
             id="dryDocking"
             value="3"
-            v-model="data.plannedOperations"
+            v-model="planned_operations"
           />
           <label for="dryDocking">{{ $t("dryDocking") }}</label>
         </div>
@@ -245,7 +233,7 @@
             type="checkbox"
             id="crewChange"
             value="4"
-            v-model="data.plannedOperations"
+            v-model="planned_operations"
           />
           <label for="crewChange">{{ $t("crewChange") }}</label>
         </div>
@@ -254,7 +242,7 @@
             type="checkbox"
             id="receivingProvisionSpareParts"
             value="5"
-            v-model="data.plannedOperations"
+            v-model="planned_operations"
           />
           <label for="receivingProvisionSpareParts">{{
             $t("receivingProvisionSpareParts")
@@ -265,7 +253,7 @@
             type="checkbox"
             id="survey"
             value="6"
-            v-model="data.plannedOperations"
+            v-model="planned_operations"
           />
           <label for="survey">{{ $t("survey") }}</label>
         </div>
@@ -274,7 +262,7 @@
             type="checkbox"
             id="others"
             value="7"
-            v-model="data.plannedOperations"
+            v-model="planned_operations"
           />
           <label for="others">{{ $t("others") }}</label>
         </div>
@@ -285,18 +273,20 @@
 
 <script setup>
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-import { reactive } from "vue";
+import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
+import { storeToRefs } from "pinia";
 
-const data = reactive({
-  time_zone: "",
-  date_time: "",
-  lat_dir: "default",
-  lat_minutes: "",
-  lat_degree: "",
-  long_dir: "default",
-  long_minutes: "",
-  long_degree: "",
-  planned_operations: [],
-  status: "",
-});
+const store = useArrivalFWEReportStore();
+const {
+  timeZone: time_zone,
+  dateTime: date_time,
+  latDir: lat_dir,
+  latDegree: lat_degree,
+  latMinute: lat_minute,
+  longDir: long_dir,
+  longMinute: long_minutes,
+  longDegree: long_degree,
+  planned_operations: planned_operations,
+  status: status,
+} = storeToRefs(store);
 </script>

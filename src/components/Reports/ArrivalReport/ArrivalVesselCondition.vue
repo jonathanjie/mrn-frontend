@@ -14,8 +14,8 @@
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-white">
         <input
-          v-model="data.draft_fwd"
-          @keypress="preventNaN($event, data.draft_fwd)"
+          v-model="draft_fwd"
+          @keypress="preventNaN($event, draft_fwd)"
           placeholder="00.00"
           class="text-gray-700 focus:outline-0"
         />
@@ -23,8 +23,8 @@
       </div>
       <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-white">
         <input
-          v-model="data.draft_mid"
-          @keypress="preventNaN($event, data.draft_mid)"
+          v-model="draft_mid"
+          @keypress="preventNaN($event, draft_mid)"
           placeholder="00.00"
           class="text-gray-700 focus:outline-0"
         />
@@ -32,8 +32,8 @@
       </div>
       <div class="flex col-span-3 p-2 pl-4 border-l bg-white">
         <input
-          v-model="data.draft_aft"
-          @keypress="preventNaN($event, data.draft_aft)"
+          v-model="draft_aft"
+          @keypress="preventNaN($event, draft_aft)"
           placeholder="00.00"
           class="text-gray-700 focus:outline-0"
         />
@@ -45,12 +45,14 @@
 
 <script setup>
 import { preventNaN } from "@/utils/helpers.js";
-import { reactive } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
+import { storeToRefs } from "pinia";
 
-const data = reactive({
-  draft_fwd: "",
-  draft_mid: "",
-  draft_aft: "",
-});
+const store = useArrivalFWEReportStore();
+const {
+  draftFwd: draft_fwd,
+  draftMid: draft_mid,
+  draftAft: draft_aft,
+} = storeToRefs(store);
 </script>

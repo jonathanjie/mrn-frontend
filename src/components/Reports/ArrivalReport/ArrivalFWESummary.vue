@@ -22,8 +22,8 @@
           </div>
           <div class="flex col-span-3 p-2 pl-4 border-b bg-gray-50">
             <input
-              v-model="data.total_distance_obs"
-              @keypress="preventNaN($event, data.total_distance_obs)"
+              v-model="total_distance_obs"
+              @keypress="preventNaN($event, total_distance_obs)"
               placeholder="0"
               disabled
               class="w-16 text-14 text-gray-700 focus:outline-0 bg-gray-50"
@@ -35,8 +35,8 @@
           </div>
           <div class="flex col-span-3 p-2 pl-4 bg-gray-50">
             <input
-              v-model="data.total_time"
-              @keypress="preventNaN($event, data.total_time)"
+              v-model="total_time"
+              @keypress="preventNaN($event, total_time)"
               placeholder="0"
               disabled
               class="w-16 text-14 text-gray-700 focus:outline-0 bg-gray-50"
@@ -68,64 +68,64 @@
 
         <div class="text-blue-700 p-3 border-t">{{ $t("lsfo") }}</div>
         <input
-          v-model="data.lsfo_me"
-          @keypress="preventNaN($event, data.lsfo_me)"
+          v-model="lsfo_me"
+          @keypress="preventNaN($event, lsfo_me)"
           placeholder="000.00"
           class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
         />
         <input
-          v-model="data.lsfo_ge"
-          @keypress="preventNaN($event, data.lsfo_ge)"
+          v-model="lsfo_ge"
+          @keypress="preventNaN($event, lsfo_ge)"
           placeholder="000.00"
           class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
         />
         <input
-          v-model="data.lsfo_boiler"
-          @keypress="preventNaN($event, data.lsfo_boiler)"
+          v-model="lsfo_boiler"
+          @keypress="preventNaN($event, lsfo_boiler)"
           placeholder="000.00"
           class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
         />
         <input
-          v-model="data.lsfo_igg"
-          @keypress="preventNaN($event, data.lsfo_igg)"
+          v-model="lsfo_igg"
+          @keypress="preventNaN($event, lsfo_igg)"
           placeholder="000.00"
           class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
         />
         <input
-          v-model="data.lsfo_total"
-          @keypress="preventNaN($event, data.lsfo_total)"
+          v-model="lsfo_total"
+          @keypress="preventNaN($event, lsfo_total)"
           placeholder="000.00"
           class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
         />
 
         <div class="text-blue-700 p-3 border-t">{{ $t("mgo") }}</div>
         <input
-          v-model="data.mgo_me"
-          @keypress="preventNaN($event, data.mgo_me)"
+          v-model="mgo_me"
+          @keypress="preventNaN($event, mgo_me)"
           placeholder="000.00"
           class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
         />
         <input
-          v-model="data.mgo_ge"
-          @keypress="preventNaN($event, data.mgo_ge)"
+          v-model="mgo_ge"
+          @keypress="preventNaN($event, mgo_ge)"
           placeholder="000.00"
           class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
         />
         <input
-          v-model="data.mgo_boiler"
-          @keypress="preventNaN($event, data.mgo_boiler)"
+          v-model="mgo_boiler"
+          @keypress="preventNaN($event, mgo_boiler)"
           placeholder="000.00"
           class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
         />
         <input
-          v-model="data.mgo_igg"
-          @keypress="preventNaN($event, data.mgo_igg)"
+          v-model="mgo_igg"
+          @keypress="preventNaN($event, mgo_igg)"
           placeholder="000.00"
           class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
         />
         <input
-          v-model="data.mgo_total"
-          @keypress="preventNaN($event, data.mgo_total)"
+          v-model="mgo_total"
+          @keypress="preventNaN($event, mgo_total)"
           placeholder="000.00"
           class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
         />
@@ -135,23 +135,24 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
+import { storeToRefs } from "pinia";
 
-// TODO: make reactive
-const data = reactive({
-  total_distance_obs: "",
-  total_time: "",
-  lsfo_me: "",
-  lsfo_ge: "",
-  lsfo_boiler: "",
-  lsfo_igg: "",
-  lsfo_total: "",
-  mgo_me: "",
-  mgo_ge: "",
-  mgo_boiler: "",
-  mgo_igg: "",
-  mgo_total: "",
-});
+const store = useArrivalFWEReportStore();
+const {
+  totalDistanceObs: total_distance_obs,
+  totalTime: total_time,
+  lsfoMe: lsfo_me,
+  lsfoGe: lsfo_ge,
+  lsfoBoiler: lsfo_boiler,
+  lsfoIgg: lsfo_igg,
+  lsfoTotal: lsfo_total,
+  mgoMe: mgo_me,
+  mgoGe: mgo_ge,
+  mgoBoiler: mgo_boiler,
+  mgoIgg: mgo_igg,
+  mgoTotal: mgo_total,
+} = storeToRefs(store);
 </script>

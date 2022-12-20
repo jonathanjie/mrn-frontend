@@ -16,8 +16,8 @@
         class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50"
       >
         <input
-          v-model="data.hours_since_noon"
-          @keypress="preventNaN($event, data.hours_since_noon)"
+          v-model="hours"
+          @keypress="preventNaN($event, hours)"
           placeholder="0"
           disabled
           class="w-24 text-14 bg-gray-50 text-gray-700 focus:outline-0"
@@ -32,8 +32,8 @@
       </div>
       <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
         <input
-          v-model="data.distance_obs_since_noon"
-          @keypress="preventNaN($event, data.distance_obs_since_noon)"
+          v-model="distance_obs"
+          @keypress="preventNaN($event, distance_obs)"
           placeholder="0"
           class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
         />
@@ -49,8 +49,8 @@
         class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t lg:border bg-gray-50"
       >
         <input
-          v-model="data.distance_eng_since_noon"
-          @keypress="preventNaN($event, data.distance_eng_since_noon)"
+          v-model="distance_eng"
+          @keypress="preventNaN($event, distance_eng)"
           placeholder="0"
           disabled
           class="w-24 text-14 bg-gray-50 text-gray-700 focus:outline-0"
@@ -64,8 +64,8 @@
         {{ $t("revolutionCounter") }}
       </div>
       <input
-        v-model="data.revolution_count"
-        @keypress="preventNaN($event, data.revolution_count)"
+        v-model="revolution_count"
+        @keypress="preventNaN($event, revolution_count)"
         placeholder="0"
         class="col-span-3 lg:col-span-3 p-3 pl-4 border-x border-y lg:border-t-0 bg-white text-14 text-gray-700 focus:outline-0"
       />
@@ -74,15 +74,16 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
+import { storeToRefs } from "pinia";
 
-const data = reactive({
-  // TODO: total distance in voyage - distance by observation? or engine?
-  hours_since_noon: "", // Distance & Time: time
-  distance_obs_since_noon: "", // Distance & Time: distance by observation
-  distance_eng_since_noon: "", // Distance & Time: distance by engine
-  revolution_count: "",
-});
+const store = useArrivalFWEReportStore();
+const {
+  hours: hours,
+  distanceObs: distance_obs,
+  distanceEng: distance_eng,
+  revolutionCount: revolution_count,
+} = storeToRefs(store);
 </script>
