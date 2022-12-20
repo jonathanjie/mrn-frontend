@@ -64,7 +64,9 @@
 import { ref } from "vue";
 import GradientButton from "../../components/Buttons/GradientButton.vue";
 import AddVoyageModal from "@/components/AddVoyageModal.vue";
+import { useAuthStore } from "@/stores/useAuthStore";
 
+const auth = useAuthStore();
 // Variable to force replacement of router-view
 const isEmpty = true;
 let voyageNum = 1;
