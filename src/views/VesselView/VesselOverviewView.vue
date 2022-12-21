@@ -79,20 +79,21 @@ const getVoyages = async (imo) => {
 };
 
 const getLoadingCondition = async (uuid) => {
-  const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/reports/" + uuid,
-    {
-      headers: {
-        Authorization: "Bearer " + auth.jwt,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
+  return "Ballast"; // temp fix
+  // const response = await fetch(
+  //   "https://testapi.marinachain.io/marinanet/reports/" + uuid,
+  //   {
+  //     headers: {
+  //       Authorization: "Bearer " + auth.jwt,
+  //       "Content-Type": "application/json",
+  //     },
+  //     method: "GET",
+  //   }
+  // );
 
-  const json = response.json();
+  // const json = response.json();
 
-  return json.curLoadingCondition;
+  // return json.curLoadingCondition;
 };
 
 const voyages = await getVoyages(imoReg);
