@@ -189,82 +189,193 @@
       <div
         class="col-span-3 bg-white flex flex-col space-y-2 p-3 text-gray-700"
       >
-        <!-- TODO: make dynamic -->
         <div class="flex align-center space-x-2">
           <input
+            :disabled="!planned_operations.includes('waiting')"
+            type="checkbox"
+            id="waiting"
+            value="waiting"
+            v-model="operations"
+            @click="resetOperations"
+          />
+          <label
+            for="waiting"
+            :class="
+              planned_operations.includes('waiting')
+                ? ''
+                : 'line-through text-gray-400'
+            "
+            >{{ $t("waiting") }}</label
+          >
+        </div>
+        <div class="flex align-center space-x-2">
+          <input
+            :disabled="
+              !planned_operations.includes('cargoOpBerth') ||
+              operations.includes('waiting')
+            "
             type="checkbox"
             id="cargoOpBerth"
-            value="0"
-            v-model="planned_operations"
+            value="cargoOpBerth"
+            v-model="operations"
           />
-          <label for="cargoOpBerth">{{ $t("cargoOperationBerth") }}</label>
+          <label
+            for="cargoOpBerth"
+            :class="
+              planned_operations.includes('cargoOpBerth')
+                ? ''
+                : 'line-through text-gray-400'
+            "
+            >{{ $t("cargoOperationBerth") }}</label
+          >
         </div>
         <div class="flex align-center space-x-2">
           <input
+            :disabled="
+              !planned_operations.includes('cargoOpSTSSTB') ||
+              operations.includes('waiting')
+            "
             type="checkbox"
             id="cargoOpSTSSTB"
-            value="1"
-            v-model="planned_operations"
+            value="cargoOpSTSSTB"
+            v-model="operations"
           />
-          <label for="cargoOpSTSSTB">{{ $t("cargoOperationSTSSTB") }}</label>
+          <label
+            for="cargoOpSTSSTB"
+            :class="
+              planned_operations.includes('cargoOpSTSSTB')
+                ? ''
+                : 'line-through text-gray-400'
+            "
+            >{{ $t("cargoOperationSTSSTB") }}</label
+          >
         </div>
         <div class="flex align-center space-x-2">
           <input
+            :disabled="
+              !planned_operations.includes('bunkeringDebunkering') ||
+              operations.includes('waiting')
+            "
             type="checkbox"
             id="bunkeringDebunkering"
-            value="2"
-            v-model="planned_operations"
+            value="bunkeringDebunkering"
+            v-model="operations"
           />
-          <label for="bunkeringDebunkering">{{
-            $t("bunkeringDebunkering")
-          }}</label>
+          <label
+            for="bunkeringDebunkering"
+            :class="
+              planned_operations.includes('bunkeringDebunkering')
+                ? ''
+                : 'line-through text-gray-400'
+            "
+            >{{ $t("bunkeringDebunkering") }}</label
+          >
         </div>
         <div class="flex align-center space-x-2">
           <input
+            :disabled="
+              !planned_operations.includes('dryDocking') ||
+              operations.includes('waiting')
+            "
             type="checkbox"
             id="dryDocking"
-            value="3"
-            v-model="planned_operations"
+            value="dryDocking"
+            v-model="operations"
           />
-          <label for="dryDocking">{{ $t("dryDocking") }}</label>
+          <label
+            for="dryDocking"
+            :class="
+              planned_operations.includes('dryDocking')
+                ? ''
+                : 'line-through text-gray-400'
+            "
+            >{{ $t("dryDocking") }}</label
+          >
         </div>
+
         <div class="flex align-center space-x-2">
           <input
+            :disabled="
+              !planned_operations.includes('crewChange') ||
+              operations.includes('waiting')
+            "
             type="checkbox"
             id="crewChange"
-            value="4"
-            v-model="planned_operations"
+            value="crewChange"
+            v-model="operations"
           />
-          <label for="crewChange">{{ $t("crewChange") }}</label>
+          <label
+            for="crewChange"
+            :class="
+              planned_operations.includes('crewChange')
+                ? ''
+                : 'line-through text-gray-400'
+            "
+            >{{ $t("crewChange") }}</label
+          >
         </div>
         <div class="flex align-center space-x-2">
           <input
+            :disabled="
+              !planned_operations.includes('receivingProvisionSpareParts') ||
+              operations.includes('waiting')
+            "
             type="checkbox"
             id="receivingProvisionSpareParts"
-            value="5"
-            v-model="planned_operations"
+            value="receivingProvisionSpareParts"
+            v-model="operations"
           />
-          <label for="receivingProvisionSpareParts">{{
-            $t("receivingProvisionSpareParts")
-          }}</label>
+          <label
+            for="receivingProvisionSpareParts"
+            :class="
+              planned_operations.includes('receivingProvisionSpareParts')
+                ? ''
+                : 'line-through text-gray-400'
+            "
+            >{{ $t("receivingProvisionSpareParts") }}</label
+          >
         </div>
         <div class="flex align-center space-x-2">
           <input
+            :disabled="
+              !planned_operations.includes('survey') ||
+              operations.includes('waiting')
+            "
             type="checkbox"
             id="survey"
-            value="6"
-            v-model="planned_operations"
+            value="survey"
+            v-model="operations"
           />
-          <label for="survey">{{ $t("survey") }}</label>
+          <label
+            for="survey"
+            :class="
+              planned_operations.includes('survey')
+                ? ''
+                : 'line-through text-gray-400'
+            "
+            >{{ $t("survey") }}</label
+          >
         </div>
         <div class="flex align-center space-x-2">
           <input
+            :disabled="
+              !planned_operations.includes('others') ||
+              operations.includes('waiting')
+            "
             type="checkbox"
             id="others"
-            value="7"
-            v-model="planned_operations"
+            value="others"
+            v-model="operations"
           />
-          <label for="others">{{ $t("others") }}</label>
+          <label
+            for="others"
+            :class="
+              planned_operations.includes('others')
+                ? ''
+                : 'line-through text-gray-400'
+            "
+            >{{ $t("others") }}</label
+          >
         </div>
       </div>
     </div>
@@ -286,7 +397,17 @@ const {
   longDir: long_dir,
   longMinute: long_minutes,
   longDegree: long_degree,
-  planned_operations: planned_operations,
+  plannedOperations: planned_operations,
+  operations: operations,
   status: status,
 } = storeToRefs(store);
+
+const resetOperations = () => {
+  if (
+    operations.value !== ["waiting"] &&
+    !operations.value.includes("waiting")
+  ) {
+    operations.value = ["waiting"];
+  }
+};
 </script>

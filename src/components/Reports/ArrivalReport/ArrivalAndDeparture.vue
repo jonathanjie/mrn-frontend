@@ -76,7 +76,7 @@
             <input
               type="checkbox"
               id="cargoOpBerth"
-              value="0"
+              value="cargoOpBerth"
               v-model="planned_operation"
             />
             <label for="cargoOpBerth">{{ $t("cargoOperationBerth") }}</label>
@@ -85,7 +85,7 @@
             <input
               type="checkbox"
               id="cargoOpSTSSTB"
-              value="1"
+              value="cargoOpSTSSTB"
               v-model="planned_operation"
             />
             <label for="cargoOpSTSSTB">{{ $t("cargoOperationSTSSTB") }}</label>
@@ -94,7 +94,7 @@
             <input
               type="checkbox"
               id="bunkeringDebunkering"
-              value="2"
+              value="bunkeringDebunkering"
               v-model="planned_operation"
             />
             <label for="bunkeringDebunkering">{{
@@ -105,7 +105,7 @@
             <input
               type="checkbox"
               id="dryDocking"
-              value="3"
+              value="dryDocking"
               v-model="planned_operation"
             />
             <label for="dryDocking">{{ $t("dryDocking") }}</label>
@@ -114,7 +114,7 @@
             <input
               type="checkbox"
               id="crewChange"
-              value="4"
+              value="crewChange"
               v-model="planned_operation"
             />
             <label for="crewChange">{{ $t("crewChange") }}</label>
@@ -123,7 +123,7 @@
             <input
               type="checkbox"
               id="receivingProvisionSpareParts"
-              value="5"
+              value="receivingProvisionSpareParts"
               v-model="planned_operation"
             />
             <label for="receivingProvisionSpareParts">{{
@@ -134,7 +134,7 @@
             <input
               type="checkbox"
               id="survey"
-              value="6"
+              value="survey"
               v-model="planned_operation"
             />
             <label for="survey">{{ $t("survey") }}</label>
@@ -143,7 +143,7 @@
             <input
               type="checkbox"
               id="others"
-              value="7"
+              value="others"
               v-model="planned_operation"
             />
             <label for="others">{{ $t("others") }}</label>

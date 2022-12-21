@@ -4,6 +4,15 @@ import { useVoyageStore } from "./useVoyageStore";
 
 // TODO: fetch from database
 const temp = {
+  // Finish With Engine
+  plannedOperations: [
+    "waiting",
+    "crewChange",
+    "cargoOpBerth",
+    "bunkeringDebunkering",
+    "receivingProvisionSpareParts",
+  ], // fetch from arrival eosp/sby
+
   // Overview
   departurePortCountry: "Country A",
   departurePortName: "Port A",
@@ -52,6 +61,7 @@ export const useHarbourPortReportStore = defineStore(
     const longDir = ref("default");
     const longMinutes = ref("");
     const longDegree = ref("");
+    const plannedOperations = ref(temp.plannedOperations);
     const operations = ref([]);
 
     // Consumption And Condition Full
@@ -212,6 +222,7 @@ export const useHarbourPortReportStore = defineStore(
       longDir,
       longMinutes,
       longDegree,
+      plannedOperations,
       operations,
       // Consumption And Condition (Full)
       lsfoTotalConsumption,

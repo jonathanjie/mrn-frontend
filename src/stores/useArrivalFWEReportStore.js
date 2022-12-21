@@ -3,6 +3,15 @@ import { ref, computed, reactive } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
 
 const temp = {
+  // Finish With Engine
+  plannedOperations: [
+    "waiting",
+    "crewChange",
+    "cargoOpBerth",
+    "bunkeringDebunkering",
+    "receivingProvisionSpareParts",
+  ], // fetch from eosp/sby
+
   // Distance & Time / Performance
   lastNoonReportTime: "2022-12-01T00:00:00Z",
   rupOfDeparture: "2022-11-21T00:00:00Z",
@@ -39,7 +48,8 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   const longDir = ref("default");
   const longMinute = ref("");
   const longDegree = ref("");
-  const plannedOperations = ref([]);
+  const plannedOperations = ref(temp.plannedOperations);
+  const operations = ref([]);
   const status = ref("");
 
   // Pilot Station -- Arrival
@@ -218,6 +228,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     longMinute,
     longDegree,
     plannedOperations,
+    operations,
     status,
     // Pilot Station -- Arrival
     pilotArrName,
