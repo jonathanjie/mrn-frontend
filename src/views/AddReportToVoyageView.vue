@@ -1,6 +1,5 @@
 <template>
   <div class="bg-gray-50 min-h-screen">
-    <!-- <div class="relative bg-gray-100 h-36"> TODO: buggy line, will fix later-->
     <div class="flex flex-col px-24 pt-11">
       <div class="flex items-center mx-5 mb-6">
         <button @click="$router.push({ name: 'vessel-overview' })">
@@ -56,30 +55,67 @@
         >
         </RadioBtnIcon>
       </div>
-
       <router-view></router-view>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import RadioBtnIcon from "../components/Buttons/RadioBtnIcon.vue";
 import router from "@/router";
+import { ref } from "vue";
+import { useVoyageStore } from "@/stores/useVoyageStore";
+import { storeToRefs } from "pinia";
+import { onBeforeRouteLeave } from "vue-router";
 
-export default {
-  components: {
-    RadioBtnIcon,
-  },
-  data() {
-    return {
-      reportType: this.$route.name,
-    };
-  },
-  methods: {
-    updateActiveReportType(type) {
-      this.reportType = type;
-      router.push({ name: type });
-    },
-  },
+const reportType = ref("");
+
+const updateActiveReportType = (type) => {
+  reportType.value = type;
+  router.push({ name: type });
 };
+
+const store = useVoyageStore();
+const {
+  curLoadingCondition,
+  curLegNo,
+  voyageNo,
+  lastNoonReportNo,
+  lastDepsReportNo,
+  lastDeprReportNo,
+  lastArrsReportNo,
+  lastArrfReportNo,
+  lastBdnReportNo,
+  // lastEvntpReportNo,
+  // lastEvntcReportNo,
+  // lastNoonpReportNo,
+  // lastNooncReportNo,
+} = storeToRefs(store);
+
+const voyageDetails = history.state.voyageDetails
+  ? JSON.parse(history.state.voyageDetails)
+  : {};
+
+// store selected voyage details in pinia voyage store
+curLoadingCondition.value = voyageDetails.cur_loading_condition;
+curLegNo.value = voyageDetails.cur_leg_no;
+voyageNo.value = voyageDetails.voyage_no;
+lastNoonReportNo.value = voyageDetails.last_noon_report_no;
+lastDepsReportNo.value = voyageDetails.last_deps_report_no;
+lastDeprReportNo.value = voyageDetails.last_depr_report_no;
+lastArrsReportNo.value = voyageDetails.last_arrs_report_no;
+lastArrfReportNo.value = voyageDetails.last_arrf_report_no;
+lastBdnReportNo.value = voyageDetails.last_bdn_report_no;
+// lastEvntpReportNo.value = voyageDetails.last_evntp_report_no;
+// lastEvntcReportNo.value = voyageDetails.last_evntc_report_no;
+// lastNoonpReportNo.value = voyageDetails.last_noonp_report_no;
+// lastNooncReportNo.value = voyageDetails.last_noonc_report_no;
+
+onBeforeRouteLeave((to, from) => {
+  const answer = window.confirm(
+    "Do you really want to leave? You have unsaved changes!"
+  );
+  // cancel the navigation and stay on the same page
+  if (!answer) return false;
+});
 </script>
