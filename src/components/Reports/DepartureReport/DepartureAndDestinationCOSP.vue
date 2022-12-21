@@ -15,12 +15,14 @@
         <input
           v-model="departure_port_country"
           :placeholder="$t('inputLocode2')"
-          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
+          disabled
+          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 bg-gray-50"
         />
         <input
           v-model="departure_port_name"
           :placeholder="$t('inputLocode3')"
-          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
+          disabled
+          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 bg-gray-50"
         />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14">
@@ -31,7 +33,8 @@
         </div>
         <div class="flex col-span-3 border-b bg-white">
           <select
-            class="grow self-center p-3 text-14 focus:outline-0"
+            disabled
+            class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50"
             :class="
               departure_time_zone === 'default'
                 ? 'text-gray-400'
@@ -87,8 +90,9 @@
         </div>
         <DatePicker
           v-model="departure_date_time"
-          class="col-span-3"
+          class="col-span-3 bg-gray-50"
           textInput
+          disabled
           :textInputOptions="textInputOptions"
           :format="format"
           :modelValue="string"
