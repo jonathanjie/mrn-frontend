@@ -24,11 +24,8 @@
       <div class="col-span-2 text-blue-700 p-3 border-l border-y">
         {{ $t("voyageNo") }}
       </div>
-      <div class="flex items-center col-span-3 p-3 border">
-        <div class="text-gray-700 bg-gray-50">{{ voyage_no }}</div>
-        <MiniUnitDisplay class="ml-2 mr-auto">{{
-          cur_loading_condition
-        }}</MiniUnitDisplay>
+      <div class="col-span-3 p-3 border text-gray-700 bg-gray-50">
+        {{ voyage_no }}
       </div>
       <div class="hidden xl:block bg-white col-span-2 row-span-1"></div>
       <input class="hidden xl:block bg-white col-span-3 p-3" disabled />
@@ -120,13 +117,11 @@
 import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 import { storeToRefs } from "pinia";
 import { textInputOptions, format } from "@/utils/helpers";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 
 const store = useDepartureSBYReportStore();
 const {
   depsReportNo: deps_report_no,
   curLegNo: cur_leg_no,
-  curLoadingCondition: cur_loading_condition,
   voyageNo: voyage_no,
   reportingDate: reporting_date,
   reportingTimeZone: reporting_time_zone,

@@ -30,7 +30,6 @@ export const useDepartureSBYReportStore = defineStore(
     // Overview
     const depsReportNo = ref(store.depsReportNo);
     const curLegNo = ref(store.curLegNo);
-    const curLoadingCondition = ref(store.curLoadingCondition);
     const voyageNo = ref(store.voyageNo);
     const reportingDate = ref("");
     const reportingTimeZone = ref("default");
@@ -332,7 +331,6 @@ export const useDepartureSBYReportStore = defineStore(
       // Overview
       depsReportNo,
       curLegNo,
-      curLoadingCondition,
       voyageNo,
       reportingDate,
       reportingTimeZone,
