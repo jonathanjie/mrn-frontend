@@ -2,13 +2,27 @@
 import { ref, onMounted } from "vue";
 import { useReportDetailsStore } from "./store/useReportDetailsStore";
 
+import { defineProps } from "vue";
+
+// props
+const props = defineProps({
+  uuid: {
+    type: String,
+    required: true,
+  },
+});
+
+console.log(props.uuid);
+// store
 const store = useReportDetailsStore();
-const report = ref(store.report);
-const uuid = "placeholder"
 const { getReport } = store;
-onMounted(getReport(uuid));
+// onMounted(getReport(props.uuid));
+getReport(props.uuid);
+const report = ref(store.report).value;
+console.log("Report: ", report.report_num);
 </script>
 
 <template>
-  <div></div>
+  <div>{{ report }}</div>
+  <div>HELLO WORLD</div>
 </template>

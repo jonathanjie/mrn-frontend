@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import RadioBtnIcon from "../components/Buttons/RadioBtnIcon.vue";
+import RadioBtnIcon from "../../components/Buttons/RadioBtnIcon.vue";
 import router from "@/router";
 
 export default {
