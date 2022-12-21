@@ -29,6 +29,13 @@
 <script setup>
 import { ref } from "vue";
 import VoyageCard from "../../components/VoyageCard.vue";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useAsyncStore } from "@/stores/useAsyncStore";
+import { defineProps } from "vue";
+
+const props = defineProps({
+  imo: { type: String, require: true },
+});
 
 let isEmpty = ref(false);
 

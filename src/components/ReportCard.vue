@@ -27,10 +27,11 @@
       src="@/assets/icons/in_harbour_header.svg"
       class="absolute left-0 top-0"
     />
+    <div>report uuid: {{ uuid }}</div>
 
     <div class="flex flex-col w-24 ml-5 mr-2">
       <span class="text-12 text-gray-400">{{ $t("reportNo") }}</span>
-      <span class="text-14 text-gray-700">{{ report_no }}</span>
+      <span class="text-14 text-gray-700">{{ report_num }}</span>
     </div>
     <div class="flex flex-col w-20 mr-2">
       <span class="text-12 text-gray-400">{{ $t("departure") }}</span>
@@ -67,7 +68,11 @@ const props = defineProps({
     required: false,
     default: "NOON",
   },
-  report_no: {
+  uuid: {
+    type: String,
+    required: true,
+  },
+  report_num: {
     type: String,
     required: true,
     default: "REPORT",
@@ -93,6 +98,8 @@ const props = defineProps({
     default: "DATE",
   },
 });
+
+
 
 const report_sent = true; // TODO: always true for MVP, no save function implemented
 </script>

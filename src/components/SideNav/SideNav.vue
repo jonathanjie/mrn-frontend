@@ -193,7 +193,7 @@ if (manager) {
   }
   localStorage.setItem("output", JSON.stringify(output));
   router.push({
-    path: `/vessels/${ship.name}/${ship.imo_reg}/overview`,
+    path: `/vessels/${ship.name}/${ship.imo_reg}/overview`
   });
 }
 </script>
