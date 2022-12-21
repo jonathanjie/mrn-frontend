@@ -8,7 +8,7 @@
         <!-- Departure and Arrival -->
         <ArrivalAndDeparture />
 
-        <!-- S/BY for EOSP -->
+        <!-- S/BY for Arrival -->
         <ArrivalDetails>{{ $t("sbyForArrival") }}</ArrivalDetails>
 
         <!-- Weather (Noon to S/BY) -->

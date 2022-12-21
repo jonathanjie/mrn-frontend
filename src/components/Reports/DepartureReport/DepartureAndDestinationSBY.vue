@@ -33,11 +33,11 @@
           <select
             class="grow self-center p-3 text-14 focus:outline-0"
             :class="
-              departure_time_zone === 'default'
+              reporting_time_zone === 'default'
                 ? 'text-gray-400'
                 : 'text-gray-700'
             "
-            v-model="departure_time_zone"
+            v-model="reporting_time_zone"
           >
             <option selected disabled value="default">
               {{ $t("selectTimeZone") }}
@@ -86,7 +86,7 @@
           {{ $t("dateAndTime") }}
         </div>
         <DatePicker
-          v-model="departure_date_time"
+          v-model="reporting_date"
           class="col-span-3"
           textInput
           :textInputOptions="textInputOptions"
@@ -203,8 +203,7 @@
 </template>
 
 <script setup>
-import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-import { reactive } from "vue";
+import { textInputOptions, format } from "@/utils/helpers.js";
 import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 import { storeToRefs } from "pinia";
 
@@ -212,8 +211,8 @@ const store = useDepartureSBYReportStore();
 const {
   departurePortCountry: departure_port_country,
   departurePortName: departure_port_name,
-  departureTimeZone: departure_time_zone,
-  departureDateTime: departure_date_time,
+  reportingTimeZone: reporting_time_zone,
+  reportingDate: reporting_date,
   destinationPortCountry: destination_port_country,
   destinationPortName: destination_port_name,
   destinationTimeZone: destination_time_zone,

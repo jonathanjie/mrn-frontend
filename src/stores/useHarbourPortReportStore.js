@@ -42,7 +42,7 @@ export const useHarbourPortReportStore = defineStore(
     const curLegNo = ref(store.curLegNo);
     const curLoadingCondition = ref(store.curLoadingCondition);
     const voyageNo = ref(store.voyageNo);
-    const reportingDate = ref("");
+    const reportingDateTime = ref("");
     const reportingTimeZone = ref("default");
     const departurePortCountry = ref(temp.departurePortCountry);
     const departurePortName = ref(temp.departurePortName);
@@ -52,8 +52,6 @@ export const useHarbourPortReportStore = defineStore(
     // Harbour Port Report
     const type = ref("");
     const status = ref("default");
-    const dateTime = ref("");
-    const timeZone = ref("default");
     const distanceTravelled = ref("");
     const latDir = ref("default");
     const latMinutes = ref("");
@@ -204,7 +202,7 @@ export const useHarbourPortReportStore = defineStore(
       curLegNo,
       curLoadingCondition,
       voyageNo,
-      reportingDate,
+      reportingDateTime,
       reportingTimeZone,
       departurePortCountry,
       departurePortName,
@@ -213,8 +211,6 @@ export const useHarbourPortReportStore = defineStore(
       // Harbour Port Report
       type,
       status,
-      dateTime,
-      timeZone,
       distanceTravelled,
       latDir,
       latMinutes,

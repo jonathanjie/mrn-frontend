@@ -15,8 +15,12 @@
       <div class="flex col-span-3 border-b">
         <select
           class="grow self-center p-3 text-14 focus:outline-0"
-          :class="time_zone === 'default' ? 'text-gray-400' : 'text-gray-700'"
-          v-model="time_zone"
+          :class="
+            reporting_time_zone === 'default'
+              ? 'text-gray-400'
+              : 'text-gray-700'
+          "
+          v-model="reporting_time_zone"
         >
           <option selected disabled value="default">
             {{ $t("selectTimeZone") }}
@@ -65,7 +69,7 @@
         {{ $t("dateAndTime") }}
       </div>
       <DatePicker
-        v-model="date_time"
+        v-model="reporting_date_time"
         class="col-span-3"
         textInput
         :textInputOptions="textInputOptions"
@@ -142,14 +146,13 @@
 
 <script setup>
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-// import { reactive } from "vue";
 import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
 import { storeToRefs } from "pinia";
 
 const store = useArrivalEOSPReportStore();
 const {
-  timeZone: time_zone,
-  dateTime: date_time,
+  reportingTimeZone: reporting_time_zone,
+  reportingDateTime: reporting_date_time,
   latDir: lat_dir,
   latMinutes: lat_minutes,
   latDegree: lat_degree,
@@ -157,15 +160,4 @@ const {
   longMinutes: long_minutes,
   longDegree: long_degree,
 } = storeToRefs(store);
-
-// const data = reactive({
-//   time_zone: "default",
-//   date_time: "",
-//   lat_dir: "default",
-//   lat_minutes: "",
-//   lat_degree: "",
-//   long_dir: "default",
-//   long_minutes: "",
-//   long_degree: "",
-// });
 </script>

@@ -6,8 +6,8 @@ const temp = {
   // Arrival and Departure
   departurePortCountry: "Country A",
   departurePortName: "Port A",
-  arrivalPortCountry: "Country A",
-  arrivalPortName: "Port A",
+  arrivalPortCountry: "Country B",
+  arrivalPortName: "Port B",
   departureDateTime: "2022-06-01T04:23:00Z",
 
   // Distance & Time / Performance
@@ -43,7 +43,7 @@ export const useArrivalEOSPReportStore = defineStore(
     const curLegNo = ref(store.curLegNo);
     const curLoadingCondition = ref(store.curLoadingCondition);
     const voyageNo = ref(store.voyageNo);
-    const reportingDate = ref("");
+    const reportingDateTime = ref("");
     const reportingTimeZone = ref("default");
 
     // Departure and Arrival
@@ -56,8 +56,6 @@ export const useArrivalEOSPReportStore = defineStore(
     const otherPlannedOperation = ref("");
 
     // S/BY for Arrival
-    const timeZone = ref("default");
-    const dateTime = ref("");
     const latDir = ref("default");
     const latMinutes = ref("");
     const latDegree = ref("");
@@ -67,17 +65,19 @@ export const useArrivalEOSPReportStore = defineStore(
 
     // Distance & Time
     const hoursSinceNoon = computed(() =>
-      dateTime.value
+      reportingDateTime.value
         ? +(
-            (Date.parse(dateTime.value) - Date.parse(temp.lastNoonReportTime)) /
+            (Date.parse(reportingDateTime.value) -
+              Date.parse(temp.lastNoonReportTime)) /
             (1000 * 60 * 60)
           ).toFixed(0)
         : ""
     );
     const hoursTotal = computed(() =>
-      dateTime.value
+      reportingDateTime.value
         ? +(
-            (Date.parse(dateTime.value) - Date.parse(temp.rupOfDeparture)) /
+            (Date.parse(reportingDateTime.value) -
+              Date.parse(temp.rupOfDeparture)) /
             (1000 * 60 * 60)
           ).toFixed(0)
         : ""
@@ -308,7 +308,7 @@ export const useArrivalEOSPReportStore = defineStore(
       curLegNo,
       curLoadingCondition,
       voyageNo,
-      reportingDate,
+      reportingDateTime,
       reportingTimeZone,
       // Departure and Arrival
       departurePortCountry,
@@ -319,8 +319,6 @@ export const useArrivalEOSPReportStore = defineStore(
       plannedOperation,
       otherPlannedOperation,
       // S/BY for Arrival
-      timeZone,
-      dateTime,
       latDir,
       latMinutes,
       latDegree,

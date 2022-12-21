@@ -302,7 +302,7 @@ const i18n = createI18n({
       save: "Save",
       saveChanges: "Save changes",
       saveDetails: "Save details",
-      sbyForDeparture: "S/BY for Departure",
+      sby: "S/BY",
       sbyForArrival: "S/BY for Arrival",
       sbyToRupInHarbour: "S/BY to R/UP (In Harbour)",
       scale: "Scale",

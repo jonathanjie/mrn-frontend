@@ -11,6 +11,16 @@ const temp = {
   mesumpPrevROB: 200,
   gesysPrevROB: 200,
   freshwaterPrevROB: 200,
+
+  // Departure and Destination
+  departurePortCountry: "Country A",
+  departurePortName: "Port A",
+  departureTimeZone: "-6",
+  departureDateTime: "2022-11-21T00:00:00Z",
+  destinationPortCountry: "Country B",
+  destinationPortName: "Port B",
+  destinationTimeZone: "-4",
+  destinationEstimatedArrival: "2022-12-03T00:00:00Z",
 };
 
 export const useDepartureCOSPReportStore = defineStore(
@@ -23,18 +33,18 @@ export const useDepartureCOSPReportStore = defineStore(
     const curLegNo = ref(store.curLegNo);
     const curLoadingCondition = ref(store.curLoadingCondition);
     const voyageNo = ref(store.voyageNo);
-    const reportingDate = ref("");
+    const reportingDateTime = ref("");
     const reportingTimeZone = ref("default");
 
     // Departure and Destination
-    const departurePortCountry = ref("");
-    const departurePortName = ref("");
-    const departureTimeZone = ref("default");
-    const departureDateTime = ref("");
-    const destinationPortCountry = ref("");
-    const destinationPortName = ref("");
-    const destinationTimeZone = ref("default");
-    const destinationEstimatedArrival = ref("");
+    const departurePortCountry = ref(temp.departurePortCountry);
+    const departurePortName = ref(temp.departurePortName);
+    const departureTimeZone = ref(temp.departureTimeZone);
+    const departureDateTime = ref(temp.departureDateTime);
+    const destinationPortCountry = ref(temp.destinationPortCountry);
+    const destinationPortName = ref(temp.destinationPortName);
+    const destinationTimeZone = ref(temp.destinationTimeZone);
+    const destinationEstimatedArrival = ref(temp.destinationEstimatedArrival);
 
     // Pilot Station - Departure
     const pilotDepName = ref("");
@@ -60,7 +70,6 @@ export const useDepartureCOSPReportStore = defineStore(
     const pilotArrLongMinute = ref("");
 
     // R/UP Engine / Distance & Time
-    const rupEngDate = ref("");
     const rupEngLatDir = ref("default");
     const rupEngLatDegree = ref("");
     const rupEngLatMinute = ref("");
@@ -199,7 +208,7 @@ export const useDepartureCOSPReportStore = defineStore(
       curLegNo,
       curLoadingCondition,
       voyageNo,
-      reportingDate,
+      reportingDateTime,
       reportingTimeZone,
       // Departure and Destination
       departurePortCountry,
@@ -232,7 +241,6 @@ export const useDepartureCOSPReportStore = defineStore(
       pilotArrLongDegree,
       pilotArrLongMinute,
       // R/UP Engine / Distance & Time
-      rupEngDate,
       rupEngLatDir,
       rupEngLatDegree,
       rupEngLatMinute,

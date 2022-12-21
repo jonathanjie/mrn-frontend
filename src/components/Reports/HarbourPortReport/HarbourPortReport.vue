@@ -23,13 +23,13 @@
       </div>
     </div>
 
-    <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border text-14">
-      <div class="col-span-2 text-blue-700 p-3 border-b border-r bg-gray-50">
+    <div class="col-span-2 lg:col-span-1 grid grid-cols-5 text-14">
+      <div class="col-span-2 text-blue-700 p-3 border bg-gray-50">
         {{ $t("status") }}
       </div>
       <select
         v-model="status"
-        class="col-span-3 p-3 border-b focus:outline-0"
+        class="col-span-3 p-3 border-y border-r focus:outline-0"
         :class="status === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
@@ -61,15 +61,19 @@
         </option>
       </select>
       <div
-        class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
+        class="col-span-2 text-blue-700 p-3 border-x border-b bg-gray-50 text-14"
       >
         {{ $t("timeZone") }}
       </div>
-      <div class="flex col-span-3 border-b bg-white">
+      <div class="flex col-span-3 border-b border-r bg-white">
         <select
           class="grow self-center p-3 text-14 focus:outline-0"
-          :class="time_zone === 'default' ? 'text-gray-400' : 'text-gray-700'"
-          v-model="time_zone"
+          :class="
+            reporting_time_zone === 'default'
+              ? 'text-gray-400'
+              : 'text-gray-700'
+          "
+          v-model="reporting_time_zone"
         >
           <option selected disabled value="default">
             {{ $t("selectTimeZone") }}
@@ -115,13 +119,13 @@
         </select>
       </div>
       <div
-        class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
+        class="col-span-2 text-blue-700 p-3 border-x border-b bg-gray-50 text-14"
       >
         {{ $t("dateAndTime") }}
       </div>
       <DatePicker
-        v-model="date_time"
-        class="col-span-3 border-b"
+        v-model="reporting_date_time"
+        class="col-span-3 border-b border-r"
         textInput
         :textInputOptions="textInputOptions"
         :format="format"
@@ -132,10 +136,10 @@
           <img src="" />
         </template>
       </DatePicker>
-      <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50">
+      <div class="col-span-2 text-blue-700 p-3 border-x border-b bg-gray-50">
         {{ $t("distanceTravelled") }}
       </div>
-      <div class="flex col-span-3 p-2 pl-4 bg-white">
+      <div class="flex col-span-3 p-2 pl-4 bg-white border-b border-r">
         <input
           v-model="distance_travelled"
           @keypress="preventNaN($event, distance_travelled)"
@@ -144,6 +148,8 @@
         />
         <MiniUnitDisplay>NM</MiniUnitDisplay>
       </div>
+      <input class="hidden lg:block bg-white col-span-5 p-3" disabled />
+      <input class="hidden lg:block bg-white col-span-5 p-3" disabled />
     </div>
 
     <div
@@ -418,8 +424,8 @@ const store = useHarbourPortReportStore();
 const {
   type: type,
   status: status,
-  dateTime: date_time,
-  timeZone: time_zone,
+  reportingDateTime: reporting_date_time,
+  reportingTimeZone: reporting_time_zone,
   distanceTravelled: distance_travelled,
   latDir: lat_dir,
   latMinutes: lat_minutes,

@@ -63,7 +63,6 @@ import BunkerReceivedDetail from "@/components/Reports/BunkerReport/BunkerReceiv
 import BunkerDateAndTime from "@/components/Reports/BunkerReport/BunkerDateAndTime.vue";
 import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
 import { storeToRefs } from "pinia";
-import { REPORT_CONSTANTS } from "@/constants";
 
 // TODO: less hacky
 let files = [];
@@ -80,11 +79,11 @@ const {
   reportNo,
   legNo,
   voyageNo,
+  reportingDateTime,
+  reportingTimeZone,
   // Bunkering Port
   portCountry,
   portName,
-  dateTime,
-  timeZone,
   status,
   // Received Bunker Detail
   oil,
@@ -112,35 +111,4 @@ const {
   address,
   telephoneNumber,
 } = storeToRefs(store);
-
-const sendReport = async () => {
-  let REPORT = {
-    report_type: REPORT_CONSTANTS.type.bunker,
-    voyage: 1, // TODO: fetch from db
-    leg_num: 1, // TODO: fetch from db
-    report_tz: timeZone.value, // FIND TIMEZONE FROM PORT
-    report_num: 1, // TODO: fetch from db
-    report_date: dateTime.value,
-    position: null, // no pos for bunker report
-    // TODO: MORE BELOW, when backend is done
-    reports: files,
-  };
-
-  console.log("data: ", REPORT);
-
-  const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/reports/",
-    {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(REPORT),
-    }
-  );
-  const data = await response.json();
-  console.log(response);
-  console.log(data);
-};
 </script>

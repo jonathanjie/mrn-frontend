@@ -11,14 +11,12 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
   const curLegNo = ref(store.curLegNo);
   const curLoadingCondition = ref(store.curLoadingCondition);
   const voyageNo = ref(store.voyageNo);
-  const reportingDate = ref("");
+  const reportingDateTime = ref("");
   const reportingTimeZone = ref("default");
 
   // Bunkering Port
   const portCountry = ref("");
   const portName = ref("");
-  const dateTime = ref("");
-  const timeZone = ref("default");
 
   // Received Bunker Detail
   const oil = ref("default");
@@ -54,13 +52,11 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
     curLegNo,
     curLoadingCondition,
     voyageNo,
-    reportingDate,
+    reportingDateTime,
     reportingTimeZone,
     // Bunkering Port
     portCountry,
     portName,
-    dateTime,
-    timeZone,
     // Received Bunker Detail
     oil,
     density,

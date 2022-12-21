@@ -4,7 +4,7 @@
     <NoonOverview />
 
     <!-- Reporting Noon -->
-    <NoonDetails>{{ $t("reportingNoon") }}</NoonDetails>
+    <NoonDetails />
 
     <!-- Weather -->
     <NoonWeather />
@@ -76,6 +76,9 @@ import { REPORT_CONSTANTS } from "@/constants";
 
 const store = useNoonReportStore();
 const {
+  // Overview
+  reportingDate,
+  reportingTimeZone,
   // Departure and Destination
   routeDeparturePortCountry,
   routeDeparturePortName,
@@ -86,8 +89,6 @@ const {
   routeArrivalDate,
   routeArrivalTimeZone,
   // DateTimeLatLong
-  timeZone,
-  dateTime,
   latDir,
   latMinutes,
   latDegree,
@@ -230,9 +231,9 @@ const sendReport = async () => {
     report_type: REPORT_CONSTANTS.type.noon,
     voyage: 1, // TODO: fetch from db
     leg_num: 1, // TODO: fetch from db
-    report_tz: timeZone.value,
+    report_tz: reportingTimeZone.value,
     report_num: 1, // TODO: fetch from db
-    report_date: dateTime.value,
+    report_date: reportingDate.value,
     position: position,
     route: {
       departure_port: routeDeparturePort,

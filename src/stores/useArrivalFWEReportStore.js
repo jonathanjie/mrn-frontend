@@ -36,12 +36,10 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   const curLegNo = ref(store.curLegNo);
   const curLoadingCondition = ref(store.curLoadingCondition);
   const voyageNo = ref(store.voyageNo);
-  const reportingDate = ref("");
+  const reportingDateTime = ref("");
   const reportingTimeZone = ref("default");
 
   // Finish With Engine
-  const timeZone = ref("default");
-  const dateTime = ref("");
   const latDir = ref("default");
   const latMinutes = ref("");
   const latDegree = ref("");
@@ -67,9 +65,10 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
 
   // Distance & Time (S/BY to F.W.E)
   const hours = computed(() =>
-    dateTime.value
+    reportingDateTime.value
       ? +(
-          (Date.parse(dateTime.value) - Date.parse(temp.lastNoonReportTime)) /
+          (Date.parse(reportingDateTime.value) -
+            Date.parse(temp.lastNoonReportTime)) /
           (1000 * 60 * 60)
         ).toFixed(0)
       : ""
@@ -216,11 +215,9 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     curLegNo,
     curLoadingCondition,
     voyageNo,
-    reportingDate,
+    reportingDateTime,
     reportingTimeZone,
     // Finish With Engine
-    timeZone,
-    dateTime,
     latDir,
     latMinutes,
     latDegree,

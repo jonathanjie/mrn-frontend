@@ -34,13 +34,13 @@
       <input class="hidden xl:block bg-white col-span-3 p-3" disabled />
     </div>
     <div
-      class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14 border mb-6"
+      class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14 border xl:mb-6"
     >
       <div class="col-span-2 text-blue-700 p-3 border-r">
         {{ $t("reportingDateAndTime") }}
       </div>
       <DatePicker
-        v-model="reporting_date"
+        v-model="reporting_date_time"
         class="col-span-3"
         textInput
         :textInputOptions="textInputOptions"
@@ -54,7 +54,7 @@
       </DatePicker>
     </div>
     <div
-      class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14 border mb-6"
+      class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14 border xl:mb-6"
     >
       <div class="col-span-2 text-blue-700 p-3 border-r">
         {{ $t("reportingTimeZone") }}
@@ -314,7 +314,7 @@ const {
   curLegNo: cur_leg_no,
   curLoadingCondition: cur_loading_condition,
   voyageNo: voyage_no,
-  reportingDate: reporting_date,
+  reportingDateTime: reporting_date_time,
   reportingTimeZone: reporting_time_zone,
   routeDeparturePortCountry: route_departure_port_country,
   routeDeparturePortName: route_departure_port_name,

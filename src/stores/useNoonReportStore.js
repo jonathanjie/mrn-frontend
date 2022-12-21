@@ -37,7 +37,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const curLegNo = ref(store.curLegNo);
   const curLoadingCondition = ref(store.curLoadingCondition);
   const voyageNo = ref(store.voyageNo);
-  const reportingDate = ref("");
+  const reportingDateTime = ref("");
   const reportingTimeZone = ref("default");
 
   // Departure and Destination
@@ -51,9 +51,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const routeArrivalDate = ref("2022-12-21T00:00:00Z");
   const routeArrivalTimeZone = ref("3");
 
-  // DateTimeLatLong
-  const timeZone = ref("default");
-  const dateTime = ref("");
+  // Reporting Noon
   const latDir = ref("default");
   const latMinutes = ref("");
   const latDegree = ref("");
@@ -90,17 +88,19 @@ export const useNoonReportStore = defineStore("noonReport", () => {
 
   // Distance and Time
   const hoursSinceNoon = computed(() =>
-    dateTime.value
+    reportingDateTime.value
       ? +(
-          (Date.parse(dateTime.value) - Date.parse(temp.lastNoonReportTime)) /
+          (Date.parse(reportingDateTime.value) -
+            Date.parse(temp.lastNoonReportTime)) /
           (1000 * 60 * 60)
         ).toFixed(0)
       : ""
   );
   const hoursTotal = computed(() =>
-    dateTime.value
+    reportingDateTime.value
       ? +(
-          (Date.parse(dateTime.value) - Date.parse(temp.rupOfDeparture)) /
+          (Date.parse(reportingDateTime.value) -
+            Date.parse(temp.rupOfDeparture)) /
           (1000 * 60 * 60)
         ).toFixed(0)
       : ""
@@ -314,7 +314,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     curLegNo,
     curLoadingCondition,
     voyageNo,
-    reportingDate,
+    reportingDateTime,
     reportingTimeZone,
     // Departure and Destination
     routeDeparturePortCountry,
@@ -325,9 +325,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     routeArrivalPortName,
     routeArrivalDate,
     routeArrivalTimeZone,
-    // DateTimeLatLong
-    timeZone,
-    dateTime,
+    // Reporting Noon
     latDir,
     latMinutes,
     latDegree,

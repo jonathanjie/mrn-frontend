@@ -1,6 +1,6 @@
 <template>
   <TabsWrapper class="mt-5">
-    <Tab :title="$t('sbyForDeparture')">
+    <Tab :title="$t('sby')">
       <div class="flex flex-col space-y-6 my-6">
         <!-- Overview -->
         <DepartureSBYOverview />

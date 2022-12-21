@@ -59,7 +59,6 @@ import HarbourPortConsumption from "@/components/Reports/HarbourPortReport/Harbo
 import RadioBtnDetail from "@/components/Buttons/RadioBtnDetail.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 import GradientButton from "@/components/Buttons/GradientButton.vue";
-import { REPORT_CONSTANTS } from "@/constants";
 import { useHarbourPortReportStore } from "@/stores/useHarbourPortReportStore";
 import { storeToRefs } from "pinia";
 
@@ -71,6 +70,8 @@ const {
   reportNo,
   legNo,
   voyageNo,
+  reportingDateTime,
+  reportingTimeZone,
   departurePortCountry,
   departurePortName,
   destinationPortCountry,
@@ -78,8 +79,6 @@ const {
   // Harbour Port Report
   type,
   status,
-  dateTime,
-  timeZone,
   distanceTravelled,
   latDir,
   latMinutes,
@@ -115,35 +114,5 @@ const {
 
 const updateActiveReportType = (type) => {
   reportType.value = type;
-};
-
-const sendReport = async () => {
-  let REPORT = {
-    report_type: REPORT_CONSTANTS.type.bunker,
-    voyage: 1, // TODO: fetch from db
-    leg_num: 1, // TODO: fetch from db
-    report_tz: timeZone.value, // FIND TIMEZONE FROM PORT
-    report_num: 1, // TODO: fetch from db
-    report_date: dateTime.value,
-    position: null, // no pos for bunker report
-    // TODO: MORE BELOW, when backend is done
-  };
-
-  console.log("data: ", REPORT);
-
-  const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/reports/",
-    {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(REPORT),
-    }
-  );
-  const data = await response.json();
-  console.log(response);
-  console.log(data);
 };
 </script>
