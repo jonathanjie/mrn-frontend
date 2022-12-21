@@ -90,7 +90,8 @@
     <div class="flex flex-col space-y-4">
       <div v-for="(report, index) in reports" :key="index">
         <ReportCard
-          :report_no="report.report_no"
+          :uuid="report.uuid"
+          :report_num="report.report_num"
           :report_type="report.report_type"
           :departure="report.departure"
           :arrival="report.arrival"
@@ -98,14 +99,14 @@
           :date_of_report="report.date_of_report"
         ></ReportCard>
       </div>
-      <ReportCard
+      <!-- <ReportCard
         report_no="DEPARTURE"
         report_type="DEPART"
         departure="Singapore"
         arrival="Ulsan"
         loading_condition="Westbound"
         date_of_report="2022-10-19, 4:08 PM"
-      ></ReportCard>
+      ></ReportCard> -->
       <!-- TEST ITEMS -->
       <!-- <ReportCard :report_no="'ARRIVAL'" :report_type="'ARRIVAL'" :departure="'Singapore'" :arrival="'Ulsan'" :status="'Anchoring'" :cargold="'Ballast'" :distance_to_go="'2503'" :date_of_report="'2022-10-19'"></ReportCard>
                 <ReportCard :report_no="'NOON'" :report_type="'NOON'" :departure="'Singapore'" :arrival="'Ulsan'" :status="'Anchoring'" :cargold="'Ballast'" :distance_to_go="'2503'" :date_of_report="'2022-10-19'"></ReportCard> -->

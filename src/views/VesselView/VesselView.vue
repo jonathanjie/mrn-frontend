@@ -11,45 +11,26 @@
         >
           <!-- TODO: need to change focus to actual onclick events -->
           <!-- TODO: don't make these router-links; they shouldn't be separate URIs, just tabs -->
-          <router-link
-            to="overview"
+          <button
             class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
+            @click="reports"
             :class="
               $route.name == 'vessel-overview'
                 ? 'border-b-2 border-blue-700 text-blue-700'
                 : ''
             "
-            >{{ $t("overview") }}</router-link
           >
+            {{ $t("report") }}
+          </button>
           <router-link
-            to="submitted"
-            class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
+            to="vessel-spec"
+            class="hidden pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
             :class="
-              $route.name == 'vessel-submitted'
+              $route.name == 'vessel-spec'
                 ? 'border-b-2 border-blue-700 text-blue-700'
                 : ''
             "
-            >{{ $t("submitted") }}</router-link
-          >
-          <router-link
-            to="draft"
-            class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
-            :class="
-              $route.name == 'vessel-draft'
-                ? 'border-b-2 border-blue-700 text-blue-700'
-                : ''
-            "
-            >{{ $t("draft") }}</router-link
-          >
-          <router-link
-            to="cancelled"
-            class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
-            :class="
-              $route.name == 'vessel-cancelled'
-                ? 'border-b-2 border-blue-700 text-blue-700'
-                : ''
-            "
-            >{{ $t("cancelled") }}</router-link
+            >{{ $t("vesselSpec") }}</router-link
           >
         </div>
       </div>
@@ -66,7 +47,7 @@
       </GradientButton>
       <AddVoyageModal
         ref="modal"
-        v-show="showModal"
+        v-if="showModal"
         @close-modal="showModal = false"
         :vesselname="vesselname"
         :imo="imo"
@@ -83,7 +64,11 @@
 import { ref } from "vue";
 import GradientButton from "../../components/Buttons/GradientButton.vue";
 import AddVoyageModal from "@/components/AddVoyageModal.vue";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
+const auth = useAuthStore();
 // Variable to force replacement of router-view
 const isEmpty = true;
 let voyageNum = 1;
@@ -91,10 +76,10 @@ let voyageNum = 1;
 const props = defineProps({
   vesselname: String,
   imo: String,
-  specs: String,
 });
 
-let showModal = ref(props.specs === "true");
+let showModal = localStorage.getItem("addSpec") == true;
+console.log(showModal);
 
 // Backend Data
 const voyageData = {
@@ -120,5 +105,56 @@ const addVoyage = async (voyageData) => {
 
   console.log(response);
   update.value += 1;
+};
+
+const getVoyages = async (imo) => {
+  const DUMMY_TOKEN = auth.jwt;
+  const response = await fetch(
+    `https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`,
+    {
+      headers: {
+        Authorization: "Bearer " + DUMMY_TOKEN,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+
+  const json = response.json();
+  return json;
+};
+
+const getReports = async (imo) => {
+  const response = await fetch(
+    `https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`,
+    {
+      headers: {
+        Authorization: "Bearer " + auth.jwt,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+
+  const json = response.json();
+  return json;
+};
+const reports = async () => {
+  const voyages = await getVoyages(props.imo);
+  const reports = await getReports(props.imo);
+  localStorage.setItem("voyages", JSON.stringify(voyages));
+  let output = {};
+  for (let i of reports) {
+    for (let j of voyages) {
+      if (i.uuid == j.uuid) {
+        output[i.uuid] = i.reports.reverse();
+      }
+    }
+  }
+  localStorage.setItem("output", JSON.stringify(output));
+  router.push({
+    name: "uploaded-reports",
+    params: { vesselname: props.vesselname, imo: props.imo },
+  });
 };
 </script>

@@ -25,6 +25,7 @@ export const useAuthStore = defineStore({
     updateRole(role) {
       this.role = role;
       localStorage.setItem("role", role);
+      console.log("Role updated with: " + role);
     },
     logout() {
       this.user = null;
@@ -34,6 +35,7 @@ export const useAuthStore = defineStore({
       localStorage.removeItem("user");
       localStorage.removeItem("jwt");
       localStorage.removeItem("role");
+      console.log(localStorage.getItem("role"));
       // logout({ returnTo: window.location.origin });
       // router.push('/login'); TODO: uncomment when login page is ready
     },

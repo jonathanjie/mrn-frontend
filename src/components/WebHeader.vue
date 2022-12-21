@@ -7,7 +7,7 @@
           src="@/assets/icons/search_icon.svg"
         />
         <input
-          class="bg-gray-50 h-10 w-80 pl-11 pr-3 rounded-lg text-14 focus:outline-none"
+          class="hidden bg-gray-50 h-10 w-80 pl-11 pr-3 rounded-lg text-14 focus:outline-none"
           type="search"
           name="search"
           :placeholder="$t('typeToSearch')"
@@ -17,10 +17,13 @@
     </div> -->
     <!-- <ul class="flex items-center">
       <li class="mx-3">
-        <img src="@/assets/icons/message.svg" class="h-6 w-6" />
+        <img src="@/assets/icons/message.svg" class="hidden h-6 w-6" />
       </li>
       <li class="mx-3">
-        <img src="@/assets/icons/bell_notification.svg" class="h-6 w-6" />
+        <img
+          src="@/assets/icons/bell_notification.svg"
+          class="hidden h-6 w-6"
+        />
       </li>
       <li>
         <img
@@ -74,12 +77,11 @@
 </template>
 
 <script setup>
-import { useAuthStore } from "@/stores/auth.store";
 import { useAuth0 } from "@auth0/auth0-vue";
 import { ref } from "vue";
 
 // TODO: get from pinia instead of auth0; need to figure out async state tracking
-const { user, logout, getAccessTokenSilently } = useAuth0();
+const { user, logout } = useAuth0();
 
 let isExpanded = ref(false);
 
@@ -90,11 +92,4 @@ function mouseEnter() {
 function mouseLeave() {
   isExpanded.value = false;
 }
-
-// async function getToken() {
-//   const authStore = useAuthStore();
-//   const jwt = await getAccessTokenSilently();
-
-//   authStore.updateToken(jwt);
-// }
 </script>

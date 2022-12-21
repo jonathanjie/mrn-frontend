@@ -20,7 +20,7 @@
       :start="portCodeToPortName[voyage.departure_port]"
       :mid="'At Sea'"
       :dest="portCodeToPortName[voyage.arrival_port]"
-      :reports="reports[voyage.uuid]"
+      :reports="output[voyage.uuid]"
       :expanded="index == 0"
     ></VoyageCard>
   </div>
@@ -29,75 +29,21 @@
 <script setup>
 import { ref } from "vue";
 import VoyageCard from "../../components/VoyageCard.vue";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useAsyncStore } from "@/stores/useAsyncStore";
+import { defineProps } from "vue";
+
+const props = defineProps({
+  imo: { type: String, require: true },
+});
 
 let isEmpty = ref(false);
+
 let portCodeToPortName = ref({
   "SG PPT": "Singapore",
   "KR USN": "Ulsan, South Korea",
 });
 
-const getReports = async (voyage_uuid) => {
-  const DUMMY_TOKEN = localStorage.getItem("jwt");
-  const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/voyages/${voyage_uuid}/reports`,
-    {
-      headers: {
-        Authorization: "Bearer " + DUMMY_TOKEN,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-
-  const json = response.json();
-  //   console.log(json);
-
-  return json;
-};
-const imoReg = 1234567;
-
-const getVoyages = async (imo) => {
-  const DUMMY_TOKEN = localStorage.getItem("jwt");
-  const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/ships/" + imoReg + "/voyages/",
-    {
-      headers: {
-        Authorization: "Bearer " + DUMMY_TOKEN,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-
-  const json = response.json();
-  //   console.log(json);
-
-  if (response.length == 0) {
-    isEmpty = true;
-    console.log("NO DATA");
-  }
-  return json;
-};
-
-const voyages = await getVoyages(imoReg);
-const reports = {}; // uuid : arr of reports
-
-for (let i = 0; i < voyages.length; i++) {
-  const uuid = voyages[i].uuid;
-  const json = await getReports(uuid);
-  reports[uuid] = [];
-
-  for (let j of json.reverse()) {
-    const ret = {};
-
-    ret["report_type"] = j.report_type;
-    ret["report_no"] = j.report_type + " " + j.report_num;
-    ret["departure"] = "Singapore"; // TODO: dynamic
-    ret["arrival"] = "Ulsan"; // TODO: dynamic
-    ret["loading_condition"] = "Westbound"; // TODO: dynamic; unclear where to fetch loading condition
-    ret["date_of_report"] = j.report_date.slice(0, 10) + ", 4:08 PM"; // TODO: dynamic; separate parse function / modified vs created date?
-
-    reports[uuid].push(ret);
-  }
-}
+const voyages = JSON.parse(localStorage.getItem("voyages"));
+const output = JSON.parse(localStorage.getItem("output"));
 </script>

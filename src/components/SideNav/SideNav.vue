@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen" :style="{ width: sidebarWidth }">
+  <div class="flex min-h-screen z-50 fixed" :style="{ width: sidebarWidth }">
     <div
       class="bg-blue text-cyan-100 w-64 relative -translate-x-0 inset-y-0 left-0 transition all ease-in-out delay-150 duration-200"
     >
@@ -13,14 +13,14 @@
         </button>
       </div>
       <div class="flex items-center justify-center py-5 bg-blue-700/[0.24]">
-        <router-link to="/">
+        <button @click="home">
           <img
             v-if="collapsed"
             src="@/assets/logomark_white.svg"
             class="h-8 px-6"
           />
           <img v-else src="@/assets/marina_logo.svg" class="w-100" />
-        </router-link>
+        </button>
       </div>
 
       <nav>
@@ -41,13 +41,12 @@
           </Transition>
         </router-link>
         <router-link
-          v-if="manager"
+          v-if="!manager"
           :to="{
             name: 'vessel-overview',
             params: {
               vesselname: ship.name,
               imo: ship.imo_reg,
-              specs: addSpec,
             },
           }"
           class="flex py-4 px-7 space-x-3 hover:bg-blue-700/[0.24]"
@@ -60,7 +59,7 @@
             }}</span>
           </Transition>
         </router-link>
-        <router-link
+        <!-- <router-link
           to="/"
           class="flex py-4 px-7 space-x-3 hover:bg-blue-700/[0.24]"
           :class="{ 'justify-center': collapsed }"
@@ -71,23 +70,82 @@
               $t("reporting")
             }}</span>
           </Transition>
-        </router-link>
+        </router-link> -->
       </nav>
     </div>
   </div>
 </template>
 
 <script setup>
-import { useAuthStore } from "@/stores/auth.store";
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
-let addSpec = true;
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useAsyncStore } from "@/stores/useAsyncStore";
+import { useAuth0 } from "@auth0/auth0-vue";
+
+const router = useRouter();
+const { user, getAccessTokenSilently } = useAuth0();
+const jwt = await getAccessTokenSilently();
+
+const asyncStore = useAsyncStore();
 const auth = useAuthStore();
+<<<<<<< HEAD
 // const manager = auth.role.localeCompare("manager") == 0;
 const manager = true;
+=======
+>>>>>>> 1dc5101e34fed4d0d9df33d65857c2fb7a4508f2
 const getShip = async () => {
   const response = await fetch(
     // Assuming that ships api can only provide 1 ship
     `https://testapi.marinachain.io/marinanet/ships`,
+    {
+      headers: {
+        Authorization: "Bearer " + jwt,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+  const ship = await response.json();
+  return ship[0];
+};
+
+const getUserRole = async () => {
+  const response = await fetch(
+    `https://testapi.marinachain.io/marinanet/user`,
+    {
+      headers: {
+        Authorization: "Bearer " + jwt,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+  const reply = await response.json();
+  const userRole = reply.role;
+  return userRole;
+};
+
+const getVoyages = async (imo) => {
+  const DUMMY_TOKEN = auth.jwt;
+  const response = await fetch(
+    `https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`,
+    {
+      headers: {
+        Authorization: "Bearer " + DUMMY_TOKEN,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+
+  const json = response.json();
+  return json;
+};
+
+const getReports = async (imo) => {
+  const response = await fetch(
+    `https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`,
     {
       headers: {
         Authorization: "Bearer " + auth.jwt,
@@ -96,15 +154,51 @@ const getShip = async () => {
       method: "GET",
     }
   );
-  const ship = await response.json();
-  console.log(ship[0]);
-  if (ship[0].shipspecs === null) {
-    addSpec = true;
-  } else {
-    addSpec = false;
-  }
-  return ship[0];
+
+  const json = response.json();
+  return json;
 };
 
+// Home Button
+const home = () => {
+  if (manager) {
+    router.push({ path: "/my-vessels" });
+  } else {
+    router.push({
+      path: `/vessels/${ship.name}/${ship.imo_reg}/overview`,
+    });
+  }
+};
+
+const role = await getUserRole();
+const manager = role === "manager";
+auth.updateUserRoleToken(user, role, jwt);
 const ship = await getShip();
+
+// console.log(asyncStore.voyages);
+// asyncStore.voyages = await getVoyages(ship.imo_reg);
+// console.log("Updated Voyages");
+// console.log(asyncStore.voyages);
+// asyncStore.reports = await getReports(ship.imo_reg); // uuid : arr of reports
+
+if (manager) {
+  router.push({ path: "/my-vessels" });
+} else {
+  localStorage.setItem("addSpec", ship.shipspecs === null);
+  const voyages = await getVoyages(ship.imo_reg);
+  const reports = await getReports(ship.imo_reg);
+  localStorage.setItem("voyages", JSON.stringify(voyages));
+  let output = {};
+  for (let i of reports) {
+    for (let j of voyages) {
+      if (i.uuid == j.uuid) {
+        output[i.uuid] = i.reports.reverse();
+      }
+    }
+  }
+  localStorage.setItem("output", JSON.stringify(output));
+  router.push({
+    path: `/vessels/${ship.name}/${ship.imo_reg}/overview`
+  });
+}
 </script>
