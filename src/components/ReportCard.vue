@@ -3,12 +3,12 @@
     class="relative flex h-24 items-center justify-between rounded-xl bg-gray-50 pt-5"
   >
     <img
-      v-if="report_type == 'DEPART'"
+      v-if="report_type == 'DSBY' || report_type == 'DCSP'"
       src="@/assets/icons/departure_header.svg"
       class="absolute left-0 top-0"
     />
     <img
-      v-if="report_type == 'ARRIVAL'"
+      v-if="report_type == 'ASBY' || report_type == 'AFWE'"
       src="@/assets/icons/arrival_header.svg"
       class="absolute left-0 top-0"
     />
@@ -18,7 +18,7 @@
       class="absolute left-0 top-0"
     />
     <img
-      v-if="report_type == 'BUNKER'"
+      v-if="report_type == 'BDN'"
       src="@/assets/icons/bunker_header.svg"
       class="absolute left-0 top-0"
     />
@@ -28,7 +28,7 @@
       class="absolute left-0 top-0"
     />
 
-    <div class="flex flex-col w-24 ml-5 mr-2">
+    <div class="flex flex-col w-20 ml-5 mr-2">
       <span class="text-12 text-gray-400">{{ $t("reportNo") }}</span>
       <span class="text-14 text-gray-700">{{ report_no }}</span>
     </div>

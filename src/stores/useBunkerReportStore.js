@@ -1,14 +1,15 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { useReportStore } from "./useReportStore";
+import { useVoyageStore } from "./useVoyageStore";
 
 export const useBunkerReportStore = defineStore("bunkerReport", () => {
-  const store = useReportStore();
+  const store = useVoyageStore();
 
   // Overview
   // TODO: fetch from backend
-  const reportNo = ref(store.reportNo);
-  const legNo = ref(store.legNo);
+  const bdnReportNo = ref(store.bdnReportNo);
+  const curLegNo = ref(store.curLegNo);
+  const curLoadingCondition = ref(store.curLoadingCondition);
   const voyageNo = ref(store.voyageNo);
   const reportingDate = ref("");
   const reportingTimeZone = ref("default");
@@ -18,7 +19,6 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
   const portName = ref("");
   const dateTime = ref("");
   const timeZone = ref("default");
-  const status = ref([]);
 
   // Received Bunker Detail
   const oil = ref("default");
@@ -50,8 +50,9 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
 
   return {
     // Overview
-    reportNo,
-    legNo,
+    bdnReportNo,
+    curLegNo,
+    curLoadingCondition,
     voyageNo,
     reportingDate,
     reportingTimeZone,
@@ -60,7 +61,6 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
     portName,
     dateTime,
     timeZone,
-    status,
     // Received Bunker Detail
     oil,
     density,

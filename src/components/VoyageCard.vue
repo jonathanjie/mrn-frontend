@@ -55,7 +55,7 @@
       <button
         v-for="category in categories"
         :key="category"
-        class="rounded-xl h-7 px-2 mr-4 text-14"
+        class="rounded-xl h-7 px-2 mr-4 text-14 min-w-fit"
         :class="
           filter === category
             ? 'border border-gradientblue bg-blue-50 text-blue-700'
@@ -66,8 +66,13 @@
         {{ $t(category) }}
       </button>
       <CustomButton
-        @click="$router.push({ name: 'add-report' })"
-        class="h-9 text-14 text-blue-700 rounded-xl ml-auto"
+        @click="
+          $router.push({
+            name: 'add-report',
+            state: { voyageDetails },
+          })
+        "
+        class="h-9 text-14 text-blue-700 rounded-xl ml-auto min-w-fit"
       >
         <template v-slot:content>+{{ $t("addNewReport") }}</template>
       </CustomButton>
@@ -75,7 +80,10 @@
 
     <!-- TODO: pagination + different start/dest depending on report type -->
     <div class="flex flex-col space-y-4">
-      <div v-for="(report, index) in filteredData" :key="index">
+      <div
+        v-for="(report, index) in filteredData.slice().reverse()"
+        :key="index"
+      >
         <ReportCard
           :report_no="report.report_no"
           :report_type="report.report_type"
@@ -124,6 +132,11 @@ const props = defineProps({
     type: Array,
     required: true,
     default: [],
+  },
+  voyageDetails: {
+    type: String,
+    required: true,
+    default: "",
   },
 });
 

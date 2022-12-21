@@ -10,17 +10,13 @@
       <div class="col-span-2 text-blue-700 p-3 border-r border-b">
         {{ $t("reportNo") }}
       </div>
-      <input
-        class="col-span-3 p-3 border-b text-gray-700 bg-gray-50"
-        disabled
-        v-model="report_no"
-      />
+      <div class="col-span-3 p-3 border-b text-gray-700 bg-gray-50">
+        {{ arrf_report_no }}
+      </div>
       <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("legNo") }}</div>
-      <input
-        class="col-span-3 p-3 text-gray-700 bg-gray-50"
-        disabled
-        v-model="leg_no"
-      />
+      <div class="col-span-3 p-3 text-gray-700 bg-gray-50">
+        {{ cur_leg_no }}
+      </div>
     </div>
     <div
       class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14"
@@ -28,11 +24,12 @@
       <div class="col-span-2 text-blue-700 p-3 border-l border-y">
         {{ $t("voyageNo") }}
       </div>
-      <input
-        class="flex col-span-3 p-3 border text-gray-700 bg-gray-50"
-        disabled
-        v-model="voyage_no"
-      />
+      <div class="flex items-center col-span-3 p-3 border">
+        <div class="text-gray-700 bg-gray-50">{{ voyage_no }}</div>
+        <MiniUnitDisplay class="ml-2 mr-auto">{{
+          cur_loading_condition
+        }}</MiniUnitDisplay>
+      </div>
       <div class="hidden xl:block bg-white col-span-2 row-span-1"></div>
       <input class="hidden xl:block bg-white col-span-3 p-3" disabled />
     </div>
@@ -123,11 +120,13 @@
 import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
 import { storeToRefs } from "pinia";
 import { textInputOptions, format } from "@/utils/helpers";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 
 const store = useArrivalFWEReportStore();
 const {
-  reportNo: report_no,
-  legNo: leg_no,
+  arrfReportNo: arrf_report_no,
+  curLegNo: cur_leg_no,
+  curLoadingCondition: cur_loading_condition,
   voyageNo: voyage_no,
   reportingDate: reporting_date,
   reportingTimeZone: reporting_time_zone,

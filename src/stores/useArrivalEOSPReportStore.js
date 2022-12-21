@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed, reactive } from "vue";
-import { useReportStore } from "./useReportStore";
+import { useVoyageStore } from "./useVoyageStore";
 
 const temp = {
   // Arrival and Departure
@@ -36,11 +36,12 @@ const temp = {
 export const useArrivalEOSPReportStore = defineStore(
   "arrivalEOSPReport",
   () => {
-    const store = useReportStore();
+    const store = useVoyageStore();
 
     // Overview
-    const reportNo = ref(store.reportNo);
-    const legNo = ref(store.legNo);
+    const arrsReportNo = ref(store.arrsReportNo);
+    const curLegNo = ref(store.curLegNo);
+    const curLoadingCondition = ref(store.curLoadingCondition);
     const voyageNo = ref(store.voyageNo);
     const reportingDate = ref("");
     const reportingTimeZone = ref("default");
@@ -160,6 +161,9 @@ export const useArrivalEOSPReportStore = defineStore(
     // Pilot Station -- Arrival
     const pilotArrName = ref("");
     const pilotArrDate = ref("");
+    const pilotArrDraftFwd = ref("");
+    const pilotArrDraftMid = ref("");
+    const pilotArrDraftAft = ref("");
     const pilotArrLatDir = ref("default");
     const pilotArrLatDegree = ref("");
     const pilotArrLatMinute = ref("");
@@ -300,8 +304,9 @@ export const useArrivalEOSPReportStore = defineStore(
 
     return {
       // Overview
-      reportNo,
-      legNo,
+      arrsReportNo,
+      curLegNo,
+      curLoadingCondition,
       voyageNo,
       reportingDate,
       reportingTimeZone,
@@ -343,6 +348,9 @@ export const useArrivalEOSPReportStore = defineStore(
       // Pilot Station -- Arrival
       pilotArrName,
       pilotArrDate,
+      pilotArrDraftAft,
+      pilotArrDraftMid,
+      pilotArrDraftFwd,
       pilotArrLatDir,
       pilotArrLatDegree,
       pilotArrLatMinute,

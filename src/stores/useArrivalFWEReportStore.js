@@ -1,13 +1,8 @@
 import { defineStore } from "pinia";
 import { ref, computed, reactive } from "vue";
-import { useReportStore } from "./useReportStore";
+import { useVoyageStore } from "./useVoyageStore";
 
 const temp = {
-  // Overview
-  reportNo: "2",
-  legNo: "2",
-  voyageNo: "2",
-
   // Distance & Time / Performance
   lastNoonReportTime: "2022-12-01T00:00:00Z",
   rupOfDeparture: "2022-11-21T00:00:00Z",
@@ -25,11 +20,12 @@ const temp = {
 };
 
 export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
-  const store = useReportStore();
+  const store = useVoyageStore();
 
   // Overview
-  const reportNo = ref(store.reportNo);
-  const legNo = ref(store.legNo);
+  const arrfReportNo = ref(store.arrfReportNo);
+  const curLegNo = ref(store.curLegNo);
+  const curLoadingCondition = ref(store.curLoadingCondition);
   const voyageNo = ref(store.voyageNo);
   const reportingDate = ref("");
   const reportingTimeZone = ref("default");
@@ -49,17 +45,15 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   // Pilot Station -- Arrival
   const pilotArrName = ref("");
   const pilotArrDate = ref("");
+  const pilotArrDraftFwd = ref("");
+  const pilotArrDraftMid = ref("");
+  const pilotArrDraftAft = ref("");
   const pilotArrLatDir = ref("default");
   const pilotArrLatDegree = ref("");
   const pilotArrLatMinute = ref("");
   const pilotArrLongDir = ref("default");
   const pilotArrLongDegree = ref("");
   const pilotArrLongMinute = ref("");
-
-  // Vessel Condition
-  const draftFwd = ref("");
-  const draftMid = ref("");
-  const draftAft = ref("");
 
   // Distance & Time (S/BY to F.W.E)
   const hours = computed(() =>
@@ -208,8 +202,9 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
 
   return {
     // Overview
-    reportNo,
-    legNo,
+    arrfReportNo,
+    curLegNo,
+    curLoadingCondition,
     voyageNo,
     reportingDate,
     reportingTimeZone,
@@ -227,16 +222,15 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     // Pilot Station -- Arrival
     pilotArrName,
     pilotArrDate,
+    pilotArrDraftFwd,
+    pilotArrDraftMid,
+    pilotArrDraftAft,
     pilotArrLatDir,
     pilotArrLatDegree,
     pilotArrLatMinute,
     pilotArrLongDir,
     pilotArrLongDegree,
     pilotArrLongMinute,
-    // Vessel Condition
-    draftFwd,
-    draftMid,
-    draftAft,
     // Distance & Time (S/BY to F.W.E)
     hours,
     distanceObs,

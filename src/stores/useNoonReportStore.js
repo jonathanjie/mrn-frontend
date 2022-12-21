@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
-import { useReportStore } from "./useReportStore";
+import { useVoyageStore } from "./useVoyageStore";
 
 // TODO: retrieve from backend or generate as needed
 // API /reports/latest
@@ -29,12 +29,13 @@ const temp = {
 };
 
 export const useNoonReportStore = defineStore("noonReport", () => {
-  const store = useReportStore();
+  const store = useVoyageStore();
 
   // Overview
   // TODO: fetch from backend
-  const reportNo = ref(store.reportNo);
-  const legNo = ref(store.legNo);
+  const noonReportNo = ref(store.noonReportNo);
+  const curLegNo = ref(store.curLegNo);
+  const curLoadingCondition = ref(store.curLoadingCondition);
   const voyageNo = ref(store.voyageNo);
   const reportingDate = ref("");
   const reportingTimeZone = ref("default");
@@ -308,9 +309,10 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const stoppageIsActive = ref(false);
 
   return {
-    //Overview
-    reportNo,
-    legNo,
+    // Overview
+    noonReportNo,
+    curLegNo,
+    curLoadingCondition,
     voyageNo,
     reportingDate,
     reportingTimeZone,

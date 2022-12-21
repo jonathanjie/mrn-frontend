@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
-import { useReportStore } from "./useReportStore";
+import { useVoyageStore } from "./useVoyageStore";
 
 // TODO: fetch from database
 const temp = {
@@ -23,14 +23,15 @@ const temp = {
 export const useHarbourPortReportStore = defineStore(
   "harbourPortReport",
   () => {
-    const store = useReportStore();
+    const store = useVoyageStore();
 
     // status var
     const reportType = ref("");
 
     // Harbour Port Overview
     const reportNo = ref(store.reportNo);
-    const legNo = ref(store.legNo);
+    const curLegNo = ref(store.curLegNo);
+    const curLoadingCondition = ref(store.curLoadingCondition);
     const voyageNo = ref(store.voyageNo);
     const reportingDate = ref("");
     const reportingTimeZone = ref("default");
@@ -190,7 +191,8 @@ export const useHarbourPortReportStore = defineStore(
       reportType,
       // Harbour Port Overview
       reportNo,
-      legNo,
+      curLegNo,
+      curLoadingCondition,
       voyageNo,
       reportingDate,
       reportingTimeZone,
