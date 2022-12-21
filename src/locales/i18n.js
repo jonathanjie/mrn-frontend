@@ -499,6 +499,7 @@ const i18n = createI18n({
       toGo: "To Go",
       foc: "FOC",
       rob: "ROB",
+      vessel: "Vessel",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser

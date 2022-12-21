@@ -258,11 +258,12 @@ const getPortCalls = async () => {
 };
 
 const portCalls = await getPortCalls();
-const latestSubmission = await getLatest();
+// Broken
+// const latestSubmission = await getLatest();
 const ship = await getShip();
 const payloadType = shipRef[ship.ship_type];
-const speed = latestSubmission.distanceperformancedata.speed_avg;
-const distanceToGo = latestSubmission.distanceperformancedata.distance_to_go;
+// const speed = latestSubmission.distanceperformancedata.speed_avg;
+// const distanceToGo = latestSubmission.distanceperformancedata.distance_to_go;
 const focDay = "99.99";
 const remainOnBoard = "0,000.0";
 </script>

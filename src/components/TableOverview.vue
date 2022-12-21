@@ -1,42 +1,76 @@
 <template>
   <div class="flex flex-col w-full bg-gray-100 rounded-lg mt-4 p-4">
     <div class="grid grid-cols-2 gap-x-3.5 w-full">
-      <div
-        class="grid grid-cols-2 gap-x-2.5 bg-blue-800 rounded-lg w-full p-2.5"
+      <!-- Speed/Distance To Go -->
+      <button
+        @click="selectedSpeed = true"
+        class="grid relative grid-cols-2 gap-x-2.5 rounded-lg w-full p-2.5 items-center"
+        :class="selectedSpeed ? 'bg-blue-800' : 'bg-white'"
       >
+        <img
+          src="@/assets/icons/Speed_Graph/selected.svg"
+          class="absolute h-5"
+        />
         <div
-          class="flex bg-gray rounded-lg justify-between px-3 py-4 items-center"
+          class="flex rounded-lg justify-between px-3 py-4 items-center"
+          :class="selectedSpeed ? 'bg-white bg-opacity-10' : 'bg-gray-100'"
         >
-          <span class="text-white text-12">Speed:</span>
-          <span class="text-white text-16 font-bold">14.57</span>
+          <span
+            class="text-12"
+            :class="selectedSpeed ? 'text-white' : 'text-gray-700'"
+            >{{ $t("speed") }}:</span
+          >
+          <span
+            class="text-16 font-bold"
+            :class="selectedSpeed ? 'text-white' : 'text-blue-600'"
+            >{{ speed }}</span
+          >
         </div>
         <div
-          class="flex bg-gray rounded-lg justify-between px-3 py-4 items-center"
+          class="flex rounded-lg justify-between px-3 py-4 items-center"
+          :class="selectedSpeed ? 'bg-white bg-opacity-10' : 'bg-gray-100'"
         >
-          <span class="text-white text-12">Distance to go:</span>
-          <span class="text-white text-16 font-bold">14.57</span>
+          <span
+            class="text-12"
+            :class="selectedSpeed ? 'text-white' : 'text-gray-700'"
+            >{{ $t("distanceToGo") }}</span
+          >
+          <span
+            class="text-16 font-bold"
+            :class="selectedSpeed ? 'text-white' : 'text-blue-500'"
+            >{{ distance }}</span
+          >
         </div>
-      </div>
-      <div
-        class="grid grid-cols-2 gap-x-2.5 bg-blue-800 rounded-lg w-full p-2.5"
+      </button>
+      <!-- FOC/ROB -->
+      <button
+        @click="selectedSpeed = false"
+        class="grid relative grid-cols-2 gap-x-2.5 rounded-lg w-full p-2.5 items-center"
+        :class="!selectedSpeed ? 'bg-blue-800' : 'bg-white'"
       >
-        <div
-          class="flex bg-gray rounded-lg justify-between px-3 py-4 items-center"
-        >
-          <span class="text-white text-12">FOC:</span>
-          <span class="text-white text-16 font-bold">14.57</span>
+        <img
+          src="@/assets/icons/Speed_Graph/selected.svg"
+          class="absolute h-5"
+        />
+        <div class="flex rounded-lg justify-between px-3 py-4 items-center">
+          <span
+            class="text-14"
+            :class="!selectedSpeed ? 'text-white' : 'text-gray-700'"
+            >{{ $t("foc") }}:</span
+          >
         </div>
-        <div
-          class="flex bg-gray rounded-lg justify-between px-3 py-4 items-center"
-        >
-          <span class="text-white text-12">ROB:</span>
-          <span class="text-white text-16 font-bold">14.57</span>
+        <div class="flex rounded-lg justify-between px-3 py-4 items-center">
+          <span
+            class="text-14"
+            :class="!selectedSpeed ? 'text-white' : 'text-gray-700'"
+            >{{ $t("rob") }}:</span
+          >
         </div>
-      </div>
+      </button>
     </div>
     <div class="flex flex-col bg-white w-full rounded-lg p-3.5 mt-3.5 mb-0.5">
       <TableOverviewRow :header="'Date'" :values="Object.keys(data)" />
-      <div class="flex flex-col w-full" v-if="false">
+      <div class="flex flex-col w-full" v-if="selectedSpeed">
         <TableOverviewRow :header="'Speed'" :values="speedList" />
         <TableOverviewRow
           :header="'Distance'"
@@ -58,7 +92,11 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import TableOverviewRow from "@/components/TableOverviewRow.vue";
+
+const speed = 14.57;
+const distance = 10.367;
 
 const data = {
   16_7: {
@@ -168,6 +206,7 @@ const data = {
   },
 };
 
+let selectedSpeed = ref(true);
 const speedList = [];
 const distanceOBSList = [];
 const distanceToGoList = [];
