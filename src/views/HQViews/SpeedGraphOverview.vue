@@ -86,10 +86,7 @@
               }}</span>
             </div>
           </div>
-
-          <div
-            class="hidden flex h-12 bg-gray-100 rounded-lg align-center p-px"
-          >
+          <div class="flex h-12 bg-gray-100 rounded-lg align-center p-px">
             <button
               class="py-2 px-3 rounded-lg m-1"
               :class="weeklyFlag ? 'bg-white shadow-md' : 'bg-transparent'"
@@ -114,16 +111,16 @@
             </button>
           </div>
         </div>
-        <div class="flex flex-row mt-6">
-          <TableOveview />
-          <!-- <SpeedSideNav
+        <TableOverview></TableOverview>
+        <!-- <div class="flex flex-row mt-6">
+          <SpeedSideNav
             :speed="speed"
             :focDay="focDay"
             :distanceToGo="distanceToGo"
             :remainOnBoard="remainOnBoard"
-          ></SpeedSideNav> -->
-          <!-- <SpeedGraphPlot></SpeedGraphPlot> -->
-        </div>
+          ></SpeedSideNav>
+          <SpeedGraphPlot></SpeedGraphPlot>
+        </div> -->
       </div>
       <!-- Port Calls -->
       <div class="flex mt-10 pt-10 flex-wrap">
@@ -152,7 +149,7 @@
 import { ref } from "vue";
 import SpeedSideNav from "./SpeedSideNav.vue";
 import SpeedGraphPlot from "./SpeedGraphPlot.vue";
-import { TableOveview } from "@/components/TableOverview.vue";
+import TableOverview from "@/components/TableOverview.vue";
 import PortCard from "@/components/PortCard.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 import SpeedGraphReminders from "./SpeedGraphReminders.vue";
