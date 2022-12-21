@@ -60,6 +60,16 @@ export const useDepartureSBYReportStore = defineStore(
     const ballast = ref("");
     const displacement = ref("");
 
+    // Pilot Station - Departure
+    const pilotDepName = ref("");
+    const pilotDepDate = ref("");
+    const pilotDepLatDir = ref("default");
+    const pilotDepLatDegree = ref("");
+    const pilotDepLatMinute = ref("");
+    const pilotDepLongDir = ref("default");
+    const pilotDepLongDegree = ref("");
+    const pilotDepLongMinute = ref("");
+
     // Consumption And Condition
     const lsfoBreakdown = reactive({
       me: "",
@@ -357,6 +367,15 @@ export const useDepartureSBYReportStore = defineStore(
       gm,
       ballast,
       displacement,
+      // Pilot station - Departure
+      pilotDepName,
+      pilotDepDate,
+      pilotDepLatDir,
+      pilotDepLatDegree,
+      pilotDepLatMinute,
+      pilotDepLongDir,
+      pilotDepLongDegree,
+      pilotDepLongMinute,
       // Consumption And Condition
       lsfoTotalConsumption,
       lsfoRob,

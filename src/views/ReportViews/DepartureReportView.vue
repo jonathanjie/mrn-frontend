@@ -14,6 +14,9 @@
         <!-- Vessel Condition at Departure -->
         <DepartureVesselCondition />
 
+        <!-- Pilot Station - Departure -->
+        <DepartureSBYPilotStation />
+
         <!-- Consumption & Condition (departure ver.) -->
         <DepartureSBYConsumption />
 
@@ -53,7 +56,7 @@
         <DepartureAndDestinationCOSP />
 
         <!-- Pilot Station - Departure -->
-        <DeparturePilotStationDeparture />
+        <DepartureCOSPPilotStation />
 
         <!-- Pilot Station - Arrival -->
         <DeparturePilotStationArrival />
@@ -108,7 +111,8 @@ import DepartureCOSPConsumption from "@/components/Reports/DepartureReport/Depar
 import DepartureSBYTotalConsumption from "@/components/Reports/DepartureReport/DepartureSBYTotalConsumption.vue";
 import DepartureSBYConsumption from "@/components/Reports/DepartureReport/DepartureSBYConsumption.vue";
 import DeparturePilotStationArrival from "@/components/Reports/DepartureReport/DeparturePilotStationArrival.vue";
-import DeparturePilotStationDeparture from "@/components/Reports/DepartureReport/DeparturePilotStationDeparture.vue";
+import DepartureCOSPPilotStation from "@/components/Reports/DepartureReport/DepartureCOSPPilotStation.vue";
+import DepartureSBYPilotStation from "@/components/Reports/DepartureReport/DepartureSBYPilotStation.vue";
 import DepartureDistanceAndTime from "@/components/Reports/DepartureReport/DepartureDistanceAndTime.vue";
 import DepartureBudgetTransOcean from "@/components/Reports/DepartureReport/DepartureBudgetTransOcean.vue";
 import DepartureSBYOverview from "@/components/Reports/DepartureReport/DepartureSBYOverview.vue";
