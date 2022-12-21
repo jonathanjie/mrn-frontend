@@ -63,11 +63,8 @@
         <!-- Finish With Engine -->
         <ArrivalFinishWithEngine></ArrivalFinishWithEngine>
 
-        <!-- Pilot station - arrival -->
+        <!-- Pilot Station - Arrival -->
         <ArrivalFWEPilotStation />
-
-        <!-- Vessel condition -->
-        <ArrivalVesselCondition></ArrivalVesselCondition>
 
         <!-- Distance & Time (S/BY to F.W.E) -->
         <ArrivalFWEDistanceAndTime />
@@ -121,7 +118,6 @@ import ArrivalFWEPilotStation from "@/components/Reports/ArrivalReport/ArrivalFW
 import ArrivalEOSPConsumption from "@/components/Reports/ArrivalReport/ArrivalEOSPConsumption.vue";
 import ArrivalFWEConsumption from "@/components/Reports/ArrivalReport/ArrivalFWEConsumption.vue";
 import ArrivalFinishWithEngine from "@/components/Reports/ArrivalReport/ArrivalFinishWithEngine.vue";
-import ArrivalVesselCondition from "@/components/Reports/ArrivalReport/ArrivalVesselCondition.vue";
 import ArrivalEOSPSummary from "@/components/Reports/ArrivalReport/ArrivalEOSPSummary.vue";
 import ArrivalFWESummary from "@/components/Reports/ArrivalReport/ArrivalFWESummary.vue";
 import ArrivalEOSPOverview from "@/components/Reports/ArrivalReport/ArrivalEOSPOverview.vue";

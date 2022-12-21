@@ -30,23 +30,21 @@
         <slot>{{ $t("pilotStationArrival") }}</slot>
       </span>
     </div>
-    <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border">
-      <div
-        class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
-      >
+    <div class="col-span-2 lg:col-span-1 grid grid-cols-5">
+      <div class="col-span-2 text-blue-700 p-3 border bg-gray-50 text-14">
         {{ $t("name") }}
       </div>
       <input
         v-model="pilot_arr_name"
         :placeholder="$t('inputName')"
-        class="col-span-3 p-3 pl-4 border-b bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-3 p-3 pl-4 border-y border-r bg-white text-14 text-gray-700 focus:outline-0"
       />
-      <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
+      <div class="col-span-2 text-blue-700 p-3 border-x bg-gray-50 text-14">
         {{ $t("dateAndTime") }}
       </div>
       <DatePicker
         v-model="pilot_arr_date"
-        class="col-span-3"
+        class="col-span-3 border-r"
         textInput
         :textInputOptions="textInputOptions"
         :format="format"
@@ -57,8 +55,56 @@
           <img src="" />
         </template>
       </DatePicker>
+      <input
+        class="hidden xl:block bg-white col-span-5 p-3 border-t"
+        disabled
+      />
     </div>
-    <div></div>
+    <div
+      class="col-span-2 lg:col-span-1 grid grid-cols-10 border-t bg-gray-50 text-14"
+    >
+      <span
+        class="col-span-4 row-span-3 text-blue-700 border-x p-3 py-16 my-auto self-center"
+        >{{ $t("draft") }}</span
+      >
+      <div class="col-span-1 text-blue-700 p-3 border-b my-auto self-center">
+        {{ $t("fwd") }}
+      </div>
+      <div class="flex col-span-5 p-2 pl-4 border-b border-x bg-white">
+        <input
+          v-model="pilot_arr_draft_fwd"
+          @keypress="preventNaN($event, pilot_arr_draft_fwd)"
+          placeholder="00.00"
+          class="w-24 text-gray-700 focus:outline-0"
+        />
+        <MiniUnitDisplay>M</MiniUnitDisplay>
+      </div>
+      <div class="col-span-1 text-blue-700 p-3 border-b my-auto self-center">
+        {{ $t("mid") }}
+      </div>
+      <div class="flex col-span-5 p-2 pl-4 border-b border-x bg-white">
+        <input
+          v-model="pilot_arr_draft_mid"
+          @keypress="preventNaN($event, pilot_arr_draft_mid)"
+          placeholder="00.00"
+          class="w-24 text-gray-700 focus:outline-0"
+        />
+        <MiniUnitDisplay>M</MiniUnitDisplay>
+      </div>
+      <div class="col-span-1 text-blue-700 p-3 my-auto self-center">
+        {{ $t("aft") }}
+      </div>
+      <div class="flex col-span-5 p-2 pl-4 border-x bg-white">
+        <input
+          v-model="pilot_arr_draft_aft"
+          @keypress="preventNaN($event, pilot_arr_draft_aft)"
+          placeholder="00.00"
+          class="w-24 text-gray-700 focus:outline-0"
+        />
+        <MiniUnitDisplay>M</MiniUnitDisplay>
+      </div>
+      <div class="col-span-10 border-t"></div>
+    </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
       <span
         class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
@@ -129,12 +175,16 @@ import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
 import { ref } from "vue";
 import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
 import { storeToRefs } from "pinia";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 
 const isActive = ref(false);
 const store = useArrivalFWEReportStore();
 const {
   pilotArrName: pilot_arr_name,
   pilotArrDate: pilot_arr_date,
+  pilotArrDraftFwd: pilot_arr_draft_fwd,
+  pilotArrDraftMid: pilot_arr_draft_mid,
+  pilotArrDraftAft: pilot_arr_draft_aft,
   pilotArrLatDir: pilot_arr_lat_dir,
   pilotArrLatDegree: pilot_arr_lat_degree,
   pilotArrLatMinute: pilot_arr_lat_minute,
