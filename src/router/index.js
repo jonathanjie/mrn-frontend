@@ -10,7 +10,7 @@ import ArrivalReportView from "../views/ReportViews/ArrivalReportView.vue";
 import DepartureReportView from "../views/ReportViews/DepartureReportView.vue";
 import BunkerReportView from "../views/ReportViews/BunkerReportView.vue";
 import HarbourPortReportView from "../views/ReportViews/HarbourPortReportView.vue";
-import DetailedReportView from "../views/ReportViews/ReportdDetailsView/ReportDetailsView.vue";
+import DetailedReportView from "../views/ReportViews/ReportDetailsView/ReportDetailsView.vue";
 
 import NotFound from "../views/NotFound.vue";
 
