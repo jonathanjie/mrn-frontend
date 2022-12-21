@@ -22,44 +22,6 @@
           class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
         />
       </div>
-      <div class="grid grid-cols-5 border bg-gray-50 text-14 mt-5">
-        <div class="col-span-2 row-span-2 text-blue-700 p-3 border-r">
-          {{ $t("status") }}
-        </div>
-        <div
-          class="col-span-3 bg-white flex flex-col space-y-2 p-3 text-gray-700"
-        >
-          <div class="flex align-center space-x-2">
-            <input
-              type="checkbox"
-              id="anchoringOutLimit"
-              value="anchoringOutLimit"
-              v-model="status"
-            />
-            <label for="anchoringOutLimit">{{ $t("anchoringOutLimit") }}</label>
-          </div>
-          <div class="flex align-center space-x-2">
-            <input
-              type="checkbox"
-              id="anchoringInnerLimit"
-              value="anchoringInnerLimit"
-              v-model="status"
-            />
-            <label for="anchoringInnerLimit">{{
-              $t("anchoringInnerLimit")
-            }}</label>
-          </div>
-          <div class="flex align-center space-x-2">
-            <input
-              type="checkbox"
-              id="berthing"
-              value="berthing"
-              v-model="status"
-            />
-            <label for="berthing">{{ $t("berthing") }}</label>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="col-span-1">
@@ -150,6 +112,5 @@ const {
   portName: port_name,
   dateTime: date_time,
   timeZone: time_zone,
-  status: status,
 } = storeToRefs(store);
 </script>

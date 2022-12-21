@@ -90,13 +90,14 @@ const i18n = createI18n({
       consumptionAndConditionHarbourInPortInTotal:
         "Consumption & Condition (Harbour/In Port in Total)",
       consumptionAndConditionLastReportEventNoon:
-        "Consumption & Condition (Last Report - Event/Noon)",
+        "Consumption & Condition (Last Report to Event/Noon)",
       consumptionAndConditionNoonToNoon:
         "Consumption & Condition (Noon to Noon)",
-      consumptionAndConditionNoonToSby: "Consumption & Condition (Noon - S/BY)",
-      consumptionAndConditionSbyToFwe: "Consumption & Condition (S/BY - F.W.E)",
-      consumptionAndConditionSbyToRup:
-        "Consumption & Condition - (S/BY to R/UP)",
+      consumptionAndConditionNoonToSby:
+        "Consumption & Condition (Noon to S/BY)",
+      consumptionAndConditionSbyToFwe:
+        "Consumption & Condition (S/BY to F.W.E)",
+      consumptionAndConditionSbyToRup: "Consumption & Condition (S/BY to R/UP)",
       container: "Container Ship",
       correction: "Correction",
       cosp: "COSP or R/UP",
@@ -319,7 +320,7 @@ const i18n = createI18n({
       selectionOfOil: "Selection of Oil",
       sendReport: "Send report",
       setRPMofME: "Set RPM of M/E",
-      sgAt15: "S.G @15/4°C",
+      sgAt15: "S.G at 15/4°C",
       shiftingStart: "Shifting start",
       shiftingEnd: "Shifting end",
       ship: "SHIP",

@@ -42,7 +42,7 @@
         <MiniUnitDisplay>HRS</MiniUnitDisplay>
       </div>
       <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50">
-        {{ $t("distanceOBS") }}
+        {{ $t("distanceByObservation") }}
       </div>
       <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
         <input

@@ -1,9 +1,14 @@
 <template>
-  <div class="grid bg-white rounded-lg p-5 gap-4 shadow-card">
+  <div
+    class="grid bg-white rounded-lg p-5 gap-4 shadow-card border border-yellow-500"
+  >
     <div>
       <div class="flex items-center">
-        <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
-        <span class="text-16 text-blue-700">
+        <img
+          src="@/assets/icons/selected_yellow_gradient.svg"
+          class="h-5 w-5"
+        />
+        <span class="text-16 text-yellow-700">
           <slot>{{ $t("consumptionAndCondition") }}</slot>
         </span>
       </div>
