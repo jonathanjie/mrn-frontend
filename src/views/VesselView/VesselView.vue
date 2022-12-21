@@ -21,7 +21,7 @@
             "
             >{{ $t("overview") }}</router-link
           >
-          <router-link
+          <!-- <router-link
             to="submitted"
             class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
             :class="
@@ -40,7 +40,7 @@
                 : ''
             "
             >{{ $t("draft") }}</router-link
-          >
+          > -->
         </div>
       </div>
       <!-- Disabled modal until finilized design -->
