@@ -27,7 +27,7 @@
 
     <!-- Consumption & Condition -->
     <HarbourPortConsumption>{{
-      $t("consumptionAndConditionLastReportEventNoon")
+      $t("consumptionAndConditionLastReportToEventNoon")
     }}</HarbourPortConsumption>
 
     <!-- Save and Send -->

@@ -89,8 +89,10 @@ const i18n = createI18n({
       consumptionAndCondition: "Consumption & Condition",
       consumptionAndConditionHarbourInPortInTotal:
         "Consumption & Condition (Harbour/In Port in Total)",
-      consumptionAndConditionLastReportEventNoon:
+      consumptionAndConditionLastReportToEventNoon:
         "Consumption & Condition (Last Report to Event/Noon)",
+      consumptionAndConditionLastReportToSby:
+        "Consumption & Condition (Last Report to S/BY)",
       consumptionAndConditionNoonToNoon:
         "Consumption & Condition (Noon to Noon)",
       consumptionAndConditionNoonToSby:
@@ -202,7 +204,6 @@ const i18n = createI18n({
       inputOtherPlannedOperation: "Input other planned operation",
       inputRemarks: "Input remarks",
       laden: "Laden",
-      lastReportToSbyForDeparture: "Last report to S/BY for departure",
       latitude: "Latitude",
       legNo: "Leg no.",
       lng: "LNG",

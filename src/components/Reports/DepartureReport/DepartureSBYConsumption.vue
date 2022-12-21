@@ -4,12 +4,9 @@
       <div class="flex items-center">
         <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
         <span class="text-16 text-blue-700">
-          <slot>{{ $t("consumptionAndCondition") }}</slot>
+          <slot>{{ $t("consumptionAndConditionLastReportToSby") }}</slot>
         </span>
       </div>
-      <span class="text-14 text-gray-600 mt-2">{{
-        $t("lastReportToSbyForDeparture")
-      }}</span>
     </div>
 
     <div class="grid divide-y divide-dashed gap-8">
@@ -533,7 +530,7 @@
 
 <script setup>
 import { preventNaN } from "@/utils/helpers";
-import { ref, reactive, computed, defineProps } from "vue";
+import { ref } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 import { storeToRefs } from "pinia";
