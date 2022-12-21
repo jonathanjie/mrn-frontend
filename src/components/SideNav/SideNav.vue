@@ -89,11 +89,6 @@ const jwt = await getAccessTokenSilently();
 
 const asyncStore = useAsyncStore();
 const auth = useAuthStore();
-<<<<<<< HEAD
-// const manager = auth.role.localeCompare("manager") == 0;
-const manager = true;
-=======
->>>>>>> 1dc5101e34fed4d0d9df33d65857c2fb7a4508f2
 const getShip = async () => {
   const response = await fetch(
     // Assuming that ships api can only provide 1 ship
@@ -198,7 +193,7 @@ if (manager) {
   }
   localStorage.setItem("output", JSON.stringify(output));
   router.push({
-    path: `/vessels/${ship.name}/${ship.imo_reg}/overview`
+    path: `/vessels/${ship.name}/${ship.imo_reg}/overview`,
   });
 }
 </script>
