@@ -1,11 +1,16 @@
 // work in progress to standardise varible names across components
 export const REPORT_CONSTANTS = {
   type: {
-    noon: "NOON",
-    departure: "DEP",
-    arrival: "ARR",
-    bunker: "BUNKER",
-    harbourPort: "HARBOUR_PORT",
+    NOON: "NOON",
+    DEP_SBY: "DEPS",
+    DEP_COSP_RUP: "DEPR",
+    ARR_SBY_EOSP: "ARRS",
+    ARR_FWE: "ARRF",
+    BUNKER: "BDN",
+    EVENT_PORT: "EVNTP",
+    EVENT_COASTAL: "EVNTC",
+    NOON_PORT: "NOONP",
+    NOON_COASTAL: "NOONC",
   },
   SRID: "4326",
   route: "route",

@@ -115,7 +115,7 @@ const {
 
 const sendReport = async () => {
   let REPORT = {
-    report_type: REPORT_CONSTANTS.type.bunker,
+    report_type: REPORT_CONSTANTS.type.BUNKER,
     voyage: 1, // TODO: fetch from db
     leg_num: 1, // TODO: fetch from db
     report_tz: timeZone.value, // FIND TIMEZONE FROM PORT
