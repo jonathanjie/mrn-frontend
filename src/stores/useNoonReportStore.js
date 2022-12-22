@@ -136,7 +136,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const speedSinceNoon = computed(() =>
     distanceObsSinceNoon.value && hoursSinceNoon.value
       ? +(Number(distanceObsSinceNoon.value) / hoursSinceNoon.value).toFixed(2)
-      : ""
+      : 0
   );
   const rpmSinceNoon = computed(() =>
     revolutionCount.value && hoursSinceNoon.value
@@ -144,7 +144,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
           (Number(revolutionCount.value) - temp.revolutionCountYesterday) /
           (hoursSinceNoon.value * 60)
         ).toFixed(1)
-      : ""
+      : 0
   );
   const slipSinceNoon = computed(() =>
     distanceEngSinceNoon.value && distanceObsSinceNoon.value
@@ -153,7 +153,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
           ((distanceEngSinceNoon.value - Number(distanceObsSinceNoon.value)) /
             distanceEngSinceNoon.value)
         ).toFixed(2)
-      : ""
+      : 0
   );
   const speedAvg = computed(() =>
     speedSinceNoon.value
@@ -161,7 +161,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
           (temp.voyageAvgSpeed + speedSinceNoon.value) /
           (temp.previousNoonReportCount + 1)
         ).toFixed(2)
-      : ""
+      : 0
   );
   const rpmAvg = computed(() =>
     rpmSinceNoon.value
@@ -169,7 +169,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
           (temp.voyageAvgRpm + rpmSinceNoon.value) /
           (temp.previousNoonReportCount + 1)
         ).toFixed(1)
-      : ""
+      : 0
   );
   const slipAvg = computed(() =>
     slipSinceNoon.value
@@ -177,7 +177,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
           (temp.voyageAvgSlip + slipSinceNoon.value) /
           (temp.previousNoonReportCount + 1)
         ).toFixed(2)
-      : ""
+      : 0
   );
 
   // Consumption and Condition
@@ -284,8 +284,6 @@ export const useNoonReportStore = defineStore("noonReport", () => {
 
   const freshwaterConsumed = ref("");
   const freshwaterEvaporated = ref("");
-  const freshwaterReceived = ref("");
-  const freshwaterDischarged = ref("");
   const freshwaterChange = computed(
     () => +(freshwaterEvaporated.value - freshwaterConsumed.value).toFixed(2)
   );
@@ -394,8 +392,6 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     lubricatingOilDataCorrection,
     freshwaterConsumed,
     freshwaterEvaporated,
-    freshwaterReceived,
-    freshwaterDischarged,
     freshwaterChange,
     freshwaterRob,
     // Stoppage or Reduction RPM
