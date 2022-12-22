@@ -450,6 +450,10 @@ const sendReport = async () => {
     console.log(data);
     if (response.ok) {
       router.push({ name: "vessel-overview" });
+      // need to update noonReportNo and other voyage details
+      store.$reset();
+    } else {
+      window.alert(JSON.stringify(data, null, 2));
     }
   } catch (error) {
     console.log(error);
