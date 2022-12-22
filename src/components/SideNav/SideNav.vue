@@ -80,14 +80,13 @@
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { useAsyncStore } from "@/stores/useAsyncStore";
 import { useAuth0 } from "@auth0/auth0-vue";
 
 const router = useRouter();
 const { user, getAccessTokenSilently } = useAuth0();
 const jwt = await getAccessTokenSilently();
 
-const asyncStore = useAsyncStore();
+// const asyncStore = useAsyncStore();
 const auth = useAuthStore();
 
 const getShip = async () => {
@@ -102,13 +101,18 @@ const getShip = async () => {
       method: "GET",
     }
   );
-  const ship = await response.json();
-  return ship[0];
+  let output = {};
+  if (response.status === 200) {
+    output = await response.json();
+  } else {
+    console.log("Error at getShip call, with error code", response.status);
+  }
+  return output[0];
 };
 
 const getUserRole = async () => {
   const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/user`,
+    `https://testapi.marinachain.io/marinanet/user/`,
     {
       headers: {
         Authorization: "Bearer " + jwt,
@@ -117,26 +121,34 @@ const getUserRole = async () => {
       method: "GET",
     }
   );
-  const reply = await response.json();
-  const userRole = reply.role;
-  return userRole;
+  let output = "";
+  if (response.status === 200) {
+    const reply = await response.json();
+    output = reply.role;
+  } else {
+    console.log("Error at getUserRole call, with error code", response.status);
+  }
+  return output;
 };
 
 const getVoyages = async (imo) => {
-  const DUMMY_TOKEN = auth.jwt;
   const response = await fetch(
     `https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`,
     {
       headers: {
-        Authorization: "Bearer " + DUMMY_TOKEN,
+        Authorization: "Bearer " + auth.jwt,
         "Content-Type": "application/json",
       },
       method: "GET",
     }
   );
-
-  const json = response.json();
-  return json;
+  let output = {};
+  if (response.status === 200) {
+    output = await response.json();
+  } else {
+    console.log("Error at getVoyages call, with error code", response.status);
+  }
+  return output;
 };
 
 const getReports = async (imo) => {
@@ -150,9 +162,13 @@ const getReports = async (imo) => {
       method: "GET",
     }
   );
-
-  const json = response.json();
-  return json;
+  let output = {};
+  if (response.status === 200) {
+    output = await response.json();
+  } else {
+    console.log("Error at getReports call, with error code", response.status);
+  }
+  return output;
 };
 
 // Home Button
@@ -168,14 +184,9 @@ const home = () => {
 
 const role = await getUserRole();
 const manager = role === "manager";
+console.log("Sidebar loads");
 auth.updateUserRoleToken(user, role, jwt);
 const ship = await getShip();
-
-// console.log(asyncStore.voyages);
-// asyncStore.voyages = await getVoyages(ship.imo_reg);
-// console.log("Updated Voyages");
-// console.log(asyncStore.voyages);
-// asyncStore.reports = await getReports(ship.imo_reg); // uuid : arr of reports
 
 if (manager) {
   router.push({ path: "/my-vessels" });

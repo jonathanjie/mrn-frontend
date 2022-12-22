@@ -89,6 +89,7 @@ import { useAuthStore } from "@/stores/useAuthStore";
 const { user, logout } = useAuth0();
 const auth = useAuthStore();
 
+console.log("WebHeader loads");
 let isExpanded = ref(false);
 
 function mouseEnter() {

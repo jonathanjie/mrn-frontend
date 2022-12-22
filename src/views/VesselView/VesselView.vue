@@ -79,7 +79,6 @@ const props = defineProps({
 });
 
 let showModal = localStorage.getItem("addSpec") == true;
-console.log(showModal);
 
 // Backend Data
 const voyageData = {

@@ -1,6 +1,8 @@
 <template>
   <div class="flex mx-12 mt-6 flex-wrap">
-    <div class="flex relative rounded-xl bg-white h-32 w-full shadow-md">
+    <div
+      class="flex relative rounded-xl bg-white h-32 w-full shadow-md items-center"
+    >
       <div class="flex flex-col">
         <div class="flex flex-row items-center justify-evenly p-5">
           <img
@@ -38,7 +40,7 @@
             }}</span>
           </div>
         </div>
-        <div
+        <!-- <div
           class="absolute bottom-0 left-0 flex flex-row pl-5 py-2.5 w-full items-center rounded-b-xl bg-gradient-to-r from-white to-red-50"
         >
           <div class="rounded-2xl bg-green-50 px-1.5 pl-2.5 mr-3.5">
@@ -70,7 +72,7 @@
             />
             <span class="text-12 text-red-500">{{ message }}</span>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="divide-y divide-solid w-full">
@@ -111,7 +113,7 @@
             </button>
           </div>
         </div>
-        <TableOverview></TableOverview>
+        <TableOverview :data="data" />
         <!-- <div class="flex flex-row mt-6">
           <SpeedSideNav
             :speed="speed"
@@ -147,12 +149,9 @@
 
 <script setup>
 import { ref } from "vue";
-import SpeedSideNav from "./SpeedSideNav.vue";
-import SpeedGraphPlot from "./SpeedGraphPlot.vue";
 import TableOverview from "@/components/TableOverview.vue";
 import PortCard from "@/components/PortCard.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
-import SpeedGraphReminders from "./SpeedGraphReminders.vue";
 
 let weeklyFlag = ref(true);
 
@@ -161,15 +160,8 @@ const props = defineProps({
   imo: String,
 });
 const auth = useAuthStore();
-
-const shipCapacity = "300,000";
-const shipFlag = "Panama";
-const previousCIIGrade = "A";
-const eexiGrade = "2.03/2.2";
-
 const message =
   "Low CII grade message goes here. [Provide action to follow up]";
-const date = "15 Jan 2023, 11:03PM";
 
 // const PortCalls = [
 //   {
@@ -194,7 +186,6 @@ const date = "15 Jan 2023, 11:03PM";
 //     arrivalTime: "27 Apr 2022, 04:13 UTC",
 //   },
 // ];
-
 const shipRef = {
   BULK: "Bulk Carrier",
   GAS: "Gas Carrier",
@@ -225,25 +216,9 @@ const getShip = async () => {
   return json;
 };
 
-const getLatest = async () => {
+const getLegs = async () => {
   const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/ships/${props.imo}/latest-report`,
-    {
-      headers: {
-        Authorization: "Bearer " + auth.jwt,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-
-  const json = await response.json();
-  return json;
-};
-
-const getPortCalls = async () => {
-  const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/ships/${props.imo}/most-recent-distinct-routes/`,
+    `https://testapi.marinachain.io/marinanet/ships/${props.imo}/legs/`,
     {
       headers: {
         Authorization: "Bearer " + auth.jwt,
@@ -257,13 +232,13 @@ const getPortCalls = async () => {
   return portCalls;
 };
 
-const portCalls = await getPortCalls();
-// Broken
-// const latestSubmission = await getLatest();
 const ship = await getShip();
+const shipFlag = ship.shipspecs.flag;
 const payloadType = shipRef[ship.ship_type];
-// const speed = latestSubmission.distanceperformancedata.speed_avg;
-// const distanceToGo = latestSubmission.distanceperformancedata.distance_to_go;
-const focDay = "99.99";
-const remainOnBoard = "0,000.0";
+const portCalls = await getLegs();
+const date = new Date(portCalls[0].arrival_date).toUTCString();
+
+const shipCapacity = "300,000";
+const previousCIIGrade = "A";
+const eexiGrade = "2.03/2.2";
 </script>
