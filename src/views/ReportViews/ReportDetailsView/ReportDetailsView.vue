@@ -1,9 +1,10 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeMount } from "vue";
 import { useReportDetailsStore } from "./store/useReportDetailsStore";
 import router from "@/router";
 import { defineProps } from "vue";
 import { Report } from "@/constants";
+import { storeToRefs } from "pinia";
 import NoonReportView from "./components/NoonReport/NoonReportView.vue";
 
 // Props
@@ -16,11 +17,17 @@ const props = defineProps({
 
 // Store
 const store = useReportDetailsStore();
+const {report:reportRef} = storeToRefs(store)
 const { getReport } = store;
 
 // API calls
 getReport(props.uuid);
-const report = ref(store.report).value;
+
+
+// onMounted(() => {
+//   getReport(props.uuid);
+// });
+const report = reportRef.value;
 console.log("Report Type: ", report.report_type);
 const reportType = report.report_type;
 
@@ -28,9 +35,11 @@ const reportType = report.report_type;
 const handleBack = () => {
   router.push({ name: "vessel-overview" });
 };
+
 </script>
 
 <template>
+<div v-if="report">
   <button @click="handleBack">
     <img
       src="@/assets/icons/back_arrow.svg"
@@ -78,4 +87,5 @@ const handleBack = () => {
   <div>{{ report }}</div>
 
   <div>HELLO WORLD</div>
+</div>  
 </template>

@@ -66,6 +66,7 @@ const report_sent = true; // TODO: always true for MVP, no save function impleme
     @click="handleClick"
     class="relative flex h-24 items-center justify-between rounded-xl bg-gray-50 pt-5"
   >
+    <!-- <div>{{ props.uuid }}</div> -->
     <img
       v-if="
         ReportTypeToDisplay[props.report_type] == Report.type.DEP_COSP_RUP ||
