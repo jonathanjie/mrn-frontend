@@ -45,12 +45,8 @@
             <option selected disabled value="default">
               {{ $t("selectTimeZone") }}
             </option>
-            <option
-              v-for="{ offset, label } in TIMEZONES"
-              :key="offset"
-              :value="offset"
-            >
-              {{ label }}
+            <option v-for="(val, key) in TIMEZONES" :key="val" :value="val">
+              {{ key }}
             </option>
           </select>
         </div>
@@ -114,12 +110,8 @@
             <option selected disabled value="default">
               {{ $t("selectTimeZone") }}
             </option>
-            <option
-              v-for="{ offset, label } in TIMEZONES"
-              :key="offset"
-              :value="offset"
-            >
-              {{ label }}
+            <option v-for="(val, key) in TIMEZONES" :key="val" :value="val">
+              {{ key }}
             </option>
           </select>
         </div>
