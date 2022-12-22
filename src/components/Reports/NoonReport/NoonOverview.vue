@@ -138,7 +138,7 @@
           {{ $t("dateAndTime") }}
         </div>
         <DatePicker
-          v-model="route_departure_date"
+          v-model="route_departure_date_time"
           class="col-span-3 text-gray-700 bg-gray-50 border-b"
           textInput
           :textInputOptions="textInputOptions"
@@ -228,19 +228,46 @@
         <div class="col-span-2 text-blue-700 p-3 border-r border-b">
           {{ $t("estDateAndTime") }}
         </div>
-        <DatePicker
-          v-model="route_arrival_date"
-          class="col-span-3 border-b"
-          textInput
-          :textInputOptions="textInputOptions"
-          :format="format"
-          :modelValue="string"
-          :placeholder="$t('selectDateAndTime')"
+        <div
+          class="flex items-center col-span-3 border-b"
+          :class="dateEditIsDisabled ? 'bg-gray-50' : 'bg-white'"
         >
-          <template #input-icon>
-            <img src="" />
-          </template>
-        </DatePicker>
+          <DatePicker
+            v-if="!route_arrival_date_time_edited"
+            v-model="route_arrival_date_time_from_utc"
+            class="flex-grow"
+            :disabled="dateEditIsDisabled"
+            textInput
+            :textInputOptions="textInputOptions"
+            :format="format"
+            :modelValue="string"
+            :placeholder="$t('selectDateAndTime')"
+          >
+            <template #input-icon>
+              <img src="" />
+            </template>
+          </DatePicker>
+          <DatePicker
+            v-else
+            v-model="route_arrival_date_time"
+            class="flex-grow"
+            :disabled="dateEditIsDisabled"
+            textInput
+            :textInputOptions="textInputOptions"
+            :format="format"
+            :modelValue="string"
+            :placeholder="$t('selectDateAndTime')"
+          >
+            <template #input-icon>
+              <img src="" />
+            </template>
+          </DatePicker>
+          <img
+            src="@/assets/icons/edit.svg"
+            @click="toggle"
+            class="mx-2 h-4 w-4 cursor-pointer"
+          />
+        </div>
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("timeZone") }}
         </div>
@@ -307,6 +334,14 @@ import { textInputOptions, format } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
+import { ref } from "vue";
+
+const dateEditIsDisabled = ref(true);
+
+const toggle = () => {
+  dateEditIsDisabled.value = !dateEditIsDisabled.value;
+  route_arrival_date_time_edited.value = true;
+};
 
 const store = useNoonReportStore();
 const {
@@ -318,11 +353,13 @@ const {
   reportingTimeZone: reporting_time_zone,
   routeDeparturePortCountry: route_departure_port_country,
   routeDeparturePortName: route_departure_port_name,
-  routeDepartureDate: route_departure_date,
+  routeDepartureDateTime: route_departure_date_time,
   routeDepartureTimeZone: route_departure_time_zone,
   routeArrivalPortCountry: route_arrival_port_country,
   routeArrivalPortName: route_arrival_port_name,
-  routeArrivalDate: route_arrival_date,
+  routeArrivalDateTime: route_arrival_date_time,
+  routeArrivalDateTimeFromUTC: route_arrival_date_time_from_utc,
+  routeArrivalDateTimeEdited: route_arrival_date_time_edited,
   routeArrivalTimeZone: route_arrival_time_zone,
 } = storeToRefs(store);
 </script>

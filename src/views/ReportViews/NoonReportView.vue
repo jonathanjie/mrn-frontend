@@ -68,6 +68,7 @@ import NoonPerformance from "@/components/Reports/NoonReport/NoonPerformance.vue
 import NoonConsumption from "@/components/Reports/NoonReport/NoonConsumption.vue";
 import NoonStoppage from "@/components/Reports/NoonReport/NoonStoppage.vue";
 
+import { convertLTToUTC } from "@/utils/helpers";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
@@ -85,8 +86,8 @@ const {
   voyageNo,
   curLegNo,
   noonReportNo,
-  reportingDateTime,
   reportingTimeZone,
+  reportingDateTimeUTC,
   // Departure and Destination
   routeDeparturePortCountry,
   routeDeparturePortName,
@@ -94,7 +95,9 @@ const {
   routeDepartureTimeZone,
   routeArrivalPortCountry,
   routeArrivalPortName,
-  routeArrivalDate,
+  routeArrivalDateTime,
+  routeArrivalDateTimeUTC,
+  routeArrivalDateTimeEdited,
   routeArrivalTimeZone,
   // DateTimeLatLong
   latDir,
@@ -182,25 +185,6 @@ const {
   stoppageIsActive,
 } = storeToRefs(store);
 
-// TODO: retrieve data from backend or generate as needed
-// TODO: modify DateTime display to also display UTC time next to local time
-
-// const convertReportDate = (date) => {
-//   // TODO: consider daylight savings in calculating UTC timezone offset + display
-//   const userOffset = parseInt(reporting_time_zone.value) * -60;
-//   const calcOffset = date.getTimezoneOffset();
-
-//   // calculate based on timezone input
-//   if (userOffset !== calcOffset) {
-//     date = new Date(
-//       date.getTime() +
-//         3600000 * (parseInt(reporting_time_zone.value) + calcOffset / 60)
-//     );
-//   }
-
-//   return date.toISOString();
-// };
-
 const sendReport = async () => {
   // TODO: need to do form validation first
 
@@ -237,10 +221,10 @@ const sendReport = async () => {
     voyage: voyageNo.value,
     voyage_leg: curLegNo.value,
     report_num: noonReportNo.value,
-    report_date: reportingDateTime.value,
+    report_date: reportingDateTimeUTC.value,
     report_tz: reportingTimeZone.value,
     noonreporttimeandposition: {
-      time: reportingDateTime.value,
+      time: reportingDateTimeUTC.value,
       timezone: reportingTimeZone.value,
       position: position,
     },
@@ -249,7 +233,9 @@ const sendReport = async () => {
       departure_date: routeDepartureDate.value,
       depature_tz: routeDepartureTimeZone.value,
       arrival_port: routeArrivalPort,
-      arrival_date: routeArrivalDate.value,
+      arrival_date: routeArrivalDateTimeEdited.value
+        ? convertLTToUTC(routeArrivalDateTime.value, routeArrivalTimeZone.value)
+        : routeArrivalDateTimeUTC,
       arrival_tz: routeArrivalTimeZone.value,
     },
     weatherdata: {

@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
+import { convertLTToUTC, convertUTCToLT } from "@/utils/helpers";
 
 // TODO: retrieve from backend or generate as needed
 // API /reports/latest
@@ -39,17 +40,41 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const voyageNo = ref(store.voyageNo);
   const reportingDateTime = ref("");
   const reportingTimeZone = ref("default");
+  const reportingDateTimeUTC = computed(() =>
+    reportingTimeZone.value !== "default" && reportingDateTime.value
+      ? convertLTToUTC(reportingDateTime.value, reportingTimeZone.value)
+      : reportingDateTime.value
+  );
 
   // Departure and Destination
   // TODO: replace dummy values
   const routeDeparturePortCountry = ref("SG");
   const routeDeparturePortName = ref("PPT");
-  const routeDepartureDate = ref("2022-12-01T00:00:00Z");
+  const routeDepartureDateTimeUTC = ref(new Date("2022-12-01T00:00:00Z"));
   const routeDepartureTimeZone = ref("8");
+  const routeDepartureDateTime = computed(() =>
+    routeDepartureTimeZone.value !== "default" &&
+    routeDepartureDateTimeUTC.value
+      ? convertUTCToLT(
+          routeDepartureDateTimeUTC.value,
+          routeDepartureTimeZone.value
+        )
+      : routeDepartureDateTimeUTC.value
+  );
   const routeArrivalPortCountry = ref("SA");
   const routeArrivalPortName = ref("RTA");
-  const routeArrivalDate = ref("2022-12-21T00:00:00Z");
+  const routeArrivalDateTimeUTC = ref(new Date("2022-12-21T00:00:00Z"));
   const routeArrivalTimeZone = ref("3");
+  const routeArrivalDateTimeEdited = ref(false);
+  const routeArrivalDateTimeFromUTC = computed(() =>
+    routeArrivalTimeZone.value !== "default" && routeArrivalDateTimeUTC.value
+      ? convertUTCToLT(
+          routeArrivalDateTimeUTC.value,
+          routeArrivalTimeZone.value
+        )
+      : routeArrivalDateTimeUTC.value
+  );
+  const routeArrivalDateTime = ref("");
 
   // Reporting Noon
   const latDir = ref("default");
@@ -88,18 +113,18 @@ export const useNoonReportStore = defineStore("noonReport", () => {
 
   // Distance and Time
   const hoursSinceNoon = computed(() =>
-    reportingDateTime.value
+    reportingDateTimeUTC.value
       ? +(
-          (Date.parse(reportingDateTime.value) -
+          (Date.parse(reportingDateTimeUTC.value) -
             Date.parse(temp.lastNoonReportTime)) /
           (1000 * 60 * 60)
         ).toFixed(0)
       : ""
   );
   const hoursTotal = computed(() =>
-    reportingDateTime.value
+    reportingDateTimeUTC.value
       ? +(
-          (Date.parse(reportingDateTime.value) -
+          (Date.parse(reportingDateTimeUTC.value) -
             Date.parse(temp.rupOfDeparture)) /
           (1000 * 60 * 60)
         ).toFixed(0)
@@ -314,14 +339,19 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     voyageNo,
     reportingDateTime,
     reportingTimeZone,
+    reportingDateTimeUTC,
     // Departure and Destination
     routeDeparturePortCountry,
     routeDeparturePortName,
-    routeDepartureDate,
+    routeDepartureDateTime,
+    routeDepartureDateTimeUTC,
     routeDepartureTimeZone,
     routeArrivalPortCountry,
     routeArrivalPortName,
-    routeArrivalDate,
+    routeArrivalDateTimeUTC,
+    routeArrivalDateTimeFromUTC,
+    routeArrivalDateTimeEdited,
+    routeArrivalDateTime,
     routeArrivalTimeZone,
     // Reporting Noon
     latDir,

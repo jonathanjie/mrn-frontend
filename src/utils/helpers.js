@@ -78,6 +78,34 @@ export const parsePosition = ({
   return `SRID=${SRID};POINT (${positionLat} ${positionLong})`;
 };
 
+export const convertLTToUTC = (date, offset) => {
+  const userOffset = parseFloat(offset) * -60;
+  const calcOffset = date.getTimezoneOffset();
+
+  // calculate based on timezone input
+  if (userOffset !== calcOffset) {
+    date = new Date(
+      date.getTime() - 3600000 * (parseFloat(offset) + calcOffset / 60)
+    );
+  }
+
+  return date.toISOString();
+};
+
+export const convertUTCToLT = (date, offset) => {
+  const userOffset = parseFloat(offset) * -60;
+  const calcOffset = date.getTimezoneOffset();
+
+  // calculate based on timezone input
+  if (userOffset !== calcOffset) {
+    date = new Date(
+      date.getTime() + 3600000 * (parseFloat(offset) + calcOffset / 60)
+    );
+  }
+
+  return date.toISOString();
+};
+
 export const parsePortLocode = ({ portCountry, portName }) => {
   return portCountry + " " + portName;
 };
