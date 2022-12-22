@@ -2,6 +2,7 @@
 import { defineProps } from "vue";
 import router from "@/router";
 import { useRoute } from "vue-router";
+import { REPORT_CONSTANTS } from "@/constants";
 const route = useRoute();
 
 const props = defineProps({
@@ -65,30 +66,40 @@ const report_sent = true; // TODO: always true for MVP, no save function impleme
     class="relative flex h-24 items-center justify-between rounded-xl bg-gray-50 pt-5"
   >
     <img
-      v-if="props.report_type == 'DEPART'"
+      v-if="
+        props.report_type == REPORT_CONSTANTS.type.DEP_COSP_RUP ||
+        props.report_type == REPORT_CONSTANTS.type.DEP_SBY
+      "
       src="@/assets/icons/departure_header.svg"
       class="absolute left-0 top-0"
     />
     <img
-      v-if="props.report_type == 'ARRIVAL'"
+      v-else-if="
+        props.report_type == REPORT_CONSTANTS.type.ARR_SBY_EOSP ||
+        props.report_type == REPORT_CONSTANTS.type.ARR_FWE
+      "
       src="@/assets/icons/arrival_header.svg"
       class="absolute left-0 top-0"
     />
     <img
-      v-if="props.report_type == 'NOON'"
+      v-else-if="props.report_type == REPORT_CONSTANTS.type.NOON"
       src="@/assets/icons/noon_header.svg"
       class="absolute left-0 top-0"
     />
     <img
-      v-if="props.report_type == 'BUNKER'"
+      v-else-if="props.report_type == REPORT_CONSTANTS.type.BUNKER"
       src="@/assets/icons/bunker_header.svg"
       class="absolute left-0 top-0"
     />
     <img
-      v-if="props.report_type == 'EVNT'"
+      v-else-if="
+        props.report_type == REPORT_CONSTANTS.type.EVENT_COASTAL ||
+        props.report_type == REPORT_CONSTANTS.type.EVENT_PORT
+      "
       src="@/assets/icons/in_harbour_header.svg"
       class="absolute left-0 top-0"
     />
+    <div v-else></div>
     <div>report uuid: {{ props.uuid }}</div>
 
     <div class="flex flex-col w-24 ml-5 mr-2">
