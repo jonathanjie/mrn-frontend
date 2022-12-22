@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 
-
 export const useReportDetailsStore = defineStore("ReportDetails", () => {
   const auth = useAuthStore();
   const report = ref({});
@@ -24,6 +23,15 @@ export const useReportDetailsStore = defineStore("ReportDetails", () => {
         console.log(error);
       });
   };
+  // const getReport = async (uuid) => {
+  //   fetch("https://testapi.marinachain.io/marinanet/reports/" + uuid + "/", {
+  //     headers: {
+  //       Authorization: "Bearer " + auth.jwt,
+  //       "Content-Type": "application/json",
+  //     },
+  //     method: "GET",
+  //   });
+  // };
 
   return {
     report,

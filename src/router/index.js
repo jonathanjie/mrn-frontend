@@ -68,7 +68,7 @@ const routes = [
     beforeEnter: authGuard,
   },
   {
-    path: "/vessels/:vesselname/:imo/:specs",
+    path: "/vessels/:vesselname/:imo",
     component: VesselView,
     props: true,
     children: [
@@ -96,7 +96,7 @@ const routes = [
     beforeEnter: authGuard,
   },
   {
-    path: "/vessels/:vesselname/:imo/:specs/add-report",
+    path: "/vessels/:vesselname/:imo/add-report",
     name: "add-report",
     component: AddReportToVoyageView,
     children: [

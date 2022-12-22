@@ -84,6 +84,8 @@
         v-for="(report, index) in filteredData.slice().reverse()"
         :key="index"
       >
+        <!-- <div>{{ report }}</div> -->
+        <div>{{ report.uuid }}</div>
         <ReportCard
           :uuid="report.uuid"
           :report_no="report.report_no"
