@@ -322,7 +322,7 @@ const i18n = createI18n({
       selectionOfOil: "Selection of Oil",
       sendReport: "Send report",
       setRPMofME: "Set RPM of M/E",
-      sgAt15: "S.G at 15/4°C",
+      specificGravityAt15: "Specific Gravity at 15°C",
       shiftingStart: "Shifting start",
       shiftingEnd: "Shifting end",
       ship: "SHIP",

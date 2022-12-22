@@ -117,7 +117,7 @@
       />
 
       <div class="col-span-1 text-blue-700 p-3 border-r border-b bg-gray-50">
-        {{ $t("sgAt15") }}
+        {{ $t("specificGravityAt15") }}
       </div>
       <input
         v-model="sg"
