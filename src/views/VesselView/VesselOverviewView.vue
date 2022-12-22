@@ -33,6 +33,11 @@ import VoyageCard from "../../components/VoyageCard.vue";
 import { useAuthStore } from "@/stores/auth.store";
 import { readableUTCDate } from "@/utils/helpers";
 import { reportTypeToDisplay } from "@/constants";
+import { defineProps } from "vue";
+
+const props = defineProps({
+  imo: { type: String, require: true },
+});
 
 const auth = useAuthStore();
 let isEmpty = ref(false);

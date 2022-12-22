@@ -198,6 +198,7 @@ const i18n = createI18n({
         "In port (Berthing, Shifting, Dry Docking)",
       inputDescriptionHere: "Input description here",
       inputDetails: "Input details",
+      inputCountryCode: "Input Country Code (e.g. KR)",
       inputLocode2: "Input LOCODE (e.g. KR)",
       inputLocode3: "Input LOCODE (e.g. PUS)",
       inputName: "Input name",

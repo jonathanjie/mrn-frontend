@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { authGuard, useAuth0 } from "@auth0/auth0-vue";
+import { authGuard } from "@auth0/auth0-vue";
 
 // import LoginView from '../views/LoginView.vue'from ;
 import VesselView from "../views/VesselView/VesselView.vue";
@@ -7,12 +7,14 @@ import VesselOverviewView from "../views/VesselView/VesselOverviewView.vue";
 import VesselSubmittedView from "../views/VesselView/VesselSubmittedView.vue";
 import VesselDraftView from "../views/VesselView/VesselDraftView.vue";
 import VesselCancelledView from "../views/VesselView/VesselCancelledView.vue";
-import AddReportToVoyageView from "../views/AddReportToVoyageView.vue";
+import AddReportToVoyageView from "../views/ReportViews/AddReportToVoyageView.vue";
 import NoonReportView from "../views/ReportViews/NoonReportView.vue";
 import ArrivalReportView from "../views/ReportViews/ArrivalReportView.vue";
 import DepartureReportView from "../views/ReportViews/DepartureReportView.vue";
 import BunkerReportView from "../views/ReportViews/BunkerReportView.vue";
 import HarbourPortReportView from "../views/ReportViews/HarbourPortReportView.vue";
+import ReportDetailsViewWrapper from "../views/ReportViews/ReportDetailsView/ReportDetailsViewWrapper.vue";
+
 import NotFound from "../views/NotFound.vue";
 
 const routes = [
@@ -124,6 +126,20 @@ const routes = [
         component: BunkerReportView,
       },
     ],
+    beforeEnter: authGuard,
+  },
+  {
+    path: "/vessels/:vesselname/:imo/report/:uuid",
+    name: "report-details",
+    component: ReportDetailsViewWrapper,
+    props: true,
+    // children: [
+    //   {
+    //     path: "noon",
+    //     name: "noon",
+    //     component: NoonReportView,
+    //   },
+    // ],
     beforeEnter: authGuard,
   },
   {

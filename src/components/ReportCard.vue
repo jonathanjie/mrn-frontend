@@ -1,65 +1,8 @@
-<template>
-  <div
-    class="relative flex h-24 items-center justify-between rounded-xl bg-gray-50 pt-5"
-  >
-    <img
-      v-if="report_type == 'DSBY' || report_type == 'DCSP'"
-      src="@/assets/icons/departure_header.svg"
-      class="absolute left-0 top-0"
-    />
-    <img
-      v-if="report_type == 'ASBY' || report_type == 'AFWE'"
-      src="@/assets/icons/arrival_header.svg"
-      class="absolute left-0 top-0"
-    />
-    <img
-      v-if="report_type == 'NOON'"
-      src="@/assets/icons/noon_header.svg"
-      class="absolute left-0 top-0"
-    />
-    <img
-      v-if="report_type == 'BDN'"
-      src="@/assets/icons/bunker_header.svg"
-      class="absolute left-0 top-0"
-    />
-    <img
-      v-if="report_type == 'EVNT'"
-      src="@/assets/icons/in_harbour_header.svg"
-      class="absolute left-0 top-0"
-    />
-
-    <div class="flex flex-col w-20 ml-5 mr-2">
-      <span class="text-12 text-gray-400">{{ $t("reportNo") }}</span>
-      <span class="text-14 text-gray-700">{{ report_no }}</span>
-    </div>
-    <div class="flex flex-col w-20 mr-2">
-      <span class="text-12 text-gray-400">{{ $t("departure") }}</span>
-      <span class="text-14 text-gray-700">{{ departure }}</span>
-    </div>
-    <div class="flex flex-col w-20 mr-2">
-      <span class="text-12 text-gray-400">{{ $t("arrival") }}</span>
-      <span class="text-14 text-gray-700">{{ arrival }}</span>
-    </div>
-    <div class="flex flex-col w-28 mr-2">
-      <span class="text-12 text-gray-400">{{ $t("loadingCondition") }}</span>
-      <span class="text-14 text-gray-700">{{ loading_condition }}</span>
-    </div>
-    <div class="flex flex-col w-38 mr-2">
-      <span class="text-12 text-gray-400">{{ $t("dateOfReport") }}</span>
-      <span class="text-14 text-gray-700">{{ date_of_report }}</span>
-    </div>
-
-    <img
-      v-if="report_sent == false"
-      src="@/assets/icons/saved_icon.svg"
-      class="mr-5"
-    />
-    <img v-else src="@/assets/icons/sent_icon.svg" class="mr-5" />
-  </div>
-</template>
-
 <script setup>
 import { defineProps } from "vue";
+import router from "@/router";
+import { useRoute } from "vue-router";
+const route = useRoute();
 
 const props = defineProps({
   report_type: {
@@ -67,10 +10,14 @@ const props = defineProps({
     required: false,
     default: "NOON",
   },
-  report_no: {
+  uuid: {
     type: String,
     required: true,
-    default: "REPORT 0",
+  },
+  report_num: {
+    type: String,
+    required: true,
+    default: "REPORT",
   },
   departure: {
     type: String,
@@ -94,5 +41,83 @@ const props = defineProps({
   },
 });
 
+const handleClick = () => {
+  console.log("im clicked");
+  console.log(route.params);
+  const imo = route.params.imo;
+  const vesselname = route.params.vesselname;
+  router.push({
+    name: "report-details",
+    params: {
+      imo: imo,
+      vesselname: vesselname,
+      uuid: props.uuid,
+    },
+  });
+};
+
 const report_sent = true; // TODO: always true for MVP, no save function implemented
 </script>
+
+<template>
+  <div
+    @click="handleClick"
+    class="relative flex h-24 items-center justify-between rounded-xl bg-gray-50 pt-5"
+  >
+    <img
+      v-if="props.report_type == 'DEPART'"
+      src="@/assets/icons/departure_header.svg"
+      class="absolute left-0 top-0"
+    />
+    <img
+      v-else-if="props.report_type == 'ARRIVAL'"
+      src="@/assets/icons/arrival_header.svg"
+      class="absolute left-0 top-0"
+    />
+    <img
+      v-else-if="props.report_type == 'NOON'"
+      src="@/assets/icons/noon_header.svg"
+      class="absolute left-0 top-0"
+    />
+    <img
+      v-else-if="props.report_type == 'BUNKER'"
+      src="@/assets/icons/bunker_header.svg"
+      class="absolute left-0 top-0"
+    />
+    <img
+      v-else-if="props.report_type == 'EVNT'"
+      src="@/assets/icons/in_harbour_header.svg"
+      class="absolute left-0 top-0"
+    />
+    <div v-else class="absolute"></div>
+    <div>report uuid: {{ props.uuid }}</div>
+
+    <div class="flex flex-col w-20 ml-5 mr-2">
+      <span class="text-12 text-gray-400">{{ $t("reportNo") }}</span>
+      <span class="text-14 text-gray-700">{{ props.report_num }}</span>
+    </div>
+    <div class="flex flex-col w-20 mr-2">
+      <span class="text-12 text-gray-400">{{ $t("departure") }}</span>
+      <span class="text-14 text-gray-700">{{ props.departure }}</span>
+    </div>
+    <div class="flex flex-col w-20 mr-2">
+      <span class="text-12 text-gray-400">{{ $t("arrival") }}</span>
+      <span class="text-14 text-gray-700">{{ props.arrival }}</span>
+    </div>
+    <div class="flex flex-col w-28 mr-2">
+      <span class="text-12 text-gray-400">{{ $t("loadingCondition") }}</span>
+      <span class="text-14 text-gray-700">{{ props.loading_condition }}</span>
+    </div>
+    <div class="flex flex-col w-38 mr-2">
+      <span class="text-12 text-gray-400">{{ $t("dateOfReport") }}</span>
+      <span class="text-14 text-gray-700">{{ props.date_of_report }}</span>
+    </div>
+
+    <img
+      v-if="report_sent == false"
+      src="@/assets/icons/saved_icon.svg"
+      class="mr-5"
+    />
+    <img v-else src="@/assets/icons/sent_icon.svg" class="mr-5" />
+  </div>
+</template>

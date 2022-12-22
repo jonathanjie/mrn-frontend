@@ -203,7 +203,6 @@
 </template>
 
 <script setup>
-import { textInputOptions, format } from "@/utils/helpers.js";
 import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 import { storeToRefs } from "pinia";
 
