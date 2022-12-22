@@ -60,7 +60,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import RadioBtnIcon from "@/components/Buttons/RadioBtnIcon.vue";
 import router from "@/router";
 import { ref } from "vue";

@@ -30,7 +30,7 @@
 <script setup>
 import { ref } from "vue";
 import VoyageCard from "../../components/VoyageCard.vue";
-import { useAuthStore } from "@/stores/auth.store";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { readableUTCDate } from "@/utils/helpers";
 import { reportTypeToDisplay } from "@/constants";
 import { defineProps } from "vue";

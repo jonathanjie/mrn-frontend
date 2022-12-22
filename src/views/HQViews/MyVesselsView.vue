@@ -246,7 +246,7 @@
 import MyVesselsDashboardIcon from "@/components/MyVesselsDashboardIcon.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 import VesselCard from "@/components/VesselCard.vue";
-import { useAuthStore } from "@/stores/auth.store";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 const auth = useAuthStore();
 
