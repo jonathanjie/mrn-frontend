@@ -25,44 +25,13 @@
           <option selected disabled value="default">
             {{ $t("selectTimeZone") }}
           </option>
-          <option value="-12">UTC-12:00</option>
-          <option value="-11">UTC-11:00</option>
-          <option value="-10">UTC-10:00</option>
-          <option value="-9.5">UTC-9:30</option>
-          <option value="-9">UTC-9:00</option>
-          <option value="-8">UTC-8:00</option>
-          <option value="-7">UTC-7:00</option>
-          <option value="-6">UTC-6:00</option>
-          <option value="-5">UTC-5:00</option>
-          <option value="-4">UTC-4:00</option>
-          <option value="-3.5">UTC-3:30</option>
-          <option value="-3">UTC-3:00</option>
-          <option value="-2">UTC-2:00</option>
-          <option value="-1">UTC-1:00</option>
-          <option value="0">UTC</option>
-          <option value="1">UTC+1:00</option>
-          <option value="2">UTC+2:00</option>
-          <option value="3">UTC+3:00</option>
-          <option value="3.5">UTC+3:30</option>
-          <option value="4">UTC+4:00</option>
-          <option value="4.5">UTC+4:30</option>
-          <option value="5">UTC+5:00</option>
-          <option value="5.5">UTC+5:30</option>
-          <option value="5.75">UTC+5:45</option>
-          <option value="6">UTC+6:00</option>
-          <option value="6.5">UTC+6:30</option>
-          <option value="7">UTC+7:00</option>
-          <option value="8">UTC+8:00</option>
-          <option value="8.75">UTC+8:45</option>
-          <option value="9">UTC+9:00</option>
-          <option value="9.5">UTC+9:30</option>
-          <option value="10">UTC+10:00</option>
-          <option value="10.5">UTC+10:30</option>
-          <option value="11">UTC+11:00</option>
-          <option value="12">UTC+12:00</option>
-          <option value="12.75">UTC+12:45</option>
-          <option value="13">UTC+13:00</option>
-          <option value="14">UTC+14:00</option>
+          <option
+            v-for="{ offset, label } in TIMEZONES"
+            :key="offset"
+            :value="offset"
+          >
+            {{ label }}
+          </option>
         </select>
       </div>
       <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
@@ -146,9 +115,9 @@
 
 <script setup>
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-// import { reactive } from "vue";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
+import { TIMEZONES } from "@/utils/options";
 
 const store = useNoonReportStore();
 const {
