@@ -44,7 +44,7 @@
       <span class="text-12 text-gray-400">{{ $t("loadingCondition") }}</span>
       <span class="text-14 text-gray-700">{{ loading_condition }}</span>
     </div>
-    <div class="flex flex-col w-36 mr-2">
+    <div class="flex flex-col w-38 mr-2">
       <span class="text-12 text-gray-400">{{ $t("dateOfReport") }}</span>
       <span class="text-14 text-gray-700">{{ date_of_report }}</span>
     </div>

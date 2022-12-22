@@ -32,11 +32,11 @@ import { ref } from "vue";
 import VoyageCard from "../../components/VoyageCard.vue";
 import { useAuthStore } from "@/stores/auth.store";
 import { readableUTCDate } from "@/utils/helpers";
-import { ENUM_TO_REPORT_TYPE } from "@/constants";
+import { reportTypeToDisplay } from "@/constants";
 
 const auth = useAuthStore();
 let isEmpty = ref(false);
-const imoReg = 1234567;
+const imoReg = 1000000;
 
 const getReports = async (voyage_uuid) => {
   const response = await fetch(
@@ -130,13 +130,13 @@ for (let i = 0; i < voyages.length; i++) {
       // update current load condition for every departure sby (new leg)
       curLoadingCondition = await getLoadingCondition(uuid);
     }
-    curLegNo = j.leg_num; // update current leg no for every report
+    curLegNo = j.voyage_leg; // update current leg no for every report
     lastReportNo[j.report_type] = j.report_num; // update most recent report no for each type
 
     ret["report_type"] = j.report_type;
-    ret["report_no"] = ENUM_TO_REPORT_TYPE[j.report_type] + " " + j.report_num;
-    ret["departure"] = j.route.departure_port || "N/A";
-    ret["arrival"] = j.route.arrival_port || "N/A";
+    ret["report_no"] = reportTypeToDisplay[j.report_type] + " " + j.report_num;
+    // ret["departure"] = j.route.departure_port || "N/A";
+    // ret["arrival"] = j.route.arrival_port || "N/A";
     ret["loading_condition"] = curLoadingCondition || "N/A";
     ret["date_of_report"] = readableUTCDate(new Date(j.report_date));
 
