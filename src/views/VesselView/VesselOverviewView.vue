@@ -32,7 +32,7 @@ import { ref } from "vue";
 import VoyageCard from "../../components/VoyageCard.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { readableUTCDate } from "@/utils/helpers";
-import { reportTypeToDisplay } from "@/constants";
+import { ReportTypeToDisplay } from "@/constants";
 import { defineProps } from "vue";
 
 const props = defineProps({
@@ -139,11 +139,12 @@ for (let i = 0; i < voyages.length; i++) {
     lastReportNo[j.report_type] = j.report_num; // update most recent report no for each type
 
     ret["report_type"] = j.report_type;
-    ret["report_no"] = reportTypeToDisplay[j.report_type] + " " + j.report_num;
+    ret["report_no"] = ReportTypeToDisplay[j.report_type] + " " + j.report_num;
     // ret["departure"] = j.route.departure_port || "N/A";
     // ret["arrival"] = j.route.arrival_port || "N/A";
     ret["loading_condition"] = curLoadingCondition || "N/A";
     ret["date_of_report"] = readableUTCDate(new Date(j.report_date));
+    ret["uuid"] = j.uuid;
 
     reports[uuid].push(ret);
   }

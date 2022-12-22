@@ -1,11 +1,16 @@
 // work in progress to standardise varible names across components
 export const Report = {
   type: {
-    noon: "NOON",
-    departure: "DEP",
-    arrival: "ARR",
-    bunker: "BUNKER",
-    harbourPort: "HARBOUR_PORT",
+    NOON: "NOON",
+    DEP_SBY: "DEPS",
+    DEP_COSP_RUP: "DEPR",
+    ARR_SBY_EOSP: "ARRS",
+    ARR_FWE: "ARRF",
+    BUNKER: "BDN",
+    EVENT_PORT: "EVNTP",
+    EVENT_COASTAL: "EVNTC",
+    NOON_PORT: "NOONP",
+    NOON_COASTAL: "NOONC",
   },
   SRID: "4326",
   route: "route",
@@ -13,7 +18,7 @@ export const Report = {
 };
 
 // temporary fix: for displaying report type (report no.) for each report in voyage card
-export const reportTypeToDisplay = {
+export const ReportTypeToDisplay = {
   NOON: "NOON",
   DSBY: "DEPS",
   DCSP: "DEPR",
@@ -78,7 +83,7 @@ const constants = {
   SRID: "4326",
   Report: Report,
   Direction: Direction,
-  reportTypeToDisplay: reportTypeToDisplay,
+  ReportTypeToDisplay: ReportTypeToDisplay,
   IceCondition: IceCondition,
   ReportType: ReportType,
   FuelOil: FuelOil,

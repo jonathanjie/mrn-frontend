@@ -2,6 +2,8 @@
 import { defineProps } from "vue";
 import router from "@/router";
 import { useRoute } from "vue-router";
+import { Report, ReportTypeToDisplay } from "@/constants";
+
 const route = useRoute();
 
 const props = defineProps({
@@ -14,10 +16,10 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  report_num: {
+  report_no: {
     type: String,
     required: true,
-    default: "REPORT",
+    default: "REPORT 0",
   },
   departure: {
     type: String,
@@ -65,52 +67,61 @@ const report_sent = true; // TODO: always true for MVP, no save function impleme
     class="relative flex h-24 items-center justify-between rounded-xl bg-gray-50 pt-5"
   >
     <img
-      v-if="props.report_type == 'DEPART'"
+      v-if="
+        ReportTypeToDisplay[props.report_type] == Report.type.DEP_COSP_RUP ||
+        ReportTypeToDisplay[props.report_type] == Report.type.DEP_SBY
+      "
       src="@/assets/icons/departure_header.svg"
       class="absolute left-0 top-0"
     />
     <img
-      v-else-if="props.report_type == 'ARRIVAL'"
+      v-else-if="
+        ReportTypeToDisplay[props.report_type] == Report.type.ARR_SBY_EOSP ||
+        ReportTypeToDisplay[props.report_type] == Report.type.ARR_FWE
+      "
       src="@/assets/icons/arrival_header.svg"
       class="absolute left-0 top-0"
     />
     <img
-      v-else-if="props.report_type == 'NOON'"
+      v-else-if="ReportTypeToDisplay[props.report_type] == Report.type.NOON"
       src="@/assets/icons/noon_header.svg"
       class="absolute left-0 top-0"
     />
     <img
-      v-else-if="props.report_type == 'BUNKER'"
+      v-else-if="ReportTypeToDisplay[props.report_type] == Report.type.BUNKER"
       src="@/assets/icons/bunker_header.svg"
       class="absolute left-0 top-0"
     />
     <img
-      v-else-if="props.report_type == 'EVNT'"
+      v-else-if="
+        ReportTypeToDisplay[props.report_type] == Report.type.EVENT_COASTAL ||
+        ReportTypeToDisplay[props.report_type] == Report.type.EVENT_PORT ||
+        ReportTypeToDisplay[props.report_type] == Report.type.NOON_PORT ||
+        ReportTypeToDisplay[props.report_type] == Report.type.NOON_COASTAL
+      "
       src="@/assets/icons/in_harbour_header.svg"
       class="absolute left-0 top-0"
     />
-    <div v-else class="absolute"></div>
-    <div>report uuid: {{ props.uuid }}</div>
-
+    <div v-else></div>
     <div class="flex flex-col w-20 ml-5 mr-2">
       <span class="text-12 text-gray-400">{{ $t("reportNo") }}</span>
-      <span class="text-14 text-gray-700">{{ props.report_num }}</span>
+      <span class="text-14 text-gray-700">{{ report_no }}</span>
     </div>
     <div class="flex flex-col w-20 mr-2">
       <span class="text-12 text-gray-400">{{ $t("departure") }}</span>
-      <span class="text-14 text-gray-700">{{ props.departure }}</span>
+      <span class="text-14 text-gray-700">{{ departure }}</span>
     </div>
     <div class="flex flex-col w-20 mr-2">
       <span class="text-12 text-gray-400">{{ $t("arrival") }}</span>
-      <span class="text-14 text-gray-700">{{ props.arrival }}</span>
+      <span class="text-14 text-gray-700">{{ arrival }}</span>
     </div>
     <div class="flex flex-col w-28 mr-2">
       <span class="text-12 text-gray-400">{{ $t("loadingCondition") }}</span>
-      <span class="text-14 text-gray-700">{{ props.loading_condition }}</span>
+      <span class="text-14 text-gray-700">{{ loading_condition }}</span>
     </div>
     <div class="flex flex-col w-38 mr-2">
       <span class="text-12 text-gray-400">{{ $t("dateOfReport") }}</span>
-      <span class="text-14 text-gray-700">{{ props.date_of_report }}</span>
+      <span class="text-14 text-gray-700">{{ date_of_report }}</span>
     </div>
 
     <img

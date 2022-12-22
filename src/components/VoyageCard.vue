@@ -86,7 +86,7 @@
       >
         <ReportCard
           :uuid="report.uuid"
-          :report_num="report.report_num"
+          :report_no="report.report_no"
           :report_type="report.report_type"
           :departure="report.departure"
           :arrival="report.arrival"
