@@ -47,7 +47,6 @@
             params: {
               vesselname: ship.name,
               imo: ship.imo_reg,
-              specs: addSpec,
             },
           }"
           class="flex py-4 px-7 space-x-3 hover:bg-blue-700/[0.24]"
@@ -88,7 +87,6 @@ const auth = useAuthStore();
 const router = useRouter();
 const { user, getAccessTokenSilently } = useAuth0();
 const jwt = await getAccessTokenSilently();
-let addSpec = false;
 
 const getShip = async () => {
   const response = await fetch(
@@ -104,11 +102,6 @@ const getShip = async () => {
   );
   const ship = await response.json();
   console.log(ship[0]);
-  if (ship[0].shipspecs === null) {
-    addSpec = true;
-  } else {
-    addSpec = false;
-  }
   return ship[0];
 };
 
@@ -136,7 +129,7 @@ if (role === "manager") {
   router.push({ path: "/my-vessels" });
 } else {
   router.push({
-    path: `/vessels/${ship.name}/${ship.imo_reg}/${addSpec}/overview`,
+    path: `/vessels/${ship.name}/${ship.imo_reg}/overview`,
   });
 }
 
@@ -145,7 +138,7 @@ const home = () => {
     router.push({ path: "/my-vessels" });
   } else {
     router.push({
-      path: `/vessels/${ship.name}/${ship.imo_reg}/${addSpec}/overview`,
+      path: `/vessels/${ship.name}/${ship.imo_reg}/overview`,
     });
   }
 };

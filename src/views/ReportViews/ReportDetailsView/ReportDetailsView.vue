@@ -3,6 +3,8 @@ import { ref, onMounted } from "vue";
 import { useReportDetailsStore } from "./store/useReportDetailsStore";
 import router from "@/router";
 import { defineProps } from "vue";
+import { Report } from "@/constants";
+import NoonReportView from "./components/NoonReport/NoonReportView.vue";
 
 // Props
 const props = defineProps({
@@ -19,7 +21,7 @@ const { getReport } = store;
 // API calls
 getReport(props.uuid);
 const report = ref(store.report).value;
-console.log("Report: ", report.report_num);
+console.log("Report Type: ", report.report_type);
 const reportType = report.report_type;
 
 // Event Handlers
@@ -37,10 +39,40 @@ const handleBack = () => {
     />
   </button>
   <div>
-    <div v-if="true">Noon Report</div>
-    <div v-if="false">Report 2</div>
-    <div v-if="false">Report 3</div>
-    <div v-if="false">Report 4</div>
+    <div v-if="reportType == Report.type.NOON">NOON</div>
+    <div
+      v-else-if="
+        reportType == Report.type.ARR_FWE ||
+        reportType == Report.type.ARR_SBY_EOSP
+      "
+    >
+      ARRIVAL
+    </div>
+    <div
+      v-else-if="
+        reportType == Report.type.DEP_COSP_RUP ||
+        reportType == Report.type.DEP_SBY
+      "
+    >
+      DEPARTURE
+    </div>
+    <div
+      v-else-if="
+        reportType == Report.type.EVENT_COASTAL ||
+        reportType == Report.type.EVENT_PORT
+      "
+    >
+      EVENT
+    </div>
+    <div
+      v-else-if="
+        reportType == Report.type.NOON_COASTAL ||
+        reportType == Report.type.NOON_PORT
+      "
+    >
+      COASTAL/PORT NOON
+    </div>
+    <div v-else>Invalid Report Type</div>
   </div>
 
   <div>{{ report }}</div>

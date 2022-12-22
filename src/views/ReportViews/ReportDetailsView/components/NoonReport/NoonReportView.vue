@@ -1,53 +1,3 @@
-<template>
-  <div class="flex flex-col space-y-6 my-6">
-    <!-- Overview -->
-    <NoonOverview />
-
-    <!-- Reporting Noon -->
-    <NoonDetails>{{ $t("reportingNoon") }}</NoonDetails>
-
-    <!-- Weather -->
-    <NoonWeather />
-
-    <!-- Heavy Weather Condition -->
-    <NoonHeavyWeather />
-
-    <!-- Distance & Time -->
-    <NoonDistanceAndTime />
-
-    <!-- Performance -->
-    <NoonPerformance />
-
-    <!-- Consumption & Condition -->
-    <NoonConsumption>{{
-      $t("consumptionAndConditionNoonToNoon")
-    }}</NoonConsumption>
-
-    <!-- Stoppage or Reduction of RPM (at sea) -->
-    <NoonStoppage />
-
-    <!-- Save and Send -->
-    <div class="flex justify-end space-x-4">
-      <CustomButton
-        class="p-3 text-14"
-        type="button"
-        v-on:click="saveChanges()"
-      >
-        <!-- TODO: need alternate function for saving changes to backend -->
-        <template v-slot:content>{{ $t("saveChanges") }}</template>
-      </CustomButton>
-      <GradientButton
-        class="p-3 text-14"
-        type="button"
-        v-on:click="sendReport()"
-      >
-        <!-- TODO: need alternate function for saving changes to backend -->
-        <template v-slot:content>{{ $t("sendReport") }}</template>
-      </GradientButton>
-    </div>
-  </div>
-</template>
-
 <script setup>
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
@@ -58,23 +8,23 @@ import {
   // preventNaN,
   parsePosition,
   parsePortLocode,
-} from "../../utils/helpers.js";
+} from "@/utils/helpers.js";
 
-import NoonOverview from "@/components/Reports/NoonReport/NoonOverview.vue";
-import NoonDetails from "@/components/Reports/NoonReport/NoonDetails.vue";
-import NoonWeather from "@/components/Reports/NoonReport/NoonWeather.vue";
-import NoonHeavyWeather from "@/components/Reports/NoonReport/NoonHeavyWeather.vue";
-import NoonDistanceAndTime from "@/components/Reports/NoonReport/NoonDistanceAndTime.vue";
-import NoonPerformance from "@/components/Reports/NoonReport/NoonPerformance.vue";
-import NoonConsumption from "@/components/Reports/NoonReport/NoonConsumption.vue";
-import NoonStoppage from "@/components/Reports/NoonReport/NoonStoppage.vue";
+import NoonOverview from "./components/NoonOverview.vue";
+import NoonDetails from "./components/NoonDetails.vue";
+import NoonWeather from "./components/NoonWeather.vue";
+import NoonHeavyWeather from "./components/NoonHeavyWeather.vue";
+import NoonDistanceAndTime from "./components/NoonDistanceAndTime.vue";
+import NoonPerformance from "./components/NoonPerformance.vue";
+import NoonConsumption from "./components/NoonConsumption.vue";
+import NoonStoppage from "./components/NoonStoppage.vue";
 
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
 
 import { REPORT_CONSTANTS } from "@/constants";
 
-const store = useNoonReportStore();
+const storeGlobal = useNoonReportStore();
 const {
   // Departure and Destination
   routeDeparturePortCountry,
@@ -174,7 +124,7 @@ const {
   stoppageLongDegree,
   stoppageLongMinutes,
   stoppageIsActive,
-} = storeToRefs(store);
+} = storeToRefs(storeGlobal);
 
 // TODO: retrieve data from backend or generate as needed
 // TODO: modify DateTime display to also display UTC time next to local time
@@ -419,3 +369,54 @@ const sendReport = async () => {
   console.log(data);
 };
 </script>
+
+<template>
+  <div class="flex flex-col space-y-6 my-6">
+    <!-- Overview -->
+    <NoonOverview />
+
+    <!-- Reporting Noon -->
+    <NoonDetails>{{ $t("reportingNoon") }}</NoonDetails>
+
+    <!-- Weather -->
+    <NoonWeather />
+
+    <!-- Heavy Weather Condition -->
+    <NoonHeavyWeather />
+
+    <!-- Distance & Time -->
+    <NoonDistanceAndTime />
+
+    <!-- Performance -->
+    <NoonPerformance />
+
+    <!-- Consumption & Condition -->
+    <NoonConsumption>{{
+      $t("consumptionAndConditionNoonToNoon")
+    }}</NoonConsumption>
+
+    <!-- Stoppage or Reduction of RPM (at sea) -->
+    <NoonStoppage />
+
+    <!-- Save and Send -->
+    <div class="flex justify-end space-x-4">
+      <CustomButton
+        class="p-3 text-14"
+        type="button"
+        v-on:click="saveChanges()"
+      >
+        <!-- TODO: need alternate function for saving changes to backend -->
+        <template v-slot:content>{{ $t("saveChanges") }}</template>
+      </CustomButton>
+      <GradientButton
+        class="p-3 text-14"
+        type="button"
+        v-on:click="sendReport()"
+      >
+        <!-- TODO: need alternate function for saving changes to backend -->
+        <template v-slot:content>{{ $t("sendReport") }}</template>
+      </GradientButton>
+    </div>
+  </div>
+</template>
+
