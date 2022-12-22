@@ -111,11 +111,14 @@ lastBdnReportNo.value = voyageDetails.last_bdn_report_no;
 // lastNoonpReportNo.value = voyageDetails.last_noonp_report_no;
 // lastNooncReportNo.value = voyageDetails.last_noonc_report_no;
 
-onBeforeRouteLeave((to, from) => {
-  const answer = window.confirm(
-    "Do you really want to leave? You have unsaved changes!"
-  );
-  // cancel the navigation and stay on the same page
-  if (!answer) return false;
-});
+// onBeforeRouteLeave((to, from) => {
+//   console.log(to);
+//   console.log(from);
+
+//   const answer = window.confirm(
+//     "Do you really want to leave? You have unsaved changes!"
+//   );
+//   // cancel the navigation and stay on the same page
+//   if (!answer) return false;
+// });
 </script>

@@ -71,7 +71,7 @@ import NoonStoppage from "@/components/Reports/NoonReport/NoonStoppage.vue";
 
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
-
+import { useRouter } from "vue-router";
 import {
   ReportType,
   FuelOil,
@@ -79,6 +79,7 @@ import {
   ConsumptionType,
 } from "@/constants";
 
+const router = useRouter();
 const store = useNoonReportStore();
 const {
   // Overview
@@ -442,10 +443,14 @@ const sendReport = async () => {
       body: JSON.stringify(REPORT),
     }
   );
+
   try {
     const data = await response.json();
     console.log(response);
     console.log(data);
+    if (response.ok) {
+      router.push({ name: "vessel-overview" });
+    }
   } catch (error) {
     console.log(error);
   }
