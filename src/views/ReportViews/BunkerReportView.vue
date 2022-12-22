@@ -34,14 +34,13 @@
 
     <!-- Save and Send -->
     <div class="flex justify-end space-x-4 my-6">
-      <CustomButton
+      <!-- <CustomButton
         class="p-3 text-14"
         type="button"
         v-on:click="saveChanges()"
       >
-        <!-- TODO: need alternate function for saving changes to backend -->
         <template v-slot:content>{{ $t("saveChanges") }}</template>
-      </CustomButton>
+      </CustomButton> -->
       <GradientButton
         class="p-3 text-14"
         type="button"
