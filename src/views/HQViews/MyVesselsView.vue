@@ -211,7 +211,8 @@
     </div>
     <div v-else class="flex flex-col">
       <VesselCard
-        v-for="ship in ships"
+        v-for="(ship, i) in ships"
+        :key="ship.name + ship.imo_reg + i"
         :vesselName="ship.name"
         :loadType="shipRef[ship.ship_type]"
         :imoNo="ship.imo_reg"
@@ -221,7 +222,7 @@
         :loadingCondition="vessel.loadingCondition"
         :reportStatus="vessel.reportStatus"
         :updatedDate="vessel.updatedDate"
-      ></VesselCard>
+      />
       <!-- To be used to test VesselCard
       <VesselCard
         v-for="vessel in vessels"
