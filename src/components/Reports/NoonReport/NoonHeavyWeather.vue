@@ -275,14 +275,4 @@ const {
   heavyRemarks: remarks,
   heavyWeatherIsActive: heavy_weather_is_active,
 } = storeToRefs(store);
-
-// const data = reactive({
-//   hours: "", // HWC: total hours
-//   dist: "", // HWC: distance (OBS)
-//   consumption: "", // HWC: fuel consumption
-//   wind_direction: "", // HWC: wind direction
-//   wind_speed: "0", // HWC: wind force; missing from BE
-//   max_wave_ht: "", // HWC: max wave height
-//   wave_force: "default", // missing from BE
-// });
 </script>

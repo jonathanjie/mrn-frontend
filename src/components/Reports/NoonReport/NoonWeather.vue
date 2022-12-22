@@ -278,7 +278,7 @@
         <input
           v-model="air_pressure"
           @keypress="preventNaN($event, air_pressure)"
-          placeholder="00.0"
+          placeholder="00"
           class="text-14 w-24 pl-2 text-gray-700 focus:outline-0"
         />
         <MiniUnitDisplay>mbar</MiniUnitDisplay>
@@ -314,23 +314,23 @@
         :class="ice_condition === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">{{ $t("select") }}</option>
-        <option value="0">{{ $t("na") }}</option>
-        <option value="1">{{ $t("glacier_low") }}</option>
-        <option value="2">{{ $t("glacier_mod") }}</option>
-        <option value="3">{{ $t("glacier_high") }}</option>
-        <option value="4">{{ $t("glacier_ext") }}</option>
+        <option :value="IceCondition.NONE">{{ $t("na") }}</option>
+        <option :value="IceCondition.LOW">{{ $t("glacier_low") }}</option>
+        <option :value="IceCondition.MOD">{{ $t("glacier_mod") }}</option>
+        <option :value="IceCondition.HIGH">{{ $t("glacier_high") }}</option>
+        <option :value="IceCondition.EXT">{{ $t("glacier_ext") }}</option>
       </select>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { preventNaN } from "@/utils/helpers";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { DIRECTION_CONSTANTS } from "@/constants";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
+import { IceCondition } from "@/constants";
 
 const store = useNoonReportStore();
 const {

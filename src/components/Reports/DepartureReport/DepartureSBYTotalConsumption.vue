@@ -210,8 +210,8 @@
               <option selected disabled value="default">
                 {{ $t("selectType") }}
               </option>
-              <option value="lsfo">{{ $t("lsfo") }}</option>
-              <option value="mgo">{{ $t("mgo") }}</option>
+              <option :value="FuelOil.LSFO">{{ $t("lsfo") }}</option>
+              <option :value="FuelOil.MGO">{{ $t("mgo") }}</option>
             </select>
             <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
               <input
@@ -432,10 +432,16 @@
               <option selected disabled value="default">
                 {{ $t("selectType") }}
               </option>
-              <option value="mecylinder">{{ $t("mecylinder") }}</option>
-              <option value="mesystem">{{ $t("mesystem") }}</option>
-              <option value="mesump">{{ $t("mesump") }}</option>
-              <option value="gesystem">{{ $t("gesystem") }}</option>
+              <option :value="LubricateOil.ME_CYLINDER">
+                {{ $t("mecylinder") }}
+              </option>
+              <option :value="LubricateOil.ME_SYSTEM">
+                {{ $t("mesystem") }}
+              </option>
+              <option :value="LubricateOil.ME_SUMP">{{ $t("mesump") }}</option>
+              <option :value="LubricateOil.GE_SYSTEM">
+                {{ $t("gesystem") }}
+              </option>
             </select>
             <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
               <input
@@ -542,10 +548,11 @@
 
 <script setup>
 import { preventNaN } from "@/utils/helpers";
-import { ref, reactive, computed, defineProps } from "vue";
+import { ref } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 import { storeToRefs } from "pinia";
+import { FuelOil, LubricateOil } from "@/constants";
 
 const isAdditionalRemarkFuel = ref(false);
 const isAdditionalRemarkLubricate = ref(false);

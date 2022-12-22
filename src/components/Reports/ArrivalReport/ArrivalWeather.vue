@@ -314,11 +314,11 @@
         :class="ice_condition === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">{{ $t("select") }}</option>
-        <option value="0">{{ $t("na") }}</option>
-        <option value="1">{{ $t("glacier_low") }}</option>
-        <option value="2">{{ $t("glacier_mod") }}</option>
-        <option value="3">{{ $t("glacier_high") }}</option>
-        <option value="4">{{ $t("glacier_ext") }}</option>
+        <option :value="IceCondition.NONE">{{ $t("na") }}</option>
+        <option :value="IceCondition.LOW">{{ $t("glacier_low") }}</option>
+        <option :value="IceCondition.MOD">{{ $t("glacier_mod") }}</option>
+        <option :value="IceCondition.HIGH">{{ $t("glacier_high") }}</option>
+        <option :value="IceCondition.EXT">{{ $t("glacier_ext") }}</option>
       </select>
     </div>
   </div>
@@ -328,9 +328,9 @@
 import { computed, ref } from "vue";
 import { preventNaN } from "@/utils/helpers";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { DIRECTION_CONSTANTS } from "@/constants";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
+import { IceCondition } from "@/constants";
 
 const store = useNoonReportStore();
 const {
