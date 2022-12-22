@@ -2,10 +2,10 @@
 export const Report = {
   type: {
     NOON: "NOON",
-    DEP_SBY: "DEPS",
-    DEP_COSP_RUP: "DEPR",
-    ARR_SBY_EOSP: "ARRS",
-    ARR_FWE: "ARRF",
+    DEP_SBY: "DSBY",
+    DEP_COSP_RUP: "DCSP",
+    ARR_SBY_EOSP: "ASBY",
+    ARR_FWE: "AFWE",
     BUNKER: "BDN",
     EVENT_PORT: "EVNTP",
     EVENT_COASTAL: "EVNTC",

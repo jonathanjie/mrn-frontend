@@ -17,7 +17,7 @@ const props = defineProps({
 
 // Store
 const store = useReportDetailsStore();
-const { report: reportRef } = storeToRefs(store);
+const { report } = storeToRefs(store);
 const { getReport } = store;
 
 // API calls
@@ -26,7 +26,7 @@ getReport(props.uuid);
 // onMounted(() => {
 //   getReport(props.uuid);
 // });
-const report = reportRef.value;
+
 console.log("Report Type: ", report.report_type);
 const reportType = report.report_type;
 
@@ -46,35 +46,35 @@ const handleBack = () => {
       />
     </button>
     <div>
-      <div v-if="reportType == Report.type.NOON">NOON</div>
+      <div v-if="report.report_type == Report.type.NOON">NOON</div>
       <div
         v-else-if="
-          reportType == Report.type.ARR_FWE ||
-          reportType == Report.type.ARR_SBY_EOSP
+          report.report_type == Report.type.ARR_FWE ||
+          report.report_type == Report.type.ARR_SBY_EOSP
         "
       >
         ARRIVAL
       </div>
       <div
         v-else-if="
-          reportType == Report.type.DEP_COSP_RUP ||
-          reportType == Report.type.DEP_SBY
+          report.report_type == Report.type.DEP_COSP_RUP ||
+          report.report_type == Report.type.DEP_SBY
         "
       >
         DEPARTURE
       </div>
       <div
         v-else-if="
-          reportType == Report.type.EVENT_COASTAL ||
-          reportType == Report.type.EVENT_PORT
+          report.report_type == Report.type.EVENT_COASTAL ||
+          report.report_type == Report.type.EVENT_PORT
         "
       >
         EVENT
       </div>
       <div
         v-else-if="
-          reportType == Report.type.NOON_COASTAL ||
-          reportType == Report.type.NOON_PORT
+          report.report_type == Report.type.NOON_COASTAL ||
+          report.report_type == Report.type.NOON_PORT
         "
       >
         COASTAL/PORT NOON
@@ -82,7 +82,7 @@ const handleBack = () => {
       <div v-else>Invalid Report Type</div>
     </div>
 
-    <div>{{ reportRef }}</div>
+    <div>{{ report }}</div>
 
     <div>HELLO WORLD</div>
   </div>
