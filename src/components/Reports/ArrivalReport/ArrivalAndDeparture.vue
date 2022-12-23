@@ -72,72 +72,18 @@
         <div
           class="col-span-3 bg-white flex flex-col space-y-2 p-3 text-gray-700"
         >
-          <div class="flex align-center space-x-2">
+          <div
+            v-for="(val, key) in OPERATIONS"
+            :key="val"
+            class="flex align-center space-x-2"
+          >
             <input
               type="checkbox"
-              id="cargoOpBerth"
-              value="cargoOpBerth"
+              :id="val"
+              :value="val"
               v-model="planned_operation"
             />
-            <label for="cargoOpBerth">{{ $t("cargoOperationBerth") }}</label>
-          </div>
-          <div class="flex align-center space-x-2">
-            <input
-              type="checkbox"
-              id="cargoOpSTSSTB"
-              value="cargoOpSTSSTB"
-              v-model="planned_operation"
-            />
-            <label for="cargoOpSTSSTB">{{ $t("cargoOperationSTSSTB") }}</label>
-          </div>
-          <div class="flex align-center space-x-2">
-            <input
-              type="checkbox"
-              id="bunkeringDebunkering"
-              value="bunkeringDebunkering"
-              v-model="planned_operation"
-            />
-            <label for="bunkeringDebunkering">{{
-              $t("bunkeringDebunkering")
-            }}</label>
-          </div>
-          <div class="flex align-center space-x-2">
-            <input
-              type="checkbox"
-              id="dryDocking"
-              value="dryDocking"
-              v-model="planned_operation"
-            />
-            <label for="dryDocking">{{ $t("dryDocking") }}</label>
-          </div>
-          <div class="flex align-center space-x-2">
-            <input
-              type="checkbox"
-              id="crewChange"
-              value="crewChange"
-              v-model="planned_operation"
-            />
-            <label for="crewChange">{{ $t("crewChange") }}</label>
-          </div>
-          <div class="flex align-center space-x-2">
-            <input
-              type="checkbox"
-              id="receivingProvisionSpareParts"
-              value="receivingProvisionSpareParts"
-              v-model="planned_operation"
-            />
-            <label for="receivingProvisionSpareParts">{{
-              $t("receivingProvisionSpareParts")
-            }}</label>
-          </div>
-          <div class="flex align-center space-x-2">
-            <input
-              type="checkbox"
-              id="survey"
-              value="survey"
-              v-model="planned_operation"
-            />
-            <label for="survey">{{ $t("survey") }}</label>
+            <label :for="val">{{ $t(key) }}</label>
           </div>
           <div class="flex align-center space-x-2">
             <input
@@ -153,8 +99,9 @@
       <div class="grid grid-cols-5 border bg-gray-50 text-14 my-5">
         <div class="col-span-2 text-blue-700 p-3">{{ $t("others") }}</div>
         <input
-          class="col-span-3 p-3 text-gray-700 border-l"
+          class="col-span-3 p-3 text-gray-700 border-l disabled:text-gray-400 disabled:bg-gray-50 focus:outline-0"
           :placeholder="$t('inputOtherPlannedOperation')"
+          :disabled="!is_other_planned_operation_enabled"
           v-model="other_planned_operation"
         />
       </div>
@@ -166,6 +113,7 @@
 import { textInputOptions, format } from "@/utils/helpers.js";
 import { storeToRefs } from "pinia";
 import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
+import { OPERATIONS } from "@/utils/options";
 
 const store = useArrivalEOSPReportStore();
 const {
@@ -175,6 +123,7 @@ const {
   arrivalPortCountry: arrival_port_country,
   arrivalPortName: arrival_port_name,
   plannedOperation: planned_operation,
+  isOtherPlannedOperationEnabled: is_other_planned_operation_enabled,
   otherPlannedOperation: other_planned_operation,
 } = storeToRefs(store);
 </script>

@@ -10,7 +10,9 @@ const temp = {
     "cargoOpBerth",
     "bunkeringDebunkering",
     "receivingProvisionSpareParts",
-  ], // fetch from eosp/sby
+  ],
+  otherPlannedOperation: "",
+  // fetch above from most recent arrival eosp/sby
 
   // Distance & Time / Performance
   lastNoonReportTime: "2022-12-01T00:00:00Z",
@@ -47,6 +49,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   const longMinute = ref("");
   const longDegree = ref("");
   const plannedOperations = ref(temp.plannedOperations);
+  const otherPlannedOperation = ref(temp.otherPlannedOperation);
   const operations = ref([]);
   const status = ref("");
 
@@ -225,6 +228,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     longMinute,
     longDegree,
     plannedOperations,
+    otherPlannedOperation,
     operations,
     status,
     // Pilot Station -- Arrival

@@ -1,5 +1,6 @@
+// label : value pair for select options
+
 export const TIMEZONES = {
-  // label : key pair for select options
   "UTC-12:00": -12,
   "UTC-11:00": -11,
   "UTC-10:00": -10,
@@ -35,4 +36,15 @@ export const TIMEZONES = {
   "UTC+12:45": 12.75,
   "UTC+13:00": 13,
   "UTC+14:00": 14,
+};
+
+export const OPERATIONS = {
+  // excluding "waiting" and "other" operations
+  cargoOperationBerth: "cargoOpBerth",
+  cargoOperationSTSSTB: "cargoOpSTSSTB",
+  bunkeringDebunkering: "bunkeringDebunkering",
+  dryDocking: "dryDocking",
+  crewChange: "crewChange",
+  receivingProvisionSpareParts: "receivingProvisionSpareParts",
+  survey: "survey",
 };

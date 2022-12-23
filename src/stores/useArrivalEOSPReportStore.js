@@ -53,6 +53,9 @@ export const useArrivalEOSPReportStore = defineStore(
     const arrivalPortCountry = ref(temp.arrivalPortCountry);
     const arrivalPortName = ref(temp.arrivalPortName);
     const plannedOperation = ref([]);
+    const isOtherPlannedOperationEnabled = computed(() =>
+      plannedOperation.value.includes("others")
+    );
     const otherPlannedOperation = ref("");
 
     // S/BY for Arrival
@@ -317,6 +320,7 @@ export const useArrivalEOSPReportStore = defineStore(
       arrivalPortCountry,
       arrivalPortName,
       plannedOperation,
+      isOtherPlannedOperationEnabled,
       otherPlannedOperation,
       // S/BY for Arrival
       latDir,

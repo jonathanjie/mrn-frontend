@@ -177,155 +177,32 @@
             >{{ $t("waiting") }}</label
           >
         </div>
-        <div class="flex align-center space-x-2">
+        <div
+          v-for="(val, key) in OPERATIONS"
+          :key="val"
+          class="flex align-center space-x-2"
+        >
           <input
             :disabled="
-              !planned_operations.includes('cargoOpBerth') ||
+              !planned_operations.includes(val) ||
               operations.includes('waiting')
             "
             type="checkbox"
-            id="cargoOpBerth"
-            value="cargoOpBerth"
+            :id="val"
+            :value="val"
             v-model="operations"
           />
           <label
-            for="cargoOpBerth"
+            :for="val"
             :class="
-              planned_operations.includes('cargoOpBerth')
+              planned_operations.includes(val)
                 ? ''
                 : 'line-through text-gray-400'
             "
-            >{{ $t("cargoOperationBerth") }}</label
+            >{{ $t(key) }}</label
           >
         </div>
-        <div class="flex align-center space-x-2">
-          <input
-            :disabled="
-              !planned_operations.includes('cargoOpSTSSTB') ||
-              operations.includes('waiting')
-            "
-            type="checkbox"
-            id="cargoOpSTSSTB"
-            value="cargoOpSTSSTB"
-            v-model="operations"
-          />
-          <label
-            for="cargoOpSTSSTB"
-            :class="
-              planned_operations.includes('cargoOpSTSSTB')
-                ? ''
-                : 'line-through text-gray-400'
-            "
-            >{{ $t("cargoOperationSTSSTB") }}</label
-          >
-        </div>
-        <div class="flex align-center space-x-2">
-          <input
-            :disabled="
-              !planned_operations.includes('bunkeringDebunkering') ||
-              operations.includes('waiting')
-            "
-            type="checkbox"
-            id="bunkeringDebunkering"
-            value="bunkeringDebunkering"
-            v-model="operations"
-          />
-          <label
-            for="bunkeringDebunkering"
-            :class="
-              planned_operations.includes('bunkeringDebunkering')
-                ? ''
-                : 'line-through text-gray-400'
-            "
-            >{{ $t("bunkeringDebunkering") }}</label
-          >
-        </div>
-        <div class="flex align-center space-x-2">
-          <input
-            :disabled="
-              !planned_operations.includes('dryDocking') ||
-              operations.includes('waiting')
-            "
-            type="checkbox"
-            id="dryDocking"
-            value="dryDocking"
-            v-model="operations"
-          />
-          <label
-            for="dryDocking"
-            :class="
-              planned_operations.includes('dryDocking')
-                ? ''
-                : 'line-through text-gray-400'
-            "
-            >{{ $t("dryDocking") }}</label
-          >
-        </div>
-
-        <div class="flex align-center space-x-2">
-          <input
-            :disabled="
-              !planned_operations.includes('crewChange') ||
-              operations.includes('waiting')
-            "
-            type="checkbox"
-            id="crewChange"
-            value="crewChange"
-            v-model="operations"
-          />
-          <label
-            for="crewChange"
-            :class="
-              planned_operations.includes('crewChange')
-                ? ''
-                : 'line-through text-gray-400'
-            "
-            >{{ $t("crewChange") }}</label
-          >
-        </div>
-        <div class="flex align-center space-x-2">
-          <input
-            :disabled="
-              !planned_operations.includes('receivingProvisionSpareParts') ||
-              operations.includes('waiting')
-            "
-            type="checkbox"
-            id="receivingProvisionSpareParts"
-            value="receivingProvisionSpareParts"
-            v-model="operations"
-          />
-          <label
-            for="receivingProvisionSpareParts"
-            :class="
-              planned_operations.includes('receivingProvisionSpareParts')
-                ? ''
-                : 'line-through text-gray-400'
-            "
-            >{{ $t("receivingProvisionSpareParts") }}</label
-          >
-        </div>
-        <div class="flex align-center space-x-2">
-          <input
-            :disabled="
-              !planned_operations.includes('survey') ||
-              operations.includes('waiting')
-            "
-            type="checkbox"
-            id="survey"
-            value="survey"
-            v-model="operations"
-          />
-          <label
-            for="survey"
-            :class="
-              planned_operations.includes('survey')
-                ? ''
-                : 'line-through text-gray-400'
-            "
-            >{{ $t("survey") }}</label
-          >
-        </div>
-        <div class="flex align-center space-x-2">
+        <div v-if="other_planned_operation" class="flex align-center space-x-2">
           <input
             :disabled="
               !planned_operations.includes('others') ||
@@ -343,7 +220,7 @@
                 ? ''
                 : 'line-through text-gray-400'
             "
-            >{{ $t("others") }}</label
+            >{{ other_planned_operation }}</label
           >
         </div>
       </div>
@@ -355,7 +232,7 @@
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
 import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
 import { storeToRefs } from "pinia";
-import { TIMEZONES } from "@/utils/options";
+import { TIMEZONES, OPERATIONS } from "@/utils/options";
 
 const store = useArrivalFWEReportStore();
 const {
@@ -368,6 +245,7 @@ const {
   longMinute: long_minutes,
   longDegree: long_degree,
   plannedOperations: planned_operations,
+  otherPlannedOperation: other_planned_operation,
   operations: operations,
   status: status,
 } = storeToRefs(store);

@@ -11,7 +11,9 @@ const temp = {
     "cargoOpBerth",
     "bunkeringDebunkering",
     "receivingProvisionSpareParts",
-  ], // fetch from arrival eosp/sby
+  ],
+  otherPlannedOperation: "",
+  // fetch above from most recent arrival eosp/sby
 
   // Overview
   departurePortCountry: "Country A",
@@ -60,6 +62,7 @@ export const useHarbourPortReportStore = defineStore(
     const longMinutes = ref("");
     const longDegree = ref("");
     const plannedOperations = ref(temp.plannedOperations);
+    const otherPlannedOperation = ref(temp.otherPlannedOperation);
     const operations = ref([]);
 
     // Consumption And Condition Full
@@ -219,6 +222,7 @@ export const useHarbourPortReportStore = defineStore(
       longMinutes,
       longDegree,
       plannedOperations,
+      otherPlannedOperation,
       operations,
       // Consumption And Condition (Full)
       lsfoTotalConsumption,
