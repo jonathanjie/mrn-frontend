@@ -56,6 +56,11 @@
         </RadioBtnIcon>
       </div>
       <router-view></router-view>
+      <SubmissionResultsModal
+        ref="modal"
+        v-show="isSubmissionRequested"
+        @close-modal="isSubmissionRequested = false"
+      ></SubmissionResultsModal>
     </div>
   </div>
 </template>
@@ -66,6 +71,8 @@ import router from "@/router";
 import { ref } from "vue";
 import { useVoyageStore } from "@/stores/useVoyageStore";
 import { storeToRefs } from "pinia";
+import SubmissionResultsModal from "@/components/Modals/SubmissionResultsModal.vue";
+import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
 // import { onBeforeRouteLeave } from "vue-router";
 
 const reportType = ref("");
@@ -74,6 +81,10 @@ const updateActiveReportType = (type) => {
   reportType.value = type;
   router.push({ name: type });
 };
+
+const submissionStatusStore = useSubmissionStatusStore();
+const { isSubmissionRequested } = storeToRefs(submissionStatusStore);
+// const showModal = ref(isSubmissionRequested.value);
 
 const store = useVoyageStore();
 const {

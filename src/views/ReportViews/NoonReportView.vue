@@ -51,14 +51,6 @@
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 // import CustomButton from "@/components/Buttons/CustomButton.vue";
 // import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import {
-  // textInputOptions,
-  // format,
-  // preventNaN,
-  parsePosition,
-  parsePortLocode,
-} from "../../utils/helpers.js";
-
 import NoonOverview from "@/components/Reports/NoonReport/NoonOverview.vue";
 import NoonDetails from "@/components/Reports/NoonReport/NoonDetails.vue";
 import NoonWeather from "@/components/Reports/NoonReport/NoonWeather.vue";
@@ -68,18 +60,21 @@ import NoonPerformance from "@/components/Reports/NoonReport/NoonPerformance.vue
 import NoonConsumption from "@/components/Reports/NoonReport/NoonConsumption.vue";
 import NoonStoppage from "@/components/Reports/NoonReport/NoonStoppage.vue";
 
-import { convertLTToUTC } from "@/utils/helpers";
+import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
-import { useRouter } from "vue-router";
 import {
   ReportType,
   FuelOil,
   LubricatingOil,
   ConsumptionType,
 } from "@/constants";
+import {
+  parsePosition,
+  parsePortLocode,
+  convertLTToUTC,
+} from "@/utils/helpers.js";
 
-const router = useRouter();
 const store = useNoonReportStore();
 const {
   // Overview
@@ -185,9 +180,12 @@ const {
   stoppageIsActive,
 } = storeToRefs(store);
 
+const submissionStatusStore = useSubmissionStatusStore();
+const { isSubmissionRequested, isSubmissionSuccessful, errorMessage } =
+  storeToRefs(submissionStatusStore);
+
 const sendReport = async () => {
   // TODO: need to do form validation first
-
   const position = parsePosition({
     latDir: latDir.value,
     latMinutes: latMinutes.value,
@@ -231,11 +229,11 @@ const sendReport = async () => {
     reportroute: {
       departure_port: routeDeparturePort,
       departure_date: routeDepartureDateTime.value,
-      depature_tz: routeDepartureTimeZone.value,
+      departure_tz: routeDepartureTimeZone.value,
       arrival_port: routeArrivalPort,
       arrival_date: routeArrivalDateTimeEdited.value
         ? convertLTToUTC(routeArrivalDateTime.value, routeArrivalTimeZone.value)
-        : routeArrivalDateTimeUTC,
+        : routeArrivalDateTimeUTC.value,
       arrival_tz: routeArrivalTimeZone.value,
     },
     weatherdata: {
@@ -434,13 +432,19 @@ const sendReport = async () => {
     const data = await response.json();
     console.log(response);
     console.log(data);
+
     if (response.ok) {
-      router.push({ name: "vessel-overview" });
+      isSubmissionSuccessful.value = true;
+      // router.push({ name: "vessel-overview" });
       // need to update noonReportNo and other voyage details
       store.$reset();
     } else {
-      window.alert(JSON.stringify(data, null, 2));
+      errorMessage.value = data;
     }
+    // else {
+    //   window.alert(JSON.stringify(data, null, 2));
+    // }
+    isSubmissionRequested.value = true;
   } catch (error) {
     console.log(error);
   }

@@ -88,7 +88,7 @@ const props = defineProps({
   specs: String,
 });
 
-let showModal = ref(props.specs === "true");
+const showModal = ref(props.specs === "true");
 
 // Backend Data
 const voyageData = {
