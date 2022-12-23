@@ -85,7 +85,7 @@
         :key="index"
       >
         <!-- <div>{{ report }}</div> -->
-        <div>{{ report.uuid }}</div>
+        <!-- <div>{{ report.uuid }}</div> -->
         <ReportCard
           :uuid="report.uuid"
           :report_no="report.report_no"

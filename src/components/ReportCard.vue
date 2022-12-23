@@ -64,41 +64,41 @@ const report_sent = true; // TODO: always true for MVP, no save function impleme
 <template>
   <div
     @click="handleClick"
-    class="relative flex h-24 items-center justify-between rounded-xl bg-gray-50 pt-5"
+    class="relative flex h-24 items-center justify-between rounded-xl bg-gray-50 pt-5 cursor-pointer"
   >
     <!-- <div>{{ props.uuid }}</div> -->
     <img
       v-if="
-        ReportTypeToDisplay[props.report_type] == Report.type.DEP_COSP_RUP ||
-        ReportTypeToDisplay[props.report_type] == Report.type.DEP_SBY
+        report_type == Report.type.DEP_COSP_RUP ||
+        report_type == Report.type.DEP_SBY
       "
       src="@/assets/icons/departure_header.svg"
       class="absolute left-0 top-0"
     />
     <img
       v-else-if="
-        ReportTypeToDisplay[props.report_type] == Report.type.ARR_SBY_EOSP ||
-        ReportTypeToDisplay[props.report_type] == Report.type.ARR_FWE
+        report_type == Report.type.ARR_SBY_EOSP ||
+        report_type == Report.type.ARR_FWE
       "
       src="@/assets/icons/arrival_header.svg"
       class="absolute left-0 top-0"
     />
     <img
-      v-else-if="ReportTypeToDisplay[props.report_type] == Report.type.NOON"
+      v-else-if="report_type == Report.type.NOON"
       src="@/assets/icons/noon_header.svg"
       class="absolute left-0 top-0"
     />
     <img
-      v-else-if="ReportTypeToDisplay[props.report_type] == Report.type.BUNKER"
+      v-else-if="report_type == Report.type.BUNKER"
       src="@/assets/icons/bunker_header.svg"
       class="absolute left-0 top-0"
     />
     <img
       v-else-if="
-        ReportTypeToDisplay[props.report_type] == Report.type.EVENT_COASTAL ||
-        ReportTypeToDisplay[props.report_type] == Report.type.EVENT_PORT ||
-        ReportTypeToDisplay[props.report_type] == Report.type.NOON_PORT ||
-        ReportTypeToDisplay[props.report_type] == Report.type.NOON_COASTAL
+        report_type == Report.type.EVENT_COASTAL ||
+        report_type == Report.type.EVENT_PORT ||
+        report_type == Report.type.NOON_PORT ||
+        report_type == Report.type.NOON_COASTAL
       "
       src="@/assets/icons/in_harbour_header.svg"
       class="absolute left-0 top-0"
