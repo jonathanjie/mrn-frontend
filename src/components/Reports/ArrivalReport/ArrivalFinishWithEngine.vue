@@ -170,9 +170,7 @@
           <label
             for="waiting"
             :class="
-              planned_operations.includes('waiting')
-                ? ''
-                : 'line-through text-gray-400'
+              planned_operations.includes('waiting') ? '' : 'text-gray-400'
             "
             >{{ $t("waiting") }}</label
           >
@@ -194,11 +192,7 @@
           />
           <label
             :for="val"
-            :class="
-              planned_operations.includes(val)
-                ? ''
-                : 'line-through text-gray-400'
-            "
+            :class="planned_operations.includes(val) ? '' : 'text-gray-400'"
             >{{ $t(key) }}</label
           >
         </div>
@@ -216,9 +210,7 @@
           <label
             for="others"
             :class="
-              planned_operations.includes('others')
-                ? ''
-                : 'line-through text-gray-400'
+              planned_operations.includes('others') ? '' : 'text-gray-400'
             "
             >{{ other_planned_operation }}</label
           >
