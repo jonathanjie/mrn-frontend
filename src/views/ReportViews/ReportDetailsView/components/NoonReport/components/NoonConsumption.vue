@@ -5,6 +5,14 @@ import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
 import { FuelOil, LubricateOil } from "@/constants";
+import { defineProps } from "vue";
+
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
 
 const isAdditionalRemarkFuel = ref(false);
 const isAdditionalRemarkLubricate = ref(false);

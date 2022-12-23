@@ -23,6 +23,14 @@ import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
 
 import { Report } from "@/constants";
+import { defineProps } from "vue";
+
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
 
 const storeGlobal = useNoonReportStore();
 const {
@@ -373,30 +381,30 @@ const sendReport = async () => {
 <template>
   <div class="flex flex-col space-y-6 my-6">
     <!-- Overview -->
-    <NoonOverview />
+    <NoonOverview :report="props.report" />
 
     <!-- Reporting Noon -->
-    <NoonDetails>{{ $t("reportingNoon") }}</NoonDetails>
+    <NoonDetails :report="props.report">{{ $t("reportingNoon") }}</NoonDetails>
 
     <!-- Weather -->
-    <NoonWeather />
+    <NoonWeather :report="props.report" />
 
     <!-- Heavy Weather Condition -->
-    <NoonHeavyWeather />
+    <NoonHeavyWeather :report="props.report" />
 
     <!-- Distance & Time -->
-    <NoonDistanceAndTime />
+    <NoonDistanceAndTime :report="props.report" />
 
     <!-- Performance -->
-    <NoonPerformance />
+    <NoonPerformance :report="props.report" />
 
     <!-- Consumption & Condition -->
-    <NoonConsumption>{{
+    <NoonConsumption :report="props.report">{{
       $t("consumptionAndConditionNoonToNoon")
     }}</NoonConsumption>
 
     <!-- Stoppage or Reduction of RPM (at sea) -->
-    <NoonStoppage />
+    <NoonStoppage :report="props.report" />
 
     <!-- Save and Send -->
     <div class="flex justify-end space-x-4">

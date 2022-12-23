@@ -20,10 +20,10 @@ export const Report = {
 // temporary fix: for displaying report type (report no.) for each report in voyage card
 export const ReportTypeToDisplay = {
   NOON: "NOON",
-  DSBY: "DEPS",
-  DCSP: "DEPR",
-  ASBY: "ARRS",
-  AFWE: "ARRF",
+  DSBY: "DSBY",
+  DCSP: "DCSP",
+  ASBY: "ASBY",
+  AFWE: "AFWE",
   BDN: "BDN",
   EVNT: "EVNT", // TODO: replace with 4 subtypes below
   EVNTP: "EVNTP",

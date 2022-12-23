@@ -1,4 +1,40 @@
-<!-- eslint-disable vue/multi-word-component-names -->
+<script setup>
+// import { reactive } from "vue";
+import { preventNaN } from "@/utils/helpers.js";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { useNoonReportStore } from "@/stores/useNoonReportStore";
+import { storeToRefs } from "pinia";
+import { defineProps } from "vue";
+
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
+
+const store = useNoonReportStore();
+
+// TODO: need to be computed values
+const {
+  speedSinceNoon: speed_since_noon,
+  rpmSinceNoon: rpm_since_noon,
+  slipSinceNoon: slip_since_noon,
+  speedAvg: speed_avg,
+  rpmAvg: rpm_avg,
+  slipAvg: slip_avg,
+} = storeToRefs(store);
+
+// const data = reactive({
+//   speed_since_noon: "",
+//   rpm_since_noon: "",
+//   slip_since_noon: "",
+//   speed_avg: "",
+//   rpm_avg: "",
+//   slip_avg: "",
+// });
+</script>
+
 <template>
   <div class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4 shadow-card">
     <div class="col-span-2 flex items-center">
@@ -92,30 +128,4 @@
   </div>
 </template>
 
-<script setup>
-// import { reactive } from "vue";
-import { preventNaN } from "@/utils/helpers.js";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useNoonReportStore } from "@/stores/useNoonReportStore";
-import { storeToRefs } from "pinia";
-const store = useNoonReportStore();
 
-// TODO: need to be computed values
-const {
-  speedSinceNoon: speed_since_noon,
-  rpmSinceNoon: rpm_since_noon,
-  slipSinceNoon: slip_since_noon,
-  speedAvg: speed_avg,
-  rpmAvg: rpm_avg,
-  slipAvg: slip_avg,
-} = storeToRefs(store);
-
-// const data = reactive({
-//   speed_since_noon: "",
-//   rpm_since_noon: "",
-//   slip_since_noon: "",
-//   speed_avg: "",
-//   rpm_avg: "",
-//   slip_avg: "",
-// });
-</script>

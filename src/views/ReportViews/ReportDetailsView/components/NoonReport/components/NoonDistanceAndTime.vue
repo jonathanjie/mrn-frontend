@@ -173,6 +173,14 @@ import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
+import { defineProps } from "vue";
+
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
 
 const store = useNoonReportStore();
 const distanceToGoDisabled = ref(true);

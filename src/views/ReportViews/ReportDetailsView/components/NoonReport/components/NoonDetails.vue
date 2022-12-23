@@ -1,3 +1,31 @@
+
+<script setup>
+import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
+// import { reactive } from "vue";
+import { useNoonReportStore } from "@/stores/useNoonReportStore";
+import { storeToRefs } from "pinia";
+import { defineProps } from "vue";
+
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
+
+const store = useNoonReportStore();
+const {
+  reportingTimeZone: reporting_time_zone,
+  reportingDateTime: reporting_date_time,
+  latDir: lat_dir,
+  latMinutes: lat_minutes,
+  latDegree: lat_degree,
+  longDir: long_dir,
+  longMinutes: long_minutes,
+  longDegree: long_degree,
+} = storeToRefs(store);
+</script>
+
 <template>
   <div class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4 shadow-card">
     <div class="col-span-2 flex items-center">
@@ -144,21 +172,3 @@
   </div>
 </template>
 
-<script setup>
-import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-// import { reactive } from "vue";
-import { useNoonReportStore } from "@/stores/useNoonReportStore";
-import { storeToRefs } from "pinia";
-
-const store = useNoonReportStore();
-const {
-  reportingTimeZone: reporting_time_zone,
-  reportingDateTime: reporting_date_time,
-  latDir: lat_dir,
-  latMinutes: lat_minutes,
-  latDegree: lat_degree,
-  longDir: long_dir,
-  longMinutes: long_minutes,
-  longDegree: long_degree,
-} = storeToRefs(store);
-</script>
