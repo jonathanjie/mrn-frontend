@@ -3,10 +3,13 @@
     <div
       class="bg-slate-400 overflow-auto fixed inset-0 z-50 justify-center items-center flex"
     >
-      <div class="relative my-6 mx-auto w-5/12 h-2/6">
+      <div
+        class="relative my-6 mx-auto"
+        :class="isSubmissionSuccessful ? 'w-1/3 h-1/3' : 'w-2/5 h-5/6'"
+      >
         <!--content-->
         <div
-          class="rounded-lg shadow-lg relative flex flex-col w-full bg-white"
+          class="rounded-lg shadow-lg relative flex flex-col w-full bg-white min-w-fit"
         >
           <!--header-->
           <div
@@ -27,18 +30,24 @@
                 :key="index"
                 class="mb-4 p-4 bg-red-50 rounded-xl"
               >
-                <div class="flex items-center space-x-2 mb-2">
+                <div class="flex items-center space-x-2 mb-2 min-w-fit">
                   <img src="@/assets/icons/alert_circle.svg" />
-                  <div class="text-14 text-red-500">{{ index }}</div>
+                  <div class="text-14 text-red-500">
+                    {{ ErrorFieldsToDisplay[index] }}
+                  </div>
                 </div>
-                <div class="bg-white p-3 px-4">
+                <div class="bg-white p-3 px-4 min-w-fit">
                   <li
                     v-for="(val, key) in error"
                     :key="key"
                     class="text-12 mb-2 flex space-x-1"
                   >
                     <div class="text-blue-700">
-                      {{ !Number.isInteger(key) ? key + ": " : "" }}
+                      {{
+                        !Number.isInteger(key)
+                          ? ErrorFieldsToDisplay[key] + ": "
+                          : ""
+                      }}
                     </div>
                     <div class="text-gray-700">
                       {{ Array.isArray(val) ? val[0] : val }}
@@ -92,6 +101,7 @@ import CustomButton from "@/components/Buttons/CustomButton.vue";
 import { useRouter } from "vue-router";
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore.js";
 import { storeToRefs } from "pinia";
+import { ErrorFieldsToDisplay } from "@/constants";
 
 const router = useRouter();
 
@@ -104,6 +114,7 @@ const emit = defineEmits(["close-modal"]);
 
 const returnToVesselOverview = () => {
   emit("close-modal");
+  submissionStatusStore.$reset();
   router.push({ name: "vessel-overview" });
 };
 </script>

@@ -32,6 +32,33 @@ export const ReportTypeToDisplay = {
   NOONC: "NOONC",
 };
 
+export const ErrorFieldsToDisplay = {
+  time: "Time",
+  timezone: "Time zone",
+  weather_notation: "Weather notation",
+  visibility: "Visibility",
+  wind_direction: "Wind direction",
+  wind_speed: "Wind force",
+  sea_direction: "Wave direction",
+  sea_state: "Wave force",
+  swell_direction: "Swell direction",
+  swell_scale: "Swell scale",
+  air_pressure: "Air pressure",
+  air_temperature_dry: "Air temperature (dry)",
+  air_temperature_wet: "Air temperature (wet)",
+  sea_temperature: "Sea water temperature",
+  ice_condition: "Glacier ice condition",
+  distance_observed_since_noon: "Distanace by observation",
+  distance_engine_since_noon: "Distance by engine",
+  distance_engine_total: "Distance by engine (total)",
+  revolution_count: "Revolution counter",
+  noonreporttimeandposition: "Reporting Noon",
+  weatherdata: "Weather",
+  distanceperformancedata: "Distance & Time / Performance",
+  report_date: "Overview: report date",
+  report_tz: "Overview: report time zone",
+};
+
 export const Direction = {
   N: "N",
   S: "S",
