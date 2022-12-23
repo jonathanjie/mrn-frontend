@@ -205,7 +205,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   );
 
   // Consumption and Condition
-  // TODO: create for each fuel oil and lubricate oil type
+  // TODO: create for each fuel oil and lubricating oil type
   const lsfoBreakdown = reactive({
     me: "",
     ge: "",

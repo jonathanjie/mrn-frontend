@@ -7,7 +7,7 @@
       <span class="text-blue-700 text-16">{{ $t("bunkeringPort") }}</span>
     </div>
     <div class="col-span-1">
-      <div class="grid grid-cols-5 border bg-gray-50 text-14 mb-5">
+      <div class="grid grid-cols-5 border bg-gray-50 text-14">
         <div class="col-span-2 row-span-2 self-center text-blue-700 p-3">
           {{ $t("portName") }}
         </div>

@@ -240,7 +240,7 @@
 
       <div class="pt-8">
         <div class="self-center text-16 mb-4 text-gray-700">
-          {{ $t("lubricateOilInL") }}
+          {{ $t("lubricatingOilInL") }}
         </div>
 
         <div class="grid grid-cols-14 text-14 mb-4">
@@ -392,9 +392,11 @@
         </div>
 
         <div
-          v-if="!isAdditionalRemarkLubricate"
+          v-if="!isAdditionalRemarkLubricating"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
-          @click="isAdditionalRemarkLubricate = !isAdditionalRemarkLubricate"
+          @click="
+            isAdditionalRemarkLubricating = !isAdditionalRemarkLubricating
+          "
         >
           <img
             src="@/assets/icons/checkboxes/unchecked_square.svg"
@@ -408,7 +410,9 @@
         >
           <div
             class="flex items-center mb-3 cursor-pointer"
-            @click="isAdditionalRemarkLubricate = !isAdditionalRemarkLubricate"
+            @click="
+              isAdditionalRemarkLubricating = !isAdditionalRemarkLubricating
+            "
           >
             <img
               src="@/assets/icons/checkboxes/checked_square.svg"
@@ -432,14 +436,16 @@
               <option selected disabled value="default">
                 {{ $t("selectType") }}
               </option>
-              <option :value="LubricateOil.ME_CYLINDER">
+              <option :value="LubricatingOil.ME_CYLINDER">
                 {{ $t("mecylinder") }}
               </option>
-              <option :value="LubricateOil.ME_SYSTEM">
+              <option :value="LubricatingOil.ME_SYSTEM">
                 {{ $t("mesystem") }}
               </option>
-              <option :value="LubricateOil.ME_SUMP">{{ $t("mesump") }}</option>
-              <option :value="LubricateOil.GE_SYSTEM">
+              <option :value="LubricatingOil.ME_SUMP">
+                {{ $t("mesump") }}
+              </option>
+              <option :value="LubricatingOil.GE_SYSTEM">
                 {{ $t("gesystem") }}
               </option>
             </select>
@@ -552,10 +558,10 @@ import { ref } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 import { storeToRefs } from "pinia";
-import { FuelOil, LubricateOil } from "@/constants";
+import { FuelOil, LubricatingOil } from "@/constants";
 
 const isAdditionalRemarkFuel = ref(false);
-const isAdditionalRemarkLubricate = ref(false);
+const isAdditionalRemarkLubricating = ref(false);
 
 const store = useDepartureSBYReportStore();
 const {

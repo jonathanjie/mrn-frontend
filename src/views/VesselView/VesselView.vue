@@ -71,7 +71,7 @@
 <script setup>
 import { ref } from "vue";
 import GradientButton from "../../components/Buttons/GradientButton.vue";
-import AddVoyageModal from "@/components/AddVoyageModal.vue";
+import AddVoyageModal from "@/components/Modals/AddVoyageModal.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 
 const auth = useAuthStore();

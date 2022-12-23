@@ -190,10 +190,10 @@
                 </div>
               </div>
             </div>
-            <!-- Lubricate oil type -->
+            <!-- Lubricating oil type -->
             <div class="bg-gray-50 rounded-lg p-4">
               <p class="leading-relaxed mb-4 text-gray-700">
-                {{ $t("lubricateOilType") }}
+                {{ $t("lubricatingOilType") }}
               </p>
               <div class="grid grid-cols-3 gap-5">
                 <div class="flex align-center">
@@ -262,7 +262,7 @@
                     id="othersOil"
                     name="othersOil"
                     value="othersOil"
-                    v-on:click="lubricateOthersFlag = !lubricateOthersFlag"
+                    v-on:click="lubricatingOthersFlag = !lubricatingOthersFlag"
                   />
                   <label class="ml-2 text-14 text-gray-700" for="othersOil">
                     {{ $t("others") }}
@@ -271,9 +271,9 @@
               </div>
               <br />
               <input
-                v-model.lazy="lubricateOthers"
-                :disabled="lubricateOthersFlag"
-                placeholder="Other lubricate oil type"
+                v-model.lazy="lubricatingOthers"
+                :disabled="lubricatingOthersFlag"
+                placeholder="Other lubricating oil type"
                 class="hidden w-full p-3 pl-4 border bg-white text-14 text-gray-500"
               />
             </div>
@@ -402,16 +402,16 @@
 
 <script setup>
 import { ref } from "vue";
-import GradientButton from "./Buttons/GradientButton.vue";
-import CustomButton from "./Buttons/CustomButton.vue";
+import GradientButton from "@/components/Buttons/GradientButton.vue";
+import CustomButton from "@/components/Buttons/CustomButton.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 
 const auth = useAuthStore();
 
 // List to export options from checkboxes
-let lubricateOthersFlag = ref(true);
+let lubricatingOthersFlag = ref(true);
 let machineryOthersFlag = ref(true);
-const lubricateOthers = ref("");
+const lubricatingOthers = ref("");
 const machineryOthers = ref("");
 
 const propeller_pitch = ref(0);

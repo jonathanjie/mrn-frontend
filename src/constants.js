@@ -62,7 +62,7 @@ export const FuelOil = {
   MGO: "MGO",
 };
 
-export const LubricateOil = {
+export const LubricatingOil = {
   ME_CYLINDER: "M/E Cylinder",
   ME_SYSTEM: "M/E System",
   ME_SUMP: "M/E Sump",
@@ -87,7 +87,7 @@ const constants = {
   IceCondition: IceCondition,
   ReportType: ReportType,
   FuelOil: FuelOil,
-  LubricateOil: LubricateOil,
+  LubricatingOil: LubricatingOil,
   ConsumptionType: ConsumptionType,
 };
 

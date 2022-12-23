@@ -49,7 +49,7 @@
 
 <script setup>
 import GradientButton from "@/components/Buttons/GradientButton.vue";
-import CustomButton from "@/components/Buttons/CustomButton.vue";
+// import CustomButton from "@/components/Buttons/CustomButton.vue";
 // import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import {
   // textInputOptions,
@@ -75,7 +75,7 @@ import { useRouter } from "vue-router";
 import {
   ReportType,
   FuelOil,
-  LubricateOil,
+  LubricatingOil,
   ConsumptionType,
 } from "@/constants";
 
@@ -91,7 +91,7 @@ const {
   // Departure and Destination
   routeDeparturePortCountry,
   routeDeparturePortName,
-  routeDepartureDate,
+  routeDepartureDateTime,
   routeDepartureTimeZone,
   routeArrivalPortCountry,
   routeArrivalPortName,
@@ -230,7 +230,7 @@ const sendReport = async () => {
     },
     reportroute: {
       departure_port: routeDeparturePort,
-      departure_date: routeDepartureDate.value,
+      departure_date: routeDepartureDateTime.value,
       depature_tz: routeDepartureTimeZone.value,
       arrival_port: routeArrivalPort,
       arrival_date: routeArrivalDateTimeEdited.value
@@ -321,13 +321,14 @@ const sendReport = async () => {
       ],
       lubricatingoildata_set: [
         {
-          fuel_oil_type: LubricateOil.ME_CYLINDER,
+          fuel_oil_type: LubricatingOil.ME_CYLINDER,
           total_consumption: mecylinderBreakdown.value.total_consumption || 0,
           receipt: mecylinderBreakdown.value.receipt || 0,
           debunkering: mecylinderBreakdown.value.debunkering || 0,
           rob: mecylinderRob.value || 0,
           lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type === LubricateOil.ME_CYLINDER
+            lubricatingOilDataCorrection.value.type ===
+            LubricatingOil.ME_CYLINDER
               ? {
                   correction: lubricatingOilDataCorrection.value.correction,
                   remarks: lubricatingOilDataCorrection.value.remarks,
@@ -335,13 +336,13 @@ const sendReport = async () => {
               : null,
         },
         {
-          fuel_oil_type: LubricateOil.ME_SYSTEM,
+          fuel_oil_type: LubricatingOil.ME_SYSTEM,
           total_consumption: mesystemBreakdown.value.total_consumption || 0,
           receipt: mesystemBreakdown.value.receipt || 0,
           debunkering: mesystemBreakdown.value.debunkering || 0,
           rob: mesystemRob.value || 0,
           lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type === LubricateOil.ME_SYSTEM
+            lubricatingOilDataCorrection.value.type === LubricatingOil.ME_SYSTEM
               ? {
                   correction: lubricatingOilDataCorrection.value.correction,
                   remarks: lubricatingOilDataCorrection.value.remarks,
@@ -349,13 +350,13 @@ const sendReport = async () => {
               : null,
         },
         {
-          fuel_oil_type: LubricateOil.ME_SUMP,
+          fuel_oil_type: LubricatingOil.ME_SUMP,
           total_consumption: mesumpBreakdown.value.total_consumption || 0,
           receipt: mesumpBreakdown.value.receipt || 0,
           debunkering: mesumpBreakdown.value.debunkering || 0,
           rob: mesumpRob.value || 0,
           lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type === LubricateOil.ME_SUMP
+            lubricatingOilDataCorrection.value.type === LubricatingOil.ME_SUMP
               ? {
                   correction: lubricatingOilDataCorrection.value.correction,
                   remarks: lubricatingOilDataCorrection.value.remarks,
@@ -363,13 +364,13 @@ const sendReport = async () => {
               : null,
         },
         {
-          fuel_oil_type: LubricateOil.GE_SYSTEM,
+          fuel_oil_type: LubricatingOil.GE_SYSTEM,
           total_consumption: gesystemBreakdown.value.total_consumption || 0,
           receipt: gesystemBreakdown.value.receipt || 0,
           debunkering: gesystemBreakdown.value.debunkering || 0,
           rob: gesystemRob.value || 0,
           lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type === LubricateOil.GE_SYSTEM
+            lubricatingOilDataCorrection.value.type === LubricatingOil.GE_SYSTEM
               ? {
                   correction: lubricatingOilDataCorrection.value.correction,
                   remarks: lubricatingOilDataCorrection.value.remarks,
