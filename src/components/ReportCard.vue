@@ -43,8 +43,6 @@ const props = defineProps({
 });
 
 const handleClick = () => {
-  console.log("im clicked");
-  console.log(route.params);
   const imo = route.params.imo;
   const vesselname = route.params.vesselname;
   router.push({

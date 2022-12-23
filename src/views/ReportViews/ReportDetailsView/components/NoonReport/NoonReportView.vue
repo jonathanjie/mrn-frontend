@@ -6,7 +6,7 @@ import {
   // textInputOptions,
   // format,
   // preventNaN,
-  parsePosition,
+  parsePositionToString,
   parsePortLocode,
 } from "@/utils/helpers.js";
 
@@ -156,7 +156,7 @@ const {
 const sendReport = async () => {
   // TODO: need to do form validation first
 
-  const position = parsePosition({
+  const position = parsePositionToString({
     latDir: latDir.value,
     latMinutes: latMinutes.value,
     latDegree: latDegree.value,
@@ -165,7 +165,7 @@ const sendReport = async () => {
     longDegree: longDegree.value,
   });
 
-  const stoppagePosition = parsePosition({
+  const stoppagePosition = parsePositionToString({
     latDir: stoppageLatDir.value,
     latMinutes: stoppageLatMinutes.value,
     latDegree: stoppageLatDegree.value,
@@ -390,7 +390,7 @@ const sendReport = async () => {
     <NoonWeather :report="props.report" />
 
     <!-- Heavy Weather Condition -->
-    <NoonHeavyWeather :report="props.report" />
+    <NoonHeavyWeather v-if="props.report.heavyweatherdata" :report="props.report" />
 
     <!-- Distance & Time -->
     <NoonDistanceAndTime :report="props.report" />
@@ -404,7 +404,7 @@ const sendReport = async () => {
     }}</NoonConsumption>
 
     <!-- Stoppage or Reduction of RPM (at sea) -->
-    <NoonStoppage :report="props.report" />
+    <NoonStoppage v-if="props.report.stoppagedata" :report="props.report" />
 
     <!-- Save and Send -->
     <div class="flex justify-end space-x-4">

@@ -51,6 +51,14 @@
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 // import CustomButton from "@/components/Buttons/CustomButton.vue";
 // import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import {
+  // textInputOptions,
+  // format,
+  // preventNaN,
+  parsePositionToString,
+  parsePortLocode,
+} from "../../utils/helpers.js";
+
 import NoonOverview from "@/components/Reports/NoonReport/NoonOverview.vue";
 import NoonDetails from "@/components/Reports/NoonReport/NoonDetails.vue";
 import NoonWeather from "@/components/Reports/NoonReport/NoonWeather.vue";
@@ -186,7 +194,8 @@ const { isSubmissionRequested, isSubmissionSuccessful, errorMessage } =
 
 const sendReport = async () => {
   // TODO: need to do form validation first
-  const position = parsePosition({
+
+  const position = parsePositionToString({
     latDir: latDir.value,
     latMinutes: latMinutes.value,
     latDegree: latDegree.value,
@@ -195,7 +204,7 @@ const sendReport = async () => {
     longDegree: longDegree.value,
   });
 
-  const stoppagePosition = parsePosition({
+  const stoppagePosition = parsePositionToString({
     latDir: stoppageLatDir.value,
     latMinutes: stoppageLatMinutes.value,
     latDegree: stoppageLatDegree.value,

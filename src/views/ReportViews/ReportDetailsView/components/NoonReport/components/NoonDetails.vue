@@ -1,10 +1,9 @@
-
 <script setup>
+import { computed, defineProps } from "vue";
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-// import { reactive } from "vue";
-import { useNoonReportStore } from "@/stores/useNoonReportStore";
-import { storeToRefs } from "pinia";
-import { defineProps } from "vue";
+// import { useNoonReportStore } from "@/stores/useNoonReportStore";
+// import { storeToRefs } from "pinia";
+import { parsePositionFromString } from "@/utils/helpers.js";
 
 const props = defineProps({
   report: {
@@ -13,17 +12,23 @@ const props = defineProps({
   },
 });
 
-const store = useNoonReportStore();
-const {
-  reportingTimeZone: reporting_time_zone,
-  reportingDateTime: reporting_date_time,
-  latDir: lat_dir,
-  latMinutes: lat_minutes,
-  latDegree: lat_degree,
-  longDir: long_dir,
-  longMinutes: long_minutes,
-  longDegree: long_degree,
-} = storeToRefs(store);
+const reporting_time_zone = computed(() => props.report.report_tz);
+const reporting_date_time = computed(() => props.report.report_date);
+const position = computed(() =>
+  parsePositionFromString(props.report.noonreporttimeandposition.position)
+);
+
+// const store = useNoonReportStore();
+// const {
+//   reportingTimeZone: reporting_time_zone,
+//   reportingDateTime: reporting_date_time,
+//   latDir: lat_dir,
+//   latMinutes: lat_minutes,
+//   latDegree: lat_degree,
+//   longDir: long_dir,
+//   longMinutes: long_minutes,
+//   longDegree: long_degree,
+// } = storeToRefs(store);
 </script>
 
 <template>
@@ -42,6 +47,7 @@ const {
       </div>
       <div class="flex col-span-3 border-b">
         <select
+          disabled
           class="grow self-center p-3 text-14 focus:outline-0"
           :class="
             reporting_time_zone === 'default'
@@ -117,21 +123,24 @@ const {
         >{{ $t("latitude") }}</span
       >
       <input
-        v-model="lat_degree"
-        @keypress="preventNaN($event, lat_degree)"
+        v-model="position.latDegree"
+        @keypress="preventNaN($event, position.latDegree)"
         placeholder="000 (Degree)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="lat_minutes"
-        @keypress="preventNaN($event, lat_minutes)"
+        v-model="position.latMinutes"
+        @keypress="preventNaN($event, position.latMinutes)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
-        v-model="lat_dir"
+        disabled
+        v-model="position.latDir"
         class="col-span-3 p-3 text-14 border-l focus:outline-0 focus:outline-0"
-        :class="lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="
+          position.latDir === 'default' ? 'text-gray-400' : 'text-gray-700'
+        "
       >
         <option selected disabled value="default">
           {{ $t("southAndNorth") }}
@@ -146,21 +155,24 @@ const {
         >{{ $t("longitude") }}</span
       >
       <input
-        v-model="long_degree"
-        @keypress="preventNaN($event, long_degree)"
+        v-model="position.longDegree"
+        @keypress="preventNaN($event, position.longDegree)"
         placeholder="000 (Degree)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="long_minutes"
-        @keypress="preventNaN($event, long_minutes)"
+        v-model="position.longMinutes"
+        @keypress="preventNaN($event, position.longMinutes)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
-        v-model="long_dir"
+        disabled
+        v-model="position.longDir"
         class="col-span-3 p-3 text-14 border-l focus:outline-0"
-        :class="long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="
+          position.longDir === 'default' ? 'text-gray-400' : 'text-gray-700'
+        "
       >
         <option selected disabled value="default">
           {{ $t("eastAndWest") }}
@@ -171,4 +183,3 @@ const {
     </div>
   </div>
 </template>
-
