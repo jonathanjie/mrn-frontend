@@ -55,7 +55,7 @@ export function convertDMSToDD(degrees, minutes, direction) {
   return dd;
 }
 
-export const parsePosition = ({
+export const parsePositionToString = ({
   latDegree,
   latMinutes,
   latDir,
@@ -76,6 +76,29 @@ export const parsePosition = ({
   );
 
   return `SRID=${SRID};POINT (${positionLat} ${positionLong})`;
+};
+
+export const parsePositionFromString = (positionString) => {
+  const splitString = positionString.split(" ");
+
+  const rawLat = splitString[1].slice(1);
+  const rawLong = splitString[2].slice(0, -1);
+
+  const latDegree = rawLat.split(".")[0];
+  const latMinutes = rawLat.split(".")[1] * 60;
+  const latDir = Math.sign(+rawLat) === -1 ? "S" : "N";
+  const longDegree = rawLong.split(".")[0];
+  const longMinutes = rawLong.split(".")[1] * 60;
+  const longDir = Math.sign(+rawLong) === -1 ? "E" : "W";
+
+  return {
+    latDegree,
+    latMinutes,
+    latDir,
+    longDegree,
+    longMinutes,
+    longDir,
+  };
 };
 
 export const convertLTToUTC = (date, offset) => {

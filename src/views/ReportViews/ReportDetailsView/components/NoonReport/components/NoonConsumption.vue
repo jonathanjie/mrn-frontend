@@ -1,6 +1,9 @@
 <script setup>
 import { preventNaN } from "@/utils/helpers";
-import { ref } from "vue";
+import {
+  // ref,
+  computed,
+} from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
@@ -14,8 +17,107 @@ const props = defineProps({
   },
 });
 
-const isAdditionalRemarkFuel = ref(false);
-const isAdditionalRemarkLubricating = ref(false);
+// const isAdditionalRemarkFuel = ref(false);
+// const isAdditionalRemarkLubricating = ref(false);
+
+// const lsfo_total_consumption = computed(
+//   () =>
+//     props.report.consumptionconditiondata.fueloildata_set.filter(
+//       (fuelData) => fuelData.fuel_oil_type == "LSFO"
+//     )[0]?.total_consumption ?? "NIL"
+// );
+// const lsfo_rob = computed(
+//   () =>
+//     props.report.consumptionconditiondata.fueloildata_set.filter(
+//       (fuelData) => fuelData.fuel_oil_type == "LSFO"
+//     )[0]?.rob ?? "NIL"
+// );
+// const lsfo_breakdown = computed(
+//   () =>
+//     props.report.consumptionconditiondata.fueloildata_set.filter(
+//       (fuelData) => fuelData.fuel_oil_type == "LSFO"
+//     )[0].breakdown
+// );
+// const mgo_total_consumption = computed(
+//   () =>
+//     props.report.consumptionconditiondata.fueloildata_set.filter(
+//       (fuelData) => fuelData.fuel_oil_type == "MGO"
+//     )[0]?.total_consumption ?? "NIL"
+// );
+// const mgo_rob = computed(
+//   () =>
+//     props.report.consumptionconditiondata.fueloildata_set.filter(
+//       (fuelData) => fuelData.fuel_oil_type == "MGO"
+//     )[0]?.total_consumption ?? "NIL"
+// );
+// const mgo_breakdown = computed(
+//   () =>
+//     props.report.consumptionconditiondata.fueloildata_set.filter(
+//       (fuelData) => fuelData.fuel_oil_type == "MGO"
+//     )[0].breakdown
+// );
+// const mecylinder_breakdown = computed(
+//   () =>
+//     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+//       (fuelData) => fuelData.fuel_oil_type == "M/E Cylinder"
+//     )[0].breakdown
+// );
+// const mecylinder_rob = computed(
+//   () =>
+//     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+//       (fuelData) => fuelData.fuel_oil_type == "M/E Cylinder"
+//     )[0].rob
+// );
+// const mesystem_breakdown = computed(
+//   () =>
+//     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+//       (fuelData) => fuelData.fuel_oil_type == "M/E System"
+//     )[0].breakdown
+// );
+// const mesystem_rob = computed(
+//   () =>
+//     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+//       (fuelData) => fuelData.fuel_oil_type == "M/E System"
+//     )[0].rob
+// );
+// const mesump_breakdown = computed(
+//   () =>
+//     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+//       (fuelData) => fuelData.fuel_oil_type == "M/E Sump"
+//     )[0].breakdown
+// );
+// const mesump_rob = computed(
+//   () =>
+//     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+//       (fuelData) => fuelData.fuel_oil_type == "M/E Sump"
+//     )[0].rob
+// );
+// const gesystem_breakdown = computed(
+//   () =>
+//     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+//       (fuelData) => fuelData.fuel_oil_type == "G/E System"
+//     )[0].breakdown
+// );
+// const gesystem_rob = computed(
+//   () =>
+//     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+//       (fuelData) => fuelData.fuel_oil_type == "G/E System"
+//     )[0].rob
+// );
+// const freshwater_consumed = computed(
+//   () => props.report.consumptionconditiondata.freshwaterdata.consumed
+// );
+// const freshwater_evaporated = computed(
+//   () => props.report.consumptionconditiondata.freshwaterdata.consumed
+// );
+// const freshwater_change = computed(
+//   () =>
+//     +props.report.consumptionconditiondata.freshwaterdata.received -
+//     props.report.consumptionconditiondata.freshwaterdata.discharged
+// );
+// const freshwater_rob = computed(
+//   () => props.report.consumptionconditiondata.freshwaterdata.rob
+// );
 
 const store = useNoonReportStore();
 const {
@@ -100,24 +202,28 @@ const {
             {{ $t("lsfo") }}
           </div>
           <input
+            disabled
             v-model="lsfo_breakdown.me"
             @keypress="preventNaN($event, lsfo_breakdown.me)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
+            disabled
             v-model="lsfo_breakdown.ge"
             @keypress="preventNaN($event, lsfo_breakdown.ge)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
+            disabled
             v-model="lsfo_breakdown.blr"
             @keypress="preventNaN($event, lsfo_breakdown.blr)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
+            disabled
             v-model="lsfo_breakdown.igg"
             @keypress="preventNaN($event, lsfo_breakdown.igg)"
             placeholder="0"
@@ -140,24 +246,28 @@ const {
             {{ $t("mgo") }}
           </div>
           <input
+            disabled
             v-model="mgo_breakdown.me"
             @keypress="preventNaN($event, mgo_breakdown.me)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
+            disabled
             v-model="mgo_breakdown.ge"
             @keypress="preventNaN($event, mgo_breakdown.ge)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
+            disabled
             v-model="mgo_breakdown.blr"
             @keypress="preventNaN($event, mgo_breakdown.blr)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
+            disabled
             v-model="mgo_breakdown.igg"
             @keypress="preventNaN($event, mgo_breakdown.igg)"
             placeholder="0"
@@ -173,7 +283,7 @@ const {
           </div>
         </div>
 
-        <div
+        <!-- <div
           v-if="!isAdditionalRemarkFuel"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
           @click="isAdditionalRemarkFuel = !isAdditionalRemarkFuel"
@@ -203,6 +313,7 @@ const {
               {{ $t("correction") }}
             </div>
             <select
+              disabled
               v-model="fuel_oil_data_correction.type"
               class="col-span-4 p-3 border-l focus:outline-0"
               :class="
@@ -219,6 +330,7 @@ const {
             </select>
             <div class="flex col-span-4 p-3 pl-4 border-l bg-white">
               <input
+                disabled
                 v-model="fuel_oil_data_correction.correction"
                 @keypress="
                   preventNaN($event, fuel_oil_data_correction.correction)
@@ -234,12 +346,13 @@ const {
               {{ $t("remarks") }}
             </div>
             <textarea
+              disabled
               v-model.trim="fuel_oil_data_correction.remarks"
               placeholder="Input description here"
               class="col-span-8 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="pt-8">
@@ -278,6 +391,7 @@ const {
             {{ $t("meCylinder") }}
           </div>
           <input
+            disabled
             v-model="mecylinder_breakdown.total_consumption"
             @keypress="
               preventNaN($event, mecylinder_breakdown.total_consumption)
@@ -286,12 +400,14 @@ const {
             class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
+            disabled
             v-model="mecylinder_breakdown.receipt"
             @keypress="preventNaN($event, mecylinder_breakdown.receipt)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
+            disabled
             v-model="mecylinder_breakdown.debunkering"
             @keypress="preventNaN($event, mecylinder_breakdown.debunkering)"
             placeholder="0"
@@ -309,18 +425,21 @@ const {
             {{ $t("meSystem") }}
           </div>
           <input
+            disabled
             v-model="mesystem_breakdown.total_consumption"
             @keypress="preventNaN($event, mesystem_breakdown.total_consumption)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
+            disabled
             v-model="mesystem_breakdown.receipt"
             @keypress="preventNaN($event, mesystem_breakdown.receipt)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
+            disabled
             v-model="mesystem_breakdown.debunkering"
             @keypress="preventNaN($event, mesystem_breakdown.debunkering)"
             placeholder="0"
@@ -338,18 +457,21 @@ const {
             {{ $t("meSump") }}
           </div>
           <input
+            disabled
             v-model="mesump_breakdown.total_consumption"
             @keypress="preventNaN($event, mesump_breakdown.total_consumption)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
+            disabled
             v-model="mesump_breakdown.receipt"
             @keypress="preventNaN($event, mesump_breakdown.receipt)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
+            disabled
             v-model="mesump_breakdown.debunkering"
             @keypress="preventNaN($event, mesump_breakdown.debunkering)"
             placeholder="0"
@@ -367,18 +489,21 @@ const {
             {{ $t("geSystem") }}
           </div>
           <input
+            disabled
             v-model="gesystem_breakdown.total_consumption"
             @keypress="preventNaN($event, gesystem_total_consumption)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
+            disabled
             v-model="gesystem_breakdown.receipt"
             @keypress="preventNaN($event, gesystem_breakdown.receipt)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
+            disabled
             v-model="gesystem_breakdown.debunkering"
             @keypress="preventNaN($event, gesystem_breakdown.debunkering)"
             placeholder="0"
@@ -391,7 +516,7 @@ const {
           </div>
         </div>
 
-        <div
+        <!-- <div
           v-if="!isAdditionalRemarkLubricating"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
           @click="
@@ -425,6 +550,7 @@ const {
               {{ $t("correction") }}
             </div>
             <select
+              disabled
               v-model="lubricating_oil_data_correction.type"
               class="col-span-6 p-3 border-l focus:outline-0"
               :class="
@@ -451,6 +577,7 @@ const {
             </select>
             <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
               <input
+                disabled
                 v-model="lubricating_oil_data_correction.correction"
                 @keypress="
                   preventNaN($event, lubricating_oil_data_correction.correction)
@@ -466,12 +593,13 @@ const {
               {{ $t("remarks") }}
             </div>
             <textarea
+              disabled
               v-model.trim="lubricating_oil_data_correction.remarks"
               :placeholder="$t('inputDescriptionHere')"
               class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="pt-8">
@@ -500,12 +628,14 @@ const {
             {{ $t("rob") }}
           </div>
           <input
+            disabled
             v-model="freshwater_consumed"
             @keypress="preventNaN($event, freshwater_consumed)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
+            disabled
             v-model="freshwater_evaporated"
             @keypress="preventNaN($event, freshwater_evaporated)"
             placeholder="0"

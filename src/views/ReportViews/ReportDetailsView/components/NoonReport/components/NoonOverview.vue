@@ -1,4 +1,5 @@
 <script setup>
+import { computed, defineProps } from "vue";
 import { textInputOptions, format } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
@@ -11,22 +12,52 @@ const props = defineProps({
   },
 });
 
+const noonReportNum = computed(() => props.report.report_num);
+const voyageLeg = computed(() => props.report.voyage_leg);
+// const cur_loading_condition = computed(() => props.report.voyage_leg);
+const reportingDateTime = computed(() => props.report.report_date);
+const reportingTimeZone = computed(() => props.report.report_tz);
+const route_departure_port_country = computed(
+  () => props.report.reportroute.departure_port.split(" ")[0]
+);
+const route_departure_port_name = computed(
+  () => props.report.reportroute.departure_port.split(" ")[1]
+);
+const route_departure_date = computed(
+  () => props.report.reportroute.departure_date
+);
+const route_departure_time_zone = computed(
+  () => props.report.reportroute.departure_tz
+);
+const route_arrival_port_country = computed(
+  () => props.report.reportroute.arrival_port.split(" ")[0]
+);
+const route_arrival_port_name = computed(
+  () => props.report.reportroute.arrival_port.split(" ")[1]
+);
+const route_arrival_date = computed(
+  () => props.report.reportroute.arrival_date
+);
+const route_arrival_time_zone = computed(
+  () => props.report.reportroute.arrival_tz
+);
+
 const store = useNoonReportStore();
 const {
   // noonReportNo: noon_report_no,
   // curLegNo: cur_leg_no,
   curLoadingCondition: cur_loading_condition,
   voyageNo: voyage_no,
-  reportingDateTime: reporting_date_time,
-  reportingTimeZone: reporting_time_zone,
-  routeDeparturePortCountry: route_departure_port_country,
-  routeDeparturePortName: route_departure_port_name,
-  routeDepartureDate: route_departure_date,
-  routeDepartureTimeZone: route_departure_time_zone,
-  routeArrivalPortCountry: route_arrival_port_country,
-  routeArrivalPortName: route_arrival_port_name,
-  routeArrivalDate: route_arrival_date,
-  routeArrivalTimeZone: route_arrival_time_zone,
+  // reportingDateTime: reporting_date_time,
+  // reportingTimeZone: reporting_time_zone,
+  // routeDeparturePortCountry: route_departure_port_country,
+  // routeDeparturePortName: route_departure_port_name,
+  // routeDepartureDate: route_departure_date,
+  // routeDepartureTimeZone: route_departure_time_zone,
+  // routeArrivalPortCountry: route_arrival_port_country,
+  // routeArrivalPortName: route_arrival_port_name,
+  // routeArrivalDate: route_arrival_date,
+  // routeArrivalTimeZone: route_arrival_time_zone,
 } = storeToRefs(store);
 </script>
 
@@ -43,11 +74,11 @@ const {
         {{ $t("reportNo") }}
       </div>
       <div class="col-span-3 p-3 border-b text-gray-700 bg-gray-50">
-        {{ props.report.report_num }}
+        {{ noonReportNum }}
       </div>
       <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("legNo") }}</div>
       <div class="col-span-3 p-3 text-gray-700 bg-gray-50">
-        {{ props.report.voyage_leg }}
+        {{ voyageLeg }}
       </div>
     </div>
     <div
@@ -72,7 +103,8 @@ const {
         {{ $t("reportingDateAndTime") }}
       </div>
       <DatePicker
-        v-model="reporting_date_time"
+        disabled
+        v-model="reportingDateTime"
         class="col-span-3"
         textInput
         :textInputOptions="textInputOptions"
@@ -93,13 +125,12 @@ const {
       </div>
       <div class="flex col-span-3 bg-white">
         <select
+          disabled
           class="grow self-center p-3 text-14 focus:outline-0"
           :class="
-            reporting_time_zone === 'default'
-              ? 'text-gray-400'
-              : 'text-gray-700'
+            reportingTimeZone === 'default' ? 'text-gray-400' : 'text-gray-700'
           "
-          v-model="reporting_time_zone"
+          v-model="reportingTimeZone"
         >
           <option selected disabled value="default">
             {{ $t("selectTimeZone") }}
@@ -170,13 +201,13 @@ const {
           {{ $t("dateAndTime") }}
         </div>
         <DatePicker
+          disabled
           v-model="route_departure_date"
           class="col-span-3 text-gray-700 bg-gray-50 border-b"
           textInput
           :textInputOptions="textInputOptions"
           :format="format"
           :modelValue="string"
-          disabled
           :placeholder="$t('selectDateAndTime')"
         >
           <template #input-icon>
@@ -188,8 +219,8 @@ const {
         </div>
         <div class="flex col-span-3 bg-white">
           <select
-            class="grow self-center p-3 text-14 text-gray-900 bg-gray-50 focus:outline-0"
             disabled
+            class="grow self-center p-3 text-14 text-gray-900 bg-gray-50 focus:outline-0"
             v-model="route_departure_time_zone"
           >
             <option selected disabled value="default">
@@ -261,6 +292,7 @@ const {
           {{ $t("estDateAndTime") }}
         </div>
         <DatePicker
+          disabled
           v-model="route_arrival_date"
           class="col-span-3 border-b"
           textInput
@@ -278,6 +310,7 @@ const {
         </div>
         <div class="flex col-span-3 bg-white text-gray-700">
           <select
+            disabled
             class="grow self-center p-3 text-14 focus:outline-0"
             :class="
               route_arrival_time_zone === 'default'

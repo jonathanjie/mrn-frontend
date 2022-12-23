@@ -41,9 +41,10 @@ const handleBack = () => {
         type="button"
       />
     </button>
+    <div>{{ report.report_type }}</div>
     <div>
       <div v-if="report.report_type == Report.type.NOON">
-        <NoonReportView :report="report"/>
+        <NoonReportView :report="report" />
       </div>
       <div
         v-else-if="
