@@ -23,6 +23,7 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
   const density = ref("");
   const sg = ref("");
   const viscosity = ref("");
+  const viscosityDegree = ref("");
   const flashPoint = ref("");
   const sulfurContent = ref("");
   const marpol1 = ref("");
@@ -62,6 +63,7 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
     density,
     sg,
     viscosity,
+    viscosityDegree,
     flashPoint,
     sulfurContent,
     marpol1,

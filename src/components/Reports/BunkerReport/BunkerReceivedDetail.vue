@@ -55,13 +55,13 @@
       <span class="text-blue-700 text-16">{{ $t("deliveredOil") }}</span>
     </div>
 
-    <div class="grid grid-cols-4 border text-14 mb-6">
-      <div class="col-span-1 text-blue-700 p-3 border-b border-r bg-gray-50">
+    <div class="grid grid-cols-8 border text-14 mb-6">
+      <div class="col-span-2 text-blue-700 p-3 border-b border-r bg-gray-50">
         {{ $t("productType") }}
       </div>
       <select
         v-model="oil"
-        class="col-span-3 p-3 text-gray-700 border-b"
+        class="col-span-6 p-3 text-gray-700 border-b"
         :class="oil === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
@@ -91,7 +91,7 @@
       </select>
 
       <div
-        class="flex col-span-1 text-blue-700 p-3 border-r border-b bg-gray-50"
+        class="flex col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50"
       >
         {{ $t("quantity") }}
         <MiniUnitDisplay>MT.LTR</MiniUnitDisplay>
@@ -100,11 +100,11 @@
         v-model="quantity"
         @keypress="preventNaN($event, quantity)"
         placeholder="000.00"
-        class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0"
+        class="col-span-6 p-3 pl-4 border-b text-gray-700 focus:outline-0"
       />
 
       <div
-        class="flex col-span-1 text-blue-700 p-3 border-r border-b bg-gray-50"
+        class="flex col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50"
       >
         {{ $t("densityAt15") }}
         <MiniUnitDisplay>KG/M<sup>3</sup></MiniUnitDisplay>
@@ -113,34 +113,45 @@
         v-model="density"
         @keypress="preventNaN($event, density)"
         placeholder="000.00"
-        class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0"
+        class="col-span-6 p-3 pl-4 border-b text-gray-700 focus:outline-0"
       />
 
-      <div class="col-span-1 text-blue-700 p-3 border-r border-b bg-gray-50">
+      <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50">
         {{ $t("specificGravityAt15") }}
       </div>
       <input
         v-model="sg"
         @keypress="preventNaN($event, sg)"
         placeholder="000.00"
-        class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0"
+        class="col-span-6 p-3 pl-4 border-b text-gray-700 focus:outline-0"
       />
 
       <div
-        class="flex col-span-1 text-blue-700 p-3 border-r border-b bg-gray-50"
+        class="flex col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50"
       >
-        {{ $t("viscosityAt15") }}
+        {{ $t("viscosity") }}
         <MiniUnitDisplay>cSt</MiniUnitDisplay>
       </div>
-      <input
-        v-model="viscosity"
-        @keypress="preventNaN($event, viscosity)"
-        placeholder="000.00"
-        class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0"
-      />
-
+      <div class="flex col-span-3 border-b border-r p-3 pl-4">
+        <input
+          v-model="viscosity"
+          @keypress="preventNaN($event, viscosity)"
+          placeholder="000.00"
+          class="text-gray-700 focus:outline-0"
+        />
+        <MiniUnitDisplay>cSt</MiniUnitDisplay>
+      </div>
+      <div class="flex col-span-3 border-b p-3 pl-4">
+        <input
+          v-model="viscosity_degree"
+          @keypress="preventNaN($event, viscosity_degree)"
+          placeholder="000.00"
+          class="text-gray-700 focus:outline-0"
+        />
+        <MiniUnitDisplay>°C</MiniUnitDisplay>
+      </div>
       <div
-        class="flex col-span-1 text-blue-700 p-3 border-r border-b bg-gray-50"
+        class="flex col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50"
       >
         {{ $t("flashPoint") }}
         <MiniUnitDisplay>°C</MiniUnitDisplay>
@@ -149,10 +160,10 @@
         v-model="flash_point"
         @keypress="preventNaN($event, flash_point)"
         placeholder="000.00"
-        class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0"
+        class="col-span-6 p-3 pl-4 border-b text-gray-700 focus:outline-0"
       />
 
-      <div class="flex col-span-1 text-blue-700 p-3 border-r bg-gray-50">
+      <div class="flex col-span-2 text-blue-700 p-3 border-r bg-gray-50">
         {{ $t("sulfurContent") }}
         <MiniUnitDisplay>%M/M</MiniUnitDisplay>
       </div>
@@ -160,7 +171,7 @@
         v-model="sulfur_content"
         @keypress="preventNaN($event, sulfur_content)"
         placeholder="000.00"
-        class="col-span-3 p-3 pl-4 text-gray-700 focus:outline-0"
+        class="col-span-6 p-3 pl-4 text-gray-700 focus:outline-0"
       />
     </div>
 
@@ -239,6 +250,7 @@ const {
   density: density,
   sg: sg,
   viscosity: viscosity,
+  viscosityDegree: viscosity_degree,
   flashPoint: flash_point,
   sulfurContent: sulfur_content,
   marpol1: marpol1,

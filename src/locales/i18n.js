@@ -386,7 +386,7 @@ const i18n = createI18n({
       vesselType: "Vessel type",
       vesselsDashboard: "Vessels Dashboard",
       viewJourney: "View Journey",
-      viscosityAt15: "Viscosity at 15°C",
+      viscosity: "Viscosity",
       visibility: "Visibility",
       visibility_1: "1 (<50 m)",
       visibility_2: "2 (50-200 m)",
