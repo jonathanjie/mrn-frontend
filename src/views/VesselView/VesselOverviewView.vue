@@ -14,7 +14,7 @@
   </div>
   <div v-else class="bg-gray-50 flex flex-col mt-12">
     <VoyageCard
-      v-for="(voyage, index) in voyages"
+      v-for="(voyage, index) in voyages.slice().reverse()"
       :key="index"
       :start="portCodeToPortName[voyage.departure_port]"
       :mid="'At Sea'"
