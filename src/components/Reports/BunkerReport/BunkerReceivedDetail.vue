@@ -60,41 +60,71 @@
         {{ $t("productType") }}
       </div>
       <select
+        v-model="oil_type"
+        class="col-span-3 p-3 text-gray-700 border-b border-r focus:outline-0"
+        :class="oil_type === 'default' ? 'text-gray-400' : 'text-gray-700'"
+      >
+        <option selected disabled value="default">
+          {{ $t("selectOilType") }}
+        </option>
+        <option value="fuelOil">
+          {{ $t("fuelOil") }}
+        </option>
+        <option value="lubricatingOil">
+          {{ $t("lubricatingOil") }}
+        </option>
+      </select>
+      <select
+        v-if="isFuelOil"
         v-model="oil"
-        class="col-span-6 p-3 text-gray-700 border-b"
+        class="col-span-3 p-3 text-gray-700 border-b focus:outline-0"
         :class="oil === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
-          {{ $t("selectionOfOil") }}
+          {{ $t("selectOil") }}
         </option>
-        <option value="mdo">
-          {{ $t("mdo") }}
-        </option>
-        <option value="mgo">
-          {{ $t("mgo") }}
-        </option>
-        <option value="lsfo">
-          {{ $t("lsfo") }}
-        </option>
-        <option value="hfo">
-          {{ $t("hfo") }}
-        </option>
-        <option value="propane">
-          {{ $t("lpgp") }}
-        </option>
-        <option value="butane">
-          {{ $t("lpgb") }}
-        </option>
-        <option value="lng">
-          {{ $t("lng") }}
+        <option
+          v-for="(value, label) in ALL_FUEL_OILS"
+          :value="value"
+          :key="value"
+        >
+          {{ $t(label) }}
         </option>
       </select>
-
+      <select
+        v-else-if="isLubricatingOil"
+        v-model="oil"
+        class="col-span-3 p-3 text-gray-700 border-b focus:outline-0"
+        :class="oil === 'default' ? 'text-gray-400' : 'text-gray-700'"
+      >
+        <option selected disabled value="default">
+          {{ $t("selectOil") }}
+        </option>
+        <option
+          v-for="(value, label) in ALL_LUBRICATING_OILS"
+          :value="value"
+          :key="value"
+        >
+          {{ $t(label) }}
+        </option>
+      </select>
+      <select
+        v-else
+        v-model="oil"
+        class="col-span-3 p-3 text-gray-700 border-b focus:outline-0"
+        :class="oil === 'default' ? 'text-gray-400' : 'text-gray-700'"
+      >
+        <option selected disabled value="default">
+          {{ $t("selectOil") }}
+        </option>
+      </select>
       <div
         class="flex col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50"
       >
         {{ $t("quantity") }}
-        <MiniUnitDisplay>MT.LTR</MiniUnitDisplay>
+        <MiniUnitDisplay v-if="isFuelOil">MT</MiniUnitDisplay>
+        <MiniUnitDisplay v-else-if="isLubricatingOil">LTR</MiniUnitDisplay>
+        <div v-else></div>
       </div>
       <input
         v-model="quantity"
@@ -137,7 +167,7 @@
           v-model="viscosity"
           @keypress="preventNaN($event, viscosity)"
           placeholder="000.00"
-          class="text-gray-700 focus:outline-0"
+          class="text-gray-700 focus:outline-0 w-24"
         />
         <MiniUnitDisplay>cSt</MiniUnitDisplay>
       </div>
@@ -146,7 +176,7 @@
           v-model="viscosity_degree"
           @keypress="preventNaN($event, viscosity_degree)"
           placeholder="000.00"
-          class="text-gray-700 focus:outline-0"
+          class="text-gray-700 focus:outline-0 w-24"
         />
         <MiniUnitDisplay>°C</MiniUnitDisplay>
       </div>
@@ -240,11 +270,14 @@ import DropZone from "@/components/FileDrop/DropZone.vue";
 import FilePreview from "@/components/FileDrop/FilePreview.vue";
 import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
 import { storeToRefs } from "pinia";
+import { ALL_FUEL_OILS, ALL_LUBRICATING_OILS } from "@/utils/options";
+import { computed } from "vue";
 
 const { files, addFiles, removeFile } = useFileList();
 
 const store = useBunkerReportStore();
 const {
+  oilType: oil_type,
   oil: oil,
   quantity: quantity,
   density: density,
@@ -260,6 +293,9 @@ const {
   barge1: barge1,
   barge2: barge2,
 } = storeToRefs(store);
+
+const isFuelOil = computed(() => oil_type.value === "fuelOil");
+const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
 
 const emit = defineEmits(["fileChange"]);
 

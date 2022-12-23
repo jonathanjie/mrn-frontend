@@ -62,3 +62,21 @@ export const END_STATUS = [
   "driftingEnd",
   "shiftingEnd",
 ];
+
+export const ALL_FUEL_OILS = {
+  mdo: "mdo",
+  mgo: "mgo",
+  lsfo: "lsfo",
+  hfo: "hfo",
+  lpgp: "propane",
+  lpgb: "butane",
+  lng: "lng",
+};
+
+export const ALL_LUBRICATING_OILS = {
+  meCylinderOil: "me_cylinder_oil",
+  meSystemOil: "me_system_oil",
+  meSumpTank: "me_sump_tank",
+  geSystemOil: "ge_system_oil",
+  tgSystemOil: "tg_system_oil",
+};

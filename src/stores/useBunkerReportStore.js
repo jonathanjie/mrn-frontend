@@ -19,6 +19,7 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
   const portName = ref("");
 
   // Received Bunker Detail
+  const oilType = ref("default");
   const oil = ref("default");
   const density = ref("");
   const sg = ref("");
@@ -59,6 +60,7 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
     portCountry,
     portName,
     // Received Bunker Detail
+    oilType,
     oil,
     density,
     sg,
