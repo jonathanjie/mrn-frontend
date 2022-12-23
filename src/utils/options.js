@@ -1,4 +1,4 @@
-// label : value pair for select options
+// (label or label for i18n : value to send backend) pair for select options
 
 export const TIMEZONES = {
   "UTC-12:00": -12,
@@ -48,3 +48,17 @@ export const OPERATIONS = {
   receivingProvisionSpareParts: "receivingProvisionSpareParts",
   survey: "survey",
 };
+
+export const START_STATUS = [
+  "anchoringStartOutside",
+  "anchoringStartInside",
+  "driftingStart",
+  "shiftingStart",
+];
+
+export const END_STATUS = [
+  "anchoringEndOutside",
+  "anchoringEndInside",
+  "driftingEnd",
+  "shiftingEnd",
+];

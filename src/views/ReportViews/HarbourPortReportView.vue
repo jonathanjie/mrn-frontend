@@ -65,6 +65,7 @@ const store = useHarbourPortReportStore();
 const {
   // status var
   reportType,
+  eventOrNoon,
   // Harbour Port Overview
   reportNo,
   legNo,
@@ -76,7 +77,6 @@ const {
   destinationPortCountry,
   destinationPortName,
   // Harbour Port Report
-  type,
   status,
   distanceTravelled,
   latDir,

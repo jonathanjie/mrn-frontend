@@ -9,15 +9,16 @@
 
     <div class="col-span-2 flex space-x-5 text-gray-700 text-14">
       <div class="flex align-center space-x-2">
-        <input type="radio" id="event" value="event" v-model="type" />
+        <input type="radio" id="event" value="event" v-model="event_or_noon" />
         <label for="event">{{ $t("event") }}</label>
       </div>
       <div class="flex align-center space-x-2">
         <input
           type="radio"
           id="noonInHarbourPort"
-          value="noonInHarbourPort"
-          v-model="type"
+          value="noon"
+          v-model="event_or_noon"
+          @change="recoverStatus"
         />
         <label for="noonInHarbourPort">{{ $t("noonInHarbourPort") }}</label>
       </div>
@@ -29,35 +30,27 @@
       </div>
       <select
         v-model="status"
-        class="col-span-3 p-3 border-y border-r focus:outline-0"
+        :disabled="event_or_noon == 'noon'"
+        class="col-span-3 p-3 border-y border-r focus:outline-0 disabled:text-gray-400 disabled:bg-gray-50"
         :class="status === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        @change="resetOperations"
       >
         <option selected disabled value="default">
           {{ $t("selectEvent") }}
         </option>
-        <option value="anchoringStartOutside">
-          {{ $t("anchoringStartOutside") }}
+        <option
+          v-for="start_status in START_STATUS"
+          :value="start_status"
+          :key="start_status"
+        >
+          {{ $t(start_status) }}
         </option>
-        <option value="anchoringEndOutside">
-          {{ $t("anchoringEndOutside") }}
-        </option>
-        <option value="anchoringStartInside">
-          {{ $t("anchoringStartInside") }}
-        </option>
-        <option value="anchoringEndInside">
-          {{ $t("anchoringEndInside") }}
-        </option>
-        <option value="driftingStart">
-          {{ $t("driftingStart") }}
-        </option>
-        <option value="driftingEnd">
-          {{ $t("driftingEnd") }}
-        </option>
-        <option value="driftingStart">
-          {{ $t("shiftingStart") }}
-        </option>
-        <option value="driftingEnd">
-          {{ $t("shiftingEnd") }}
+        <option
+          v-for="end_status in END_STATUS"
+          :value="end_status"
+          :key="end_status"
+        >
+          {{ $t(end_status) }}
         </option>
       </select>
       <div
@@ -123,20 +116,35 @@
       <div class="col-span-2 row-span-2 text-blue-700 p-3 border-r bg-gray-50">
         {{ $t("operations") }}
       </div>
-      <div class="col-span-3 flex flex-col space-y-2 p-3 text-gray-700">
+      <div
+        class="col-span-3 flex flex-col space-y-2 p-3 text-gray-700"
+        :class="
+          event_or_noon === 'noon' || END_STATUS.includes(status)
+            ? 'bg-gray-50'
+            : ''
+        "
+      >
         <div class="flex align-center space-x-2">
           <input
-            :disabled="!planned_operations.includes('waiting')"
+            :disabled="
+              event_or_noon == 'noon' ||
+              !START_STATUS.includes(status) ||
+              !planned_operations.includes('waiting')
+            "
             type="checkbox"
             id="waiting"
             value="waiting"
             v-model="operations"
-            @click="resetOperations"
+            @click="setOperationsToWaiting"
           />
           <label
             for="waiting"
             :class="
-              planned_operations.includes('waiting') ? '' : 'text-gray-400'
+              event_or_noon == 'noon' ||
+              !START_STATUS.includes(status) ||
+              !planned_operations.includes('waiting')
+                ? 'text-gray-400'
+                : ''
             "
             >{{ $t("waiting") }}</label
           >
@@ -148,6 +156,8 @@
         >
           <input
             :disabled="
+              event_or_noon == 'noon' ||
+              !START_STATUS.includes(status) ||
               !planned_operations.includes(val) ||
               operations.includes('waiting')
             "
@@ -158,13 +168,21 @@
           />
           <label
             :for="val"
-            :class="planned_operations.includes(val) ? '' : 'text-gray-400'"
+            :class="
+              event_or_noon == 'noon' ||
+              !START_STATUS.includes(status) ||
+              !planned_operations.includes(val)
+                ? 'text-gray-400'
+                : ''
+            "
             >{{ $t(key) }}</label
           >
         </div>
         <div v-if="other_planned_operation" class="flex align-center space-x-2">
           <input
             :disabled="
+              event_or_noon == 'noon' ||
+              !START_STATUS.includes(status) ||
               !planned_operations.includes('others') ||
               operations.includes('waiting')
             "
@@ -176,7 +194,11 @@
           <label
             for="others"
             :class="
-              planned_operations.includes('others') ? '' : 'text-gray-400'
+              event_or_noon == 'noon' ||
+              !START_STATUS.includes(status) ||
+              !planned_operations.includes('others')
+                ? 'text-gray-400'
+                : ''
             "
             >{{ other_planned_operation }}</label
           >
@@ -253,11 +275,17 @@ import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
 import { useHarbourPortReportStore } from "@/stores/useHarbourPortReportStore";
 import { storeToRefs } from "pinia";
-import { TIMEZONES, OPERATIONS } from "@/utils/options";
+import {
+  TIMEZONES,
+  OPERATIONS,
+  START_STATUS,
+  END_STATUS,
+} from "@/utils/options";
 
 const store = useHarbourPortReportStore();
 const {
-  type: type,
+  eventOrNoon: event_or_noon,
+  prevStatus: prev_status,
   status: status,
   reportingDateTime: reporting_date_time,
   reportingTimeZone: reporting_time_zone,
@@ -273,12 +301,25 @@ const {
   operations: operations,
 } = storeToRefs(store);
 
-const resetOperations = () => {
+const setOperationsToWaiting = () => {
   if (
     operations.value !== ["waiting"] &&
     !operations.value.includes("waiting")
   ) {
     operations.value = ["waiting"];
+  }
+};
+
+const recoverStatus = () => {
+  if (event_or_noon.value == "noon") {
+    status.value = prev_status.value;
+    operations.value = [];
+  }
+};
+
+const resetOperations = () => {
+  if (END_STATUS.includes(status.value)) {
+    operations.value = [];
   }
 };
 </script>

@@ -21,6 +21,9 @@ const temp = {
   destinationPortCountry: "Country A",
   destinationPortName: "Port A",
 
+  // Harbour Port Report
+  prevStatus: "anchoringStartOutside", // only applies if there was a previous event report
+
   // Consumption & Condition
   lsfoPrevROB: 200,
   mgoPrevROB: 200,
@@ -37,7 +40,8 @@ export const useHarbourPortReportStore = defineStore(
     const store = useVoyageStore();
 
     // status var
-    const reportType = ref("");
+    const reportType = ref("in_port");
+    const eventOrNoon = ref("event");
 
     // Harbour Port Overview
     const reportNo = ref(store.reportNo);
@@ -52,8 +56,8 @@ export const useHarbourPortReportStore = defineStore(
     const destinationPortName = ref(temp.destinationPortName);
 
     // Harbour Port Report
-    const type = ref("");
-    const status = ref("default");
+    const prevStatus = ref(temp.prevStatus);
+    const status = ref(temp.prevStatus);
     const distanceTravelled = ref("");
     const latDir = ref("default");
     const latMinutes = ref("");
@@ -199,7 +203,8 @@ export const useHarbourPortReportStore = defineStore(
 
     return {
       // status var
-      reportType,
+      reportType, // HarbourPortReportView.vue
+      eventOrNoon, // HarbourPortReport.vue
       // Harbour Port Overview
       reportNo,
       curLegNo,
@@ -212,7 +217,7 @@ export const useHarbourPortReportStore = defineStore(
       destinationPortCountry,
       destinationPortName,
       // Harbour Port Report
-      type,
+      prevStatus,
       status,
       distanceTravelled,
       latDir,
