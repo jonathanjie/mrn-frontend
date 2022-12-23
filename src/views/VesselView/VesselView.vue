@@ -45,13 +45,13 @@
       >
         <template v-slot:content>{{ $t("createNewVoyage") }}</template>
       </GradientButton>
-      <AddVoyageModal
+      <InitializationModal
         ref="modal"
         v-if="showModal"
         @close-modal="showModal = false"
         :vesselname="vesselname"
         :imo="imo"
-      ></AddVoyageModal>
+      ></InitializationModal>
     </div>
     <!-- <router-view :key="update"></router-view> -->
     <suspense>
@@ -63,7 +63,7 @@
 <script setup>
 import { ref } from "vue";
 import GradientButton from "../../components/Buttons/GradientButton.vue";
-import AddVoyageModal from "@/components/AddVoyageModal.vue";
+import InitializationModal from "@/components/InitializationModal.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useRouter } from "vue-router";
 
@@ -101,8 +101,6 @@ const addVoyage = async (voyageData) => {
       body: JSON.stringify(voyageData),
     }
   );
-
-  console.log(response);
   update.value += 1;
 };
 
