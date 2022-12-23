@@ -25,10 +25,9 @@ const routes = [
   // },
 
   {
-    // Need to edit
     path: "/",
     name: "home",
-    component: () => import("../views/HomeView.vue"),
+    component: () => import("../views/EmptyPage.vue"),
     beforeEnter: authGuard,
   },
   {

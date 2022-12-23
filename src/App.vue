@@ -3,25 +3,17 @@
   <!-- <router-view v-if="!isAuthenticated" class="bg-gray-50 min-h-screen"></router-view> -->
   <div v-if="isAuthenticated" class="flex items-start items-stretch">
     <Suspense>
-      <SideNav />
+      <HomeView />
     </Suspense>
-    <div class="grow h-screen" :class="collapsed ? 'ml-20' : 'ml-64'">
-      <!-- TODO: change to fixed, not sticky -->
-      <WebHeader class="sticky top-0 z-40" />
-      <router-view class="bg-gray-50 min-h-screen" />
-    </div>
   </div>
 </template>
 
 <script setup>
-import SideNav from "./components/SideNav/SideNav.vue";
-import WebHeader from "./components/WebHeader.vue";
-import { collapsed } from "./components/SideNav/state.js";
+import HomeView from "./views/HomeView.vue";
 import { useAuth0 } from "@auth0/auth0-vue";
 
 const { isAuthenticated } = useAuth0();
-
-console.log("app.vue is loaded");
+console.log("App is loaded");
 </script>
 
 <style lang="scss">

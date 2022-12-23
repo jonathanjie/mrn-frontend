@@ -100,14 +100,18 @@ const getShip = async () => {
       method: "GET",
     }
   );
-  const ship = await response.json();
-  console.log(ship[0]);
-  return ship[0];
+  let output = {};
+  if (response.status === 200) {
+    output = await response.json();
+  } else {
+    console.log("Error at getShip call, with error code", response.status);
+  }
+  return output[0];
 };
 
 const getUserRole = async () => {
   const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/user`,
+    `https://testapi.marinachain.io/marinanet/user/`,
     {
       headers: {
         Authorization: "Bearer " + jwt,
@@ -116,25 +120,59 @@ const getUserRole = async () => {
       method: "GET",
     }
   );
-  const reply = await response.json();
-  const userRole = reply.role;
-  return userRole;
+  let output = "";
+  if (response.status === 200) {
+    const reply = await response.json();
+    output = reply.role;
+  } else {
+    console.log("Error at getUserRole call, with error code", response.status);
+  }
+  return output;
 };
-const role = await getUserRole();
-const manager = role === "manager";
-auth.updateUserRoleToken(user, role, jwt);
-console.log("Auth store is updated here");
-const ship = await getShip();
-if (role === "manager") {
-  router.push({ path: "/my-vessels" });
-} else {
-  router.push({
-    path: `/vessels/${ship.name}/${ship.imo_reg}/overview`,
-  });
-}
 
+const getVoyages = async (imo) => {
+  const response = await fetch(
+    `https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`,
+    {
+      headers: {
+        Authorization: "Bearer " + auth.jwt,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+  let output = {};
+  if (response.status === 200) {
+    output = await response.json();
+  } else {
+    console.log("Error at getVoyages call, with error code", response.status);
+  }
+  return output;
+};
+
+const getReports = async (imo) => {
+  const response = await fetch(
+    `https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`,
+    {
+      headers: {
+        Authorization: "Bearer " + auth.jwt,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+  let output = {};
+  if (response.status === 200) {
+    output = await response.json();
+  } else {
+    console.log("Error at getReports call, with error code", response.status);
+  }
+  return output;
+};
+
+// Home Button
 const home = () => {
-  if (role === "manager") {
+  if (manager) {
     router.push({ path: "/my-vessels" });
   } else {
     router.push({
@@ -142,4 +180,19 @@ const home = () => {
     });
   }
 };
+
+const role = await getUserRole();
+const manager = role === "manager";
+console.log("Sidebar loads");
+auth.updateUserRoleToken(user, role, jwt);
+console.log("Auth store is updated here");
+const ship = await getShip();
+
+if (manager) {
+  router.push({ path: "/my-vessels" });
+} else {
+  router.push({
+    path: `/vessels/${ship.name}/${ship.imo_reg}/overview`,
+  });
+}
 </script>

@@ -84,6 +84,7 @@ import { ref } from "vue";
 // TODO: get from pinia instead of auth0; need to figure out async state tracking
 const { user, logout, getAccessTokenSilently } = useAuth0();
 
+console.log("WebHeader loads");
 let isExpanded = ref(false);
 
 function mouseEnter() {

@@ -62,9 +62,13 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-const update = ref(0);
-defineProps({
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/useAuthStore";
+
+const auth = useAuthStore();
+const router = useRouter();
+
+const props = defineProps({
   vesselname: String,
   imo: String,
 });

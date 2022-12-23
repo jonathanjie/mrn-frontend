@@ -54,13 +54,13 @@
       >
         <template v-slot:content>{{ $t("createNewVoyage") }}</template>
       </GradientButton>
-      <AddVoyageModal
+      <InitializationModal
         ref="modal"
         v-show="showModal"
         @close-modal="showModal = false"
         :vesselname="vesselname"
         :imo="imo"
-      ></AddVoyageModal>
+      ></InitializationModal>
     </div>
     <suspense>
       <router-view :key="update"></router-view>
@@ -71,7 +71,7 @@
 <script setup>
 import { ref } from "vue";
 import GradientButton from "../../components/Buttons/GradientButton.vue";
-import AddVoyageModal from "@/components/Modals/AddVoyageModal.vue";
+import InitializationModal from "@/components/InitializationModal.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 
 const auth = useAuthStore();
@@ -88,7 +88,7 @@ const props = defineProps({
   specs: String,
 });
 
-const showModal = ref(props.specs === "true");
+let showModal = localStorage.getItem("addSpec") == true;
 
 // Backend Data
 const voyageData = {
@@ -110,7 +110,6 @@ const addVoyage = async (voyageData) => {
       body: JSON.stringify(voyageData),
     }
   );
-
   console.log(response);
 
   if (response.ok) {
@@ -120,5 +119,22 @@ const addVoyage = async (voyageData) => {
   }
 
   isFetchingVoyages.value = false;
+};
+
+const getVoyages = async (imo) => {
+  const DUMMY_TOKEN = auth.jwt;
+  const response = await fetch(
+    `https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`,
+    {
+      headers: {
+        Authorization: "Bearer " + DUMMY_TOKEN,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    }
+  );
+
+  const json = response.json();
+  return json;
 };
 </script>
