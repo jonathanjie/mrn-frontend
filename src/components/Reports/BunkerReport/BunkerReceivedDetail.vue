@@ -229,7 +229,6 @@ import DropZone from "@/components/FileDrop/DropZone.vue";
 import FilePreview from "@/components/FileDrop/FilePreview.vue";
 import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
 import { storeToRefs } from "pinia";
-import { defineEmits } from "vue";
 
 const { files, addFiles, removeFile } = useFileList();
 

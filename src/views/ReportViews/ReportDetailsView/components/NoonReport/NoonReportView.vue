@@ -22,7 +22,7 @@ import NoonStoppage from "./components/NoonStoppage.vue";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
 
-import { REPORT_CONSTANTS } from "@/constants";
+import { Report } from "@/constants";
 
 const storeGlobal = useNoonReportStore();
 const {
@@ -177,7 +177,7 @@ const sendReport = async () => {
   });
 
   let REPORT = {
-    report_type: REPORT_CONSTANTS.type.NOON,
+    report_type: Report.type.NOON,
     voyage: 1, // TODO: fetch from db
     leg_num: 1, // TODO: fetch from db
     report_tz: timeZone.value,
@@ -419,4 +419,3 @@ const sendReport = async () => {
     </div>
   </div>
 </template>
-

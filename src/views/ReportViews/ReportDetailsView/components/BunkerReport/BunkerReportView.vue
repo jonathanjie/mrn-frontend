@@ -63,7 +63,7 @@ import BunkerReceivedDetail from "@/components/Reports/BunkerReport/BunkerReceiv
 import BunkerDateAndTime from "@/components/Reports/BunkerReport/BunkerDateAndTime.vue";
 import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
 import { storeToRefs } from "pinia";
-import { REPORT_CONSTANTS } from "@/constants";
+import { Report } from "@/constants";
 
 // TODO: less hacky
 let files = [];
@@ -115,7 +115,7 @@ const {
 
 const sendReport = async () => {
   let REPORT = {
-    report_type: REPORT_CONSTANTS.type.BUNKER,
+    report_type: Report.type.BUNKER,
     voyage: 1, // TODO: fetch from db
     leg_num: 1, // TODO: fetch from db
     report_tz: timeZone.value, // FIND TIMEZONE FROM PORT

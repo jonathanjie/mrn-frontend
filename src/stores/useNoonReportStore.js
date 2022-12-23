@@ -33,7 +33,6 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const store = useVoyageStore();
 
   // Overview
-  // TODO: fetch from backend
   const noonReportNo = ref(store.noonReportNo);
   const curLegNo = ref(store.curLegNo);
   const curLoadingCondition = ref(store.curLoadingCondition);

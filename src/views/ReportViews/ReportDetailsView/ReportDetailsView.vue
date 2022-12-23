@@ -2,7 +2,6 @@
 import { ref, onMounted, onBeforeMount } from "vue";
 import { useReportDetailsStore } from "./store/useReportDetailsStore";
 import router from "@/router";
-import { defineProps } from "vue";
 import { Report } from "@/constants";
 import { storeToRefs } from "pinia";
 import NoonReportView from "./components/NoonReport/NoonReportView.vue";

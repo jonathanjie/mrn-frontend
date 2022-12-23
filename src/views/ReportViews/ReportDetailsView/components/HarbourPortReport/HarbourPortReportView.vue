@@ -59,7 +59,7 @@ import HarbourPortConsumption from "@/components/Reports/HarbourPortReport/Harbo
 import RadioBtnDetail from "@/components/Buttons/RadioBtnDetail.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 import GradientButton from "@/components/Buttons/GradientButton.vue";
-import { REPORT_CONSTANTS } from "@/constants";
+import { Report } from "@/constants";
 import { useHarbourPortReportStore } from "@/stores/useHarbourPortReportStore";
 import { storeToRefs } from "pinia";
 
@@ -119,7 +119,7 @@ const updateActiveReportType = (type) => {
 
 const sendReport = async () => {
   let REPORT = {
-    report_type: REPORT_CONSTANTS.type.BUNKER,
+    report_type: Report.type.BUNKER,
     voyage: 1, // TODO: fetch from db
     leg_num: 1, // TODO: fetch from db
     report_tz: timeZone.value, // FIND TIMEZONE FROM PORT

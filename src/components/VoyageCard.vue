@@ -103,7 +103,7 @@
 <script setup>
 import CustomButton from "./Buttons/CustomButton.vue";
 import ReportCard from ".//ReportCard.vue";
-import { defineProps, computed, ref } from "vue";
+import { computed, ref } from "vue";
 
 const props = defineProps({
   num: {

@@ -404,7 +404,6 @@
 import { ref } from "vue";
 import GradientButton from "./Buttons/GradientButton.vue";
 import CustomButton from "./Buttons/CustomButton.vue";
-import { defineEmits } from "vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 
 const auth = useAuthStore();
