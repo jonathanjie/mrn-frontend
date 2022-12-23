@@ -1,3 +1,37 @@
+<script setup>
+import { ref } from "vue";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { textInputOptions, format, preventNaN } from "@/utils/helpers.js";
+import { useNoonReportStore } from "@/stores/useNoonReportStore";
+import { storeToRefs } from "pinia";
+import { defineProps } from "vue";
+
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
+
+const store = useNoonReportStore();
+
+const {
+  stoppageBeginning: beginning,
+  stoppageEnding: ending,
+  stoppageDuration: duration,
+  stoppageReducedRPM: reduced_RPM,
+  stoppageReason: reason,
+  stoppageRemarks: remarks,
+  stoppageLatDir: lat_dir,
+  stoppageLatDegree: lat_degree,
+  stoppageLatMinutes: lat_minutes,
+  stoppageLongDir: long_dir,
+  stoppageLongDegree: long_degree,
+  stoppageLongMinutes: long_minutes,
+  stoppageIsActive: stoppage_is_active,
+} = storeToRefs(store);
+</script>
+
 <template>
   <div
     v-if="!stoppage_is_active"
@@ -181,28 +215,4 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from "vue";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { textInputOptions, format, preventNaN } from "@/utils/helpers.js";
-import { useNoonReportStore } from "@/stores/useNoonReportStore";
-import { storeToRefs } from "pinia";
 
-const store = useNoonReportStore();
-
-const {
-  stoppageBeginning: beginning,
-  stoppageEnding: ending,
-  stoppageDuration: duration,
-  stoppageReducedRPM: reduced_RPM,
-  stoppageReason: reason,
-  stoppageRemarks: remarks,
-  stoppageLatDir: lat_dir,
-  stoppageLatDegree: lat_degree,
-  stoppageLatMinutes: lat_minutes,
-  stoppageLongDir: long_dir,
-  stoppageLongDegree: long_degree,
-  stoppageLongMinutes: long_minutes,
-  stoppageIsActive: stoppage_is_active,
-} = storeToRefs(store);
-</script>

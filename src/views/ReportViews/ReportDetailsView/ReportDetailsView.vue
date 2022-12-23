@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onBeforeMount } from "vue";
+import { ref, onMounted, onBeforeMount, defineProps } from "vue";
 import { useReportDetailsStore } from "./store/useReportDetailsStore";
 import router from "@/router";
 import { Report } from "@/constants";
@@ -20,14 +20,11 @@ const { report } = storeToRefs(store);
 const { getReport } = store;
 
 // API calls
-getReport(props.uuid);
+// getReport(props.uuid);
 
-// onMounted(() => {
-//   getReport(props.uuid);
-// });
-
-console.log("Report Type: ", report.report_type);
-const reportType = report.report_type;
+onBeforeMount(() => {
+  getReport(props.uuid);
+});
 
 // Event Handlers
 const handleBack = () => {
@@ -45,7 +42,9 @@ const handleBack = () => {
       />
     </button>
     <div>
-      <div v-if="report.report_type == Report.type.NOON">NOON</div>
+      <div v-if="report.report_type == Report.type.NOON">
+        <NoonReportView :report="report"/>
+      </div>
       <div
         v-else-if="
           report.report_type == Report.type.ARR_FWE ||
@@ -82,7 +81,5 @@ const handleBack = () => {
     </div>
 
     <div>{{ report }}</div>
-
-    <div>HELLO WORLD</div>
   </div>
 </template>

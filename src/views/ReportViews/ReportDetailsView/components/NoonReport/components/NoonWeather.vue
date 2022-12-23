@@ -1,3 +1,66 @@
+<script setup>
+import { ref, computed ,defineProps} from "vue";
+import { preventNaN } from "@/utils/helpers";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { useNoonReportStore } from "@/stores/useNoonReportStore";
+import { storeToRefs } from "pinia";
+import { IceCondition } from "@/constants";
+
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
+
+const weather = computed(() => props.report.weatherdata.weather_notation);
+
+const store = useNoonReportStore();
+const {
+  // weather: weather,
+  visibility: visibility,
+  windDirection: wind_direction,
+  windSpeed: wind_speed,
+  seaDirection: sea_direction,
+  seaState: sea_state,
+  swellDirection: swell_direction,
+  swellScale: swell_scale,
+  airTemperatureDry: air_temperature_dry,
+  airTemperatureWet: air_temperature_wet,
+  airPressure: air_pressure,
+  seaTemperature: sea_temperature,
+  iceCondition: ice_condition,
+} = storeToRefs(store);
+
+const wind_speed_beaufort = computed(() =>
+  Number(wind_speed.value) < 1
+    ? 0
+    : Number(wind_speed.value) < 4
+    ? 1
+    : Number(wind_speed.value) < 7
+    ? 2
+    : Number(wind_speed.value) < 11
+    ? 3
+    : Number(wind_speed.value) < 17
+    ? 4
+    : Number(wind_speed.value) < 22
+    ? 5
+    : Number(wind_speed.value) < 28
+    ? 6
+    : Number(wind_speed.value) < 34
+    ? 7
+    : Number(wind_speed.value) < 41
+    ? 8
+    : Number(wind_speed.value) < 48
+    ? 9
+    : Number(wind_speed.value) < 56
+    ? 10
+    : Number(wind_speed.value) < 64
+    ? 11
+    : 12
+);
+</script>
+
 <template>
   <div class="grid bg-white rounded-lg p-5 gap-4 shadow-card">
     <div class="flex items-center">
@@ -13,6 +76,7 @@
           {{ $t("weatherNotation") }}
         </div>
         <select
+          disabled
           v-model="weather"
           class="col-span-3 p-3 text-14 focus:outline-0"
           :class="weather === 'default' ? 'text-gray-400' : 'text-gray-700'"
@@ -324,56 +388,12 @@
   </div>
 </template>
 
-<script setup>
-import { computed } from "vue";
-import { preventNaN } from "@/utils/helpers";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useNoonReportStore } from "@/stores/useNoonReportStore";
-import { storeToRefs } from "pinia";
-import { IceCondition } from "@/constants";
-
-const store = useNoonReportStore();
-const {
-  weather: weather,
-  visibility: visibility,
-  windDirection: wind_direction,
-  windSpeed: wind_speed,
-  seaDirection: sea_direction,
-  seaState: sea_state,
-  swellDirection: swell_direction,
-  swellScale: swell_scale,
-  airTemperatureDry: air_temperature_dry,
-  airTemperatureWet: air_temperature_wet,
-  airPressure: air_pressure,
-  seaTemperature: sea_temperature,
-  iceCondition: ice_condition,
-} = storeToRefs(store);
-
-const wind_speed_beaufort = computed(() =>
-  Number(wind_speed.value) < 1
-    ? 0
-    : Number(wind_speed.value) < 4
-    ? 1
-    : Number(wind_speed.value) < 7
-    ? 2
-    : Number(wind_speed.value) < 11
-    ? 3
-    : Number(wind_speed.value) < 17
-    ? 4
-    : Number(wind_speed.value) < 22
-    ? 5
-    : Number(wind_speed.value) < 28
-    ? 6
-    : Number(wind_speed.value) < 34
-    ? 7
-    : Number(wind_speed.value) < 41
-    ? 8
-    : Number(wind_speed.value) < 48
-    ? 9
-    : Number(wind_speed.value) < 56
-    ? 10
-    : Number(wind_speed.value) < 64
-    ? 11
-    : 12
-);
-</script>
+<style>
+:root {
+  /* Disabled State */
+  --vs-state-disabled-bg: rgb(41, 40, 40);
+  --vs-state-disabled-color: rgb(255, 255, 255);
+  --vs-state-disabled-controls-color: var(--vs-colors--light);
+  --vs-state-disabled-cursor: not-allowed;
+}
+</style>

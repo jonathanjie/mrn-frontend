@@ -20,18 +20,9 @@ export const useReportDetailsStore = defineStore("ReportDetails", () => {
         console.log("Data is fetched.");
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
-  // const getReport = async (uuid) => {
-  //   fetch("https://testapi.marinachain.io/marinanet/reports/" + uuid + "/", {
-  //     headers: {
-  //       Authorization: "Bearer " + auth.jwt,
-  //       "Content-Type": "application/json",
-  //     },
-  //     method: "GET",
-  //   });
-  // };
 
   return {
     report,
