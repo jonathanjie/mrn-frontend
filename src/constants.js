@@ -51,12 +51,17 @@ export const ErrorFieldsToDisplay = {
   distance_observed_since_noon: "Distanace by observation",
   distance_engine_since_noon: "Distance by engine",
   distance_engine_total: "Distance by engine (total)",
+  slip_average: "Average slip",
+  slip_since_noon: "Slip",
+  hours_since_noon: "Time",
   revolution_count: "Revolution counter",
   noonreporttimeandposition: "Reporting Noon",
   weatherdata: "Weather",
   distanceperformancedata: "Distance & Time / Performance",
-  report_date: "Overview: report date",
-  report_tz: "Overview: report time zone",
+  report_date: "Overview: Report Date",
+  report_tz: "Overview: Report Time Zone",
+  reportroute: "Overview: Departure & Destination",
+  depature_tz: "Departure time zone",
 };
 
 export const Direction = {
@@ -69,9 +74,9 @@ export const Direction = {
 export const IceCondition = {
   NONE: "NONE",
   LOW: "LOW",
-  MOD: "MODERATE",
+  MOD: "MOD",
   HIGH: "HIGH",
-  EXT: "EXTENSIVE",
+  EXT: "EXT",
 };
 
 export const ReportType = {

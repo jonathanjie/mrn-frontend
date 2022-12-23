@@ -319,7 +319,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const stoppageBeginning = ref("");
   const stoppageEnding = ref("");
   const stoppageDuration = ref("");
-  const stoppageReducedRPM = ref("");
+  const stoppageChangedRPM = ref("");
   const stoppageReason = ref("default");
   const stoppageRemarks = ref("");
   const stoppageLatDir = ref("default");
@@ -427,7 +427,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     stoppageBeginning,
     stoppageEnding,
     stoppageDuration,
-    stoppageReducedRPM,
+    stoppageChangedRPM,
     stoppageReason,
     stoppageRemarks,
     stoppageLatDir,

@@ -9,9 +9,7 @@
       src="@/assets/icons/checkboxes/unchecked_square.svg"
       class="mr-2 h-5 w-5"
     />
-    <span class="text-blue-700 text-16">{{
-      $t("stoppageOrReductionOfRPM")
-    }}</span>
+    <span class="text-blue-700 text-16">{{ $t("stoppageOrChangeInRPM") }}</span>
   </div>
   <div
     v-else
@@ -27,7 +25,7 @@
         class="mr-2 h-5 w-5"
       />
       <span class="text-blue-700 text-16">{{
-        $t("stoppageOrReductionOfRPM")
+        $t("stoppageOrChangeInRPM")
       }}</span>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
@@ -79,12 +77,12 @@
         <MiniUnitDisplay>HRS</MiniUnitDisplay>
       </div>
       <span class="col-span-2 text-blue-700 p-3 text-14">{{
-        $t("reducedRPM")
+        $t("changedRPM")
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 bg-white text-14 border-l">
         <input
-          v-model="reduced_RPM"
-          @keypress="preventNaN($event, reduced_RPM)"
+          v-model="changed_RPM"
+          @keypress="preventNaN($event, changed_RPM)"
           placeholder="0"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -182,7 +180,6 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { textInputOptions, format, preventNaN } from "@/utils/helpers.js";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
@@ -194,7 +191,7 @@ const {
   stoppageBeginning: beginning,
   stoppageEnding: ending,
   stoppageDuration: duration,
-  stoppageReducedRPM: reduced_RPM,
+  stoppageChangedRPM: changed_RPM,
   stoppageReason: reason,
   stoppageRemarks: remarks,
   stoppageLatDir: lat_dir,
