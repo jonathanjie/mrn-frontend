@@ -37,6 +37,7 @@ export const useDepartureSBYReportStore = defineStore(
     // Departure and Destination
     const departurePortCountry = ref("");
     const departurePortName = ref("");
+    const isDestinationEnabled = ref(true);
     const destinationPortCountry = ref("");
     const destinationPortName = ref("");
     const destinationTimeZone = ref("default");
@@ -345,6 +346,7 @@ export const useDepartureSBYReportStore = defineStore(
       // Departure and Destination
       departurePortCountry,
       departurePortName,
+      isDestinationEnabled,
       destinationPortCountry,
       destinationPortName,
       destinationTimeZone,

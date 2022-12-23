@@ -3,7 +3,7 @@
     <div class="flex items-center">
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
       <span class="text-blue-700 text-16">
-        <slot>{{ $t("consumptionAndCondition") }}</slot>
+        {{ $t("consumptionAndConditionSbyToFwe") }}
       </span>
     </div>
     <div class="grid divide-y divide-dashed gap-8">

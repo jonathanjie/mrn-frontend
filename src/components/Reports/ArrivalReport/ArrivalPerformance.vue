@@ -4,7 +4,7 @@
     <div class="col-span-2 flex items-center">
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
       <span class="text-blue-700 text-16">
-        <slot>{{ $t("performance") }}</slot>
+        {{ $t("performance") }}
       </span>
     </div>
     <div class="col-span-2 lg:col-span-1 text-14">

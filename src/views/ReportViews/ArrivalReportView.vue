@@ -9,26 +9,22 @@
         <ArrivalAndDeparture />
 
         <!-- S/BY for Arrival -->
-        <ArrivalDetails>{{ $t("sbyForArrival") }}</ArrivalDetails>
+        <ArrivalDetails />
 
         <!-- Weather (Noon to S/BY) -->
-        <ArrivalWeather>{{ $t("weatherNoonToSby") }}</ArrivalWeather>
+        <ArrivalWeather />
 
         <!-- Distance & Time (Noon to S/BY) -->
-        <ArrivalEOSPDistanceAndTime>{{
-          $t("distanceAndTimeNoonToSby")
-        }}</ArrivalEOSPDistanceAndTime>
+        <ArrivalEOSPDistanceAndTime />
 
         <!-- Performance -->
-        <ArrivalPerformance>{{ $t("performance") }}</ArrivalPerformance>
+        <ArrivalPerformance />
 
         <!-- Pilot Station - Arrival -->
         <ArrivalEOSPPilotStation />
 
         <!-- Consumption & Condition (Noon - S/BY) -->
-        <ArrivalEOSPConsumption>{{
-          $t("consumptionAndConditionNoonToSby")
-        }}</ArrivalEOSPConsumption>
+        <ArrivalEOSPConsumption />
 
         <!-- Actual Performance at Sea / Total Consumption (Pilot to Pilot) -->
         <ArrivalEOSPSummary />
@@ -60,7 +56,7 @@
         <ArrivalFWEOverview />
 
         <!-- Finish With Engine -->
-        <ArrivalFinishWithEngine></ArrivalFinishWithEngine>
+        <ArrivalFinishWithEngine />
 
         <!-- Pilot Station - Arrival -->
         <ArrivalFWEPilotStation />
@@ -69,9 +65,7 @@
         <ArrivalFWEDistanceAndTime />
 
         <!-- Consumption & Condition (S/BY - F.W.E) -->
-        <ArrivalFWEConsumption>{{
-          $t("consumptionAndConditionSbyToFwe")
-        }}</ArrivalFWEConsumption>
+        <ArrivalFWEConsumption />
 
         <!-- ArrivalFWESummary: Actual Performance (Port to Port) & Total Consumption (Pilot to Pilot) -->
         <ArrivalFWESummary />

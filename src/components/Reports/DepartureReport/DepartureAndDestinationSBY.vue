@@ -70,6 +70,18 @@
     <div class="col-span-1">
       <div class="flex items-center">
         <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
+        <img
+          v-if="is_destination_enabled"
+          src="@/assets/icons/checkboxes/checked_square.svg"
+          class="mr-2 h-5 w-5"
+          @click="is_destination_enabled = !is_destination_enabled"
+        />
+        <img
+          v-else
+          src="@/assets/icons/checkboxes/unchecked_square.svg"
+          class="mr-2 h-5 w-5"
+          @click="is_destination_enabled = !is_destination_enabled"
+        />
         <span class="text-blue-700 text-16">{{ $t("destination") }}</span>
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14 my-5">
@@ -79,12 +91,14 @@
         <input
           v-model="destination_port_country"
           :placeholder="$t('inputLocode2')"
-          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
+          :disabled="!is_destination_enabled"
+          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 disabled:bg-gray-50 disabled:text-gray-400"
         />
         <input
           v-model="destination_port_name"
           :placeholder="$t('inputLocode3')"
-          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
+          :disabled="!is_destination_enabled"
+          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 disabled:bg-gray-50 disabled:text-gray-400"
         />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14">
@@ -95,12 +109,13 @@
         </div>
         <div class="flex col-span-3 border-b bg-white">
           <select
-            class="grow self-center p-3 text-14 focus:outline-0"
+            class="grow self-center p-3 text-14 focus:outline-0 disabled:bg-gray-50"
             :class="
-              destination_time_zone === 'default'
+              destination_time_zone === 'default' || !is_destination_enabled
                 ? 'text-gray-400'
                 : 'text-gray-700'
             "
+            :disabled="!is_destination_enabled"
             v-model="destination_time_zone"
           >
             <option selected disabled value="default">
@@ -120,6 +135,7 @@
           textInput
           :textInputOptions="textInputOptions"
           :format="format"
+          :disabled="!is_destination_enabled"
           :modelValue="string"
           :placeholder="$t('selectDateAndTime')"
         >
@@ -144,6 +160,7 @@ const {
   departurePortName: departure_port_name,
   reportingTimeZone: reporting_time_zone,
   reportingDate: reporting_date,
+  isDestinationEnabled: is_destination_enabled,
   destinationPortCountry: destination_port_country,
   destinationPortName: destination_port_name,
   destinationTimeZone: destination_time_zone,
