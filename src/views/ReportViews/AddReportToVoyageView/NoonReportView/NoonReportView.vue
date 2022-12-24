@@ -63,12 +63,7 @@ import NoonStoppage from "@/components/Reports/NoonReport/NoonStoppage.vue";
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
-import {
-  ReportType,
-  FuelOil,
-  LubricatingOil,
-  ConsumptionType,
-} from "@/constants";
+import { Report, FuelOil, LubricatingOil, ConsumptionType } from "@/constants";
 import {
   convertLTToUTC,
   parsePositionToString,
@@ -216,7 +211,7 @@ const sendReport = async () => {
   });
 
   let REPORT = {
-    report_type: ReportType.NOON,
+    report_type: Report.type.NOON,
     voyage: voyageNo.value,
     voyage_leg: legNo.value,
     report_num: reportNo.value,
@@ -384,7 +379,7 @@ const sendReport = async () => {
         discharged: 0, // irrelevant for noon report
         rob: freshwaterRob.value || 0,
       },
-      consumption_type: ConsumptionType.NOON_TO_NOON, // TODO: make enum in constants.js
+      consumption_type: ConsumptionType.NOON_TO_NOON,
     },
     heavyweatherdata: null,
     stoppagedata: null,

@@ -7,6 +7,7 @@ export const Report = {
     ARR_SBY_EOSP: "ASBY",
     ARR_FWE: "AFWE",
     BUNKER: "BDN",
+    EVENT: "EVENT", // TODO: placeholder, remove when event types are implemented in backend
     EVENT_PORT: "EVNTP",
     EVENT_COASTAL: "EVNTC",
     NOON_PORT: "NOONP",
@@ -20,10 +21,10 @@ export const Report = {
 // temporary fix: for displaying report type (report no.) for each report in voyage card
 export const ReportTypeToDisplay = {
   NOON: "NOON",
-  DSBY: "DSBY",
-  DCSP: "DCSP",
-  ASBY: "ASBY",
-  AFWE: "AFWE",
+  DSBY: "DEPS",
+  DCSP: "DEPR",
+  ASBY: "ARRS",
+  AFWE: "ARRF",
   BDN: "BDN",
   EVNT: "EVNT", // TODO: replace with 4 subtypes below
   EVNTP: "EVNTP",
@@ -79,16 +80,6 @@ export const IceCondition = {
   EXT: "EXT",
 };
 
-export const ReportType = {
-  NOON: "NOON",
-  DEPARTURE_SBY: "DEP_SBY",
-  DEPARTURE_COSP: "DEP_COSP",
-  ARRIVAL_SBY: "ARR_SBY",
-  ARRIVAL_FWE: "ARR_FWE",
-  BUNKER_DELIVERY: "BDN",
-  EVENT: "EVENT",
-};
-
 export const FuelOil = {
   LSFO: "LSFO",
   MGO: "MGO",
@@ -117,7 +108,6 @@ const constants = {
   Direction: Direction,
   ReportTypeToDisplay: ReportTypeToDisplay,
   IceCondition: IceCondition,
-  ReportType: ReportType,
   FuelOil: FuelOil,
   LubricatingOil: LubricatingOil,
   ConsumptionType: ConsumptionType,
