@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onBeforeMount, defineProps } from "vue";
-import { useReportDetailsStore } from "./store/useReportDetailsStore";
+import { useReportDetailsStore } from "./stores/useReportDetailsStore";
 import router from "@/router";
 import { Report } from "@/constants";
 import { storeToRefs } from "pinia";

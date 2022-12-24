@@ -1,21 +1,21 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { authGuard } from "@auth0/auth0-vue";
 
-// import LoginView from '../views/LoginView.vue'from ;
-import VesselView from "../views/VesselView/VesselView.vue";
-import VesselOverviewView from "../views/VesselView/VesselOverviewView.vue";
-import VesselSubmittedView from "../views/VesselView/VesselSubmittedView.vue";
-import VesselDraftView from "../views/VesselView/VesselDraftView.vue";
-import VesselCancelledView from "../views/VesselView/VesselCancelledView.vue";
-import AddReportToVoyageView from "../views/ReportViews/AddReportToVoyageView.vue";
-import NoonReportView from "../views/ReportViews/NoonReportView.vue";
-import ArrivalReportView from "../views/ReportViews/ArrivalReportView.vue";
-import DepartureReportView from "../views/ReportViews/DepartureReportView.vue";
-import BunkerReportView from "../views/ReportViews/BunkerReportView.vue";
-import HarbourPortReportView from "../views/ReportViews/HarbourPortReportView.vue";
-import ReportDetailsViewWrapper from "../views/ReportViews/ReportDetailsView/ReportDetailsViewWrapper.vue";
+// import LoginView from '@/views/LoginView.vue'from ;
+import VesselView from "@/views/VesselView/VesselView.vue";
+import VesselOverviewView from "@/views/VesselView/VesselOverviewView.vue";
+import VesselSubmittedView from "@/views/VesselView/VesselSubmittedView.vue";
+import VesselDraftView from "@/views/VesselView/VesselDraftView.vue";
+import VesselCancelledView from "@/views/VesselView/VesselCancelledView.vue";
+import AddReportToVoyageView from "@/views/ReportViews/AddReportToVoyageView/AddReportToVoyageView.vue";
+import NoonReportView from "@/views/ReportViews/AddReportToVoyageView/NoonReportView/NoonReportView.vue";
+import ArrivalReportView from "@/views/ReportViews/AddReportToVoyageView/ArrivalReportView/ArrivalReportView.vue";
+import DepartureReportView from "@/views/ReportViews/AddReportToVoyageView/DepartureReportView/DepartureReportView.vue";
+import BunkerReportView from "@/views/ReportViews/AddReportToVoyageView/BunkerReportView/BunkerReportView.vue";
+import HarbourPortReportView from "@/views/ReportViews/AddReportToVoyageView/HarbourPortReportView/HarbourPortReportView.vue";
+import ReportDetailsViewWrapper from "@/views/ReportViews/ReportDetailsView/ReportDetailsViewWrapper.vue";
 
-import NotFound from "../views/NotFound.vue";
+import NotFound from "@/views/NotFound.vue";
 
 const routes = [
   // {
