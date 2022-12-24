@@ -8,10 +8,11 @@ export const useVoyageStore = defineStore("voyage", () => {
   const lastArrsReportNo = ref(0); // Arrival EOSP or S/BY
   const lastArrfReportNo = ref(0); // Arrival FWE
   const lastBdnReportNo = ref(0); // Bunker Delivery
-  const lastEvntpReportNo = ref(0); // Event Port
-  const lastEvntcReportNo = ref(0); // Event Coastal
-  const lastNoonpReportNo = ref(0); // Noon Port
-  const lastNooncReportNo = ref(0); // Noon Coastal
+  const lastEvntReportNo = ref(0); // Event (general)
+  // const lastEvntpReportNo = ref(0); // Event Port
+  // const lastEvntcReportNo = ref(0); // Event Coastal
+  // const lastNoonpReportNo = ref(0); // Noon Port
+  // const lastNooncReportNo = ref(0); // Noon Coastal
 
   const noonReportNo = computed(() => {
     return lastNoonReportNo.value + 1;
@@ -31,22 +32,25 @@ export const useVoyageStore = defineStore("voyage", () => {
   const bdnReportNo = computed(() => {
     return lastBdnReportNo.value + 1;
   });
-  const evntpReportNo = computed(() => {
-    return lastEvntpReportNo.value + 1;
+  const evntReportNo = computed(() => {
+    return lastEvntReportNo.value + 1;
   });
-  const evntcReportNo = computed(() => {
-    return lastEvntcReportNo.value + 1;
-  });
-  const noonpReportNo = computed(() => {
-    return lastNoonpReportNo.value + 1;
-  });
-  const nooncReportNo = computed(() => {
-    return lastNooncReportNo.value + 1;
-  });
+  // const evntpReportNo = computed(() => {
+  //   return lastEvntpReportNo.value + 1;
+  // });
+  // const evntcReportNo = computed(() => {
+  //   return lastEvntcReportNo.value + 1;
+  // });
+  // const noonpReportNo = computed(() => {
+  //   return lastNoonpReportNo.value + 1;
+  // });
+  // const nooncReportNo = computed(() => {
+  //   return lastNooncReportNo.value + 1;
+  // });
 
   const curLoadingCondition = ref("");
   const curLegNo = ref(0);
-  const voyageNo = ref(0);
+  const curVoyageNo = ref(0);
 
   return {
     lastNoonReportNo,
@@ -55,22 +59,24 @@ export const useVoyageStore = defineStore("voyage", () => {
     lastArrsReportNo,
     lastArrfReportNo,
     lastBdnReportNo,
-    lastEvntpReportNo,
-    lastEvntcReportNo,
-    lastNoonpReportNo,
-    lastNooncReportNo,
+    lastEvntReportNo,
+    // lastEvntpReportNo,
+    // lastEvntcReportNo,
+    // lastNoonpReportNo,
+    // lastNooncReportNo,
     noonReportNo,
     depsReportNo,
     deprReportNo,
     arrsReportNo,
     arrfReportNo,
     bdnReportNo,
-    evntpReportNo,
-    evntcReportNo,
-    noonpReportNo,
-    nooncReportNo,
+    evntReportNo,
+    // evntpReportNo,
+    // evntcReportNo,
+    // noonpReportNo,
+    // nooncReportNo,
     curLoadingCondition,
     curLegNo,
-    voyageNo,
+    curVoyageNo,
   };
 });

@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
+import { storeToRefs } from "pinia";
 
 // TODO: fetch from database
 const temp = {
@@ -38,16 +39,19 @@ export const useHarbourPortReportStore = defineStore(
   "harbourPortReport",
   () => {
     const store = useVoyageStore();
+    // TODO: report no for harbourPort depends on exact type of report
+    const { evntReportNo, curLegNo, curLoadingCondition, curVoyageNo } =
+      storeToRefs(store);
 
     // status var
     const reportType = ref("in_port");
     const eventOrNoon = ref("event");
 
     // Harbour Port Overview
-    const reportNo = ref(store.reportNo);
-    const curLegNo = ref(store.curLegNo);
-    const curLoadingCondition = ref(store.curLoadingCondition);
-    const voyageNo = ref(store.voyageNo);
+    const reportNo = evntReportNo; // TODO: report no for harbourPort depends on exact type of report
+    const legNo = curLegNo;
+    const loadingCondition = curLoadingCondition;
+    const voyageNo = curVoyageNo;
     const reportingDateTime = ref("");
     const reportingTimeZone = ref("default");
     const departurePortCountry = ref(temp.departurePortCountry);
@@ -207,8 +211,8 @@ export const useHarbourPortReportStore = defineStore(
       eventOrNoon, // HarbourPortReport.vue
       // Harbour Port Overview
       reportNo,
-      curLegNo,
-      curLoadingCondition,
+      legNo,
+      loadingCondition,
       voyageNo,
       reportingDateTime,
       reportingTimeZone,

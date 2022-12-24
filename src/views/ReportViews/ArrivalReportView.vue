@@ -97,7 +97,7 @@
 import TabsWrapper from "@/components/Tabs/TabsWrapper.vue";
 import Tab from "@/components/Tabs/Tab.vue";
 import GradientButton from "@/components/Buttons/GradientButton.vue";
-import CustomButton from "@/components/Buttons/CustomButton.vue";
+// import CustomButton from "@/components/Buttons/CustomButton.vue";
 
 import ArrivalAndDeparture from "@/components/Reports/ArrivalReport/ArrivalAndDeparture.vue";
 import ArrivalDetails from "@/components/Reports/ArrivalReport/ArrivalDetails.vue";

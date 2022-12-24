@@ -51,14 +51,6 @@
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 // import CustomButton from "@/components/Buttons/CustomButton.vue";
 // import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import {
-  // textInputOptions,
-  // format,
-  // preventNaN,
-  parsePositionToString,
-  parsePortLocode,
-} from "../../utils/helpers.js";
-
 import NoonOverview from "@/components/Reports/NoonReport/NoonOverview.vue";
 import NoonDetails from "@/components/Reports/NoonReport/NoonDetails.vue";
 import NoonWeather from "@/components/Reports/NoonReport/NoonWeather.vue";
@@ -78,17 +70,17 @@ import {
   ConsumptionType,
 } from "@/constants";
 import {
-  parsePosition,
-  parsePortLocode,
   convertLTToUTC,
+  parsePositionToString,
+  parsePortLocode,
 } from "@/utils/helpers.js";
 
 const store = useNoonReportStore();
 const {
   // Overview
   voyageNo,
-  curLegNo,
-  noonReportNo,
+  legNo,
+  reportNo,
   reportingTimeZone,
   reportingDateTimeUTC,
   // Departure and Destination
@@ -226,8 +218,8 @@ const sendReport = async () => {
   let REPORT = {
     report_type: ReportType.NOON,
     voyage: voyageNo.value,
-    voyage_leg: curLegNo.value,
-    report_num: noonReportNo.value,
+    voyage_leg: legNo.value,
+    report_num: reportNo.value,
     report_date: reportingDateTimeUTC.value,
     report_tz: reportingTimeZone.value,
     noonreporttimeandposition: {
@@ -238,7 +230,7 @@ const sendReport = async () => {
     reportroute: {
       departure_port: routeDeparturePort,
       departure_date: routeDepartureDateTime.value,
-      departure_tz: routeDepartureTimeZone.value,
+      depature_tz: routeDepartureTimeZone.value,
       arrival_port: routeArrivalPort,
       arrival_date: routeArrivalDateTimeEdited.value
         ? convertLTToUTC(routeArrivalDateTime.value, routeArrivalTimeZone.value)

@@ -56,7 +56,7 @@ import HarbourPortOverview from "@/components/Reports/HarbourPortReport/HarbourP
 import HarbourPortReport from "@/components/Reports/HarbourPortReport/HarbourPortReport.vue";
 import HarbourPortConsumption from "@/components/Reports/HarbourPortReport/HarbourPortConsumption.vue";
 import RadioBtnDetail from "@/components/Buttons/RadioBtnDetail.vue";
-import CustomButton from "@/components/Buttons/CustomButton.vue";
+// import CustomButton from "@/components/Buttons/CustomButton.vue";
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 import { useHarbourPortReportStore } from "@/stores/useHarbourPortReportStore";
 import { storeToRefs } from "pinia";
@@ -68,6 +68,7 @@ const {
   eventOrNoon,
   // Harbour Port Overview
   reportNo,
+  loadingCondition,
   legNo,
   voyageNo,
   reportingDateTime,

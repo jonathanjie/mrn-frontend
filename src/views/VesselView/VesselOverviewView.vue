@@ -149,7 +149,7 @@ for (let i = 0; i < voyages.length; i++) {
   }
 
   // update voyage details
-  voyageDetails[uuid]["voyage_no"] = voyages[i].voyage_num;
+  voyageDetails[uuid]["cur_voyage_no"] = voyages[i].voyage_num;
   voyageDetails[uuid]["cur_loading_condition"] = curLoadingCondition || "N/A";
   voyageDetails[uuid]["cur_leg_no"] = curLegNo || "N/A";
   voyageDetails[uuid]["last_noon_report_no"] = lastReportNo["NOON"];

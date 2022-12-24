@@ -11,11 +11,11 @@
         {{ $t("reportNo") }}
       </div>
       <div class="col-span-3 p-3 border-b text-gray-700 bg-gray-50">
-        {{ arrf_report_no }}
+        {{ report_no }}
       </div>
       <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("legNo") }}</div>
       <div class="col-span-3 p-3 text-gray-700 bg-gray-50">
-        {{ cur_leg_no }}
+        {{ leg_no }}
       </div>
     </div>
     <div
@@ -27,7 +27,7 @@
       <div class="flex items-center col-span-3 p-3 border">
         <div class="text-gray-700 bg-gray-50">{{ voyage_no }}</div>
         <MiniUnitDisplay class="ml-2 mr-auto">{{
-          cur_loading_condition
+          loading_condition
         }}</MiniUnitDisplay>
       </div>
       <div class="hidden xl:block bg-white col-span-2 row-span-1"></div>
@@ -90,9 +90,9 @@ import { TIMEZONES } from "@/utils/options";
 
 const store = useArrivalFWEReportStore();
 const {
-  arrfReportNo: arrf_report_no,
-  curLegNo: cur_leg_no,
-  curLoadingCondition: cur_loading_condition,
+  reportNo: report_no,
+  legNo: leg_no,
+  loadingCondition: loading_condition,
   voyageNo: voyage_no,
   reportingDateTime: reporting_date_time,
   reportingTimeZone: reporting_time_zone,

@@ -11,11 +11,11 @@
         {{ $t("reportNo") }}
       </div>
       <div class="col-span-3 p-3 border-b text-gray-700 bg-gray-50">
-        {{ deps_report_no }}
+        {{ report_no }}
       </div>
       <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("legNo") }}</div>
       <div class="col-span-3 p-3 text-gray-700 bg-gray-50">
-        {{ cur_leg_no }}
+        {{ leg_no }}
       </div>
     </div>
     <div
@@ -86,8 +86,8 @@ import { TIMEZONES } from "@/utils/options";
 
 const store = useDepartureSBYReportStore();
 const {
-  depsReportNo: deps_report_no,
-  curLegNo: cur_leg_no,
+  reportNo: report_no,
+  legNo: leg_no,
   voyageNo: voyage_no,
   reportingDate: reporting_date,
   reportingTimeZone: reporting_time_zone,

@@ -90,7 +90,7 @@ const store = useVoyageStore();
 const {
   curLoadingCondition,
   curLegNo,
-  voyageNo,
+  curVoyageNo,
   lastNoonReportNo,
   lastDepsReportNo,
   lastDeprReportNo,
@@ -103,6 +103,7 @@ const {
   // lastNooncReportNo,
 } = storeToRefs(store);
 
+console.log("voyage details loaded", history.state.voyageDetails);
 const voyageDetails = history.state.voyageDetails
   ? JSON.parse(history.state.voyageDetails)
   : {};
@@ -110,7 +111,7 @@ const voyageDetails = history.state.voyageDetails
 // store selected voyage details in pinia voyage store
 curLoadingCondition.value = voyageDetails.cur_loading_condition;
 curLegNo.value = voyageDetails.cur_leg_no;
-voyageNo.value = voyageDetails.voyage_no;
+curVoyageNo.value = voyageDetails.cur_voyage_no;
 lastNoonReportNo.value = voyageDetails.last_noon_report_no;
 lastDepsReportNo.value = voyageDetails.last_deps_report_no;
 lastDeprReportNo.value = voyageDetails.last_depr_report_no;

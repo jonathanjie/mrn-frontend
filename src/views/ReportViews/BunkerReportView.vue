@@ -55,7 +55,7 @@
 
 <script setup>
 import GradientButton from "@/components/Buttons/GradientButton.vue";
-import CustomButton from "@/components/Buttons/CustomButton.vue";
+// import CustomButton from "@/components/Buttons/CustomButton.vue";
 import BunkerOverview from "@/components/Reports/BunkerReport/BunkerOverview.vue";
 import BunkeringPort from "@/components/Reports/BunkerReport/BunkeringPort.vue";
 import BunkerReceivedDetail from "@/components/Reports/BunkerReport/BunkerReceivedDetail.vue";
@@ -77,6 +77,7 @@ const {
   // Overview
   reportNo,
   legNo,
+  loadingCondition,
   voyageNo,
   reportingDateTime,
   reportingTimeZone,

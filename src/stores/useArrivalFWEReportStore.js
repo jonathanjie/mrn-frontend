@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, computed, reactive } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
+import { storeToRefs } from "pinia";
 
 const temp = {
   // Finish With Engine
@@ -32,12 +33,14 @@ const temp = {
 
 export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   const store = useVoyageStore();
+  const { arrfReportNo, curLegNo, curLoadingCondition, curVoyageNo } =
+    storeToRefs(store);
 
   // Overview
-  const arrfReportNo = ref(store.arrfReportNo);
-  const curLegNo = ref(store.curLegNo);
-  const curLoadingCondition = ref(store.curLoadingCondition);
-  const voyageNo = ref(store.voyageNo);
+  const reportNo = arrfReportNo;
+  const legNo = curLegNo;
+  const loadingCondition = curLoadingCondition;
+  const voyageNo = curVoyageNo;
   const reportingDateTime = ref("");
   const reportingTimeZone = ref("default");
 
@@ -214,9 +217,9 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
 
   return {
     // Overview
-    arrfReportNo,
-    curLegNo,
-    curLoadingCondition,
+    reportNo,
+    legNo,
+    loadingCondition,
     voyageNo,
     reportingDateTime,
     reportingTimeZone,

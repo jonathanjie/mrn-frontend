@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
 import { convertLTToUTC, convertUTCToLT } from "@/utils/helpers";
+import { storeToRefs } from "pinia";
 
 // TODO: retrieve from backend or generate as needed
 // API /reports/latest
@@ -31,12 +32,14 @@ const temp = {
 
 export const useNoonReportStore = defineStore("noonReport", () => {
   const store = useVoyageStore();
+  const { noonReportNo, curLegNo, curLoadingCondition, curVoyageNo } =
+    storeToRefs(store);
 
   // Overview
-  const noonReportNo = ref(store.noonReportNo);
-  const curLegNo = ref(store.curLegNo);
-  const curLoadingCondition = ref(store.curLoadingCondition);
-  const voyageNo = ref(store.voyageNo);
+  const reportNo = noonReportNo;
+  const legNo = curLegNo;
+  const loadingCondition = curLoadingCondition;
+  const voyageNo = curVoyageNo;
   const reportingDateTime = ref("");
   const reportingTimeZone = ref("default");
   const reportingDateTimeUTC = computed(() =>
@@ -332,9 +335,9 @@ export const useNoonReportStore = defineStore("noonReport", () => {
 
   return {
     // Overview
-    noonReportNo,
-    curLegNo,
-    curLoadingCondition,
+    reportNo,
+    legNo,
+    loadingCondition,
     voyageNo,
     reportingDateTime,
     reportingTimeZone,
