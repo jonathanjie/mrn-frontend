@@ -132,3 +132,31 @@ export const convertUTCToLT = (date, offset) => {
 export const parsePortLocode = ({ portCountry, portName }) => {
   return portCountry + " " + portName;
 };
+
+export const windSpeedToBeaufort = (wind_speed) => {
+  return Number(wind_speed) < 1
+    ? 0
+    : Number(wind_speed) < 4
+    ? 1
+    : Number(wind_speed) < 7
+    ? 2
+    : Number(wind_speed) < 11
+    ? 3
+    : Number(wind_speed) < 17
+    ? 4
+    : Number(wind_speed) < 22
+    ? 5
+    : Number(wind_speed) < 28
+    ? 6
+    : Number(wind_speed) < 34
+    ? 7
+    : Number(wind_speed) < 41
+    ? 8
+    : Number(wind_speed) < 48
+    ? 9
+    : Number(wind_speed) < 56
+    ? 10
+    : Number(wind_speed) < 64
+    ? 11
+    : 12;
+};

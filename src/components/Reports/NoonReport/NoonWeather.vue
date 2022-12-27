@@ -326,7 +326,7 @@
 
 <script setup>
 import { computed } from "vue";
-import { preventNaN } from "@/utils/helpers";
+import { preventNaN, windSpeedToBeaufort } from "@/utils/helpers";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
@@ -350,30 +350,6 @@ const {
 } = storeToRefs(store);
 
 const wind_speed_beaufort = computed(() =>
-  Number(wind_speed.value) < 1
-    ? 0
-    : Number(wind_speed.value) < 4
-    ? 1
-    : Number(wind_speed.value) < 7
-    ? 2
-    : Number(wind_speed.value) < 11
-    ? 3
-    : Number(wind_speed.value) < 17
-    ? 4
-    : Number(wind_speed.value) < 22
-    ? 5
-    : Number(wind_speed.value) < 28
-    ? 6
-    : Number(wind_speed.value) < 34
-    ? 7
-    : Number(wind_speed.value) < 41
-    ? 8
-    : Number(wind_speed.value) < 48
-    ? 9
-    : Number(wind_speed.value) < 56
-    ? 10
-    : Number(wind_speed.value) < 64
-    ? 11
-    : 12
+  windSpeedToBeaufort(wind_speed.value)
 );
 </script>
