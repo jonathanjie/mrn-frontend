@@ -121,11 +121,11 @@ export const useNoonReportStore = defineStore("noonReport", () => {
       heavyWeatherHours.value ||
       heavyWeatherDist.value ||
       heavyWeatherConsumption.value ||
-      heavyWeatherNotation.value ||
-      heavyWindDirection.value ||
+      heavyWeatherNotation.value !== "default" ||
+      heavyWindDirection.value !== "default" ||
       heavyWindSpeed.value ||
-      heavySeaDirection.value ||
-      heavySeaState.value ||
+      heavySeaDirection.value !== "default" ||
+      heavySeaState.value !== "default" ||
       heavyRemarks.value
   );
 
@@ -356,12 +356,12 @@ export const useNoonReportStore = defineStore("noonReport", () => {
       stoppageEnding.value ||
       stoppageDuration.value ||
       stoppageChangedRPM.value ||
-      stoppageReason.value ||
+      stoppageReason.value !== "default" ||
       stoppageRemarks.value ||
-      stoppageLatDir.value ||
+      stoppageLatDir.value !== "default" ||
       stoppageLatDegree.value ||
       stoppageLatMinutes.value ||
-      stoppageLongDir.value ||
+      stoppageLongDir.value !== "default" ||
       stoppageLongDegree.value ||
       stoppageLongMinutes.value
   );

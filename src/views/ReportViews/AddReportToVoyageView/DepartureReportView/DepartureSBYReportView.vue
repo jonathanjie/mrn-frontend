@@ -312,7 +312,7 @@ const sendReport = async () => {
       ],
       freshwaterdata: {
         consumed: freshwaterConsumed.value || 0,
-        evaporated: freshwaterEvaporated.value || 0,
+        generated: freshwaterEvaporated.value || 0,
         received: freshwaterReceiving.value || 0,
         discharged: freshwaterDischarging.value || 0,
         rob: freshwaterRob.value || 0,
@@ -328,8 +328,8 @@ const sendReport = async () => {
           debunkering: lsfoBreakdownSum.value.debunkering || 0,
           rob: lsfoRobSum.value || 0,
           breakdown: {
-            "G/E": lsfoBreakdownSum.value.ge || 0,
-            "M/E": lsfoBreakdownSum.value.me || 0,
+            GE: lsfoBreakdownSum.value.ge || 0,
+            ME: lsfoBreakdownSum.value.me || 0,
             BLR: lsfoBreakdownSum.value.blr || 0,
             IGG: lsfoBreakdownSum.value.igg || 0,
           },
@@ -348,8 +348,8 @@ const sendReport = async () => {
           debunkering: mgoBreakdownSum.value.debunkering || 0,
           rob: mgoRobSum.value || 0,
           breakdown: {
-            "G/E": mgoBreakdownSum.value.ge || 0,
-            "M/E": mgoBreakdownSum.value.me || 0,
+            GE: mgoBreakdownSum.value.ge || 0,
+            ME: mgoBreakdownSum.value.me || 0,
             BLR: mgoBreakdownSum.value.blr || 0,
             IGG: mgoBreakdownSum.value.igg || 0,
           },
@@ -427,7 +427,7 @@ const sendReport = async () => {
       ],
       freshwatertotalconsumptiondata: {
         consumed: freshwaterConsumedSum.value || 0,
-        evaporated: freshwaterEvaporatedSum.value || 0,
+        generated: freshwaterEvaporatedSum.value || 0,
         received: freshwaterReceivingSum.value || 0,
         discharged: freshwaterDischargingSum.value || 0,
         rob: freshwaterRobSum.value || 0,

@@ -228,8 +228,8 @@ const sendReport = async () => {
           debunkering: 0, // Does not apply for Departure COSP reports
           rob: lsfoRob.value || 0,
           breakdown: {
-            "G/E": lsfoBreakdown.value.ge || 0,
-            "M/E": lsfoBreakdown.value.me || 0,
+            GE: lsfoBreakdown.value.ge || 0,
+            ME: lsfoBreakdown.value.me || 0,
             BLR: lsfoBreakdown.value.blr || 0,
             IGG: lsfoBreakdown.value.igg || 0,
           },
@@ -248,8 +248,8 @@ const sendReport = async () => {
           debunkering: 0, // Does not apply for Departure COSP reports
           rob: mgoRob.value || 0,
           breakdown: {
-            "G/E": mgoBreakdown.value.ge || 0,
-            "M/E": mgoBreakdown.value.me || 0,
+            GE: mgoBreakdown.value.ge || 0,
+            ME: mgoBreakdown.value.me || 0,
             BLR: mgoBreakdown.value.blr || 0,
             IGG: mgoBreakdown.value.igg || 0,
           },
@@ -323,7 +323,7 @@ const sendReport = async () => {
       ],
       freshwaterdata: {
         consumed: freshwaterConsumed.value || 0,
-        evaporated: freshwaterEvaporated.value || 0,
+        generated: freshwaterEvaporated.value || 0,
         received: 0, // Does not apply for Departure COSP reports
         discharged: 0, // Does not apply for Departure COSP reports
         rob: freshwaterRob.value || 0,

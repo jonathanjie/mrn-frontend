@@ -109,13 +109,4 @@ const {
   rpmAvg: rpm_avg,
   slipAvg: slip_avg,
 } = storeToRefs(store);
-
-// const data = reactive({
-//   speed_since_noon: "",
-//   rpm_since_noon: "",
-//   slip_since_noon: "",
-//   speed_avg: "",
-//   rpm_avg: "",
-//   slip_avg: "",
-// });
 </script>
