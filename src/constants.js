@@ -49,6 +49,10 @@ export const ErrorFieldsToDisplay = {
   departurerunup: "R/UP Engine",
   distancetimedata: "Distance & Time",
   transoceanicbudget: "Budget Trans Ocean",
+  actualperformancedata: "Actual Performance",
+  arrivalstandbytimeandposition: "S/BY for Arrival",
+  heavyweatherdata: "Heavy Weather Condition",
+  stoppagedata: "Stoppage or Change in RPM (at Sea)",
 };
 
 export const Direction = {
@@ -92,6 +96,12 @@ export const ConsumptionType = {
   NOON_TO_SBY: "NOON_TO_STANDBY",
   SBY_TO_FWE: "STANDBY_TO_FWE",
   LAST_TO_EVENT: "LAST_TO_EVENT",
+  PILOT_TO_PILOT: "PILOT_TO_PILOT",
+};
+
+export const ActualPerformanceType = {
+  PILOT_TO_PILOT: "PILOT_TO_PILOT",
+  PORT_TO_PORT: "PORT_TO_PORT",
 };
 
 const constants = {
@@ -104,6 +114,7 @@ const constants = {
   LubricatingOil: LubricatingOil,
   ConsumptionType: ConsumptionType,
   TotalConsumptionType: TotalConsumptionType,
+  ActualPerformanceType: ActualPerformanceType,
 };
 
 export default constants;

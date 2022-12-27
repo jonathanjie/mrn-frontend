@@ -111,7 +111,7 @@ for (let i = 0; i < voyages.length; i++) {
   voyageDetails[uuid] = {};
 
   let curLoadingCondition = "";
-  let curLegNo = "";
+  let curLegNo = 1;
   let lastReportNo = {
     NOON: 0,
     DSBY: 0,
