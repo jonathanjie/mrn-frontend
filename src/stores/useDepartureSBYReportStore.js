@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
 import { storeToRefs } from "pinia";
+import { convertLTToUTC } from "@/utils/helpers";
 
 const temp = {
   // Consumption & Condition
@@ -33,8 +34,13 @@ export const useDepartureSBYReportStore = defineStore(
     const reportNo = depsReportNo;
     const legNo = curLegNo;
     const voyageNo = curVoyageNo;
-    const reportingDate = ref("");
+    const reportingDateTime = ref("");
     const reportingTimeZone = ref("default");
+    const reportingDateTimeUTC = computed(() =>
+      reportingTimeZone.value !== "default" && reportingDateTime.value
+        ? convertLTToUTC(reportingDateTime.value, reportingTimeZone.value)
+        : reportingDateTime.value
+    );
 
     // Departure and Destination
     const departurePortCountry = ref("");
@@ -44,6 +50,15 @@ export const useDepartureSBYReportStore = defineStore(
     const destinationPortName = ref("");
     const destinationTimeZone = ref("default");
     const destinationEstimatedArrival = ref("");
+    const destinationEstimatedArrivalUTC = computed(() =>
+      destinationTimeZone.value !== "default" &&
+      destinationEstimatedArrival.value
+        ? convertLTToUTC(
+            destinationEstimatedArrival.value,
+            destinationTimeZone.value
+          )
+        : destinationEstimatedArrival.value
+    );
 
     // Cargo Operation
     const loadCondition = ref("default");
@@ -62,8 +77,17 @@ export const useDepartureSBYReportStore = defineStore(
     const displacement = ref("");
 
     // Pilot Station - Departure
+    const shouldPilotDepDataBeSent = computed(
+      () => pilotDepName.value || pilotDepDateTime.value
+    );
     const pilotDepName = ref("");
-    const pilotDepDate = ref("");
+    const pilotDepDateTime = ref("");
+    const pilotDepDateTimeUTC = computed(() =>
+      reportingTimeZone.value !== "default" && reportingDateTime.value
+        ? convertLTToUTC(pilotDepDateTime.value, reportingTimeZone.value)
+        : pilotDepDateTime.value
+    );
+
     const pilotDepLatDir = ref("default");
     const pilotDepLatDegree = ref("");
     const pilotDepLatMinute = ref("");
@@ -343,8 +367,9 @@ export const useDepartureSBYReportStore = defineStore(
       reportNo,
       legNo,
       voyageNo,
-      reportingDate,
+      reportingDateTime,
       reportingTimeZone,
+      reportingDateTimeUTC,
       // Departure and Destination
       departurePortCountry,
       departurePortName,
@@ -353,6 +378,7 @@ export const useDepartureSBYReportStore = defineStore(
       destinationPortName,
       destinationTimeZone,
       destinationEstimatedArrival,
+      destinationEstimatedArrivalUTC,
       // Cargo Operation
       loadCondition,
       loading,
@@ -368,8 +394,10 @@ export const useDepartureSBYReportStore = defineStore(
       ballast,
       displacement,
       // Pilot station - Departure
+      shouldPilotDepDataBeSent,
       pilotDepName,
-      pilotDepDate,
+      pilotDepDateTime,
+      pilotDepDateTimeUTC,
       pilotDepLatDir,
       pilotDepLatDegree,
       pilotDepLatMinute,
