@@ -39,24 +39,35 @@
         :placeholder="$t('inputName')"
         class="col-span-3 p-3 pl-4 border-y border-r bg-white text-14 text-gray-700 focus:outline-0"
       />
-      <div class="col-span-2 text-blue-700 p-3 border-x bg-gray-50 text-14">
+      <div
+        class="col-span-2 text-blue-700 p-3 border-x border-b lg:border-b-0 bg-gray-50 text-14"
+      >
         {{ $t("dateAndTime") }}
       </div>
-      <DatePicker
-        v-model="pilot_arr_date"
-        class="col-span-3 border-r"
-        textInput
-        :textInputOptions="textInputOptions"
-        :format="format"
-        :modelValue="string"
-        :placeholder="$t('pleaseSelectDateAndTime')"
+      <div
+        class="col-span-3 relative flex items-center border-r border-b lg:border-b-0"
       >
-        <template #input-icon>
-          <img src="" />
-        </template>
-      </DatePicker>
+        <DatePicker
+          v-model="pilot_arr_date_time"
+          class="grow"
+          textInput
+          :textInputOptions="textInputOptions"
+          :format="format"
+          :modelValue="string"
+          :placeholder="$t('selectDateAndTime')"
+        >
+          <template #input-icon>
+            <img src="" />
+          </template>
+        </DatePicker>
+        <MiniUnitDisplay
+          class="absolute right-0 min-w-fit"
+          :class="pilot_arr_date_time ? 'mr-9' : 'mr-2'"
+          >{{ pilot_arr_date_time_utc }}</MiniUnitDisplay
+        >
+      </div>
       <input
-        class="hidden xl:block bg-white col-span-5 p-3 border-t"
+        class="hidden lg:block bg-white col-span-5 p-3 border-t"
         disabled
       />
     </div>
@@ -171,11 +182,17 @@
 </template>
 
 <script setup>
-import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-import { ref } from "vue";
+import {
+  preventNaN,
+  textInputOptions,
+  format,
+  formatUTC,
+} from "@/utils/helpers.js";
+import { ref, computed } from "vue";
 import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
 import { storeToRefs } from "pinia";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { UTCPlaceholder } from "@/constants";
 
 const isActive = ref(false);
 const store = useArrivalEOSPReportStore();
@@ -183,7 +200,8 @@ const store = useArrivalEOSPReportStore();
 // TODO: need to be computed values
 const {
   pilotArrName: pilot_arr_name,
-  pilotArrDate: pilot_arr_date,
+  pilotArrDateTime: pilot_arr_date_time,
+  pilotArrDateTimeUTC,
   pilotArrDraftFwd: pilot_arr_draft_fwd,
   pilotArrDraftMid: pilot_arr_draft_mid,
   pilotArrDraftAft: pilot_arr_draft_aft,
@@ -194,4 +212,10 @@ const {
   pilotArrLongDegree: pilot_arr_long_degree,
   pilotArrLongMinute: pilot_arr_long_minute,
 } = storeToRefs(store);
+
+const pilot_arr_date_time_utc = computed(() =>
+  pilotArrDateTimeUTC.value
+    ? formatUTC(new Date(pilotArrDateTimeUTC.value))
+    : UTCPlaceholder
+);
 </script>

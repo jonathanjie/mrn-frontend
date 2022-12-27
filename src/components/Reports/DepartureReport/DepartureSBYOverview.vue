@@ -36,19 +36,26 @@
       <div class="col-span-2 text-blue-700 p-3 border-r">
         {{ $t("reportingDateAndTime") }}
       </div>
-      <DatePicker
-        v-model="reporting_date_time"
-        class="col-span-3"
-        textInput
-        :textInputOptions="textInputOptions"
-        :format="format"
-        :modelValue="string"
-        :placeholder="$t('selectDateAndTime')"
-      >
-        <template #input-icon>
-          <img src="" />
-        </template>
-      </DatePicker>
+      <div class="col-span-3 relative flex items-center">
+        <DatePicker
+          v-model="reporting_date_time"
+          class="grow"
+          textInput
+          :textInputOptions="textInputOptions"
+          :format="format"
+          :modelValue="string"
+          :placeholder="$t('selectDateAndTime')"
+        >
+          <template #input-icon>
+            <img src="" />
+          </template>
+        </DatePicker>
+        <MiniUnitDisplay
+          class="absolute right-0 min-w-fit"
+          :class="reporting_date_time ? 'mr-9' : 'mr-2'"
+          >{{ reporting_date_time_utc }}</MiniUnitDisplay
+        >
+      </div>
     </div>
     <div
       class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14 border"
@@ -81,8 +88,11 @@
 <script setup>
 import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 import { storeToRefs } from "pinia";
-import { textInputOptions, format } from "@/utils/helpers";
+import { textInputOptions, format, formatUTC } from "@/utils/helpers";
 import { TIMEZONES } from "@/utils/options";
+import { computed } from "vue";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { UTCPlaceholder } from "@/constants";
 
 const store = useDepartureSBYReportStore();
 const {
@@ -91,5 +101,12 @@ const {
   voyageNo: voyage_no,
   reportingDateTime: reporting_date_time,
   reportingTimeZone: reporting_time_zone,
+  reportingDateTimeUTC,
 } = storeToRefs(store);
+
+const reporting_date_time_utc = computed(() =>
+  reportingDateTimeUTC.value
+    ? formatUTC(new Date(reportingDateTimeUTC.value))
+    : UTCPlaceholder
+);
 </script>

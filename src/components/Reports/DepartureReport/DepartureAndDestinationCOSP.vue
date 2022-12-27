@@ -48,20 +48,26 @@
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("dateAndTime") }}
         </div>
-        <DatePicker
-          v-model="departure_date_time"
-          class="col-span-3 bg-gray-50"
-          textInput
-          disabled
-          :textInputOptions="textInputOptions"
-          :format="format"
-          :modelValue="string"
-          :placeholder="$t('selectDateAndTime')"
-        >
-          <template #input-icon>
-            <img src="" />
-          </template>
-        </DatePicker>
+        <div class="col-span-3 relative flex items-center bg-gray-50">
+          <DatePicker
+            v-model="departure_date_time"
+            class="grow"
+            textInput
+            :textInputOptions="textInputOptions"
+            :format="format"
+            :modelValue="string"
+            :placeholder="$t('selectDateAndTime')"
+          >
+            <template #input-icon>
+              <img src="" />
+            </template>
+          </DatePicker>
+          <MiniUnitDisplay
+            class="absolute right-0 min-w-fit"
+            :class="departure_date_time ? 'mr-9' : 'mr-2'"
+            >{{ departure_date_time_utc }}</MiniUnitDisplay
+          >
+        </div>
       </div>
     </div>
 
@@ -113,29 +119,39 @@
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("estimatedTimeOfArrival") }}
         </div>
-        <DatePicker
-          v-model="destination_estimated_arrival"
-          class="col-span-3"
-          textInput
-          :textInputOptions="textInputOptions"
-          :format="format"
-          :modelValue="string"
-          :placeholder="$t('selectDateAndTime')"
-        >
-          <template #input-icon>
-            <img src="" />
-          </template>
-        </DatePicker>
+        <div class="col-span-3 relative flex items-center">
+          <DatePicker
+            v-model="destination_estimated_arrival"
+            class="grow"
+            textInput
+            :textInputOptions="textInputOptions"
+            :format="format"
+            :modelValue="string"
+            :placeholder="$t('selectDateAndTime')"
+          >
+            <template #input-icon>
+              <img src="" />
+            </template>
+          </DatePicker>
+          <MiniUnitDisplay
+            class="absolute right-0 min-w-fit"
+            :class="destination_estimated_arrival ? 'mr-9' : 'mr-2'"
+            >{{ destination_estimated_arrival_utc }}</MiniUnitDisplay
+          >
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { textInputOptions, format } from "@/utils/helpers.js";
+import { textInputOptions, format, formatUTC } from "@/utils/helpers.js";
 import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
 import { storeToRefs } from "pinia";
 import { TIMEZONES } from "@/utils/options";
+import { UTCPlaceholder } from "@/constants";
+import { computed } from "vue";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 
 const store = useDepartureCOSPReportStore();
 const {
@@ -143,9 +159,23 @@ const {
   departurePortName: departure_port_name,
   departureTimeZone: departure_time_zone,
   departureDateTime: departure_date_time,
+  departureDateTimeUTC,
   destinationPortCountry: destination_port_country,
   destinationPortName: destination_port_name,
   destinationTimeZone: destination_time_zone,
   destinationEstimatedArrival: destination_estimated_arrival,
+  destinationEstimatedArrivalUTC,
 } = storeToRefs(store);
+
+const departure_date_time_utc = computed(() =>
+  departureDateTimeUTC.value
+    ? formatUTC(new Date(departureDateTimeUTC.value))
+    : UTCPlaceholder
+);
+
+const destination_estimated_arrival_utc = computed(() =>
+  destinationEstimatedArrivalUTC.value
+    ? formatUTC(new Date(destinationEstimatedArrivalUTC.value))
+    : UTCPlaceholder
+);
 </script>

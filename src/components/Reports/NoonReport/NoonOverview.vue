@@ -39,19 +39,26 @@
       <div class="col-span-2 text-blue-700 p-3 border-r">
         {{ $t("reportingDateAndTime") }}
       </div>
-      <DatePicker
-        v-model="reporting_date_time"
-        class="col-span-3"
-        textInput
-        :textInputOptions="textInputOptions"
-        :format="format"
-        :modelValue="string"
-        :placeholder="$t('selectDateAndTime')"
-      >
-        <template #input-icon>
-          <img src="" />
-        </template>
-      </DatePicker>
+      <div class="col-span-3 relative flex items-center">
+        <DatePicker
+          v-model="reporting_date_time"
+          class="grow"
+          textInput
+          :textInputOptions="textInputOptions"
+          :format="format"
+          :modelValue="string"
+          :placeholder="$t('selectDateAndTime')"
+        >
+          <template #input-icon>
+            <img src="" />
+          </template>
+        </DatePicker>
+        <MiniUnitDisplay
+          class="absolute right-0 min-w-fit"
+          :class="reporting_date_time ? 'mr-9' : 'mr-2'"
+          >{{ reporting_date_time_utc }}</MiniUnitDisplay
+        >
+      </div>
     </div>
     <div
       class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14 border xl:mb-6"
@@ -102,20 +109,28 @@
         <div class="col-span-2 text-blue-700 border-b p-3 border-r">
           {{ $t("dateAndTime") }}
         </div>
-        <DatePicker
-          v-model="route_departure_date_time"
-          class="col-span-3 text-gray-700 bg-gray-50 border-b"
-          textInput
-          :textInputOptions="textInputOptions"
-          :format="format"
-          :modelValue="string"
-          disabled
-          :placeholder="$t('selectDateAndTime')"
+        <div
+          class="col-span-3 relative flex items-center text-gray-700 bg-gray-50 border-b"
         >
-          <template #input-icon>
-            <img src="" />
-          </template>
-        </DatePicker>
+          <DatePicker
+            v-model="route_departure_date_time"
+            class="grow"
+            textInput
+            :textInputOptions="textInputOptions"
+            :format="format"
+            :modelValue="string"
+            disabled
+            :placeholder="$t('selectDateAndTime')"
+          >
+            <template #input-icon>
+              <img src="" />
+            </template>
+          </DatePicker>
+          <MiniUnitDisplay class="absolute right-0 min-w-fit mr-2">{{
+            route_departure_date_time_utc
+          }}</MiniUnitDisplay>
+        </div>
+
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("timeZone") }}
         </div>
@@ -162,36 +177,47 @@
           class="flex items-center col-span-3 border-b"
           :class="dateEditIsDisabled ? 'bg-gray-50' : 'bg-white'"
         >
-          <DatePicker
-            v-if="!route_arrival_date_time_edited"
-            v-model="route_arrival_date_time_from_utc"
-            class="flex-grow"
-            :disabled="dateEditIsDisabled"
-            textInput
-            :textInputOptions="textInputOptions"
-            :format="format"
-            :modelValue="string"
-            :placeholder="$t('selectDateAndTime')"
+          <div
+            v-if="!isRouteArrivalDateTimeEdited"
+            class="grow col-span-3 relative flex items-center"
           >
-            <template #input-icon>
-              <img src="" />
-            </template>
-          </DatePicker>
-          <DatePicker
-            v-else
-            v-model="route_arrival_date_time"
-            class="flex-grow"
-            :disabled="dateEditIsDisabled"
-            textInput
-            :textInputOptions="textInputOptions"
-            :format="format"
-            :modelValue="string"
-            :placeholder="$t('selectDateAndTime')"
-          >
-            <template #input-icon>
-              <img src="" />
-            </template>
-          </DatePicker>
+            <DatePicker
+              v-model="route_arrival_date_time"
+              class="grow"
+              :disabled="dateEditIsDisabled"
+              textInput
+              :textInputOptions="textInputOptions"
+              :format="format"
+              :modelValue="string"
+              :placeholder="$t('selectDateAndTime')"
+            >
+              <template #input-icon>
+                <img src="" />
+              </template>
+            </DatePicker>
+            <MiniUnitDisplay class="absolute right-0 min-w-fit mr-2">{{
+              route_arrival_date_time_utc
+            }}</MiniUnitDisplay>
+          </div>
+          <div v-else class="grow col-span-3 relative flex items-center">
+            <DatePicker
+              v-model="route_arrival_date_time_edited"
+              class="grow"
+              :disabled="dateEditIsDisabled"
+              textInput
+              :textInputOptions="textInputOptions"
+              :format="format"
+              :modelValue="string"
+              :placeholder="$t('selectDateAndTime')"
+            >
+              <template #input-icon>
+                <img src="" />
+              </template>
+            </DatePicker>
+            <MiniUnitDisplay class="absolute right-0 min-w-fit">{{
+              route_arrival_date_time_edited_utc
+            }}</MiniUnitDisplay>
+          </div>
           <img
             src="@/assets/icons/edit.svg"
             @click="toggle"
@@ -225,18 +251,19 @@
 </template>
 
 <script setup>
-import { textInputOptions, format } from "@/utils/helpers.js";
+import { textInputOptions, format, formatUTC } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { TIMEZONES } from "@/utils/options";
+import { UTCPlaceholder } from "@/constants";
 
 const dateEditIsDisabled = ref(true);
 
 const toggle = () => {
   dateEditIsDisabled.value = !dateEditIsDisabled.value;
-  route_arrival_date_time_edited.value = true;
+  isRouteArrivalDateTimeEdited.value = true;
 };
 
 const store = useNoonReportStore();
@@ -247,15 +274,43 @@ const {
   voyageNo: voyage_no,
   reportingDateTime: reporting_date_time,
   reportingTimeZone: reporting_time_zone,
+  reportingDateTimeUTC,
   routeDeparturePortCountry: route_departure_port_country,
   routeDeparturePortName: route_departure_port_name,
   routeDepartureDateTime: route_departure_date_time,
   routeDepartureTimeZone: route_departure_time_zone,
+  routeDepartureDateTimeUTC,
   routeArrivalPortCountry: route_arrival_port_country,
   routeArrivalPortName: route_arrival_port_name,
+  routeArrivalDateTimeUTC,
   routeArrivalDateTime: route_arrival_date_time,
-  routeArrivalDateTimeFromUTC: route_arrival_date_time_from_utc,
+  isRouteArrivalDateTimeEdited,
   routeArrivalDateTimeEdited: route_arrival_date_time_edited,
+  routeArrivalDateTimeEditedUTC,
   routeArrivalTimeZone: route_arrival_time_zone,
 } = storeToRefs(store);
+
+const reporting_date_time_utc = computed(() =>
+  reportingDateTimeUTC.value
+    ? formatUTC(new Date(reportingDateTimeUTC.value))
+    : UTCPlaceholder
+);
+
+const route_departure_date_time_utc = computed(() =>
+  routeDepartureDateTimeUTC.value
+    ? formatUTC(new Date(routeDepartureDateTimeUTC.value))
+    : UTCPlaceholder
+);
+
+const route_arrival_date_time_utc = computed(() =>
+  routeArrivalDateTimeUTC.value
+    ? formatUTC(new Date(routeArrivalDateTimeUTC.value))
+    : UTCPlaceholder
+);
+
+const route_arrival_date_time_edited_utc = computed(() =>
+  routeArrivalDateTimeEditedUTC.value
+    ? formatUTC(new Date(routeArrivalDateTimeEditedUTC.value))
+    : UTCPlaceholder
+);
 </script>

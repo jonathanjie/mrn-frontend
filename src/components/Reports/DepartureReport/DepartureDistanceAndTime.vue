@@ -35,19 +35,26 @@
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("dateAndTime") }}
         </div>
-        <DatePicker
-          v-model="reporting_date_time"
-          class="col-span-3"
-          textInput
-          :textInputOptions="textInputOptions"
-          :format="format"
-          :modelValue="string"
-          :placeholder="$t('selectDateAndTime')"
-        >
-          <template #input-icon>
-            <img src="" />
-          </template>
-        </DatePicker>
+        <div class="col-span-3 relative flex items-center">
+          <DatePicker
+            v-model="reporting_date_time"
+            class="grow"
+            textInput
+            :textInputOptions="textInputOptions"
+            :format="format"
+            :modelValue="string"
+            :placeholder="$t('selectDateAndTime')"
+          >
+            <template #input-icon>
+              <img src="" />
+            </template>
+          </DatePicker>
+          <MiniUnitDisplay
+            class="absolute right-0 min-w-fit"
+            :class="reporting_date_time ? 'mr-9' : 'mr-2'"
+            >{{ reporting_date_time_utc }}</MiniUnitDisplay
+          >
+        </div>
       </div>
       <div></div>
       <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
@@ -191,13 +198,12 @@
         >
           {{ $t("setRPMofME") }}
         </div>
-        <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border bg-gray-50">
+        <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border bg-white">
           <input
             v-model="sby_to_rup_set_rpm"
             @keypress="preventNaN($event, sby_to_rup_set_rpm)"
             placeholder="0"
-            disabled
-            class="w-24 bg-gray-50 text-14 text-gray-700 focus:outline-0"
+            class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
           <MiniUnitDisplay>RPM</MiniUnitDisplay>
         </div>
@@ -207,16 +213,24 @@
 </template>
 
 <script setup>
-import { textInputOptions, format, preventNaN } from "@/utils/helpers.js";
+import {
+  textInputOptions,
+  format,
+  preventNaN,
+  formatUTC,
+} from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
 import { storeToRefs } from "pinia";
 import { TIMEZONES } from "@/utils/options";
+import { UTCPlaceholder } from "@/constants";
+import { computed } from "vue";
 
 const store = useDepartureCOSPReportStore();
 const {
   reportingDateTime: reporting_date_time,
   reportingTimeZone: reporting_time_zone,
+  reportingDateTimeUTC,
   rupEngLatDir: rup_eng_lat_dir,
   rupEngLatDegree: rup_eng_lat_degree,
   rupEngLatMinute: rup_eng_lat_minute,
@@ -229,4 +243,10 @@ const {
   sbyToRupRevolutionCount: sby_to_rup_revolution_count,
   sbyToRupSetRPM: sby_to_rup_set_rpm,
 } = storeToRefs(store);
+
+const reporting_date_time_utc = computed(() =>
+  reportingDateTimeUTC.value
+    ? formatUTC(new Date(reportingDateTimeUTC.value))
+    : UTCPlaceholder
+);
 </script>

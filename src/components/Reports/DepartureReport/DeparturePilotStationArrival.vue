@@ -20,19 +20,28 @@
       >
         {{ $t("requiredTimeOfArrival") }}
       </div>
-      <DatePicker
-        v-model="pilot_arr_date"
-        class="col-span-3 border-r border-b xl:border-b-0"
-        textInput
-        :textInputOptions="textInputOptions"
-        :format="format"
-        :modelValue="string"
-        :placeholder="$t('pleaseSelectDateAndTime')"
+      <div
+        class="col-span-3 relative flex items-center border-r border-b xl:border-b-0"
       >
-        <template #input-icon>
-          <img src="" />
-        </template>
-      </DatePicker>
+        <DatePicker
+          v-model="pilot_arr_date_time"
+          class="grow"
+          textInput
+          :textInputOptions="textInputOptions"
+          :format="format"
+          :modelValue="string"
+          :placeholder="$t('selectDateAndTime')"
+        >
+          <template #input-icon>
+            <img src="" />
+          </template>
+        </DatePicker>
+        <MiniUnitDisplay
+          class="absolute right-0 min-w-fit"
+          :class="pilot_arr_date_time ? 'mr-9' : 'mr-2'"
+          >{{ pilot_arr_date_time_utc }}</MiniUnitDisplay
+        >
+      </div>
       <input
         class="hidden xl:block bg-white col-span-5 p-3 border-t"
         disabled
@@ -149,15 +158,23 @@
 </template>
 
 <script setup>
-import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
+import {
+  preventNaN,
+  textInputOptions,
+  format,
+  formatUTC,
+} from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
 import { storeToRefs } from "pinia";
+import { UTCPlaceholder } from "@/constants";
+import { computed } from "vue";
 
 const store = useDepartureCOSPReportStore();
 const {
   pilotArrName: pilot_arr_name,
-  pilotArrDate: pilot_arr_date,
+  pilotArrDateTime: pilot_arr_date_time,
+  pilotArrDateTimeUTC,
   pilotArrDraftFwd: pilot_arr_draft_fwd,
   pilotArrDraftMid: pilot_arr_draft_mid,
   pilotArrDraftAft: pilot_arr_draft_aft,
@@ -168,4 +185,10 @@ const {
   pilotArrLongDegree: pilot_arr_long_degree,
   pilotArrLongMinute: pilot_arr_long_minute,
 } = storeToRefs(store);
+
+const pilot_arr_date_time_utc = computed(() =>
+  pilotArrDateTimeUTC.value
+    ? formatUTC(new Date(pilotArrDateTimeUTC.value))
+    : UTCPlaceholder
+);
 </script>

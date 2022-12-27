@@ -23,6 +23,16 @@ export function format(date) {
   return `${year}.${month}.${day} ${hour}:${minute} (LT)`;
 }
 
+export function formatUTC(date) {
+  const day = ("0" + date.getUTCDate()).slice(-2);
+  const month = ("0" + (date.getUTCMonth() + 1)).slice(-2);
+  const year = date.getUTCFullYear();
+  const hour = ("0" + date.getUTCHours()).slice(-2);
+  const minute = ("0" + date.getUTCMinutes()).slice(-2);
+
+  return `${year}.${month}.${day} ${hour}:${minute} (UTC)`;
+}
+
 export function readableUTCDate(date) {
   // 1 --> Jan, 2 --> Feb etc.
   function getMonthName(monthNumber) {

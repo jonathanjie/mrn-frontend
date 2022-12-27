@@ -48,7 +48,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
           new Date(reportingDateTime.value),
           reportingTimeZone.value
         )
-      : reportingDateTime.value
+      : ""
   );
 
   // Departure and Destination
@@ -64,22 +64,30 @@ export const useNoonReportStore = defineStore("noonReport", () => {
           new Date(routeDepartureDateTimeUTC.value),
           routeDepartureTimeZone.value
         )
-      : routeDepartureDateTimeUTC.value
+      : ""
   );
   const routeArrivalPortCountry = ref("SA");
   const routeArrivalPortName = ref("RTA");
-  const routeArrivalDateTimeUTC = ref(new Date("2022-12-21T00:00:00Z"));
   const routeArrivalTimeZone = ref("3");
-  const routeArrivalDateTimeEdited = ref(false);
-  const routeArrivalDateTimeFromUTC = computed(() =>
+  const isRouteArrivalDateTimeEdited = ref(false);
+  const routeArrivalDateTimeUTC = ref(new Date("2022-12-21T00:00:00Z"));
+  const routeArrivalDateTime = computed(() =>
     routeArrivalTimeZone.value !== "default" && routeArrivalDateTimeUTC.value
       ? convertUTCToLT(
           new Date(routeArrivalDateTimeUTC.value),
           routeArrivalTimeZone.value
         )
-      : routeArrivalDateTimeUTC.value
+      : ""
   );
-  const routeArrivalDateTime = ref("");
+  const routeArrivalDateTimeEdited = ref("");
+  const routeArrivalDateTimeEditedUTC = computed(() =>
+    routeArrivalTimeZone.value !== "default" && routeArrivalDateTimeEdited.value
+      ? convertLTToUTC(
+          new Date(routeArrivalDateTimeEdited.value),
+          routeArrivalTimeZone.value
+        )
+      : ""
+  );
 
   // Reporting Noon
   const latDir = ref("default");
@@ -327,9 +335,9 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   });
 
   const freshwaterConsumed = ref("");
-  const freshwaterEvaporated = ref("");
+  const freshwaterGenerated = ref("");
   const freshwaterChange = computed(
-    () => +(freshwaterEvaporated.value - freshwaterConsumed.value).toFixed(2)
+    () => +(freshwaterGenerated.value - freshwaterConsumed.value).toFixed(2)
   );
   const freshwaterRob = computed(
     () => temp.freshwaterPrevROB + freshwaterChange.value
@@ -337,7 +345,23 @@ export const useNoonReportStore = defineStore("noonReport", () => {
 
   // Stoppage or Reduction RPM
   const stoppageBeginning = ref("");
+  const stoppageBeginningUTC = computed(() =>
+    reportingTimeZone.value !== "default" && stoppageBeginning.value
+      ? convertLTToUTC(
+          new Date(stoppageBeginning.value),
+          reportingTimeZone.value
+        )
+      : ""
+  );
   const stoppageEnding = ref("");
+  const stoppageEndingUTC = computed(() =>
+    reportingTimeZone.value !== "default" && stoppageEndingUTC.value
+      ? convertLTToUTC(
+          new Date(stoppageEndingUTC.value),
+          reportingTimeZone.value
+        )
+      : ""
+  );
   const stoppageDuration = ref("");
   const stoppageChangedRPM = ref("");
   const stoppageReason = ref("default");
@@ -383,10 +407,11 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     routeDepartureTimeZone,
     routeArrivalPortCountry,
     routeArrivalPortName,
-    routeArrivalDateTimeUTC,
-    routeArrivalDateTimeFromUTC,
-    routeArrivalDateTimeEdited,
+    isRouteArrivalDateTimeEdited,
     routeArrivalDateTime,
+    routeArrivalDateTimeUTC,
+    routeArrivalDateTimeEdited,
+    routeArrivalDateTimeEditedUTC,
     routeArrivalTimeZone,
     // Reporting Noon
     latDir,
@@ -457,12 +482,14 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     gesystemRob,
     lubricatingOilDataCorrection,
     freshwaterConsumed,
-    freshwaterEvaporated,
+    freshwaterGenerated,
     freshwaterChange,
     freshwaterRob,
     // Stoppage or Reduction RPM
     stoppageBeginning,
+    stoppageBeginningUTC,
     stoppageEnding,
+    stoppageEndingUTC,
     stoppageDuration,
     stoppageChangedRPM,
     stoppageReason,

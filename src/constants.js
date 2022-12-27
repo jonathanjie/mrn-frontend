@@ -104,6 +104,8 @@ export const ActualPerformanceType = {
   PORT_TO_PORT: "PORT_TO_PORT",
 };
 
+export const UTCPlaceholder = "YYYY.MM.DD HH:MM (UTC)";
+
 const constants = {
   SRID: "4326",
   Report: Report,
@@ -115,6 +117,7 @@ const constants = {
   ConsumptionType: ConsumptionType,
   TotalConsumptionType: TotalConsumptionType,
   ActualPerformanceType: ActualPerformanceType,
+  UTCPlaceholder: UTCPlaceholder,
 };
 
 export default constants;

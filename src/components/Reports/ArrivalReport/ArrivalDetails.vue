@@ -33,19 +33,26 @@
       <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
         {{ $t("dateAndTime") }}
       </div>
-      <DatePicker
-        v-model="reporting_date_time"
-        class="col-span-3"
-        textInput
-        :textInputOptions="textInputOptions"
-        :format="format"
-        :modelValue="string"
-        :placeholder="$t('selectDateAndTime')"
-      >
-        <template #input-icon>
-          <img src="" />
-        </template>
-      </DatePicker>
+      <div class="col-span-3 relative flex items-center">
+        <DatePicker
+          v-model="reporting_date_time"
+          class="grow"
+          textInput
+          :textInputOptions="textInputOptions"
+          :format="format"
+          :modelValue="string"
+          :placeholder="$t('selectDateAndTime')"
+        >
+          <template #input-icon>
+            <img src="" />
+          </template>
+        </DatePicker>
+        <MiniUnitDisplay
+          class="absolute right-0 min-w-fit"
+          :class="reporting_date_time ? 'mr-9' : 'mr-2'"
+          >{{ reporting_date_time_utc }}</MiniUnitDisplay
+        >
+      </div>
     </div>
     <div></div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
@@ -60,8 +67,8 @@
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="lat_minutes"
-        @keypress="preventNaN($event, lat_minutes)"
+        v-model="lat_minute"
+        @keypress="preventNaN($event, lat_minute)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
@@ -89,8 +96,8 @@
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="long_minutes"
-        @keypress="preventNaN($event, long_minutes)"
+        v-model="long_minute"
+        @keypress="preventNaN($event, long_minute)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
@@ -110,20 +117,35 @@
 </template>
 
 <script setup>
-import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
+import {
+  preventNaN,
+  textInputOptions,
+  format,
+  formatUTC,
+} from "@/utils/helpers.js";
 import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
 import { storeToRefs } from "pinia";
 import { TIMEZONES } from "@/utils/options";
+import { UTCPlaceholder } from "@/constants";
+import { computed } from "vue";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 
 const store = useArrivalEOSPReportStore();
 const {
   reportingTimeZone: reporting_time_zone,
   reportingDateTime: reporting_date_time,
+  reportingDateTimeUTC,
   latDir: lat_dir,
-  latMinutes: lat_minutes,
+  latMinute: lat_minute,
   latDegree: lat_degree,
   longDir: long_dir,
-  longMinutes: long_minutes,
+  longMinute: long_minute,
   longDegree: long_degree,
 } = storeToRefs(store);
+
+const reporting_date_time_utc = computed(() =>
+  reportingDateTimeUTC.value
+    ? formatUTC(new Date(reportingDateTimeUTC.value))
+    : UTCPlaceholder
+);
 </script>

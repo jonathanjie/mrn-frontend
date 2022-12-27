@@ -42,19 +42,26 @@
       <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
         {{ $t("dateAndTime") }}
       </div>
-      <DatePicker
-        v-model="pilot_dep_date_time"
-        class="col-span-3"
-        textInput
-        :textInputOptions="textInputOptions"
-        :format="format"
-        :modelValue="string"
-        :placeholder="$t('pleaseSelectDateAndTime')"
-      >
-        <template #input-icon>
-          <img src="" />
-        </template>
-      </DatePicker>
+      <div class="col-span-3 relative flex items-center">
+        <DatePicker
+          v-model="pilot_dep_date_time"
+          class="grow"
+          textInput
+          :textInputOptions="textInputOptions"
+          :format="format"
+          :modelValue="string"
+          :placeholder="$t('selectDateAndTime')"
+        >
+          <template #input-icon>
+            <img src="" />
+          </template>
+        </DatePicker>
+        <MiniUnitDisplay
+          class="absolute right-0 min-w-fit"
+          :class="pilot_dep_date_time ? 'mr-9' : 'mr-2'"
+          >{{ pilot_dep_date_time_utc }}</MiniUnitDisplay
+        >
+      </div>
     </div>
     <div></div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
@@ -123,10 +130,17 @@
 </template>
 
 <script setup>
-import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-import { ref } from "vue";
+import {
+  preventNaN,
+  textInputOptions,
+  format,
+  formatUTC,
+} from "@/utils/helpers.js";
+import { ref, computed } from "vue";
 import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
 import { storeToRefs } from "pinia";
+import { UTCPlaceholder } from "@/constants";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 
 const isActive = ref(false);
 
@@ -134,6 +148,7 @@ const store = useDepartureCOSPReportStore();
 const {
   pilotDepName: pilot_dep_name,
   pilotDepDateTime: pilot_dep_date_time,
+  pilotDepDateTimeUTC,
   pilotDepLatDir: pilot_dep_lat_dir,
   pilotDepLatDegree: pilot_dep_lat_degree,
   pilotDepLatMinute: pilot_dep_lat_minute,
@@ -141,4 +156,10 @@ const {
   pilotDepLongDegree: pilot_dep_long_degree,
   pilotDepLongMinute: pilot_dep_long_minute,
 } = storeToRefs(store);
+
+const pilot_dep_date_time_utc = computed(() =>
+  pilotDepDateTimeUTC.value
+    ? formatUTC(new Date(pilotDepDateTimeUTC.value))
+    : UTCPlaceholder
+);
 </script>

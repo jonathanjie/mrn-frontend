@@ -33,35 +33,49 @@
         class="col-span-2 text-blue-700 p-3 text-14 self-center border-b border-r"
         >{{ $t("beginningDateAndTime") }}</span
       >
-      <DatePicker
-        v-model="beginning"
-        class="col-span-3 border-b"
-        textInput
-        :textInputOptions="textInputOptions"
-        :format="format"
-        :modelValue="string"
-        :placeholder="$t('selectDateAndTime')"
-      >
-        <template #input-icon>
-          <img src="" />
-        </template>
-      </DatePicker>
+      <div class="col-span-3 relative flex items-center border-b bg-white">
+        <DatePicker
+          v-model="beginning"
+          class="grow"
+          textInput
+          :textInputOptions="textInputOptions"
+          :format="format"
+          :modelValue="string"
+          :placeholder="$t('selectDateAndTime')"
+        >
+          <template #input-icon>
+            <img src="" />
+          </template>
+        </DatePicker>
+        <MiniUnitDisplay
+          class="absolute right-0 min-w-fit"
+          :class="beginning ? 'mr-9' : 'mr-2'"
+          >{{ stoppage_beginning_utc }}</MiniUnitDisplay
+        >
+      </div>
       <span class="col-span-2 text-blue-700 p-3 text-14 self-center border-r">{{
         $t("endingDateAndTime")
       }}</span>
-      <DatePicker
-        v-model="ending"
-        class="col-span-3"
-        textInput
-        :textInputOptions="textInputOptions"
-        :format="format"
-        :modelValue="string"
-        :placeholder="$t('selectDateAndTime')"
-      >
-        <template #input-icon>
-          <img src="" />
-        </template>
-      </DatePicker>
+      <div class="col-span-3 relative flex items-center bg-white">
+        <DatePicker
+          v-model="ending"
+          class="grow"
+          textInput
+          :textInputOptions="textInputOptions"
+          :format="format"
+          :modelValue="string"
+          :placeholder="$t('selectDateAndTime')"
+        >
+          <template #input-icon>
+            <img src="" />
+          </template>
+        </DatePicker>
+        <MiniUnitDisplay
+          class="absolute right-0 min-w-fit"
+          :class="ending ? 'mr-9' : 'mr-2'"
+          >{{ stoppage_ending_utc }}</MiniUnitDisplay
+        >
+      </div>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
       <span class="col-span-2 text-blue-700 p-3 border-b text-14 self-center">{{
@@ -181,15 +195,23 @@
 
 <script setup>
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { textInputOptions, format, preventNaN } from "@/utils/helpers.js";
+import {
+  textInputOptions,
+  format,
+  preventNaN,
+  formatUTC,
+} from "@/utils/helpers.js";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
+import { UTCPlaceholder } from "@/constants";
+import { computed } from "vue";
 
 const store = useNoonReportStore();
-
 const {
   stoppageBeginning: beginning,
+  stoppageBeginningUTC,
   stoppageEnding: ending,
+  stoppageEndingUTC,
   stoppageDuration: duration,
   stoppageChangedRPM: changed_RPM,
   stoppageReason: reason,
@@ -202,4 +224,16 @@ const {
   stoppageLongMinutes: long_minutes,
   isStoppageEnabled: is_stoppage_enabled,
 } = storeToRefs(store);
+
+const stoppage_beginning_utc = computed(() =>
+  stoppageBeginningUTC.value
+    ? formatUTC(new Date(stoppageBeginningUTC.value))
+    : UTCPlaceholder
+);
+
+const stoppage_ending_utc = computed(() =>
+  stoppageEndingUTC.value
+    ? formatUTC(new Date(stoppageEndingUTC.value))
+    : UTCPlaceholder
+);
 </script>
