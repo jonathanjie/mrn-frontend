@@ -51,6 +51,15 @@
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 // import CustomButton from "@/components/Buttons/CustomButton.vue";
 // import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import {
+  // textInputOptions,
+  // format,
+  // preventNaN,
+  parsePositionToString,
+  parsePortLocode,
+  convertLTToUTC,
+} from "../../utils/helpers.js";
+
 import NoonOverview from "@/components/Reports/NoonReport/NoonOverview.vue";
 import NoonDetails from "@/components/Reports/NoonReport/NoonDetails.vue";
 import NoonWeather from "@/components/Reports/NoonReport/NoonWeather.vue";
@@ -64,11 +73,6 @@ import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
 import { Report, FuelOil, LubricatingOil, ConsumptionType } from "@/constants";
-import {
-  convertLTToUTC,
-  parsePositionToString,
-  parsePortLocode,
-} from "@/utils/helpers.js";
 
 const store = useNoonReportStore();
 const {

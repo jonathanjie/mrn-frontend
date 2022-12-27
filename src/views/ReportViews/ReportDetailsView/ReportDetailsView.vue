@@ -5,6 +5,7 @@ import router from "@/router";
 import { Report } from "@/constants";
 import { storeToRefs } from "pinia";
 import NoonReportView from "./components/NoonReport/NoonReportView.vue";
+import DepartureReportView from "../DepartureReportView.vue";
 
 // Props
 const props = defineProps({
@@ -41,18 +42,10 @@ const handleBack = () => {
         type="button"
       />
     </button>
-    <div>{{ report.report_type }}</div>
+    <div>REPORT TYPE: {{ report.report_type }}</div>
     <div>
       <div v-if="report.report_type == Report.type.NOON">
         <NoonReportView :report="report" />
-      </div>
-      <div
-        v-else-if="
-          report.report_type == Report.type.ARR_FWE ||
-          report.report_type == Report.type.ARR_SBY_EOSP
-        "
-      >
-        ARRIVAL
       </div>
       <div
         v-else-if="
@@ -60,7 +53,17 @@ const handleBack = () => {
           report.report_type == Report.type.DEP_SBY
         "
       >
-        DEPARTURE
+        <!-- <DepartureReportView :report="report" /> -->
+        <!-- <div>DEPARTURE STANDBY</div> -->
+        <!-- <div>DEPARTURE COSP RUP</div> -->
+      </div>
+      <div
+        v-else-if="
+          report.report_type == Report.type.ARR_FWE ||
+          report.report_type == Report.type.ARR_SBY_EOSP
+        "
+      >
+        <div>ARRIVAL</div>
       </div>
       <div
         v-else-if="
@@ -68,7 +71,7 @@ const handleBack = () => {
           report.report_type == Report.type.EVENT_PORT
         "
       >
-        EVENT
+        <div>EVENT</div>
       </div>
       <div
         v-else-if="
@@ -76,9 +79,9 @@ const handleBack = () => {
           report.report_type == Report.type.NOON_PORT
         "
       >
-        COASTAL/PORT NOON
+        <div>COASTAL/PORT NOON</div>
       </div>
-      <div v-else>Invalid Report Type</div>
+      <div v-else><div>Invalid Report Type</div></div>
     </div>
 
     <div>{{ report }}</div>
