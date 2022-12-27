@@ -53,7 +53,7 @@ const handleBack = () => {
           report.report_type == Report.type.DEP_SBY
         "
       >
-        <!-- <DepartureReportView :report="report" /> -->
+        <DepartureReportView :report="report" />
         <!-- <div>DEPARTURE STANDBY</div> -->
         <!-- <div>DEPARTURE COSP RUP</div> -->
       </div>

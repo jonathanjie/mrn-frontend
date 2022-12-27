@@ -1,4 +1,3 @@
-
 <script setup>
 import { preventNaN } from "@/utils/helpers";
 import { ref } from "vue";
@@ -32,7 +31,7 @@ const {
   lubricatingOilDataCorrection: lubricating_oil_data_correction,
   // fresh water
   freshwaterConsumed: freshwater_consumed,
-  freshwaterEvaporated: freshwater_evaporated,
+  freshwaterGenerated: freshwater_generated,
   freshwaterChange: freshwater_change,
   freshwaterReceiving: freshwater_receiving,
   freshwaterDischarging: freshwater_discharging,
@@ -287,7 +286,7 @@ const {
           <div
             class="col-span-3 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-l bg-gray-50"
           >
-            {{ $t("totalConsumption") }}
+            {{ $t("consumption") }}
           </div>
           <div
             class="col-span-3 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-l bg-gray-50"
@@ -530,7 +529,7 @@ const {
           <div
             class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25"
           >
-            {{ $t("receiving") }}
+            {{ $t("receipt") }}
           </div>
           <div
             class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25"
@@ -540,7 +539,7 @@ const {
           <div
             class="col-span-1 text-sysblue-800 p-3 border-t border-x border-sysblue-100 bg-sysblue-25"
           >
-            {{ $t("rob") }}
+            {{ $t("remainOnBoard") }}
           </div>
           <input
             v-model="freshwater_consumed"
@@ -549,8 +548,8 @@ const {
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="freshwater_evaporated"
-            @keypress="preventNaN($event, freshwater_evaporated)"
+            v-model="freshwater_generated"
+            @keypress="preventNaN($event, freshwater_generated)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
@@ -581,4 +580,5 @@ const {
     </div>
   </div>
 </template>
+
 
