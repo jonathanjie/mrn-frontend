@@ -14,14 +14,47 @@ const temp = {
   gesysPrevROB: 200,
   freshwaterPrevROB: 200,
 
-  // Consumption & Condition (Sum)
-  lsfoPrevROBSum: 400,
-  mgoPrevROBSum: 400,
-  mecylPrevROBSum: 400,
-  mesysPrevROBSum: 400,
-  mesumpPrevROBSum: 400,
-  gesysPrevROBSum: 400,
-  freshwaterPrevROBSum: 400,
+  // Consumption & Condition (Total)
+  lsfoPrevBreakdown: {
+    me: 10,
+    ge: 10,
+    blr: 10,
+    igg: 10,
+    receipt: 20,
+    debunkering: 10,
+  },
+  mgoPrevBreakdown: {
+    me: 10,
+    ge: 10,
+    blr: 10,
+    igg: 10,
+    receipt: 20,
+    debunkering: 10,
+  },
+  mecylinderPrevBreakdown: {
+    total_consumption: 10,
+    receipt: 20,
+    debunkering: 10,
+  },
+  mesystemPrevBreakdown: {
+    total_consumption: 10,
+    receipt: 20,
+    debunkering: 10,
+  },
+  mesumpPrevBreakdown: {
+    total_consumption: 10,
+    receipt: 20,
+    debunkering: 10,
+  },
+  gesystemPrevBreakdown: {
+    total_consumption: 10,
+    receipt: 20,
+    debunkering: 10,
+  },
+  freshwaterPrevConsumed: 100,
+  freshwaterPrevEvaporated: 100,
+  freshwaterPrevReceiving: 10,
+  freshwaterPrevDischarging: 5,
 };
 
 export const useDepartureSBYReportStore = defineStore(
@@ -227,140 +260,167 @@ export const useDepartureSBYReportStore = defineStore(
         freshwaterChange.value
     );
 
-    // Consumption and Condition (Sum)
-    const lsfoBreakdownSum = reactive({
-      me: "",
-      ge: "",
-      blr: "",
-      igg: "",
-      receipt: "",
-      debunkering: "",
+    // Consumption and Condition (Total)
+    const lsfoBreakdownSum = computed(() => {
+      return {
+        me: +(temp.lsfoPrevBreakdown.me + Number(lsfoBreakdown.me)).toFixed(2),
+        ge: +(temp.lsfoPrevBreakdown.ge + Number(lsfoBreakdown.ge)).toFixed(2),
+        blr: +(temp.lsfoPrevBreakdown.blr + Number(lsfoBreakdown.blr)).toFixed(
+          2
+        ),
+        igg: +(temp.lsfoPrevBreakdown.igg + Number(lsfoBreakdown.igg)).toFixed(
+          2
+        ),
+        receipt: +(
+          temp.lsfoPrevBreakdown.receipt + Number(lsfoBreakdown.receipt)
+        ).toFixed(2),
+        debunkering: +(
+          temp.lsfoPrevBreakdown.debunkering + Number(lsfoBreakdown.debunkering)
+        ).toFixed(2),
+      };
     });
-    const mgoBreakdownSum = reactive({
-      me: "",
-      ge: "",
-      blr: "",
-      igg: "",
-      receipt: "",
-      debunkering: "",
+    const mgoBreakdownSum = computed(() => {
+      return {
+        me: +(temp.mgoPrevBreakdown.me + Number(mgoBreakdown.me)).toFixed(2),
+        ge: +(temp.mgoPrevBreakdown.ge + Number(mgoBreakdown.ge)).toFixed(2),
+        blr: +(temp.mgoPrevBreakdown.blr + Number(mgoBreakdown.blr)).toFixed(2),
+        igg: +(temp.mgoPrevBreakdown.igg + Number(mgoBreakdown.igg)).toFixed(2),
+        receipt: +(
+          temp.mgoPrevBreakdown.receipt + Number(mgoBreakdown.receipt)
+        ).toFixed(2),
+        debunkering: +(
+          temp.mgoPrevBreakdown.debunkering + Number(mgoBreakdown.debunkering)
+        ).toFixed(2),
+      };
     });
     const lsfoTotalConsumptionSum = computed(
       () =>
         +(
-          Number(lsfoBreakdownSum.me) +
-          Number(lsfoBreakdownSum.ge) +
-          Number(lsfoBreakdownSum.blr) +
-          Number(lsfoBreakdownSum.igg)
-        )
+          Number(lsfoBreakdownSum.value.me) +
+          Number(lsfoBreakdownSum.value.ge) +
+          Number(lsfoBreakdownSum.value.blr) +
+          Number(lsfoBreakdownSum.value.igg)
+        ).toFixed(2)
     );
-    const lsfoRobSum = computed(
-      () =>
-        temp.lsfoPrevROBSum -
-        lsfoTotalConsumptionSum.value +
-        Number(lsfoBreakdownSum.receipt) -
-        Number(lsfoBreakdownSum.debunkering)
-    );
+    const lsfoRobSum = lsfoRob;
     const mgoTotalConsumptionSum = computed(
       () =>
         +(
-          Number(mgoBreakdownSum.me) +
-          Number(mgoBreakdownSum.ge) +
-          Number(mgoBreakdownSum.blr) +
-          Number(mgoBreakdownSum.igg)
+          Number(mgoBreakdownSum.value.me) +
+          Number(mgoBreakdownSum.value.ge) +
+          Number(mgoBreakdownSum.value.blr) +
+          Number(mgoBreakdownSum.value.igg)
         ).toFixed(2)
     );
-    const mgoRobSum = computed(
-      () =>
-        temp.mgoPrevROBSum -
-        mgoTotalConsumptionSum.value +
-        Number(mgoBreakdownSum.receipt) -
-        Number(mgoBreakdownSum.debunkering)
-    );
+    const mgoRobSum = mgoRob;
     const fuelOilDataCorrectionSum = reactive({
       type: "default",
       correction: "",
       remarks: "",
     });
 
-    const mecylinderBreakdownSum = reactive({
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
+    const mecylinderBreakdownSum = computed(() => {
+      return {
+        total_consumption: +(
+          temp.mecylinderPrevBreakdown.total_consumption +
+          Number(mecylinderBreakdown.total_consumption)
+        ).toFixed(2),
+        receipt: +(
+          temp.mecylinderPrevBreakdown.receipt +
+          Number(mecylinderBreakdown.receipt)
+        ).toFixed(2),
+        debunkering: +(
+          temp.mecylinderPrevBreakdown.debunkering +
+          Number(mecylinderBreakdown.debunkering)
+        ).toFixed(2),
+      };
     });
-    const mesystemBreakdownSum = reactive({
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
+    const mesystemBreakdownSum = computed(() => {
+      return {
+        total_consumption: +(
+          temp.mesystemPrevBreakdown.total_consumption +
+          Number(mesystemBreakdown.total_consumption)
+        ).toFixed(2),
+        receipt: +(
+          temp.mesystemPrevBreakdown.receipt + Number(mesystemBreakdown.receipt)
+        ).toFixed(2),
+        debunkering: +(
+          temp.mesystemPrevBreakdown.debunkering +
+          Number(mesystemBreakdown.debunkering)
+        ).toFixed(2),
+      };
     });
-    const mesumpBreakdownSum = reactive({
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
+    const mesumpBreakdownSum = computed(() => {
+      return {
+        total_consumption: +(
+          temp.mesumpPrevBreakdown.total_consumption +
+          Number(mesumpBreakdown.total_consumption)
+        ).toFixed(2),
+        receipt: +(
+          temp.mesumpPrevBreakdown.receipt + Number(mesumpBreakdown.receipt)
+        ).toFixed(2),
+        debunkering: +(
+          temp.mesumpPrevBreakdown.debunkering +
+          Number(mesumpBreakdown.debunkering)
+        ).toFixed(2),
+      };
     });
-    const gesystemBreakdownSum = reactive({
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
+    const gesystemBreakdownSum = computed(() => {
+      return {
+        total_consumption: +(
+          temp.gesystemPrevBreakdown.total_consumption +
+          Number(gesystemBreakdown.total_consumption)
+        ).toFixed(2),
+        receipt: +(
+          temp.gesystemPrevBreakdown.receipt + Number(gesystemBreakdown.receipt)
+        ).toFixed(2),
+        debunkering: +(
+          temp.gesystemPrevBreakdown.debunkering +
+          Number(gesystemBreakdown.debunkering)
+        ).toFixed(2),
+      };
     });
-    const mecylinderRobSum = computed(
-      () =>
-        +(
-          temp.mecylPrevROBSum -
-          Number(mecylinderBreakdownSum.total_consumption) +
-          Number(mecylinderBreakdownSum.receipt) -
-          Number(mecylinderBreakdownSum.debunkering)
-        ).toFixed(2)
-    );
-    const mesystemRobSum = computed(
-      () =>
-        +(
-          temp.mesysPrevROBSum -
-          Number(mesystemBreakdownSum.total_consumption) +
-          Number(mesystemBreakdownSum.receipt) -
-          Number(mesystemBreakdownSum.debunkering)
-        ).toFixed(2)
-    );
-    const mesumpRobSum = computed(
-      () =>
-        +(
-          temp.mesumpPrevROBSum -
-          Number(mesumpBreakdownSum.total_consumption) +
-          Number(mesumpBreakdownSum.receipt) -
-          Number(mesumpBreakdownSum.debunkering)
-        ).toFixed(2)
-    );
-    const gesystemRobSum = computed(
-      () =>
-        +(
-          temp.gesysPrevROBSum -
-          Number(gesystemBreakdownSum.total_consumption) +
-          Number(gesystemBreakdownSum.receipt) -
-          Number(gesystemBreakdownSum.debunkering)
-        ).toFixed(2)
-    );
+    const mecylinderRobSum = mecylinderRob;
+    const mesystemRobSum = mesystemRob;
+    const mesumpRobSum = mesumpRob;
+    const gesystemRobSum = gesystemRob;
     const lubricatingOilDataCorrectionSum = reactive({
       type: "default",
       correction: "",
       remarks: "",
     });
 
-    const freshwaterConsumedSum = ref("");
-    const freshwaterEvaporatedSum = ref("");
-    const freshwaterReceivingSum = ref("");
-    const freshwaterDischargingSum = ref("");
+    const freshwaterConsumedSum = computed(
+      () =>
+        +(
+          temp.freshwaterPrevConsumed + Number(freshwaterConsumed.value)
+        ).toFixed(2)
+    );
+    const freshwaterEvaporatedSum = computed(
+      () =>
+        +(
+          temp.freshwaterPrevEvaporated + Number(freshwaterEvaporated.value)
+        ).toFixed(2)
+    );
+    const freshwaterReceivingSum = computed(
+      () =>
+        +(
+          temp.freshwaterPrevReceiving + Number(freshwaterReceiving.value)
+        ).toFixed(2)
+    );
+    const freshwaterDischargingSum = computed(
+      () =>
+        +(
+          temp.freshwaterPrevDischarging + Number(freshwaterDischarging.value)
+        ).toFixed(2)
+    );
     const freshwaterChangeSum = computed(
       () =>
         +(freshwaterEvaporatedSum.value - freshwaterConsumedSum.value).toFixed(
           2
         )
     );
-    const freshwaterRobSum = computed(
-      () =>
-        temp.freshwaterPrevROBSum +
-        Number(freshwaterReceivingSum.value) -
-        Number(freshwaterDischargingSum.value) +
-        freshwaterChangeSum.value
-    );
+    const freshwaterRobSum = freshwaterRob;
 
     return {
       // Overview

@@ -19,9 +19,7 @@
     <DepartureSBYConsumption />
 
     <!-- Consumption & Condition (Harbour/In Port in Total) -->
-    <DepartureSBYTotalConsumption>{{
-      $t("consumptionAndConditionHarbourInPortInTotal")
-    }}</DepartureSBYTotalConsumption>
+    <DepartureSBYTotalConsumption />
   </div>
 
   <!-- Save and Send -->
