@@ -7,7 +7,7 @@
       </span>
     </div>
     <div class="col-span-2 lg:col-span-1">
-      <div class="grid grid-cols-5 my-5 border">
+      <div class="grid grid-cols-5 mb-5 border">
         <div class="col-span-2 text-blue-700 p-3 bg-gray-50 text-14">
           {{ $t("loadCondition") }}
         </div>
@@ -21,10 +21,13 @@
           <option selected disabled value="default">
             {{ $t("selectAnOption") }}
           </option>
-          <option value="ballast">{{ $t("ballast") }}</option>
-          <option value="laden">{{ $t("laden") }}</option>
-          <option value="eastbound">{{ $t("eastbound") }}</option>
-          <option value="westbound">{{ $t("westbound") }}</option>
+          <option
+            v-for="(val, label) in LOAD_CONDITIONS"
+            :key="val"
+            :value="val"
+          >
+            {{ $t(label) }}
+          </option>
         </select>
       </div>
       <div class="grid grid-cols-5">
@@ -97,6 +100,7 @@ import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 import { storeToRefs } from "pinia";
+import { LOAD_CONDITIONS } from "@/utils/options";
 
 const store = useDepartureSBYReportStore();
 const {
