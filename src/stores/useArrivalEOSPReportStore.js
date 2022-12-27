@@ -2,14 +2,16 @@ import { defineStore } from "pinia";
 import { ref, computed, reactive } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
 import { storeToRefs } from "pinia";
+import { convertLTToUTC } from "@/utils/helpers";
 
 const temp = {
   // Arrival and Departure
-  departurePortCountry: "Country A",
-  departurePortName: "Port A",
-  arrivalPortCountry: "Country B",
-  arrivalPortName: "Port B",
+  departurePortCountry: "KR",
+  departurePortName: "PUS",
+  arrivalPortCountry: "SG",
+  arrivalPortName: "PPT",
   departureDateTime: "2022-06-01T04:23:00Z",
+  departureTimeZone: 9,
 
   // Distance & Time / Performance
   lastNoonReportTime: "2022-12-01T00:00:00Z",
@@ -32,6 +34,28 @@ const temp = {
   mesumpPrevROB: 200,
   gesysPrevROB: 200,
   freshwaterPrevROB: 200,
+
+  // Actual Performance
+  prevDistanceByObservation: 2000,
+  prevSailingTime: 200,
+  displacement: 2000, // from departure s/by (vessel condition)
+  prevAvgSpeed: 20,
+  prevAvgRpm: 300,
+  prevMeFoConsumption: 20,
+
+  // Total Consumption
+  prevLsfoBreakdown: {
+    me: 100,
+    ge: 100,
+    blr: 100,
+    igg: 100,
+  },
+  prevMgoBreakdown: {
+    me: 100,
+    ge: 100,
+    blr: 100,
+    igg: 100,
+  },
 };
 
 export const useArrivalEOSPReportStore = defineStore(
@@ -48,26 +72,58 @@ export const useArrivalEOSPReportStore = defineStore(
     const voyageNo = curVoyageNo;
     const reportingDateTime = ref("");
     const reportingTimeZone = ref("default");
+    const reportingDateTimeUTC = computed(() =>
+      reportingTimeZone.value !== "default" && reportingDateTime.value
+        ? convertLTToUTC(
+            new Date(reportingDateTime.value),
+            reportingTimeZone.value
+          )
+        : ""
+    );
 
     // Departure and Arrival
     const departurePortCountry = ref(temp.departurePortCountry);
     const departurePortName = ref(temp.departurePortName);
     const departureDateTime = ref(temp.departureDateTime);
+    const departureTimeZone = ref(temp.departureTimeZone);
+    const departureDateTimeUTC = computed(() =>
+      departureTimeZone.value !== "default" && departureDateTime.value
+        ? convertLTToUTC(
+            new Date(departureDateTime.value),
+            departureTimeZone.value
+          )
+        : departureDateTime.value
+    );
     const arrivalPortCountry = ref(temp.arrivalPortCountry);
     const arrivalPortName = ref(temp.arrivalPortName);
-    const plannedOperation = ref([]);
+    const plannedOperations = ref([]);
     const isOtherPlannedOperationEnabled = computed(() =>
-      plannedOperation.value.includes("others")
+      plannedOperations.value.includes("others")
     );
     const otherPlannedOperation = ref("");
 
     // S/BY for Arrival
     const latDir = ref("default");
-    const latMinutes = ref("");
+    const latMinute = ref("");
     const latDegree = ref("");
     const longDir = ref("default");
-    const longMinutes = ref("");
+    const longMinute = ref("");
     const longDegree = ref("");
+
+    // Weather (Noon to S/BY)
+    const weather = ref("default");
+    const visibility = ref("default");
+    const windDirection = ref("default");
+    const windSpeed = ref("");
+    const seaDirection = ref("default");
+    const seaState = ref("default");
+    const swellDirection = ref("default");
+    const swellScale = ref("default");
+    const airTemperatureDry = ref("");
+    const airTemperatureWet = ref("");
+    const airPressure = ref("");
+    const seaTemperature = ref("");
+    const iceCondition = ref("default");
 
     // Distance & Time
     const hoursSinceNoon = computed(() =>
@@ -89,9 +145,12 @@ export const useArrivalEOSPReportStore = defineStore(
         : ""
     );
     const distanceObsSinceNoon = ref("");
-    const distanceObsTotal = computed(
-      () =>
-        +(temp.distanceObsSoFar + Number(distanceObsSinceNoon.value)).toFixed(2)
+    const distanceObsTotal = computed(() =>
+      distanceObsSinceNoon.value
+        ? +(temp.distanceObsSoFar + Number(distanceObsSinceNoon.value)).toFixed(
+            2
+          )
+        : ""
     );
     const distanceEngSinceNoon = computed(() =>
       revolutionCount.value
@@ -164,9 +223,26 @@ export const useArrivalEOSPReportStore = defineStore(
           ).toFixed(2)
         : ""
     );
+
     // Pilot Station -- Arrival
+    const shouldPilotArrDataBeSent = computed(
+      () =>
+        pilotArrName.value ||
+        pilotArrDateTime.value ||
+        pilotArrDraftFwd.value ||
+        pilotArrDraftMid.value ||
+        pilotArrDraftAft.value
+    );
     const pilotArrName = ref("");
-    const pilotArrDate = ref("");
+    const pilotArrDateTime = ref("");
+    const pilotArrDateTimeUTC = computed(() =>
+      reportingTimeZone.value !== "default" && pilotArrDateTime.value
+        ? convertLTToUTC(
+            new Date(pilotArrDateTime.value),
+            reportingTimeZone.value
+          )
+        : ""
+    );
     const pilotArrDraftFwd = ref("");
     const pilotArrDraftMid = ref("");
     const pilotArrDraftAft = ref("");
@@ -281,9 +357,9 @@ export const useArrivalEOSPReportStore = defineStore(
     });
 
     const freshwaterConsumed = ref("");
-    const freshwaterEvaporated = ref("");
+    const freshwaterGenerated = ref("");
     const freshwaterChange = computed(
-      () => +(freshwaterEvaporated.value - freshwaterConsumed.value).toFixed(2)
+      () => +(freshwaterGenerated.value - freshwaterConsumed.value).toFixed(2)
     );
     const freshwaterRob = computed(
       () => temp.freshwaterPrevROB + freshwaterChange.value
@@ -291,22 +367,61 @@ export const useArrivalEOSPReportStore = defineStore(
 
     // Actual performance
     // TODO: need to be computed values
-    const pilotToPilotTotalDistanceObs = ref("");
-    const pilotToPilotTotalSailingTime = ref("");
-    const pilotToPilotDisplacement = ref("");
-    const pilotToPilotAvgSpeed = ref("");
-    const pilotToPilotAvgRpm = ref("");
-    const pilotToPilotMeFoConsumption = ref("");
-    const lsfoMeSum = ref("");
-    const lsfoGeSum = ref("");
-    const lsfoBoilerSum = ref("");
-    const lsfoIggSum = ref("");
-    const lsfoTotalSum = ref("");
-    const mgoMeSum = ref("");
-    const mgoGeSum = ref("");
-    const mgoBoilerSum = ref("");
-    const mgoIggSum = ref("");
-    const mgoTotalSum = ref("");
+    const totalDistanceObs = distanceObsTotal;
+    const totalSailingTime = hoursTotal;
+    const displacement = ref(temp.displacement);
+    const avgSpeed = speedAvg;
+    const avgRpm = rpmAvg;
+    const meFoConsumption = computed(() =>
+      hoursTotal.value
+        ? (
+            (lsfoMeSum.value + mgoMeSum.value) /
+            (hoursTotal.value * 24)
+          ).toFixed(2)
+        : ""
+    );
+    const lsfoMeSum = computed(
+      () => +(temp.prevLsfoBreakdown.me + Number(lsfoBreakdown.me)).toFixed(2)
+    );
+    const lsfoGeSum = computed(
+      () => +(temp.prevLsfoBreakdown.ge + Number(lsfoBreakdown.ge)).toFixed(2)
+    );
+    const lsfoBoilerSum = computed(
+      () => +(temp.prevLsfoBreakdown.blr + Number(lsfoBreakdown.blr)).toFixed(2)
+    );
+    const lsfoIggSum = computed(
+      () => +(temp.prevLsfoBreakdown.igg + Number(lsfoBreakdown.igg)).toFixed(2)
+    );
+    const lsfoTotalSum = computed(
+      () =>
+        +(
+          Number(lsfoMeSum.value) +
+          Number(lsfoGeSum.value) +
+          Number(lsfoBoilerSum.value) +
+          Number(lsfoIggSum.value)
+        ).toFixed(2)
+    );
+    const mgoMeSum = computed(
+      () => +(temp.prevMgoBreakdown.me + Number(mgoBreakdown.me)).toFixed(2)
+    );
+    const mgoGeSum = computed(
+      () => +(temp.prevMgoBreakdown.ge + Number(mgoBreakdown.ge)).toFixed(2)
+    );
+    const mgoBoilerSum = computed(
+      () => +(temp.prevMgoBreakdown.blr + Number(mgoBreakdown.blr)).toFixed(2)
+    );
+    const mgoIggSum = computed(
+      () => +(temp.prevMgoBreakdown.igg + Number(mgoBreakdown.igg)).toFixed(2)
+    );
+    const mgoTotalSum = computed(
+      () =>
+        +(
+          Number(mgoMeSum.value) +
+          Number(mgoGeSum.value) +
+          Number(mgoBoilerSum.value) +
+          Number(mgoIggSum.value)
+        ).toFixed(2)
+    );
 
     return {
       // Overview
@@ -315,23 +430,40 @@ export const useArrivalEOSPReportStore = defineStore(
       loadingCondition,
       voyageNo,
       reportingDateTime,
+      reportingDateTimeUTC,
       reportingTimeZone,
       // Departure and Arrival
       departurePortCountry,
       departurePortName,
+      departureTimeZone,
       departureDateTime,
+      departureDateTimeUTC,
       arrivalPortCountry,
       arrivalPortName,
-      plannedOperation,
+      plannedOperations,
       isOtherPlannedOperationEnabled,
       otherPlannedOperation,
       // S/BY for Arrival
       latDir,
-      latMinutes,
+      latMinute,
       latDegree,
       longDir,
-      longMinutes,
+      longMinute,
       longDegree,
+      // Weather
+      weather,
+      visibility,
+      windDirection,
+      windSpeed,
+      seaDirection,
+      seaState,
+      swellDirection,
+      swellScale,
+      airTemperatureDry,
+      airTemperatureWet,
+      airPressure,
+      seaTemperature,
+      iceCondition,
       // Distance & Time
       hoursSinceNoon,
       hoursTotal,
@@ -351,8 +483,10 @@ export const useArrivalEOSPReportStore = defineStore(
       rpmAvg,
       slipAvg,
       // Pilot Station -- Arrival
+      shouldPilotArrDataBeSent,
       pilotArrName,
-      pilotArrDate,
+      pilotArrDateTime,
+      pilotArrDateTimeUTC,
       pilotArrDraftAft,
       pilotArrDraftMid,
       pilotArrDraftFwd,
@@ -380,16 +514,16 @@ export const useArrivalEOSPReportStore = defineStore(
       gesystemRob,
       lubricatingOilDataCorrection,
       freshwaterConsumed,
-      freshwaterEvaporated,
+      freshwaterGenerated,
       freshwaterChange,
       freshwaterRob,
       // Actual performance
-      pilotToPilotTotalDistanceObs,
-      pilotToPilotTotalSailingTime,
-      pilotToPilotDisplacement,
-      pilotToPilotAvgSpeed,
-      pilotToPilotAvgRpm,
-      pilotToPilotMeFoConsumption,
+      totalDistanceObs,
+      totalSailingTime,
+      displacement,
+      avgSpeed,
+      avgRpm,
+      meFoConsumption,
       lsfoMeSum,
       lsfoGeSum,
       lsfoBoilerSum,

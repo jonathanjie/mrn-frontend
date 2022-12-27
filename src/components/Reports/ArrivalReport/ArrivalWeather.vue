@@ -278,7 +278,7 @@
         <input
           v-model="air_pressure"
           @keypress="preventNaN($event, air_pressure)"
-          placeholder="00.0"
+          placeholder="00"
           class="text-14 w-24 pl-2 text-gray-700 focus:outline-0"
         />
         <MiniUnitDisplay>mbar</MiniUnitDisplay>

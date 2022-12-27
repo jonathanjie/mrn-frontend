@@ -259,12 +259,12 @@ const sendReport = async () => {
       distance_engine_since_noon: distanceEngSinceNoon.value,
       distance_engine_total: distanceEngTotal.value,
       revolution_count: revolutionCount.value,
-      speed_since_noon: speedSinceNoon.value,
-      rpm_since_noon: rpmSinceNoon.value,
-      slip_since_noon: slipSinceNoon.value,
-      speed_average: speedAvg.value,
-      rpm_average: rpmAvg.value,
-      slip_average: slipAvg.value,
+      speed_since_noon: speedSinceNoon.value || 0,
+      rpm_since_noon: rpmSinceNoon.value || 0,
+      slip_since_noon: slipSinceNoon.value || 0,
+      speed_average: speedAvg.value || 0,
+      rpm_average: rpmAvg.value || 0,
+      slip_average: slipAvg.value || 0,
     },
     consumptionconditiondata: {
       fueloildata_set: [
