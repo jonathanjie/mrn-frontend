@@ -160,7 +160,7 @@
           @keypress="preventNaN($event, lsfo_total_sum)"
           placeholder="000.00"
           disabled
-          class="p-3 pl-4 border-t border-l text-14 text-gray-700 focus:outline-0 bg-gray-50"
+          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
         />
 
         <div class="text-blue-700 p-3 border-t">{{ $t("mgo") }}</div>
@@ -197,7 +197,7 @@
           @keypress="preventNaN($event, mgo_total_sum)"
           placeholder="000.00"
           disabled
-          class="p-3 pl-4 border-t border-l text-14 text-gray-700 focus:outline-0 bg-gray-50"
+          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
         />
       </div>
     </div>
