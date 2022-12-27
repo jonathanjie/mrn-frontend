@@ -45,6 +45,10 @@ export const ErrorFieldsToDisplay = {
   departurevesselcondition: "Vessel Condition at Departure",
   totalconsumptiondata: "Consumption & Condition (Total in Harbour/Port)",
   consumptionconditiondata: "Consumption & Condition",
+  arrivalpilotstation: "Pilot Station - Arrival",
+  departurerunup: "R/UP Engine",
+  distancetimedata: "Distance & Time",
+  transoceanicbudget: "Budget Trans Ocean",
 };
 
 export const Direction = {

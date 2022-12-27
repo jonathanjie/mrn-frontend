@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
 import { storeToRefs } from "pinia";
+import { convertLTToUTC, convertUTCToLT } from "@/utils/helpers";
 
 const temp = {
   // Consumption & Condition
@@ -14,14 +15,19 @@ const temp = {
   freshwaterPrevROB: 200,
 
   // Departure and Destination
-  departurePortCountry: "Country A",
-  departurePortName: "Port A",
+  departurePortCountry: "KR",
+  departurePortName: "PUS",
   departureTimeZone: "-6",
-  departureDateTime: "2022-11-21T00:00:00Z",
-  destinationPortCountry: "Country B",
-  destinationPortName: "Port B",
+  departureDateTimeUTC: "2022-12-01T00:00:00Z",
+  destinationPortCountry: "SG",
+  destinationPortName: "PPT",
   destinationTimeZone: "-4",
-  destinationEstimatedArrival: "2022-12-03T00:00:00Z",
+  destinationEstimatedArrival: "2022-12-06T00:00:00Z",
+
+  // Distance & Time
+  prevSbyTime: "2022-12-01T00:00:00Z",
+  revolutionCountAtSby: 20000,
+  propellerPitch: 2,
 };
 
 export const useDepartureCOSPReportStore = defineStore(
@@ -38,20 +44,56 @@ export const useDepartureCOSPReportStore = defineStore(
     const voyageNo = curVoyageNo;
     const reportingDateTime = ref("");
     const reportingTimeZone = ref("default");
+    const reportingDateTimeUTC = computed(() =>
+      reportingTimeZone.value !== "default" && reportingDateTime.value
+        ? convertLTToUTC(
+            new Date(reportingDateTime.value),
+            reportingTimeZone.value
+          )
+        : reportingDateTime.value
+    );
 
     // Departure and Destination
     const departurePortCountry = ref(temp.departurePortCountry);
     const departurePortName = ref(temp.departurePortName);
     const departureTimeZone = ref(temp.departureTimeZone);
-    const departureDateTime = ref(temp.departureDateTime);
+    const departureDateTimeUTC = ref(temp.departureDateTimeUTC);
+    const departureDateTime = computed(() =>
+      departureTimeZone.value !== "default" && departureDateTimeUTC.value
+        ? convertUTCToLT(
+            new Date(departureDateTimeUTC.value),
+            departureTimeZone.value
+          )
+        : departureDateTimeUTC.value
+    );
     const destinationPortCountry = ref(temp.destinationPortCountry);
     const destinationPortName = ref(temp.destinationPortName);
     const destinationTimeZone = ref(temp.destinationTimeZone);
     const destinationEstimatedArrival = ref(temp.destinationEstimatedArrival);
+    const destinationEstimatedArrivalUTC = computed(() =>
+      destinationTimeZone.value !== "default" &&
+      destinationEstimatedArrival.value
+        ? convertLTToUTC(
+            new Date(destinationEstimatedArrival.value),
+            destinationTimeZone.value
+          )
+        : destinationEstimatedArrival.value
+    );
 
     // Pilot Station - Departure
+    const shouldPilotDepDataBeSent = computed(
+      () => pilotDepName.value || pilotDepDateTime.value
+    );
     const pilotDepName = ref("");
-    const pilotDepDate = ref("");
+    const pilotDepDateTime = ref("");
+    const pilotDepDateTimeUTC = computed(() =>
+      reportingTimeZone.value !== "default" && pilotDepDateTime.value
+        ? convertLTToUTC(
+            new Date(pilotDepDateTime.value),
+            reportingTimeZone.value
+          )
+        : pilotDepDateTime.value
+    );
     const pilotDepLatDir = ref("default");
     const pilotDepLatDegree = ref("");
     const pilotDepLatMinute = ref("");
@@ -79,11 +121,35 @@ export const useDepartureCOSPReportStore = defineStore(
     const rupEngLongDir = ref("default");
     const rupEngLongDegree = ref("");
     const rupEngLongMinute = ref("");
-    const sbyToRupTime = ref("");
+    const sbyToRupTime = computed(() =>
+      reportingDateTimeUTC.value
+        ? +(
+            (Date.parse(reportingDateTimeUTC.value) -
+              Date.parse(temp.prevSbyTime)) /
+            (1000 * 60 * 60)
+          ).toFixed(0)
+        : ""
+    );
     const sbyToRupDistanceObs = ref("");
-    const sbyToRupDistanceEng = ref("");
+    const sbyToRupDistanceEng = computed(() =>
+      sbyToRupRevolutionCount.value
+        ? +(
+            (Number(sbyToRupRevolutionCount.value) -
+              temp.revolutionCountAtSby) *
+            temp.propellerPitch
+          ).toFixed(2)
+        : ""
+    );
     const sbyToRupRevolutionCount = ref("");
-    const sbyToRupSetRPM = ref("");
+    const sbyToRupSetRPM = computed(() =>
+      sbyToRupRevolutionCount.value && sbyToRupTime.value
+        ? +(
+            (Number(sbyToRupRevolutionCount.value) -
+              temp.revolutionCountAtSby) /
+            (sbyToRupTime.value * 60)
+          ).toFixed(1)
+        : ""
+    );
 
     // Budget Trans Ocean (Pilot to Pilot)
     const budgetDistance = ref("");
@@ -196,8 +262,6 @@ export const useDepartureCOSPReportStore = defineStore(
 
     const freshwaterConsumed = ref("");
     const freshwaterEvaporated = ref("");
-    const freshwaterReceived = ref("");
-    const freshwaterDischarged = ref("");
     const freshwaterChange = computed(
       () => +(freshwaterEvaporated.value - freshwaterConsumed.value).toFixed(2)
     );
@@ -213,18 +277,23 @@ export const useDepartureCOSPReportStore = defineStore(
       voyageNo,
       reportingDateTime,
       reportingTimeZone,
+      reportingDateTimeUTC,
       // Departure and Destination
       departurePortCountry,
       departurePortName,
       departureTimeZone,
       departureDateTime,
+      departureDateTimeUTC,
       destinationPortCountry,
       destinationPortName,
       destinationTimeZone,
       destinationEstimatedArrival,
+      destinationEstimatedArrivalUTC,
       // Pilot station - Departure
+      shouldPilotDepDataBeSent,
       pilotDepName,
-      pilotDepDate,
+      pilotDepDateTime,
+      pilotDepDateTimeUTC,
       pilotDepLatDir,
       pilotDepLatDegree,
       pilotDepLatMinute,
@@ -279,8 +348,6 @@ export const useDepartureCOSPReportStore = defineStore(
       lubricatingOilDataCorrection,
       freshwaterConsumed,
       freshwaterEvaporated,
-      freshwaterReceived,
-      freshwaterDischarged,
       freshwaterChange,
       freshwaterRob,
     };
