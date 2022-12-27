@@ -88,6 +88,7 @@ const i18n = createI18n({
       combiCarrier: "Combination Carrier",
       constant: "Constant",
       consumed: "Consumed",
+      consumption: "Consumption",
       consumptionAndCondition: "Consumption & Condition",
       consumptionAndConditionHarbourInPortInTotal:
         "Consumption & Condition (Harbour/In Port in Total)",

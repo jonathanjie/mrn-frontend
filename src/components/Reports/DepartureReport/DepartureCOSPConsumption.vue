@@ -207,7 +207,7 @@
           <div
             class="col-span-3 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-l bg-gray-50"
           >
-            {{ $t("totalConsumption") }}
+            {{ $t("consumption") }}
           </div>
           <div
             class="col-span-3 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-l bg-gray-50"
@@ -450,7 +450,7 @@
           <div
             class="col-span-1 text-sysblue-800 p-3 border-t border-x border-sysblue-100 bg-sysblue-25"
           >
-            {{ $t("rob") }}
+            {{ $t("remainOnBoard") }}
           </div>
           <input
             v-model="freshwater_consumed"
