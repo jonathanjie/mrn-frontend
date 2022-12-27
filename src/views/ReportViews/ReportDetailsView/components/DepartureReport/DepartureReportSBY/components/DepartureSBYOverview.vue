@@ -12,12 +12,12 @@ const props = defineProps({
   },
 });
 
-const deps_report_no = computed(() => props.report.report_num);
-const cur_leg_no = computed(() => props.report.voyage_leg);
+const reportNum = computed(() => props.report.report_num);
+const legNum = computed(() => props.report.voyage_leg);
 // TODO: switch to actual voyage number
-const voyage_no = computed(() => props.report.voyage_leg);
-const reporting_date = computed(() => props.report.report_date);
-const reporting_time_zone = computed(() => props.report.report_tz);
+const voyageNum = computed(() => props.report.voyage_leg);
+const reportingDate = computed(() => props.report.report_date);
+const reportingTimeZone = computed(() => props.report.report_tz);
 
 // const store = useDepartureSBYReportStore();
 // const {
@@ -42,11 +42,11 @@ const reporting_time_zone = computed(() => props.report.report_tz);
         {{ $t("reportNo") }}
       </div>
       <div class="col-span-3 p-3 border-b text-gray-700 bg-gray-50">
-        {{ deps_report_no }}
+        {{ reportNum }}
       </div>
       <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("legNo") }}</div>
       <div class="col-span-3 p-3 text-gray-700 bg-gray-50">
-        {{ cur_leg_no }}
+        {{ legNum }}
       </div>
     </div>
     <div
@@ -56,7 +56,7 @@ const reporting_time_zone = computed(() => props.report.report_tz);
         {{ $t("voyageNo") }}
       </div>
       <div class="col-span-3 p-3 border text-gray-700 bg-gray-50">
-        {{ voyage_no }}
+        {{ voyageNum }}
       </div>
       <div class="hidden xl:block bg-white col-span-2 row-span-1"></div>
       <input disabled class="hidden xl:block bg-white col-span-3 p-3" />
@@ -69,7 +69,7 @@ const reporting_time_zone = computed(() => props.report.report_tz);
       </div>
       <DatePicker
         disabled
-        v-model="reporting_date"
+        v-model="reportingDate"
         class="col-span-3"
         textInput
         :textInputOptions="textInputOptions"
@@ -93,11 +93,11 @@ const reporting_time_zone = computed(() => props.report.report_tz);
           disabled
           class="grow self-center p-3 text-14 focus:outline-0"
           :class="
-            reporting_time_zone === 'default'
+            reportingTimeZone === 'default'
               ? 'text-gray-400'
               : 'text-gray-700'
           "
-          v-model="reporting_time_zone"
+          v-model="reportingTimeZone"
         >
           <option selected disabled value="default">
             {{ $t("selectTimeZone") }}

@@ -1,9 +1,8 @@
 <script setup>
 import { defineProps } from "vue";
 import { Report } from "@/constants";
-
+import DepartureReportSBY from "./DepartureReportSBY/DepartureReportSBY.vue";
 import DepartureReportCOSP from "./DepartureReportCOSP/DepartureReportCOSP.vue";
-import DepartureReportSBY from "./DepartureReportCOSP/DepartureReportCOSP.vue";
 const props = defineProps({
   report: {
     type: Object,

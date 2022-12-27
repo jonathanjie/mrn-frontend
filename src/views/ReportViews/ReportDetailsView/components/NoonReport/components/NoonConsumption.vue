@@ -20,36 +20,42 @@ const props = defineProps({
 // const isAdditionalRemarkFuel = ref(false);
 // const isAdditionalRemarkLubricating = ref(false);
 
-// const lsfo_total_consumption = computed(
-//   () =>
-//     props.report.consumptionconditiondata.fueloildata_set.filter(
-//       (fuelData) => fuelData.fuel_oil_type == "LSFO"
-//     )[0]?.total_consumption ?? "NIL"
-// );
-// const lsfo_rob = computed(
-//   () =>
-//     props.report.consumptionconditiondata.fueloildata_set.filter(
-//       (fuelData) => fuelData.fuel_oil_type == "LSFO"
-//     )[0]?.rob ?? "NIL"
-// );
-// const lsfo_breakdown = computed(
-//   () =>
-//     props.report.consumptionconditiondata.fueloildata_set.filter(
-//       (fuelData) => fuelData.fuel_oil_type == "LSFO"
-//     )[0].breakdown
-// );
-// const mgo_total_consumption = computed(
-//   () =>
-//     props.report.consumptionconditiondata.fueloildata_set.filter(
-//       (fuelData) => fuelData.fuel_oil_type == "MGO"
-//     )[0]?.total_consumption ?? "NIL"
-// );
-// const mgo_rob = computed(
-//   () =>
-//     props.report.consumptionconditiondata.fueloildata_set.filter(
-//       (fuelData) => fuelData.fuel_oil_type == "MGO"
-//     )[0]?.total_consumption ?? "NIL"
-// );
+const lsfo_total_consumption = computed(
+  () =>
+    props.report.consumptionconditiondata.fueloildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "LSFO"
+    )[0].total_consumption
+);
+const lsfo_rob = computed(
+  () =>
+    props.report.consumptionconditiondata.fueloildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "LSFO"
+    )[0]?.rob ?? "NIL"
+);
+const lsfo_breakdown_me = computed(
+  () =>
+    props.report.consumptionconditiondata.fueloildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "LSFO"
+    )[0].breakdown.ME
+);
+const lsfo_breakdown_igg = computed(
+  () =>
+    props.report.consumptionconditiondata.fueloildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "LSFO"
+    )[0].breakdown.IGG
+);
+const mgo_total_consumption = computed(
+  () =>
+    props.report.consumptionconditiondata.fueloildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "MGO"
+    )[0]?.total_consumption ?? "NIL"
+);
+const mgo_rob = computed(
+  () =>
+    props.report.consumptionconditiondata.fueloildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "MGO"
+    )[0]?.total_consumption ?? "NIL"
+);
 // const mgo_breakdown = computed(
 //   () =>
 //     props.report.consumptionconditiondata.fueloildata_set.filter(
@@ -62,70 +68,70 @@ const props = defineProps({
 //       (fuelData) => fuelData.fuel_oil_type == "M/E Cylinder"
 //     )[0].breakdown
 // );
-// const mecylinder_rob = computed(
-//   () =>
-//     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
-//       (fuelData) => fuelData.fuel_oil_type == "M/E Cylinder"
-//     )[0].rob
-// );
+const mecylinder_rob = computed(
+  () =>
+    props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "M/E Cylinder"
+    )[0].rob
+);
 // const mesystem_breakdown = computed(
 //   () =>
 //     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
 //       (fuelData) => fuelData.fuel_oil_type == "M/E System"
 //     )[0].breakdown
 // );
-// const mesystem_rob = computed(
-//   () =>
-//     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
-//       (fuelData) => fuelData.fuel_oil_type == "M/E System"
-//     )[0].rob
-// );
+const mesystem_rob = computed(
+  () =>
+    props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "M/E System"
+    )[0].rob
+);
 // const mesump_breakdown = computed(
 //   () =>
 //     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
 //       (fuelData) => fuelData.fuel_oil_type == "M/E Sump"
 //     )[0].breakdown
 // );
-// const mesump_rob = computed(
-//   () =>
-//     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
-//       (fuelData) => fuelData.fuel_oil_type == "M/E Sump"
-//     )[0].rob
-// );
+const mesump_rob = computed(
+  () =>
+    props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "M/E Sump"
+    )[0].rob
+);
 // const gesystem_breakdown = computed(
 //   () =>
 //     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
 //       (fuelData) => fuelData.fuel_oil_type == "G/E System"
 //     )[0].breakdown
 // );
-// const gesystem_rob = computed(
-//   () =>
-//     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
-//       (fuelData) => fuelData.fuel_oil_type == "G/E System"
-//     )[0].rob
-// );
-// const freshwater_consumed = computed(
-//   () => props.report.consumptionconditiondata.freshwaterdata.consumed
-// );
-// const freshwater_generated = computed(
-//   () => props.report.consumptionconditiondata.freshwaterdata.consumed
-// );
-// const freshwater_change = computed(
-//   () =>
-//     +props.report.consumptionconditiondata.freshwaterdata.received -
-//     props.report.consumptionconditiondata.freshwaterdata.discharged
-// );
-// const freshwater_rob = computed(
-//   () => props.report.consumptionconditiondata.freshwaterdata.rob
-// );
+const gesystem_rob = computed(
+  () =>
+    props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "G/E System"
+    )[0].rob
+);
+const freshwater_consumed = computed(
+  () => props.report.consumptionconditiondata.freshwaterdata.consumed
+);
+const freshwater_generated = computed(
+  () => props.report.consumptionconditiondata.freshwaterdata.generated
+);
+const freshwater_change = computed(
+  () =>
+    +props.report.consumptionconditiondata.freshwaterdata.received -
+    props.report.consumptionconditiondata.freshwaterdata.discharged
+);
+const freshwater_rob = computed(
+  () => props.report.consumptionconditiondata.freshwaterdata.rob
+);
 
 const store = useNoonReportStore();
 const {
   // fuel oil
-  lsfoTotalConsumption: lsfo_total_consumption,
-  lsfoRob: lsfo_rob,
-  mgoTotalConsumption: mgo_total_consumption,
-  mgoRob: mgo_rob,
+  // lsfoTotalConsumption: lsfo_total_consumption,
+  // lsfoRob: lsfo_rob,
+  // mgoTotalConsumption: mgo_total_consumption,
+  // mgoRob: mgo_rob,
   lsfoBreakdown: lsfo_breakdown,
   mgoBreakdown: mgo_breakdown,
   fuelOilDataCorrection: fuel_oil_data_correction,
@@ -134,16 +140,16 @@ const {
   mesystemBreakdown: mesystem_breakdown,
   mesumpBreakdown: mesump_breakdown,
   gesystemBreakdown: gesystem_breakdown,
-  mecylinderRob: mecylinder_rob,
-  mesystemRob: mesystem_rob,
-  mesumpRob: mesump_rob,
-  gesystemRob: gesystem_rob,
+  // mecylinderRob: mecylinder_rob,
+  // mesystemRob: mesystem_rob,
+  // mesumpRob: mesump_rob,
+  // gesystemRob: gesystem_rob,
   lubricatingOilDataCorrection: lubricating_oil_data_correction,
   // fresh water
-  freshwaterConsumed: freshwater_consumed,
-  freshwaterGenerated: freshwater_generated,
-  freshwaterChange: freshwater_change,
-  freshwaterRob: freshwater_rob,
+  // freshwaterConsumed: freshwater_consumed,
+  // freshwaterGenerated: freshwater_generated,
+  // freshwaterChange: freshwater_change,
+  // freshwaterRob: freshwater_rob,
 } = storeToRefs(store);
 </script>
 
@@ -203,8 +209,8 @@ const {
           </div>
           <input
             disabled
-            v-model="lsfo_breakdown.me"
-            @keypress="preventNaN($event, lsfo_breakdown.me)"
+            v-model="lsfo_breakdown_me"
+            @keypress="preventNaN($event, lsfo_breakdown_me)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
@@ -224,8 +230,8 @@ const {
           />
           <input
             disabled
-            v-model="lsfo_breakdown.igg"
-            @keypress="preventNaN($event, lsfo_breakdown.igg)"
+            v-model="lsfo_breakdown_igg"
+            @keypress="preventNaN($event, lsfo_breakdown_igg)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
