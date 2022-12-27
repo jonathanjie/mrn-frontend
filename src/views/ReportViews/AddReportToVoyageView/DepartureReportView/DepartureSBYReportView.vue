@@ -169,7 +169,7 @@ const sendReport = async () => {
     portName: destinationPortName.value,
   });
 
-  let REPORT = {
+  const REPORT = {
     report_type: Report.type.DEP_SBY,
     voyage: voyageNo.value,
     voyage_leg: legNo.value,

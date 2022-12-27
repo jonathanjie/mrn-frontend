@@ -43,7 +43,7 @@
         {{ $t("dateAndTime") }}
       </div>
       <DatePicker
-        v-model="pilot_dep_date"
+        v-model="pilot_dep_date_time"
         class="col-span-3"
         textInput
         :textInputOptions="textInputOptions"
@@ -133,7 +133,7 @@ const isActive = ref(false);
 const store = useDepartureCOSPReportStore();
 const {
   pilotDepName: pilot_dep_name,
-  pilotDepDate: pilot_dep_date,
+  pilotDepDateTime: pilot_dep_date_time,
   pilotDepLatDir: pilot_dep_lat_dir,
   pilotDepLatDegree: pilot_dep_lat_degree,
   pilotDepLatMinute: pilot_dep_lat_minute,

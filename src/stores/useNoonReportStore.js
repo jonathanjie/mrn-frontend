@@ -61,7 +61,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     routeDepartureTimeZone.value !== "default" &&
     routeDepartureDateTimeUTC.value
       ? convertUTCToLT(
-          new Date(routeDepartureDateTimeUTC).value,
+          new Date(routeDepartureDateTimeUTC.value),
           routeDepartureTimeZone.value
         )
       : routeDepartureDateTimeUTC.value
@@ -131,7 +131,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
 
   // Distance and Time
   const hoursSinceNoon = computed(() =>
-    reportingDateTimeUTC.value
+    reportingDateTimeUTC.value && reportingTimeZone.value !== "default"
       ? +(
           (Date.parse(reportingDateTimeUTC.value) -
             Date.parse(temp.lastNoonReportTime)) /
@@ -140,7 +140,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
       : ""
   );
   const hoursTotal = computed(() =>
-    reportingDateTimeUTC.value
+    hoursSinceNoon.value
       ? +(
           (Date.parse(reportingDateTimeUTC.value) -
             Date.parse(temp.rupOfDeparture)) /
@@ -149,9 +149,10 @@ export const useNoonReportStore = defineStore("noonReport", () => {
       : ""
   );
   const distanceObsSinceNoon = ref("");
-  const distanceObsTotal = computed(
-    () =>
-      +(temp.distanceObsSoFar + Number(distanceObsSinceNoon.value)).toFixed(2)
+  const distanceObsTotal = computed(() =>
+    distanceObsSinceNoon.value
+      ? +(temp.distanceObsSoFar + Number(distanceObsSinceNoon.value)).toFixed(2)
+      : ""
   );
   const distanceEngSinceNoon = computed(() =>
     revolutionCount.value

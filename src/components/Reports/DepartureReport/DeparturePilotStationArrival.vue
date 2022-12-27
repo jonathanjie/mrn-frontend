@@ -15,12 +15,14 @@
         :placeholder="$t('inputName')"
         class="col-span-3 p-3 pl-4 border-y border-r bg-white text-14 text-gray-700 focus:outline-0"
       />
-      <div class="col-span-2 text-blue-700 p-3 border-x bg-gray-50 text-14">
+      <div
+        class="col-span-2 text-blue-700 p-3 border-x border-b xl:border-b-0 bg-gray-50 text-14"
+      >
         {{ $t("requiredTimeOfArrival") }}
       </div>
       <DatePicker
         v-model="pilot_arr_date"
-        class="col-span-3 border-r"
+        class="col-span-3 border-r border-b xl:border-b-0"
         textInput
         :textInputOptions="textInputOptions"
         :format="format"

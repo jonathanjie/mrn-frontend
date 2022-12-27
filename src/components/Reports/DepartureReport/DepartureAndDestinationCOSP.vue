@@ -34,12 +34,7 @@
         <div class="flex col-span-3 border-b bg-white">
           <select
             disabled
-            class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50"
-            :class="
-              departure_time_zone === 'default'
-                ? 'text-gray-400'
-                : 'text-gray-700'
-            "
+            class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50 text-gray-700"
             v-model="departure_time_zone"
           >
             <option selected disabled value="default">
@@ -137,7 +132,7 @@
 </template>
 
 <script setup>
-import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
+import { textInputOptions, format } from "@/utils/helpers.js";
 import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
 import { storeToRefs } from "pinia";
 import { TIMEZONES } from "@/utils/options";

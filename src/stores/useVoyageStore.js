@@ -52,6 +52,8 @@ export const useVoyageStore = defineStore("voyage", () => {
   const curLegNo = ref(0);
   const curVoyageNo = ref(0);
 
+  // TODO: get reportroute from voyage
+
   return {
     lastNoonReportNo,
     lastDepsReportNo,
