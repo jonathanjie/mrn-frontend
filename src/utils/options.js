@@ -80,3 +80,10 @@ export const ALL_LUBRICATING_OILS = {
   geSystemOil: "ge_system_oil",
   tgSystemOil: "tg_system_oil",
 };
+
+export const LOAD_CONDITIONS = {
+  ballast: "BALLAST",
+  laden: "LADEN",
+  eastbound: "EASTBOUND",
+  westbound: "WESTBOUND",
+};
