@@ -44,7 +44,10 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const reportingTimeZone = ref("default");
   const reportingDateTimeUTC = computed(() =>
     reportingTimeZone.value !== "default" && reportingDateTime.value
-      ? convertLTToUTC(reportingDateTime.value, reportingTimeZone.value)
+      ? convertLTToUTC(
+          new Date(reportingDateTime.value),
+          reportingTimeZone.value
+        )
       : reportingDateTime.value
   );
 
@@ -58,7 +61,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     routeDepartureTimeZone.value !== "default" &&
     routeDepartureDateTimeUTC.value
       ? convertUTCToLT(
-          routeDepartureDateTimeUTC.value,
+          new Date(routeDepartureDateTimeUTC).value,
           routeDepartureTimeZone.value
         )
       : routeDepartureDateTimeUTC.value
@@ -71,7 +74,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const routeArrivalDateTimeFromUTC = computed(() =>
     routeArrivalTimeZone.value !== "default" && routeArrivalDateTimeUTC.value
       ? convertUTCToLT(
-          routeArrivalDateTimeUTC.value,
+          new Date(routeArrivalDateTimeUTC.value),
           routeArrivalTimeZone.value
         )
       : routeArrivalDateTimeUTC.value

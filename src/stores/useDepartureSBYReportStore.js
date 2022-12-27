@@ -71,7 +71,10 @@ export const useDepartureSBYReportStore = defineStore(
     const reportingTimeZone = ref("default");
     const reportingDateTimeUTC = computed(() =>
       reportingTimeZone.value !== "default" && reportingDateTime.value
-        ? convertLTToUTC(reportingDateTime.value, reportingTimeZone.value)
+        ? convertLTToUTC(
+            new Date(reportingDateTime.value),
+            reportingTimeZone.value
+          )
         : reportingDateTime.value
     );
 
@@ -87,7 +90,7 @@ export const useDepartureSBYReportStore = defineStore(
       destinationTimeZone.value !== "default" &&
       destinationEstimatedArrival.value
         ? convertLTToUTC(
-            destinationEstimatedArrival.value,
+            new Date(destinationEstimatedArrival.value),
             destinationTimeZone.value
           )
         : destinationEstimatedArrival.value
@@ -116,8 +119,11 @@ export const useDepartureSBYReportStore = defineStore(
     const pilotDepName = ref("");
     const pilotDepDateTime = ref("");
     const pilotDepDateTimeUTC = computed(() =>
-      reportingTimeZone.value !== "default" && reportingDateTime.value
-        ? convertLTToUTC(pilotDepDateTime.value, reportingTimeZone.value)
+      reportingTimeZone.value !== "default" && pilotDepDateTime.value
+        ? convertLTToUTC(
+            new Date(pilotDepDateTime.value),
+            reportingTimeZone.value
+          )
         : pilotDepDateTime.value
     );
 
