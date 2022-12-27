@@ -1,7 +1,7 @@
 <template>
   <div
-    v-if="!heavy_weather_is_active"
-    @click="heavy_weather_is_active = !heavy_weather_is_active"
+    v-if="!is_heavy_weather_enabled"
+    @click="is_heavy_weather_enabled = !is_heavy_weather_enabled"
     class="flex items-center bg-white rounded-lg p-5 shadow-card cursor-pointer"
   >
     <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
@@ -17,7 +17,7 @@
   >
     <div
       class="col-span-2 flex items-center cursor-pointer"
-      @click="heavy_weather_is_active = !heavy_weather_is_active"
+      @click="is_heavy_weather_enabled = !is_heavy_weather_enabled"
     >
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
       <img
@@ -273,6 +273,6 @@ const {
   heavySeaDirection: sea_direction,
   heavySeaState: sea_state,
   heavyRemarks: remarks,
-  heavyWeatherIsActive: heavy_weather_is_active,
+  isHeavyWeatherEnabled: is_heavy_weather_enabled,
 } = storeToRefs(store);
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div
-    v-if="!stoppage_is_active"
-    @click="stoppage_is_active = !stoppage_is_active"
+    v-if="!is_stoppage_enabled"
+    @click="is_stoppage_enabled = !is_stoppage_enabled"
     class="flex items-center bg-white rounded-lg p-5 shadow-card cursor-pointer"
   >
     <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
@@ -17,7 +17,7 @@
   >
     <div
       class="col-span-2 flex items-center cursor-pointer"
-      @click="stoppage_is_active = !stoppage_is_active"
+      @click="is_stoppage_enabled = !is_stoppage_enabled"
     >
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
       <img
@@ -200,6 +200,6 @@ const {
   stoppageLongDir: long_dir,
   stoppageLongDegree: long_degree,
   stoppageLongMinutes: long_minutes,
-  stoppageIsActive: stoppage_is_active,
+  isStoppageEnabled: is_stoppage_enabled,
 } = storeToRefs(store);
 </script>

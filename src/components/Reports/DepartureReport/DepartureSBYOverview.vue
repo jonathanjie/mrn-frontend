@@ -37,7 +37,7 @@
         {{ $t("reportingDateAndTime") }}
       </div>
       <DatePicker
-        v-model="reporting_date"
+        v-model="reporting_date_time"
         class="col-span-3"
         textInput
         :textInputOptions="textInputOptions"
@@ -89,7 +89,7 @@ const {
   reportNo: report_no,
   legNo: leg_no,
   voyageNo: voyage_no,
-  reportingDate: reporting_date,
+  reportingDateTime: reporting_date_time,
   reportingTimeZone: reporting_time_zone,
 } = storeToRefs(store);
 </script>
