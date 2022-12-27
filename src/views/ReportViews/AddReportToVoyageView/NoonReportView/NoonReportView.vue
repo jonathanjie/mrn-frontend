@@ -64,11 +64,7 @@ import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
 import { Report, FuelOil, LubricatingOil, ConsumptionType } from "@/constants";
-import {
-  convertLTToUTC,
-  parsePositionToString,
-  parsePortLocode,
-} from "@/utils/helpers.js";
+import { parsePositionToString, parsePortLocode } from "@/utils/helpers.js";
 
 const store = useNoonReportStore();
 const {
@@ -85,9 +81,9 @@ const {
   routeDepartureTimeZone,
   routeArrivalPortCountry,
   routeArrivalPortName,
-  routeArrivalDateTime,
   routeArrivalDateTimeUTC,
-  routeArrivalDateTimeEdited,
+  isRouteArrivalDateTimeEdited,
+  routeArrivalDateTimeEditedUTC,
   routeArrivalTimeZone,
   // DateTimeLatLong
   latDir,
@@ -157,7 +153,7 @@ const {
   gesystemRob,
   lubricatingOilDataCorrection,
   freshwaterConsumed,
-  freshwaterEvaporated,
+  freshwaterGenerated,
   freshwaterRob,
   // Stoppage or Reduction RPM
   stoppageBeginning,
@@ -227,8 +223,8 @@ const sendReport = async () => {
       departure_date: routeDepartureDateTime.value,
       depature_tz: routeDepartureTimeZone.value,
       arrival_port: routeArrivalPort,
-      arrival_date: routeArrivalDateTimeEdited.value
-        ? convertLTToUTC(routeArrivalDateTime.value, routeArrivalTimeZone.value)
+      arrival_date: isRouteArrivalDateTimeEdited.value
+        ? routeArrivalDateTimeEditedUTC.value
         : routeArrivalDateTimeUTC.value,
       arrival_tz: routeArrivalTimeZone.value,
     },
@@ -374,7 +370,7 @@ const sendReport = async () => {
       ],
       freshwaterdata: {
         consumed: freshwaterConsumed.value || 0,
-        generated: freshwaterEvaporated.value || 0,
+        generated: freshwaterGenerated.value || 0,
         received: 0, // irrelevant for noon report
         discharged: 0, // irrelevant for noon report
         rob: freshwaterRob.value || 0,

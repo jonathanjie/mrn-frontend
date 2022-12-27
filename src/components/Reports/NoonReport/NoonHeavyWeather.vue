@@ -66,9 +66,9 @@
         <MiniUnitDisplay>MT</MiniUnitDisplay>
       </div>
     </div>
-    <div></div>
+    <div class="hidden lg:block"></div>
 
-    <div class="col-span-1 grid grid-cols-5 border text-14">
+    <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border text-14">
       <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50">
         {{ $t("weatherNotation") }}
       </div>
@@ -99,7 +99,7 @@
         <option value="Z">{{ $t("weather_z") }}</option>
       </select>
     </div>
-    <div></div>
+    <div class="hidden lg:block"></div>
 
     <div class="col-span-2 grid grid-cols-10 border text-14">
       <div

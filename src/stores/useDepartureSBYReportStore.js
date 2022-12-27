@@ -75,7 +75,7 @@ export const useDepartureSBYReportStore = defineStore(
             new Date(reportingDateTime.value),
             reportingTimeZone.value
           )
-        : reportingDateTime.value
+        : ""
     );
 
     // Departure and Destination
@@ -93,7 +93,7 @@ export const useDepartureSBYReportStore = defineStore(
             new Date(destinationEstimatedArrival.value),
             destinationTimeZone.value
           )
-        : destinationEstimatedArrival.value
+        : ""
     );
 
     // Cargo Operation
@@ -124,7 +124,7 @@ export const useDepartureSBYReportStore = defineStore(
             new Date(pilotDepDateTime.value),
             reportingTimeZone.value
           )
-        : pilotDepDateTime.value
+        : ""
     );
 
     const pilotDepLatDir = ref("default");
@@ -252,11 +252,11 @@ export const useDepartureSBYReportStore = defineStore(
     });
 
     const freshwaterConsumed = ref("");
-    const freshwaterEvaporated = ref("");
+    const freshwaterGenerated = ref("");
     const freshwaterReceiving = ref("");
     const freshwaterDischarging = ref("");
     const freshwaterChange = computed(
-      () => +(freshwaterEvaporated.value - freshwaterConsumed.value).toFixed(2)
+      () => +(freshwaterGenerated.value - freshwaterConsumed.value).toFixed(2)
     );
     const freshwaterRob = computed(
       () =>
@@ -402,10 +402,10 @@ export const useDepartureSBYReportStore = defineStore(
           temp.freshwaterPrevConsumed + Number(freshwaterConsumed.value)
         ).toFixed(2)
     );
-    const freshwaterEvaporatedSum = computed(
+    const freshwaterGeneratedSum = computed(
       () =>
         +(
-          temp.freshwaterPrevEvaporated + Number(freshwaterEvaporated.value)
+          temp.freshwaterPrevEvaporated + Number(freshwaterGenerated.value)
         ).toFixed(2)
     );
     const freshwaterReceivingSum = computed(
@@ -422,9 +422,7 @@ export const useDepartureSBYReportStore = defineStore(
     );
     const freshwaterChangeSum = computed(
       () =>
-        +(freshwaterEvaporatedSum.value - freshwaterConsumedSum.value).toFixed(
-          2
-        )
+        +(freshwaterGeneratedSum.value - freshwaterConsumedSum.value).toFixed(2)
     );
     const freshwaterRobSum = freshwaterRob;
 
@@ -488,7 +486,7 @@ export const useDepartureSBYReportStore = defineStore(
       gesystemRob,
       lubricatingOilDataCorrection,
       freshwaterConsumed,
-      freshwaterEvaporated,
+      freshwaterGenerated,
       freshwaterReceiving,
       freshwaterDischarging,
       freshwaterChange,
@@ -511,7 +509,7 @@ export const useDepartureSBYReportStore = defineStore(
       gesystemRobSum,
       lubricatingOilDataCorrectionSum,
       freshwaterConsumedSum,
-      freshwaterEvaporatedSum,
+      freshwaterGeneratedSum,
       freshwaterReceivingSum,
       freshwaterDischargingSum,
       freshwaterChangeSum,

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="grid bg-gray-25 border border-yellow-500 rounded-lg p-5 gap-4 divide-y divide-dashed shadow-card"
+    class="grid bg-white border border-yellow-500 rounded-lg p-5 gap-4 divide-y divide-dashed shadow-card"
   >
     <div class="grid grid-cols-2 gap-4 mb-4">
       <!-- Actual Performance at Sea -->
@@ -18,7 +18,7 @@
           <div
             class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
           >
-            {{ $t("totalDistanceByOBS") }}
+            {{ $t("totalDistanceByObservation") }}
           </div>
           <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
             <input
@@ -151,7 +151,8 @@
           v-model="lsfo_total_sum"
           @keypress="preventNaN($event, lsfo_total_sum)"
           placeholder="000.00"
-          class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
+          disabled
+          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
         />
 
         <div class="text-blue-700 p-3 border-t">{{ $t("mgo") }}</div>
@@ -183,7 +184,8 @@
           v-model="mgo_total_sum"
           @keypress="preventNaN($event, mgo_total_sum)"
           placeholder="000.00"
-          class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
+          disabled
+          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
         />
       </div>
     </div>

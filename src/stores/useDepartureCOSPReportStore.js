@@ -50,7 +50,7 @@ export const useDepartureCOSPReportStore = defineStore(
             new Date(reportingDateTime.value),
             reportingTimeZone.value
           )
-        : reportingDateTime.value
+        : ""
     );
 
     // Departure and Destination
@@ -64,7 +64,7 @@ export const useDepartureCOSPReportStore = defineStore(
             new Date(departureDateTimeUTC.value),
             departureTimeZone.value
           )
-        : departureDateTimeUTC.value
+        : ""
     );
     const destinationPortCountry = ref(temp.destinationPortCountry);
     const destinationPortName = ref(temp.destinationPortName);
@@ -77,7 +77,7 @@ export const useDepartureCOSPReportStore = defineStore(
             new Date(destinationEstimatedArrival.value),
             destinationTimeZone.value
           )
-        : destinationEstimatedArrival.value
+        : ""
     );
 
     // Pilot Station - Departure
@@ -92,7 +92,7 @@ export const useDepartureCOSPReportStore = defineStore(
             new Date(pilotDepDateTime.value),
             reportingTimeZone.value
           )
-        : pilotDepDateTime.value
+        : ""
     );
     const pilotDepLatDir = ref("default");
     const pilotDepLatDegree = ref("");
@@ -103,7 +103,15 @@ export const useDepartureCOSPReportStore = defineStore(
 
     // Pilot Station - Arrival
     const pilotArrName = ref("");
-    const pilotArrDate = ref("");
+    const pilotArrDateTime = ref("");
+    const pilotArrDateTimeUTC = computed(() =>
+      destinationTimeZone.value !== "default" && pilotArrDateTime.value
+        ? convertLTToUTC(
+            new Date(pilotArrDateTime.value),
+            destinationTimeZone.value
+          )
+        : ""
+    );
     const pilotArrLatDir = ref("default");
     const pilotArrDraftFwd = ref("");
     const pilotArrDraftMid = ref("");
@@ -141,15 +149,7 @@ export const useDepartureCOSPReportStore = defineStore(
         : ""
     );
     const sbyToRupRevolutionCount = ref("");
-    const sbyToRupSetRPM = computed(() =>
-      sbyToRupRevolutionCount.value && sbyToRupTime.value
-        ? +(
-            (Number(sbyToRupRevolutionCount.value) -
-              temp.revolutionCountAtSby) /
-            (sbyToRupTime.value * 60)
-          ).toFixed(1)
-        : ""
-    );
+    const sbyToRupSetRPM = ref("");
 
     // Budget Trans Ocean (Pilot to Pilot)
     const budgetDistance = ref("");
@@ -261,9 +261,9 @@ export const useDepartureCOSPReportStore = defineStore(
     });
 
     const freshwaterConsumed = ref("");
-    const freshwaterEvaporated = ref("");
+    const freshwaterGenerated = ref("");
     const freshwaterChange = computed(
-      () => +(freshwaterEvaporated.value - freshwaterConsumed.value).toFixed(2)
+      () => +(freshwaterGenerated.value - freshwaterConsumed.value).toFixed(2)
     );
     const freshwaterRob = computed(
       () => temp.freshwaterPrevROB + freshwaterChange.value
@@ -302,7 +302,8 @@ export const useDepartureCOSPReportStore = defineStore(
       pilotDepLongMinute,
       // Pilot Station - Arrival
       pilotArrName,
-      pilotArrDate,
+      pilotArrDateTime,
+      pilotArrDateTimeUTC,
       pilotArrDraftFwd,
       pilotArrDraftMid,
       pilotArrDraftAft,
@@ -347,7 +348,7 @@ export const useDepartureCOSPReportStore = defineStore(
       gesystemRob,
       lubricatingOilDataCorrection,
       freshwaterConsumed,
-      freshwaterEvaporated,
+      freshwaterGenerated,
       freshwaterChange,
       freshwaterRob,
     };

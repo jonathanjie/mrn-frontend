@@ -524,7 +524,7 @@
           <div
             class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25"
           >
-            {{ $t("receiving") }}
+            {{ $t("receipt") }}
           </div>
           <div
             class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25"
@@ -544,8 +544,8 @@
             class="col-span-1 p-3 pl-4 border-y border-l bg-gray-50 text-gray-400 focus:outline-0"
           />
           <input
-            v-model="freshwater_evaporated_sum"
-            @keypress="preventNaN($event, freshwater_evaporated_sum)"
+            v-model="freshwater_generated_sum"
+            @keypress="preventNaN($event, freshwater_generated_sum)"
             placeholder="0"
             disabled
             class="col-span-1 p-3 pl-4 border-y border-l bg-gray-50 text-gray-400 focus:outline-0"
@@ -613,7 +613,7 @@ const {
   lubricatingOilDataCorrectionSum: lubricating_oil_data_correction_sum,
   // fresh water
   freshwaterConsumedSum: freshwater_consumed_sum,
-  freshwaterEvaporatedSum: freshwater_evaporated_sum,
+  freshwaterGeneratedSum: freshwater_generated_sum,
   freshwaterChangeSum: freshwater_change_sum,
   freshwaterReceivingSum: freshwater_receiving_sum,
   freshwaterDischargingSum: freshwater_discharging_sum,

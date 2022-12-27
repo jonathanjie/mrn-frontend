@@ -18,7 +18,7 @@
           <div
             class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
           >
-            {{ $t("totalDistanceByOBS") }}
+            {{ $t("totalDistanceByObservation") }}
           </div>
           <div class="flex col-span-3 p-2 pl-4 border-b bg-gray-50">
             <input

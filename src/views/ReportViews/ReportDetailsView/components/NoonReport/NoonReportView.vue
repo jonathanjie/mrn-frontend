@@ -113,7 +113,7 @@ const {
   gesystemRob,
   lubricatingOilDataCorrection,
   freshwaterConsumed,
-  freshwaterEvaporated,
+  freshwaterGenerated,
   freshwaterReceived,
   freshwaterDischarged,
   freshwaterChange,
@@ -325,7 +325,7 @@ const sendReport = async () => {
       ],
       freshwaterdata: {
         consumed: freshwaterConsumed.value,
-        evaporated: freshwaterEvaporated.value,
+        evaporated: freshwaterGenerated.value,
         received: 0, // irrelevant for noon report
         discharged: 0, // irrelevant for noon report
         rob: freshwaterRob.value,
@@ -390,7 +390,10 @@ const sendReport = async () => {
     <NoonWeather :report="props.report" />
 
     <!-- Heavy Weather Condition -->
-    <NoonHeavyWeather v-if="props.report.heavyweatherdata" :report="props.report" />
+    <NoonHeavyWeather
+      v-if="props.report.heavyweatherdata"
+      :report="props.report"
+    />
 
     <!-- Distance & Time -->
     <NoonDistanceAndTime :report="props.report" />

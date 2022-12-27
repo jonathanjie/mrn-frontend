@@ -111,7 +111,7 @@
           v-model="wind_speed"
           @keypress="preventNaN($event, wind_speed)"
           placeholder="00.0"
-          class="text-14 w-24 text-gray-700 focus:outline-0"
+          class="text-14 w-20 text-gray-700 focus:outline-0"
         />
         <MiniUnitDisplay>KNOT</MiniUnitDisplay>
       </div>

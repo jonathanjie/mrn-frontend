@@ -459,8 +459,8 @@
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="freshwater_evaporated"
-            @keypress="preventNaN($event, freshwater_evaporated)"
+            v-model="freshwater_generated"
+            @keypress="preventNaN($event, freshwater_generated)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
@@ -513,7 +513,7 @@ const {
   lubricatingOilDataCorrection: lubricating_oil_data_correction,
   // fresh water
   freshwaterConsumed: freshwater_consumed,
-  freshwaterEvaporated: freshwater_evaporated,
+  freshwaterGenerated: freshwater_generated,
   freshwaterChange: freshwater_change,
   freshwaterRob: freshwater_rob,
 } = storeToRefs(store);

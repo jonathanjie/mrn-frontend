@@ -191,11 +191,11 @@ export const useHarbourPortReportStore = defineStore(
     });
 
     const freshwaterConsumed = ref("");
-    const freshwaterEvaporated = ref("");
+    const freshwaterGenerated = ref("");
     const freshwaterReceiving = ref("");
     const freshwaterDischarging = ref("");
     const freshwaterChange = computed(
-      () => +(freshwaterEvaporated.value - freshwaterConsumed.value).toFixed(2)
+      () => +(freshwaterGenerated.value - freshwaterConsumed.value).toFixed(2)
     );
     const freshwaterRob = computed(
       () =>
@@ -251,7 +251,7 @@ export const useHarbourPortReportStore = defineStore(
       gesystemRob,
       lubricatingOilDataCorrection,
       freshwaterConsumed,
-      freshwaterEvaporated,
+      freshwaterGenerated,
       freshwaterReceiving,
       freshwaterDischarging,
       freshwaterChange,

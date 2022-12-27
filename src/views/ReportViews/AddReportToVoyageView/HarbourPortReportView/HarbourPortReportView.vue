@@ -105,7 +105,7 @@ const {
   gesystemRob,
   lubricatingOilDataCorrection,
   freshwaterConsumed,
-  freshwaterEvaporated,
+  freshwaterGenerated,
   freshwaterReceiving,
   freshwaterDischarging,
   freshwaterChange,

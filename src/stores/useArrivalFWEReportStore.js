@@ -192,9 +192,9 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   });
 
   const freshwaterConsumed = ref("");
-  const freshwaterEvaporated = ref("");
+  const freshwaterGenerated = ref("");
   const freshwaterChange = computed(
-    () => +(freshwaterEvaporated.value - freshwaterConsumed.value).toFixed(2)
+    () => +(freshwaterGenerated.value - freshwaterConsumed.value).toFixed(2)
   );
   const freshwaterRob = computed(
     () => temp.freshwaterPrevROB + freshwaterChange.value
@@ -269,7 +269,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     gesystemRob,
     lubricatingOilDataCorrection,
     freshwaterConsumed,
-    freshwaterEvaporated,
+    freshwaterGenerated,
     freshwaterChange,
     freshwaterRob,
     // Actual performance

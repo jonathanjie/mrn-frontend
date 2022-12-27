@@ -83,7 +83,7 @@ const {
   shouldPilotDepDataBeSent,
   // Pilot Station - Arrival
   pilotArrName,
-  pilotArrDate,
+  pilotArrDateUTC,
   pilotArrDraftFwd,
   pilotArrDraftMid,
   pilotArrDraftAft,
@@ -128,7 +128,7 @@ const {
   gesystemRob,
   lubricatingOilDataCorrection,
   freshwaterConsumed,
-  freshwaterEvaporated,
+  freshwaterGenerated,
   freshwaterRob,
 } = storeToRefs(store);
 
@@ -195,7 +195,7 @@ const sendReport = async () => {
       : null,
     arrivalpilotstation: {
       name: pilotArrName.value,
-      date: pilotArrDate.value,
+      date: pilotArrDateUTC.value,
       position: pilotArrPosition,
       draft_fwd: pilotArrDraftFwd.value,
       draft_mid: pilotArrDraftMid.value,
@@ -323,7 +323,7 @@ const sendReport = async () => {
       ],
       freshwaterdata: {
         consumed: freshwaterConsumed.value || 0,
-        generated: freshwaterEvaporated.value || 0,
+        generated: freshwaterGenerated.value || 0,
         received: 0, // Does not apply for Departure COSP reports
         discharged: 0, // Does not apply for Departure COSP reports
         rob: freshwaterRob.value || 0,
