@@ -333,7 +333,7 @@ const sendReport = async () => {
             BLR: lsfoBreakdownSum.value.blr || 0,
             IGG: lsfoBreakdownSum.value.igg || 0,
           },
-          fueloildatacorrection:
+          fueloiltotalconsumptiondatacorrection:
             fuelOilDataCorrectionSum.value.type === FuelOil.LSFO
               ? {
                   correction: fuelOilDataCorrectionSum.value.correction,
@@ -353,7 +353,7 @@ const sendReport = async () => {
             BLR: mgoBreakdownSum.value.blr || 0,
             IGG: mgoBreakdownSum.value.igg || 0,
           },
-          fueloildatacorrection:
+          fueloiltotalconsumptiondatacorrection:
             fuelOilDataCorrectionSum.value.type === FuelOil.MGO
               ? {
                   correction: fuelOilDataCorrectionSum.value.correction,
@@ -370,7 +370,7 @@ const sendReport = async () => {
           receipt: mecylinderBreakdownSum.value.receipt || 0,
           debunkering: mecylinderBreakdownSum.value.debunkering || 0,
           rob: mecylinderRobSum.value || 0,
-          lubricatingoildatacorrection:
+          lubricatingoiltotalconsumptiondatacorrection:
             lubricatingOilDataCorrectionSum.value.type ===
             LubricatingOil.ME_CYLINDER
               ? {
@@ -385,7 +385,7 @@ const sendReport = async () => {
           receipt: mesystemBreakdownSum.value.receipt || 0,
           debunkering: mesystemBreakdownSum.value.debunkering || 0,
           rob: mesystemRobSum.value || 0,
-          lubricatingoildatacorrection:
+          lubricatingoiltotalconsumptiondatacorrection:
             lubricatingOilDataCorrectionSum.value.type ===
             LubricatingOil.ME_SYSTEM
               ? {
@@ -400,7 +400,7 @@ const sendReport = async () => {
           receipt: mesumpBreakdownSum.value.receipt || 0,
           debunkering: mesumpBreakdownSum.value.debunkering || 0,
           rob: mesumpRobSum.value || 0,
-          lubricatingoildatacorrection:
+          lubricatingoiltotalconsumptiondatacorrection:
             lubricatingOilDataCorrectionSum.value.type ===
             LubricatingOil.ME_SUMP
               ? {
@@ -415,7 +415,7 @@ const sendReport = async () => {
           receipt: gesystemBreakdownSum.value.receipt || 0,
           debunkering: gesystemBreakdownSum.value.debunkering || 0,
           rob: gesystemRobSum.value || 0,
-          lubricatingoildatacorrection:
+          lubricatingoiltotalconsumptiondatacorrection:
             lubricatingOilDataCorrectionSum.value.type ===
             LubricatingOil.GE_SYSTEM
               ? {
