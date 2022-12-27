@@ -34,35 +34,17 @@ export const ReportTypeToDisplay = {
 };
 
 export const ErrorFieldsToDisplay = {
-  time: "Time",
-  timezone: "Time zone",
-  weather_notation: "Weather notation",
-  visibility: "Visibility",
-  wind_direction: "Wind direction",
-  wind_speed: "Wind force",
-  sea_direction: "Wave direction",
-  sea_state: "Wave force",
-  swell_direction: "Swell direction",
-  swell_scale: "Swell scale",
-  air_pressure: "Air pressure",
-  air_temperature_dry: "Air temperature (dry)",
-  air_temperature_wet: "Air temperature (wet)",
-  sea_temperature: "Sea water temperature",
-  ice_condition: "Glacier ice condition",
-  distance_observed_since_noon: "Distanace by observation",
-  distance_engine_since_noon: "Distance by engine",
-  distance_engine_total: "Distance by engine (total)",
-  slip_average: "Average slip",
-  slip_since_noon: "Slip",
-  hours_since_noon: "Time",
-  revolution_count: "Revolution counter",
   noonreporttimeandposition: "Reporting Noon",
   weatherdata: "Weather",
   distanceperformancedata: "Distance & Time / Performance",
   report_date: "Overview: Report Date",
   report_tz: "Overview: Report Time Zone",
   reportroute: "Overview: Departure & Destination",
-  depature_tz: "Departure time zone",
+  cargooperation: "Cargo Operation",
+  departurepilotstation: "Pilot Station - Departure",
+  departurevesselcondition: "Vessel Condition at Departure",
+  totalconsumptiondata: "Consumption & Condition (Total in Harbour/Port)",
+  consumptionconditiondata: "Consumption & Condition",
 };
 
 export const Direction = {
@@ -92,13 +74,19 @@ export const LubricatingOil = {
   GE_SYSTEM: "G/E System",
 };
 
+export const TotalConsumptionType = {
+  IN_HARBOUR_PORT: "IN_HARBOUR_PORT",
+  PILOT_TO_PILOT: "PILOT_TO_PILOT",
+  PORT_TO_PORT: "PORT_TO_PORT",
+};
+
 export const ConsumptionType = {
   NOON_TO_NOON: "NOON_TO_NOON",
-  LAST_TO_SBY: "LAST_TO_SBY",
+  LAST_TO_SBY: "LAST_TO_STANDBY",
   IN_HARBOUR_PORT: "IN_HARBOUR_PORT",
-  STANDBY_TO_RUNUP: "STANDBY_TO_RUNUP",
-  NOON_TO_STANDBY: "NOON_TO_STANDBY",
-  STANDBY_TO_FWE: "STANDBY_TO_FWE",
+  SBY_TO_RUP: "STANDBY_TO_RUNUP",
+  NOON_TO_SBY: "NOON_TO_STANDBY",
+  SBY_TO_FWE: "STANDBY_TO_FWE",
   LAST_TO_EVENT: "LAST_TO_EVENT",
 };
 
@@ -111,6 +99,7 @@ const constants = {
   FuelOil: FuelOil,
   LubricatingOil: LubricatingOil,
   ConsumptionType: ConsumptionType,
+  TotalConsumptionType: TotalConsumptionType,
 };
 
 export default constants;

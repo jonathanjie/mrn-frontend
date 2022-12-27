@@ -45,11 +45,12 @@
                     <div class="text-blue-700">
                       {{
                         !Number.isInteger(key)
-                          ? ErrorFieldsToDisplay[key] + ": "
+                          ? key.replaceAll("_", " ") + ": "
                           : ""
                       }}
                     </div>
                     <div class="text-gray-700">
+                      <!-- Assuming only one error can be returned / is relevant per field -->
                       {{ Array.isArray(val) ? val[0] : val }}
                     </div>
                   </li>
