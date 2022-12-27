@@ -5,7 +5,7 @@ import router from "@/router";
 import { Report } from "@/constants";
 import { storeToRefs } from "pinia";
 import NoonReportView from "./components/NoonReport/NoonReportView.vue";
-import DepartureReportView from "../DepartureReportView.vue";
+import DepartureReportView from "./components/DepartureReport/DepartureReportView.vue";
 
 // Props
 const props = defineProps({

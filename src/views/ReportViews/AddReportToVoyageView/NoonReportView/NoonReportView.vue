@@ -58,7 +58,7 @@ import {
   parsePositionToString,
   parsePortLocode,
   convertLTToUTC,
-} from "../../utils/helpers.js";
+} from "@/utils/helpers.js";
 
 import NoonOverview from "@/components/Reports/NoonReport/NoonOverview.vue";
 import NoonDetails from "@/components/Reports/NoonReport/NoonDetails.vue";
