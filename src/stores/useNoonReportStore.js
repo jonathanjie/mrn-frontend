@@ -111,7 +111,20 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const heavySeaDirection = ref("default");
   const heavySeaState = ref("default");
   const heavyRemarks = ref("");
-  const heavyWeatherIsActive = ref(false);
+  const isHeavyWeatherEnabled = ref(false); // toggle button is on/off
+  const shouldHeavyWeatherDataBeSent = computed(
+    // at least one field is filled out
+    () =>
+      heavyWeatherHours.value ||
+      heavyWeatherDist.value ||
+      heavyWeatherConsumption.value ||
+      heavyWeatherNotation.value ||
+      heavyWindDirection.value ||
+      heavyWindSpeed.value ||
+      heavySeaDirection.value ||
+      heavySeaState.value ||
+      heavyRemarks.value
+  );
 
   // Distance and Time
   const hoursSinceNoon = computed(() =>
@@ -331,7 +344,23 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const stoppageLongDir = ref("default");
   const stoppageLongDegree = ref("");
   const stoppageLongMinutes = ref("");
-  const stoppageIsActive = ref(false);
+  const isStoppageEnabled = ref(false); // stoppage button toggled on/off
+  const shouldStoppageDataBeSent = computed(
+    // at least one field is filled out
+    () =>
+      stoppageBeginning.value ||
+      stoppageEnding.value ||
+      stoppageDuration.value ||
+      stoppageChangedRPM.value ||
+      stoppageReason.value ||
+      stoppageRemarks.value ||
+      stoppageLatDir.value ||
+      stoppageLatDegree.value ||
+      stoppageLatMinutes.value ||
+      stoppageLongDir.value ||
+      stoppageLongDegree.value ||
+      stoppageLongMinutes.value
+  );
 
   return {
     // Overview
@@ -386,7 +415,8 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     heavySeaDirection,
     heavySeaState,
     heavyRemarks,
-    heavyWeatherIsActive,
+    isHeavyWeatherEnabled,
+    shouldHeavyWeatherDataBeSent,
     // DistanceTime
     hoursSinceNoon,
     hoursTotal,
@@ -439,15 +469,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     stoppageLongDir,
     stoppageLongDegree,
     stoppageLongMinutes,
-    stoppageIsActive,
+    isStoppageEnabled,
+    shouldStoppageDataBeSent,
   };
-});
-
-export const useCounterStore = defineStore("counter", () => {
-  const counter = ref(0);
-  function increment() {
-    counter.value++;
-  }
-
-  return { counter, increment };
 });

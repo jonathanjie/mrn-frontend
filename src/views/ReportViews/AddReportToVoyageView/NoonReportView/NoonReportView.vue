@@ -120,7 +120,7 @@ const {
   heavySeaDirection,
   heavySeaState,
   heavyRemarks,
-  heavyWeatherIsActive,
+  shouldHeavyWeatherDataBeSent,
   // DistanceTime
   hoursSinceNoon,
   hoursTotal,
@@ -172,7 +172,7 @@ const {
   stoppageLongDir,
   stoppageLongDegree,
   stoppageLongMinutes,
-  stoppageIsActive,
+  shouldStoppageDataBeSent,
 } = storeToRefs(store);
 
 const submissionStatusStore = useSubmissionStatusStore();
@@ -210,7 +210,7 @@ const sendReport = async () => {
     portName: routeArrivalPortName.value,
   });
 
-  let REPORT = {
+  const REPORT = {
     report_type: Report.type.NOON,
     voyage: voyageNo.value,
     voyage_leg: legNo.value,
@@ -381,34 +381,30 @@ const sendReport = async () => {
       },
       consumption_type: ConsumptionType.NOON_TO_NOON,
     },
-    heavyweatherdata: null,
-    stoppagedata: null,
+    heavyweatherdata: shouldHeavyWeatherDataBeSent.value
+      ? {
+          total_hours: heavyWeatherHours.value,
+          observed_distance: heavyWeatherDist.value,
+          fuel_consumption: heavyWeatherConsumption.value,
+          wind_direction: heavyWindDirection.value,
+          wind_speed: heavyWindSpeed.value,
+          sea_direction: heavySeaDirection.value,
+          sea_state: heavySeaState.value,
+          remarks: heavyRemarks.value,
+        }
+      : null,
+    stoppagedata: shouldStoppageDataBeSent.value
+      ? {
+          start_date: stoppageBeginning.value,
+          end_date: stoppageEnding.value || null,
+          duration: stoppageDuration.value,
+          reduced_rpm: stoppageChangedRPM.value,
+          position: stoppagePosition,
+          reason: stoppageReason.value,
+          remarks: stoppageRemarks.value,
+        }
+      : null,
   };
-
-  if (heavyWeatherIsActive.value) {
-    REPORT.heavyweatherdata = {
-      total_hours: heavyWeatherHours.value,
-      observed_distance: heavyWeatherDist.value,
-      fuel_consumption: heavyWeatherConsumption.value,
-      wind_direction: heavyWindDirection.value,
-      wind_speed: heavyWindSpeed.value,
-      sea_direction: heavySeaDirection.value,
-      sea_state: heavySeaState.value,
-      remarks: heavyRemarks.value,
-    };
-  }
-
-  if (stoppageIsActive.value) {
-    REPORT.stoppagedata = {
-      start_date: stoppageBeginning.value,
-      end_date: stoppageEnding.value || null,
-      duration: stoppageDuration.value,
-      reduced_rpm: stoppageChangedRPM.value,
-      position: stoppagePosition,
-      reason: stoppageReason.value,
-      remarks: stoppageRemarks.value,
-    };
-  }
 
   console.log("data: ", REPORT);
 
@@ -431,15 +427,10 @@ const sendReport = async () => {
 
     if (response.ok) {
       isSubmissionSuccessful.value = true;
-      // router.push({ name: "vessel-overview" });
-      // need to update noonReportNo and other voyage details
       store.$reset();
     } else {
       errorMessage.value = data;
     }
-    // else {
-    //   window.alert(JSON.stringify(data, null, 2));
-    // }
     isSubmissionRequested.value = true;
   } catch (error) {
     console.log(error);
