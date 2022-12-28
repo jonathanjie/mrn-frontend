@@ -223,53 +223,11 @@ const getLegs = async () => {
       console.log(error.message);
     });
 };
-
-const getVoyages = async (imo) => {
-  return await axios
-    .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-};
-
-const getReports = async (imo) => {
-  return await axios
-    .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-};
-const router = useRouter();
-const store = useVoyageStore();
 const ship = await getShip();
 const shipFlag = ship.shipspecs.flag;
 const payloadType = shipRef[ship.ship_type];
 const portCalls = await getLegs();
 const date = new Date(portCalls[0].arrival_date).toUTCString();
-
-onBeforeRouteLeave(async () => {
-  const voyages = await getVoyages(props.imo);
-  const reports = await getReports(props.imo);
-  store.voyages = voyages;
-  // localStorage.setItem("voyages", JSON.stringify(voyages));
-  let output = {};
-  for (let i of reports) {
-    for (let j of voyages) {
-      if (i.uuid == j.uuid) {
-        output[i.uuid] = i.reports.reverse();
-      }
-    }
-  }
-  // localStorage.setItem("output", JSON.stringify(output));
-  store.reports = output;
-  console.log("This thing runs");
-});
 
 const shipCapacity = "300,000";
 const previousCIIGrade = "A";

@@ -36,8 +36,10 @@ let portCodeToPortName = ref({
   "SG PPT": "Singapore",
   "KR USN": "Ulsan, South Korea",
 });
-
+console.log("This runs in overview view");
 const store = useVoyageStore();
 const voyages = store.voyages;
+console.log("Voyages in Overview", voyages);
 const reports = store.reports;
+console.log("Report in Overview", voyages);
 </script>

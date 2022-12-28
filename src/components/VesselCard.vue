@@ -1,10 +1,7 @@
 <template>
-  <router-link
-    :to="{
-      name: 'speed-graph-overview',
-      params: { vesselname: props.vesselName, imo: props.imoNo },
-    }"
-    class="flex h-20 mx-12 rounded-xl min-w-max z-10 bg-white drop-shadow mt-5 p-4"
+  <button
+    @click="navigate"
+    class="flex h-20 mx-12 rounded-xl min-w-max z-10 bg-white drop-shadow mt-5 p-4 items-center"
   >
     <div class="flex w-full mr-16 ml-0.5 items-center justify-between">
       <!-- Sailing Icon -->
@@ -100,7 +97,7 @@
         </ul>
       </div>
     </div>
-  </router-link>
+  </button>
 </template>
 
 <script setup>
@@ -118,4 +115,48 @@ const props = defineProps({
   reportStatus: String,
   updatedDate: String,
 });
+const router = useRouter();
+const store = useVoyageStore();
+
+const getVoyages = async (imo) => {
+  return await axios
+    .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+};
+
+const getReports = async (imo) => {
+  return await axios
+    .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+};
+
+const navigate = async () => {
+  const voyages = await getVoyages(props.imoNo);
+  const reports = await getReports(props.imoNo);
+  store.voyages = voyages;
+  let output = {};
+  for (let i of reports) {
+    for (let j of voyages) {
+      if (i.uuid == j.uuid) {
+        output[i.uuid] = i.reports.reverse();
+      }
+    }
+  }
+  store.reports = output;
+  console.log("This thing runs");
+  router.push({
+    name: "speed-graph-overview",
+    params: { vesselname: props.vesselName, imo: props.imoNo },
+  });
+};
 </script>

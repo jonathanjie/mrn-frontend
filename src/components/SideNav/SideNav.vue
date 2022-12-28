@@ -80,6 +80,7 @@
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useVoyageStore } from "@/stores/useVoyageStore";
 import { useAuth0 } from "@auth0/auth0-vue";
 import axios from "axios";
 
@@ -119,7 +120,7 @@ const getVoyages = async (imo) => {
     .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`)
     .then((response) => {
       console.log("Voyages", response);
-      return response.data.role;
+      return response.data;
     })
     .catch((error) => {
       console.log(error.message);
@@ -131,7 +132,7 @@ const getReports = async (imo) => {
     .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`)
     .then((response) => {
       console.log("Reports", response);
-      return response.data.role;
+      return response.data;
     })
     .catch((error) => {
       console.log(error.message);
@@ -149,20 +150,16 @@ const home = () => {
   }
 };
 
+const store = useVoyageStore();
 const role = await getUserRole();
 const manager = role === "manager";
-console.log("Sidebar loads");
 auth.updateUserRoleToken(user, role, jwt);
 const ship = await getShip();
-console.log(ship);
 
 if (manager) {
   router.push({ path: "/my-vessels" });
-} else {
-  localStorage.setItem("addSpec", ship.shipspecs === null);
-  const voyages = await getVoyages(ship.imo_reg);
-  const reports = await getReports(ship.imo_reg);
-  localStorage.setItem("voyages", JSON.stringify(voyages));
+
+  store.voyages = voyages;
   let output = {};
   for (let i of reports) {
     for (let j of voyages) {
@@ -171,7 +168,8 @@ if (manager) {
       }
     }
   }
-  localStorage.setItem("output", JSON.stringify(output));
+  store.reports = output;
+  console.log("This thing runs in sidebar");
   router.push({
     path: `/vessels/${ship.name}/${ship.imo_reg}/overview`,
   });
