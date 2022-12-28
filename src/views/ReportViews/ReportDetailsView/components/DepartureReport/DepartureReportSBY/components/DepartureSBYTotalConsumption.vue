@@ -230,7 +230,6 @@ const {
         <div
           v-if="!isAdditionalRemarkFuel"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
-          @click="isAdditionalRemarkFuel = !isAdditionalRemarkFuel"
         >
           <img
             src="@/assets/icons/checkboxes/unchecked_square.svg"
@@ -242,10 +241,7 @@ const {
           v-else
           class="bg-gray-25 flex-col py-4 px-3 border border-gray-100"
         >
-          <div
-            class="flex items-center mb-3 cursor-pointer"
-            @click="isAdditionalRemarkFuel = !isAdditionalRemarkFuel"
-          >
+          <div class="flex items-center mb-3 cursor-pointer">
             <img
               src="@/assets/icons/checkboxes/checked_square.svg"
               class="mr-2 h-5 w-5"
@@ -258,6 +254,7 @@ const {
             </div>
             <!-- TODO: make dynamic -->
             <select
+              disabled
               v-model="fuel_oil_data_correction_sum.type"
               class="col-span-6 p-3 border-l focus:outline-0"
               :class="
@@ -496,6 +493,7 @@ const {
               {{ $t("correction") }}
             </div>
             <select
+              disabled
               v-model="lubricating_oil_data_correction_sum.type"
               class="col-span-6 p-3 border-l focus:outline-0"
               :class="
