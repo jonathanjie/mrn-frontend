@@ -87,3 +87,10 @@ export const LOAD_CONDITIONS = {
   eastbound: "EASTBOUND",
   westbound: "WESTBOUND",
 };
+
+export const PARKING_STATUS = {
+  anchoringStartOutside: "ANCHOR_START_OUTSIDE",
+  anchoringStartInside: "ANCHOR_START_INSIDE",
+  driftingStart: "DRIFTING_START",
+  berthingStart: "BERTHING",
+};

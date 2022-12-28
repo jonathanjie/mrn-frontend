@@ -33,19 +33,26 @@
       <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
         {{ $t("dateAndTime") }}
       </div>
-      <DatePicker
-        v-model="reporting_date_time"
-        class="col-span-3"
-        textInput
-        :textInputOptions="textInputOptions"
-        :format="format"
-        :modelValue="string"
-        :placeholder="$t('selectDateAndTime')"
-      >
-        <template #input-icon>
-          <img src="" />
-        </template>
-      </DatePicker>
+      <div class="col-span-3 relative flex items-center bg-white">
+        <DatePicker
+          v-model="reporting_date_time"
+          class="grow"
+          textInput
+          :textInputOptions="textInputOptions"
+          :format="format"
+          :modelValue="string"
+          :placeholder="$t('selectDateAndTime')"
+        >
+          <template #input-icon>
+            <img src="" />
+          </template>
+        </DatePicker>
+        <MiniUnitDisplay
+          class="absolute right-0 min-w-fit"
+          :class="reporting_date_time ? 'mr-9' : 'mr-2'"
+          >{{ reporting_date_time_utc }}</MiniUnitDisplay
+        >
+      </div>
     </div>
     <div></div>
 
@@ -116,35 +123,13 @@
         {{ $t("status") }}
       </div>
       <div class="col-span-3 flex flex-col space-y-2 p-3 text-gray-700">
-        <div class="flex align-center space-x-2">
-          <input
-            type="radio"
-            id="anchoringStartOutside"
-            value="0"
-            v-model="status"
-          />
-          <label for="anchoringStartOutside">{{
-            $t("anchoringStartOutside")
-          }}</label>
-        </div>
-        <div class="flex align-center space-x-2">
-          <input
-            type="radio"
-            id="anchoringStartInside"
-            value="1"
-            v-model="status"
-          />
-          <label for="anchoringStartInside">{{
-            $t("anchoringStartInside")
-          }}</label>
-        </div>
-        <div class="flex align-center space-x-2">
-          <input type="radio" id="driftingStart" value="2" v-model="status" />
-          <label for="driftingStart">{{ $t("driftingStart") }}</label>
-        </div>
-        <div class="flex align-center space-x-2">
-          <input type="radio" id="berthingStart" value="3" v-model="status" />
-          <label for="berthingStart">{{ $t("berthingStart") }}</label>
+        <div
+          v-for="(val, key) in PARKING_STATUS"
+          :key="val"
+          class="flex align-center space-x-2"
+        >
+          <input type="radio" :id="val" :value="val" v-model="status" />
+          <label :for="val">{{ $t(key) }}</label>
         </div>
       </div>
     </div>
@@ -221,15 +206,24 @@
 </template>
 
 <script setup>
-import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
+import {
+  preventNaN,
+  textInputOptions,
+  format,
+  formatUTC,
+} from "@/utils/helpers.js";
 import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
 import { storeToRefs } from "pinia";
-import { TIMEZONES, OPERATIONS } from "@/utils/options";
+import { TIMEZONES, OPERATIONS, PARKING_STATUS } from "@/utils/options";
+import { UTCPlaceholder } from "@/constants";
+import { computed } from "vue";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 
 const store = useArrivalFWEReportStore();
 const {
   reportingTimeZone: reporting_time_zone,
   reportingDateTime: reporting_date_time,
+  reportingDateTimeUTC,
   latDir: lat_dir,
   latDegree: lat_degree,
   latMinute: lat_minute,
@@ -250,4 +244,10 @@ const resetOperations = () => {
     operations.value = ["waiting"];
   }
 };
+
+const reporting_date_time_utc = computed(() =>
+  reportingDateTimeUTC.value
+    ? formatUTC(new Date(reportingDateTimeUTC.value))
+    : UTCPlaceholder
+);
 </script>

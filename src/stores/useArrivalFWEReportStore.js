@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref, computed, reactive } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
 import { storeToRefs } from "pinia";
+import { convertLTToUTC } from "@/utils/helpers";
 
 const temp = {
   // Finish With Engine
@@ -11,14 +12,14 @@ const temp = {
     "cargoOpBerth",
     "bunkeringDebunkering",
     "receivingProvisionSpareParts",
+    "others",
   ],
-  otherPlannedOperation: "",
+  otherPlannedOperation: "Sign contract",
   // fetch above from most recent arrival eosp/sby
 
   // Distance & Time / Performance
-  lastNoonReportTime: "2022-12-01T00:00:00Z",
-  rupOfDeparture: "2022-11-21T00:00:00Z",
-  revolutionCountYesterday: 20000,
+  sbyTime: "2022-12-01T00:00:00Z",
+  revolutionCountAtSby: 20000,
   propellerPitch: 2,
 
   // Consumption & Condition
@@ -29,6 +30,24 @@ const temp = {
   mesumpPrevROB: 200,
   gesysPrevROB: 200,
   freshwaterPrevROB: 200,
+
+  // Actual Performance
+  prevDistanceByObservation: 2000,
+  prevSailingTime: 200,
+
+  // Total Consumption
+  prevLsfoBreakdown: {
+    me: 100,
+    ge: 100,
+    blr: 100,
+    igg: 100,
+  },
+  prevMgoBreakdown: {
+    me: 100,
+    ge: 100,
+    blr: 100,
+    igg: 100,
+  },
 };
 
 export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
@@ -43,10 +62,17 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   const voyageNo = curVoyageNo;
   const reportingDateTime = ref("");
   const reportingTimeZone = ref("default");
-
+  const reportingDateTimeUTC = computed(() =>
+    reportingTimeZone.value !== "default" && reportingDateTime.value
+      ? convertLTToUTC(
+          new Date(reportingDateTime.value),
+          reportingTimeZone.value
+        )
+      : ""
+  );
   // Finish With Engine
   const latDir = ref("default");
-  const latMinutes = ref("");
+  const latMinute = ref("");
   const latDegree = ref("");
   const longDir = ref("default");
   const longMinute = ref("");
@@ -57,8 +83,24 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   const status = ref("");
 
   // Pilot Station -- Arrival
+  const shouldPilotArrDataBeSent = computed(
+    () =>
+      pilotArrName.value ||
+      pilotArrDateTime.value ||
+      pilotArrDraftFwd.value ||
+      pilotArrDraftMid.value ||
+      pilotArrDraftAft.value
+  );
   const pilotArrName = ref("");
-  const pilotArrDate = ref("");
+  const pilotArrDateTime = ref("");
+  const pilotArrDateTimeUTC = computed(() =>
+    reportingTimeZone.value !== "default" && pilotArrDateTime.value
+      ? convertLTToUTC(
+          new Date(pilotArrDateTime.value),
+          reportingTimeZone.value
+        )
+      : ""
+  );
   const pilotArrDraftFwd = ref("");
   const pilotArrDraftMid = ref("");
   const pilotArrDraftAft = ref("");
@@ -73,8 +115,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   const hours = computed(() =>
     reportingDateTime.value
       ? +(
-          (Date.parse(reportingDateTime.value) -
-            Date.parse(temp.lastNoonReportTime)) /
+          (Date.parse(reportingDateTime.value) - Date.parse(temp.sbyTime)) /
           (1000 * 60 * 60)
         ).toFixed(0)
       : ""
@@ -83,7 +124,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   const distanceEng = computed(() =>
     revolutionCount.value
       ? +(
-          (Number(revolutionCount.value) - temp.revolutionCountYesterday) *
+          (Number(revolutionCount.value) - temp.revolutionCountAtSby) *
           temp.propellerPitch
         ).toFixed(2)
       : ""
@@ -201,19 +242,55 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   );
 
   // Actual Performance
-  // TODO: need to be computed values
-  const totalDistanceObs = ref("");
-  const totalTime = ref("");
-  const lsfoMe = ref("");
-  const lsfoGe = ref("");
-  const lsfoBoiler = ref("");
-  const lsfoIgg = ref("");
-  const lsfoTotal = ref("");
-  const mgoMe = ref("");
-  const mgoGe = ref("");
-  const mgoBoiler = ref("");
-  const mgoIgg = ref("");
-  const mgoTotal = ref("");
+  const totalDistanceObs = computed(
+    () =>
+      +(temp.prevDistanceByObservation + Number(distanceObs.value)).toFixed(2)
+  );
+  const totalSailingTime = computed(
+    () => +(temp.prevSailingTime + Number(hours.value)).toFixed(2)
+  );
+  const lsfoMeSum = computed(
+    () => +(temp.prevLsfoBreakdown.me + Number(lsfoBreakdown.me)).toFixed(2)
+  );
+  const lsfoGeSum = computed(
+    () => +(temp.prevLsfoBreakdown.ge + Number(lsfoBreakdown.ge)).toFixed(2)
+  );
+  const lsfoBoilerSum = computed(
+    () => +(temp.prevLsfoBreakdown.blr + Number(lsfoBreakdown.blr)).toFixed(2)
+  );
+  const lsfoIggSum = computed(
+    () => +(temp.prevLsfoBreakdown.igg + Number(lsfoBreakdown.igg)).toFixed(2)
+  );
+  const lsfoTotalSum = computed(
+    () =>
+      +(
+        Number(lsfoMeSum.value) +
+        Number(lsfoGeSum.value) +
+        Number(lsfoBoilerSum.value) +
+        Number(lsfoIggSum.value)
+      ).toFixed(2)
+  );
+  const mgoMeSum = computed(
+    () => +(temp.prevMgoBreakdown.me + Number(mgoBreakdown.me)).toFixed(2)
+  );
+  const mgoGeSum = computed(
+    () => +(temp.prevMgoBreakdown.ge + Number(mgoBreakdown.ge)).toFixed(2)
+  );
+  const mgoBoilerSum = computed(
+    () => +(temp.prevMgoBreakdown.blr + Number(mgoBreakdown.blr)).toFixed(2)
+  );
+  const mgoIggSum = computed(
+    () => +(temp.prevMgoBreakdown.igg + Number(mgoBreakdown.igg)).toFixed(2)
+  );
+  const mgoTotalSum = computed(
+    () =>
+      +(
+        Number(mgoMeSum.value) +
+        Number(mgoGeSum.value) +
+        Number(mgoBoilerSum.value) +
+        Number(mgoIggSum.value)
+      ).toFixed(2)
+  );
 
   return {
     // Overview
@@ -223,9 +300,10 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     voyageNo,
     reportingDateTime,
     reportingTimeZone,
+    reportingDateTimeUTC,
     // Finish With Engine
     latDir,
-    latMinutes,
+    latMinute,
     latDegree,
     longDir,
     longMinute,
@@ -235,8 +313,10 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     operations,
     status,
     // Pilot Station -- Arrival
+    shouldPilotArrDataBeSent,
     pilotArrName,
-    pilotArrDate,
+    pilotArrDateTime,
+    pilotArrDateTimeUTC,
     pilotArrDraftFwd,
     pilotArrDraftMid,
     pilotArrDraftAft,
@@ -274,16 +354,16 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     freshwaterRob,
     // Actual performance
     totalDistanceObs,
-    totalTime,
-    lsfoMe,
-    lsfoGe,
-    lsfoBoiler,
-    lsfoIgg,
-    lsfoTotal,
-    mgoMe,
-    mgoGe,
-    mgoBoiler,
-    mgoIgg,
-    mgoTotal,
+    totalSailingTime,
+    lsfoMeSum,
+    lsfoGeSum,
+    lsfoBoilerSum,
+    lsfoIggSum,
+    lsfoTotalSum,
+    mgoMeSum,
+    mgoGeSum,
+    mgoBoilerSum,
+    mgoIggSum,
+    mgoTotalSum,
   };
 });

@@ -53,6 +53,7 @@ export const ErrorFieldsToDisplay = {
   arrivalstandbytimeandposition: "S/BY for Arrival",
   heavyweatherdata: "Heavy Weather Condition",
   stoppagedata: "Stoppage or Change in RPM (at Sea)",
+  arrivalfwetimeandposition: "Finish With Engine",
 };
 
 export const Direction = {
