@@ -20,7 +20,7 @@
       :start="portCodeToPortName[voyage.departure_port]"
       :mid="'At Sea'"
       :dest="portCodeToPortName[voyage.arrival_port]"
-      :reports="output[voyage.uuid]"
+      :reports="reports[voyage.uuid]"
       :expanded="index == 0"
     ></VoyageCard>
   </div>
@@ -29,7 +29,7 @@
 <script setup>
 import { ref } from "vue";
 import VoyageCard from "../../components/VoyageCard.vue";
-
+import { useVoyageStore } from "@/stores/useVoyageStore";
 let isEmpty = ref(false);
 
 let portCodeToPortName = ref({
@@ -37,6 +37,7 @@ let portCodeToPortName = ref({
   "KR USN": "Ulsan, South Korea",
 });
 
-const voyages = JSON.parse(localStorage.getItem("voyages"));
-const output = JSON.parse(localStorage.getItem("output"));
+const store = useVoyageStore();
+const voyages = store.voyages;
+const reports = store.reports;
 </script>

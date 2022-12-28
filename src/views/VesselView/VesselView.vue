@@ -11,9 +11,12 @@
         >
           <!-- TODO: need to change focus to actual onclick events -->
           <!-- TODO: don't make these router-links; they shouldn't be separate URIs, just tabs -->
-          <button
+          <router-link
+            :to="{
+              name: 'vessel-overview',
+              params: { vesselname: props.vesselname, imo: props.imo },
+            }"
             class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
-            @click="reports"
             :class="
               $route.name == 'vessel-overview'
                 ? 'border-b-2 border-blue-700 text-blue-700'
@@ -21,7 +24,7 @@
             "
           >
             {{ $t("report") }}
-          </button>
+          </router-link>
           <router-link
             to="vessel-spec"
             class="hidden pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
@@ -61,14 +64,9 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 import GradientButton from "../../components/Buttons/GradientButton.vue";
 import InitializationModal from "@/components/InitializationModal.vue";
-import { useAuthStore } from "@/stores/useAuthStore";
-import { useRouter } from "vue-router";
 
-const router = useRouter();
-const auth = useAuthStore();
 // Variable to force replacement of router-view
 const isEmpty = true;
 let voyageNum = 1;
@@ -102,56 +100,5 @@ const addVoyage = async (voyageData) => {
     }
   );
   update.value += 1;
-};
-
-const getVoyages = async (imo) => {
-  const DUMMY_TOKEN = auth.jwt;
-  const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`,
-    {
-      headers: {
-        Authorization: "Bearer " + DUMMY_TOKEN,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-
-  const json = response.json();
-  return json;
-};
-
-const getReports = async (imo) => {
-  const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`,
-    {
-      headers: {
-        Authorization: "Bearer " + auth.jwt,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-
-  const json = response.json();
-  return json;
-};
-const reports = async () => {
-  const voyages = await getVoyages(props.imo);
-  const reports = await getReports(props.imo);
-  localStorage.setItem("voyages", JSON.stringify(voyages));
-  let output = {};
-  for (let i of reports) {
-    for (let j of voyages) {
-      if (i.uuid == j.uuid) {
-        output[i.uuid] = i.reports.reverse();
-      }
-    }
-  }
-  localStorage.setItem("output", JSON.stringify(output));
-  router.push({
-    name: "uploaded-reports",
-    params: { vesselname: props.vesselname, imo: props.imo },
-  });
 };
 </script>

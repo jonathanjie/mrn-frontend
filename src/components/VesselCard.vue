@@ -2,7 +2,7 @@
   <router-link
     :to="{
       name: 'speed-graph-overview',
-      params: { vesselname: vesselName, imo: imoNo },
+      params: { vesselname: props.vesselName, imo: props.imoNo },
     }"
     class="flex h-20 mx-12 rounded-xl min-w-max z-10 bg-white drop-shadow mt-5 p-4"
   >
@@ -43,27 +43,27 @@
 
       <div class="flex flex-col w-28">
         <span class="text-12 text-gray-500">{{ $t("name") }}</span>
-        <span class="text-14 text-gray-700">{{ vesselName }}</span>
+        <span class="text-14 text-gray-700">{{ props.vesselName }}</span>
       </div>
       <div class="flex flex-col w-28">
         <span class="text-12 text-gray-500">{{ $t("type") }}</span>
-        <span class="text-14 text-gray-700">{{ loadType }}</span>
+        <span class="text-14 text-gray-700">{{ props.loadType }}</span>
       </div>
       <div class="flex flex-col w-28">
         <span class="text-12 text-gray-500">{{ $t("flag") }}</span>
-        <span class="text-14 text-gray-700">{{ flag }}</span>
+        <span class="text-14 text-gray-700">{{ props.flag }}</span>
       </div>
       <div class="flex flex-col w-28">
         <span class="text-12 text-gray-500">{{ $t("imoNo") }}</span>
-        <span class="text-14 text-gray-700">{{ imoNo }}</span>
+        <span class="text-14 text-gray-700">{{ props.imoNo }}</span>
       </div>
       <div class="flex flex-col w-28">
         <span class="text-12 text-gray-500">{{ $t("shipSize") }}</span>
-        <span class="text-14 text-gray-700">{{ shipSize }} DWT</span>
+        <span class="text-14 text-gray-700">{{ props.shipSize }} DWT</span>
       </div>
       <div class="flex flex-col w-28">
         <span class="text-12 text-gray-500">{{ $t("loadingCondition") }}</span>
-        <span class="text-14 text-gray-700">{{ loadingCondition }}</span>
+        <span class="text-14 text-gray-700">{{ props.loadingCondition }}</span>
       </div>
       <div
         v-if="reportStatus === 'uploaded'"
@@ -72,7 +72,7 @@
         <ul class="list-disc p-0.5 text-14">
           <li class="text-green-500">
             <span class="text-green-700"
-              >{{ $t("uploadedStatus") }}: {{ updatedDate }}</span
+              >{{ $t("uploadedStatus") }}: {{ props.updatedDate }}</span
             >
           </li>
         </ul>
@@ -84,7 +84,7 @@
         <ul class="list-disc p-0.5 text-14">
           <li class="text-red-500">
             <span class="text-red-700"
-              >{{ $t("errorStatus") }}: {{ updatedDate }}</span
+              >{{ $t("errorStatus") }}: {{ props.updatedDate }}</span
             >
           </li>
         </ul>
@@ -104,7 +104,10 @@
 </template>
 
 <script setup>
-defineProps({
+import { useRouter } from "vue-router";
+import axios from "axios";
+import { useVoyageStore } from "@/stores/useVoyageStore";
+const props = defineProps({
   vesselStatus: String,
   vesselName: String,
   loadType: String,

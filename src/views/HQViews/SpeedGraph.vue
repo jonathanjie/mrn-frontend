@@ -40,9 +40,12 @@
           "
           >{{ $t("vesselSpec") }}</router-link
         >
-        <button
+        <router-link
+          :to="{
+            name: 'uploaded-reports',
+            params: { vesselname: props.vesselname, imo: props.imo },
+          }"
           class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
-          @click="uploadedReports"
           :class="
             $route.name == 'uploaded-reports'
               ? 'border-b-2 border-blue-700 text-blue-700'
@@ -50,7 +53,7 @@
           "
         >
           {{ $t("uploadedReports") }}
-        </button>
+        </router-link>
       </div>
     </div>
     <suspense>
@@ -60,72 +63,8 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
-import { useAuthStore } from "@/stores/useAuthStore";
-
-const auth = useAuthStore();
-const router = useRouter();
-
 const props = defineProps({
   vesselname: String,
   imo: String,
 });
-
-const getReports = async (imo) => {
-  const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`,
-    {
-      headers: {
-        Authorization: "Bearer " + auth.jwt,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-
-  const json = response.json();
-  return json;
-};
-
-const getVoyages = async (imo) => {
-  const DUMMY_TOKEN = auth.jwt;
-  const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/ships/" + imo + "/voyages/",
-    {
-      headers: {
-        Authorization: "Bearer " + DUMMY_TOKEN,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-
-  const json = response.json();
-  //   console.log(json);
-
-  if (response.length == 0) {
-    isEmpty = true;
-    console.log("NO DATA");
-  }
-  return json;
-};
-
-const uploadedReports = async () => {
-  const voyages = await getVoyages(props.imo);
-  const reports = await getReports(props.imo);
-  localStorage.setItem("voyages", JSON.stringify(voyages));
-  let output = {};
-  for (let i of reports) {
-    for (let j of voyages) {
-      if (i.uuid == j.uuid) {
-        output[i.uuid] = i.reports.reverse();
-      }
-    }
-  }
-  localStorage.setItem("output", JSON.stringify(output));
-  router.push({
-    name: "uploaded-reports",
-    params: { vesselname: props.vesselname, imo: props.imo },
-  });
-};
 </script>

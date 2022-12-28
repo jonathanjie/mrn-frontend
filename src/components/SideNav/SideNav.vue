@@ -81,94 +81,61 @@ import { collapsed, toggleSidebar, sidebarWidth } from "./state";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useAuth0 } from "@auth0/auth0-vue";
+import axios from "axios";
 
 const router = useRouter();
 const { user, getAccessTokenSilently } = useAuth0();
-const jwt = await getAccessTokenSilently();
-
-// const asyncStore = useAsyncStore();
 const auth = useAuthStore();
 
+const jwt = await getAccessTokenSilently();
+axios.defaults.headers.common["Authorization"] = "Bearer " + jwt;
+
 const getShip = async () => {
-  const response = await fetch(
-    // Assuming that ships api can only provide 1 ship
-    `https://testapi.marinachain.io/marinanet/ships`,
-    {
-      headers: {
-        Authorization: "Bearer " + jwt,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-  let output = {};
-  if (response.status === 200) {
-    output = await response.json();
-  } else {
-    console.log("Error at getShip call, with error code", response.status);
-  }
-  return output[0];
+  return await axios
+    .get(`https://testapi.marinachain.io/marinanet/ships`)
+    .then((response) => {
+      console.log("Ship", response.data);
+      return response.data[0];
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 };
 
 const getUserRole = async () => {
-  const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/user/`,
-    {
-      headers: {
-        Authorization: "Bearer " + jwt,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-  let output = "";
-  if (response.status === 200) {
-    const reply = await response.json();
-    output = reply.role;
-  } else {
-    console.log("Error at getUserRole call, with error code", response.status);
-  }
-  return output;
+  return await axios
+    .get(`https://testapi.marinachain.io/marinanet/user/`)
+    .then((response) => {
+      console.log("User Role", response);
+      return response.data.role;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 };
 
 const getVoyages = async (imo) => {
-  const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`,
-    {
-      headers: {
-        Authorization: "Bearer " + auth.jwt,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-  let output = {};
-  if (response.status === 200) {
-    output = await response.json();
-  } else {
-    console.log("Error at getVoyages call, with error code", response.status);
-  }
-  return output;
+  return await axios
+    .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`)
+    .then((response) => {
+      console.log("Voyages", response);
+      return response.data.role;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 };
 
 const getReports = async (imo) => {
-  const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`,
-    {
-      headers: {
-        Authorization: "Bearer " + auth.jwt,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-  let output = {};
-  if (response.status === 200) {
-    output = await response.json();
-  } else {
-    console.log("Error at getReports call, with error code", response.status);
-  }
-  return output;
+  return await axios
+    .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`)
+    .then((response) => {
+      console.log("Reports", response);
+      return response.data.role;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 };
 
 // Home Button
@@ -187,6 +154,7 @@ const manager = role === "manager";
 console.log("Sidebar loads");
 auth.updateUserRoleToken(user, role, jwt);
 const ship = await getShip();
+console.log(ship);
 
 if (manager) {
   router.push({ path: "/my-vessels" });

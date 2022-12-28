@@ -154,16 +154,16 @@ import { ref } from "vue";
 import TableOverview from "@/components/TableOverview.vue";
 import PortCard from "@/components/PortCard.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
-
-let weeklyFlag = ref(true);
+import axios from "axios";
+import { useRouter, onBeforeRouteLeave } from "vue-router";
+import { useVoyageStore } from "@/stores/useVoyageStore";
 
 const props = defineProps({
   vesselname: String,
   imo: String,
 });
+
 const auth = useAuthStore();
-const message =
-  "Low CII grade message goes here. [Provide action to follow up]";
 
 // const PortCalls = [
 //   {
@@ -203,44 +203,77 @@ const shipRef = {
   CRUZ: "Cruise Passenger Ship",
 };
 const getShip = async () => {
-  const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/ships/${props.imo}`,
-    {
-      headers: {
-        Authorization: "Bearer " + auth.jwt,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-
-  const json = await response.json();
-  return json;
+  return await axios
+    .get(`https://testapi.marinachain.io/marinanet/ships/${props.imo}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 };
 
 const getLegs = async () => {
-  const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/ships/${props.imo}/legs/`,
-    {
-      headers: {
-        Authorization: "Bearer " + auth.jwt,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-
-  const portCalls = await response.json();
-  return portCalls;
+  return await axios
+    .get(`https://testapi.marinachain.io/marinanet/ships/${props.imo}/legs/`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 };
 
+const getVoyages = async (imo) => {
+  return await axios
+    .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+};
+
+const getReports = async (imo) => {
+  return await axios
+    .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+};
+const router = useRouter();
+const store = useVoyageStore();
 const ship = await getShip();
 const shipFlag = ship.shipspecs.flag;
 const payloadType = shipRef[ship.ship_type];
 const portCalls = await getLegs();
 const date = new Date(portCalls[0].arrival_date).toUTCString();
 
+onBeforeRouteLeave(async () => {
+  const voyages = await getVoyages(props.imo);
+  const reports = await getReports(props.imo);
+  store.voyages = voyages;
+  // localStorage.setItem("voyages", JSON.stringify(voyages));
+  let output = {};
+  for (let i of reports) {
+    for (let j of voyages) {
+      if (i.uuid == j.uuid) {
+        output[i.uuid] = i.reports.reverse();
+      }
+    }
+  }
+  // localStorage.setItem("output", JSON.stringify(output));
+  store.reports = output;
+  console.log("This thing runs");
+});
+
 const shipCapacity = "300,000";
 const previousCIIGrade = "A";
 const eexiGrade = "2.03/2.2";
+const message =
+  "Low CII grade message goes here. [Provide action to follow up]";
 </script>

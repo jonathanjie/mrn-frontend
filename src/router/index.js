@@ -32,7 +32,7 @@ const routes = [
     props: true,
     children: [
       {
-        path: "speed-graph-overview",
+        path: "/speed-graph-overview",
         name: "speed-graph-overview",
         component: () => import("../views/HQViews/SpeedGraphOverview.vue"),
         props: true,
