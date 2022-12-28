@@ -19,7 +19,7 @@ const temp = {
   distanceLeft: 4000,
   distanceObsSoFar: 1000,
   distanceEngSoFar: 1000,
-  revolutionCountYesterday: 20000,
+  revolutionCountPrevNoon: 20000,
   propellerPitch: 2,
   previousNoonReportCount: 2,
   voyageAvgSpeed: 200,
@@ -155,7 +155,7 @@ export const useArrivalEOSPReportStore = defineStore(
     const distanceEngSinceNoon = computed(() =>
       revolutionCount.value
         ? +(
-            (Number(revolutionCount.value) - temp.revolutionCountYesterday) *
+            (Number(revolutionCount.value) - temp.revolutionCountPrevNoon) *
             temp.propellerPitch
           ).toFixed(2)
         : ""
@@ -185,7 +185,7 @@ export const useArrivalEOSPReportStore = defineStore(
     const rpmSinceNoon = computed(() =>
       revolutionCount.value && hoursSinceNoon.value
         ? +(
-            (Number(revolutionCount.value) - temp.revolutionCountYesterday) /
+            (Number(revolutionCount.value) - temp.revolutionCountPrevNoon) /
             (hoursSinceNoon.value * 60)
           ).toFixed(1)
         : ""
@@ -200,7 +200,7 @@ export const useArrivalEOSPReportStore = defineStore(
         : ""
     );
     const speedAvg = computed(() =>
-      speedSinceNoon.value
+      speedSinceNoon.value !== ""
         ? +(
             (temp.voyageAvgSpeed + speedSinceNoon.value) /
             (temp.previousNoonReportCount + 1)
@@ -208,7 +208,7 @@ export const useArrivalEOSPReportStore = defineStore(
         : ""
     );
     const rpmAvg = computed(() =>
-      rpmSinceNoon.value
+      rpmSinceNoon.value !== ""
         ? +(
             (temp.voyageAvgRpm + rpmSinceNoon.value) /
             (temp.previousNoonReportCount + 1)
@@ -216,7 +216,7 @@ export const useArrivalEOSPReportStore = defineStore(
         : ""
     );
     const slipAvg = computed(() =>
-      slipSinceNoon.value
+      slipSinceNoon.value !== ""
         ? +(
             (temp.voyageAvgSlip + slipSinceNoon.value) /
             (temp.previousNoonReportCount + 1)
@@ -366,7 +366,6 @@ export const useArrivalEOSPReportStore = defineStore(
     );
 
     // Actual performance
-    // TODO: need to be computed values
     const totalDistanceObs = distanceObsTotal;
     const totalSailingTime = hoursTotal;
     const displacement = ref(temp.displacement);

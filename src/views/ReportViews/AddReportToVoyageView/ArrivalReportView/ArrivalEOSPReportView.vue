@@ -64,6 +64,7 @@ import {
   FuelOil,
   LubricatingOil,
   ConsumptionType,
+  TotalConsumptionType,
   ActualPerformanceType,
 } from "@/constants";
 import { parsePositionToString, parsePortLocode } from "@/utils/helpers.js";
@@ -129,7 +130,7 @@ const {
   // Pilot Station -- Arrival
   shouldPilotArrDataBeSent,
   pilotArrName,
-  pilotArrDateTime,
+  pilotArrDateTimeUTC,
   pilotArrDraftAft,
   pilotArrDraftMid,
   pilotArrDraftFwd,
@@ -182,6 +183,8 @@ const submissionStatusStore = useSubmissionStatusStore();
 const { isSubmissionRequested, isSubmissionSuccessful, errorMessage } =
   storeToRefs(submissionStatusStore);
 
+const includesOperation = (op) => plannedOperations.value.includes(op);
+
 const sendReport = async () => {
   const pilotArrPosition = parsePositionToString({
     latDir: pilotArrLatDir.value,
@@ -225,21 +228,17 @@ const sendReport = async () => {
       arrival_tz: reportingTimeZone.value, // irrelevant for Arrival EOSP
     },
     plannedoperations: {
-      cargo_operation_berth: plannedOperations.value.includes(
-        OPERATIONS.cargoOperationBerth
-      ),
-      cargo_operation_stsstb: plannedOperations.value.includes(
+      cargo_operation_berth: includesOperation(OPERATIONS.cargoOperationBerth),
+      cargo_operation_stsstb: includesOperation(
         OPERATIONS.cargoOperationSTSSTB
       ),
-      bunkering_debunkering: plannedOperations.value.includes(
-        OPERATIONS.bunkeringDebunkering
-      ),
-      dry_docking: plannedOperations.value.includes(OPERATIONS.dryDocking),
-      crew_change: plannedOperations.value.includes(OPERATIONS.crewChange),
-      receiving_provisions_spares: plannedOperations.value.includes(
+      bunkering_debunkering: includesOperation(OPERATIONS.bunkeringDebunkering),
+      dry_docking: includesOperation(OPERATIONS.dryDocking),
+      crew_change: includesOperation(OPERATIONS.crewChange),
+      receiving_provisions_spares: includesOperation(
         OPERATIONS.receivingProvisionSpareParts
       ),
-      surveying: plannedOperations.value.includes(OPERATIONS.survey),
+      surveying: includesOperation(OPERATIONS.survey),
       others: isOtherPlannedOperationEnabled.value,
       planned_operation_othersdetails: otherPlannedOperation.value || "NIL",
     },
@@ -289,7 +288,7 @@ const sendReport = async () => {
     arrivalpilotstation: shouldPilotArrDataBeSent.value
       ? {
           name: pilotArrName.value,
-          date: pilotArrDateTime.value,
+          date: pilotArrDateTimeUTC.value,
           position: pilotArrPosition,
           draft_fwd: pilotArrDraftFwd.value,
           draft_mid: pilotArrDraftMid.value,
@@ -448,7 +447,7 @@ const sendReport = async () => {
         },
       ],
       freshwatertotalconsumptiondata: null,
-      consumption_type: ConsumptionType.PILOT_TO_PILOT,
+      consumption_type: TotalConsumptionType.PILOT_TO_PILOT,
     },
   };
 
