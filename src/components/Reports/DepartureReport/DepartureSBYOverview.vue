@@ -36,7 +36,7 @@
       <div class="col-span-2 text-blue-700 p-3 border-r">
         {{ $t("reportingDateAndTime") }}
       </div>
-      <div class="col-span-3 relative flex items-center">
+      <div class="col-span-3 relative flex items-center bg-white">
         <DatePicker
           v-model="reporting_date_time"
           class="grow"
