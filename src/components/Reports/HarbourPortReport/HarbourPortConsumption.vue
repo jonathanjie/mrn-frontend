@@ -488,7 +488,7 @@
           <div
             class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25"
           >
-            {{ $t("receiving") }}
+            {{ $t("receipt") }}
           </div>
           <div
             class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25"

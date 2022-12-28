@@ -52,6 +52,7 @@ export const ErrorFieldsToDisplay = {
   heavyweatherdata: "Heavy Weather Condition",
   stoppagedata: "Stoppage or Change in RPM (at Sea)",
   arrivalfwetimeandposition: "Finish With Engine",
+  eventdata: "Report",
 };
 
 export const Direction = {
