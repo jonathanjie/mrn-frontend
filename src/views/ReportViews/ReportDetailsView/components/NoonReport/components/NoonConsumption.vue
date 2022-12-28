@@ -8,7 +8,7 @@ import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
 import { FuelOil, LubricatingOil } from "@/constants";
-import { defineProps } from "vue";
+import { ref, defineProps } from "vue";
 
 const props = defineProps({
   report: {
@@ -19,7 +19,29 @@ const props = defineProps({
 
 // const isAdditionalRemarkFuel = ref(false);
 // const isAdditionalRemarkLubricating = ref(false);
+const isAdditionalRemarkFuel = computed(() =>
+  props.report.consumptionconditiondata.fueloildata_set.reduce(
+    (accum, curr) => accum || curr.fueloildatacorrection,
+    false
+  )
+    ? true
+    : false
+);
+const isAdditionalRemarkLubricating = computed(() =>
+  props.report.consumptionconditiondata.lubricatingoildata_set.reduce(
+    (accum, curr) => accum || curr.lubricatingoildatacorrection,
+    false
+  )
+    ? true
+    : false
+);
+console.log("fuel correction bool value: ", isAdditionalRemarkFuel.value);
+console.log(
+  "lubricating correction bool value: ",
+  isAdditionalRemarkLubricating.value
+);
 
+// Fuel Consumption
 const lsfo_total_consumption = computed(
   () =>
     props.report.consumptionconditiondata.fueloildata_set.filter(
@@ -30,86 +52,100 @@ const lsfo_rob = computed(
   () =>
     props.report.consumptionconditiondata.fueloildata_set.filter(
       (fuelData) => fuelData.fuel_oil_type == "LSFO"
-    )[0]?.rob ?? "NIL"
+    )[0].rob
 );
-const lsfo_breakdown_me = computed(
+
+const lsfo_breakdown = computed(
   () =>
     props.report.consumptionconditiondata.fueloildata_set.filter(
       (fuelData) => fuelData.fuel_oil_type == "LSFO"
-    )[0].breakdown.ME
-);
-const lsfo_breakdown_igg = computed(
-  () =>
-    props.report.consumptionconditiondata.fueloildata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "LSFO"
-    )[0].breakdown.IGG
+    )[0].breakdown
 );
 const mgo_total_consumption = computed(
   () =>
     props.report.consumptionconditiondata.fueloildata_set.filter(
       (fuelData) => fuelData.fuel_oil_type == "MGO"
-    )[0]?.total_consumption ?? "NIL"
+    )[0].total_consumption
 );
 const mgo_rob = computed(
   () =>
     props.report.consumptionconditiondata.fueloildata_set.filter(
       (fuelData) => fuelData.fuel_oil_type == "MGO"
-    )[0]?.total_consumption ?? "NIL"
+    )[0].total_consumption
 );
-// const mgo_breakdown = computed(
-//   () =>
-//     props.report.consumptionconditiondata.fueloildata_set.filter(
-//       (fuelData) => fuelData.fuel_oil_type == "MGO"
-//     )[0].breakdown
-// );
-// const mecylinder_breakdown = computed(
-//   () =>
-//     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
-//       (fuelData) => fuelData.fuel_oil_type == "M/E Cylinder"
-//     )[0].breakdown
-// );
+const mgo_breakdown = computed(
+  () =>
+    props.report.consumptionconditiondata.fueloildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "MGO"
+    )[0].breakdown
+);
+
+const fuel_oil_data_correction = computed(() =>
+  isAdditionalRemarkFuel.value
+    ? props.report.consumptionconditiondata.fueloildata_set.filter(
+        (fuelData) => fuelData.fueloildatacorrection != null
+      )[0]
+    : null
+);
+console.log("fuel correction value: ", fuel_oil_data_correction.value);
+// Lubricating Oil Consumption
+const mecylinder_breakdown = computed(
+  () =>
+    props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "M/E Cylinder"
+    )[0]
+);
 const mecylinder_rob = computed(
   () =>
     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
       (fuelData) => fuelData.fuel_oil_type == "M/E Cylinder"
     )[0].rob
 );
-// const mesystem_breakdown = computed(
-//   () =>
-//     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
-//       (fuelData) => fuelData.fuel_oil_type == "M/E System"
-//     )[0].breakdown
-// );
+const mesystem_breakdown = computed(
+  () =>
+    props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "M/E System"
+    )[0]
+);
 const mesystem_rob = computed(
   () =>
     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
       (fuelData) => fuelData.fuel_oil_type == "M/E System"
     )[0].rob
 );
-// const mesump_breakdown = computed(
-//   () =>
-//     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
-//       (fuelData) => fuelData.fuel_oil_type == "M/E Sump"
-//     )[0].breakdown
-// );
+const mesump_breakdown = computed(
+  () =>
+    props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "M/E Sump"
+    )[0]
+);
 const mesump_rob = computed(
   () =>
     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
       (fuelData) => fuelData.fuel_oil_type == "M/E Sump"
     )[0].rob
 );
-// const gesystem_breakdown = computed(
-//   () =>
-//     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
-//       (fuelData) => fuelData.fuel_oil_type == "G/E System"
-//     )[0].breakdown
-// );
+const gesystem_breakdown = computed(
+  () =>
+    props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "G/E System"
+    )[0]
+);
 const gesystem_rob = computed(
   () =>
     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
       (fuelData) => fuelData.fuel_oil_type == "G/E System"
     )[0].rob
 );
+const lubricating_oil_data_correction = computed(() =>
+  isAdditionalRemarkFuel.value
+    ? props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+        (fuelData) => fuelData.lubricatingoildatacorrection != null
+      )[0]
+    : null
+);
+
+// Freshwater Consumption
 const freshwater_consumed = computed(
   () => props.report.consumptionconditiondata.freshwaterdata.consumed
 );
@@ -126,31 +162,31 @@ const freshwater_rob = computed(
 );
 
 const store = useNoonReportStore();
-const {
-  // fuel oil
-  // lsfoTotalConsumption: lsfo_total_consumption,
-  // lsfoRob: lsfo_rob,
-  // mgoTotalConsumption: mgo_total_consumption,
-  // mgoRob: mgo_rob,
-  lsfoBreakdown: lsfo_breakdown,
-  mgoBreakdown: mgo_breakdown,
-  fuelOilDataCorrection: fuel_oil_data_correction,
-  // lubricating oil
-  mecylinderBreakdown: mecylinder_breakdown,
-  mesystemBreakdown: mesystem_breakdown,
-  mesumpBreakdown: mesump_breakdown,
-  gesystemBreakdown: gesystem_breakdown,
-  // mecylinderRob: mecylinder_rob,
-  // mesystemRob: mesystem_rob,
-  // mesumpRob: mesump_rob,
-  // gesystemRob: gesystem_rob,
-  lubricatingOilDataCorrection: lubricating_oil_data_correction,
-  // fresh water
-  // freshwaterConsumed: freshwater_consumed,
-  // freshwaterGenerated: freshwater_generated,
-  // freshwaterChange: freshwater_change,
-  // freshwaterRob: freshwater_rob,
-} = storeToRefs(store);
+// const {
+//   // fuel oil
+//   // lsfoTotalConsumption: lsfo_total_consumption,
+//   // lsfoRob: lsfo_rob,
+//   // mgoTotalConsumption: mgo_total_consumption,
+//   // mgoRob: mgo_rob,
+//   // lsfoBreakdown: lsfo_breakdown,
+//   // mgoBreakdown: mgo_breakdown,
+//   // fuelOilDataCorrection: fuel_oil_data_correction,
+//   // lubricating oil
+//   // mecylinderBreakdown: mecylinder_breakdown,
+//   // mesystemBreakdown: mesystem_breakdown,
+//   // mesumpBreakdown: mesump_breakdown,
+//   // gesystemBreakdown: gesystem_breakdown,
+//   // mecylinderRob: mecylinder_rob,
+//   // mesystemRob: mesystem_rob,
+//   // mesumpRob: mesump_rob,
+//   // gesystemRob: gesystem_rob,
+//   // lubricatingOilDataCorrection: lubricating_oil_data_correction,
+//   // fresh water
+//   // freshwaterConsumed: freshwater_consumed,
+//   // freshwaterGenerated: freshwater_generated,
+//   // freshwaterChange: freshwater_change,
+//   // freshwaterRob: freshwater_rob,
+// } = storeToRefs(store);
 </script>
 
 <template>
@@ -209,29 +245,29 @@ const {
           </div>
           <input
             disabled
-            v-model="lsfo_breakdown_me"
-            @keypress="preventNaN($event, lsfo_breakdown_me)"
+            v-model="lsfo_breakdown.ME"
+            @keypress="preventNaN($event, lsfo_breakdown.ME)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
             disabled
-            v-model="lsfo_breakdown.ge"
-            @keypress="preventNaN($event, lsfo_breakdown.ge)"
+            v-model="lsfo_breakdown.GE"
+            @keypress="preventNaN($event, lsfo_breakdown.GE)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
             disabled
-            v-model="lsfo_breakdown.blr"
-            @keypress="preventNaN($event, lsfo_breakdown.blr)"
+            v-model="lsfo_breakdown.BLR"
+            @keypress="preventNaN($event, lsfo_breakdown.BLR)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
             disabled
-            v-model="lsfo_breakdown_igg"
-            @keypress="preventNaN($event, lsfo_breakdown_igg)"
+            v-model="lsfo_breakdown.IGG"
+            @keypress="preventNaN($event, lsfo_breakdown.IGG)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
@@ -253,29 +289,29 @@ const {
           </div>
           <input
             disabled
-            v-model="mgo_breakdown.me"
-            @keypress="preventNaN($event, mgo_breakdown.me)"
+            v-model="mgo_breakdown.ME"
+            @keypress="preventNaN($event, mgo_breakdown.ME)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
             disabled
-            v-model="mgo_breakdown.ge"
-            @keypress="preventNaN($event, mgo_breakdown.ge)"
+            v-model="mgo_breakdown.GE"
+            @keypress="preventNaN($event, mgo_breakdown.GE)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
             disabled
-            v-model="mgo_breakdown.blr"
-            @keypress="preventNaN($event, mgo_breakdown.blr)"
+            v-model="mgo_breakdown.BLR"
+            @keypress="preventNaN($event, mgo_breakdown.BLR)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
             disabled
-            v-model="mgo_breakdown.igg"
-            @keypress="preventNaN($event, mgo_breakdown.igg)"
+            v-model="mgo_breakdown.IGG"
+            @keypress="preventNaN($event, mgo_breakdown.IGG)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
@@ -292,22 +328,18 @@ const {
         <!-- <div
           v-if="!isAdditionalRemarkFuel"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
-          @click="isAdditionalRemarkFuel = !isAdditionalRemarkFuel"
         >
           <img
             src="@/assets/icons/checkboxes/unchecked_square.svg"
             class="mr-2 h-5 w-5"
           />
           <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
-        </div>
+        </div> -->
         <div
-          v-else
+          v-if="isAdditionalRemarkFuel"
           class="bg-gray-25 flex-col py-4 px-3 border border-gray-100"
         >
-          <div
-            class="flex items-center mb-3 cursor-pointer"
-            @click="isAdditionalRemarkFuel = !isAdditionalRemarkFuel"
-          >
+          <div class="flex items-center mb-3 cursor-pointer">
             <img
               src="@/assets/icons/checkboxes/checked_square.svg"
               class="mr-2 h-5 w-5"
@@ -320,10 +352,10 @@ const {
             </div>
             <select
               disabled
-              v-model="fuel_oil_data_correction.type"
+              v-model="fuel_oil_data_correction.fuel_oil_type"
               class="col-span-4 p-3 border-l focus:outline-0"
               :class="
-                fuel_oil_data_correction.type === 'default'
+                fuel_oil_data_correction.fuel_oil_type === 'default'
                   ? 'text-gray-400'
                   : 'text-gray-700'
               "
@@ -337,9 +369,14 @@ const {
             <div class="flex col-span-4 p-3 pl-4 border-l bg-white">
               <input
                 disabled
-                v-model="fuel_oil_data_correction.correction"
+                v-model="
+                  fuel_oil_data_correction.fueloildatacorrection.correction
+                "
                 @keypress="
-                  preventNaN($event, fuel_oil_data_correction.correction)
+                  preventNaN(
+                    $event,
+                    fuel_oil_data_correction.fueloildatacorrection.correction
+                  )
                 "
                 placeholder="00,000.00"
                 class="w-24 text-gray-700 focus:outline-0"
@@ -353,12 +390,14 @@ const {
             </div>
             <textarea
               disabled
-              v-model.trim="fuel_oil_data_correction.remarks"
+              v-model.trim="
+                fuel_oil_data_correction.fueloildatacorrection.remarks
+              "
               placeholder="Input description here"
               class="col-span-8 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
           </div>
-        </div> -->
+        </div>
       </div>
 
       <div class="pt-8">
@@ -497,7 +536,7 @@ const {
           <input
             disabled
             v-model="gesystem_breakdown.total_consumption"
-            @keypress="preventNaN($event, gesystem_total_consumption)"
+            @keypress="preventNaN($event, gesystem_breakdown.total_consumption)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
@@ -525,26 +564,18 @@ const {
         <!-- <div
           v-if="!isAdditionalRemarkLubricating"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
-          @click="
-            isAdditionalRemarkLubricating = !isAdditionalRemarkLubricating
-          "
         >
           <img
             src="@/assets/icons/checkboxes/unchecked_square.svg"
             class="mr-2 h-5 w-5"
           />
           <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
-        </div>
+        </div> -->
         <div
-          v-else
+          v-if="isAdditionalRemarkLubricating"
           class="bg-gray-25 flex-col py-4 px-3 border border-gray-100"
         >
-          <div
-            class="flex items-center mb-3 cursor-pointer"
-            @click="
-              isAdditionalRemarkLubricating = !isAdditionalRemarkLubricating
-            "
-          >
+          <div class="flex items-center mb-3 cursor-pointer">
             <img
               src="@/assets/icons/checkboxes/checked_square.svg"
               class="mr-2 h-5 w-5"
@@ -557,10 +588,10 @@ const {
             </div>
             <select
               disabled
-              v-model="lubricating_oil_data_correction.type"
+              v-model="lubricating_oil_data_correction.fuel_oil_type"
               class="col-span-6 p-3 border-l focus:outline-0"
               :class="
-                lubricating_oil_data_correction.type === 'default'
+                lubricating_oil_data_correction.fuel_oil_type === 'default'
                   ? 'text-gray-400'
                   : 'text-gray-700'
               "
@@ -584,9 +615,16 @@ const {
             <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
               <input
                 disabled
-                v-model="lubricating_oil_data_correction.correction"
+                v-model="
+                  lubricating_oil_data_correction.lubricatingoildatacorrection
+                    .correction
+                "
                 @keypress="
-                  preventNaN($event, lubricating_oil_data_correction.correction)
+                  preventNaN(
+                    $event,
+                    lubricating_oil_data_correction.lubricatingoildatacorrection
+                      .correction
+                  )
                 "
                 placeholder="00,000.00"
                 class="w-24 text-gray-700 focus:outline-0"
@@ -600,12 +638,15 @@ const {
             </div>
             <textarea
               disabled
-              v-model.trim="lubricating_oil_data_correction.remarks"
+              v-model.trim="
+                lubricating_oil_data_correction.lubricatingoildatacorrection
+                  .remarks
+              "
               :placeholder="$t('inputDescriptionHere')"
               class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
           </div>
-        </div> -->
+        </div>
       </div>
 
       <div class="pt-8">
