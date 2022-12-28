@@ -92,10 +92,10 @@ const report_sent = true; // TODO: always true for MVP, no save function impleme
     />
     <img
       v-else-if="
-        report_type == Report.type.EVENT_COASTAL ||
+        report_type == Report.type.EVENT_HARBOUR ||
         report_type == Report.type.EVENT_PORT ||
         report_type == Report.type.NOON_PORT ||
-        report_type == Report.type.NOON_COASTAL
+        report_type == Report.type.NOON_HARBOUR
       "
       src="@/assets/icons/in_harbour_header.svg"
       class="absolute left-0 top-0"
