@@ -1,16 +1,29 @@
 import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
+import { useVoyageStore } from "./useVoyageStore";
+import { storeToRefs } from "pinia";
 
 // TODO: fetch from database
 const temp = {
+  // Finish With Engine
+  plannedOperations: [
+    "waiting",
+    "crewChange",
+    "cargoOpBerth",
+    "bunkeringDebunkering",
+    "receivingProvisionSpareParts",
+  ],
+  otherPlannedOperation: "",
+  // fetch above from most recent arrival eosp/sby
+
   // Overview
-  reportNo: "2",
-  legNo: "2",
-  voyageNo: "2",
   departurePortCountry: "Country A",
   departurePortName: "Port A",
   destinationPortCountry: "Country A",
   destinationPortName: "Port A",
+
+  // Harbour Port Report
+  prevStatus: "anchoringStartOutside", // only applies if there was a previous event report
 
   // Consumption & Condition
   lsfoPrevROB: 200,
@@ -25,23 +38,30 @@ const temp = {
 export const useHarbourPortReportStore = defineStore(
   "harbourPortReport",
   () => {
+    const store = useVoyageStore();
+    // TODO: report no for harbourPort depends on exact type of report
+    const { evntReportNo, curLegNo, curLoadingCondition, curVoyageNo } =
+      storeToRefs(store);
+
     // status var
-    const reportType = ref("");
+    const reportType = ref("in_port");
+    const eventOrNoon = ref("event");
 
     // Harbour Port Overview
-    const reportNo = ref(temp.reportNo);
-    const legNo = ref(temp.legNo);
-    const voyageNo = ref(temp.voyageNo);
+    const reportNo = evntReportNo; // TODO: report no for harbourPort depends on exact type of report
+    const legNo = curLegNo;
+    const loadingCondition = curLoadingCondition;
+    const voyageNo = curVoyageNo;
+    const reportingDateTime = ref("");
+    const reportingTimeZone = ref("default");
     const departurePortCountry = ref(temp.departurePortCountry);
     const departurePortName = ref(temp.departurePortName);
     const destinationPortCountry = ref(temp.destinationPortCountry);
     const destinationPortName = ref(temp.destinationPortName);
 
     // Harbour Port Report
-    const type = ref("");
-    const status = ref("default");
-    const dateTime = ref("");
-    const timeZone = ref("default");
+    const prevStatus = ref(temp.prevStatus);
+    const status = ref(temp.prevStatus);
     const distanceTravelled = ref("");
     const latDir = ref("default");
     const latMinutes = ref("");
@@ -49,9 +69,27 @@ export const useHarbourPortReportStore = defineStore(
     const longDir = ref("default");
     const longMinutes = ref("");
     const longDegree = ref("");
+    const plannedOperations = ref(temp.plannedOperations);
+    const otherPlannedOperation = ref(temp.otherPlannedOperation);
     const operations = ref([]);
 
     // Consumption And Condition Full
+    const lsfoBreakdown = reactive({
+      me: "",
+      ge: "",
+      blr: "",
+      igg: "",
+      receipt: "",
+      debunkering: "",
+    });
+    const mgoBreakdown = reactive({
+      me: "",
+      ge: "",
+      blr: "",
+      igg: "",
+      receipt: "",
+      debunkering: "",
+    });
     const lsfoTotalConsumption = computed(
       () =>
         +(
@@ -84,22 +122,6 @@ export const useHarbourPortReportStore = defineStore(
         Number(mgoBreakdown.receipt) -
         Number(mgoBreakdown.debunkering)
     );
-    const lsfoBreakdown = reactive({
-      me: "",
-      ge: "",
-      blr: "",
-      igg: "",
-      receipt: "",
-      debunkering: "",
-    });
-    const mgoBreakdown = reactive({
-      me: "",
-      ge: "",
-      blr: "",
-      igg: "",
-      receipt: "",
-      debunkering: "",
-    });
     const fuelOilDataCorrection = reactive({
       type: "default",
       correction: "",
@@ -169,11 +191,11 @@ export const useHarbourPortReportStore = defineStore(
     });
 
     const freshwaterConsumed = ref("");
-    const freshwaterEvaporated = ref("");
+    const freshwaterGenerated = ref("");
     const freshwaterReceiving = ref("");
     const freshwaterDischarging = ref("");
     const freshwaterChange = computed(
-      () => +(freshwaterEvaporated.value - freshwaterConsumed.value).toFixed(2)
+      () => +(freshwaterGenerated.value - freshwaterConsumed.value).toFixed(2)
     );
     const freshwaterRob = computed(
       () =>
@@ -185,20 +207,22 @@ export const useHarbourPortReportStore = defineStore(
 
     return {
       // status var
-      reportType,
+      reportType, // HarbourPortReportView.vue
+      eventOrNoon, // HarbourPortReport.vue
       // Harbour Port Overview
       reportNo,
       legNo,
+      loadingCondition,
       voyageNo,
+      reportingDateTime,
+      reportingTimeZone,
       departurePortCountry,
       departurePortName,
       destinationPortCountry,
       destinationPortName,
       // Harbour Port Report
-      type,
+      prevStatus,
       status,
-      dateTime,
-      timeZone,
       distanceTravelled,
       latDir,
       latMinutes,
@@ -206,6 +230,8 @@ export const useHarbourPortReportStore = defineStore(
       longDir,
       longMinutes,
       longDegree,
+      plannedOperations,
+      otherPlannedOperation,
       operations,
       // Consumption And Condition (Full)
       lsfoTotalConsumption,
@@ -225,7 +251,7 @@ export const useHarbourPortReportStore = defineStore(
       gesystemRob,
       lubricatingOilDataCorrection,
       freshwaterConsumed,
-      freshwaterEvaporated,
+      freshwaterGenerated,
       freshwaterReceiving,
       freshwaterDischarging,
       freshwaterChange,

@@ -1,18 +1,29 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { authGuard, useAuth0 } from "@auth0/auth0-vue";
+import { authGuard } from "@auth0/auth0-vue";
 
-// import LoginView from '../views/LoginView.vue'from ;
-import VesselView from "../views/VesselView/VesselView.vue";
-import VesselOverviewView from "../views/VesselView/VesselOverviewView.vue";
-import AddReportToVoyageView from "../views/AddReportToVoyageView.vue";
-import NoonReportView from "../views/ReportViews/NoonReportView.vue";
-import ArrivalReportView from "../views/ReportViews/ArrivalReportView.vue";
-import DepartureReportView from "../views/ReportViews/DepartureReportView.vue";
-import BunkerReportView from "../views/ReportViews/BunkerReportView.vue";
-import HarbourPortReportView from "../views/ReportViews/HarbourPortReportView.vue";
-import NotFound from "../views/NotFound.vue";
+// import LoginView from '@/views/LoginView.vue'from ;
+import VesselView from "@/views/VesselView/VesselView.vue";
+import VesselOverviewView from "@/views/VesselView/VesselOverviewView.vue";
+import VesselSubmittedView from "@/views/VesselView/VesselSubmittedView.vue";
+import VesselDraftView from "@/views/VesselView/VesselDraftView.vue";
+import VesselCancelledView from "@/views/VesselView/VesselCancelledView.vue";
+import AddReportToVoyageView from "@/views/ReportViews/AddReportToVoyageView/AddReportToVoyageView.vue";
+import NoonReportView from "@/views/ReportViews/AddReportToVoyageView/NoonReportView/NoonReportView.vue";
+import ArrivalReportView from "@/views/ReportViews/AddReportToVoyageView/ArrivalReportView/ArrivalReportView.vue";
+import DepartureReportView from "@/views/ReportViews/AddReportToVoyageView/DepartureReportView/DepartureReportView.vue";
+import BunkerReportView from "@/views/ReportViews/AddReportToVoyageView/BunkerReportView/BunkerReportView.vue";
+import HarbourPortReportView from "@/views/ReportViews/AddReportToVoyageView/HarbourPortReportView/HarbourPortReportView.vue";
+import ReportDetailsViewWrapper from "@/views/ReportViews/ReportDetailsView/ReportDetailsViewWrapper.vue";
+
+import NotFound from "@/views/NotFound.vue";
 
 const routes = [
+  // {
+  //   path: '/login',
+  //   name: 'login',
+  //   component: LoginView
+  // },
+
   {
     path: "/",
     name: "home",
@@ -32,7 +43,7 @@ const routes = [
     props: true,
     children: [
       {
-        path: "speed-graph-overview",
+        path: "overview",
         name: "speed-graph-overview",
         component: () => import("../views/HQViews/SpeedGraphOverview.vue"),
         props: true,
@@ -49,6 +60,7 @@ const routes = [
         path: "uploaded-reports",
         name: "uploaded-reports",
         component: () => import("../views/VesselView/VesselOverviewView.vue"),
+        props: true, // To pass HQ parameter to hide Add Report Button
         beforeEnter: authGuard,
       },
     ],
@@ -65,9 +77,19 @@ const routes = [
         component: VesselOverviewView,
       },
       {
-        path: "vessel-spec",
-        name: "vessel-spec",
-        component: () => import("../views/VesselSpec.vue"),
+        path: "submitted",
+        name: "vessel-submitted",
+        component: VesselSubmittedView,
+      },
+      {
+        path: "draft",
+        name: "vessel-draft",
+        component: VesselDraftView,
+      },
+      {
+        path: "cancelled",
+        name: "vessel-cancelled",
+        component: VesselCancelledView,
       },
     ],
     beforeEnter: authGuard,
@@ -103,6 +125,20 @@ const routes = [
         component: BunkerReportView,
       },
     ],
+    beforeEnter: authGuard,
+  },
+  {
+    path: "/vessels/:vesselname/:imo/report/:uuid",
+    name: "report-details",
+    component: ReportDetailsViewWrapper,
+    props: true,
+    // children: [
+    //   {
+    //     path: "noon",
+    //     name: "noon",
+    //     component: NoonReportView,
+    //   },
+    // ],
     beforeEnter: authGuard,
   },
   {

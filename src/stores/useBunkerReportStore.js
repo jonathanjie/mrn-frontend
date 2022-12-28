@@ -1,33 +1,33 @@
 import { defineStore } from "pinia";
-import { ref, reactive, computed } from "vue";
-
-// TODO: fetch from database
-const temp = {
-  // Overview
-  reportNo: "2",
-  legNo: "2",
-  voyageNo: "1",
-};
+import { ref } from "vue";
+import { useVoyageStore } from "./useVoyageStore";
+import { storeToRefs } from "pinia";
 
 export const useBunkerReportStore = defineStore("bunkerReport", () => {
+  const store = useVoyageStore();
+  const { bdnReportNo, curLegNo, curLoadingCondition, curVoyageNo } =
+    storeToRefs(store);
+
   // Overview
   // TODO: fetch from backend
-  const reportNo = ref(temp.reportNo);
-  const legNo = ref(temp.legNo);
-  const voyageNo = ref(temp.voyageNo);
+  const reportNo = bdnReportNo;
+  const legNo = curLegNo;
+  const loadingCondition = curLoadingCondition;
+  const voyageNo = curVoyageNo;
+  const reportingDateTime = ref("");
+  const reportingTimeZone = ref("default");
 
   // Bunkering Port
   const portCountry = ref("");
   const portName = ref("");
-  const dateTime = ref("");
-  const timeZone = ref("default");
-  const status = ref([]);
 
   // Received Bunker Detail
+  const oilType = ref("default");
   const oil = ref("default");
   const density = ref("");
   const sg = ref("");
   const viscosity = ref("");
+  const viscosityDegree = ref("");
   const flashPoint = ref("");
   const sulfurContent = ref("");
   const marpol1 = ref("");
@@ -55,18 +55,20 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
     // Overview
     reportNo,
     legNo,
+    loadingCondition,
     voyageNo,
+    reportingDateTime,
+    reportingTimeZone,
     // Bunkering Port
     portCountry,
     portName,
-    dateTime,
-    timeZone,
-    status,
     // Received Bunker Detail
+    oilType,
     oil,
     density,
     sg,
     viscosity,
+    viscosityDegree,
     flashPoint,
     sulfurContent,
     marpol1,

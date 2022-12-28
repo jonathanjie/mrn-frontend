@@ -1,6 +1,6 @@
 <template>
   <div
-    class="grid bg-gray-25 border border-yellow-500 rounded-lg p-5 gap-4 divide-y divide-dashed shadow-card"
+    class="grid bg-white border border-yellow-500 rounded-lg p-5 gap-4 divide-y divide-dashed shadow-card"
   >
     <div class="grid grid-cols-2 gap-4 mb-4">
       <!-- Actual Performance at Sea -->
@@ -14,18 +14,19 @@
         }}</span>
       </div>
       <div class="col-span-2 lg:col-span-1">
-        <div class="grid grid-cols-5 border">
+        <div class="grid grid-cols-5 border bg-gray-50">
           <div
             class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
           >
-            {{ $t("totalDistanceByOBS") }}
+            {{ $t("totalDistanceByObservation") }}
           </div>
-          <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
+          <div class="flex col-span-3 p-2 pl-4 border-b">
             <input
-              v-model="data.total_distance_obs"
-              @keypress="preventNaN($event, data.total_distance_obs)"
+              v-model="total_distance_obs"
+              @keypress="preventNaN($event, total_distance_obs)"
               placeholder="0"
-              class="w-16 text-14 text-gray-700 focus:outline-0"
+              disabled
+              class="w-16 text-14 text-gray-700 focus:outline-0 bg-gray-50"
             />
             <MiniUnitDisplay>NM</MiniUnitDisplay>
           </div>
@@ -34,42 +35,43 @@
           >
             {{ $t("totalSailingTime") }}
           </div>
-          <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
+          <div class="flex col-span-3 p-2 pl-4 border-b">
             <input
-              v-model="data.total_sailing_time"
-              @keypress="preventNaN($event, data.total_sailing_time)"
+              v-model="total_sailing_time"
+              @keypress="preventNaN($event, total_sailing_time)"
               placeholder="0"
-              class="w-16 text-14 text-gray-700 focus:outline-0"
+              disabled
+              class="w-16 text-14 text-gray-700 focus:outline-0 bg-gray-50"
             />
             <MiniUnitDisplay>HRS</MiniUnitDisplay>
           </div>
           <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
             {{ $t("displacement") }}
           </div>
-          <div class="flex col-span-3 p-2 pl-4 bg-white">
+          <div class="flex col-span-3 p-2 pl-4">
             <input
-              v-model="data.displacement"
-              @keypress="preventNaN($event, data.displacement)"
+              v-model="displacement"
+              @keypress="preventNaN($event, displacement)"
               placeholder="0"
-              class="w-16 text-14 text-gray-700 focus:outline-0"
+              disabled
+              class="w-16 text-14 text-gray-700 focus:outline-0 bg-gray-50"
             />
             <MiniUnitDisplay>MT</MiniUnitDisplay>
           </div>
         </div>
       </div>
       <div class="col-span-2 lg:col-span-1">
-        <div class="grid grid-cols-5 border">
-          <div
-            class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
-          >
+        <div class="grid grid-cols-5 border bg-gray-50">
+          <div class="col-span-2 text-blue-700 p-3 border-r border-b text-14">
             {{ $t("averageSpeed") }}
           </div>
-          <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
+          <div class="flex col-span-3 p-2 pl-4 border-b">
             <input
-              v-model="data.avg_speed"
-              @keypress="preventNaN($event, data.avg_speed)"
+              v-model="avg_speed"
+              @keypress="preventNaN($event, avg_speed)"
               placeholder="0"
-              class="w-16 text-14 text-gray-700 focus:outline-0"
+              disabled
+              class="w-16 text-14 text-gray-700 focus:outline-0 bg-gray-50"
             />
             <MiniUnitDisplay>KNOTS</MiniUnitDisplay>
           </div>
@@ -78,24 +80,26 @@
           >
             {{ $t("averageRPM") }}
           </div>
-          <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
+          <div class="flex col-span-3 p-2 pl-4 border-b">
             <input
-              v-model="data.avg_rpm"
-              @keypress="preventNaN($event, data.avg_rpm)"
+              v-model="avg_rpm"
+              @keypress="preventNaN($event, avg_rpm)"
               placeholder="0"
-              class="w-16 text-14 text-gray-700 focus:outline-0"
+              disabled
+              class="w-16 text-14 text-gray-700 focus:outline-0 bg-gray-50"
             />
             <MiniUnitDisplay>RPM</MiniUnitDisplay>
           </div>
           <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
             {{ $t("mefoConsumptionPerDay") }}
           </div>
-          <div class="flex col-span-3 p-2 pl-4 bg-white">
+          <div class="flex col-span-3 p-2 pl-4">
             <input
-              v-model="data.me_fo_consumption"
-              @keypress="preventNaN($event, data.me_fo_consumption)"
+              v-model="me_fo_consumption"
+              @keypress="preventNaN($event, me_fo_consumption)"
               placeholder="0"
-              class="w-16 text-14 text-gray-700 focus:outline-0"
+              disabled
+              class="w-16 text-14 text-gray-700 focus:outline-0 bg-gray-50"
             />
             <MiniUnitDisplay>MT</MiniUnitDisplay>
           </div>
@@ -116,74 +120,84 @@
       </div>
       <div class="grid grid-cols-6 border bg-gray-25 text-14">
         <div></div>
-        <div class="p-3 border-l text-gray-700">{{ $t("me") }}</div>
-        <div class="p-3 border-l text-gray-700">{{ $t("ge") }}</div>
-        <div class="p-3 border-l text-gray-700">{{ $t("boiler") }}</div>
-        <div class="p-3 border-l text-gray-700">{{ $t("igg") }}</div>
-        <div class="p-3 border-l text-gray-700">{{ $t("total") }}</div>
+        <div class="p-3 border-l text-blue-700">{{ $t("me") }}</div>
+        <div class="p-3 border-l text-blue-700">{{ $t("ge") }}</div>
+        <div class="p-3 border-l text-blue-700">{{ $t("boiler") }}</div>
+        <div class="p-3 border-l text-blue-700">{{ $t("igg") }}</div>
+        <div class="p-3 border-l text-blue-700">{{ $t("total") }}</div>
 
         <div class="text-blue-700 p-3 border-t">{{ $t("lsfo") }}</div>
         <input
-          v-model="data.lsfo_me"
-          @keypress="preventNaN($event, data.lsfo_me)"
+          v-model="lsfo_me_sum"
+          @keypress="preventNaN($event, lsfo_me_sum)"
           placeholder="000.00"
-          class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
+          disabled
+          class="p-3 pl-4 border-t border-l text-14 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <input
-          v-model="data.lsfo_ge"
-          @keypress="preventNaN($event, data.lsfo_ge)"
+          v-model="lsfo_ge_sum"
+          @keypress="preventNaN($event, lsfo_ge_sum)"
           placeholder="000.00"
-          class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
+          disabled
+          class="p-3 pl-4 border-t border-l text-14 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <input
-          v-model="data.lsfo_boiler"
-          @keypress="preventNaN($event, data.lsfo_boiler)"
+          v-model="lsfo_boiler_sum"
+          @keypress="preventNaN($event, lsfo_boiler_sum)"
           placeholder="000.00"
-          class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
+          disabled
+          class="p-3 pl-4 border-t border-l text-14 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <input
-          v-model="data.lsfo_igg"
-          @keypress="preventNaN($event, data.lsfo_igg)"
+          v-model="lsfo_igg_sum"
+          @keypress="preventNaN($event, lsfo_igg_sum)"
           placeholder="000.00"
-          class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
+          disabled
+          class="p-3 pl-4 border-t border-l text-14 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <input
-          v-model="data.lsfo_total"
-          @keypress="preventNaN($event, data.lsfo_total)"
+          v-model="lsfo_total_sum"
+          @keypress="preventNaN($event, lsfo_total_sum)"
           placeholder="000.00"
-          class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
+          disabled
+          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
         />
 
         <div class="text-blue-700 p-3 border-t">{{ $t("mgo") }}</div>
         <input
-          v-model="data.mgo_me"
-          @keypress="preventNaN($event, data.mgo_me)"
+          v-model="mgo_me_sum"
+          @keypress="preventNaN($event, mgo_me_sum)"
           placeholder="000.00"
-          class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
+          disabled
+          class="p-3 pl-4 border-t border-l text-14 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <input
-          v-model="data.mgo_ge"
-          @keypress="preventNaN($event, data.mgo_ge)"
+          v-model="mgo_ge_sum"
+          @keypress="preventNaN($event, mgo_ge_sum)"
           placeholder="000.00"
-          class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
+          disabled
+          class="p-3 pl-4 border-t border-l text-14 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <input
-          v-model="data.mgo_boiler"
-          @keypress="preventNaN($event, data.mgo_boiler)"
+          v-model="mgo_boiler_sum"
+          @keypress="preventNaN($event, mgo_boiler_sum)"
           placeholder="000.00"
-          class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
+          disabled
+          class="p-3 pl-4 border-t border-l text-14 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <input
-          v-model="data.mgo_igg"
-          @keypress="preventNaN($event, data.mgo_igg)"
+          v-model="mgo_igg_sum"
+          @keypress="preventNaN($event, mgo_igg_sum)"
           placeholder="000.00"
-          class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
+          disabled
+          class="p-3 pl-4 border-t border-l text-14 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <input
-          v-model="data.mgo_total"
-          @keypress="preventNaN($event, data.mgo_total)"
+          v-model="mgo_total_sum"
+          @keypress="preventNaN($event, mgo_total_sum)"
           placeholder="000.00"
-          class="p-3 pl-4 border-t border-l bg-white text-14 text-gray-700 focus:outline-0"
+          disabled
+          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
         />
       </div>
     </div>
@@ -191,26 +205,28 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { storeToRefs } from "pinia";
+import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
 
-const data = reactive({
-  total_distance_obs: "",
-  total_sailing_time: "",
-  displacement: "",
-  avg_speed: "",
-  avg_rpm: "",
-  me_fo_consumption: "",
-  lsfo_me: "",
-  lsfo_ge: "",
-  lsfo_boiler: "",
-  lsfo_igg: "",
-  lsfo_total: "",
-  mgo_me: "",
-  mgo_ge: "",
-  mgo_boiler: "",
-  mgo_igg: "",
-  mgo_total: "",
-});
+const store = useArrivalEOSPReportStore();
+const {
+  totalDistanceObs: total_distance_obs,
+  totalSailingTime: total_sailing_time,
+  displacement: displacement,
+  avgSpeed: avg_speed,
+  avgRpm: avg_rpm,
+  meFoConsumption: me_fo_consumption,
+  lsfoMeSum: lsfo_me_sum,
+  lsfoGeSum: lsfo_ge_sum,
+  lsfoBoilerSum: lsfo_boiler_sum,
+  lsfoIggSum: lsfo_igg_sum,
+  lsfoTotalSum: lsfo_total_sum,
+  mgoMeSum: mgo_me_sum,
+  mgoGeSum: mgo_ge_sum,
+  mgoBoilerSum: mgo_boiler_sum,
+  mgoIggSum: mgo_igg_sum,
+  mgoTotalSum: mgo_total_sum,
+} = storeToRefs(store);
 </script>

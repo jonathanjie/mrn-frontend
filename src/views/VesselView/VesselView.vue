@@ -22,19 +22,30 @@
                 ? 'border-b-2 border-blue-700 text-blue-700'
                 : ''
             "
+            >{{ $t("overview") }}</router-link
+          >
+          <!-- <router-link
+            to="submitted"
+            class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
+            :class="
+              $route.name == 'vessel-submitted'
+                ? 'border-b-2 border-blue-700 text-blue-700'
+                : ''
+            "
+            >{{ $t("submitted") }}</router-link
           >
             {{ $t("report") }}
           </router-link>
           <router-link
-            to="vessel-spec"
-            class="hidden pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
+            to="draft"
+            class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
             :class="
-              $route.name == 'vessel-spec'
+              $route.name == 'vessel-draft'
                 ? 'border-b-2 border-blue-700 text-blue-700'
                 : ''
             "
-            >{{ $t("vesselSpec") }}</router-link
-          >
+            >{{ $t("draft") }}</router-link
+          > -->
         </div>
       </div>
       <!-- Disabled modal until finilized design -->
@@ -44,36 +55,40 @@
       <GradientButton
         class="m-10"
         type="button"
-        v-on:click="addVoyage(voyageData)"
+        :disabled="isFetchingVoyages"
+        @click="addVoyage(voyageData)"
       >
         <template v-slot:content>{{ $t("createNewVoyage") }}</template>
       </GradientButton>
       <InitializationModal
         ref="modal"
-        v-if="showModal"
+        v-show="showModal"
         @close-modal="showModal = false"
         :vesselname="vesselname"
         :imo="imo"
       ></InitializationModal>
     </div>
-    <!-- <router-view :key="update"></router-view> -->
     <suspense>
-      <router-view></router-view>
+      <router-view :key="update"></router-view>
     </suspense>
   </div>
 </template>
 
 <script setup>
 import GradientButton from "../../components/Buttons/GradientButton.vue";
-import InitializationModal from "@/components/InitializationModal.vue";
+import InitializationModal from "@/components/Modals/InitializationModal.vue";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 // Variable to force replacement of router-view
-const isEmpty = true;
-let voyageNum = 1;
+const update = ref(0);
+const isFetchingVoyages = ref(false);
+// TODO: fetch voyage number here
+let voyageNum = 4;
 
 const props = defineProps({
   vesselname: String,
   imo: String,
+  specs: String,
 });
 
 let showModal = localStorage.getItem("addSpec") == true;
@@ -81,24 +96,31 @@ let showModal = localStorage.getItem("addSpec") == true;
 // Backend Data
 const voyageData = {
   voyage_num: voyageNum,
-  ship_uuid: "9bbd38d8-b68a-4d46-8388-fc1fb5298e34",
+  imo_reg: props.imo,
 };
 
 // POST request to add in a new voyage
 const addVoyage = async (voyageData) => {
-  voyageNum += 1;
-  const DUMMY_TOKEN = localStorage.getItem("jwt");
+  isFetchingVoyages.value = true;
   const response = await fetch(
     "https://testapi.marinachain.io/marinanet/voyages/",
     {
       headers: {
-        Authorization: "Bearer " + DUMMY_TOKEN,
+        Authorization: "Bearer " + auth.jwt,
         "Content-Type": "application/json",
       },
       method: "POST",
       body: JSON.stringify(voyageData),
     }
   );
-  update.value += 1;
+  console.log(response);
+
+  if (response.ok) {
+    update.value += 1;
+  } else {
+    window.alert("ERROR: " + JSON.stringify(response.json));
+  }
+
+  isFetchingVoyages.value = false;
 };
 </script>

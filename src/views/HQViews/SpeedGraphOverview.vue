@@ -123,8 +123,8 @@
             :distanceToGo="distanceToGo"
             :remainOnBoard="remainOnBoard"
           ></SpeedSideNav>
-          <SpeedGraphPlot></SpeedGraphPlot>
-        </div> -->
+          <!-- <SpeedGraphPlot></SpeedGraphPlot> -->
+        </div>
       </div>
       <!-- Port Calls -->
       <div class="flex mt-10 pt-10 flex-wrap">

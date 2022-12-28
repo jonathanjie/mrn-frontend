@@ -1,7 +1,7 @@
 <template>
   <div
-    v-if="!stoppage_is_active"
-    @click="stoppage_is_active = !stoppage_is_active"
+    v-if="!is_stoppage_enabled"
+    @click="is_stoppage_enabled = !is_stoppage_enabled"
     class="flex items-center bg-white rounded-lg p-5 shadow-card cursor-pointer"
   >
     <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
@@ -9,9 +9,7 @@
       src="@/assets/icons/checkboxes/unchecked_square.svg"
       class="mr-2 h-5 w-5"
     />
-    <span class="text-blue-700 text-16">{{
-      $t("stoppageOrReductionOfRPM")
-    }}</span>
+    <span class="text-blue-700 text-16">{{ $t("stoppageOrChangeInRPM") }}</span>
   </div>
   <div
     v-else
@@ -19,7 +17,7 @@
   >
     <div
       class="col-span-2 flex items-center cursor-pointer"
-      @click="stoppage_is_active = !stoppage_is_active"
+      @click="is_stoppage_enabled = !is_stoppage_enabled"
     >
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
       <img
@@ -27,7 +25,7 @@
         class="mr-2 h-5 w-5"
       />
       <span class="text-blue-700 text-16">{{
-        $t("stoppageOrReductionOfRPM")
+        $t("stoppageOrChangeInRPM")
       }}</span>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
@@ -35,35 +33,49 @@
         class="col-span-2 text-blue-700 p-3 text-14 self-center border-b border-r"
         >{{ $t("beginningDateAndTime") }}</span
       >
-      <DatePicker
-        v-model="beginning"
-        class="col-span-3 border-b"
-        textInput
-        :textInputOptions="textInputOptions"
-        :format="format"
-        :modelValue="string"
-        :placeholder="$t('selectDateAndTime')"
-      >
-        <template #input-icon>
-          <img src="" />
-        </template>
-      </DatePicker>
+      <div class="col-span-3 relative flex items-center border-b bg-white">
+        <DatePicker
+          v-model="beginning"
+          class="grow"
+          textInput
+          :textInputOptions="textInputOptions"
+          :format="format"
+          :modelValue="string"
+          :placeholder="$t('selectDateAndTime')"
+        >
+          <template #input-icon>
+            <img src="" />
+          </template>
+        </DatePicker>
+        <MiniUnitDisplay
+          class="absolute right-0 min-w-fit"
+          :class="beginning ? 'mr-9' : 'mr-2'"
+          >{{ stoppage_beginning_utc }}</MiniUnitDisplay
+        >
+      </div>
       <span class="col-span-2 text-blue-700 p-3 text-14 self-center border-r">{{
         $t("endingDateAndTime")
       }}</span>
-      <DatePicker
-        v-model="ending"
-        class="col-span-3"
-        textInput
-        :textInputOptions="textInputOptions"
-        :format="format"
-        :modelValue="string"
-        :placeholder="$t('selectDateAndTime')"
-      >
-        <template #input-icon>
-          <img src="" />
-        </template>
-      </DatePicker>
+      <div class="col-span-3 relative flex items-center bg-white">
+        <DatePicker
+          v-model="ending"
+          class="grow"
+          textInput
+          :textInputOptions="textInputOptions"
+          :format="format"
+          :modelValue="string"
+          :placeholder="$t('selectDateAndTime')"
+        >
+          <template #input-icon>
+            <img src="" />
+          </template>
+        </DatePicker>
+        <MiniUnitDisplay
+          class="absolute right-0 min-w-fit"
+          :class="ending ? 'mr-9' : 'mr-2'"
+          >{{ stoppage_ending_utc }}</MiniUnitDisplay
+        >
+      </div>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
       <span class="col-span-2 text-blue-700 p-3 border-b text-14 self-center">{{
@@ -79,12 +91,12 @@
         <MiniUnitDisplay>HRS</MiniUnitDisplay>
       </div>
       <span class="col-span-2 text-blue-700 p-3 text-14">{{
-        $t("reducedRPM")
+        $t("changedRPM")
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 bg-white text-14 border-l">
         <input
-          v-model="reduced_RPM"
-          @keypress="preventNaN($event, reduced_RPM)"
+          v-model="changed_RPM"
+          @keypress="preventNaN($event, changed_RPM)"
           placeholder="0"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -159,12 +171,12 @@
         :class="reason === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">{{ $t("select") }}</option>
-        <option value="engi">{{ $t("engineProblem") }}</option>
-        <option value="acci">{{ $t("accident") }}</option>
-        <option value="coll">{{ $t("collision") }}</option>
-        <option value="grou">{{ $t("grounding") }}</option>
-        <option value="oil">{{ $t("oilSpill") }}</option>
-        <option value="othe">{{ $t("other") }}</option>
+        <option value="ENGINE_PROBLEM">{{ $t("engineProblem") }}</option>
+        <option value="ACCIDENT">{{ $t("accident") }}</option>
+        <option value="COLLISION">{{ $t("collision") }}</option>
+        <option value="GROUNDING">{{ $t("grounding") }}</option>
+        <option value="OIL_SPILL">{{ $t("oilSpill") }}</option>
+        <option value="OTHER">{{ $t("other") }}</option>
       </select>
       <div
         class="col-span-2 row-span-2 text-blue-700 p-3 border-t bg-gray-50 text-14"
@@ -182,19 +194,26 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { textInputOptions, format, preventNaN } from "@/utils/helpers.js";
+import {
+  textInputOptions,
+  format,
+  preventNaN,
+  formatUTC,
+} from "@/utils/helpers.js";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
+import { UTCPlaceholder } from "@/constants";
+import { computed } from "vue";
 
 const store = useNoonReportStore();
-
 const {
   stoppageBeginning: beginning,
+  stoppageBeginningUTC,
   stoppageEnding: ending,
+  stoppageEndingUTC,
   stoppageDuration: duration,
-  stoppageReducedRPM: reduced_RPM,
+  stoppageChangedRPM: changed_RPM,
   stoppageReason: reason,
   stoppageRemarks: remarks,
   stoppageLatDir: lat_dir,
@@ -203,6 +222,18 @@ const {
   stoppageLongDir: long_dir,
   stoppageLongDegree: long_degree,
   stoppageLongMinutes: long_minutes,
-  stoppageIsActive: stoppage_is_active,
+  isStoppageEnabled: is_stoppage_enabled,
 } = storeToRefs(store);
+
+const stoppage_beginning_utc = computed(() =>
+  stoppageBeginningUTC.value
+    ? formatUTC(new Date(stoppageBeginningUTC.value))
+    : UTCPlaceholder
+);
+
+const stoppage_ending_utc = computed(() =>
+  stoppageEndingUTC.value
+    ? formatUTC(new Date(stoppageEndingUTC.value))
+    : UTCPlaceholder
+);
 </script>

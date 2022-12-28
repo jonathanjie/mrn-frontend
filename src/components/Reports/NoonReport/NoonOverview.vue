@@ -10,17 +10,13 @@
       <div class="col-span-2 text-blue-700 p-3 border-r border-b">
         {{ $t("reportNo") }}
       </div>
-      <input
-        class="col-span-3 p-3 border-b text-gray-700 bg-gray-50"
-        disabled
-        v-model="report_no"
-      />
+      <div class="col-span-3 p-3 border-b text-gray-700 bg-gray-50">
+        {{ report_no }}
+      </div>
       <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("legNo") }}</div>
-      <input
-        class="col-span-3 p-3 text-gray-700 bg-gray-50"
-        disabled
-        v-model="leg_no"
-      />
+      <div class="col-span-3 p-3 text-gray-700 bg-gray-50">
+        {{ leg_no }}
+      </div>
     </div>
     <div
       class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14"
@@ -28,19 +24,66 @@
       <div class="col-span-2 text-blue-700 p-3 border-l border-y">
         {{ $t("voyageNo") }}
       </div>
-      <div class="flex col-span-3 p-3 border">
-        <input
-          class="text-gray-700 bg-gray-50 w-8"
-          disabled
-          v-model="voyage_no"
-        />
-        <!-- value here (e.g. Ballast) should be dynamic -->
-        <MiniUnitDisplay class="ml-0 mr-auto">{{
-          $t("ballast")
+      <div class="flex items-center col-span-3 p-3 border">
+        <div class="text-gray-700 bg-gray-50">{{ voyage_no }}</div>
+        <MiniUnitDisplay class="ml-2 mr-auto">{{
+          loading_condition
         }}</MiniUnitDisplay>
       </div>
       <div class="hidden xl:block bg-white col-span-2 row-span-1"></div>
       <input class="hidden xl:block bg-white col-span-3 p-3" disabled />
+    </div>
+    <div
+      class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14 border xl:mb-6"
+    >
+      <div class="col-span-2 text-blue-700 p-3 border-r">
+        {{ $t("reportingDateAndTime") }}
+      </div>
+      <div class="col-span-3 relative flex items-center bg-white">
+        <DatePicker
+          v-model="reporting_date_time"
+          class="grow"
+          textInput
+          :textInputOptions="textInputOptions"
+          :format="format"
+          :modelValue="string"
+          :placeholder="$t('selectDateAndTime')"
+        >
+          <template #input-icon>
+            <img src="" />
+          </template>
+        </DatePicker>
+        <MiniUnitDisplay
+          class="absolute right-0 min-w-fit"
+          :class="reporting_date_time ? 'mr-9' : 'mr-2'"
+          >{{ reporting_date_time_utc }}</MiniUnitDisplay
+        >
+      </div>
+    </div>
+    <div
+      class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14 border xl:mb-6"
+    >
+      <div class="col-span-2 text-blue-700 p-3 border-r">
+        {{ $t("reportingTimeZone") }}
+      </div>
+      <div class="flex col-span-3 bg-white">
+        <select
+          class="grow self-center p-3 text-14 focus:outline-0"
+          :class="
+            reporting_time_zone === 'default'
+              ? 'text-gray-400'
+              : 'text-gray-700'
+          "
+          v-model="reporting_time_zone"
+        >
+          <option selected disabled value="default">
+            {{ $t("selectTimeZone") }}
+          </option>
+          <option v-for="(val, key) in TIMEZONES" :key="val" :value="val">
+            {{ key }}
+          </option>
+        </select>
+      </div>
     </div>
     <div class="col-span-2 xl:col-span-1 items-center mt-2">
       <div class="flex items-center">
@@ -66,20 +109,28 @@
         <div class="col-span-2 text-blue-700 border-b p-3 border-r">
           {{ $t("dateAndTime") }}
         </div>
-        <DatePicker
-          v-model="route_departure_date"
-          class="col-span-3 text-gray-700 bg-gray-50 border-b"
-          textInput
-          :textInputOptions="textInputOptions"
-          :format="format"
-          :modelValue="string"
-          disabled
-          :placeholder="$t('selectDateAndTime')"
+        <div
+          class="col-span-3 relative flex items-center text-gray-700 bg-gray-50 border-b"
         >
-          <template #input-icon>
-            <img src="" />
-          </template>
-        </DatePicker>
+          <DatePicker
+            v-model="route_departure_date_time"
+            class="grow"
+            textInput
+            :textInputOptions="textInputOptions"
+            :format="format"
+            :modelValue="string"
+            disabled
+            :placeholder="$t('selectDateAndTime')"
+          >
+            <template #input-icon>
+              <img src="" />
+            </template>
+          </DatePicker>
+          <MiniUnitDisplay class="absolute right-0 min-w-fit mr-2">{{
+            route_departure_date_time_utc
+          }}</MiniUnitDisplay>
+        </div>
+
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("timeZone") }}
         </div>
@@ -92,44 +143,9 @@
             <option selected disabled value="default">
               {{ $t("select") }}
             </option>
-            <option value="-12">UTC-12:00</option>
-            <option value="-11">UTC-11:00</option>
-            <option value="-10">UTC-10:00</option>
-            <option value="-9.5">UTC-9:30</option>
-            <option value="-9">UTC-9:00</option>
-            <option value="-8">UTC-8:00</option>
-            <option value="-7">UTC-7:00</option>
-            <option value="-6">UTC-6:00</option>
-            <option value="-5">UTC-5:00</option>
-            <option value="-4">UTC-4:00</option>
-            <option value="-3.5">UTC-3:30</option>
-            <option value="-3">UTC-3:00</option>
-            <option value="-2">UTC-2:00</option>
-            <option value="-1">UTC-1:00</option>
-            <option value="0">UTC</option>
-            <option value="1">UTC+1:00</option>
-            <option value="2">UTC+2:00</option>
-            <option value="3">UTC+3:00</option>
-            <option value="3.5">UTC+3:30</option>
-            <option value="4">UTC+4:00</option>
-            <option value="4.5">UTC+4:30</option>
-            <option value="5">UTC+5:00</option>
-            <option value="5.5">UTC+5:30</option>
-            <option value="5.75">UTC+5:45</option>
-            <option value="6">UTC+6:00</option>
-            <option value="6.5">UTC+6:30</option>
-            <option value="7">UTC+7:00</option>
-            <option value="8">UTC+8:00</option>
-            <option value="8.75">UTC+8:45</option>
-            <option value="9">UTC+9:00</option>
-            <option value="9.5">UTC+9:30</option>
-            <option value="10">UTC+10:00</option>
-            <option value="10.5">UTC+10:30</option>
-            <option value="11">UTC+11:00</option>
-            <option value="12">UTC+12:00</option>
-            <option value="12.75">UTC+12:45</option>
-            <option value="13">UTC+13:00</option>
-            <option value="14">UTC+14:00</option>
+            <option v-for="(val, key) in TIMEZONES" :key="val" :value="val">
+              {{ key }}
+            </option>
           </select>
         </div>
       </div>
@@ -157,19 +173,57 @@
         <div class="col-span-2 text-blue-700 p-3 border-r border-b">
           {{ $t("estDateAndTime") }}
         </div>
-        <DatePicker
-          v-model="route_arrival_date"
-          class="col-span-3 border-b"
-          textInput
-          :textInputOptions="textInputOptions"
-          :format="format"
-          :modelValue="string"
-          :placeholder="$t('selectDateAndTime')"
+        <div
+          class="flex items-center col-span-3 border-b"
+          :class="dateEditIsDisabled ? 'bg-gray-50' : 'bg-white'"
         >
-          <template #input-icon>
-            <img src="" />
-          </template>
-        </DatePicker>
+          <div
+            v-if="!isRouteArrivalDateTimeEdited"
+            class="grow col-span-3 relative flex items-center"
+          >
+            <DatePicker
+              v-model="route_arrival_date_time"
+              class="grow"
+              :disabled="dateEditIsDisabled"
+              textInput
+              :textInputOptions="textInputOptions"
+              :format="format"
+              :modelValue="string"
+              :placeholder="$t('selectDateAndTime')"
+            >
+              <template #input-icon>
+                <img src="" />
+              </template>
+            </DatePicker>
+            <MiniUnitDisplay class="absolute right-0 min-w-fit mr-2">{{
+              route_arrival_date_time_utc
+            }}</MiniUnitDisplay>
+          </div>
+          <div v-else class="grow col-span-3 relative flex items-center">
+            <DatePicker
+              v-model="route_arrival_date_time_edited"
+              class="grow"
+              :disabled="dateEditIsDisabled"
+              textInput
+              :textInputOptions="textInputOptions"
+              :format="format"
+              :modelValue="string"
+              :placeholder="$t('selectDateAndTime')"
+            >
+              <template #input-icon>
+                <img src="" />
+              </template>
+            </DatePicker>
+            <MiniUnitDisplay class="absolute right-0 min-w-fit">{{
+              route_arrival_date_time_edited_utc
+            }}</MiniUnitDisplay>
+          </div>
+          <img
+            src="@/assets/icons/edit.svg"
+            @click="toggle"
+            class="mx-2 h-4 w-4 cursor-pointer"
+          />
+        </div>
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("timeZone") }}
         </div>
@@ -186,44 +240,9 @@
             <option selected disabled value="default">
               {{ $t("select") }}
             </option>
-            <option value="-12">UTC-12:00</option>
-            <option value="-11">UTC-11:00</option>
-            <option value="-10">UTC-10:00</option>
-            <option value="-9.5">UTC-9:30</option>
-            <option value="-9">UTC-9:00</option>
-            <option value="-8">UTC-8:00</option>
-            <option value="-7">UTC-7:00</option>
-            <option value="-6">UTC-6:00</option>
-            <option value="-5">UTC-5:00</option>
-            <option value="-4">UTC-4:00</option>
-            <option value="-3.5">UTC-3:30</option>
-            <option value="-3">UTC-3:00</option>
-            <option value="-2">UTC-2:00</option>
-            <option value="-1">UTC-1:00</option>
-            <option value="0">UTC</option>
-            <option value="1">UTC+1:00</option>
-            <option value="2">UTC+2:00</option>
-            <option value="3">UTC+3:00</option>
-            <option value="3.5">UTC+3:30</option>
-            <option value="4">UTC+4:00</option>
-            <option value="4.5">UTC+4:30</option>
-            <option value="5">UTC+5:00</option>
-            <option value="5.5">UTC+5:30</option>
-            <option value="5.75">UTC+5:45</option>
-            <option value="6">UTC+6:00</option>
-            <option value="6.5">UTC+6:30</option>
-            <option value="7">UTC+7:00</option>
-            <option value="8">UTC+8:00</option>
-            <option value="8.75">UTC+8:45</option>
-            <option value="9">UTC+9:00</option>
-            <option value="9.5">UTC+9:30</option>
-            <option value="10">UTC+10:00</option>
-            <option value="10.5">UTC+10:30</option>
-            <option value="11">UTC+11:00</option>
-            <option value="12">UTC+12:00</option>
-            <option value="12.75">UTC+12:45</option>
-            <option value="13">UTC+13:00</option>
-            <option value="14">UTC+14:00</option>
+            <option v-for="(val, key) in TIMEZONES" :key="val" :value="val">
+              {{ key }}
+            </option>
           </select>
         </div>
       </div>
@@ -232,24 +251,66 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
-import { textInputOptions, format } from "@/utils/helpers.js";
+import { textInputOptions, format, formatUTC } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
+import { ref, computed } from "vue";
+import { TIMEZONES } from "@/utils/options";
+import { UTCPlaceholder } from "@/constants";
+
+const dateEditIsDisabled = ref(true);
+
+const toggle = () => {
+  dateEditIsDisabled.value = !dateEditIsDisabled.value;
+  isRouteArrivalDateTimeEdited.value = true;
+};
 
 const store = useNoonReportStore();
 const {
   reportNo: report_no,
   legNo: leg_no,
+  loadingCondition: loading_condition,
   voyageNo: voyage_no,
+  reportingDateTime: reporting_date_time,
+  reportingTimeZone: reporting_time_zone,
+  reportingDateTimeUTC,
   routeDeparturePortCountry: route_departure_port_country,
   routeDeparturePortName: route_departure_port_name,
-  routeDepartureDate: route_departure_date,
+  routeDepartureDateTime: route_departure_date_time,
   routeDepartureTimeZone: route_departure_time_zone,
+  routeDepartureDateTimeUTC,
   routeArrivalPortCountry: route_arrival_port_country,
   routeArrivalPortName: route_arrival_port_name,
-  routeArrivalDate: route_arrival_date,
+  routeArrivalDateTimeUTC,
+  routeArrivalDateTime: route_arrival_date_time,
+  isRouteArrivalDateTimeEdited,
+  routeArrivalDateTimeEdited: route_arrival_date_time_edited,
+  routeArrivalDateTimeEditedUTC,
   routeArrivalTimeZone: route_arrival_time_zone,
 } = storeToRefs(store);
+
+const reporting_date_time_utc = computed(() =>
+  reportingDateTimeUTC.value
+    ? formatUTC(new Date(reportingDateTimeUTC.value))
+    : UTCPlaceholder
+);
+
+const route_departure_date_time_utc = computed(() =>
+  routeDepartureDateTimeUTC.value
+    ? formatUTC(new Date(routeDepartureDateTimeUTC.value))
+    : UTCPlaceholder
+);
+
+const route_arrival_date_time_utc = computed(() =>
+  routeArrivalDateTimeUTC.value
+    ? formatUTC(new Date(routeArrivalDateTimeUTC.value))
+    : UTCPlaceholder
+);
+
+const route_arrival_date_time_edited_utc = computed(() =>
+  routeArrivalDateTimeEditedUTC.value
+    ? formatUTC(new Date(routeArrivalDateTimeEditedUTC.value))
+    : UTCPlaceholder
+);
 </script>

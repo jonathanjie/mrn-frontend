@@ -10,17 +10,13 @@
       <div class="col-span-2 text-blue-700 p-3 border-r border-b">
         {{ $t("reportNo") }}
       </div>
-      <input
-        class="col-span-3 p-3 border-b text-gray-700 bg-gray-50"
-        disabled
-        v-model="report_no"
-      />
+      <div class="col-span-3 p-3 border-b text-gray-700 bg-gray-50">
+        {{ report_no }}
+      </div>
       <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("legNo") }}</div>
-      <input
-        class="col-span-3 p-3 text-gray-700 bg-gray-50"
-        disabled
-        v-model="leg_no"
-      />
+      <div class="col-span-3 p-3 text-gray-700 bg-gray-50">
+        {{ leg_no }}
+      </div>
     </div>
     <div
       class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14"
@@ -28,25 +24,93 @@
       <div class="col-span-2 text-blue-700 p-3 border-l border-y">
         {{ $t("voyageNo") }}
       </div>
-      <input
-        class="flex col-span-3 p-3 border text-gray-700 bg-gray-50"
-        disabled
-        v-model="voyage_no"
-      />
+      <div class="flex items-center col-span-3 p-3 border">
+        <div class="text-gray-700 bg-gray-50">{{ voyage_no }}</div>
+        <MiniUnitDisplay class="ml-2 mr-auto">{{
+          loading_condition
+        }}</MiniUnitDisplay>
+      </div>
       <div class="hidden xl:block bg-white col-span-2 row-span-1"></div>
       <input class="hidden xl:block bg-white col-span-3 p-3" disabled />
+    </div>
+    <div
+      class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14 border"
+    >
+      <div class="col-span-2 text-blue-700 p-3 border-r">
+        {{ $t("reportingDateAndTime") }}
+      </div>
+      <div class="col-span-3 relative flex items-center bg-white">
+        <DatePicker
+          v-model="reporting_date_time"
+          class="grow"
+          textInput
+          :textInputOptions="textInputOptions"
+          :format="format"
+          :modelValue="string"
+          :placeholder="$t('selectDateAndTime')"
+        >
+          <template #input-icon>
+            <img src="" />
+          </template>
+        </DatePicker>
+        <MiniUnitDisplay
+          class="absolute right-0 min-w-fit"
+          :class="reporting_date_time ? 'mr-9' : 'mr-2'"
+          >{{ reporting_date_time_utc }}</MiniUnitDisplay
+        >
+      </div>
+    </div>
+    <div
+      class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14 border"
+    >
+      <div class="col-span-2 text-blue-700 p-3 border-r">
+        {{ $t("reportingTimeZone") }}
+      </div>
+      <div class="flex col-span-3 bg-white">
+        <select
+          class="grow self-center p-3 text-14 focus:outline-0"
+          :class="
+            reporting_time_zone === 'default'
+              ? 'text-gray-400'
+              : 'text-gray-700'
+          "
+          v-model="reporting_time_zone"
+        >
+          <option selected disabled value="default">
+            {{ $t("selectTimeZone") }}
+          </option>
+          <option v-for="(val, key) in TIMEZONES" :key="val" :value="val">
+            {{ key }}
+          </option>
+        </select>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { textInputOptions, format, formatUTC } from "@/utils/helpers";
 import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
 import { storeToRefs } from "pinia";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { TIMEZONES } from "@/utils/options";
+import { UTCPlaceholder } from "@/constants";
+import { computed } from "vue";
 
 const store = useDepartureCOSPReportStore();
 const {
   reportNo: report_no,
   legNo: leg_no,
+  loadingCondition: loading_condition,
   voyageNo: voyage_no,
+  reportingDateTime: reporting_date_time,
+  reportingTimeZone: reporting_time_zone,
+  reportingDateTimeUTC,
 } = storeToRefs(store);
+
+const reporting_date_time_utc = computed(() =>
+  reportingDateTimeUTC.value
+    ? formatUTC(new Date(reportingDateTimeUTC.value))
+    : UTCPlaceholder
+);
 </script>

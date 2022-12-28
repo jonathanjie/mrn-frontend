@@ -84,6 +84,8 @@ import { useVoyageStore } from "@/stores/useVoyageStore";
 import { useAuth0 } from "@auth0/auth0-vue";
 import axios from "axios";
 
+console.log("Sidenav loads");
+const auth = useAuthStore();
 const router = useRouter();
 const { user, getAccessTokenSilently } = useAuth0();
 const auth = useAuthStore();
@@ -153,7 +155,9 @@ const home = () => {
 const store = useVoyageStore();
 const role = await getUserRole();
 const manager = role === "manager";
+console.log("Sidebar loads");
 auth.updateUserRoleToken(user, role, jwt);
+console.log("Auth store is updated here");
 const ship = await getShip();
 
 if (manager) {

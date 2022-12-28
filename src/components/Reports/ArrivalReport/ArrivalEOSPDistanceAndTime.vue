@@ -195,15 +195,4 @@ const {
   distanceEngTotal: distance_eng_total,
   revolutionCount: revolution_count,
 } = storeToRefs(store);
-
-// const data = reactive({
-//   // TODO: total distance in voyage - distance by observation? or engine?
-//   hours_since_noon: "", // Distance & Time: time
-//   hours_total: "", // Distance & Time: time total
-//   distance_obs_since_noon: "", // Distance & Time: distance by observation
-//   distance_obs_total: "", // distance observation total field missing from BE
-//   distance_eng_since_noon: "", // Distance & Time: distance by engine
-//   distance_eng_total: "", // Distance & Time: distance by engine total
-//   revolution_count: "", // only for noon report
-// });
 </script>

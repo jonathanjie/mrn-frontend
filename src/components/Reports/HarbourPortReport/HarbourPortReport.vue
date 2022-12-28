@@ -9,119 +9,81 @@
 
     <div class="col-span-2 flex space-x-5 text-gray-700 text-14">
       <div class="flex align-center space-x-2">
-        <input type="radio" id="event" value="event" v-model="type" />
+        <input type="radio" id="event" value="event" v-model="event_or_noon" />
         <label for="event">{{ $t("event") }}</label>
       </div>
       <div class="flex align-center space-x-2">
         <input
           type="radio"
           id="noonInHarbourPort"
-          value="noonInHarbourPort"
-          v-model="type"
+          value="noon"
+          v-model="event_or_noon"
+          @change="recoverStatus"
         />
         <label for="noonInHarbourPort">{{ $t("noonInHarbourPort") }}</label>
       </div>
     </div>
 
-    <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border text-14">
-      <div class="col-span-2 text-blue-700 p-3 border-b border-r bg-gray-50">
+    <div class="col-span-2 lg:col-span-1 grid grid-cols-5 text-14">
+      <div class="col-span-2 text-blue-700 p-3 border bg-gray-50">
         {{ $t("status") }}
       </div>
       <select
         v-model="status"
-        class="col-span-3 p-3 border-b focus:outline-0"
+        :disabled="event_or_noon == 'noon'"
+        class="col-span-3 p-3 border-y border-r focus:outline-0 disabled:text-gray-400 disabled:bg-gray-50"
         :class="status === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        @change="resetOperations"
       >
         <option selected disabled value="default">
           {{ $t("selectEvent") }}
         </option>
-        <option value="anchoringStartOutside">
-          {{ $t("anchoringStartOutside") }}
+        <option
+          v-for="start_status in START_STATUS"
+          :value="start_status"
+          :key="start_status"
+        >
+          {{ $t(start_status) }}
         </option>
-        <option value="anchoringEndOutside">
-          {{ $t("anchoringEndOutside") }}
-        </option>
-        <option value="anchoringStartInside">
-          {{ $t("anchoringStartInside") }}
-        </option>
-        <option value="anchoringEndInside">
-          {{ $t("anchoringEndInside") }}
-        </option>
-        <option value="driftingStart">
-          {{ $t("driftingStart") }}
-        </option>
-        <option value="driftingEnd">
-          {{ $t("driftingEnd") }}
-        </option>
-        <option value="driftingStart">
-          {{ $t("shiftingStart") }}
-        </option>
-        <option value="driftingEnd">
-          {{ $t("shiftingEnd") }}
+        <option
+          v-for="end_status in END_STATUS"
+          :value="end_status"
+          :key="end_status"
+        >
+          {{ $t(end_status) }}
         </option>
       </select>
       <div
-        class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
+        class="col-span-2 text-blue-700 p-3 border-x border-b bg-gray-50 text-14"
       >
         {{ $t("timeZone") }}
       </div>
-      <div class="flex col-span-3 border-b bg-white">
+      <div class="flex col-span-3 border-b border-r bg-white">
         <select
           class="grow self-center p-3 text-14 focus:outline-0"
-          :class="time_zone === 'default' ? 'text-gray-400' : 'text-gray-700'"
-          v-model="time_zone"
+          :class="
+            reporting_time_zone === 'default'
+              ? 'text-gray-400'
+              : 'text-gray-700'
+          "
+          v-model="reporting_time_zone"
         >
           <option selected disabled value="default">
             {{ $t("selectTimeZone") }}
           </option>
-          <option value="-12">UTC-12:00</option>
-          <option value="-11">UTC-11:00</option>
-          <option value="-10">UTC-10:00</option>
-          <option value="-9.5">UTC-9:30</option>
-          <option value="-9">UTC-9:00</option>
-          <option value="-8">UTC-8:00</option>
-          <option value="-7">UTC-7:00</option>
-          <option value="-6">UTC-6:00</option>
-          <option value="-5">UTC-5:00</option>
-          <option value="-4">UTC-4:00</option>
-          <option value="-3.5">UTC-3:30</option>
-          <option value="-3">UTC-3:00</option>
-          <option value="-2">UTC-2:00</option>
-          <option value="-1">UTC-1:00</option>
-          <option value="0">UTC</option>
-          <option value="1">UTC+1:00</option>
-          <option value="2">UTC+2:00</option>
-          <option value="3">UTC+3:00</option>
-          <option value="3.5">UTC+3:30</option>
-          <option value="4">UTC+4:00</option>
-          <option value="4.5">UTC+4:30</option>
-          <option value="5">UTC+5:00</option>
-          <option value="5.5">UTC+5:30</option>
-          <option value="5.75">UTC+5:45</option>
-          <option value="6">UTC+6:00</option>
-          <option value="6.5">UTC+6:30</option>
-          <option value="7">UTC+7:00</option>
-          <option value="8">UTC+8:00</option>
-          <option value="8.75">UTC+8:45</option>
-          <option value="9">UTC+9:00</option>
-          <option value="9.5">UTC+9:30</option>
-          <option value="10">UTC+10:00</option>
-          <option value="10.5">UTC+10:30</option>
-          <option value="11">UTC+11:00</option>
-          <option value="12">UTC+12:00</option>
-          <option value="12.75">UTC+12:45</option>
-          <option value="13">UTC+13:00</option>
-          <option value="14">UTC+14:00</option>
+          <option v-for="(val, key) in TIMEZONES" :key="val" :value="val">
+            {{ key }}
+          </option>
         </select>
       </div>
       <div
-        class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
+        class="col-span-2 text-blue-700 p-3 border-x border-b bg-gray-50 text-14"
       >
         {{ $t("dateAndTime") }}
       </div>
       <DatePicker
-        v-model="date_time"
-        class="col-span-3 border-b"
+        v-model="reporting_date_time"
+        class="col-span-3 border-b border-r"
         textInput
         :textInputOptions="textInputOptions"
         :format="format"
@@ -132,10 +94,10 @@
           <img src="" />
         </template>
       </DatePicker>
-      <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50">
+      <div class="col-span-2 text-blue-700 p-3 border-x border-b bg-gray-50">
         {{ $t("distanceTravelled") }}
       </div>
-      <div class="flex col-span-3 p-2 pl-4 bg-white">
+      <div class="flex col-span-3 p-2 pl-4 bg-white border-b border-r">
         <input
           v-model="distance_travelled"
           @keypress="preventNaN($event, distance_travelled)"
@@ -144,6 +106,8 @@
         />
         <MiniUnitDisplay>NM</MiniUnitDisplay>
       </div>
+      <input class="hidden lg:block bg-white col-span-5 p-3" disabled />
+      <input class="hidden lg:block bg-white col-span-5 p-3" disabled />
     </div>
 
     <div
@@ -152,45 +116,92 @@
       <div class="col-span-2 row-span-2 text-blue-700 p-3 border-r bg-gray-50">
         {{ $t("operations") }}
       </div>
-      <div class="col-span-3 flex flex-col space-y-2 p-3 text-gray-700">
-        <!-- TODO: make dynamic -->
+      <div
+        class="col-span-3 flex flex-col space-y-2 p-3 text-gray-700"
+        :class="
+          event_or_noon === 'noon' || END_STATUS.includes(status)
+            ? 'bg-gray-50'
+            : ''
+        "
+      >
         <div class="flex align-center space-x-2">
           <input
+            :disabled="
+              event_or_noon == 'noon' ||
+              !START_STATUS.includes(status) ||
+              !planned_operations.includes('waiting')
+            "
             type="checkbox"
             id="waiting"
             value="waiting"
             v-model="operations"
+            @click="setOperationsToWaiting"
           />
-          <label for="waiting">{{ $t("waiting") }}</label>
+          <label
+            for="waiting"
+            :class="
+              event_or_noon == 'noon' ||
+              !START_STATUS.includes(status) ||
+              !planned_operations.includes('waiting')
+                ? 'text-gray-400'
+                : ''
+            "
+            >{{ $t("waiting") }}</label
+          >
         </div>
-        <div class="flex align-center space-x-2">
+        <div
+          v-for="(val, key) in OPERATIONS"
+          :key="val"
+          class="flex align-center space-x-2"
+        >
           <input
+            :disabled="
+              event_or_noon == 'noon' ||
+              !START_STATUS.includes(status) ||
+              !planned_operations.includes(val) ||
+              operations.includes('waiting')
+            "
             type="checkbox"
-            id="cargoOperation"
-            value="cargoOperation"
+            :id="val"
+            :value="val"
             v-model="operations"
           />
-          <label for="cargoOperation">{{ $t("cargoOperation") }}</label>
+          <label
+            :for="val"
+            :class="
+              event_or_noon == 'noon' ||
+              !START_STATUS.includes(status) ||
+              !planned_operations.includes(val)
+                ? 'text-gray-400'
+                : ''
+            "
+            >{{ $t(key) }}</label
+          >
         </div>
-        <div class="flex align-center space-x-2">
+        <div v-if="other_planned_operation" class="flex align-center space-x-2">
           <input
-            type="checkbox"
-            id="bunkeringDebunkering"
-            value="bunkeringDebunkering"
-            v-model="operations"
-          />
-          <label for="bunkeringDebunkering">{{
-            $t("bunkeringDebunkering")
-          }}</label>
-        </div>
-        <div class="flex align-center space-x-2">
-          <input
+            :disabled="
+              event_or_noon == 'noon' ||
+              !START_STATUS.includes(status) ||
+              !planned_operations.includes('others') ||
+              operations.includes('waiting')
+            "
             type="checkbox"
             id="others"
             value="others"
             v-model="operations"
           />
-          <label for="others">{{ $t("others") }}</label>
+          <label
+            for="others"
+            :class="
+              event_or_noon == 'noon' ||
+              !START_STATUS.includes(status) ||
+              !planned_operations.includes('others')
+                ? 'text-gray-400'
+                : ''
+            "
+            >{{ other_planned_operation }}</label
+          >
         </div>
       </div>
     </div>
@@ -262,16 +273,22 @@
 <script setup>
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-import { refs, reactive } from "vue";
 import { useHarbourPortReportStore } from "@/stores/useHarbourPortReportStore";
 import { storeToRefs } from "pinia";
+import {
+  TIMEZONES,
+  OPERATIONS,
+  START_STATUS,
+  END_STATUS,
+} from "@/utils/options";
 
 const store = useHarbourPortReportStore();
 const {
-  type: type,
+  eventOrNoon: event_or_noon,
+  prevStatus: prev_status,
   status: status,
-  dateTime: date_time,
-  timeZone: time_zone,
+  reportingDateTime: reporting_date_time,
+  reportingTimeZone: reporting_time_zone,
   distanceTravelled: distance_travelled,
   latDir: lat_dir,
   latMinutes: lat_minutes,
@@ -279,6 +296,30 @@ const {
   longDir: long_dir,
   longMinutes: long_minutes,
   longDegree: long_degree,
+  plannedOperations: planned_operations,
+  otherPlannedOperation: other_planned_operation,
   operations: operations,
 } = storeToRefs(store);
+
+const setOperationsToWaiting = () => {
+  if (
+    operations.value !== ["waiting"] &&
+    !operations.value.includes("waiting")
+  ) {
+    operations.value = ["waiting"];
+  }
+};
+
+const recoverStatus = () => {
+  if (event_or_noon.value == "noon") {
+    status.value = prev_status.value;
+    operations.value = [];
+  }
+};
+
+const resetOperations = () => {
+  if (END_STATUS.includes(status.value)) {
+    operations.value = [];
+  }
+};
 </script>

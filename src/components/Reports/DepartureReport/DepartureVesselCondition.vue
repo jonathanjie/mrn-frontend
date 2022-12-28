@@ -7,38 +7,53 @@
       </span>
     </div>
     <div
-      class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50 text-14"
+      class="col-span-2 lg:col-span-1 grid grid-cols-10 border-t bg-gray-50 text-14"
     >
-      <span class="col-span-2 row-span-3 text-blue-700 p-3 self-center">{{
-        $t("draft")
-      }}</span>
-      <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-white">
+      <div
+        class="col-span-4 row-span-3 text-blue-700 border-x p-3 py-16 my-auto self-center"
+      >
+        {{ $t("draft") }}
+      </div>
+      <div class="col-span-1 text-blue-700 p-3 border-b my-auto self-center">
+        {{ $t("fwd") }}
+      </div>
+      <div class="flex col-span-5 p-2 pl-4 border-b border-x bg-white">
         <input
-          v-model="data.draft_fwd"
-          @keypress="preventNaN($event, data.draft_fwd)"
+          v-model="draft_fwd"
+          @keypress="preventNaN($event, draft_fwd)"
           placeholder="00.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
-        <MiniUnitDisplay>FWD</MiniUnitDisplay>
+        <MiniUnitDisplay>M</MiniUnitDisplay>
       </div>
-      <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-white">
+      <div class="col-span-1 text-blue-700 p-3 border-b my-auto self-center">
+        {{ $t("mid") }}
+      </div>
+      <div class="flex col-span-5 p-2 pl-4 border-b border-x bg-white">
         <input
-          v-model="data.draft_mid"
-          @keypress="preventNaN($event, data.draft_mid)"
+          v-model="draft_mid"
+          @keypress="preventNaN($event, draft_mid)"
           placeholder="00.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
-        <MiniUnitDisplay>MID</MiniUnitDisplay>
+        <MiniUnitDisplay>M</MiniUnitDisplay>
       </div>
-      <div class="flex col-span-3 p-2 pl-4 border-l bg-white">
+      <div class="col-span-1 text-blue-700 p-3 my-auto self-center">
+        {{ $t("aft") }}
+      </div>
+      <div class="flex col-span-5 p-2 pl-4 border-x bg-white">
         <input
-          v-model="data.draft_aft"
-          @keypress="preventNaN($event, data.draft_aft)"
+          v-model="draft_aft"
+          @keypress="preventNaN($event, draft_aft)"
           placeholder="00.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
-        <MiniUnitDisplay>AFT</MiniUnitDisplay>
+        <MiniUnitDisplay>M</MiniUnitDisplay>
       </div>
+      <input
+        disabled
+        class="bg-white col-span-10 row-span-1 h-0 lg:h-max lg:block lg:p-3 border-t border-x-0"
+      />
     </div>
     <div
       class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50 text-14"
@@ -48,8 +63,8 @@
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-white">
         <input
-          v-model="data.constant"
-          @keypress="preventNaN($event, data.constant)"
+          v-model="constant"
+          @keypress="preventNaN($event, constant)"
           placeholder="00.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -60,8 +75,8 @@
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-white">
         <input
-          v-model="data.gm"
-          @keypress="preventNaN($event, data.gm)"
+          v-model="gm"
+          @keypress="preventNaN($event, gm)"
           placeholder="00.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -72,8 +87,8 @@
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-white">
         <input
-          v-model="data.ballast"
-          @keypress="preventNaN($event, data.ballast)"
+          v-model="ballast"
+          @keypress="preventNaN($event, ballast)"
           placeholder="00.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -84,8 +99,8 @@
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 border-l bg-white">
         <input
-          v-model="data.displacement"
-          @keypress="preventNaN($event, data.displacement)"
+          v-model="displacement"
+          @keypress="preventNaN($event, displacement)"
           placeholder="00.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -97,16 +112,18 @@
 
 <script setup>
 import { preventNaN } from "@/utils/helpers.js";
-import { reactive } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
+import { storeToRefs } from "pinia";
 
-const data = reactive({
-  draft_fwd: "",
-  draft_mid: "",
-  draft_aft: "",
-  constant: "",
-  gm: "",
-  ballast: "",
-  displacement: "",
-});
+const store = useDepartureSBYReportStore();
+const {
+  draftFwd: draft_fwd,
+  draftMid: draft_mid,
+  draftAft: draft_aft,
+  constant: constant,
+  gm: gm,
+  ballast: ballast,
+  displacement: displacement,
+} = storeToRefs(store);
 </script>

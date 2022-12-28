@@ -48,13 +48,8 @@
         <span class="font-bold text-gray-900 text-14 mr-1">{{
           user.name
         }}</span>
-        <span
-          v-if="auth.role === 'manager'"
-          class="font-semibold text-gray-500 text-12 mr-1"
-          >{{ $t("shipOwner") }}</span
-        >
-        <span v-else class="font-semibold text-gray-500 text-12 mr-1">{{
-          $t("vessel")
+        <span class="font-semibold text-gray-500 text-12 mr-1">{{
+          $t("shipOwner")
         }}</span>
       </div>
       <div v-else class="flex flex-col items-left">
@@ -82,12 +77,12 @@
 </template>
 
 <script setup>
+import { useAuthStore } from "@/stores/useAuthStore";
 import { useAuth0 } from "@auth0/auth0-vue";
 import { ref } from "vue";
-import { useAuthStore } from "@/stores/useAuthStore";
+
 // TODO: get from pinia instead of auth0; need to figure out async state tracking
-const { user, logout } = useAuth0();
-const auth = useAuthStore();
+const { user, logout, getAccessTokenSilently } = useAuth0();
 
 console.log("WebHeader loads");
 let isExpanded = ref(false);
@@ -99,4 +94,11 @@ function mouseEnter() {
 function mouseLeave() {
   isExpanded.value = false;
 }
+
+// async function getToken() {
+//   const authStore = useAuthStore();
+//   const jwt = await getAccessTokenSilently();
+
+//   authStore.updateToken(jwt);
+// }
 </script>

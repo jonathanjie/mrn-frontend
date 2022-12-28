@@ -9,22 +9,52 @@
         <span class="text-blue-700 text-16">{{ $t("rupEngine") }}</span>
       </div>
       <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border">
+        <div
+          class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
+        >
+          {{ $t("timeZone") }}
+        </div>
+        <div class="flex col-span-3 border-b">
+          <select
+            class="grow self-center p-3 text-14 focus:outline-0"
+            :class="
+              reporting_time_zone === 'default'
+                ? 'text-gray-400'
+                : 'text-gray-700'
+            "
+            v-model="reporting_time_zone"
+          >
+            <option selected disabled value="default">
+              {{ $t("selectTimeZone") }}
+            </option>
+            <option v-for="(val, key) in TIMEZONES" :key="val" :value="val">
+              {{ key }}
+            </option>
+          </select>
+        </div>
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("dateAndTime") }}
         </div>
-        <DatePicker
-          v-model="rupEngine.date_time"
-          class="col-span-3"
-          textInput
-          :textInputOptions="textInputOptions"
-          :format="format"
-          :modelValue="string"
-          :placeholder="$t('pleaseSelectDateAndTime')"
-        >
-          <template #input-icon>
-            <img src="" />
-          </template>
-        </DatePicker>
+        <div class="col-span-3 relative flex items-center">
+          <DatePicker
+            v-model="reporting_date_time"
+            class="grow"
+            textInput
+            :textInputOptions="textInputOptions"
+            :format="format"
+            :modelValue="string"
+            :placeholder="$t('selectDateAndTime')"
+          >
+            <template #input-icon>
+              <img src="" />
+            </template>
+          </DatePicker>
+          <MiniUnitDisplay
+            class="absolute right-0 min-w-fit"
+            :class="reporting_date_time ? 'mr-9' : 'mr-2'"
+            >{{ reporting_date_time_utc }}</MiniUnitDisplay
+          >
+        </div>
       </div>
       <div></div>
       <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
@@ -33,22 +63,22 @@
           >{{ $t("latitude") }}</span
         >
         <input
-          v-model="rupEngine.lat_degree"
-          @keypress="preventNaN($event, rupEngine.lat_degree)"
+          v-model="rup_eng_lat_degree"
+          @keypress="preventNaN($event, rup_eng_lat_degree)"
           placeholder="000 (Degree)"
           class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
         />
         <input
-          v-model="rupEngine.lat_minutes"
-          @keypress="preventNaN($event, rupEngine.lat_minutes)"
+          v-model="rup_eng_lat_minute"
+          @keypress="preventNaN($event, rup_eng_lat_minute)"
           placeholder="000 (Minutes)"
           class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
         />
         <select
-          v-model="rupEngine.lat_dir"
+          v-model="rup_eng_lat_dir"
           class="col-span-3 p-3 text-14 border-l focus:outline-0"
           :class="
-            rupEngine.lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
+            rup_eng_lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
           "
         >
           <option selected disabled value="default">
@@ -64,22 +94,22 @@
           >{{ $t("longitude") }}</span
         >
         <input
-          v-model="rupEngine.long_degree"
-          @keypress="preventNaN($event, rupEngine.long_degree)"
+          v-model="rup_eng_long_degree"
+          @keypress="preventNaN($event, rup_eng_long_degree)"
           placeholder="000 (Degree)"
           class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
         />
         <input
-          v-model="rupEngine.long_minutes"
-          @keypress="preventNaN($event, rupEngine.long_minutes)"
+          v-model="rup_eng_long_minute"
+          @keypress="preventNaN($event, rup_eng_long_minute)"
           placeholder="000 (Minutes)"
           class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
         />
         <select
-          v-model="rupEngine.long_dir"
+          v-model="rup_eng_long_dir"
           class="col-span-3 p-3 text-14 border-l focus:outline-0"
           :class="
-            rupEngine.long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
+            rup_eng_long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
           "
         >
           <option selected disabled value="default">
@@ -105,12 +135,15 @@
         >
           {{ $t("time") }}
         </div>
-        <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
+        <div
+          class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50"
+        >
           <input
-            v-model="inHarbour.time"
-            @keypress="preventNaN($event, inHarbour.time)"
-            placeholder="000"
-            class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
+            v-model="sby_to_rup_time"
+            @keypress="preventNaN($event, sby_to_rup_time)"
+            placeholder="0"
+            disabled
+            class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
           />
           <MiniUnitDisplay>HRS</MiniUnitDisplay>
         </div>
@@ -122,8 +155,8 @@
         </div>
         <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
           <input
-            v-model="inHarbour.distance_by_observation"
-            @keypress="preventNaN($event, inHarbour.distance_by_observation)"
+            v-model="sby_to_rup_distance_obs"
+            @keypress="preventNaN($event, sby_to_rup_distance_obs)"
             placeholder="000"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
@@ -136,13 +169,14 @@
           {{ $t("distanceByEngine") }}
         </div>
         <div
-          class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t lg:border"
+          class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t lg:border bg-gray-50"
         >
           <input
-            v-model="inHarbour.distance_by_engine"
-            @keypress="preventNaN($event, inHarbour.distance_by_engine)"
-            placeholder="000"
-            class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
+            v-model="sby_to_rup_distance_eng"
+            @keypress="preventNaN($event, sby_to_rup_distance_eng)"
+            placeholder="0"
+            disabled
+            class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
           />
           <MiniUnitDisplay>NM</MiniUnitDisplay>
         </div>
@@ -153,24 +187,22 @@
           {{ $t("revolutionCounter") }}
         </div>
         <input
-          v-model="inHarbour.revolution_counter"
-          @keypress="preventNaN($event, inHarbour.revolution_counter)"
+          v-model="sby_to_rup_revolution_count"
+          @keypress="preventNaN($event, sby_to_rup_revolution_count)"
           placeholder="000"
           class="col-span-3 lg:col-span-3 p-3 pl-4 border-x border-t lg:border-t-0 bg-white text-14 text-gray-700 focus:outline-0"
         />
 
         <div
-          class="col-span-2 text-blue-700 p-3 border-l border-t lg:border-y bg-gray-50 text-14"
+          class="col-span-2 text-blue-700 p-3 border-l border-y bg-gray-50 text-14"
         >
           {{ $t("setRPMofME") }}
         </div>
-        <div
-          class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t lg:border"
-        >
+        <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border bg-white">
           <input
-            v-model="inHarbour.setRPMofME"
-            @keypress="preventNaN($event, inHarbour.setRPMofME)"
-            placeholder="000.0"
+            v-model="sby_to_rup_set_rpm"
+            @keypress="preventNaN($event, sby_to_rup_set_rpm)"
+            placeholder="0"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
           <MiniUnitDisplay>RPM</MiniUnitDisplay>
@@ -181,26 +213,40 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
-import { textInputOptions, format, preventNaN } from "@/utils/helpers.js";
+import {
+  textInputOptions,
+  format,
+  preventNaN,
+  formatUTC,
+} from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
+import { storeToRefs } from "pinia";
+import { TIMEZONES } from "@/utils/options";
+import { UTCPlaceholder } from "@/constants";
+import { computed } from "vue";
 
-// TODO: make reactive
-const rupEngine = reactive({
-  date_time: "",
-  lat_degree: "",
-  lat_minutes: "",
-  lat_dir: "default",
-  long_degree: "",
-  long_minute: "",
-  long_dir: "default",
-});
+const store = useDepartureCOSPReportStore();
+const {
+  reportingDateTime: reporting_date_time,
+  reportingTimeZone: reporting_time_zone,
+  reportingDateTimeUTC,
+  rupEngLatDir: rup_eng_lat_dir,
+  rupEngLatDegree: rup_eng_lat_degree,
+  rupEngLatMinute: rup_eng_lat_minute,
+  rupEngLongDir: rup_eng_long_dir,
+  rupEngLongDegree: rup_eng_long_degree,
+  rupEngLongMinute: rup_eng_long_minute,
+  sbyToRupTime: sby_to_rup_time,
+  sbyToRupDistanceObs: sby_to_rup_distance_obs,
+  sbyToRupDistanceEng: sby_to_rup_distance_eng,
+  sbyToRupRevolutionCount: sby_to_rup_revolution_count,
+  sbyToRupSetRPM: sby_to_rup_set_rpm,
+} = storeToRefs(store);
 
-const inHarbour = reactive({
-  time: "",
-  distance_by_observation: "",
-  distance_by_engine: "",
-  revolution_counter: "",
-  setRPMofME: "",
-});
+const reporting_date_time_utc = computed(() =>
+  reportingDateTimeUTC.value
+    ? formatUTC(new Date(reportingDateTimeUTC.value))
+    : UTCPlaceholder
+);
 </script>

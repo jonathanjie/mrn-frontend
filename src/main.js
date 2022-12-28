@@ -11,6 +11,7 @@ import i18n from "./locales/i18n";
 import { h } from "vue";
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
+import resetStore from "@/plugins/resetStore";
 
 // TODO: fix router for custom login; typeof useAuth0 is undefined after initialization
 // router.beforeEach(async (to, from) => {
@@ -46,7 +47,7 @@ const app = createApp(App)
       audience: "https://django-jwt-test-dan/api",
     })
   )
-  .use(createPinia())
+  .use(createPinia().use(resetStore))
   .use(VueClickAway);
 
 vSelect.props.components.default = () => ({

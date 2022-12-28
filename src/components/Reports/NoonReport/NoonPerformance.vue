@@ -75,7 +75,7 @@
           class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0 bg-gray-50"
         />
         <div class="col-span-2 text-blue-700 p-3 border-r">
-          {{ $t("slip") }}
+          {{ $t("averageSlip") }}
         </div>
         <div class="flex col-span-3 p-2 pl-4">
           <input
@@ -109,13 +109,4 @@ const {
   rpmAvg: rpm_avg,
   slipAvg: slip_avg,
 } = storeToRefs(store);
-
-// const data = reactive({
-//   speed_since_noon: "",
-//   rpm_since_noon: "",
-//   slip_since_noon: "",
-//   speed_avg: "",
-//   rpm_avg: "",
-//   slip_avg: "",
-// });
 </script>

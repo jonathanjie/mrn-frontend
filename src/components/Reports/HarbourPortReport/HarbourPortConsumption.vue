@@ -205,8 +205,8 @@
               <option selected disabled value="default">
                 {{ $t("selectType") }}
               </option>
-              <option value="lsfo">{{ $t("lsfo") }}</option>
-              <option value="mgo">{{ $t("mgo") }}</option>
+              <option :value="FuelOil.LSFO">{{ $t("lsfo") }}</option>
+              <option :value="FuelOil.MGO">{{ $t("mgo") }}</option>
             </select>
             <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
               <input
@@ -235,7 +235,7 @@
 
       <div class="pt-8">
         <div class="self-center text-16 mb-4 text-gray-700">
-          {{ $t("lubricateOilInL") }}
+          {{ $t("lubricatingOilInL") }}
         </div>
 
         <div class="grid grid-cols-14 text-14 mb-4">
@@ -245,7 +245,7 @@
           <div
             class="col-span-3 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-l bg-gray-50"
           >
-            {{ $t("totalConsumption") }}
+            {{ $t("consumption") }}
           </div>
           <div
             class="col-span-3 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-l bg-gray-50"
@@ -383,9 +383,11 @@
         </div>
 
         <div
-          v-if="!isAdditionalRemarkLubricate"
+          v-if="!isAdditionalRemarkLubricating"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
-          @click="isAdditionalRemarkLubricate = !isAdditionalRemarkLubricate"
+          @click="
+            isAdditionalRemarkLubricating = !isAdditionalRemarkLubricating
+          "
         >
           <img
             src="@/assets/icons/checkboxes/unchecked_square.svg"
@@ -399,7 +401,9 @@
         >
           <div
             class="flex items-center mb-3 cursor-pointer"
-            @click="isAdditionalRemarkLubricate = !isAdditionalRemarkLubricate"
+            @click="
+              isAdditionalRemarkLubricating = !isAdditionalRemarkLubricating
+            "
           >
             <img
               src="@/assets/icons/checkboxes/checked_square.svg"
@@ -423,10 +427,18 @@
               <option selected disabled value="default">
                 {{ $t("selectType") }}
               </option>
-              <option value="mecylinder">{{ $t("mecylinder") }}</option>
-              <option value="mesystem">{{ $t("mesystem") }}</option>
-              <option value="mesump">{{ $t("mesump") }}</option>
-              <option value="gesystem">{{ $t("gesystem") }}</option>
+              <option :value="LubricatingOil.ME_CYLINDER">
+                {{ $t("mecylinder") }}
+              </option>
+              <option :value="LubricatingOil.ME_SYSTEM">
+                {{ $t("mesystem") }}
+              </option>
+              <option :value="LubricatingOil.ME_SUMP">
+                {{ $t("mesump") }}
+              </option>
+              <option :value="LubricatingOil.GE_SYSTEM">
+                {{ $t("gesystem") }}
+              </option>
             </select>
             <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
               <input
@@ -486,7 +498,7 @@
           <div
             class="col-span-1 text-sysblue-800 p-3 border-t border-x border-sysblue-100 bg-sysblue-25"
           >
-            {{ $t("rob") }}
+            {{ $t("remainOnBoard") }}
           </div>
           <input
             v-model="freshwater_consumed"
@@ -495,8 +507,8 @@
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="freshwater_evaporated"
-            @keypress="preventNaN($event, freshwater_evaporated)"
+            v-model="freshwater_generated"
+            @keypress="preventNaN($event, freshwater_generated)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
@@ -530,13 +542,14 @@
 
 <script setup>
 import { preventNaN } from "@/utils/helpers";
-import { ref, reactive, computed } from "vue";
+import { ref } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useHarbourPortReportStore } from "@/stores/useHarbourPortReportStore";
 import { storeToRefs } from "pinia";
+import { FuelOil, LubricatingOil } from "@/constants";
 
 const isAdditionalRemarkFuel = ref(false);
-const isAdditionalRemarkLubricate = ref(false);
+const isAdditionalRemarkLubricating = ref(false);
 
 const store = useHarbourPortReportStore();
 const {
@@ -560,7 +573,7 @@ const {
   lubricatingOilDataCorrection: lubricating_oil_data_correction,
   // fresh water
   freshwaterConsumed: freshwater_consumed,
-  freshwaterEvaporated: freshwater_evaporated,
+  freshwaterGenerated: freshwater_generated,
   freshwaterChange: freshwater_change,
   freshwaterReceiving: freshwater_receiving,
   freshwaterDischarging: freshwater_discharging,

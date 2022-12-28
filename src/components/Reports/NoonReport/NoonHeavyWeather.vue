@@ -1,7 +1,7 @@
 <template>
   <div
-    v-if="!heavy_weather_is_active"
-    @click="heavy_weather_is_active = !heavy_weather_is_active"
+    v-if="!is_heavy_weather_enabled"
+    @click="is_heavy_weather_enabled = !is_heavy_weather_enabled"
     class="flex items-center bg-white rounded-lg p-5 shadow-card cursor-pointer"
   >
     <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
@@ -17,7 +17,7 @@
   >
     <div
       class="col-span-2 flex items-center cursor-pointer"
-      @click="heavy_weather_is_active = !heavy_weather_is_active"
+      @click="is_heavy_weather_enabled = !is_heavy_weather_enabled"
     >
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
       <img
@@ -42,7 +42,7 @@
         <MiniUnitDisplay>HRS</MiniUnitDisplay>
       </div>
       <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50">
-        {{ $t("distanceOBS") }}
+        {{ $t("distanceByObservation") }}
       </div>
       <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
         <input
@@ -66,9 +66,9 @@
         <MiniUnitDisplay>MT</MiniUnitDisplay>
       </div>
     </div>
-    <div></div>
+    <div class="hidden lg:block"></div>
 
-    <div class="col-span-1 grid grid-cols-5 border text-14">
+    <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border text-14">
       <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50">
         {{ $t("weatherNotation") }}
       </div>
@@ -99,7 +99,7 @@
         <option value="Z">{{ $t("weather_z") }}</option>
       </select>
     </div>
-    <div></div>
+    <div class="hidden lg:block"></div>
 
     <div class="col-span-2 grid grid-cols-10 border text-14">
       <div
@@ -273,16 +273,6 @@ const {
   heavySeaDirection: sea_direction,
   heavySeaState: sea_state,
   heavyRemarks: remarks,
-  heavyWeatherIsActive: heavy_weather_is_active,
+  isHeavyWeatherEnabled: is_heavy_weather_enabled,
 } = storeToRefs(store);
-
-// const data = reactive({
-//   hours: "", // HWC: total hours
-//   dist: "", // HWC: distance (OBS)
-//   consumption: "", // HWC: fuel consumption
-//   wind_direction: "", // HWC: wind direction
-//   wind_speed: "0", // HWC: wind force; missing from BE
-//   max_wave_ht: "", // HWC: max wave height
-//   wave_force: "default", // missing from BE
-// });
 </script>

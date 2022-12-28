@@ -30,7 +30,7 @@
         <router-link
           :to="{
             name: 'vessel-spec',
-            params: { vesselname: props.vesselname, imo: props.imo },
+            params: { vesselname: vesselname, imo: imo },
           }"
           class="hidden pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
           :class="
@@ -51,9 +51,8 @@
               ? 'border-b-2 border-blue-700 text-blue-700'
               : ''
           "
+          >{{ $t("uploadedReports") }}</router-link
         >
-          {{ $t("uploadedReports") }}
-        </router-link>
       </div>
     </div>
     <suspense>
