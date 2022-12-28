@@ -515,6 +515,9 @@ const i18n = createI18n({
       fwd: "FWD",
       mid: "MID",
       aft: "AFT",
+      obs: "OBS",
+      toGo: "To Go",
+      foc: "FOC",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser

@@ -11,6 +11,29 @@
 import SideNav from "@/components/SideNav/SideNav.vue";
 import WebHeader from "@/components/WebHeader.vue";
 import { collapsed } from "@/components/SideNav/state.js";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useAuth0 } from "@auth0/auth0-vue";
+import axios from "axios";
+console.log("HomeView setup is run");
 
-console.log("HomeView is loaded");
+const auth = useAuthStore();
+
+const { user, getAccessTokenSilently } = useAuth0();
+
+const getUserRole = async () => {
+  return await axios
+    .get(`https://testapi.marinachain.io/marinanet/user/`)
+    .then((response) => {
+      console.log("User Role", response);
+      return response.data.role;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+};
+
+const jwt = await getAccessTokenSilently();
+axios.defaults.headers.common["Authorization"] = "Bearer " + jwt;
+const role = await getUserRole();
+auth.updateUserRoleToken(user, role, jwt);
 </script>

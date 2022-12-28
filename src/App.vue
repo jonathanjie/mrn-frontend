@@ -11,9 +11,7 @@
 <script setup>
 import HomeView from "./views/HomeView.vue";
 import { useAuth0 } from "@auth0/auth0-vue";
-
 const { isAuthenticated } = useAuth0();
-console.log("App is loaded");
 </script>
 
 <style lang="scss">

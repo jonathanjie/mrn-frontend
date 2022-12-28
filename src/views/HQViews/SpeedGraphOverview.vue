@@ -123,8 +123,8 @@
             :distanceToGo="distanceToGo"
             :remainOnBoard="remainOnBoard"
           ></SpeedSideNav>
-          <!-- <SpeedGraphPlot></SpeedGraphPlot> -->
-        </div>
+          <SpeedGraphPlot></SpeedGraphPlot>
+        </div> -->
       </div>
       <!-- Port Calls -->
       <div class="flex mt-10 pt-10 flex-wrap">
@@ -223,6 +223,7 @@ const getLegs = async () => {
       console.log(error.message);
     });
 };
+
 const ship = await getShip();
 const shipFlag = ship.shipspecs.flag;
 const payloadType = shipRef[ship.ship_type];

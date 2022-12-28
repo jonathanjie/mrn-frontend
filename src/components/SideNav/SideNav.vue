@@ -79,19 +79,10 @@
 <script setup>
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
 import { useRouter } from "vue-router";
-import { useAuthStore } from "@/stores/useAuthStore";
 import { useVoyageStore } from "@/stores/useVoyageStore";
-import { useAuth0 } from "@auth0/auth0-vue";
+import { useAuthStore } from "@/stores/useAuthStore";
 import axios from "axios";
-
-console.log("Sidenav loads");
-const auth = useAuthStore();
 const router = useRouter();
-const { user, getAccessTokenSilently } = useAuth0();
-const auth = useAuthStore();
-
-const jwt = await getAccessTokenSilently();
-axios.defaults.headers.common["Authorization"] = "Bearer " + jwt;
 
 const getShip = async () => {
   return await axios
@@ -99,18 +90,6 @@ const getShip = async () => {
     .then((response) => {
       console.log("Ship", response.data);
       return response.data[0];
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-};
-
-const getUserRole = async () => {
-  return await axios
-    .get(`https://testapi.marinachain.io/marinanet/user/`)
-    .then((response) => {
-      console.log("User Role", response);
-      return response.data.role;
     })
     .catch((error) => {
       console.log(error.message);
@@ -151,19 +130,17 @@ const home = () => {
     });
   }
 };
-
-const store = useVoyageStore();
-const role = await getUserRole();
-const manager = role === "manager";
 console.log("Sidebar loads");
-auth.updateUserRoleToken(user, role, jwt);
-console.log("Auth store is updated here");
+const store = useVoyageStore();
+const auth = useAuthStore();
 const ship = await getShip();
-
+const manager = auth.role === "manager";
 if (manager) {
-  router.push({ path: "/my-vessels" });
-
+  // router.push({ path: "/my-vessels" });
+} else {
+  const voyages = await getVoyages(ship.imo_reg);
   store.voyages = voyages;
+  const reports = await getReports(ship.imo_reg);
   let output = {};
   for (let i of reports) {
     for (let j of voyages) {
@@ -173,9 +150,8 @@ if (manager) {
     }
   }
   store.reports = output;
-  console.log("This thing runs in sidebar");
-  router.push({
-    path: `/vessels/${ship.name}/${ship.imo_reg}/overview`,
-  });
+  // router.push({
+  //   path: `/vessels/${ship.name}/${ship.imo_reg}/overview`,
+  // });
 }
 </script>
