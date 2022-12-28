@@ -200,26 +200,26 @@ export const useArrivalEOSPReportStore = defineStore(
         : ""
     );
     const speedAvg = computed(() =>
-      speedSinceNoon.value !== ""
+      speedSinceNoon.value !== "" && hoursTotal.value
         ? +(
             (temp.voyageAvgSpeed + speedSinceNoon.value) /
-            (temp.previousNoonReportCount + 1)
+            (hoursTotal.value / 24)
           ).toFixed(2)
         : ""
     );
     const rpmAvg = computed(() =>
-      rpmSinceNoon.value !== ""
+      rpmSinceNoon.value !== "" && hoursTotal.value
         ? +(
             (temp.voyageAvgRpm + rpmSinceNoon.value) /
-            (temp.previousNoonReportCount + 1)
+            (hoursTotal.value / 24)
           ).toFixed(1)
         : ""
     );
     const slipAvg = computed(() =>
-      slipSinceNoon.value !== ""
+      slipSinceNoon.value !== "" && hoursTotal.value
         ? +(
             (temp.voyageAvgSlip + slipSinceNoon.value) /
-            (temp.previousNoonReportCount + 1)
+            (hoursTotal.value / 24)
           ).toFixed(2)
         : ""
     );

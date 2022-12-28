@@ -15,7 +15,6 @@ const temp = {
   distanceEngSoFar: 1000,
   revolutionCountYesterday: 20000,
   propellerPitch: 2,
-  previousNoonReportCount: 2,
   voyageAvgSpeed: 200,
   voyageAvgRpm: 100,
   voyageAvgSlip: 5,
@@ -208,26 +207,26 @@ export const useNoonReportStore = defineStore("noonReport", () => {
       : ""
   );
   const speedAvg = computed(() =>
-    speedSinceNoon.value
+    speedSinceNoon.value !== "" && hoursTotal.value
       ? +(
           (temp.voyageAvgSpeed + speedSinceNoon.value) /
-          (temp.previousNoonReportCount + 1)
+          (hoursTotal.value / 24)
         ).toFixed(2)
       : ""
   );
   const rpmAvg = computed(() =>
-    rpmSinceNoon.value
+    rpmSinceNoon.value !== "" && hoursTotal.value
       ? +(
           (temp.voyageAvgRpm + rpmSinceNoon.value) /
-          (temp.previousNoonReportCount + 1)
+          (hoursTotal.value / 24)
         ).toFixed(1)
       : ""
   );
   const slipAvg = computed(() =>
-    slipSinceNoon.value
+    slipSinceNoon.value !== "" && hoursTotal.value
       ? +(
           (temp.voyageAvgSlip + slipSinceNoon.value) /
-          (temp.previousNoonReportCount + 1)
+          (hoursTotal.value / 24)
         ).toFixed(2)
       : ""
   );
