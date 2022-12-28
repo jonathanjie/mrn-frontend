@@ -221,8 +221,8 @@ const sendReport = async () => {
       departure_date: departureDateTimeUTC.value,
       depature_tz: departureTimeZone.value,
       arrival_port: arrivalPort,
-      arrival_date: null, // irrelevant for Arrival EOSP; should just pull from voyage? (destination date & time?)
-      arrival_tz: null, // similarly irrelevant
+      arrival_date: reportingDateTimeUTC.value, // irrelevant for Arrival EOSP
+      arrival_tz: reportingTimeZone.value, // irrelevant for Arrival EOSP
     },
     plannedoperations: {
       cargo_operation_berth: plannedOperations.value.includes(
@@ -286,7 +286,7 @@ const sendReport = async () => {
       rpm_average: rpmAvg.value,
       slip_average: slipAvg.value,
     },
-    arrivalpilotstation: shouldPilotArrDataBeSent
+    arrivalpilotstation: shouldPilotArrDataBeSent.value
       ? {
           name: pilotArrName.value,
           date: pilotArrDateTime.value,
@@ -305,8 +305,8 @@ const sendReport = async () => {
           debunkering: 0, // Does not apply for Arrival EOSP reports
           rob: lsfoRob.value || 0,
           breakdown: {
-            "G/E": lsfoBreakdown.value.ge || 0,
-            "M/E": lsfoBreakdown.value.me || 0,
+            GE: lsfoBreakdown.value.ge || 0,
+            ME: lsfoBreakdown.value.me || 0,
             BLR: lsfoBreakdown.value.blr || 0,
             IGG: lsfoBreakdown.value.igg || 0,
           },
@@ -325,8 +325,8 @@ const sendReport = async () => {
           debunkering: 0, // Does not apply for Arrival EOSP reports
           rob: mgoRob.value || 0,
           breakdown: {
-            "G/E": mgoBreakdown.value.ge || 0,
-            "M/E": mgoBreakdown.value.me || 0,
+            GE: mgoBreakdown.value.ge || 0,
+            ME: mgoBreakdown.value.me || 0,
             BLR: mgoBreakdown.value.blr || 0,
             IGG: mgoBreakdown.value.igg || 0,
           },
@@ -447,7 +447,6 @@ const sendReport = async () => {
           },
         },
       ],
-      lubricatingoiltotalconsumptiondata_set: [],
       freshwatertotalconsumptiondata: null,
       consumption_type: ConsumptionType.PILOT_TO_PILOT,
     },
@@ -461,6 +460,7 @@ const sendReport = async () => {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
         "Content-Type": "application/json",
+        Accept: "application/json",
       },
       method: "POST",
       body: JSON.stringify(REPORT),
