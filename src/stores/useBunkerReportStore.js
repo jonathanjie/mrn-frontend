@@ -38,6 +38,31 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
   const barge2 = ref("");
   const files = ref([]);
 
+  const addFiles = (newFiles) => {
+    let newUploadableFiles = [...newFiles]
+      .map((file) => new UploadableFile(file))
+      .filter((file) => !fileExists(file.id));
+    files.value = files.value.concat(newUploadableFiles);
+  };
+
+  const fileExists = (otherId) => {
+    return files.value.some(({ id }) => id === otherId);
+  };
+
+  const removeFile = (file) => {
+    const index = files.value.indexOf(file);
+
+    if (index > -1) files.value.splice(index, 1);
+  };
+
+  class UploadableFile {
+    constructor(file) {
+      this.file = file;
+      this.id = `${file.name}-${file.size}-${file.lastModified}-${file.type}`;
+      this.url = URL.createObjectURL(file);
+      // this.status = null;
+    }
+  }
   // Date and Time Bunker
   const alongside = ref("");
   const hoseConnection = ref("");
@@ -78,6 +103,8 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
     barge1,
     barge2,
     files,
+    addFiles,
+    removeFile,
     // Date and Time Bunker
     alongside,
     hoseConnection,

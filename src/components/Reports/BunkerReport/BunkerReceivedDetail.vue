@@ -12,7 +12,7 @@
     <!-- Upload delivery note section -->
     <DropZone
       class="flex drop-area border border-dashed border-sysblue-300 p-14 place-content-center rounded-lg text-16 text-gray-800 bg-gray-25"
-      @files-dropped="addFilesAndEmit"
+      @files-dropped="store.addFiles"
       #default="{ dropZoneActive }"
     >
       <span v-if="dropZoneActive">
@@ -46,7 +46,7 @@
         v-for="file of files"
         :key="file.id"
         :file="file"
-        @remove="removeFileAndEmit"
+        @remove="store.removeFile"
       />
     </ul>
 
@@ -265,15 +265,12 @@
 <script setup>
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { preventNaN } from "@/utils/helpers.js";
-import useFileList from "@/components/FileDrop/file-list";
 import DropZone from "@/components/FileDrop/DropZone.vue";
 import FilePreview from "@/components/FileDrop/FilePreview.vue";
 import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
 import { storeToRefs } from "pinia";
 import { ALL_FUEL_OILS, ALL_LUBRICATING_OILS } from "@/utils/options";
 import { computed } from "vue";
-
-const { files, addFiles, removeFile } = useFileList();
 
 const store = useBunkerReportStore();
 const {
@@ -292,26 +289,14 @@ const {
   ship2: ship2,
   barge1: barge1,
   barge2: barge2,
+  files: files,
 } = storeToRefs(store);
 
 const isFuelOil = computed(() => oil_type.value === "fuelOil");
 const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
 
-const emit = defineEmits(["fileChange"]);
-
-const addFilesAndEmit = (newFiles) => {
-  addFiles(newFiles);
-  emit("fileChange", files);
-};
-
-const removeFileAndEmit = (file) => {
-  removeFile(file);
-  emit("fileChange", files);
-};
-
 const onInputChange = (e) => {
-  addFiles(e.target.files);
+  store.addFiles(e.target.files);
   e.target.value = null;
-  emit("fileChange", files);
 };
 </script>

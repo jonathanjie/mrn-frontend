@@ -27,7 +27,7 @@
     <BunkeringPort />
 
     <!-- Received Bunker Detail -->
-    <BunkerReceivedDetail @file-change="updateFiles"></BunkerReceivedDetail>
+    <BunkerReceivedDetail />
 
     <!-- Bunker Date and Time & Supplier -->
     <BunkerDateAndTime />
@@ -55,20 +55,12 @@
 
 <script setup>
 import GradientButton from "@/components/Buttons/GradientButton.vue";
-// import CustomButton from "@/components/Buttons/CustomButton.vue";
 import BunkerOverview from "@/components/Reports/BunkerReport/BunkerOverview.vue";
 import BunkeringPort from "@/components/Reports/BunkerReport/BunkeringPort.vue";
 import BunkerReceivedDetail from "@/components/Reports/BunkerReport/BunkerReceivedDetail.vue";
 import BunkerDateAndTime from "@/components/Reports/BunkerReport/BunkerDateAndTime.vue";
 import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
 import { storeToRefs } from "pinia";
-
-// TODO: less hacky
-let files = [];
-const updateFiles = (f) => {
-  files = f;
-  console.log("updatefiles");
-};
 
 const store = useBunkerReportStore();
 const {
@@ -98,6 +90,7 @@ const {
   ship2,
   barge1,
   barge2,
+  files,
   // Date and Time Bunker
   alongside,
   hoseConnection,
@@ -111,4 +104,28 @@ const {
   address,
   telephoneNumber,
 } = storeToRefs(store);
+
+const sendReport = async () => {
+  const response = await fetch(
+    "https://4diue6gphj.execute-api.ap-southeast-1.amazonaws.com/default/marinanet-s3-uploader/",
+    {
+      headers: {
+        // Authorization: "Bearer " + localStorage.getItem("jwt"),
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: {
+        file_prefix: `${company_uuid}/${report_uuid}/bdn`,
+      },
+    }
+  );
+
+  try {
+    const data = await response.json();
+    console.log(response);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
 </script>
