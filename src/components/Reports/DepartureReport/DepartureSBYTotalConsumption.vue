@@ -16,11 +16,11 @@
 
     <div class="grid divide-y divide-dashed gap-8">
       <div>
-        <div class="self-center mb-4 text-16 text-gray-700">
+        <div class="self-center mb-4 text-16 text-gray-700 pt-4">
           {{ $t("fuelOilInMT") }}
         </div>
 
-        <div class="grid grid-cols-14 mb-4 text-14">
+        <div class="grid grid-cols-14 text-14">
           <div
             class="col-span-2 border-green-100 bg-green-25 px-6 border-l border-t"
           ></div>
@@ -179,75 +179,6 @@
             {{ mgo_rob_sum }}
           </div>
         </div>
-
-        <div
-          v-if="!isAdditionalRemarkFuel"
-          class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
-          @click="isAdditionalRemarkFuel = !isAdditionalRemarkFuel"
-        >
-          <img
-            src="@/assets/icons/checkboxes/unchecked_square.svg"
-            class="mr-2 h-5 w-5"
-          />
-          <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
-        </div>
-        <div
-          v-else
-          class="bg-gray-25 flex-col py-4 px-3 border border-gray-100"
-        >
-          <div
-            class="flex items-center mb-3 cursor-pointer"
-            @click="isAdditionalRemarkFuel = !isAdditionalRemarkFuel"
-          >
-            <img
-              src="@/assets/icons/checkboxes/checked_square.svg"
-              class="mr-2 h-5 w-5"
-            />
-            <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
-          </div>
-          <div class="grid grid-cols-14 border text-14">
-            <div class="col-span-2 text-blue-700 p-3">
-              {{ $t("correction") }}
-            </div>
-            <!-- TODO: make dynamic -->
-            <select
-              v-model="fuel_oil_data_correction_sum.type"
-              class="col-span-6 p-3 border-l focus:outline-0"
-              :class="
-                fuel_oil_data_correction_sum.type === 'default'
-                  ? 'text-gray-400'
-                  : 'text-gray-700'
-              "
-            >
-              <option selected disabled value="default">
-                {{ $t("selectType") }}
-              </option>
-              <option :value="FuelOil.LSFO">{{ $t("lsfo") }}</option>
-              <option :value="FuelOil.MGO">{{ $t("mgo") }}</option>
-            </select>
-            <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
-              <input
-                v-model="fuel_oil_data_correction_sum.correction"
-                @keypress="
-                  preventNaN($event, fuel_oil_data_correction_sum.correction)
-                "
-                placeholder="00,000.00"
-                class="w-24 text-gray-700 focus:outline-0"
-              />
-              <MiniUnitDisplay>MT</MiniUnitDisplay>
-            </div>
-            <div
-              class="col-span-2 row-span-2 text-blue-700 p-3 border-t bg-gray-50"
-            >
-              {{ $t("remarks") }}
-            </div>
-            <textarea
-              v-model.trim="fuel_oil_data_correction_sum.remarks"
-              :placeholder="$t('inputDescriptionHere')"
-              class="col-span-12 row-span-2 border-t border-l p-3 pl-4 text-gray-700 focus:outline-0"
-            ></textarea>
-          </div>
-        </div>
       </div>
 
       <div class="pt-8">
@@ -255,7 +186,7 @@
           {{ $t("lubricatingOilInL") }}
         </div>
 
-        <div class="grid grid-cols-14 text-14 mb-4">
+        <div class="grid grid-cols-14 text-14">
           <div
             class="col-span-2 border-yellow-100 bg-yellow-25 px-6 border-l border-t"
           ></div>
@@ -414,91 +345,6 @@
             {{ gesystem_rob_sum }}
           </div>
         </div>
-
-        <div
-          v-if="!isAdditionalRemarkLubricating"
-          class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
-          @click="
-            isAdditionalRemarkLubricating = !isAdditionalRemarkLubricating
-          "
-        >
-          <img
-            src="@/assets/icons/checkboxes/unchecked_square.svg"
-            class="mr-2 h-5 w-5"
-          />
-          <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
-        </div>
-        <div
-          v-else
-          class="bg-gray-25 flex-col py-4 px-3 border border-gray-100"
-        >
-          <div
-            class="flex items-center mb-3 cursor-pointer"
-            @click="
-              isAdditionalRemarkLubricating = !isAdditionalRemarkLubricating
-            "
-          >
-            <img
-              src="@/assets/icons/checkboxes/checked_square.svg"
-              class="mr-2 h-5 w-5"
-            />
-            <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
-          </div>
-          <div class="grid grid-cols-14 border text-14">
-            <div class="col-span-2 text-blue-700 p-3 bg-gray-50">
-              {{ $t("correction") }}
-            </div>
-            <select
-              v-model="lubricating_oil_data_correction_sum.type"
-              class="col-span-6 p-3 border-l focus:outline-0"
-              :class="
-                lubricating_oil_data_correction_sum.type === 'default'
-                  ? 'text-gray-400'
-                  : 'text-gray-700'
-              "
-            >
-              <option selected disabled value="default">
-                {{ $t("selectType") }}
-              </option>
-              <option :value="LubricatingOil.ME_CYLINDER">
-                {{ $t("mecylinder") }}
-              </option>
-              <option :value="LubricatingOil.ME_SYSTEM">
-                {{ $t("mesystem") }}
-              </option>
-              <option :value="LubricatingOil.ME_SUMP">
-                {{ $t("mesump") }}
-              </option>
-              <option :value="LubricatingOil.GE_SYSTEM">
-                {{ $t("gesystem") }}
-              </option>
-            </select>
-            <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
-              <input
-                v-model="lubricating_oil_data_correction_sum.correction"
-                @keypress="
-                  preventNaN(
-                    $event,
-                    lubricating_oil_data_correction_sum.correction
-                  )
-                "
-                placeholder="00,000.00"
-                class="w-24 text-gray-700 focus:outline-0"
-              />
-              <MiniUnitDisplay>MT</MiniUnitDisplay>
-            </div>
-            <div
-              class="col-span-2 row-span-2 text-blue-700 p-3 border-t bg-gray-50"
-            >
-              {{ $t("remarks") }}
-            </div>
-            <textarea
-              v-model.trim="lubricating_oil_data_correction_sum.remarks"
-              :placeholder="$t('inputDescriptionHere')"
-              class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
-            ></textarea>
-          </div>
-        </div>
       </div>
 
       <div class="pt-8">
@@ -582,14 +428,8 @@
 
 <script setup>
 import { preventNaN } from "@/utils/helpers";
-import { ref } from "vue";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 import { storeToRefs } from "pinia";
-import { FuelOil, LubricatingOil } from "@/constants";
-
-const isAdditionalRemarkFuel = ref(false);
-const isAdditionalRemarkLubricating = ref(false);
 
 const store = useDepartureSBYReportStore();
 const {
@@ -600,7 +440,6 @@ const {
   mgoRobSum: mgo_rob_sum,
   lsfoBreakdownSum: lsfo_breakdown_sum,
   mgoBreakdownSum: mgo_breakdown_sum,
-  fuelOilDataCorrectionSum: fuel_oil_data_correction_sum,
   // lubricating oil
   mecylinderBreakdownSum: mecylinder_breakdown_sum,
   mesystemBreakdownSum: mesystem_breakdown_sum,
@@ -610,7 +449,6 @@ const {
   mesystemRobSum: mesystem_rob_sum,
   mesumpRobSum: mesump_rob_sum,
   gesystemRobSum: gesystem_rob_sum,
-  lubricatingOilDataCorrectionSum: lubricating_oil_data_correction_sum,
   // fresh water
   freshwaterConsumedSum: freshwater_consumed_sum,
   freshwaterGeneratedSum: freshwater_generated_sum,

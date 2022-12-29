@@ -11,7 +11,7 @@ const temp = {
   arrivalPortCountry: "SG",
   arrivalPortName: "PPT",
   departureDateTime: "2022-06-01T04:23:00Z",
-  departureTimeZone: 9,
+  departureTimeZone: 9, // from departure sby time zone of this leg
 
   // Distance & Time / Performance
   lastNoonReportTime: "2022-12-01T00:00:00Z",

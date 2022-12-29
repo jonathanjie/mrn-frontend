@@ -30,12 +30,9 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
   const viscosityDegree = ref("");
   const flashPoint = ref("");
   const sulfurContent = ref("");
-  const marpol1 = ref("");
-  const marpol2 = ref("");
-  const ship1 = ref("");
-  const ship2 = ref("");
-  const barge1 = ref("");
-  const barge2 = ref("");
+  const marpol = ref("");
+  const ship = ref("");
+  const barge = ref("");
   const files = ref([]);
 
   const addFiles = (newFiles) => {
@@ -96,12 +93,9 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
     viscosityDegree,
     flashPoint,
     sulfurContent,
-    marpol1,
-    marpol2,
-    ship1,
-    ship2,
-    barge1,
-    barge2,
+    marpol,
+    ship,
+    barge,
     files,
     addFiles,
     removeFile,

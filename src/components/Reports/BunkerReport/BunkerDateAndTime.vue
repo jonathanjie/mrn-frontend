@@ -137,7 +137,7 @@
         </div>
         <input
           v-model="purchaser"
-          placeholder=""
+          :placeholder="$t('inputDetails')"
           class="col-span-3 p-3 pl-4 bg-white text-14 text-gray-700 focus:outline-0"
         />
 
@@ -148,7 +148,7 @@
         </div>
         <input
           v-model="barge_name"
-          placeholder=""
+          :placeholder="$t('inputDetails')"
           class="col-span-3 p-3 pl-4 border-t bg-white text-14 text-gray-700 focus:outline-0"
         />
 
@@ -159,7 +159,7 @@
         </div>
         <input
           v-model="supplier_name"
-          placeholder=""
+          :placeholder="$t('inputDetails')"
           class="col-span-3 p-3 pl-4 border-t bg-white text-14 text-gray-700 focus:outline-0"
         />
 
@@ -170,7 +170,7 @@
         </div>
         <input
           v-model="address"
-          placeholder=""
+          :placeholder="$t('inputDetails')"
           class="col-span-3 p-3 pl-4 border-t bg-white text-14 text-gray-700 focus:outline-0"
         />
 
@@ -180,7 +180,7 @@
         <input
           v-model="telephone_number"
           @keypress="preventNaN($event, telephone_number)"
-          placeholder=""
+          :placeholder="$t('countryCodePhoneNumber')"
           class="col-span-3 p-3 pl-4 border-t bg-white text-14 text-gray-700 focus:outline-0"
         />
       </div>

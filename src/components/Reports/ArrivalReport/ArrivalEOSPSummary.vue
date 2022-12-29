@@ -56,7 +56,7 @@
               disabled
               class="w-16 text-14 text-gray-700 focus:outline-0 bg-gray-50"
             />
-            <MiniUnitDisplay>MT</MiniUnitDisplay>
+            <MiniUnitDisplay>TON</MiniUnitDisplay>
           </div>
         </div>
       </div>

@@ -137,7 +137,7 @@
         class="flex col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50"
       >
         {{ $t("densityAt15") }}
-        <MiniUnitDisplay>KG/M<sup>3</sup></MiniUnitDisplay>
+        <MiniUnitDisplay>KG/M³</MiniUnitDisplay>
       </div>
       <input
         v-model="density"
@@ -215,48 +215,28 @@
         {{ $t("marpol") }}
       </div>
       <input
-        v-model="marpol1"
-        @keypress="preventNaN($event, marpol1)"
+        v-model="marpol"
+        @keypress="preventNaN($event, marpol)"
         placeholder="000.00"
-        class="col-span-3 p-3 pl-4 border-r text-gray-700 focus:outline-0"
+        class="col-span-6 p-3 pl-4 border-r text-gray-700 focus:outline-0"
       />
-      <input
-        v-model="marpol2"
-        @keypress="preventNaN($event, marpol2)"
-        placeholder="000.00"
-        class="col-span-3 p-3 pl-4 text-gray-700 focus:outline-0"
-      />
-
       <div class="col-span-2 text-blue-700 p-3 border-r border-t bg-gray-50">
         {{ $t("ship") }}
       </div>
       <input
-        v-model="ship1"
-        @keypress="preventNaN($event, ship1)"
+        v-model="ship"
+        @keypress="preventNaN($event, ship)"
         placeholder="000.00"
-        class="col-span-3 p-3 pl-4 border-r border-t text-gray-700 focus:outline-0"
+        class="col-span-6 p-3 pl-4 border-r border-t text-gray-700 focus:outline-0"
       />
-      <input
-        v-model="ship2"
-        @keypress="preventNaN($event, ship2)"
-        placeholder="000.00"
-        class="col-span-3 p-3 pl-4 border-t text-gray-700 focus:outline-0"
-      />
-
       <div class="col-span-2 text-blue-700 p-3 border-r border-t bg-gray-50">
         {{ $t("barge") }}
       </div>
       <input
-        v-model="barge1"
-        @keypress="preventNaN($event, barge1)"
+        v-model="barge"
+        @keypress="preventNaN($event, barge)"
         placeholder="000.00"
-        class="col-span-3 p-3 pl-4 border-r border-t text-gray-700 focus:outline-0"
-      />
-      <input
-        v-model="barge2"
-        @keypress="preventNaN($event, barge2)"
-        placeholder="000.00"
-        class="col-span-3 p-3 pl-4 border-t text-gray-700 focus:outline-0"
+        class="col-span-6 p-3 pl-4 border-r border-t text-gray-700 focus:outline-0"
       />
     </div>
   </div>
@@ -283,12 +263,9 @@ const {
   viscosityDegree: viscosity_degree,
   flashPoint: flash_point,
   sulfurContent: sulfur_content,
-  marpol1: marpol1,
-  marpol2: marpol2,
-  ship1: ship1,
-  ship2: ship2,
-  barge1: barge1,
-  barge2: barge2,
+  marpol: marpol,
+  ship: ship,
+  barge: barge,
   files: files,
 } = storeToRefs(store);
 

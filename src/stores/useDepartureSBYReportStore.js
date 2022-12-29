@@ -14,6 +14,9 @@ const temp = {
   gesysPrevROB: 200,
   freshwaterPrevROB: 200,
 
+  // Cargo Operation (from init modal, M³/MT/TEU/CEU)
+  cargoUnit: "M³",
+
   // Consumption & Condition (Total)
   lsfoPrevBreakdown: {
     me: 10,
@@ -102,6 +105,7 @@ export const useDepartureSBYReportStore = defineStore(
     const unloading = ref("");
     const totalAmount = ref("");
     const time = ref("");
+    const cargoUnit = ref(temp.cargoUnit);
 
     // Vessel Condition at Departure
     const draftFwd = ref("");
@@ -319,11 +323,6 @@ export const useDepartureSBYReportStore = defineStore(
         ).toFixed(2)
     );
     const mgoRobSum = mgoRob;
-    const fuelOilDataCorrectionSum = reactive({
-      type: "default",
-      correction: "",
-      remarks: "",
-    });
 
     const mecylinderBreakdownSum = computed(() => {
       return {
@@ -390,11 +389,6 @@ export const useDepartureSBYReportStore = defineStore(
     const mesystemRobSum = mesystemRob;
     const mesumpRobSum = mesumpRob;
     const gesystemRobSum = gesystemRob;
-    const lubricatingOilDataCorrectionSum = reactive({
-      type: "default",
-      correction: "",
-      remarks: "",
-    });
 
     const freshwaterConsumedSum = computed(
       () =>
@@ -449,6 +443,7 @@ export const useDepartureSBYReportStore = defineStore(
       unloading,
       totalAmount,
       time,
+      cargoUnit,
       // Vessel Condition at Departure
       draftFwd,
       draftMid,
@@ -498,7 +493,6 @@ export const useDepartureSBYReportStore = defineStore(
       mgoRobSum,
       lsfoBreakdownSum,
       mgoBreakdownSum,
-      fuelOilDataCorrectionSum,
       mecylinderBreakdownSum,
       mesystemBreakdownSum,
       mesumpBreakdownSum,
@@ -507,7 +501,6 @@ export const useDepartureSBYReportStore = defineStore(
       mesystemRobSum,
       mesumpRobSum,
       gesystemRobSum,
-      lubricatingOilDataCorrectionSum,
       freshwaterConsumedSum,
       freshwaterGeneratedSum,
       freshwaterReceivingSum,

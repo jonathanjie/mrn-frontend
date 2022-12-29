@@ -57,7 +57,7 @@ const {
 
     <div class="grid divide-y divide-dashed gap-8">
       <div>
-        <div class="self-center mb-4 text-16 text-gray-700">
+        <div class="self-center mb-4 text-16 text-gray-700 pt-4">
           {{ $t("fuelOilInMT") }}
         </div>
 
@@ -592,5 +592,3 @@ const {
     </div>
   </div>
 </template>
-
-
