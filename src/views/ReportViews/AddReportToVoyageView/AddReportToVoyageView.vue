@@ -97,10 +97,10 @@ const {
   lastArrsReportNo,
   lastArrfReportNo,
   lastBdnReportNo,
-  // lastEvntpReportNo,
-  // lastEvntcReportNo,
-  // lastNoonpReportNo,
-  // lastNooncReportNo,
+  lastEvntpReportNo,
+  lastEvntcReportNo,
+  lastNoonpReportNo,
+  lastNooncReportNo,
 } = storeToRefs(store);
 
 console.log("voyage details loaded", history.state.voyageDetails);
@@ -118,10 +118,10 @@ lastDeprReportNo.value = voyageDetails.last_depr_report_no;
 lastArrsReportNo.value = voyageDetails.last_arrs_report_no;
 lastArrfReportNo.value = voyageDetails.last_arrf_report_no;
 lastBdnReportNo.value = voyageDetails.last_bdn_report_no;
-// lastEvntpReportNo.value = voyageDetails.last_evntp_report_no;
-// lastEvntcReportNo.value = voyageDetails.last_evntc_report_no;
-// lastNoonpReportNo.value = voyageDetails.last_noonp_report_no;
-// lastNooncReportNo.value = voyageDetails.last_noonc_report_no;
+lastEvntpReportNo.value = voyageDetails.last_evntp_report_no;
+lastEvntcReportNo.value = voyageDetails.last_evntc_report_no;
+lastNoonpReportNo.value = voyageDetails.last_noonp_report_no;
+lastNooncReportNo.value = voyageDetails.last_noonc_report_no;
 
 // onBeforeRouteLeave((to, from) => {
 //   console.log(to);

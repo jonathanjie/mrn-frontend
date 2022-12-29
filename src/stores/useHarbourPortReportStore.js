@@ -34,16 +34,34 @@ export const useHarbourPortReportStore = defineStore(
   "harbourPortReport",
   () => {
     const store = useVoyageStore();
-    // TODO: report no for harbourPort depends on exact type of report
-    const { evntReportNo, curLegNo, curLoadingCondition, curVoyageNo } =
-      storeToRefs(store);
+    const {
+      evntcReportNo,
+      evntpReportNo,
+      noonpReportNo,
+      nooncReportNo,
+      curLegNo,
+      curLoadingCondition,
+      curVoyageNo,
+    } = storeToRefs(store);
 
     // status var
     const reportSubtypeIsPort = ref(true);
     const reportSubtypeIsNoon = ref(false);
 
     // Harbour Port Overview
-    const reportNo = evntReportNo; // TODO: report no for harbourPort depends on exact type of report
+    const reportNo = computed(() => {
+      if (reportSubtypeIsPort.value && reportSubtypeIsNoon.value) {
+        return noonpReportNo;
+      } else if (reportSubtypeIsPort.value && !reportSubtypeIsNoon.value) {
+        return evntpReportNo;
+      } else if (!reportSubtypeIsPort.value && reportSubtypeIsNoon.value) {
+        return nooncReportNo;
+      } else if (!reportSubtypeIsPort.value && !reportSubtypeIsNoon.value) {
+        return evntcReportNo;
+      } else {
+        return ""; // shouldn't reach here
+      }
+    });
     const legNo = curLegNo;
     const loadingCondition = curLoadingCondition;
     const voyageNo = curVoyageNo;

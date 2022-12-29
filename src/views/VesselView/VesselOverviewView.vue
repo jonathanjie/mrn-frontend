@@ -33,6 +33,7 @@ import VoyageCard from "../../components/VoyageCard.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { readableUTCDate } from "@/utils/helpers";
 import { ReportTypeToDisplay } from "@/constants";
+import { Report } from "@/constants";
 
 const props = defineProps({
   imo: { type: String, require: true },
@@ -119,10 +120,10 @@ for (let i = 0; i < voyages.length; i++) {
     ASBY: 0,
     AFWE: 0,
     BDN: 0,
-    // evntp: 0,
-    // evntc: 0,
-    // noonp: 0,
-    // noonc: 0.
+    EVPO: 0,
+    EVHB: 0,
+    NNHB: 0,
+    NNPO: 0,
   };
 
   // update report details
@@ -130,10 +131,11 @@ for (let i = 0; i < voyages.length; i++) {
     // oldest to most recent
     const ret = {};
 
-    if (j.report_type === "DSBY") {
+    if (j.report_type === Report.type.DEP_SBY) {
       // update current load condition for every departure sby (new leg)
       curLoadingCondition = await getLoadingCondition(uuid);
     }
+    // console.log(j.report_type);
     curLegNo = j.voyage_leg; // update current leg no for every report
     lastReportNo[j.report_type] = j.report_num; // update most recent report no for each type
 
@@ -158,11 +160,12 @@ for (let i = 0; i < voyages.length; i++) {
   voyageDetails[uuid]["last_arrs_report_no"] = lastReportNo["ASBY"];
   voyageDetails[uuid]["last_arrf_report_no"] = lastReportNo["AFWE"];
   voyageDetails[uuid]["last_bdn_report_no"] = lastReportNo["BDN"];
-  // voyageDetails[uuid]["last_evntp_report_no"] = lastEvntpReportNo;
-  // voyageDetails[uuid]["last_evntc_report_no"] = lastEvntcReportNo;
-  // voyageDetails[uuid]["last_noonp_report_no"] = lastNoonpReportNo;
-  // voyageDetails[uuid]["last_noonc_report_no"] = lastNooncReportNo;
+  voyageDetails[uuid]["last_evntp_report_no"] = lastReportNo["EVPO"];
+  voyageDetails[uuid]["last_evntc_report_no"] = lastReportNo["EVHB"];
+  voyageDetails[uuid]["last_noonp_report_no"] = lastReportNo["NNPO"];
+  voyageDetails[uuid]["last_noonc_report_no"] = lastReportNo["NNHB"];
 }
+// console.log(voyageDetails);
 
 // TODO: replace with helper conversion method
 const portCodeToPortName = ref({
