@@ -168,21 +168,21 @@ const position = computed(() =>
       >
       <input
         disabled
-        :v-model="position.latDegree"
+        v-model="position.latDegree"
         @keypress="preventNaN($event, position.latDegree)"
         placeholder="000 (Degree)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
         disabled
-        :v-model="position.latMinutes"
+        v-model="position.latMinutes"
         @keypress="preventNaN($event, position.latMinutes)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
         disabled
-        :v-model="position.latDir"
+        v-model="position.latDir"
         class="col-span-3 p-3 text-14 border-l focus:outline-0 focus:outline-0"
         :class="
           position.latDir === 'default' ? 'text-gray-400' : 'text-gray-700'
@@ -202,21 +202,21 @@ const position = computed(() =>
       >
       <input
         disabled
-        :v-model="position.longDegree"
+        v-model="position.longDegree"
         @keypress="preventNaN($event, position.longDegree)"
         placeholder="000 (Degree)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
         disabled
-        :v-model="position.longMinutes"
+        v-model="position.longMinutes"
         @keypress="preventNaN($event, position.longMinutes)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
         disabled
-        :v-model="position.longDir"
+        v-model="position.longDir"
         class="col-span-3 p-3 text-14 border-l focus:outline-0"
         :class="
           position.longDir === 'default' ? 'text-gray-400' : 'text-gray-700'

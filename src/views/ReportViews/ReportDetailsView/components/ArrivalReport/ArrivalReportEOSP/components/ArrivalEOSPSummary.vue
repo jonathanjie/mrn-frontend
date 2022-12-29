@@ -1,3 +1,30 @@
+<script setup>
+import { preventNaN } from "@/utils/helpers.js";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { storeToRefs } from "pinia";
+import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
+
+const store = useArrivalEOSPReportStore();
+const {
+  totalDistanceObs: total_distance_obs,
+  totalSailingTime: total_sailing_time,
+  displacement: displacement,
+  avgSpeed: avg_speed,
+  avgRpm: avg_rpm,
+  meFoConsumption: me_fo_consumption,
+  lsfoMeSum: lsfo_me_sum,
+  lsfoGeSum: lsfo_ge_sum,
+  lsfoBoilerSum: lsfo_boiler_sum,
+  lsfoIggSum: lsfo_igg_sum,
+  lsfoTotalSum: lsfo_total_sum,
+  mgoMeSum: mgo_me_sum,
+  mgoGeSum: mgo_ge_sum,
+  mgoBoilerSum: mgo_boiler_sum,
+  mgoIggSum: mgo_igg_sum,
+  mgoTotalSum: mgo_total_sum,
+} = storeToRefs(store);
+</script>
+
 <template>
   <div
     class="grid bg-white border border-yellow-500 rounded-lg p-5 gap-4 divide-y divide-dashed shadow-card"
@@ -204,29 +231,4 @@
   </div>
 </template>
 
-<script setup>
-import { preventNaN } from "@/utils/helpers.js";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { storeToRefs } from "pinia";
-import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
 
-const store = useArrivalEOSPReportStore();
-const {
-  totalDistanceObs: total_distance_obs,
-  totalSailingTime: total_sailing_time,
-  displacement: displacement,
-  avgSpeed: avg_speed,
-  avgRpm: avg_rpm,
-  meFoConsumption: me_fo_consumption,
-  lsfoMeSum: lsfo_me_sum,
-  lsfoGeSum: lsfo_ge_sum,
-  lsfoBoilerSum: lsfo_boiler_sum,
-  lsfoIggSum: lsfo_igg_sum,
-  lsfoTotalSum: lsfo_total_sum,
-  mgoMeSum: mgo_me_sum,
-  mgoGeSum: mgo_ge_sum,
-  mgoBoilerSum: mgo_boiler_sum,
-  mgoIggSum: mgo_igg_sum,
-  mgoTotalSum: mgo_total_sum,
-} = storeToRefs(store);
-</script>

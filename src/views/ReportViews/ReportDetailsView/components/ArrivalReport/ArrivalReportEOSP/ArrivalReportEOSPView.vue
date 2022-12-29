@@ -24,6 +24,7 @@ const props = defineProps({
     <ArrivalOverview :report="props.report" />
 
     <!-- Departure and Arrival -->
+    <!-- TODO: Fix hardcoded planned operation -->
     <ArrivalAndDeparture :report="props.report" />
 
     <!-- S/BY for Arrival -->

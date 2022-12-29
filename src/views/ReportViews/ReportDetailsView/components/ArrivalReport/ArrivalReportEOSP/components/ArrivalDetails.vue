@@ -1,3 +1,42 @@
+<script setup>
+import { computed, defineProps } from "vue";
+import {
+  preventNaN,
+  textInputOptions,
+  format,
+  parsePositionFromString,
+  // formatUTC,
+} from "@/utils/helpers.js";
+import { TIMEZONES } from "@/utils/options";
+// import { UTCPlaceholder } from "@/constants";
+// import { computed } from "vue";
+// import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
+
+console.log("wtf", props.report);
+
+const reportingTimeZone = computed(() => props.report.report_tz);
+const reportingDateTime = computed(() => props.report.report_date);
+
+const position = computed(() =>
+  parsePositionFromString(props.report.arrivalstandbytimeandposition.position)
+);
+console.log("timezone: ", reportingTimeZone);
+console.log("datetime: ", reportingDateTime);
+
+// const reporting_date_time_utc = computed(() =>
+//   reportingDateTimeUTC.value
+//     ? formatUTC(new Date(reportingDateTimeUTC.value))
+//     : UTCPlaceholder
+// );
+</script>
+
 <template>
   <div class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4 shadow-card">
     <div class="col-span-2 flex items-center">
@@ -14,13 +53,12 @@
       </div>
       <div class="flex col-span-3 border-b">
         <select
+          disabled
           class="grow self-center p-3 text-14 focus:outline-0"
           :class="
-            reporting_time_zone === 'default'
-              ? 'text-gray-400'
-              : 'text-gray-700'
+            reportingTimeZone === 'default' ? 'text-gray-400' : 'text-gray-700'
           "
-          v-model="reporting_time_zone"
+          v-model="reportingTimeZone"
         >
           <option selected disabled value="default">
             {{ $t("selectTimeZone") }}
@@ -35,7 +73,8 @@
       </div>
       <div class="col-span-3 relative flex items-center">
         <DatePicker
-          v-model="reporting_date_time"
+          disabled
+          v-model="reportingDateTime"
           class="grow"
           textInput
           :textInputOptions="textInputOptions"
@@ -47,11 +86,11 @@
             <img src="" />
           </template>
         </DatePicker>
-        <MiniUnitDisplay
+        <!-- <MiniUnitDisplay
           class="absolute right-0 min-w-fit"
           :class="reporting_date_time ? 'mr-9' : 'mr-2'"
           >{{ reporting_date_time_utc }}</MiniUnitDisplay
-        >
+        > -->
       </div>
     </div>
     <div></div>
@@ -61,21 +100,26 @@
         >{{ $t("latitude") }}</span
       >
       <input
-        v-model="lat_degree"
-        @keypress="preventNaN($event, lat_degree)"
+        disabled
+        v-model="position.latDegree"
+        @keypress="preventNaN($event, position.latDegree)"
         placeholder="000 (Degree)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="lat_minute"
-        @keypress="preventNaN($event, lat_minute)"
+        disabled
+        v-model="position.latMinutes"
+        @keypress="preventNaN($event, position.latMinutes)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
-        v-model="lat_dir"
+        disabled
+        v-model="position.latDir"
         class="col-span-3 p-3 text-14 border-l focus:outline-0 focus:outline-0"
-        :class="lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="
+          position.latDir === 'default' ? 'text-gray-400' : 'text-gray-700'
+        "
       >
         <option selected disabled value="default">
           {{ $t("southAndNorth") }}
@@ -90,21 +134,26 @@
         >{{ $t("longitude") }}</span
       >
       <input
-        v-model="long_degree"
-        @keypress="preventNaN($event, long_degree)"
+        disabled
+        v-model="position.longDegree"
+        @keypress="preventNaN($event, position.longDegree)"
         placeholder="000 (Degree)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="long_minute"
-        @keypress="preventNaN($event, long_minute)"
+        disabled
+        v-model="position.longMinutes"
+        @keypress="preventNaN($event, position.longMinutes)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
-        v-model="long_dir"
+        disabled
+        v-model="position.longDir"
         class="col-span-3 p-3 text-14 border-l focus:outline-0"
-        :class="long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="
+          position.longDir === 'default' ? 'text-gray-400' : 'text-gray-700'
+        "
       >
         <option selected disabled value="default">
           {{ $t("eastAndWest") }}
@@ -115,37 +164,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import {
-  preventNaN,
-  textInputOptions,
-  format,
-  formatUTC,
-} from "@/utils/helpers.js";
-import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
-import { storeToRefs } from "pinia";
-import { TIMEZONES } from "@/utils/options";
-import { UTCPlaceholder } from "@/constants";
-import { computed } from "vue";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-
-const store = useArrivalEOSPReportStore();
-const {
-  reportingTimeZone: reporting_time_zone,
-  reportingDateTime: reporting_date_time,
-  reportingDateTimeUTC,
-  latDir: lat_dir,
-  latMinute: lat_minute,
-  latDegree: lat_degree,
-  longDir: long_dir,
-  longMinute: long_minute,
-  longDegree: long_degree,
-} = storeToRefs(store);
-
-const reporting_date_time_utc = computed(() =>
-  reportingDateTimeUTC.value
-    ? formatUTC(new Date(reportingDateTimeUTC.value))
-    : UTCPlaceholder
-);
-</script>

@@ -1,27 +1,49 @@
 <script setup>
-import { textInputOptions, format, formatUTC } from "@/utils/helpers.js";
+import { computed, defineProps } from "vue";
+import {
+  textInputOptions,
+  format,
+  // formatUTC
+} from "@/utils/helpers.js";
 import { storeToRefs } from "pinia";
 import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
 import { OPERATIONS } from "@/utils/options";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { UTCPlaceholder } from "@/constants";
+// import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+// import { UTCPlaceholder } from "@/constants";
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
+
+const departurePortCountry = computed(
+  () => props.report.reportroute.departure_port.split(" ")[0]
+);
+const departurePortName = computed(
+  () => props.report.reportroute.departure_port.split(" ")[1]
+);
+const departureDateTime = computed(
+  () => props.report.reportroute?.departure_date ?? ""
+);
+
+const arrivalPortCountry = computed(
+  () => props.report.reportroute?.arrival_port.split(" ")[1] ?? ""
+);
+const arrivalPortName = computed(
+  () => props.report.reportroute?.arrival_port.split(" ")[1] ?? ""
+);
+
 
 const store = useArrivalEOSPReportStore();
 const {
-  departurePortCountry: departure_port_country,
-  departurePortName: departure_port_name,
-  departureDateTime: departure_date_time,
-  departureDateTimeUTC,
-  arrivalPortCountry: arrival_port_country,
-  arrivalPortName: arrival_port_name,
   plannedOperations: planned_operations,
-  isOtherPlannedOperationEnabled: is_other_planned_operation_enabled,
   otherPlannedOperation: other_planned_operation,
 } = storeToRefs(store);
 
-const departure_date_time_utc = departureDateTimeUTC.value
-  ? formatUTC(new Date(departureDateTimeUTC.value))
-  : UTCPlaceholder;
+// const departure_date_time_utc = departureDateTimeUTC.value
+//   ? formatUTC(new Date(departureDateTimeUTC.value))
+//   : UTCPlaceholder;
 </script>
 
 <template>
@@ -38,15 +60,15 @@ const departure_date_time_utc = departureDateTimeUTC.value
         <div class="col-span-2 row-span-2 self-center text-blue-700 p-3">
           {{ $t("portName") }}
         </div>
-        <input
+        <input disabled
           class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b"
-          disabled
-          v-model="departure_port_country"
+          
+          v-model="departurePortCountry"
         />
-        <input
+        <input disabled
           class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l"
-          disabled
-          v-model="departure_port_name"
+          
+          v-model="departurePortName"
         />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14 min-w-fit">
@@ -55,12 +77,12 @@ const departure_date_time_utc = departureDateTimeUTC.value
         </div>
         <div class="col-span-3 relative flex">
           <DatePicker
-            v-model="departure_date_time"
+            v-model="departureDateTime"
+            disabled
             class="grow"
             textInput
             :textInputOptions="textInputOptions"
             :format="format"
-            disabled
             :modelValue="string"
             :placeholder="$t('selectDateAndTime')"
           >
@@ -68,9 +90,9 @@ const departure_date_time_utc = departureDateTimeUTC.value
               <img src="" />
             </template>
           </DatePicker>
-          <MiniUnitDisplay class="absolute right-0 min-w-fit mr-2">{{
+          <!-- <MiniUnitDisplay class="absolute right-0 min-w-fit mr-2">{{
             departure_date_time_utc
-          }}</MiniUnitDisplay>
+          }}</MiniUnitDisplay> -->
         </div>
       </div>
     </div>
@@ -85,15 +107,15 @@ const departure_date_time_utc = departureDateTimeUTC.value
         <div class="col-span-2 row-span-2 self-center text-blue-700 p-3">
           {{ $t("portName") }}
         </div>
-        <input
+        <input disabled
           class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b"
-          disabled
-          v-model="arrival_port_country"
+          
+          v-model="arrivalPortCountry"
         />
-        <input
+        <input disabled
           class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l"
-          disabled
-          v-model="arrival_port_name"
+          
+          v-model="arrivalPortName"
         />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14">
@@ -108,7 +130,7 @@ const departure_date_time_utc = departureDateTimeUTC.value
             :key="val"
             class="flex align-center space-x-2"
           >
-            <input
+            <input disabled
               type="checkbox"
               :id="val"
               :value="val"
@@ -117,7 +139,7 @@ const departure_date_time_utc = departureDateTimeUTC.value
             <label :for="val">{{ $t(key) }}</label>
           </div>
           <div class="flex align-center space-x-2">
-            <input
+            <input disabled
               type="checkbox"
               id="others"
               value="others"
@@ -129,14 +151,12 @@ const departure_date_time_utc = departureDateTimeUTC.value
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14 mt-5">
         <div class="col-span-2 text-blue-700 p-3">{{ $t("others") }}</div>
-        <input
+        <input disabled
           class="col-span-3 p-3 text-gray-700 border-l disabled:text-gray-400 disabled:bg-gray-50 focus:outline-0"
           :placeholder="$t('inputOtherPlannedOperation')"
-          :disabled="!is_other_planned_operation_enabled"
           v-model="other_planned_operation"
         />
       </div>
     </div>
   </div>
 </template>
-

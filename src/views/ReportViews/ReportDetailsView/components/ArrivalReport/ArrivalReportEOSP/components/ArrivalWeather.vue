@@ -1,3 +1,35 @@
+<script setup>
+import { computed, defineProps } from "vue";
+import { preventNaN, windSpeedToBeaufort } from "@/utils/helpers";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { IceCondition } from "@/constants";
+
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
+
+const weather = computed(()=>props.report.weatherdata.weather_notation)
+const visibility = computed(()=>props.report.weatherdata.visibility)
+const windDirection = computed(()=>props.report.weatherdata.wind_direction)
+const windSpeed = computed(()=>props.report.weatherdata.wind_speed)
+const seaDirection = computed(()=>props.report.weatherdata.sea_direction)
+const seaState = computed(()=>props.report.weatherdata.sea_state)
+const swellDirection = computed(()=>props.report.weatherdata.swell_direction)
+const swellScale = computed(()=>props.report.weatherdata.swell_scale)
+const airTemperatureDry = computed(()=>props.report.weatherdata.air_temperature_dry)
+const airTemperatureWet = computed(()=>props.report.weatherdata.air_temperature_wet)
+const airPressure = computed(()=>props.report.weatherdata.air_pressure)
+const seaTemperature = computed(()=>props.report.weatherdata.sea_temperature)
+const iceCondition = computed(()=>props.report.weatherdata.ice_condition)
+
+const wind_speed_beaufort = computed(() =>
+  windSpeedToBeaufort(windSpeed.value)
+);
+</script>
+
 <template>
   <div class="grid bg-white rounded-lg p-5 gap-4 shadow-card">
     <div class="flex items-center">
@@ -75,10 +107,10 @@
         {{ $t("direction") }}
       </div>
       <select
-        v-model="wind_direction"
+        v-model="windDirection"
         class="col-span-6 xl:col-span-3 p-3 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"
         :class="
-          wind_direction === 'default' ? 'text-gray-400' : 'text-gray-700'
+          windDirection === 'default' ? 'text-gray-400' : 'text-gray-700'
         "
       >
         <option selected disabled value="default">
@@ -108,8 +140,8 @@
       </div>
       <div class="col-span-3 flex xl:col-span-2 p-3 border-r bg-white">
         <input
-          v-model="wind_speed"
-          @keypress="preventNaN($event, wind_speed)"
+          v-model="windSpeed"
+          @keypress="preventNaN($event, windSpeed)"
           placeholder="00.0"
           class="text-14 w-20 text-gray-700 focus:outline-0"
         />
@@ -134,9 +166,9 @@
         {{ $t("direction") }}
       </div>
       <select
-        v-model="sea_direction"
+        v-model="seaDirection"
         class="col-span-6 xl:col-span-3 p-3 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"
-        :class="sea_direction === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="seaDirection === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
           {{ $t("dir_8_placeholder") }}
@@ -156,9 +188,9 @@
         {{ $t("force") }}
       </div>
       <select
-        v-model="sea_state"
+        v-model="seaState"
         class="col-span-6 xl:col-span-3 p-3 text-14 focus:outline-0"
-        :class="sea_state === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="seaState === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
           {{ $t("douglasScale") }}
@@ -188,10 +220,10 @@
         {{ $t("direction") }}
       </div>
       <select
-        v-model="swell_direction"
+        v-model="swellDirection"
         class="col-span-6 xl:col-span-3 p-3 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"
         :class="
-          swell_direction === 'default' ? 'text-gray-400' : 'text-gray-700'
+          swellDirection === 'default' ? 'text-gray-400' : 'text-gray-700'
         "
       >
         <option selected disabled value="default">
@@ -212,9 +244,9 @@
         {{ $t("scale") }}
       </div>
       <select
-        v-model="swell_scale"
+        v-model="swellScale"
         class="col-span-6 xl:col-span-3 p-3 text-14 focus:outline-0"
-        :class="swell_scale === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="swellScale === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">{{ $t("select") }}</option>
         <option value="0">{{ $t("swell_0") }}</option>
@@ -245,8 +277,8 @@
         class="col-span-6 flex xl:col-span-3 xl:border-r border-b xl:border-b-0 p-2 bg-white"
       >
         <input
-          v-model="air_temperature_dry"
-          @keypress="preventNaN($event, air_temperature_dry)"
+          v-model="airTemperatureDry"
+          @keypress="preventNaN($event, airTemperatureDry)"
           placeholder="00.0"
           class="text-14 w-24 pl-2 text-gray-700 focus:outline-0"
         />
@@ -259,8 +291,8 @@
       </div>
       <div class="col-span-6 flex xl:col-span-3 p-2 bg-white">
         <input
-          v-model="air_temperature_wet"
-          @keypress="preventNaN($event, air_temperature_wet)"
+          v-model="airTemperatureWet"
+          @keypress="preventNaN($event, airTemperatureWet)"
           placeholder="00.0"
           class="text-14 w-24 pl-2 text-gray-700 focus:outline-0"
         />
@@ -276,8 +308,8 @@
       </div>
       <div class="col-span-6 xl:col-span-4 flex border-y border-r p-2 bg-white">
         <input
-          v-model="air_pressure"
-          @keypress="preventNaN($event, air_pressure)"
+          v-model="airPressure"
+          @keypress="preventNaN($event, airPressure)"
           placeholder="00"
           class="text-14 w-24 pl-2 text-gray-700 focus:outline-0"
         />
@@ -293,8 +325,8 @@
       </div>
       <div class="col-span-6 xl:col-span-4 flex border-y border-r p-2 bg-white">
         <input
-          v-model="sea_temperature"
-          @keypress="preventNaN($event, sea_temperature)"
+          v-model="seaTemperature"
+          @keypress="preventNaN($event, seaTemperature)"
           placeholder="00.0"
           class="text-14 w-24 pl-2 text-gray-700 focus:outline-0"
         />
@@ -309,9 +341,9 @@
         {{ $t("glacierIceCondition") }}
       </div>
       <select
-        v-model="ice_condition"
+        v-model="iceCondition"
         class="col-span-6 xl:col-span-4 p-3 border-y border-r text-14 focus:outline-0"
-        :class="ice_condition === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="iceCondition === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">{{ $t("select") }}</option>
         <option :value="IceCondition.NONE">{{ $t("na") }}</option>
@@ -324,32 +356,4 @@
   </div>
 </template>
 
-<script setup>
-import { computed } from "vue";
-import { preventNaN, windSpeedToBeaufort } from "@/utils/helpers";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
-import { storeToRefs } from "pinia";
-import { IceCondition } from "@/constants";
 
-const store = useArrivalEOSPReportStore();
-const {
-  weather: weather,
-  visibility: visibility,
-  windDirection: wind_direction,
-  windSpeed: wind_speed,
-  seaDirection: sea_direction,
-  seaState: sea_state,
-  swellDirection: swell_direction,
-  swellScale: swell_scale,
-  airTemperatureDry: air_temperature_dry,
-  airTemperatureWet: air_temperature_wet,
-  airPressure: air_pressure,
-  seaTemperature: sea_temperature,
-  iceCondition: ice_condition,
-} = storeToRefs(store);
-
-const wind_speed_beaufort = computed(() =>
-  windSpeedToBeaufort(wind_speed.value)
-);
-</script>

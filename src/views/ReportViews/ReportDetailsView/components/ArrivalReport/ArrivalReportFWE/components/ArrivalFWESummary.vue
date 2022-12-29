@@ -10,8 +10,8 @@ const props = defineProps({
   },
 });
 
-const total_distance_obs = computed(()=>props.report.actualperformancedata.distance_obs_total)
-const total_sailing_time = computed(()=>props.report.actualperformancedata.sailing_time)
+const totalDistanceObs = computed(()=>props.report.actualperformancedata.distance_obs_total)
+const totalSailingTime = computed(()=>props.report.actualperformancedata.sailing_time)
 
 // Fuel Consumption
 const lsfo_me_sum = computed(
@@ -100,8 +100,8 @@ const mgo_total_sum = computed(
           </div>
           <div class="flex col-span-3 p-2 pl-4 border-b bg-gray-50">
             <input
-              v-model="total_distance_obs"
-              @keypress="preventNaN($event, total_distance_obs)"
+              v-model="totalDistanceObs"
+              @keypress="preventNaN($event, totalDistanceObs)"
               placeholder="0"
               disabled
               class="w-16 text-14 text-gray-700 focus:outline-0 bg-gray-50"
@@ -113,8 +113,8 @@ const mgo_total_sum = computed(
           </div>
           <div class="flex col-span-3 p-2 pl-4 bg-gray-50">
             <input
-              v-model="total_sailing_time"
-              @keypress="preventNaN($event, total_sailing_time)"
+              v-model="totalSailingTime"
+              @keypress="preventNaN($event, totalSailingTime)"
               placeholder="0"
               disabled
               class="w-16 text-14 text-gray-700 focus:outline-0 bg-gray-50"
