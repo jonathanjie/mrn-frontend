@@ -73,14 +73,15 @@ import { ref } from "vue";
 import GradientButton from "../../components/Buttons/GradientButton.vue";
 import InitializationModal from "@/components/Modals/InitializationModal.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useShipStore } from "@/stores/useShipStore";
+import { storeToRefs } from "pinia";
 
 const auth = useAuthStore();
+const store = useShipStore();
+const { isFetchingVoyages, lastVoyageNo, nextVoyageNo } = storeToRefs(store);
 
 // Variable to force replacement of router-view
 const update = ref(0);
-const isFetchingVoyages = ref(false);
-// TODO: fetch voyage number here
-let voyageNum = 4;
 
 const props = defineProps({
   vesselname: String,
@@ -90,15 +91,10 @@ const props = defineProps({
 
 let showModal = localStorage.getItem("addSpec") == true;
 
-// Backend Data
-const voyageData = {
-  voyage_num: voyageNum,
-  imo_reg: props.imo,
-};
-
 // POST request to add in a new voyage
 const addVoyage = async (voyageData) => {
   isFetchingVoyages.value = true;
+
   const response = await fetch(
     "https://testapi.marinachain.io/marinanet/voyages/",
     {
@@ -107,18 +103,20 @@ const addVoyage = async (voyageData) => {
         "Content-Type": "application/json",
       },
       method: "POST",
-      body: JSON.stringify(voyageData),
+      body: JSON.stringify({
+        voyage_num: nextVoyageNo.value,
+        imo_reg: props.imo,
+      }),
     }
   );
   console.log(response);
 
   if (response.ok) {
+    lastVoyageNo.value += 1;
     update.value += 1;
   } else {
-    window.alert("ERROR: " + JSON.stringify(response.json));
+    window.alert("ERROR: " + JSON.stringify(response.text()));
   }
-
-  isFetchingVoyages.value = false;
 };
 
 const getVoyages = async (imo) => {

@@ -51,6 +51,8 @@ export const useVoyageStore = defineStore("voyage", () => {
   // TODO: get reportroute from voyage
 
   return {
+    lastVoyageNo,
+    nextVoyageNo,
     lastNoonReportNo,
     lastDepsReportNo,
     lastDeprReportNo,
