@@ -10,8 +10,12 @@ const props = defineProps({
   },
 });
 
-const totalDistanceObs = computed(()=>props.report.actualperformancedata.distance_obs_total)
-const totalSailingTime = computed(()=>props.report.actualperformancedata.sailing_time)
+const totalDistanceObs = computed(
+  () => props.report.actualperformancedata.distance_obs_total
+);
+const totalSailingTime = computed(
+  () => props.report.actualperformancedata.sailing_time
+);
 
 // Fuel Consumption
 const lsfo_me_sum = computed(

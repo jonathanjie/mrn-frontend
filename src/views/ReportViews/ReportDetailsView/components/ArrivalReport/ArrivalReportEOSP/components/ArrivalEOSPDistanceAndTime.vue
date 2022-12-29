@@ -1,3 +1,35 @@
+<script setup>
+import { ref, computed, defineProps } from "vue";
+import { preventNaN } from "@/utils/helpers.js";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
+
+const distanceToGoDisabled = ref(false);
+const edited = ref(false);
+
+const hours_since_noon = computed(() => props.report.distanceperformancedata.hours_since_noon);
+const hours_total = computed(() => props.report.distanceperformancedata.hours_total);
+const distance_to_go = computed(() => props.report.distanceperformancedata.distance_to_go);
+const remarks = computed(() => props.report.distanceperformancedata.remarks_for_changes);
+const distance_obs_since_noon = computed(() => props.report.distanceperformancedata.distance_observed_since_noon);
+const distance_obs_total = computed(() => props.report.distanceperformancedata.distance_observed_total);
+const distance_eng_since_noon = computed(() => props.report.distanceperformancedata.distance_engine_since_noon);
+const distance_eng_total = computed(() => props.report.distanceperformancedata.distance_engine_total);
+const revolution_count = computed(() => props.report.distanceperformancedata.revolution_count);
+
+// const toggle = () => {
+//   distanceToGoDisabled.value = !distanceToGoDisabled.value;
+//   edited.value = true;
+// };
+
+</script>
+
 <template>
   <div class="grid grid-cols-1 bg-white rounded-lg p-5 gap-4 shadow-card">
     <div class="flex items-center">
@@ -59,7 +91,7 @@
           disabled
           class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
         />
-        <input
+        <!-- <input
           v-else
           v-model="distance_to_go_edited"
           @keypress="preventNaN($event, distance_to_go_edited)"
@@ -67,12 +99,12 @@
           :disabled="distanceToGoDisabled"
           class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
           :class="distanceToGoDisabled ? 'bg-gray-50' : 'bg-white'"
-        />
-        <img
+        /> -->
+        <!-- <img
           src="@/assets/icons/edit.svg"
           @click="toggle"
           class="ml-auto h-4 w-4 cursor-pointer"
-        />
+        /> -->
         <MiniUnitDisplay class="ml-2">NM</MiniUnitDisplay>
       </div>
       <div
@@ -166,33 +198,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref } from "vue";
-import { preventNaN } from "@/utils/helpers.js";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
-import { storeToRefs } from "pinia";
-
-const store = useArrivalEOSPReportStore();
-const distanceToGoDisabled = ref(true);
-const edited = ref(false);
-
-const toggle = () => {
-  distanceToGoDisabled.value = !distanceToGoDisabled.value;
-  edited.value = true;
-};
-
-const {
-  hoursSinceNoon: hours_since_noon,
-  hoursTotal: hours_total,
-  distanceToGo: distance_to_go,
-  distanceToGoEdited: distance_to_go_edited,
-  remarksForChanges: remarks,
-  distanceObsSinceNoon: distance_obs_since_noon,
-  distanceObsTotal: distance_obs_total,
-  distanceEngSinceNoon: distance_eng_since_noon,
-  distanceEngTotal: distance_eng_total,
-  revolutionCount: revolution_count,
-} = storeToRefs(store);
-</script>

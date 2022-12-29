@@ -1,4 +1,34 @@
-<!-- eslint-disable vue/multi-word-component-names -->
+<script setup>
+import { computed, defineProps } from "vue";
+import { preventNaN } from "@/utils/helpers.js";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
+
+const speedSinceNoon = computed(
+  () => props.report.distanceperformancedata.speed_since_noon
+);
+const rpmSinceNoon = computed(
+  () => props.report.distanceperformancedata.rpm_since_noon
+);
+const slipSinceNoon = computed(
+  () => props.report.distanceperformancedata.slip_since_noon
+);
+const speedAverage = computed(
+  () => props.report.distanceperformancedata.speed_avg
+);
+const rpmAverage = computed(
+  () => props.report.distanceperformancedata.rpm_average
+);
+const slipAverage = computed(
+  () => props.report.distanceperformancedata.slip_average
+);
+</script>
 <template>
   <div class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4 shadow-card">
     <div class="col-span-2 flex items-center">
@@ -15,8 +45,8 @@
         </div>
         <div class="flex col-span-3 p-2 pl-4 border-b">
           <input
-            v-model="speed_since_noon"
-            @keypress="preventNaN($event, speed_since_noon)"
+            v-model="speedSinceNoon"
+            @keypress="preventNaN($event, speedSinceNoon)"
             placeholder="0"
             disabled
             class="w-16 text-gray-700 focus:outline-0 bg-gray-50"
@@ -27,8 +57,8 @@
           {{ $t("rpm") }}
         </div>
         <input
-          v-model="rpm_since_noon"
-          @keypress="preventNaN($event, rpm_since_noon)"
+          v-model="rpmSinceNoon"
+          @keypress="preventNaN($event, rpmSinceNoon)"
           placeholder="0"
           disabled
           class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0 bg-gray-50"
@@ -38,8 +68,8 @@
         </div>
         <div class="flex col-span-3 p-2 pl-4">
           <input
-            v-model="slip_since_noon"
-            @keypress="preventNaN($event, slip_since_noon)"
+            v-model="slipSinceNoon"
+            @keypress="preventNaN($event, slipSinceNoon)"
             placeholder="0"
             disabled
             class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
@@ -56,8 +86,8 @@
         </div>
         <div class="flex col-span-3 p-2 pl-4 border-b">
           <input
-            v-model="speed_avg"
-            @keypress="preventNaN($event, speed_avg)"
+            v-model="speedAverage"
+            @keypress="preventNaN($event, speedAverage)"
             placeholder="0"
             disabled
             class="w-16 text-gray-700 focus:outline-0 bg-gray-50"
@@ -68,8 +98,8 @@
           {{ $t("averageRPM") }}
         </div>
         <input
-          v-model="rpm_avg"
-          @keypress="preventNaN($event, rpm_avg)"
+          v-model="rpmAverage"
+          @keypress="preventNaN($event, rpmAverage)"
           placeholder="0"
           disabled
           class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0 bg-gray-50"
@@ -79,8 +109,8 @@
         </div>
         <div class="flex col-span-3 p-2 pl-4">
           <input
-            v-model="slip_avg"
-            @keypress="preventNaN($event, slip_avg)"
+            v-model="slipAverage"
+            @keypress="preventNaN($event, slipAverage)"
             placeholder="0"
             disabled
             class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
@@ -91,22 +121,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-// import { reactive } from "vue";
-import { preventNaN } from "@/utils/helpers.js";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
-import { storeToRefs } from "pinia";
-const store = useArrivalEOSPReportStore();
-
-// TODO: need to be computed values
-const {
-  speedSinceNoon: speed_since_noon,
-  rpmSinceNoon: rpm_since_noon,
-  slipSinceNoon: slip_since_noon,
-  speedAvg: speed_avg,
-  rpmAvg: rpm_avg,
-  slipAvg: slip_avg,
-} = storeToRefs(store);
-</script>
