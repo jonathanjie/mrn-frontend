@@ -100,6 +100,13 @@ export const ConsumptionType = {
   PILOT_TO_PILOT: "PILOT_TO_PILOT",
 };
 
+export const CargoLoadConditions = {
+  LADEN: "LADEN",
+  BALLAST: "BALLAST",
+  EASTBOUND: "EASTBOUND",
+  WESTBOUND: "WESTBOUND",
+};
+
 export const ActualPerformanceType = {
   PILOT_TO_PILOT: "PILOT_TO_PILOT",
   PORT_TO_PORT: "PORT_TO_PORT",

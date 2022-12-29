@@ -2,8 +2,6 @@
 import { preventNaN } from "@/utils/helpers";
 import { computed, defineProps } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
-import { storeToRefs } from "pinia";
 import { FuelOil, LubricatingOil } from "@/constants";
 
 const props = defineProps({
@@ -28,11 +26,6 @@ const isAdditionalRemarkLubricating = computed(() =>
   )
     ? true
     : false
-);
-console.log("fuel correction bool value: ", isAdditionalRemarkFuel.value);
-console.log(
-  "lubricating correction bool value: ",
-  isAdditionalRemarkLubricating.value
 );
 
 // Fuel Consumption
@@ -95,7 +88,7 @@ const meCylinderRob = computed(
       (fuelData) => fuelData.fuel_oil_type == "M/E Cylinder"
     )[0].rob
 );
-const mesystem_breakdown = computed(
+const meSystemBreakdown = computed(
   () =>
     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
       (fuelData) => fuelData.fuel_oil_type == "M/E System"
@@ -147,7 +140,7 @@ const freshwaterGenerated = computed(
   () => props.report.consumptionconditiondata.freshwaterdata.generated
 );
 const freshwaterReceiving = computed(
-  () => props.report.consumptionconditiondata.freshwaterdata.generated
+  () => props.report.consumptionconditiondata.freshwaterdata.received
 );
 const freshwaterDischarging = computed(
   () => props.report.consumptionconditiondata.freshwaterdata.generated
@@ -405,6 +398,7 @@ const freshwaterRob = computed(
               {{ $t("remarks") }}
             </div>
             <textarea
+              disabled
               v-model.trim="fuelOilDataCorrection.fueloildatacorrection.remarks"
               :placeholder="$t('inputDescriptionHere')"
               class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
@@ -484,22 +478,22 @@ const freshwaterRob = computed(
           </div>
           <input
             disabled
-            v-model="mesystem_breakdown.total_consumption"
-            @keypress="preventNaN($event, mesystem_breakdown.total_consumption)"
+            v-model="meSystemBreakdown.total_consumption"
+            @keypress="preventNaN($event, meSystemBreakdown.total_consumption)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
             disabled
-            v-model="mesystem_breakdown.receipt"
-            @keypress="preventNaN($event, mesystem_breakdown.receipt)"
+            v-model="meSystemBreakdown.receipt"
+            @keypress="preventNaN($event, meSystemBreakdown.receipt)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
             disabled
-            v-model="mesystem_breakdown.debunkering"
-            @keypress="preventNaN($event, mesystem_breakdown.debunkering)"
+            v-model="meSystemBreakdown.debunkering"
+            @keypress="preventNaN($event, meSystemBreakdown.debunkering)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
@@ -651,6 +645,7 @@ const freshwaterRob = computed(
               {{ $t("remarks") }}
             </div>
             <textarea
+              disabled
               v-model.trim="
                 lubricatingOilDataCorrection.lubricatingoildatacorrection
                   .remarks

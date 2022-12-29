@@ -1,3 +1,36 @@
+<script setup>
+import { computed, defineProps } from "vue";
+import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { parsePositionFromString } from "@/utils/helpers.js";
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
+
+const pilotArrName = computed(
+  () => props.report.arrivalpilotstation.name
+);
+const pilotArrDate = computed(
+  () => props.report.arrivalpilotstation.date
+);
+const pilotArrDraftFwd = computed(
+  () => props.report.arrivalpilotstation.draft_fwd
+);
+const pilotArrDraftMid = computed(
+  () => props.report.arrivalpilotstation.draft_mid
+);
+const pilotArrDraftAft = computed(
+  () => props.report.arrivalpilotstation.draft_aft
+);   
+const position = computed(() =>
+  parsePositionFromString(props.report.arrivalpilotstation.position)
+);
+
+</script>
+
 <template>
   <div class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4 shadow-card">
     <div class="col-span-2 flex items-center">
@@ -11,7 +44,7 @@
         {{ $t("name") }}
       </div>
       <input
-        v-model="pilot_arr_name"
+        v-model="pilotArrName"
         :placeholder="$t('inputName')"
         class="col-span-3 p-3 pl-4 border-y border-r bg-white text-14 text-gray-700 focus:outline-0"
       />
@@ -19,7 +52,7 @@
         {{ $t("requiredTimeOfArrival") }}
       </div>
       <DatePicker
-        v-model="pilot_arr_date"
+        v-model="pilotArrDate"
         class="col-span-3 border-r"
         textInput
         :textInputOptions="textInputOptions"
@@ -48,8 +81,8 @@
       </div>
       <div class="flex col-span-5 p-2 pl-4 border-b border-x bg-white">
         <input
-          v-model="pilot_arr_draft_fwd"
-          @keypress="preventNaN($event, pilot_arr_draft_fwd)"
+          v-model="pilotArrDraftFwd"
+          @keypress="preventNaN($event, pilotArrDraftFwd)"
           placeholder="00.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -60,8 +93,8 @@
       </div>
       <div class="flex col-span-5 p-2 pl-4 border-b border-x bg-white">
         <input
-          v-model="pilot_arr_draft_mid"
-          @keypress="preventNaN($event, pilot_arr_draft_mid)"
+          v-model="pilotArrDraftMid"
+          @keypress="preventNaN($event, pilotArrDraftMid)"
           placeholder="00.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -72,8 +105,8 @@
       </div>
       <div class="flex col-span-5 p-2 pl-4 border-x bg-white">
         <input
-          v-model="pilot_arr_draft_aft"
-          @keypress="preventNaN($event, pilot_arr_draft_aft)"
+          v-model="pilotArrDraftAft"
+          @keypress="preventNaN($event, pilotArrDraftAft)"
           placeholder="00.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -87,22 +120,22 @@
         >{{ $t("latitude") }}</span
       >
       <input
-        v-model="pilot_arr_lat_degree"
-        @keypress="preventNaN($event, pilot_arr_lat_degree)"
+        v-model="position.latDegree"
+        @keypress="preventNaN($event, position.latDegree)"
         placeholder="000 (Degree)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="pilot_arr_lat_minute"
-        @keypress="preventNaN($event, pilot_arr_lat_minute)"
+        v-model="position.latMinutes"
+        @keypress="preventNaN($event, position.latMinutes)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
-        v-model="pilot_arr_lat_dir"
+        v-model="position.latDir"
         class="col-span-3 p-3 text-14 border-l focus:outline-0"
         :class="
-          pilot_arr_lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
+          position.latDir === 'default' ? 'text-gray-400' : 'text-gray-700'
         "
       >
         <option selected disabled value="default">
@@ -118,22 +151,22 @@
         >{{ $t("longitude") }}</span
       >
       <input
-        v-model="pilot_arr_long_degree"
-        @keypress="preventNaN($event, pilot_arr_long_degree)"
+        v-model="position.longDegree"
+        @keypress="preventNaN($event, position.longDegree)"
         placeholder="000 (Degree)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="pilot_arr_long_minute"
-        @keypress="preventNaN($event, pilot_arr_long_minute)"
+        v-model="position.longMinutes"
+        @keypress="preventNaN($event, position.longMinutes)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
-        v-model="pilot_arr_long_dir"
+        v-model="position.longDir"
         class="col-span-3 p-3 text-14 border-l focus:outline-0"
         :class="
-          pilot_arr_long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
+          position.longDir === 'default' ? 'text-gray-400' : 'text-gray-700'
         "
       >
         <option selected disabled value="default">
@@ -145,25 +178,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
-import { storeToRefs } from "pinia";
-
-const store = useDepartureCOSPReportStore();
-const {
-  pilotArrName: pilot_arr_name,
-  pilotArrDate: pilot_arr_date,
-  pilotArrDraftFwd: pilot_arr_draft_fwd,
-  pilotArrDraftMid: pilot_arr_draft_mid,
-  pilotArrDraftAft: pilot_arr_draft_aft,
-  pilotArrLatDir: pilot_arr_lat_dir,
-  pilotArrLatDegree: pilot_arr_lat_degree,
-  pilotArrLatMinute: pilot_arr_lat_minute,
-  pilotArrLongDir: pilot_arr_long_dir,
-  pilotArrLongDegree: pilot_arr_long_degree,
-  pilotArrLongMinute: pilot_arr_long_minute,
-} = storeToRefs(store);
-</script>

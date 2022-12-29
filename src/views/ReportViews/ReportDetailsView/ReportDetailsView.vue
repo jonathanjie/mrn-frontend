@@ -6,6 +6,7 @@ import { Report } from "@/constants";
 import { storeToRefs } from "pinia";
 import NoonReportView from "./components/NoonReport/NoonReportView.vue";
 import DepartureReportView from "./components/DepartureReport/DepartureReportView.vue";
+import ArrivalReportView from "./components/ArrivalReport/ArrivalReportView.vue";
 
 // Props
 const props = defineProps({
@@ -63,7 +64,8 @@ const handleBack = () => {
           report.report_type == Report.type.ARR_SBY_EOSP
         "
       >
-        <div>ARRIVAL</div>
+        <ArrivalReportView :report="report" />
+        <!-- <div>ARRIVAL</div> -->
       </div>
       <div
         v-else-if="

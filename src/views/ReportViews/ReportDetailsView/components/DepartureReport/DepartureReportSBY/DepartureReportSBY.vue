@@ -1,10 +1,10 @@
 <script setup>
 import { defineProps } from "vue";
-import DepartureSBYOverview from "./components/DepartureSBYOverview.vue";
 import DepartureAndDestinationSBY from "./components/DepartureAndDestinationSBY.vue";
 import DepartureSBYConsumption from "./components/DepartureSBYConsumption.vue";
 import DepartureSBYTotalConsumption from "./components/DepartureSBYTotalConsumption.vue";
-import DepartureSBYPilotStation from "./components/DepartureSBYPilotStation.vue";
+import DepartureSBYPilotStation from "../components/DeparturePilotStation.vue";
+import DepartureSBYOverview from "../components/DepartureOverview.vue";
 import DepartureCargoOperation from "../components/DepartureCargoOperation.vue";
 import DepartureVesselCondition from "../components/DepartureVesselCondition.vue";
 

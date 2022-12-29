@@ -1,6 +1,6 @@
 <script setup>
-import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
 import { computed, defineProps } from "vue";
+import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
 import { parsePositionFromString } from "@/utils/helpers.js";
 // import { UTCPlaceholder } from "@/constants";
 // import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
