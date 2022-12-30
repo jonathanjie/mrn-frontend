@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onBeforeMount, defineProps } from "vue";
+import { onBeforeMount, defineProps } from "vue";
 import { useReportDetailsStore } from "./stores/useReportDetailsStore";
 import router from "@/router";
 import { Report } from "@/constants";
@@ -7,6 +7,8 @@ import { storeToRefs } from "pinia";
 import NoonReportView from "./components/NoonReport/NoonReportView.vue";
 import DepartureReportView from "./components/DepartureReport/DepartureReportView.vue";
 import ArrivalReportView from "./components/ArrivalReport/ArrivalReportView.vue";
+import HarbourPortReportView from "./components/HarbourPortReport/HarbourPortReportView.vue";
+import BunkerReportView from "./components/BunkerReport/BunkerReportView.vue";
 
 // Props
 const props = defineProps({
@@ -69,19 +71,18 @@ const handleBack = () => {
       </div>
       <div
         v-else-if="
-          report.report_type == Report.type.EVENT_COASTAL ||
-          report.report_type == Report.type.EVENT_PORT
-        "
-      >
-        <div>EVENT</div>
-      </div>
-      <div
-        v-else-if="
-          report.report_type == Report.type.NOON_COASTAL ||
+          report.report_type == Report.type.EVENT_HARBOUR ||
+          report.report_type == Report.type.EVENT_PORT ||
+          report.report_type == Report.type.NOON_HARBOUR ||
           report.report_type == Report.type.NOON_PORT
         "
       >
-        <div>COASTAL/PORT NOON</div>
+        <HarbourPortReportView :report="report" />
+        <!-- <div>HarbourPort</div> -->
+      </div>
+      <div v-else-if="report.report_type == Report.type.BUNKER">
+        <BunkerReportView :report="report" />
+        <div>BUNKER</div>
       </div>
       <div v-else><div>Invalid Report Type</div></div>
     </div>

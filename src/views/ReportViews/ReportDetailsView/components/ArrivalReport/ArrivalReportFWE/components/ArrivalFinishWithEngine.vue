@@ -20,8 +20,8 @@ const props = defineProps({
   },
 });
 
-const reportingTimeZone = computed(() => props.report.report_tz);
-const reportingDateTime = computed(() => props.report.report_date);
+const reportingTimeZone = computed(() => props.report.arrivalfwetimeandposition.timezone);
+const reportingDateTime = computed(() => props.report.arrivalfwetimeandposition.time);
 
 const position = computed(() =>
   parsePositionFromString(props.report.arrivalfwetimeandposition.position)

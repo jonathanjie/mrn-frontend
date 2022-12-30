@@ -26,9 +26,9 @@ export const ReportTypeToDisplay = {
   AFWE: "ARRF",
   BDN: "BDN",
   EVPO: "EVNTP",
-  EVHB: "EVNTC",
+  EVHB: "EVNTHB",
   NNPO: "NOONP",
-  NNHB: "NOONC",
+  NNHB: "NOONHB",
 };
 
 export const ErrorFieldsToDisplay = {
