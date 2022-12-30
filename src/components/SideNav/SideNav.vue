@@ -85,19 +85,19 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { useShipsQuery } from "@/queries/useShipsQuery";
 import axios from "axios";
 const router = useRouter();
-const ships = ref(null);
-const { isLoading, data } = useShipsQuery({ enabled: computed(() => !!ships) });
-// const getShip = async () => {
-//   return await axios
-//     .get(`https://testapi.marinachain.io/marinanet/ships`)
-//     .then((response) => {
-//       console.log("Ship", response.data);
-//       return response.data[0];
-//     })
-//     .catch((error) => {
-//       console.log(error.message);
-//     });
-// };
+// const ships = ref(null);
+// const { isLoading, data } = useShipsQuery({ enabled: computed(() => !!ships) });
+const getShip = async () => {
+  return await axios
+    .get(`https://testapi.marinachain.io/marinanet/ships`)
+    .then((response) => {
+      console.log("Ship", response.data);
+      return response.data[0];
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+};
 
 const getVoyages = async (imo) => {
   return await axios
@@ -136,13 +136,10 @@ const home = () => {
 console.log("Sidebar loads");
 const store = useVoyageStore();
 const auth = useAuthStore();
-// const ship = await getShip();
-const ship = ships[0];
-console.log("Dammm ship", ship);
-const manager = auth.role === "manager";
-if (manager) {
-  // router.push({ path: "/my-vessels" });
-} else {
+const ship = await getShip();
+// const ship = ships[0];
+const crew = auth.role !== "manager";
+if (crew) {
   const voyages = await getVoyages(ship.imo_reg);
   store.voyages = voyages;
   const reports = await getReports(ship.imo_reg);
@@ -155,8 +152,5 @@ if (manager) {
     }
   }
   store.reports = output;
-  // router.push({
-  //   path: `/vessels/${ship.name}/${ship.imo_reg}/overview`,
-  // });
 }
 </script>

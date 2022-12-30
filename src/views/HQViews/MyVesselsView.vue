@@ -247,13 +247,12 @@
 import MyVesselsDashboardIcon from "@/components/MyVesselsDashboardIcon.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 import VesselCard from "@/components/VesselCard.vue";
-import { useAuthStore } from "@/stores/useAuthStore";
+import axios from "axios";
 // To be pulled from backend
 
-const auth = useAuthStore();
-const totalVessels = 33;
-const sailingVessels = 20;
-const inPortVessels = 13;
+const totalVessels = 0;
+const sailingVessels = 0;
+const inPortVessels = 0;
 const etcVessels = 0;
 const isEmpty = false;
 
@@ -344,19 +343,14 @@ const vessel = {
 // ];
 
 const getShips = async () => {
-  const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/ships/",
-    {
-      headers: {
-        Authorization: "Bearer " + auth.jwt,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-
-  const ships = response.json();
-  return ships;
+  return await axios
+    .get(`https://testapi.marinachain.io/marinanet/ships/`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 };
 
 const ships = await getShips();
