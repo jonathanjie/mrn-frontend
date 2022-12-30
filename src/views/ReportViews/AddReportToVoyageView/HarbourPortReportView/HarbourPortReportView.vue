@@ -165,7 +165,7 @@ const sendReport = async () => {
     ),
     voyage: voyageNo.value,
     voyage_leg: legNo.value,
-    report_num: reportNo.value,
+    report_num: reportNo.value.value, // temp fix for recursive structure error
     report_date: reportingDateTimeUTC.value,
     report_tz: reportingTimeZone.value,
     eventdata: {

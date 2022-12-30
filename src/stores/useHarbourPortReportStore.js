@@ -226,6 +226,10 @@ export const useHarbourPortReportStore = defineStore(
       reportSubtypeIsNoon, // HarbourPortReport.vue
       // Harbour Port Overview
       reportNo,
+      noonpReportNo,
+      nooncReportNo,
+      evntpReportNo,
+      evntcReportNo,
       legNo,
       loadingCondition,
       voyageNo,
