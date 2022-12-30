@@ -39,6 +39,7 @@
         class="p-3 text-14"
         type="button"
         v-on:click="sendReport()"
+        :disabled="isSubmissionRequested"
       >
         <!-- TODO: need alternate function for saving changes to backend -->
         <template v-slot:content>{{ $t("sendReport") }}</template>
@@ -57,7 +58,6 @@ import {
   // preventNaN,
   parsePositionToString,
   parsePortLocode,
-  convertLTToUTC,
 } from "@/utils/helpers.js";
 
 import NoonOverview from "@/components/Reports/NoonReport/NoonOverview.vue";
@@ -180,11 +180,16 @@ const {
 } = storeToRefs(store);
 
 const submissionStatusStore = useSubmissionStatusStore();
-const { isSubmissionRequested, isSubmissionSuccessful, errorMessage } =
-  storeToRefs(submissionStatusStore);
+const {
+  isSubmissionRequested,
+  isSubmissionModalVisible,
+  isSubmissionSuccessful,
+  errorMessage,
+} = storeToRefs(submissionStatusStore);
 
 const sendReport = async () => {
   // TODO: need to do form validation first
+  isSubmissionRequested.value = true;
 
   const position = parsePositionToString({
     latDir: latDir.value,
@@ -436,7 +441,7 @@ const sendReport = async () => {
     } else {
       errorMessage.value = data;
     }
-    isSubmissionRequested.value = true;
+    isSubmissionModalVisible.value = true;
   } catch (error) {
     console.log(error);
   }

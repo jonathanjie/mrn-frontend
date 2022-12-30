@@ -58,8 +58,8 @@
       <router-view></router-view>
       <SubmissionResultsModal
         ref="modal"
-        v-show="isSubmissionRequested"
-        @close-modal="isSubmissionRequested = false"
+        v-show="isSubmissionModalVisible"
+        @close-modal="isSubmissionModalVisible = false"
       ></SubmissionResultsModal>
     </div>
   </div>
@@ -83,11 +83,12 @@ const updateActiveReportType = (type) => {
 };
 
 const submissionStatusStore = useSubmissionStatusStore();
-const { isSubmissionRequested } = storeToRefs(submissionStatusStore);
+const { isSubmissionModalVisible } = storeToRefs(submissionStatusStore);
 // const showModal = ref(isSubmissionRequested.value);
 
 const store = useVoyageStore();
 const {
+  voyageUuid,
   curLoadingCondition,
   curLegNo,
   curVoyageNo,
@@ -109,6 +110,7 @@ const voyageDetails = history.state.voyageDetails
   : {};
 
 // store selected voyage details in pinia voyage store
+voyageUuid.value = voyageDetails.uuid;
 curLoadingCondition.value = voyageDetails.cur_loading_condition;
 curLegNo.value = voyageDetails.cur_leg_no;
 curVoyageNo.value = voyageDetails.cur_voyage_no;

@@ -31,7 +31,12 @@
         >
           <template v-slot:content>{{ $t("saveChanges") }}</template>
         </CustomButton> -->
-    <GradientButton class="p-3 text-14" type="button" v-on:click="sendReport()">
+    <GradientButton
+      class="p-3 text-14"
+      type="button"
+      v-on:click="sendReport()"
+      :disabled="isSubmissionRequested"
+    >
       <!-- TODO: need alternate function for saving changes to backend -->
       <template v-slot:content>{{ $t("sendReport") }}</template>
     </GradientButton>
@@ -83,7 +88,7 @@ const {
   shouldPilotDepDataBeSent,
   // Pilot Station - Arrival
   pilotArrName,
-  pilotArrDateUTC,
+  pilotArrDateTimeUTC,
   pilotArrDraftFwd,
   pilotArrDraftMid,
   pilotArrDraftAft,
@@ -133,10 +138,16 @@ const {
 } = storeToRefs(store);
 
 const submissionStatusStore = useSubmissionStatusStore();
-const { isSubmissionRequested, isSubmissionSuccessful, errorMessage } =
-  storeToRefs(submissionStatusStore);
+const {
+  isSubmissionRequested,
+  isSubmissionModalVisible,
+  isSubmissionSuccessful,
+  errorMessage,
+} = storeToRefs(submissionStatusStore);
 
 const sendReport = async () => {
+  isSubmissionRequested.value = true;
+
   const pilotDepPosition = parsePositionToString({
     latDir: pilotDepLatDir.value,
     latMinutes: pilotDepLatMinute.value,
@@ -195,7 +206,7 @@ const sendReport = async () => {
       : null,
     arrivalpilotstation: {
       name: pilotArrName.value,
-      date: pilotArrDateUTC.value,
+      date: pilotArrDateTimeUTC.value,
       position: pilotArrPosition,
       draft_fwd: pilotArrDraftFwd.value,
       draft_mid: pilotArrDraftMid.value,
@@ -357,7 +368,7 @@ const sendReport = async () => {
     } else {
       errorMessage.value = data;
     }
-    isSubmissionRequested.value = true;
+    isSubmissionModalVisible.value = true;
   } catch (error) {
     console.log(error);
   }
