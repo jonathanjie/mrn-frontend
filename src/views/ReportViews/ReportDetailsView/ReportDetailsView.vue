@@ -37,56 +37,58 @@ const handleBack = () => {
 </script>
 
 <template>
-  <div v-if="report">
-    <button @click="handleBack">
-      <img
-        src="@/assets/icons/back_arrow.svg"
-        class="fill-blue float-left"
-        type="button"
-      />
-    </button>
-    <div>REPORT TYPE: {{ report.report_type }}</div>
-    <div>
-      <div v-if="report.report_type == Report.type.NOON">
-        <NoonReportView :report="report" />
+  <div class="bg-gray-50 min-h-screen">
+    <div v-if="report" class="flex flex-col px-24 pt-11">
+      <button @click="handleBack">
+        <img
+          src="@/assets/icons/back_arrow.svg"
+          class="fill-blue float-left"
+          type="button"
+        />
+      </button>
+      <div>REPORT TYPE: {{ report.report_type }}</div>
+      <div>
+        <div v-if="report.report_type == Report.type.NOON">
+          <NoonReportView :report="report" />
+        </div>
+        <div
+          v-else-if="
+            report.report_type == Report.type.DEP_COSP_RUP ||
+            report.report_type == Report.type.DEP_SBY
+          "
+        >
+          <DepartureReportView :report="report" />
+          <!-- <div>DEPARTURE STANDBY</div> -->
+          <!-- <div>DEPARTURE COSP RUP</div> -->
+        </div>
+        <div
+          v-else-if="
+            report.report_type == Report.type.ARR_FWE ||
+            report.report_type == Report.type.ARR_SBY_EOSP
+          "
+        >
+          <ArrivalReportView :report="report" />
+          <!-- <div>ARRIVAL</div> -->
+        </div>
+        <div
+          v-else-if="
+            report.report_type == Report.type.EVENT_HARBOUR ||
+            report.report_type == Report.type.EVENT_PORT ||
+            report.report_type == Report.type.NOON_HARBOUR ||
+            report.report_type == Report.type.NOON_PORT
+          "
+        >
+          <HarbourPortReportView :report="report" />
+          <!-- <div>HarbourPort</div> -->
+        </div>
+        <div v-else-if="report.report_type == Report.type.BUNKER">
+          <BunkerReportView :report="report" />
+          <!-- <div>BUNKER</div> -->
+        </div>
+        <div v-else><div>Invalid Report Type</div></div>
       </div>
-      <div
-        v-else-if="
-          report.report_type == Report.type.DEP_COSP_RUP ||
-          report.report_type == Report.type.DEP_SBY
-        "
-      >
-        <DepartureReportView :report="report" />
-        <!-- <div>DEPARTURE STANDBY</div> -->
-        <!-- <div>DEPARTURE COSP RUP</div> -->
-      </div>
-      <div
-        v-else-if="
-          report.report_type == Report.type.ARR_FWE ||
-          report.report_type == Report.type.ARR_SBY_EOSP
-        "
-      >
-        <ArrivalReportView :report="report" />
-        <!-- <div>ARRIVAL</div> -->
-      </div>
-      <div
-        v-else-if="
-          report.report_type == Report.type.EVENT_HARBOUR ||
-          report.report_type == Report.type.EVENT_PORT ||
-          report.report_type == Report.type.NOON_HARBOUR ||
-          report.report_type == Report.type.NOON_PORT
-        "
-      >
-        <HarbourPortReportView :report="report" />
-        <!-- <div>HarbourPort</div> -->
-      </div>
-      <div v-else-if="report.report_type == Report.type.BUNKER">
-        <BunkerReportView :report="report" />
-        <!-- <div>BUNKER</div> -->
-      </div>
-      <div v-else><div>Invalid Report Type</div></div>
-    </div>
 
-    <div>{{ report }}</div>
+      <div>{{ report }}</div>
+    </div>
   </div>
 </template>
