@@ -53,6 +53,7 @@ export const ErrorFieldsToDisplay = {
   stoppagedata: "Stoppage or Change in RPM (at Sea)",
   arrivalfwetimeandposition: "Finish With Engine",
   eventdata: "Report",
+  bdndata: "BDN",
 };
 
 export const Direction = {
