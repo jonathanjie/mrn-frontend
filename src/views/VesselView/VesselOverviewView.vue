@@ -46,8 +46,6 @@ let isEmpty = ref(false);
 const store = useShipStore();
 const { isFetchingVoyages, lastVoyageNo, imoReg } = storeToRefs(store);
 
-imoReg.value = 1000000; // temporary, will remove after merging with lionel's branch
-
 const getVoyages = async (imo) => {
   return await axios
     .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`)
