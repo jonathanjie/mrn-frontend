@@ -2,8 +2,8 @@
 import { computed, defineProps } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useNoonReportStore } from "@/stores/useNoonReportStore";
-import { storeToRefs } from "pinia";
+// import { useNoonReportStore } from "@/stores/useNoonReportStore";
+// import { storeToRefs } from "pinia";
 
 const props = defineProps({
   report: {
@@ -12,49 +12,61 @@ const props = defineProps({
   },
 });
 
-// const hours = computed(() => props.report.weatherdata.weather_notation);
+const heavy_weather_is_active = computed(() =>
+  props.report.heavyweatherdata ? true : false
+);
+const hours = computed(() => props.report.heavyweatherdata.total_hours);
+const dist = computed(() => props.report.heavyweatherdata.observed_distance);
+const consumption = computed(() => props.report.heavyweatherdata.fuel_consumption);
+const weather = computed(() => props.report.heavyweatherdata.weather_notation);
+const windDirection = computed(() => props.report.heavyweatherdata.wind_direction);
+const windSpeed = computed(() => props.report.heavyweatherdata.wind_speed);
+const seaDirection = computed(() => props.report.heavyweatherdata.sea_direction);
+const seaState = computed(() => props.report.heavyweatherdata.sea_state);
+const remarks = computed(() => props.report.heavyweatherdata.remarks);
+
 
 const wind_speed_beaufort = computed(() =>
-  Number(wind_speed.value) < 1
+  Number(windSpeed.value) < 1
     ? 0
-    : Number(wind_speed.value) < 4
+    : Number(windSpeed.value) < 4
     ? 1
-    : Number(wind_speed.value) < 7
+    : Number(windSpeed.value) < 7
     ? 2
-    : Number(wind_speed.value) < 11
+    : Number(windSpeed.value) < 11
     ? 3
-    : Number(wind_speed.value) < 17
+    : Number(windSpeed.value) < 17
     ? 4
-    : Number(wind_speed.value) < 22
+    : Number(windSpeed.value) < 22
     ? 5
-    : Number(wind_speed.value) < 28
+    : Number(windSpeed.value) < 28
     ? 6
-    : Number(wind_speed.value) < 34
+    : Number(windSpeed.value) < 34
     ? 7
-    : Number(wind_speed.value) < 41
+    : Number(windSpeed.value) < 41
     ? 8
-    : Number(wind_speed.value) < 48
+    : Number(windSpeed.value) < 48
     ? 9
-    : Number(wind_speed.value) < 56
+    : Number(windSpeed.value) < 56
     ? 10
-    : Number(wind_speed.value) < 64
+    : Number(windSpeed.value) < 64
     ? 11
     : 12
 );
 
-const store = useNoonReportStore();
-const {
-  heavyWeatherHours: hours,
-  heavyWeatherDist: dist,
-  heavyWeatherConsumption: consumption,
-  heavyWeatherNotation: weather,
-  heavyWindDirection: wind_direction,
-  heavyWindSpeed: wind_speed,
-  heavySeaDirection: sea_direction,
-  heavySeaState: sea_state,
-  heavyRemarks: remarks,
-  heavyWeatherIsActive: heavy_weather_is_active,
-} = storeToRefs(store);
+// const store = useNoonReportStore();
+// const {
+//   heavyWeatherHours: hours,
+//   heavyWeatherDist: dist,
+//   heavyWeatherConsumption: consumption,
+//   heavyWeatherNotation: weather,
+//   heavyWindDirection: wind_direction,
+//   heavyWindSpeed: wind_speed,
+//   heavySeaDirection: sea_direction,
+//   heavySeaState: sea_state,
+//   heavyRemarks: remarks,
+//   heavyWeatherIsActive: heavy_weather_is_active,
+// } = storeToRefs(store);
 </script>
 
 <template>
@@ -177,10 +189,10 @@ const {
       </div>
       <select
         disabled
-        v-model="wind_direction"
+        v-model="windDirection"
         class="col-span-6 xl:col-span-3 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-gray-700 focus:outline-0"
         :class="
-          wind_direction === 'default' ? 'text-gray-400' : 'text-gray-700'
+          windDirection === 'default' ? 'text-gray-400' : 'text-gray-700'
         "
       >
         <option selected disabled value="default">
@@ -211,8 +223,8 @@ const {
       <div class="col-span-3 flex xl:col-span-2 p-2 pl-4 border-r bg-white">
         <input
           disabled
-          v-model="wind_speed"
-          @keypress="preventNaN($event, wind_speed)"
+          v-model="windSpeed"
+          @keypress="preventNaN($event, windSpeed)"
           placeholder="00.0"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -238,9 +250,9 @@ const {
       </div>
       <select
         disabled
-        v-model="sea_direction"
+        v-model="seaDirection"
         class="col-span-6 xl:col-span-3 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"
-        :class="sea_direction === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="seaDirection === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
           {{ $t("dir_8_placeholder") }}
@@ -261,9 +273,9 @@ const {
       </div>
       <select
         disabled
-        v-model="sea_state"
+        v-model="seaState"
         class="col-span-6 xl:col-span-3 p-3 focus:outline-0"
-        :class="sea_state === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="seaState === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
           {{ $t("douglasScale") }}

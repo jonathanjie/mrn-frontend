@@ -1,20 +1,46 @@
 <script setup>
-import { textInputOptions, format } from "@/utils/helpers.js";
-import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
-import { storeToRefs } from "pinia";
+import { computed, defineProps } from "vue";
+import {
+  textInputOptions,
+  format,
+  // formatUTC
+} from "@/utils/helpers.js";
 import { TIMEZONES } from "@/utils/options";
+// import { UTCPlaceholder } from "@/constants";
+// import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 
-const store = useDepartureCOSPReportStore();
-const {
-  departurePortCountry: departure_port_country,
-  departurePortName: departure_port_name,
-  departureTimeZone: departure_time_zone,
-  departureDateTime: departure_date_time,
-  destinationPortCountry: destination_port_country,
-  destinationPortName: destination_port_name,
-  destinationTimeZone: destination_time_zone,
-  destinationEstimatedArrival: destination_estimated_arrival,
-} = storeToRefs(store);
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
+
+const departurePortCountry = computed(
+  () => props.report.reportroute.departure_port.split(" ")[0]
+);
+const departurePortName = computed(
+  () => props.report.reportroute.departure_port.split(" ")[1]
+);
+const departureDateTime = computed(
+  () => props.report.reportroute?.departure_date ?? ""
+);
+const departureTimeZone = computed(
+  () => props.report.reportroute?.departure_tz ?? ""
+);
+
+const destinationPortCountry = computed(
+  () => props.report.reportroute?.arrival_port.split(" ")[1] ?? ""
+);
+const destinationPortName = computed(
+  () => props.report.reportroute?.arrival_port.split(" ")[1] ?? ""
+);
+const destinationEstimatedArrival = computed(
+  () => props.report.reportroute?.arrival_date ?? ""
+);
+const destinationTimeZone = computed(
+  () => props.report.reportroute?.arrival_tz ?? ""
+);
 </script>
 
 <template>
@@ -32,13 +58,13 @@ const {
           {{ $t("portName") }}
         </div>
         <input
-          v-model="departure_port_country"
+          v-model="departurePortCountry"
           :placeholder="$t('inputLocode2')"
           disabled
           class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 bg-gray-50"
         />
         <input
-          v-model="departure_port_name"
+          v-model="departurePortName"
           :placeholder="$t('inputLocode3')"
           disabled
           class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 bg-gray-50"
@@ -53,13 +79,8 @@ const {
         <div class="flex col-span-3 border-b bg-white">
           <select
             disabled
-            class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50"
-            :class="
-              departure_time_zone === 'default'
-                ? 'text-gray-400'
-                : 'text-gray-700'
-            "
-            v-model="departure_time_zone"
+            class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50 text-gray-700"
+            v-model="departureTimeZone"
           >
             <option selected disabled value="default">
               {{ $t("selectTimeZone") }}
@@ -72,20 +93,26 @@ const {
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("dateAndTime") }}
         </div>
-        <DatePicker
-          v-model="departure_date_time"
-          class="col-span-3 bg-gray-50"
-          textInput
-          disabled
-          :textInputOptions="textInputOptions"
-          :format="format"
-          :modelValue="string"
-          :placeholder="$t('selectDateAndTime')"
-        >
-          <template #input-icon>
-            <img src="" />
-          </template>
-        </DatePicker>
+        <div class="col-span-3 relative flex items-center bg-gray-50">
+          <DatePicker
+            v-model="departureDateTime"
+            class="grow"
+            textInput
+            :textInputOptions="textInputOptions"
+            :format="format"
+            :modelValue="string"
+            :placeholder="$t('selectDateAndTime')"
+          >
+            <template #input-icon>
+              <img src="" />
+            </template>
+          </DatePicker>
+          <!-- <MiniUnitDisplay
+            class="absolute right-0 min-w-fit"
+            :class="departure_date_time ? 'mr-9' : 'mr-2'"
+            >{{ departure_date_time_utc }}</MiniUnitDisplay
+          > -->
+        </div>
       </div>
     </div>
 
@@ -100,12 +127,12 @@ const {
           {{ $t("portName") }}
         </div>
         <input
-          v-model="destination_port_country"
+          v-model="destinationPortCountry"
           :placeholder="$t('inputLocode2')"
           class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
         />
         <input
-          v-model="destination_port_name"
+          v-model="destinationPortName"
           :placeholder="$t('inputLocode3')"
           class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
         />
@@ -120,11 +147,11 @@ const {
           <select
             class="grow self-center p-3 text-14 focus:outline-0"
             :class="
-              destination_time_zone === 'default'
+              destinationTimeZone === 'default'
                 ? 'text-gray-400'
                 : 'text-gray-700'
             "
-            v-model="destination_time_zone"
+            v-model="destinationTimeZone"
           >
             <option selected disabled value="default">
               {{ $t("selectTimeZone") }}
@@ -137,22 +164,27 @@ const {
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("estimatedTimeOfArrival") }}
         </div>
-        <DatePicker
-          v-model="destination_estimated_arrival"
-          class="col-span-3"
-          textInput
-          :textInputOptions="textInputOptions"
-          :format="format"
-          :modelValue="string"
-          :placeholder="$t('selectDateAndTime')"
-        >
-          <template #input-icon>
-            <img src="" />
-          </template>
-        </DatePicker>
+        <div class="col-span-3 relative flex items-center">
+          <DatePicker
+            v-model="destinationEstimatedArrival"
+            class="grow"
+            textInput
+            :textInputOptions="textInputOptions"
+            :format="format"
+            :modelValue="string"
+            :placeholder="$t('selectDateAndTime')"
+          >
+            <template #input-icon>
+              <img src="" />
+            </template>
+          </DatePicker>
+          <!-- <MiniUnitDisplay
+            class="absolute right-0 min-w-fit"
+            :class="destination_estimated_arrival ? 'mr-9' : 'mr-2'"
+            >{{ destination_estimated_arrival_utc }}</MiniUnitDisplay
+          > -->
+        </div>
       </div>
     </div>
   </div>
 </template>
-
-

@@ -49,6 +49,8 @@ export const useVoyageStore = defineStore("voyage", () => {
   const curLoadingCondition = ref("");
   const curLegNo = ref(0);
   const curVoyageNo = ref(0);
+  const lastVoyageNo = ref(0);
+  const nextVoyageNo = ref(0);
 
   // TODO: get reportroute from voyage
 

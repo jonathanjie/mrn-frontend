@@ -1,42 +1,160 @@
 <script setup>
 import { preventNaN } from "@/utils/helpers";
-import { ref } from "vue";
+import { computed, defineProps } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
-import { storeToRefs } from "pinia";
 import { FuelOil, LubricatingOil } from "@/constants";
 
-const isAdditionalRemarkFuel = ref(false);
-const isAdditionalRemarkLubricating = ref(false);
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
 
-const store = useDepartureSBYReportStore();
-const {
-  // fuel oil
-  lsfoTotalConsumption: lsfo_total_consumption,
-  lsfoRob: lsfo_rob,
-  mgoTotalConsumption: mgo_total_consumption,
-  mgoRob: mgo_rob,
-  lsfoBreakdown: lsfo_breakdown,
-  mgoBreakdown: mgo_breakdown,
-  fuelOilDataCorrection: fuel_oil_data_correction,
-  // lubricating oil
-  mecylinderBreakdown: mecylinder_breakdown,
-  mesystemBreakdown: mesystem_breakdown,
-  mesumpBreakdown: mesump_breakdown,
-  gesystemBreakdown: gesystem_breakdown,
-  mecylinderRob: mecylinder_rob,
-  mesystemRob: mesystem_rob,
-  mesumpRob: mesump_rob,
-  gesystemRob: gesystem_rob,
-  lubricatingOilDataCorrection: lubricating_oil_data_correction,
-  // fresh water
-  freshwaterConsumed: freshwater_consumed,
-  freshwaterEvaporated: freshwater_evaporated,
-  freshwaterChange: freshwater_change,
-  freshwaterReceiving: freshwater_receiving,
-  freshwaterDischarging: freshwater_discharging,
-  freshwaterRob: freshwater_rob,
-} = storeToRefs(store);
+const isAdditionalRemarkFuel = computed(() =>
+  props.report.consumptionconditiondata.fueloildata_set.reduce(
+    (accum, curr) => accum || curr.fueloildatacorrection,
+    false
+  )
+    ? true
+    : false
+);
+const isAdditionalRemarkLubricating = computed(() =>
+  props.report.consumptionconditiondata.lubricatingoildata_set.reduce(
+    (accum, curr) => accum || curr.lubricatingoildatacorrection,
+    false
+  )
+    ? true
+    : false
+);
+
+// Fuel Consumption
+const lsfoTotalConsumption = computed(
+  () =>
+    props.report.consumptionconditiondata.fueloildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "LSFO"
+    )[0].total_consumption
+);
+const lsfoRob = computed(
+  () =>
+    props.report.consumptionconditiondata.fueloildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "LSFO"
+    )[0].rob
+);
+
+const lsfoBreakdown = computed(
+  () =>
+    props.report.consumptionconditiondata.fueloildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "LSFO"
+    )[0].breakdown
+);
+const mgoTotalConsumption = computed(
+  () =>
+    props.report.consumptionconditiondata.fueloildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "MGO"
+    )[0].total_consumption
+);
+const mgoRob = computed(
+  () =>
+    props.report.consumptionconditiondata.fueloildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "MGO"
+    )[0].total_consumption
+);
+const mgoBreakdown = computed(
+  () =>
+    props.report.consumptionconditiondata.fueloildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "MGO"
+    )[0].breakdown
+);
+
+const fuelOilDataCorrection = computed(() =>
+  isAdditionalRemarkFuel.value
+    ? props.report.consumptionconditiondata.fueloildata_set.filter(
+        (fuelData) => fuelData.fueloildatacorrection != null
+      )[0]
+    : null
+);
+console.log("fuel correction value: ", fuelOilDataCorrection.value);
+// Lubricating Oil Consumption
+const meCylinderBreakdown = computed(
+  () =>
+    props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "M/E Cylinder"
+    )[0]
+);
+const meCylinderRob = computed(
+  () =>
+    props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "M/E Cylinder"
+    )[0].rob
+);
+const meSystemBreakdown = computed(
+  () =>
+    props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "M/E System"
+    )[0]
+);
+const meSystemRob = computed(
+  () =>
+    props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "M/E System"
+    )[0].rob
+);
+const meSumpBreakdown = computed(
+  () =>
+    props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "M/E Sump"
+    )[0]
+);
+const meSumpRob = computed(
+  () =>
+    props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "M/E Sump"
+    )[0].rob
+);
+const geSystemBreakdown = computed(
+  () =>
+    props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "G/E System"
+    )[0]
+);
+const geSystemRob = computed(
+  () =>
+    props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "G/E System"
+    )[0].rob
+);
+const lubricatingOilDataCorrection = computed(() =>
+  isAdditionalRemarkFuel.value
+    ? props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+        (fuelData) => fuelData.lubricatingoildatacorrection != null
+      )[0]
+    : null
+);
+
+// Freshwater Consumption
+const freshwaterConsumed = computed(
+  () => props.report.consumptionconditiondata.freshwaterdata.consumed
+);
+const freshwaterGenerated = computed(
+  () => props.report.consumptionconditiondata.freshwaterdata.generated
+);
+const freshwaterReceiving = computed(
+  () => props.report.consumptionconditiondata.freshwaterdata.received
+);
+const freshwaterDischarging = computed(
+  () => props.report.consumptionconditiondata.freshwaterdata.generated
+);
+const freshwaterChange = computed(
+  () =>
+    +props.report.consumptionconditiondata.freshwaterdata.received +
+    props.report.consumptionconditiondata.freshwaterdata.generated -
+    props.report.consumptionconditiondata.freshwaterdata.discharged -
+    props.report.consumptionconditiondata.freshwaterdata.consumed
+);
+const freshwaterRob = computed(
+  () => props.report.consumptionconditiondata.freshwaterdata.rob
+);
 </script>
 
 <template>
@@ -107,50 +225,56 @@ const {
             {{ $t("lsfo") }}
           </div>
           <input
-            v-model="lsfo_breakdown.me"
-            @keypress="preventNaN($event, lsfo_breakdown.me)"
+            disabled
+            v-model="lsfoBreakdown.ME"
+            @keypress="preventNaN($event, lsfoBreakdown.ME)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="lsfo_breakdown.ge"
-            @keypress="preventNaN($event, lsfo_breakdown.ge)"
+            disabled
+            v-model="lsfoBreakdown.GE"
+            @keypress="preventNaN($event, lsfoBreakdown.GE)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="lsfo_breakdown.blr"
-            @keypress="preventNaN($event, lsfo_breakdown.blr)"
+            disabled
+            v-model="lsfoBreakdown.BLR"
+            @keypress="preventNaN($event, lsfoBreakdown.BLR)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="lsfo_breakdown.igg"
-            @keypress="preventNaN($event, lsfo_breakdown.igg)"
+            disabled
+            v-model="lsfoBreakdown.IGG"
+            @keypress="preventNaN($event, lsfoBreakdown.IGG)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <div
             class="col-span-2 text-gray-400 p-3 border-t border-l bg-gray-25"
           >
-            {{ lsfo_total_consumption }}
+            {{ lsfoTotalConsumption }}
           </div>
           <input
-            v-model="lsfo_breakdown.receipt"
-            @keypress="preventNaN($event, lsfo_breakdown.receipt)"
+            disabled
+            v-model="lsfoBreakdown.receipt"
+            @keypress="preventNaN($event, lsfoBreakdown.receipt)"
             placeholder="0"
             class="col-span-2 text-gray-700 p-3 border-t border-l focus:outline-0"
           />
           <input
-            v-model="lsfo_breakdown.debunkering"
-            @keypress="preventNaN($event, lsfo_breakdown.debunkering)"
+            disabled
+            v-model="lsfoBreakdown.debunkering"
+            @keypress="preventNaN($event, lsfoBreakdown.debunkering)"
             placeholder="0"
             class="col-span-2 text-gray-700 p-3 border-t border-l focus:outline-0"
           />
           <div
             class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25"
           >
-            {{ lsfo_rob }}
+            {{ lsfoRob }}
           </div>
 
           <div
@@ -159,70 +283,73 @@ const {
             {{ $t("mgo") }}
           </div>
           <input
-            v-model="mgo_breakdown.me"
-            @keypress="preventNaN($event, mgo_breakdown.me)"
+            disabled
+            v-model="mgoBreakdown.ME"
+            @keypress="preventNaN($event, mgoBreakdown.ME)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="mgo_breakdown.ge"
-            @keypress="preventNaN($event, mgo_breakdown.ge)"
+            disabled
+            v-model="mgoBreakdown.GE"
+            @keypress="preventNaN($event, mgoBreakdown.GE)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="mgo_breakdown.blr"
-            @keypress="preventNaN($event, mgo_breakdown.blr)"
+            disabled
+            v-model="mgoBreakdown.BLR"
+            @keypress="preventNaN($event, mgoBreakdown.BLR)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="mgo_breakdown.igg"
-            @keypress="preventNaN($event, mgo_breakdown.igg)"
+            disabled
+            v-model="mgoBreakdown.IGG"
+            @keypress="preventNaN($event, mgoBreakdown.IGG)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <div
             class="col-span-2 text-gray-400 p-3 border-y border-l bg-gray-25"
           >
-            {{ mgo_total_consumption }}
+            {{ mgoTotalConsumption }}
           </div>
           <input
-            v-model="mgo_breakdown.receipt"
-            @keypress="preventNaN($event, mgo_breakdown.receipt)"
+            disabled
+            v-model="mgoBreakdown.receipt"
+            @keypress="preventNaN($event, mgoBreakdown.receipt)"
             placeholder="0"
             class="col-span-2 text-gray-700 p-3 border-y border-l focus:outline-0"
           />
           <input
-            v-model="mgo_breakdown.debunkering"
-            @keypress="preventNaN($event, mgo_breakdown.debunkering)"
+            disabled
+            v-model="mgoBreakdown.debunkering"
+            @keypress="preventNaN($event, mgoBreakdown.debunkering)"
             placeholder="0"
             class="col-span-2 text-gray-700 p-3 border-y border-l focus:outline-0"
           />
           <div class="col-span-2 text-gray-400 p-3 border bg-gray-25">
-            {{ mgo_rob }}
+            {{ mgoRob }}
           </div>
         </div>
 
-        <div
+        <!-- <div
           v-if="!isAdditionalRemarkFuel"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
-          @click="isAdditionalRemarkFuel = !isAdditionalRemarkFuel"
+          
         >
           <img
             src="@/assets/icons/checkboxes/unchecked_square.svg"
             class="mr-2 h-5 w-5"
           />
           <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
-        </div>
+        </div> -->
         <div
-          v-else
+          v-if="isAdditionalRemarkFuel"
           class="bg-gray-25 flex-col py-4 px-3 border border-gray-100"
         >
-          <div
-            class="flex items-center mb-3 cursor-pointer"
-            @click="isAdditionalRemarkFuel = !isAdditionalRemarkFuel"
-          >
+          <div class="flex items-center mb-3 cursor-pointer">
             <img
               src="@/assets/icons/checkboxes/checked_square.svg"
               class="mr-2 h-5 w-5"
@@ -235,10 +362,11 @@ const {
             </div>
             <!-- TODO: make dynamic -->
             <select
-              v-model="fuel_oil_data_correction.type"
+              disabled
+              v-model="fuelOilDataCorrection.fuel_oil_type"
               class="col-span-6 p-3 border-l focus:outline-0"
               :class="
-                fuel_oil_data_correction.type === 'default'
+                fuelOilDataCorrection.fuel_oil_type === 'default'
                   ? 'text-gray-400'
                   : 'text-gray-700'
               "
@@ -251,9 +379,13 @@ const {
             </select>
             <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
               <input
-                v-model="fuel_oil_data_correction.correction"
+                disabled
+                v-model="fuelOilDataCorrection.fueloildatacorrection.correction"
                 @keypress="
-                  preventNaN($event, fuel_oil_data_correction.correction)
+                  preventNaN(
+                    $event,
+                    fuelOilDataCorrection.fueloildatacorrection.correction
+                  )
                 "
                 placeholder="00,000.00"
                 class="w-24 text-gray-700 focus:outline-0"
@@ -266,7 +398,8 @@ const {
               {{ $t("remarks") }}
             </div>
             <textarea
-              v-model.trim="fuel_oil_data_correction.remarks"
+              disabled
+              v-model.trim="fuelOilDataCorrection.fueloildatacorrection.remarks"
               :placeholder="$t('inputDescriptionHere')"
               class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
@@ -286,7 +419,7 @@ const {
           <div
             class="col-span-3 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-l bg-gray-50"
           >
-            {{ $t("totalConsumption") }}
+            {{ $t("consumption") }}
           </div>
           <div
             class="col-span-3 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-l bg-gray-50"
@@ -310,29 +443,32 @@ const {
             {{ $t("meCylinder") }}
           </div>
           <input
-            v-model="mecylinder_breakdown.total_consumption"
+            disabled
+            v-model="meCylinderBreakdown.total_consumption"
             @keypress="
-              preventNaN($event, mecylinder_breakdown.total_consumption)
+              preventNaN($event, meCylinderBreakdown.total_consumption)
             "
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="mecylinder_breakdown.receipt"
-            @keypress="preventNaN($event, mecylinder_breakdown.receipt)"
+            disabled
+            v-model="meCylinderBreakdown.receipt"
+            @keypress="preventNaN($event, meCylinderBreakdown.receipt)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="mecylinder_breakdown.debunkering"
-            @keypress="preventNaN($event, mecylinder_breakdown.debunkering)"
+            disabled
+            v-model="meCylinderBreakdown.debunkering"
+            @keypress="preventNaN($event, meCylinderBreakdown.debunkering)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <div
             class="col-span-3 text-gray-400 p-3 border-t border-x bg-gray-25"
           >
-            {{ mecylinder_rob }}
+            {{ meCylinderRob }}
           </div>
 
           <div
@@ -341,27 +477,30 @@ const {
             {{ $t("meSystem") }}
           </div>
           <input
-            v-model="mesystem_breakdown.total_consumption"
-            @keypress="preventNaN($event, mesystem_breakdown.total_consumption)"
+            disabled
+            v-model="meSystemBreakdown.total_consumption"
+            @keypress="preventNaN($event, meSystemBreakdown.total_consumption)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="mesystem_breakdown.receipt"
-            @keypress="preventNaN($event, mesystem_breakdown.receipt)"
+            disabled
+            v-model="meSystemBreakdown.receipt"
+            @keypress="preventNaN($event, meSystemBreakdown.receipt)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="mesystem_breakdown.debunkering"
-            @keypress="preventNaN($event, mesystem_breakdown.debunkering)"
+            disabled
+            v-model="meSystemBreakdown.debunkering"
+            @keypress="preventNaN($event, meSystemBreakdown.debunkering)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <div
             class="col-span-3 text-gray-400 p-3 border-t border-x bg-gray-25"
           >
-            {{ mesystem_rob }}
+            {{ meSystemRob }}
           </div>
 
           <div
@@ -370,27 +509,30 @@ const {
             {{ $t("meSump") }}
           </div>
           <input
-            v-model="mesump_breakdown.total_consumption"
-            @keypress="preventNaN($event, mesump_breakdown.total_consumption)"
+            disabled
+            v-model="meSumpBreakdown.total_consumption"
+            @keypress="preventNaN($event, meSumpBreakdown.total_consumption)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="mesump_breakdown.receipt"
-            @keypress="preventNaN($event, mesump_breakdown.receipt)"
+            disabled
+            v-model="meSumpBreakdown.receipt"
+            @keypress="preventNaN($event, meSumpBreakdown.receipt)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="mesump_breakdown.debunkering"
-            @keypress="preventNaN($event, mesump_breakdown.debunkering)"
+            disabled
+            v-model="meSumpBreakdown.debunkering"
+            @keypress="preventNaN($event, meSumpBreakdown.debunkering)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
           />
           <div
             class="col-span-3 text-gray-400 p-3 border-t border-x bg-gray-25"
           >
-            {{ mesump_rob }}
+            {{ meSumpRob }}
           </div>
 
           <div
@@ -399,53 +541,49 @@ const {
             {{ $t("geSystem") }}
           </div>
           <input
-            v-model="gesystem_breakdown.total_consumption"
+            disabled
+            v-model="geSystemBreakdown.total_consumption"
             @keypress="preventNaN($event, gesystem_total_consumption)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="gesystem_breakdown.receipt"
-            @keypress="preventNaN($event, gesystem_breakdown.receipt)"
+            disabled
+            v-model="geSystemBreakdown.receipt"
+            @keypress="preventNaN($event, geSystemBreakdown.receipt)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="gesystem_breakdown.debunkering"
-            @keypress="preventNaN($event, gesystem_breakdown.debunkering)"
+            disabled
+            v-model="geSystemBreakdown.debunkering"
+            @keypress="preventNaN($event, geSystemBreakdown.debunkering)"
             placeholder="0"
             class="col-span-3 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <div
             class="col-span-3 text-gray-400 p-3 border-y border-x bg-gray-25"
           >
-            {{ gesystem_rob }}
+            {{ geSystemRob }}
           </div>
         </div>
 
-        <div
+        <!-- <div
           v-if="!isAdditionalRemarkLubricating"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
-          @click="
-            isAdditionalRemarkLubricating = !isAdditionalRemarkLubricating
-          "
+        
         >
           <img
             src="@/assets/icons/checkboxes/unchecked_square.svg"
             class="mr-2 h-5 w-5"
           />
           <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
-        </div>
+        </div> -->
         <div
-          v-else
+          v-if="isAdditionalRemarkLubricating"
           class="bg-gray-25 flex-col py-4 px-3 border border-gray-100"
         >
-          <div
-            class="flex items-center mb-3 cursor-pointer"
-            @click="
-              isAdditionalRemarkLubricating = !isAdditionalRemarkLubricating
-            "
-          >
+          <div class="flex items-center mb-3 cursor-pointer">
             <img
               src="@/assets/icons/checkboxes/checked_square.svg"
               class="mr-2 h-5 w-5"
@@ -457,10 +595,11 @@ const {
               {{ $t("correction") }}
             </div>
             <select
-              v-model="lubricating_oil_data_correction.type"
+              disabled
+              v-model="lubricatingOilDataCorrection.fuel_oil_type"
               class="col-span-6 p-3 border-l focus:outline-0"
               :class="
-                lubricating_oil_data_correction.type === 'default'
+                lubricatingOilDataCorrection.fuel_oil_type === 'default'
                   ? 'text-gray-400'
                   : 'text-gray-700'
               "
@@ -483,9 +622,17 @@ const {
             </select>
             <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
               <input
-                v-model="lubricating_oil_data_correction.correction"
+                disabled
+                v-model="
+                  lubricatingOilDataCorrection.lubricatingoildatacorrection
+                    .correction
+                "
                 @keypress="
-                  preventNaN($event, lubricating_oil_data_correction.correction)
+                  preventNaN(
+                    $event,
+                    lubricatingOilDataCorrection.lubricatingoildatacorrection
+                      .correction
+                  )
                 "
                 placeholder="00,000.00"
                 class="w-24 text-gray-700 focus:outline-0"
@@ -498,7 +645,11 @@ const {
               {{ $t("remarks") }}
             </div>
             <textarea
-              v-model.trim="lubricating_oil_data_correction.remarks"
+              disabled
+              v-model.trim="
+                lubricatingOilDataCorrection.lubricatingoildatacorrection
+                  .remarks
+              "
               :placeholder="$t('inputDescriptionHere')"
               class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
@@ -529,7 +680,7 @@ const {
           <div
             class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25"
           >
-            {{ $t("receiving") }}
+            {{ $t("receipt") }}
           </div>
           <div
             class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25"
@@ -539,41 +690,45 @@ const {
           <div
             class="col-span-1 text-sysblue-800 p-3 border-t border-x border-sysblue-100 bg-sysblue-25"
           >
-            {{ $t("rob") }}
+            {{ $t("remainOnBoard") }}
           </div>
           <input
-            v-model="freshwater_consumed"
-            @keypress="preventNaN($event, freshwater_consumed)"
+            disabled
+            v-model="freshwaterConsumed"
+            @keypress="preventNaN($event, freshwaterConsumed)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="freshwater_evaporated"
-            @keypress="preventNaN($event, freshwater_evaporated)"
+            disabled
+            v-model="freshwaterGenerated"
+            @keypress="preventNaN($event, freshwaterGenerated)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <div
             class="col-span-1 text-gray-400 p-3 border-y border-l bg-gray-25"
           >
-            {{ freshwater_change }}
+            {{ freshwaterChange }}
           </div>
           <input
-            v-model="freshwater_receiving"
-            @keypress="preventNaN($event, freshwater_receiving)"
+            disabled
+            v-model="freshwaterReceiving"
+            @keypress="preventNaN($event, freshwaterReceiving)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="freshwater_discharging"
-            @keypress="preventNaN($event, freshwater_discharging)"
+            disabled
+            v-model="freshwaterDischarging"
+            @keypress="preventNaN($event, freshwaterDischarging)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <div
             class="col-span-1 text-gray-400 p-3 border-y border-x bg-gray-25"
           >
-            {{ freshwater_rob }}
+            {{ freshwaterRob }}
           </div>
         </div>
       </div>

@@ -89,6 +89,7 @@ const destinationTimeZone = computed(
         </div>
         <div class="flex col-span-3 border-b bg-white">
           <select
+            disabled
             class="grow self-center p-3 text-14 focus:outline-0"
             :class="
               reportingTimeZone === 'default'
@@ -109,6 +110,7 @@ const destinationTimeZone = computed(
           {{ $t("dateAndTime") }}
         </div>
         <DatePicker
+          disabled
           v-model="reportingDate"
           class="col-span-3"
           textInput
@@ -132,13 +134,11 @@ const destinationTimeZone = computed(
           v-if="isDestinationEnabled"
           src="@/assets/icons/checkboxes/checked_square.svg"
           class="mr-2 h-5 w-5"
-          @click="isDestinationEnabled = !isDestinationEnabled"
         />
         <img
           v-else
           src="@/assets/icons/checkboxes/unchecked_square.svg"
           class="mr-2 h-5 w-5"
-          @click="isDestinationEnabled = !isDestinationEnabled"
         />
         <span class="text-blue-700 text-16">{{ $t("destination") }}</span>
       </div>
@@ -167,13 +167,13 @@ const destinationTimeZone = computed(
         </div>
         <div class="flex col-span-3 border-b bg-white">
           <select
+            disabled
             class="grow self-center p-3 text-14 focus:outline-0 disabled:bg-gray-50"
             :class="
               destinationTimeZone === 'default' || !isDestinationEnabled
                 ? 'text-gray-400'
                 : 'text-gray-700'
             "
-            :disabled="!isDestinationEnabled"
             v-model="destinationTimeZone"
           >
             <option selected disabled value="default">
@@ -188,12 +188,12 @@ const destinationTimeZone = computed(
           {{ $t("estimatedTimeOfArrival") }}
         </div>
         <DatePicker
+          disabled
           v-model="destinationEstimatedArrival"
           class="col-span-3"
           textInput
           :textInputOptions="textInputOptions"
           :format="format"
-          :disabled="!isDestinationEnabled"
           :modelValue="string"
           :placeholder="$t('selectDateAndTime')"
         >

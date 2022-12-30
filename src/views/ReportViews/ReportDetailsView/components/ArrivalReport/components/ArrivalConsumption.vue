@@ -2,6 +2,8 @@
 import { preventNaN } from "@/utils/helpers";
 import { computed, defineProps } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { Report } from "@/constants";
+
 import { FuelOil, LubricatingOil } from "@/constants";
 
 const props = defineProps({
@@ -147,42 +149,26 @@ const freshwaterChange = computed(
 const freshwaterRob = computed(
   () => props.report.consumptionconditiondata.freshwaterdata.rob
 );
-
-// const store = useDepartureCOSPReportStore();
-// const {
-//   // fuel oil
-//   lsfoTotalConsumption: lsfoTotalConsumption,
-//   lsfoRob: lsfoRob,
-//   mgoTotalConsumption: mgoTotalConsumption,
-//   mgoRob: mgoRob,
-//   lsfoBreakdown: lsfoBreakdown,
-//   mgoBreakdown: mgoBreakdown,
-//   fuelOilDataCorrection: fuelOilDataCorrection,
-//   // lubricating oil
-//   mecylinderBreakdown: meCylinderBreakdown,
-//   mesystemBreakdown: meSystemBreakdown,
-//   mesumpBreakdown: meSumpBreakdown,
-//   gesystemBreakdown: geSystemBreakdown,
-//   mecylinderRob: meCylinderRob,
-//   mesystemRob: meSystemRob,
-//   mesumpRob: meSumpRob,
-//   gesystemRob: geSystemRob,
-//   lubricatingOilDataCorrection: lubricatingOilDataCorrection,
-//   // fresh water
-//   freshwaterConsumed: freshwaterConsumed,
-//   freshwaterGenerated: freshwaterGenerated,
-//   freshwaterChange: freshwaterChange,
-//   freshwaterRob: freshwaterRob,
-// } = storeToRefs(store);
 </script>
 
 <template>
   <div class="grid bg-white rounded-lg p-5 gap-8 shadow-card">
     <div class="flex items-center">
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
-      <span class="text-blue-700 text-16">
-        {{ $t("consumptionAndConditionSbyToRup") }}
+
+      <span
+        v-if="props.report.report_type == Report.type.ARR_FWE"
+        class="text-blue-700 text-16"
+      >
+        {{ $t("consumptionAndConditionSbyToFwe") }}
       </span>
+      <span
+        v-else-if="props.report.report_type == Report.type.ARR_SBY_EOSP"
+        class="text-blue-700 text-16"
+      >
+        {{ $t("consumptionAndConditionNoonToSby") }}
+      </span>
+      <span v-else class="text-blue-700 text-16"> </span>
     </div>
     <div class="grid divide-y divide-dashed gap-8">
       <div>
@@ -311,26 +297,11 @@ const freshwaterRob = computed(
             {{ mgoRob }}
           </div>
         </div>
-
         <div
-          v-if="!isAdditionalRemarkFuel"
-          class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
-          @click="isAdditionalRemarkFuel = !isAdditionalRemarkFuel"
-        >
-          <img
-            src="@/assets/icons/checkboxes/unchecked_square.svg"
-            class="mr-2 h-5 w-5"
-          />
-          <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
-        </div>
-        <div
-          v-else
+          v-if="isAdditionalRemarkFuel"
           class="bg-gray-25 flex-col py-4 px-3 border border-gray-100"
         >
-          <div
-            class="flex items-center mb-3 cursor-pointer"
-            @click="isAdditionalRemarkFuel = !isAdditionalRemarkFuel"
-          >
+          <div class="flex items-center mb-3 cursor-pointer">
             <img
               src="@/assets/icons/checkboxes/checked_square.svg"
               class="mr-2 h-5 w-5"
@@ -342,10 +313,11 @@ const freshwaterRob = computed(
               {{ $t("correction") }}
             </div>
             <select
-              v-model="fuelOilDataCorrection.fuel_oil_type"
+              disabled
+              v-model="fuelOilDataCorrection.type"
               class="col-span-4 p-3 border-l focus:outline-0"
               :class="
-                fuelOilDataCorrection.fuel_oil_type === 'default'
+                fuelOilDataCorrection.type === 'default'
                   ? 'text-gray-400'
                   : 'text-gray-700'
               "
@@ -359,13 +331,8 @@ const freshwaterRob = computed(
             <div class="flex col-span-4 p-3 pl-4 border-l bg-white">
               <input
                 disabled
-                v-model="fuelOilDataCorrection.fueloildatacorrection.correction"
-                @keypress="
-                  preventNaN(
-                    $event,
-                    fuelOilDataCorrection.fueloildatacorrection.correction
-                  )
-                "
+                v-model="fuelOilDataCorrection.correction"
+                @keypress="preventNaN($event, fuelOilDataCorrection.correction)"
                 placeholder="00,000.00"
                 class="w-24 text-gray-700 focus:outline-0"
               />
@@ -377,7 +344,8 @@ const freshwaterRob = computed(
               {{ $t("remarks") }}
             </div>
             <textarea
-              v-model.trim="fuelOilDataCorrection.fueloildatacorrection.remarks"
+              disabled
+              v-model.trim="fuelOilDataCorrection.remarks"
               placeholder="Input description here"
               class="col-span-8 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
@@ -545,18 +513,6 @@ const freshwaterRob = computed(
             {{ geSystemRob }}
           </div>
         </div>
-
-        <!-- <div
-          v-if="!isAdditionalRemarkLubricating"
-          class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
-    
-        >
-          <img
-            src="@/assets/icons/checkboxes/unchecked_square.svg"
-            class="mr-2 h-5 w-5"
-          />
-          <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
-        </div> -->
         <div
           v-if="isAdditionalRemarkLubricating"
           class="bg-gray-25 flex-col py-4 px-3 border border-gray-100"
@@ -573,10 +529,11 @@ const freshwaterRob = computed(
               {{ $t("correction") }}
             </div>
             <select
-              v-model="lubricatingOilDataCorrection.fuel_oil_type"
+              disabled
+              v-model="lubricatingOilDataCorrection.type"
               class="col-span-6 p-3 border-l focus:outline-0"
               :class="
-                lubricatingOilDataCorrection.fuel_oil_type === 'default'
+                lubricatingOilDataCorrection.type === 'default'
                   ? 'text-gray-400'
                   : 'text-gray-700'
               "
@@ -600,15 +557,9 @@ const freshwaterRob = computed(
             <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
               <input
                 disabled
-                v-model="
-                  lubricatingOilDataCorrection.fueloildatacorrection.correction
-                "
+                v-model="lubricatingOilDataCorrection.correction"
                 @keypress="
-                  preventNaN(
-                    $event,
-                    lubricatingOilDataCorrection.fueloildatacorrection
-                      .correction
-                  )
+                  preventNaN($event, lubricatingOilDataCorrection.correction)
                 "
                 placeholder="00,000.00"
                 class="w-24 text-gray-700 focus:outline-0"
@@ -621,9 +572,8 @@ const freshwaterRob = computed(
               {{ $t("remarks") }}
             </div>
             <textarea
-              v-model.trim="
-                lubricatingOilDataCorrection.fueloildatacorrection.remarks
-              "
+              disabled
+              v-model.trim="lubricatingOilDataCorrection.remarks"
               :placeholder="$t('inputDescriptionHere')"
               class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>

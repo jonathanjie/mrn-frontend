@@ -1,3 +1,28 @@
+<script setup>
+import { computed, defineProps } from "vue";
+import { preventNaN } from "@/utils/helpers.js";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
+const budget_distance = computed(
+  () => props.report.transoceanicbudget.distance_to_go
+);
+const budget_speed = computed(
+  () => props.report.transoceanicbudget.speed
+);
+const me_daily = computed(
+  () => props.report.transoceanicbudget.me_daily_fo_consumption
+);
+const me_rpm = computed(
+  () => props.report.transoceanicbudget.me_rpm
+);
+
+</script>
+
 <template>
   <div class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4 shadow-card">
     <div class="col-span-2 flex items-center">
@@ -65,17 +90,4 @@
   </div>
 </template>
 
-<script setup>
-import { preventNaN } from "@/utils/helpers.js";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
-import { storeToRefs } from "pinia";
 
-const store = useDepartureCOSPReportStore();
-const {
-  budgetDistance: budget_distance,
-  budgetSpeed: budget_speed,
-  meDaily: me_daily,
-  meRPM: me_rpm,
-} = storeToRefs(store);
-</script>

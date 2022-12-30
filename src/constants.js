@@ -26,9 +26,9 @@ export const ReportTypeToDisplay = {
   AFWE: "ARRF",
   BDN: "BDN",
   EVPO: "EVNTP",
-  EVHB: "EVNTC",
+  EVHB: "EVNTHB",
   NNPO: "NOONP",
-  NNHB: "NOONC",
+  NNHB: "NOONHB",
 };
 
 export const ErrorFieldsToDisplay = {
@@ -98,6 +98,13 @@ export const ConsumptionType = {
   SBY_TO_FWE: "STANDBY_TO_FWE",
   LAST_TO_EVENT: "LAST_TO_EVENT",
   PILOT_TO_PILOT: "PILOT_TO_PILOT",
+};
+
+export const CargoLoadConditions = {
+  LADEN: "LADEN",
+  BALLAST: "BALLAST",
+  EASTBOUND: "EASTBOUND",
+  WESTBOUND: "WESTBOUND",
 };
 
 export const ActualPerformanceType = {
