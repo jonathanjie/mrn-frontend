@@ -79,18 +79,19 @@
 <script setup>
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
 import { useRouter } from "vue-router";
-// import { useShipStore } from "@/stores/useShipStore";
+import { useShipStore } from "@/stores/useShipStore";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useAuth0 } from "@auth0/auth0-vue";
-// import { storeToRefs } from "pinia";
+import { storeToRefs } from "pinia";
 
 console.log("Sidenav loads");
 const auth = useAuthStore();
 const router = useRouter();
 const { user, getAccessTokenSilently } = useAuth0();
 const jwt = await getAccessTokenSilently();
-// const store = useShipStore();
-// const { imoReg, uuid } = storeToRefs(store);
+
+const store = useShipStore();
+const { imoReg, companyUuid } = storeToRefs(store);
 
 const getShip = async () => {
   const response = await fetch(
@@ -196,9 +197,8 @@ if (manager) {
   router.push({ path: "/my-vessels" });
 } else {
   // store in ship store for crew side
-  // console.log("update imoreg");
-  // imoReg.value = ship.imo_reg;
-  // uuid.value = ship.uuid;
+  imoReg.value = ship.imo_reg;
+  companyUuid.value = ship.company.uuid;
 
   router.push({
     path: `/vessels/${ship.name}/${ship.imo_reg}/overview`,
