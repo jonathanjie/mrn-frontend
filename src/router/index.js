@@ -74,6 +74,7 @@ const routes = [
       {
         path: "overview",
         name: "vessel-overview",
+        props: true,
         component: VesselOverviewView,
       },
       {

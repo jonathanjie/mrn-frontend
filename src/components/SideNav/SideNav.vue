@@ -133,7 +133,7 @@ const home = () => {
     });
   }
 };
-console.log("Sidebar loads");
+
 const store = useVoyageStore();
 const auth = useAuthStore();
 const ship = await getShip();

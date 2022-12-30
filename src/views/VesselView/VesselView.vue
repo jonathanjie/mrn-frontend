@@ -124,21 +124,4 @@ const addVoyage = async (voyageData) => {
     window.alert("ERROR: " + JSON.stringify(response.text()));
   }
 };
-
-const getVoyages = async (imo) => {
-  const DUMMY_TOKEN = auth.jwt;
-  const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`,
-    {
-      headers: {
-        Authorization: "Bearer " + DUMMY_TOKEN,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-
-  const json = response.json();
-  return json;
-};
 </script>

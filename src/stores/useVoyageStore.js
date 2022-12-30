@@ -53,9 +53,6 @@ export const useVoyageStore = defineStore("voyage", () => {
   const nextVoyageNo = ref(0);
 
   // TODO: get reportroute from voyage
-
-  const voyages = ref(undefined);
-  const reports = ref(undefined);
   return {
     voyageUuid,
     lastNoonReportNo,
@@ -81,7 +78,5 @@ export const useVoyageStore = defineStore("voyage", () => {
     curLoadingCondition,
     curLegNo,
     curVoyageNo,
-    voyages,
-    reports,
   };
 });
