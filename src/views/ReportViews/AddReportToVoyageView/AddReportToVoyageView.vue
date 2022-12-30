@@ -104,7 +104,6 @@ const {
   lastNooncReportNo,
 } = storeToRefs(store);
 
-console.log("voyage details loaded", history.state.voyageDetails);
 const voyageDetails = history.state.voyageDetails
   ? JSON.parse(history.state.voyageDetails)
   : {};

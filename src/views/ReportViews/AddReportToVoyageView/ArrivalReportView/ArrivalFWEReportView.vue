@@ -142,8 +142,6 @@ const {
   errorMessage,
 } = storeToRefs(submissionStatusStore);
 
-console.log(operations.value);
-
 const includesOperation = (op) => operations.value.includes(op);
 
 const sendReport = async () => {
