@@ -179,7 +179,6 @@
         </div>
         <input
           v-model="telephone_number"
-          @keypress="preventNaN($event, telephone_number)"
           :placeholder="$t('countryCodePhoneNumber')"
           class="col-span-3 p-3 pl-4 border-t bg-white text-14 text-gray-700 focus:outline-0"
         />
@@ -189,8 +188,7 @@
 </template>
 
 <script setup>
-import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-import { reactive } from "vue";
+import { textInputOptions, format } from "@/utils/helpers.js";
 import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
 import { storeToRefs } from "pinia";
 

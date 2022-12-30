@@ -4,18 +4,18 @@
       <span class="text-gray-500">{{ $t("arrivalPort") + ":" }}</span>
       <input
         type="radio"
-        name="arrival_port"
+        name="before_or_after_arrival"
         id="beforeArrival"
-        value="0"
-        v-model="arrival_port"
+        :value="true"
+        v-model="isBeforeArrival"
       />
       <label for="beforeArrival" class="mr-1">{{ $t("beforeArrival") }}</label>
       <input
         type="radio"
-        name="arrival_port"
+        name="before_or_after_arrival"
         id="afterArrival"
-        value="1"
-        v-model="arrival_port"
+        :value="false"
+        v-model="isBeforeArrival"
       />
       <label for="afterArrival">{{ $t("afterArrival") }}</label>
     </div>
@@ -45,8 +45,8 @@
         class="p-3 text-14"
         type="button"
         v-on:click="sendReport()"
+        :disabled="isSubmissionRequested"
       >
-        <!-- TODO: need alternate function for saving changes to backend -->
         <template v-slot:content>{{ $t("sendReport") }}</template>
       </GradientButton>
     </div>
@@ -61,43 +61,52 @@ import BunkerReceivedDetail from "@/components/Reports/BunkerReport/BunkerReceiv
 import BunkerDateAndTime from "@/components/Reports/BunkerReport/BunkerDateAndTime.vue";
 import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
 import { storeToRefs } from "pinia";
+import { useShipStore } from "@/stores/useShipStore";
+import { useVoyageStore } from "@/stores/useVoyageStore";
+import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
+import { Report } from "@/constants";
+import { parsePortLocode } from "@/utils/helpers";
+import axios from "axios";
+
+const shipStore = useShipStore();
+const { companyUuid: company_uuid } = storeToRefs(shipStore);
+
+const voyageStore = useVoyageStore();
+const { voyageUuid: voyage_uuid } = storeToRefs(voyageStore);
 
 const store = useBunkerReportStore();
 const {
-  // status var
-  arrivalPort: arrival_port,
+  // subtype variable
+  isBeforeArrival,
   // Overview
   reportNo,
   legNo,
-  loadingCondition,
   voyageNo,
-  reportingDateTime,
   reportingTimeZone,
+  reportingDateTimeUTC,
   // Bunkering Port
   portCountry,
   portName,
-  status,
   // Received Bunker Detail
   oil,
+  quantity,
   density,
   sg,
   viscosity,
+  viscosityDegree,
   flashPoint,
   sulfurContent,
-  marpol1,
-  marpol2,
-  ship1,
-  ship2,
-  barge1,
-  barge2,
+  marpol,
+  ship,
+  barge,
   files,
   // Date and Time Bunker
-  alongside,
-  hoseConnection,
-  pumpStart,
-  pumpStop,
-  hoseDisconnection,
-  awayside,
+  alongsideUTC,
+  hoseConnectionUTC,
+  pumpStartUTC,
+  pumpStopUTC,
+  hoseDisconnectionUTC,
+  awaysideUTC,
   purchaser,
   bargeName,
   supplierName,
@@ -105,18 +114,28 @@ const {
   telephoneNumber,
 } = storeToRefs(store);
 
-const sendReport = async () => {
+const submissionStatusStore = useSubmissionStatusStore();
+const {
+  isSubmissionRequested,
+  isSubmissionModalVisible,
+  isSubmissionSuccessful,
+  errorMessage,
+} = storeToRefs(submissionStatusStore);
+
+const getPresignedUrlForFiles = async () => {
+  console.log(`${company_uuid.value}/${voyage_uuid.value}/bdn`);
+
   const response = await fetch(
-    "https://4diue6gphj.execute-api.ap-southeast-1.amazonaws.com/default/marinanet-s3-uploader/",
+    "https://majnalcwgg5jdnfpr2zdxvqubq0thpjz.lambda-url.ap-southeast-1.on.aws/",
     {
       headers: {
-        // Authorization: "Bearer " + localStorage.getItem("jwt"),
         "Content-Type": "application/json",
       },
       method: "POST",
-      body: {
-        file_prefix: `${company_uuid}/${report_uuid}/bdn`,
-      },
+      body: JSON.stringify({
+        file_prefix: `${company_uuid.value}/${voyage_uuid.value}/bdn`,
+        file_count: files.value.length,
+      }),
     }
   );
 
@@ -124,6 +143,122 @@ const sendReport = async () => {
     const data = await response.json();
     console.log(response);
     console.log(data);
+
+    return data.presigned_urls;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const uploadFilesToS3 = async () => {
+  const boundary =
+    "----WebKitFormBoundary" + Math.random().toString(36).slice(2);
+  const config = {
+    headers: {
+      "Content-Type": `multipart/form-data; boundary=${boundary}`,
+    },
+  };
+
+  for (const file of files.value) {
+    const url = `${file.presignedUrl}`;
+    const data = file.file;
+
+    try {
+      // TODO: batch request
+      const response = await axios.put(url, data, config);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+};
+
+const sendReport = async () => {
+  isSubmissionRequested.value = true;
+
+  let urls = [];
+  if (files.value.length) {
+    urls = await getPresignedUrlForFiles();
+    console.log(urls);
+
+    for (const [index, file] of files.value.entries()) {
+      file.presignedUrl = urls[index].presigned_url;
+    }
+
+    await uploadFilesToS3();
+  }
+
+  const bunkeringPort = parsePortLocode({
+    portCountry: portCountry.value,
+    portName: portName.value,
+  });
+
+  const REPORT = {
+    report_type: Report.type.BUNKER,
+    report_num: reportNo.value,
+    report_date: reportingDateTimeUTC.value,
+    report_tz: reportingTimeZone.value,
+    voyage: voyageNo.value,
+    voyage_leg: legNo.value,
+    bdndata: {
+      bunkering_port: bunkeringPort,
+      bunkering_date: reportingDateTimeUTC.value,
+      bdn_file: files.value.length
+        ? urls.map(function (file) {
+            return file["presigned_url"];
+          })
+        : urls,
+      delivered_oil_type: oil.value,
+      delivered_quantity: quantity.value,
+      density_15: density.value,
+      specific_gravity_15: sg.value,
+      viscosity_value: viscosity.value,
+      viscosity_temperature: viscosityDegree.value,
+      flash_point: flashPoint.value,
+      sulfur_content: sulfurContent.value,
+      sample_sealing_marpol: marpol.value,
+      sample_sealing_ship: ship.value,
+      sample_sealing_barge: barge.value,
+      alongside_date: alongsideUTC.value,
+      hose_connection_date: hoseConnectionUTC.value,
+      pump_start_date: pumpStartUTC.value,
+      pump_stop_date: pumpStopUTC.value,
+      hose_disconnection_date: hoseDisconnectionUTC.value,
+      slipoff_date: awaysideUTC.value,
+      purchaser: purchaser.value,
+      barge_name: bargeName.value,
+      supplier_name: supplierName.value,
+      supplier_address: address.value,
+      supplier_contact: telephoneNumber.value,
+    },
+  };
+
+  console.log("data: ", REPORT);
+
+  const response = await fetch(
+    "https://testapi.marinachain.io/marinanet/reports/",
+    {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(REPORT),
+    }
+  );
+
+  try {
+    const data = await response.json();
+    console.log(response);
+    console.log(data);
+
+    if (response.ok) {
+      isSubmissionSuccessful.value = true;
+      store.$reset();
+    } else {
+      errorMessage.value = data;
+    }
+    isSubmissionModalVisible.value = true;
   } catch (error) {
     console.log(error);
   }

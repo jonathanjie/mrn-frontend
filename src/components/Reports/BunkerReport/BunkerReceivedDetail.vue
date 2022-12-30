@@ -218,7 +218,7 @@
         v-model="marpol"
         @keypress="preventNaN($event, marpol)"
         placeholder="000.00"
-        class="col-span-6 p-3 pl-4 border-r text-gray-700 focus:outline-0"
+        class="col-span-6 p-3 pl-4 text-gray-700 focus:outline-0"
       />
       <div class="col-span-2 text-blue-700 p-3 border-r border-t bg-gray-50">
         {{ $t("ship") }}
@@ -227,7 +227,7 @@
         v-model="ship"
         @keypress="preventNaN($event, ship)"
         placeholder="000.00"
-        class="col-span-6 p-3 pl-4 border-r border-t text-gray-700 focus:outline-0"
+        class="col-span-6 p-3 pl-4 border-t text-gray-700 focus:outline-0"
       />
       <div class="col-span-2 text-blue-700 p-3 border-r border-t bg-gray-50">
         {{ $t("barge") }}
@@ -236,7 +236,7 @@
         v-model="barge"
         @keypress="preventNaN($event, barge)"
         placeholder="000.00"
-        class="col-span-6 p-3 pl-4 border-r border-t text-gray-700 focus:outline-0"
+        class="col-span-6 p-3 pl-4 border-t text-gray-700 focus:outline-0"
       />
     </div>
   </div>
