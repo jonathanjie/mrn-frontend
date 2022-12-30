@@ -49,19 +49,17 @@ export const useHarbourPortReportStore = defineStore(
     const reportSubtypeIsNoon = ref(false);
 
     // Harbour Port Overview
-    const reportNo = computed(() => {
-      if (reportSubtypeIsPort.value && reportSubtypeIsNoon.value) {
-        return noonpReportNo;
-      } else if (reportSubtypeIsPort.value && !reportSubtypeIsNoon.value) {
-        return evntpReportNo;
-      } else if (!reportSubtypeIsPort.value && reportSubtypeIsNoon.value) {
-        return nooncReportNo;
-      } else if (!reportSubtypeIsPort.value && !reportSubtypeIsNoon.value) {
-        return evntcReportNo;
-      } else {
-        return ""; // shouldn't reach here
-      }
-    });
+    const reportNo = computed(() =>
+      reportSubtypeIsPort.value && reportSubtypeIsNoon.value
+        ? noonpReportNo
+        : reportSubtypeIsPort.value && !reportSubtypeIsNoon.value
+        ? evntpReportNo
+        : !reportSubtypeIsPort.value && reportSubtypeIsNoon.value
+        ? nooncReportNo
+        : !reportSubtypeIsPort.value && !reportSubtypeIsNoon.value
+        ? evntcReportNo
+        : ""
+    );
     const legNo = curLegNo;
     const loadingCondition = curLoadingCondition;
     const voyageNo = curVoyageNo;

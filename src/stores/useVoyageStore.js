@@ -2,6 +2,8 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 
 export const useVoyageStore = defineStore("voyage", () => {
+  const voyageUuid = ref("");
+
   const lastNoonReportNo = ref(0); // Noon
   const lastDepsReportNo = ref(0); // Departure S/BY
   const lastDeprReportNo = ref(0); // Departure COSP or R/UP
@@ -51,8 +53,7 @@ export const useVoyageStore = defineStore("voyage", () => {
   // TODO: get reportroute from voyage
 
   return {
-    lastVoyageNo,
-    nextVoyageNo,
+    voyageUuid,
     lastNoonReportNo,
     lastDepsReportNo,
     lastDeprReportNo,

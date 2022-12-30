@@ -21,7 +21,6 @@ const temp = {
   distanceEngSoFar: 1000,
   revolutionCountPrevNoon: 20000,
   propellerPitch: 2,
-  previousNoonReportCount: 2,
   voyageAvgSpeed: 200,
   voyageAvgRpm: 100,
   voyageAvgSlip: 5,
@@ -36,12 +35,7 @@ const temp = {
   freshwaterPrevROB: 200,
 
   // Actual Performance
-  prevDistanceByObservation: 2000,
-  prevSailingTime: 200,
   displacement: 2000, // from departure s/by (vessel condition)
-  prevAvgSpeed: 20,
-  prevAvgRpm: 300,
-  prevMeFoConsumption: 20,
 
   // Total Consumption
   prevLsfoBreakdown: {

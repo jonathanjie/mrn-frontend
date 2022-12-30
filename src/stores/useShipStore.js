@@ -2,8 +2,9 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 
 export const useShipStore = defineStore("ship", () => {
+  const companyUuid = ref("");
   const imoReg = ref("");
-  const uuid = ref("");
+  const shipUuid = ref("");
   const lastVoyageNo = ref(0);
 
   const nextVoyageNo = computed(() => {
@@ -13,8 +14,9 @@ export const useShipStore = defineStore("ship", () => {
   const isFetchingVoyages = ref(false);
 
   return {
+    companyUuid,
     imoReg,
-    uuid,
+    shipUuid,
     lastVoyageNo,
     nextVoyageNo,
     isFetchingVoyages,
