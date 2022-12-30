@@ -158,22 +158,23 @@ for (let i = 0; i < voyages.length; i++) {
     reports[uuid].push(ret);
   }
 
-  if (i === voyages.length - 1) {
-    // update voyage details
-    voyageDetails[uuid]["cur_voyage_no"] = voyages[i].voyage_num;
-    voyageDetails[uuid]["cur_loading_condition"] = curLoadingCondition || "N/A";
-    voyageDetails[uuid]["cur_leg_no"] = curLegNo || "N/A";
-    voyageDetails[uuid]["last_noon_report_no"] = lastReportNo["NOON"];
-    voyageDetails[uuid]["last_deps_report_no"] = lastReportNo["DSBY"];
-    voyageDetails[uuid]["last_depr_report_no"] = lastReportNo["DCSP"];
-    voyageDetails[uuid]["last_arrs_report_no"] = lastReportNo["ASBY"];
-    voyageDetails[uuid]["last_arrf_report_no"] = lastReportNo["AFWE"];
-    voyageDetails[uuid]["last_bdn_report_no"] = lastReportNo["BDN"];
-    voyageDetails[uuid]["last_evntp_report_no"] = lastReportNo["EVPO"];
-    voyageDetails[uuid]["last_evntc_report_no"] = lastReportNo["EVHB"];
-    voyageDetails[uuid]["last_noonp_report_no"] = lastReportNo["NNPO"];
-    voyageDetails[uuid]["last_noonc_report_no"] = lastReportNo["NNHB"];
+  // update voyage details
+  voyageDetails[uuid]["uuid"] = uuid;
+  voyageDetails[uuid]["cur_voyage_no"] = voyages[i].voyage_num;
+  voyageDetails[uuid]["cur_loading_condition"] = curLoadingCondition || "N/A";
+  voyageDetails[uuid]["cur_leg_no"] = curLegNo || "N/A";
+  voyageDetails[uuid]["last_noon_report_no"] = lastReportNo["NOON"];
+  voyageDetails[uuid]["last_deps_report_no"] = lastReportNo["DSBY"];
+  voyageDetails[uuid]["last_depr_report_no"] = lastReportNo["DCSP"];
+  voyageDetails[uuid]["last_arrs_report_no"] = lastReportNo["ASBY"];
+  voyageDetails[uuid]["last_arrf_report_no"] = lastReportNo["AFWE"];
+  voyageDetails[uuid]["last_bdn_report_no"] = lastReportNo["BDN"];
+  voyageDetails[uuid]["last_evntp_report_no"] = lastReportNo["EVPO"];
+  voyageDetails[uuid]["last_evntc_report_no"] = lastReportNo["EVHB"];
+  voyageDetails[uuid]["last_noonp_report_no"] = lastReportNo["NNPO"];
+  voyageDetails[uuid]["last_noonc_report_no"] = lastReportNo["NNHB"];
 
+  if (i === voyages.length - 1) {
     // update voyage number
     lastVoyageNo.value = voyages[i].voyage_num;
   }
