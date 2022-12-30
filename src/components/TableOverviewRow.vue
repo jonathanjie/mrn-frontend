@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="props.header === 'Date' || props.header === 'Speed'"
+    v-if="props.header === 'Speed'"
     class="grid grid-cols-9 w-full rounded-lg w-full border mb-3"
   >
     <!-- Table header -->
@@ -20,6 +20,75 @@
         "
       >
         <span class="text-14 font-semibold text-gray-800">{{ value }}</span>
+      </div>
+    </div>
+  </div>
+  <div
+    v-else-if="props.header === 'Date'"
+    class="grid grid-cols-9 grid-rows-2 w-full rounded-lg w-full border mb-3"
+  >
+    <!-- Table header -->
+    <div
+      class="flex px-3.5 py-3 bg-sysblue-25 rounded-tl-lg border-y border-l border-blue-200 col-span-2 items-center"
+    >
+      <span class="text-14 font-bold text-gray-800">{{ props.header }}</span>
+    </div>
+    <div v-for="(value, index) in props.values">
+      <div
+        class="flex px-3.5 py-3 justify-center"
+        :class="
+          index === 6
+            ? 'bg-yellow-50 border border-yellow-200 rounded-r-lg'
+            : 'border-l border-t border-gray-200'
+        "
+      >
+        <span class="text-14 font-semibold text-gray-800">{{ value }}</span>
+      </div>
+    </div>
+    <div
+      class="flex px-3.5 py-3 bg-sysblue-25 rounded-bl-lg border-y border-l border-blue-200 col-span-2 items-center"
+    >
+      <span class="text-14 font-bold text-gray-800">{{
+        $t("reportType")
+      }}</span>
+    </div>
+    <div v-for="(value, index) in props.reportType">
+      <div
+        class="flex px-3.5 py-3 justify-center"
+        :class="
+          index === 6
+            ? 'bg-yellow-50 border border-yellow-200 rounded-r-lg'
+            : 'border-l border-t border-gray-200'
+        "
+      >
+        <img
+          v-if="value === 'DCSP' || value === 'DSBY'"
+          src="@/assets/icons/departure_header_icon.svg"
+        />
+        <img
+          v-else-if="value === 'ASBY' || value === 'AFWE'"
+          src="@/assets/icons/arrival_header_icon.svg"
+        />
+        <img
+          v-else-if="value === 'NOON'"
+          src="@/assets/icons/noon_header_icon.svg"
+        />
+        <img
+          v-else-if="value === 'BDN'"
+          src="@/assets/icons/bunker_header_icon.svg"
+        />
+        <img
+          v-else-if="
+            value === 'EVHB' ||
+            value === 'EVPO' ||
+            value === 'NNPO' ||
+            value === 'NNHB'
+          "
+          src="@/assets/icons/in_harbour_header_icon.svg"
+        />
+        <span class="text-14 font-semibold text-gray-800 ml-1">{{
+          reportTypes[value]
+        }}</span>
       </div>
     </div>
   </div>
@@ -88,12 +157,28 @@
 <script setup>
 const props = defineProps({
   header: String,
+  report: Boolean,
+  reportType: Array,
   values: Array,
   distanceToGo: Array,
   distanceOBS: Array,
   fuelFoc: Array,
   fuelRob: Array,
 });
+
+const reportTypes = {
+  NOON: "Noon",
+  DSBY: "Depart S.B",
+  DCSP: "Depart COSP",
+  ASBY: "Arr SB",
+  AFWE: "Arr F.W.E",
+  BDN: "Bunker",
+  EVHB: "Event in Harbour",
+  EVPO: "Event in Port",
+  NNHB: "Noon in Harbour",
+  NNPO: "Noon in Port",
+};
+
 let row1 = undefined;
 let row2 = undefined;
 if (props.header === "Distance") {

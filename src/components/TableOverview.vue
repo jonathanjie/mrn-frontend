@@ -23,7 +23,7 @@
           <span
             class="text-16 font-bold"
             :class="selectedSpeed ? 'text-white' : 'text-blue-600'"
-            >{{ latestData.value.speed }}</span
+            >{{ latestData.speed }}</span
           >
         </div>
         <div
@@ -38,7 +38,7 @@
           <span
             class="text-16 font-bold"
             :class="selectedSpeed ? 'text-white' : 'text-blue-500'"
-            >{{ latestData.value.distanceToGo }}</span
+            >{{ latestData.distance_observed }}</span
           >
         </div>
       </button>
@@ -60,9 +60,9 @@
           >
           <div
             class="grid grid-cols-2 w-full"
-            :class="latestData.value.fuel.length > 2 ? 'grid-rows-2' : ''"
+            :class="latestData.fuel_stats.length > 2 ? 'grid-rows-2' : ''"
           >
-            <div v-for="(value, key) in latestData.value.fuel">
+            <div v-for="value in latestData.fuel_stats">
               <div
                 class="flex rounded-xl bg-gray-100 ml-2 py-1.5 px-2.5 justify-center"
                 :class="!selectedSpeed ? 'bg-opacity-10' : ''"
@@ -70,12 +70,12 @@
                 <span
                   class="text-12"
                   :class="!selectedSpeed ? 'text-white' : 'text-gray-700'"
-                  >{{ key.toUpperCase() }}:</span
+                  >{{ value.fuel_oil_type }}:</span
                 >
                 <span
                   class="text-12 ml-2"
                   :class="!selectedSpeed ? 'text-white' : 'text-blue-600'"
-                  >{{ value.foc }}</span
+                  >{{ value.total_consumption }}</span
                 >
               </div>
             </div>
@@ -93,9 +93,9 @@
           >
           <div
             class="grid grid-cols-2 w-full"
-            :class="latestData.value.fuel.length > 2 ? 'grid-rows-2' : ''"
+            :class="latestData.fuel_stats.length > 2 ? 'grid-rows-2' : ''"
           >
-            <div v-for="(value, key) in latestData.value.fuel">
+            <div v-for="value in latestData.fuel_stats">
               <div
                 class="flex rounded-xl bg-gray-100 ml-2 py-1.5 px-2.5 justify-center"
                 :class="!selectedSpeed ? 'bg-opacity-10' : ''"
@@ -103,7 +103,7 @@
                 <span
                   class="text-12"
                   :class="!selectedSpeed ? 'text-white' : 'text-gray-700'"
-                  >{{ key.toUpperCase() }}:</span
+                  >{{ value.fuel_oil_type }}:</span
                 >
                 <span
                   class="text-12 ml-2"
@@ -117,7 +117,11 @@
       </button>
     </div>
     <div class="flex flex-col bg-white w-full rounded-lg p-3.5 mt-3.5 mb-0.5">
-      <TableOverviewRow :header="'Date'" :values="dateList" />
+      <TableOverviewRow
+        :header="'Date'"
+        :values="dateList"
+        :reportType="reportType"
+      />
       <div class="flex flex-col w-full" v-if="selectedSpeed">
         <TableOverviewRow :header="'Speed'" :values="speedList" />
         <TableOverviewRow
@@ -145,157 +149,188 @@ import TableOverviewRow from "@/components/TableOverviewRow.vue";
 
 const data = [
   {
-    date: "16/7",
-    value: {
-      speed: 4.0,
-      distanceObserved: 0.0,
-      distanceToGo: 0.0,
-      fuel: {
-        mgo: {
-          foc: 0.0,
-          rob: 0.0,
-        },
-        lsfo: {
-          foc: 0.0,
-          rob: 0,
-        },
+    report_date: "2022-12-27T18:00:02Z",
+    report_type: "ASBY",
+    speed: "5.00",
+    distance_observed: "30",
+    distance_to_go: "10",
+    fuel_stats: [
+      {
+        fuel_oil_type: "HFO",
+        total_consumption: "100.00",
+        rob: "100.00",
       },
-    },
+      // {
+      //   fuel_oil_type: "LSFO",
+      //   total_consumption: "100.00",
+      //   rob: "900.00",
+      // },
+    ],
   },
   {
-    date: "17/7",
-    value: {
-      speed: 5.0,
-      distanceObserved: 0.0,
-      distanceToGo: 0.0,
-      fuel: {
-        mgo: {
-          foc: 0.0,
-          rob: 0.0,
-        },
-        lsfo: {
-          foc: 0.0,
-          rob: 0,
-        },
+    report_date: "2022-12-21T12:00:00Z",
+    report_type: "NOON",
+    speed: "1.50",
+    distance_observed: "20",
+    distance_to_go: "4000",
+    fuel_stats: [
+      {
+        fuel_oil_type: "HFO",
+        total_consumption: "100.00",
+        rob: "900.00",
       },
-    },
+      {
+        fuel_oil_type: "LSFO",
+        total_consumption: "100.00",
+        rob: "900.00",
+      },
+    ],
   },
   {
-    date: "18/7",
-    value: {
-      speed: 6.0,
-      distanceObserved: 0.0,
-      distanceToGo: 0.0,
-      fuel: {
-        mgo: {
-          foc: 0.0,
-          rob: 0.0,
-        },
-        lsfo: {
-          foc: 0.0,
-          rob: 0,
-        },
+    report_date: "2022-12-21T12:00:00Z",
+    report_type: "NOON",
+    speed: "1.50",
+    distance_observed: "20",
+    distance_to_go: "4000",
+    fuel_stats: [
+      {
+        fuel_oil_type: "HFO",
+        total_consumption: "100.00",
+        rob: "900.00",
       },
-    },
+      {
+        fuel_oil_type: "LSFO",
+        total_consumption: "100.00",
+        rob: "900.00",
+      },
+    ],
   },
   {
-    date: "19/7",
-    value: {
-      speed: 7.0,
-      distanceObserved: 0.0,
-      distanceToGo: 0.0,
-      fuel: {
-        mgo: {
-          foc: 0.0,
-          rob: 0.0,
-        },
-        lsfo: {
-          foc: 0.0,
-          rob: 0,
-        },
+    report_date: "2022-12-21T12:00:00Z",
+    report_type: "NOON",
+    speed: "1.50",
+    distance_observed: "20",
+    distance_to_go: "4000",
+    fuel_stats: [
+      {
+        fuel_oil_type: "HFO",
+        total_consumption: "100.00",
+        rob: "900.00",
       },
-    },
+      {
+        fuel_oil_type: "LSFO",
+        total_consumption: "100.00",
+        rob: "900.00",
+      },
+    ],
   },
   {
-    date: "20/7",
-    value: {
-      speed: 8.0,
-      distanceObserved: 0.0,
-      distanceToGo: 0.0,
-      fuel: {
-        mgo: {
-          foc: 0.0,
-          rob: 0.0,
-        },
-        lsfo: {
-          foc: 0.0,
-          rob: 0,
-        },
+    report_date: "2022-12-21T12:00:00Z",
+    report_type: "NOON",
+    speed: "1.50",
+    distance_observed: "20",
+    distance_to_go: "4000",
+    fuel_stats: [
+      {
+        fuel_oil_type: "HFO",
+        total_consumption: "100.00",
+        rob: "900.00",
       },
-    },
+      {
+        fuel_oil_type: "LSFO",
+        total_consumption: "100.00",
+        rob: "900.00",
+      },
+    ],
   },
   {
-    date: "21/7",
-    value: {
-      speed: 9.0,
-      distanceObserved: 0.0,
-      distanceToGo: 0.0,
-      fuel: {
-        mgo: {
-          foc: 0.0,
-          rob: 0.0,
-        },
-        lsfo: {
-          foc: 0.0,
-          rob: 0,
-        },
+    report_date: "2022-12-21T12:00:00Z",
+    report_type: "NOON",
+    speed: "1.50",
+    distance_observed: "20",
+    distance_to_go: "4000",
+    fuel_stats: [
+      {
+        fuel_oil_type: "HFO",
+        total_consumption: "100.00",
+        rob: "900.00",
       },
-    },
+      {
+        fuel_oil_type: "LSFO",
+        total_consumption: "100.00",
+        rob: "900.00",
+      },
+    ],
   },
   {
-    date: "22/7",
-    value: {
-      speed: 10.0,
-      distanceObserved: 0.0,
-      distanceToGo: 0.0,
-      fuel: {
-        mgo: {
-          foc: 0.0,
-          rob: 0.0,
-        },
-        lsfo: {
-          foc: 0.0,
-          rob: 0,
-        },
+    report_date: "2022-12-21T12:00:00Z",
+    report_type: "NOON",
+    speed: "1.50",
+    distance_observed: "20",
+    distance_to_go: "4000",
+    fuel_stats: [
+      {
+        fuel_oil_type: "HFO",
+        total_consumption: "100.00",
+        rob: "900.00",
       },
-    },
+      {
+        fuel_oil_type: "LSFO",
+        total_consumption: "100.00",
+        rob: "900.00",
+      },
+    ],
   },
 ];
-const latestData = data[data.length - 1];
+
+const latestData = data[0];
 let selectedSpeed = ref(true);
 const dateList = [];
+const reportType = [];
 const speedList = [];
 const distanceOBSList = [];
 const distanceToGoList = [];
 const fuelObject = {};
-for (let item in data) {
-  dateList.push(data[item].date);
-  speedList.push(data[item].value.speed);
-  distanceOBSList.push(data[item].value.distanceObserved);
-  distanceToGoList.push(data[item].value.distanceToGo);
-  for (let fuel_type in data[item].value.fuel) {
-    if (fuelObject[fuel_type] == undefined) {
-      fuelObject[fuel_type] = {};
-      fuelObject[fuel_type]["foc"] = [];
-      fuelObject[fuel_type]["rob"] = [];
+for (let report in data) {
+  let obj = data[report];
+  let date = new Date(obj.report_date);
+  dateList.push(date.getDay() + "/" + date.getMonth());
+  reportType.push(obj.report_type);
+  speedList.push(obj.speed);
+  distanceOBSList.push(obj.distance_observed);
+  distanceToGoList.push(obj.distance_to_go);
+  for (let fuel_type in obj.fuel_stats) {
+    if (!(obj.fuel_stats[fuel_type].fuel_oil_type in fuelObject)) {
+      fuelObject[obj.fuel_stats[fuel_type].fuel_oil_type] = {
+        foc: [],
+        rob: [],
+      };
     }
-    fuelObject[fuel_type].foc.push(data[item].value.fuel[fuel_type].foc);
-    fuelObject[fuel_type].rob.push(data[item].value.fuel[fuel_type].rob);
+  }
+}
+for (let fuel in fuelObject) {
+  for (let report in data) {
+    let obj = data[report];
+    let tempCount = 0;
+    for (let fuel_type in obj.fuel_stats) {
+      let fuel_item = obj.fuel_stats[fuel_type];
+      tempCount = tempCount + 1;
+      if (fuel_item.fuel_oil_type === fuel) {
+        fuelObject[fuel]["foc"].push(fuel_item.total_consumption);
+        fuelObject[fuel]["rob"].push(fuel_item.rob);
+      }
+    }
+    for (let tempFuel in fuelObject) {
+      if (fuelObject[tempFuel].foc.length < tempCount - 1) {
+        fuelObject[tempFuel].foc.push("0");
+        fuelObject[tempFuel].rob.push("0");
+      }
+    }
   }
 }
 
-// console.log(speedList);
-// console.log(distanceOBSList);
-// console.log(distanceToGoList);
-// console.log(fuelObject);
+for (let fuel in fuelObject) {
+  fuelObject[fuel].foc = fuelObject[fuel].foc.reverse();
+  fuelObject[fuel].rob = fuelObject[fuel].rob.reverse();
+}
 </script>
