@@ -31,7 +31,12 @@
         >
           <template v-slot:content>{{ $t("saveChanges") }}</template>
         </CustomButton> -->
-    <GradientButton class="p-3 text-14" type="button" v-on:click="sendReport()">
+    <GradientButton
+      class="p-3 text-14"
+      type="button"
+      v-on:click="sendReport()"
+      :disabled="isSubmissionRequested"
+    >
       <!-- TODO: need alternate function for saving changes to backend -->
       <template v-slot:content>{{ $t("sendReport") }}</template>
     </GradientButton>
@@ -146,10 +151,16 @@ const {
 } = storeToRefs(store);
 
 const submissionStatusStore = useSubmissionStatusStore();
-const { isSubmissionRequested, isSubmissionSuccessful, errorMessage } =
-  storeToRefs(submissionStatusStore);
+const {
+  isSubmissionRequested,
+  isSubmissionModalVisible,
+  isSubmissionSuccessful,
+  errorMessage,
+} = storeToRefs(submissionStatusStore);
 
 const sendReport = async () => {
+  isSubmissionRequested.value = true;
+
   const pilotPosition = parsePositionToString({
     latDir: pilotDepLatDir.value,
     latMinutes: pilotDepLatMinute.value,
@@ -333,13 +344,7 @@ const sendReport = async () => {
             BLR: lsfoBreakdownSum.value.blr || 0,
             IGG: lsfoBreakdownSum.value.igg || 0,
           },
-          fueloiltotalconsumptiondatacorrection:
-            fuelOilDataCorrectionSum.value.type === FuelOil.LSFO
-              ? {
-                  correction: fuelOilDataCorrectionSum.value.correction,
-                  remarks: fuelOilDataCorrectionSum.value.remarks,
-                }
-              : null,
+          fueloiltotalconsumptiondatacorrection: null,
         },
         {
           fuel_oil_type: FuelOil.MGO,
@@ -353,13 +358,7 @@ const sendReport = async () => {
             BLR: mgoBreakdownSum.value.blr || 0,
             IGG: mgoBreakdownSum.value.igg || 0,
           },
-          fueloiltotalconsumptiondatacorrection:
-            fuelOilDataCorrectionSum.value.type === FuelOil.MGO
-              ? {
-                  correction: fuelOilDataCorrectionSum.value.correction,
-                  remarks: fuelOilDataCorrectionSum.value.remarks,
-                }
-              : null,
+          fueloiltotalconsumptiondatacorrection: null,
         },
       ],
       lubricatingoiltotalconsumptiondata_set: [
@@ -370,14 +369,7 @@ const sendReport = async () => {
           receipt: mecylinderBreakdownSum.value.receipt || 0,
           debunkering: mecylinderBreakdownSum.value.debunkering || 0,
           rob: mecylinderRobSum.value || 0,
-          lubricatingoiltotalconsumptiondatacorrection:
-            lubricatingOilDataCorrectionSum.value.type ===
-            LubricatingOil.ME_CYLINDER
-              ? {
-                  correction: lubricatingOilDataCorrectionSum.value.correction,
-                  remarks: lubricatingOilDataCorrectionSum.value.remarks,
-                }
-              : null,
+          lubricatingoiltotalconsumptiondatacorrection: null,
         },
         {
           fuel_oil_type: LubricatingOil.ME_SYSTEM,
@@ -385,14 +377,7 @@ const sendReport = async () => {
           receipt: mesystemBreakdownSum.value.receipt || 0,
           debunkering: mesystemBreakdownSum.value.debunkering || 0,
           rob: mesystemRobSum.value || 0,
-          lubricatingoiltotalconsumptiondatacorrection:
-            lubricatingOilDataCorrectionSum.value.type ===
-            LubricatingOil.ME_SYSTEM
-              ? {
-                  correction: lubricatingOilDataCorrectionSum.value.correction,
-                  remarks: lubricatingOilDataCorrectionSum.value.remarks,
-                }
-              : null,
+          lubricatingoiltotalconsumptiondatacorrection: null,
         },
         {
           fuel_oil_type: LubricatingOil.ME_SUMP,
@@ -400,14 +385,7 @@ const sendReport = async () => {
           receipt: mesumpBreakdownSum.value.receipt || 0,
           debunkering: mesumpBreakdownSum.value.debunkering || 0,
           rob: mesumpRobSum.value || 0,
-          lubricatingoiltotalconsumptiondatacorrection:
-            lubricatingOilDataCorrectionSum.value.type ===
-            LubricatingOil.ME_SUMP
-              ? {
-                  correction: lubricatingOilDataCorrectionSum.value.correction,
-                  remarks: lubricatingOilDataCorrectionSum.value.remarks,
-                }
-              : null,
+          lubricatingoiltotalconsumptiondatacorrection: null,
         },
         {
           fuel_oil_type: LubricatingOil.GE_SYSTEM,
@@ -415,14 +393,7 @@ const sendReport = async () => {
           receipt: gesystemBreakdownSum.value.receipt || 0,
           debunkering: gesystemBreakdownSum.value.debunkering || 0,
           rob: gesystemRobSum.value || 0,
-          lubricatingoiltotalconsumptiondatacorrection:
-            lubricatingOilDataCorrectionSum.value.type ===
-            LubricatingOil.GE_SYSTEM
-              ? {
-                  correction: lubricatingOilDataCorrectionSum.value.correction,
-                  remarks: lubricatingOilDataCorrectionSum.value.remarks,
-                }
-              : null,
+          lubricatingoiltotalconsumptiondatacorrection: null,
         },
       ],
       freshwatertotalconsumptiondata: {
@@ -461,7 +432,7 @@ const sendReport = async () => {
     } else {
       errorMessage.value = data;
     }
-    isSubmissionRequested.value = true;
+    isSubmissionModalVisible.value = true;
   } catch (error) {
     console.log(error);
   }

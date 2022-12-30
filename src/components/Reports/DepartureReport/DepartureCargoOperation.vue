@@ -43,7 +43,7 @@
             :placeholder="$t('inputDetails')"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
-          <MiniUnitDisplay>Unit</MiniUnitDisplay>
+          <MiniUnitDisplay>{{ cargoUnit }}</MiniUnitDisplay>
         </div>
 
         <div
@@ -58,7 +58,7 @@
             :placeholder="$t('inputDetails')"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
-          <MiniUnitDisplay>Unit</MiniUnitDisplay>
+          <MiniUnitDisplay>{{ cargoUnit }}</MiniUnitDisplay>
         </div>
 
         <div
@@ -73,7 +73,7 @@
             :placeholder="$t('inputDetails')"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
-          <MiniUnitDisplay>Unit</MiniUnitDisplay>
+          <MiniUnitDisplay>{{ cargoUnit }}</MiniUnitDisplay>
         </div>
 
         <div
@@ -109,5 +109,6 @@ const {
   unloading: unloading,
   totalAmount: total_amount,
   time: time,
+  cargoUnit: cargoUnit,
 } = storeToRefs(store);
 </script>

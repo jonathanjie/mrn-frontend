@@ -46,6 +46,7 @@
         class="p-3 text-14"
         type="button"
         v-on:click="sendReport()"
+        :disabled="isSubmissionRequested"
       >
         <!-- TODO: need alternate function for saving changes to backend -->
         <template v-slot:content>{{ $t("sendReport") }}</template>

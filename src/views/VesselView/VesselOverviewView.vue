@@ -16,9 +16,9 @@
     <VoyageCard
       v-for="(voyage, index) in voyages.slice().reverse()"
       :key="index"
-      :start="portCodeToPortName[voyage.departure_port]"
+      :start="voyage.departure_port"
       :mid="'At Sea'"
-      :dest="portCodeToPortName[voyage.arrival_port]"
+      :dest="voyage.arrival_port"
       :reports="reports[voyage.uuid]"
       :voyage-details="JSON.stringify(voyageDetails[voyage.uuid])"
       :num="voyage.voyage_num"
@@ -28,11 +28,13 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import VoyageCard from "../../components/VoyageCard.vue";
-import { useAuthStore } from "@/stores/useAuthStore";
 import { readableUTCDate } from "@/utils/helpers";
-import { ReportTypeToDisplay } from "@/constants";
+import { ReportTypeToDisplay, Report } from "@/constants";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useShipStore } from "@/stores/useShipStore";
+import { storeToRefs } from "pinia";
 
 const props = defineProps({
   imo: { type: String, require: true },
@@ -40,7 +42,11 @@ const props = defineProps({
 
 const auth = useAuthStore();
 let isEmpty = ref(false);
-const imoReg = 1000000;
+
+const store = useShipStore();
+const { isFetchingVoyages, lastVoyageNo, imoReg } = storeToRefs(store);
+
+imoReg.value = 1000000; // temporary, will remove after merging with lionel's branch
 
 const getReports = async (voyage_uuid) => {
   const response = await fetch(
@@ -62,7 +68,9 @@ const getReports = async (voyage_uuid) => {
 
 const getVoyages = async (imo) => {
   const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/ships/" + imoReg + "/voyages/",
+    "https://testapi.marinachain.io/marinanet/ships/" +
+      imoReg.value +
+      "/voyages/",
     {
       headers: {
         Authorization: "Bearer " + auth.jwt,
@@ -100,7 +108,7 @@ const getLoadingCondition = async (uuid) => {
   // return json.curLoadingCondition;
 };
 
-const voyages = await getVoyages(imoReg);
+const voyages = await getVoyages(imoReg.value);
 const voyageDetails = {}; // uuid : arr of voyage details
 const reports = {}; // uuid : arr of reports
 
@@ -119,10 +127,10 @@ for (let i = 0; i < voyages.length; i++) {
     ASBY: 0,
     AFWE: 0,
     BDN: 0,
-    // evntp: 0,
-    // evntc: 0,
-    // noonp: 0,
-    // noonc: 0.
+    EVPO: 0,
+    EVHB: 0,
+    NNHB: 0,
+    NNPO: 0,
   };
 
   // update report details
@@ -130,15 +138,17 @@ for (let i = 0; i < voyages.length; i++) {
     // oldest to most recent
     const ret = {};
 
-    if (j.report_type === "DSBY") {
+    if (j.report_type === Report.type.DEP_SBY) {
       // update current load condition for every departure sby (new leg)
       curLoadingCondition = await getLoadingCondition(uuid);
     }
+    // console.log(j.report_type);
     curLegNo = j.voyage_leg; // update current leg no for every report
     lastReportNo[j.report_type] = j.report_num; // update most recent report no for each type
 
     ret["report_type"] = j.report_type;
     ret["report_no"] = ReportTypeToDisplay[j.report_type] + " " + j.report_num;
+    // TODO: get voyage leg to get route
     // ret["departure"] = j.route.departure_port || "N/A";
     // ret["arrival"] = j.route.arrival_port || "N/A";
     ret["loading_condition"] = curLoadingCondition || "N/A";
@@ -149,6 +159,7 @@ for (let i = 0; i < voyages.length; i++) {
   }
 
   // update voyage details
+  voyageDetails[uuid]["uuid"] = uuid;
   voyageDetails[uuid]["cur_voyage_no"] = voyages[i].voyage_num;
   voyageDetails[uuid]["cur_loading_condition"] = curLoadingCondition || "N/A";
   voyageDetails[uuid]["cur_leg_no"] = curLegNo || "N/A";
@@ -158,16 +169,19 @@ for (let i = 0; i < voyages.length; i++) {
   voyageDetails[uuid]["last_arrs_report_no"] = lastReportNo["ASBY"];
   voyageDetails[uuid]["last_arrf_report_no"] = lastReportNo["AFWE"];
   voyageDetails[uuid]["last_bdn_report_no"] = lastReportNo["BDN"];
-  // voyageDetails[uuid]["last_evntp_report_no"] = lastEvntpReportNo;
-  // voyageDetails[uuid]["last_evntc_report_no"] = lastEvntcReportNo;
-  // voyageDetails[uuid]["last_noonp_report_no"] = lastNoonpReportNo;
-  // voyageDetails[uuid]["last_noonc_report_no"] = lastNooncReportNo;
+  voyageDetails[uuid]["last_evntp_report_no"] = lastReportNo["EVPO"];
+  voyageDetails[uuid]["last_evntc_report_no"] = lastReportNo["EVHB"];
+  voyageDetails[uuid]["last_noonp_report_no"] = lastReportNo["NNPO"];
+  voyageDetails[uuid]["last_noonc_report_no"] = lastReportNo["NNHB"];
+
+  if (i === voyages.length - 1) {
+    // update voyage number
+    lastVoyageNo.value = voyages[i].voyage_num;
+  }
 }
 
-// TODO: replace with helper conversion method
-const portCodeToPortName = ref({
-  "SG PPT": "Singapore",
-  "KR USN": "Ulsan, South Korea",
+onMounted(() => {
+  isFetchingVoyages.value = false;
 });
 // console.log("This runs in overview view");
 // const store = useVoyageStore();

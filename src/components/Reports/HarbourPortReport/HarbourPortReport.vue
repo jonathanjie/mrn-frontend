@@ -9,15 +9,20 @@
 
     <div class="col-span-2 flex space-x-5 text-gray-700 text-14">
       <div class="flex align-center space-x-2">
-        <input type="radio" id="event" value="event" v-model="event_or_noon" />
+        <input
+          type="radio"
+          id="event"
+          :value="false"
+          v-model="report_subtype_is_noon"
+        />
         <label for="event">{{ $t("event") }}</label>
       </div>
       <div class="flex align-center space-x-2">
         <input
           type="radio"
           id="noonInHarbourPort"
-          value="noon"
-          v-model="event_or_noon"
+          :value="true"
+          v-model="report_subtype_is_noon"
           @change="recoverStatus"
         />
         <label for="noonInHarbourPort">{{ $t("noonInHarbourPort") }}</label>
@@ -30,7 +35,7 @@
       </div>
       <select
         v-model="status"
-        :disabled="event_or_noon == 'noon'"
+        :disabled="report_subtype_is_noon"
         class="col-span-3 p-3 border-y border-r focus:outline-0 disabled:text-gray-400 disabled:bg-gray-50"
         :class="status === 'default' ? 'text-gray-400' : 'text-gray-700'"
         @change="resetOperations"
@@ -39,18 +44,11 @@
           {{ $t("selectEvent") }}
         </option>
         <option
-          v-for="start_status in START_STATUS"
-          :value="start_status"
-          :key="start_status"
+          v-for="(val, key) in PARKING_STATUS_EVNT"
+          :value="val"
+          :key="val"
         >
-          {{ $t(start_status) }}
-        </option>
-        <option
-          v-for="end_status in END_STATUS"
-          :value="end_status"
-          :key="end_status"
-        >
-          {{ $t(end_status) }}
+          {{ $t(key) }}
         </option>
       </select>
       <div
@@ -81,19 +79,26 @@
       >
         {{ $t("dateAndTime") }}
       </div>
-      <DatePicker
-        v-model="reporting_date_time"
-        class="col-span-3 border-b border-r"
-        textInput
-        :textInputOptions="textInputOptions"
-        :format="format"
-        :modelValue="string"
-        :placeholder="$t('selectDateAndTime')"
-      >
-        <template #input-icon>
-          <img src="" />
-        </template>
-      </DatePicker>
+      <div class="col-span-3 relative flex items-center border-b border-r">
+        <DatePicker
+          v-model="reporting_date_time"
+          class="grow"
+          textInput
+          :textInputOptions="textInputOptions"
+          :format="format"
+          :modelValue="string"
+          :placeholder="$t('selectDateAndTime')"
+        >
+          <template #input-icon>
+            <img src="" />
+          </template>
+        </DatePicker>
+        <MiniUnitDisplay
+          class="absolute right-0 min-w-fit"
+          :class="reporting_date_time ? 'mr-9' : 'mr-2'"
+          >{{ reporting_date_time_utc }}</MiniUnitDisplay
+        >
+      </div>
       <div class="col-span-2 text-blue-700 p-3 border-x border-b bg-gray-50">
         {{ $t("distanceTravelled") }}
       </div>
@@ -119,7 +124,7 @@
       <div
         class="col-span-3 flex flex-col space-y-2 p-3 text-gray-700"
         :class="
-          event_or_noon === 'noon' || END_STATUS.includes(status)
+          report_subtype_is_noon || END_STATUS.includes(status)
             ? 'bg-gray-50'
             : ''
         "
@@ -127,7 +132,7 @@
         <div class="flex align-center space-x-2">
           <input
             :disabled="
-              event_or_noon == 'noon' ||
+              report_subtype_is_noon ||
               !START_STATUS.includes(status) ||
               !planned_operations.includes('waiting')
             "
@@ -140,7 +145,7 @@
           <label
             for="waiting"
             :class="
-              event_or_noon == 'noon' ||
+              report_subtype_is_noon ||
               !START_STATUS.includes(status) ||
               !planned_operations.includes('waiting')
                 ? 'text-gray-400'
@@ -156,7 +161,7 @@
         >
           <input
             :disabled="
-              event_or_noon == 'noon' ||
+              report_subtype_is_noon ||
               !START_STATUS.includes(status) ||
               !planned_operations.includes(val) ||
               operations.includes('waiting')
@@ -169,7 +174,7 @@
           <label
             :for="val"
             :class="
-              event_or_noon == 'noon' ||
+              report_subtype_is_noon ||
               !START_STATUS.includes(status) ||
               !planned_operations.includes(val)
                 ? 'text-gray-400'
@@ -181,7 +186,7 @@
         <div v-if="other_planned_operation" class="flex align-center space-x-2">
           <input
             :disabled="
-              event_or_noon == 'noon' ||
+              report_subtype_is_noon ||
               !START_STATUS.includes(status) ||
               !planned_operations.includes('others') ||
               operations.includes('waiting')
@@ -194,7 +199,7 @@
           <label
             for="others"
             :class="
-              event_or_noon == 'noon' ||
+              report_subtype_is_noon ||
               !START_STATUS.includes(status) ||
               !planned_operations.includes('others')
                 ? 'text-gray-400'
@@ -272,7 +277,12 @@
 
 <script setup>
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
+import {
+  preventNaN,
+  textInputOptions,
+  format,
+  formatUTC,
+} from "@/utils/helpers.js";
 import { useHarbourPortReportStore } from "@/stores/useHarbourPortReportStore";
 import { storeToRefs } from "pinia";
 import {
@@ -280,15 +290,19 @@ import {
   OPERATIONS,
   START_STATUS,
   END_STATUS,
+  PARKING_STATUS_EVNT,
 } from "@/utils/options";
+import { UTCPlaceholder } from "@/constants";
+import { computed } from "vue";
 
 const store = useHarbourPortReportStore();
 const {
-  eventOrNoon: event_or_noon,
+  reportSubtypeIsNoon: report_subtype_is_noon,
   prevStatus: prev_status,
   status: status,
   reportingDateTime: reporting_date_time,
   reportingTimeZone: reporting_time_zone,
+  reportingDateTimeUTC,
   distanceTravelled: distance_travelled,
   latDir: lat_dir,
   latMinutes: lat_minutes,
@@ -311,7 +325,7 @@ const setOperationsToWaiting = () => {
 };
 
 const recoverStatus = () => {
-  if (event_or_noon.value == "noon") {
+  if (report_subtype_is_noon.value) {
     status.value = prev_status.value;
     operations.value = [];
   }
@@ -322,4 +336,10 @@ const resetOperations = () => {
     operations.value = [];
   }
 };
+
+const reporting_date_time_utc = computed(() =>
+  reportingDateTimeUTC.value
+    ? formatUTC(new Date(reportingDateTimeUTC.value))
+    : UTCPlaceholder
+);
 </script>

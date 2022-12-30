@@ -2,6 +2,7 @@
 import { computed, defineProps } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { CargoLoadConditions } from "@/constants";
 // import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 // import { storeToRefs } from "pinia";
 
@@ -15,18 +16,10 @@ const props = defineProps({
 const loadCondition = computed(
   () => props.report.cargooperation.load_condition
 );
-const loading = computed(
-  () => props.report.cargooperation.loading
-);
-const unloading = computed(
-  () => props.report.cargooperation.unloading
-);
-const totalAmount = computed(
-  () => props.report.cargooperation.total
-);
-const time = computed(
-  () => props.report.cargooperation.time
-);
+const loading = computed(() => props.report.cargooperation.loading);
+const unloading = computed(() => props.report.cargooperation.unloading);
+const totalAmount = computed(() => props.report.cargooperation.total);
+const time = computed(() => props.report.cargooperation.time);
 
 // const store = useDepartureSBYReportStore();
 // const {
@@ -52,6 +45,7 @@ const time = computed(
           {{ $t("loadCondition") }}
         </div>
         <select
+          disabled
           v-model="loadCondition"
           class="col-span-3 p-3 border-l text-14 focus:outline-0"
           :class="
@@ -61,10 +55,10 @@ const time = computed(
           <option selected disabled value="default">
             {{ $t("selectAnOption") }}
           </option>
-          <option value="ballast">{{ $t("ballast") }}</option>
-          <option value="laden">{{ $t("laden") }}</option>
-          <option value="eastbound">{{ $t("eastbound") }}</option>
-          <option value="westbound">{{ $t("westbound") }}</option>
+          <option :value="CargoLoadConditions.BALLAST">{{ $t("ballast") }}</option>
+          <option :value="CargoLoadConditions.LADEN">{{ $t("laden") }}</option>
+          <option :value="CargoLoadConditions.EASTBOUND">{{ $t("eastbound") }}</option>
+          <option :value="CargoLoadConditions.WESTBOUND">{{ $t("westbound") }}</option>
         </select>
       </div>
       <div class="grid grid-cols-5">
@@ -75,6 +69,7 @@ const time = computed(
         </div>
         <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
           <input
+            disabled
             v-model="loading"
             @keypress="preventNaN($event, loading)"
             :placeholder="$t('inputDetails')"
@@ -90,6 +85,7 @@ const time = computed(
         </div>
         <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
           <input
+            disabled
             v-model="unloading"
             @keypress="preventNaN($event, unloading)"
             :placeholder="$t('inputDetails')"
@@ -105,6 +101,7 @@ const time = computed(
         </div>
         <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
           <input
+            disabled
             v-model="totalAmount"
             @keypress="preventNaN($event, totalAmount)"
             :placeholder="$t('inputDetails')"
@@ -120,6 +117,7 @@ const time = computed(
         </div>
         <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border">
           <input
+            disabled
             v-model="time"
             @keypress="preventNaN($event, time)"
             :placeholder="$t('inputDetails')"

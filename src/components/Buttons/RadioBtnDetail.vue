@@ -5,11 +5,11 @@
   <button
     @click="updateActiveBtn"
     class="flex flex-col bg-white text-gray-700 font-bold text-14 py-4 px-5 rounded-xl border"
-    :class="this.type == this.active ? 'border-pink' : 'border-gray-200'"
+    :class="this.type === this.active ? 'border-pink' : 'border-gray-200'"
   >
     <div class="flex">
       <img
-        v-if="this.active == this.type"
+        v-if="this.active === this.type"
         src="@/assets/icons/checkboxes/checked_round.svg"
       />
       <img v-else src="@/assets/icons/checkboxes/unchecked_round.svg" />

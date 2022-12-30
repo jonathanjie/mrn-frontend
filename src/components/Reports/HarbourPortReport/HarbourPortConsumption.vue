@@ -11,7 +11,7 @@
 
     <div class="grid divide-y divide-dashed gap-8">
       <div>
-        <div class="self-center mb-4 text-16 text-gray-700">
+        <div class="self-center mb-4 text-16 text-gray-700 pt-4">
           {{ $t("fuelOilInMT") }}
         </div>
 
@@ -488,7 +488,7 @@
           <div
             class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25"
           >
-            {{ $t("receiving") }}
+            {{ $t("receipt") }}
           </div>
           <div
             class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25"

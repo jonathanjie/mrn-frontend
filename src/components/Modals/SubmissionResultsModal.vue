@@ -74,7 +74,7 @@
               v-if="!isSubmissionSuccessful"
               class="px-6 py-2 text-14 border-red-500 text-red-500"
               type="button"
-              @click="$emit('close-modal')"
+              @click="returnToReport"
               :isWarning="true"
             >
               <template v-slot:content>{{ $t("returnToReport") }}</template>
@@ -84,7 +84,7 @@
               v-else
               class="px-6 py-2 text-14"
               type="button"
-              v-on:click="returnToVesselOverview"
+              @click="returnToVesselOverview"
             >
               <template v-slot:content>{{ $t("proceed") }}</template>
             </GradientButton>
@@ -107,9 +107,8 @@ import { ErrorFieldsToDisplay } from "@/constants";
 const router = useRouter();
 
 const submissionStatusStore = useSubmissionStatusStore();
-const { isSubmissionSuccessful, errorMessage } = storeToRefs(
-  submissionStatusStore
-);
+const { isSubmissionRequested, isSubmissionSuccessful, errorMessage } =
+  storeToRefs(submissionStatusStore);
 
 const emit = defineEmits(["close-modal"]);
 
@@ -117,5 +116,10 @@ const returnToVesselOverview = () => {
   emit("close-modal");
   submissionStatusStore.$reset();
   router.push({ name: "vessel-overview" });
+};
+
+const returnToReport = () => {
+  emit("close-modal");
+  isSubmissionRequested.value = false;
 };
 </script>

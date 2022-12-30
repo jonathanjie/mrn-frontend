@@ -7,11 +7,10 @@ export const Report = {
     ARR_SBY_EOSP: "ASBY",
     ARR_FWE: "AFWE",
     BUNKER: "BDN",
-    EVENT: "EVENT", // TODO: placeholder, remove when event types are implemented in backend
-    EVENT_PORT: "EVNTP",
-    EVENT_COASTAL: "EVNTC",
-    NOON_PORT: "NOONP",
-    NOON_COASTAL: "NOONC",
+    EVENT_HARBOUR: "EVHB",
+    EVENT_PORT: "EVPO",
+    NOON_HARBOUR: "NNHB",
+    NOON_PORT: "NNPO",
   },
   SRID: "4326",
   route: "route",
@@ -26,11 +25,10 @@ export const ReportTypeToDisplay = {
   ASBY: "ARRS",
   AFWE: "ARRF",
   BDN: "BDN",
-  EVNT: "EVNT", // TODO: replace with 4 subtypes below
-  EVNTP: "EVNTP",
-  EVNTC: "EVNTC",
-  NOONP: "NOONP",
-  NOONC: "NOONC",
+  EVPO: "EVNTP",
+  EVHB: "EVNTHB",
+  NNPO: "NOONP",
+  NNHB: "NOONHB",
 };
 
 export const ErrorFieldsToDisplay = {
@@ -54,6 +52,8 @@ export const ErrorFieldsToDisplay = {
   heavyweatherdata: "Heavy Weather Condition",
   stoppagedata: "Stoppage or Change in RPM (at Sea)",
   arrivalfwetimeandposition: "Finish With Engine",
+  eventdata: "Report",
+  bdndata: "BDN",
 };
 
 export const Direction = {
@@ -98,6 +98,13 @@ export const ConsumptionType = {
   SBY_TO_FWE: "STANDBY_TO_FWE",
   LAST_TO_EVENT: "LAST_TO_EVENT",
   PILOT_TO_PILOT: "PILOT_TO_PILOT",
+};
+
+export const CargoLoadConditions = {
+  LADEN: "LADEN",
+  BALLAST: "BALLAST",
+  EASTBOUND: "EASTBOUND",
+  WESTBOUND: "WESTBOUND",
 };
 
 export const ActualPerformanceType = {

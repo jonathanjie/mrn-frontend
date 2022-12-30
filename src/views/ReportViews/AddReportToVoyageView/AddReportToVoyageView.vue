@@ -58,8 +58,8 @@
       <router-view></router-view>
       <SubmissionResultsModal
         ref="modal"
-        v-show="isSubmissionRequested"
-        @close-modal="isSubmissionRequested = false"
+        v-show="isSubmissionModalVisible"
+        @close-modal="isSubmissionModalVisible = false"
       ></SubmissionResultsModal>
     </div>
   </div>
@@ -83,11 +83,12 @@ const updateActiveReportType = (type) => {
 };
 
 const submissionStatusStore = useSubmissionStatusStore();
-const { isSubmissionRequested } = storeToRefs(submissionStatusStore);
+const { isSubmissionModalVisible } = storeToRefs(submissionStatusStore);
 // const showModal = ref(isSubmissionRequested.value);
 
 const store = useVoyageStore();
 const {
+  voyageUuid,
   curLoadingCondition,
   curLegNo,
   curVoyageNo,
@@ -97,10 +98,10 @@ const {
   lastArrsReportNo,
   lastArrfReportNo,
   lastBdnReportNo,
-  // lastEvntpReportNo,
-  // lastEvntcReportNo,
-  // lastNoonpReportNo,
-  // lastNooncReportNo,
+  lastEvntpReportNo,
+  lastEvntcReportNo,
+  lastNoonpReportNo,
+  lastNooncReportNo,
 } = storeToRefs(store);
 
 console.log("voyage details loaded", history.state.voyageDetails);
@@ -109,6 +110,7 @@ const voyageDetails = history.state.voyageDetails
   : {};
 
 // store selected voyage details in pinia voyage store
+voyageUuid.value = voyageDetails.uuid;
 curLoadingCondition.value = voyageDetails.cur_loading_condition;
 curLegNo.value = voyageDetails.cur_leg_no;
 curVoyageNo.value = voyageDetails.cur_voyage_no;
@@ -118,10 +120,10 @@ lastDeprReportNo.value = voyageDetails.last_depr_report_no;
 lastArrsReportNo.value = voyageDetails.last_arrs_report_no;
 lastArrfReportNo.value = voyageDetails.last_arrf_report_no;
 lastBdnReportNo.value = voyageDetails.last_bdn_report_no;
-// lastEvntpReportNo.value = voyageDetails.last_evntp_report_no;
-// lastEvntcReportNo.value = voyageDetails.last_evntc_report_no;
-// lastNoonpReportNo.value = voyageDetails.last_noonp_report_no;
-// lastNooncReportNo.value = voyageDetails.last_noonc_report_no;
+lastEvntpReportNo.value = voyageDetails.last_evntp_report_no;
+lastEvntcReportNo.value = voyageDetails.last_evntc_report_no;
+lastNoonpReportNo.value = voyageDetails.last_noonp_report_no;
+lastNooncReportNo.value = voyageDetails.last_noonc_report_no;
 
 // onBeforeRouteLeave((to, from) => {
 //   console.log(to);

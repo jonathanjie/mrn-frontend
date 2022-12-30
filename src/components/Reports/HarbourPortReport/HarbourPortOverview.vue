@@ -40,19 +40,26 @@
       <div class="col-span-2 text-blue-700 p-3 border-r">
         {{ $t("reportingDateAndTime") }}
       </div>
-      <DatePicker
-        v-model="reporting_date_time"
-        class="col-span-3"
-        textInput
-        :textInputOptions="textInputOptions"
-        :format="format"
-        :modelValue="string"
-        :placeholder="$t('selectDateAndTime')"
-      >
-        <template #input-icon>
-          <img src="" />
-        </template>
-      </DatePicker>
+      <div class="col-span-3 relative flex items-center bg-white">
+        <DatePicker
+          v-model="reporting_date_time"
+          class="grow"
+          textInput
+          :textInputOptions="textInputOptions"
+          :format="format"
+          :modelValue="string"
+          :placeholder="$t('selectDateAndTime')"
+        >
+          <template #input-icon>
+            <img src="" />
+          </template>
+        </DatePicker>
+        <MiniUnitDisplay
+          class="absolute right-0 min-w-fit"
+          :class="reporting_date_time ? 'mr-9' : 'mr-2'"
+          >{{ reporting_date_time_utc }}</MiniUnitDisplay
+        >
+      </div>
     </div>
     <div
       class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14 border xl:mb-6"
@@ -79,49 +86,17 @@
         </select>
       </div>
     </div>
-    <div
-      class="col-span-2 xl:col-span-1 grid grid-cols-5 border bg-gray-50 text-14"
-    >
-      <div class="col-span-2 row-span-2 self-center text-blue-700 p-3">
-        {{ $t("departurePortName") }}
-      </div>
-      <input
-        class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b"
-        disabled
-        v-model="departure_port_country"
-      />
-      <input
-        class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l"
-        disabled
-        v-model="departure_port_name"
-      />
-    </div>
-    <div
-      class="col-span-2 xl:col-span-1 grid grid-cols-5 border bg-gray-50 text-14"
-    >
-      <div class="col-span-2 row-span-2 self-center text-blue-700 p-3">
-        {{ $t("destinationPortName") }}
-      </div>
-      <input
-        class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b"
-        disabled
-        v-model="destination_port_country"
-      />
-      <input
-        class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l"
-        disabled
-        v-model="destination_port_name"
-      />
-    </div>
   </div>
 </template>
 
 <script setup>
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useHarbourPortReportStore } from "@/stores/useHarbourPortReportStore";
-import { textInputOptions, format } from "@/utils/helpers";
+import { textInputOptions, format, formatUTC } from "@/utils/helpers";
 import { storeToRefs } from "pinia";
 import { TIMEZONES } from "@/utils/options";
+import { UTCPlaceholder } from "@/constants";
+import { computed } from "vue";
 
 const store = useHarbourPortReportStore();
 const {
@@ -131,9 +106,12 @@ const {
   voyageNo: voyage_no,
   reportingDateTime: reporting_date_time,
   reportingTimeZone: reporting_time_zone,
-  departurePortCountry: departure_port_country,
-  departurePortName: departure_port_name,
-  destinationPortCountry: destination_port_country,
-  destinationPortName: destination_port_name,
+  reportingDateTimeUTC,
 } = storeToRefs(store);
+
+const reporting_date_time_utc = computed(() =>
+  reportingDateTimeUTC.value
+    ? formatUTC(new Date(reportingDateTimeUTC.value))
+    : UTCPlaceholder
+);
 </script>

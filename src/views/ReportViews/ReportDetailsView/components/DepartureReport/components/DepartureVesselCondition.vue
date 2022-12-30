@@ -21,19 +21,12 @@ const draftMid = computed(
 const draftAft = computed(
   () => props.report.departurevesselcondition.draft_aft
 );
-const constant = computed(
-  () => props.report.departurevesselcondition.constant
-);
-const gm = computed(
-  () => props.report.departurevesselcondition.gm
-);
-const ballast = computed(
-  () => props.report.departurevesselcondition.ballast
-);
+const constant = computed(() => props.report.departurevesselcondition.constant);
+const gm = computed(() => props.report.departurevesselcondition.gm);
+const ballast = computed(() => props.report.departurevesselcondition.ballast);
 const displacement = computed(
   () => props.report.departurevesselcondition.displacement
 );
-
 
 // const store = useDepartureSBYReportStore();
 // const {
@@ -68,6 +61,7 @@ const displacement = computed(
       </div>
       <div class="flex col-span-5 p-2 pl-4 border-b border-x bg-white">
         <input
+          disabled
           v-model="draftFwd"
           @keypress="preventNaN($event, draftFwd)"
           placeholder="00.00"
@@ -80,6 +74,7 @@ const displacement = computed(
       </div>
       <div class="flex col-span-5 p-2 pl-4 border-b border-x bg-white">
         <input
+          disabled
           v-model="draftMid"
           @keypress="preventNaN($event, draftMid)"
           placeholder="00.00"
@@ -92,6 +87,7 @@ const displacement = computed(
       </div>
       <div class="flex col-span-5 p-2 pl-4 border-x bg-white">
         <input
+          disabled
           v-model="draftAft"
           @keypress="preventNaN($event, draftAft)"
           placeholder="00.00"
@@ -112,6 +108,7 @@ const displacement = computed(
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-white">
         <input
+          disabled
           v-model="constant"
           @keypress="preventNaN($event, constant)"
           placeholder="00.00"
@@ -124,6 +121,7 @@ const displacement = computed(
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-white">
         <input
+          disabled
           v-model="gm"
           @keypress="preventNaN($event, gm)"
           placeholder="00.00"
@@ -136,6 +134,7 @@ const displacement = computed(
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-white">
         <input
+          disabled
           v-model="ballast"
           @keypress="preventNaN($event, ballast)"
           placeholder="00.00"
@@ -148,6 +147,7 @@ const displacement = computed(
       }}</span>
       <div class="flex col-span-3 p-2 pl-4 border-l bg-white">
         <input
+          disabled
           v-model="displacement"
           @keypress="preventNaN($event, displacement)"
           placeholder="00.00"

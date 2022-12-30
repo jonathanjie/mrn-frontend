@@ -2,7 +2,8 @@ import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
 import { storeToRefs } from "pinia";
-
+import { convertLTToUTC } from "@/utils/helpers";
+import { PARKING_STATUS_EVNT } from "@/utils/options";
 // TODO: fetch from database
 const temp = {
   // Finish With Engine
@@ -16,14 +17,8 @@ const temp = {
   otherPlannedOperation: "",
   // fetch above from most recent arrival eosp/sby
 
-  // Overview
-  departurePortCountry: "Country A",
-  departurePortName: "Port A",
-  destinationPortCountry: "Country A",
-  destinationPortName: "Port A",
-
   // Harbour Port Report
-  prevStatus: "anchoringStartOutside", // only applies if there was a previous event report
+  prevStatus: PARKING_STATUS_EVNT.anchoringStartOutside, // only applies if there was a previous event report
 
   // Consumption & Condition
   lsfoPrevROB: 200,
@@ -39,25 +34,45 @@ export const useHarbourPortReportStore = defineStore(
   "harbourPortReport",
   () => {
     const store = useVoyageStore();
-    // TODO: report no for harbourPort depends on exact type of report
-    const { evntReportNo, curLegNo, curLoadingCondition, curVoyageNo } =
-      storeToRefs(store);
+    const {
+      evntcReportNo,
+      evntpReportNo,
+      noonpReportNo,
+      nooncReportNo,
+      curLegNo,
+      curLoadingCondition,
+      curVoyageNo,
+    } = storeToRefs(store);
 
     // status var
-    const reportType = ref("in_port");
-    const eventOrNoon = ref("event");
+    const reportSubtypeIsPort = ref(true);
+    const reportSubtypeIsNoon = ref(false);
 
     // Harbour Port Overview
-    const reportNo = evntReportNo; // TODO: report no for harbourPort depends on exact type of report
+    const reportNo = computed(() =>
+      reportSubtypeIsPort.value && reportSubtypeIsNoon.value
+        ? noonpReportNo
+        : reportSubtypeIsPort.value && !reportSubtypeIsNoon.value
+        ? evntpReportNo
+        : !reportSubtypeIsPort.value && reportSubtypeIsNoon.value
+        ? nooncReportNo
+        : !reportSubtypeIsPort.value && !reportSubtypeIsNoon.value
+        ? evntcReportNo
+        : ""
+    );
     const legNo = curLegNo;
     const loadingCondition = curLoadingCondition;
     const voyageNo = curVoyageNo;
     const reportingDateTime = ref("");
     const reportingTimeZone = ref("default");
-    const departurePortCountry = ref(temp.departurePortCountry);
-    const departurePortName = ref(temp.departurePortName);
-    const destinationPortCountry = ref(temp.destinationPortCountry);
-    const destinationPortName = ref(temp.destinationPortName);
+    const reportingDateTimeUTC = computed(() =>
+      reportingTimeZone.value !== "default" && reportingDateTime.value
+        ? convertLTToUTC(
+            new Date(reportingDateTime.value),
+            reportingTimeZone.value
+          )
+        : ""
+    );
 
     // Harbour Port Report
     const prevStatus = ref(temp.prevStatus);
@@ -207,19 +222,20 @@ export const useHarbourPortReportStore = defineStore(
 
     return {
       // status var
-      reportType, // HarbourPortReportView.vue
-      eventOrNoon, // HarbourPortReport.vue
+      reportSubtypeIsPort, // HarbourPortReportOverview.vue
+      reportSubtypeIsNoon, // HarbourPortReport.vue
       // Harbour Port Overview
       reportNo,
+      noonpReportNo,
+      nooncReportNo,
+      evntpReportNo,
+      evntcReportNo,
       legNo,
       loadingCondition,
       voyageNo,
       reportingDateTime,
       reportingTimeZone,
-      departurePortCountry,
-      departurePortName,
-      destinationPortCountry,
-      destinationPortName,
+      reportingDateTimeUTC,
       // Harbour Port Report
       prevStatus,
       status,

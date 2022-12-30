@@ -1,8 +1,15 @@
 <script setup>
-import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
 import { computed, defineProps } from "vue";
-import { parsePositionFromString } from "@/utils/helpers.js";
+import {
+  preventNaN,
+  textInputOptions,
+  format,
+  parsePositionFromString,
+  // formatUTC,
+} from "@/utils/helpers.js";
+import { TIMEZONES } from "@/utils/options";
 // import { UTCPlaceholder } from "@/constants";
+// import { computed } from "vue";
 // import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 
 const props = defineProps({
@@ -12,69 +19,62 @@ const props = defineProps({
   },
 });
 
-const isActive = computed(() =>
-  props.report.departurepilotstation ? true : false
-);
-const pilot_dep_name = computed(() => props.report.departurepilotstation.name);
-const pilot_dep_date_time = computed(
-  () => props.report.departurepilotstation.date
-);
-const position = computed(() =>
-  parsePositionFromString(props.report.departurepilotstation.position)
-);
+console.log("wtf", props.report);
 
-// const pilot_dep_date_time_utc = computed(() =>
-//   pilotDepDateTimeUTC.value
-//     ? formatUTC(new Date(pilotDepDateTimeUTC.value))
+const reportingTimeZone = computed(() => props.report.report_tz);
+const reportingDateTime = computed(() => props.report.report_date);
+
+const position = computed(() =>
+  parsePositionFromString(props.report.arrivalstandbytimeandposition.position)
+);
+console.log("timezone: ", reportingTimeZone);
+console.log("datetime: ", reportingDateTime);
+
+// const reporting_date_time_utc = computed(() =>
+//   reportingDateTimeUTC.value
+//     ? formatUTC(new Date(reportingDateTimeUTC.value))
 //     : UTCPlaceholder
 // );
 </script>
 
 <template>
-  <div
-    v-if="!isActive"
-    class="flex items-center bg-white rounded-lg p-5 shadow-card cursor-pointer"
-  >
-    <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
-    <img
-      src="@/assets/icons/checkboxes/unchecked_square.svg"
-      class="mr-2 h-5 w-5"
-    />
-    <span class="text-blue-700 text-16">{{ $t("pilotStationDeparture") }}</span>
-  </div>
-  <div
-    v-else
-    class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4 shadow-card"
-  >
-    <div class="col-span-2 flex items-center cursor-pointer">
+  <div class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4 shadow-card">
+    <div class="col-span-2 flex items-center">
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
-      <img
-        src="@/assets/icons/checkboxes/checked_square.svg"
-        class="mr-2 h-5 w-5"
-      />
       <span class="text-blue-700 text-16">
-        {{ $t("pilotStationDeparture") }}
+        {{ $t("sbyForArrival") }}
       </span>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border">
       <div
         class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
       >
-        {{ $t("name") }}
+        {{ $t("timeZone") }}
       </div>
-      <input
-        disabled
-        v-model="pilot_dep_name"
-        :placeholder="$t('inputName')"
-        class="col-span-3 p-3 pl-4 border-b bg-white text-14 text-gray-700 focus:outline-0"
-      />
+      <div class="flex col-span-3 border-b">
+        <select
+          disabled
+          class="grow self-center p-3 text-14 focus:outline-0"
+          :class="
+            reportingTimeZone === 'default' ? 'text-gray-400' : 'text-gray-700'
+          "
+          v-model="reportingTimeZone"
+        >
+          <option selected disabled value="default">
+            {{ $t("selectTimeZone") }}
+          </option>
+          <option v-for="(val, key) in TIMEZONES" :key="val" :value="val">
+            {{ key }}
+          </option>
+        </select>
+      </div>
       <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
         {{ $t("dateAndTime") }}
       </div>
       <div class="col-span-3 relative flex items-center">
         <DatePicker
           disabled
-          v-model="pilot_dep_date_time"
+          v-model="reportingDateTime"
           class="grow"
           textInput
           :textInputOptions="textInputOptions"
@@ -88,8 +88,8 @@ const position = computed(() =>
         </DatePicker>
         <!-- <MiniUnitDisplay
           class="absolute right-0 min-w-fit"
-          :class="pilot_dep_date_time ? 'mr-9' : 'mr-2'"
-          >{{ pilot_dep_date_time_utc }}</MiniUnitDisplay
+          :class="reporting_date_time ? 'mr-9' : 'mr-2'"
+          >{{ reporting_date_time_utc }}</MiniUnitDisplay
         > -->
       </div>
     </div>

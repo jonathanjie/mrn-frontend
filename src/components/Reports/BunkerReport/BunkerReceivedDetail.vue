@@ -12,7 +12,7 @@
     <!-- Upload delivery note section -->
     <DropZone
       class="flex drop-area border border-dashed border-sysblue-300 p-14 place-content-center rounded-lg text-16 text-gray-800 bg-gray-25"
-      @files-dropped="addFilesAndEmit"
+      @files-dropped="store.addFiles"
       #default="{ dropZoneActive }"
     >
       <span v-if="dropZoneActive">
@@ -46,7 +46,7 @@
         v-for="file of files"
         :key="file.id"
         :file="file"
-        @remove="removeFileAndEmit"
+        @remove="store.removeFile"
       />
     </ul>
 
@@ -137,7 +137,7 @@
         class="flex col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50"
       >
         {{ $t("densityAt15") }}
-        <MiniUnitDisplay>KG/M<sup>3</sup></MiniUnitDisplay>
+        <MiniUnitDisplay>KG/M³</MiniUnitDisplay>
       </div>
       <input
         v-model="density"
@@ -215,48 +215,28 @@
         {{ $t("marpol") }}
       </div>
       <input
-        v-model="marpol1"
-        @keypress="preventNaN($event, marpol1)"
+        v-model="marpol"
+        @keypress="preventNaN($event, marpol)"
         placeholder="000.00"
-        class="col-span-3 p-3 pl-4 border-r text-gray-700 focus:outline-0"
+        class="col-span-6 p-3 pl-4 text-gray-700 focus:outline-0"
       />
-      <input
-        v-model="marpol2"
-        @keypress="preventNaN($event, marpol2)"
-        placeholder="000.00"
-        class="col-span-3 p-3 pl-4 text-gray-700 focus:outline-0"
-      />
-
       <div class="col-span-2 text-blue-700 p-3 border-r border-t bg-gray-50">
         {{ $t("ship") }}
       </div>
       <input
-        v-model="ship1"
-        @keypress="preventNaN($event, ship1)"
+        v-model="ship"
+        @keypress="preventNaN($event, ship)"
         placeholder="000.00"
-        class="col-span-3 p-3 pl-4 border-r border-t text-gray-700 focus:outline-0"
+        class="col-span-6 p-3 pl-4 border-t text-gray-700 focus:outline-0"
       />
-      <input
-        v-model="ship2"
-        @keypress="preventNaN($event, ship2)"
-        placeholder="000.00"
-        class="col-span-3 p-3 pl-4 border-t text-gray-700 focus:outline-0"
-      />
-
       <div class="col-span-2 text-blue-700 p-3 border-r border-t bg-gray-50">
         {{ $t("barge") }}
       </div>
       <input
-        v-model="barge1"
-        @keypress="preventNaN($event, barge1)"
+        v-model="barge"
+        @keypress="preventNaN($event, barge)"
         placeholder="000.00"
-        class="col-span-3 p-3 pl-4 border-r border-t text-gray-700 focus:outline-0"
-      />
-      <input
-        v-model="barge2"
-        @keypress="preventNaN($event, barge2)"
-        placeholder="000.00"
-        class="col-span-3 p-3 pl-4 border-t text-gray-700 focus:outline-0"
+        class="col-span-6 p-3 pl-4 border-t text-gray-700 focus:outline-0"
       />
     </div>
   </div>
@@ -265,15 +245,12 @@
 <script setup>
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { preventNaN } from "@/utils/helpers.js";
-import useFileList from "@/components/FileDrop/file-list";
 import DropZone from "@/components/FileDrop/DropZone.vue";
 import FilePreview from "@/components/FileDrop/FilePreview.vue";
 import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
 import { storeToRefs } from "pinia";
 import { ALL_FUEL_OILS, ALL_LUBRICATING_OILS } from "@/utils/options";
 import { computed } from "vue";
-
-const { files, addFiles, removeFile } = useFileList();
 
 const store = useBunkerReportStore();
 const {
@@ -286,32 +263,17 @@ const {
   viscosityDegree: viscosity_degree,
   flashPoint: flash_point,
   sulfurContent: sulfur_content,
-  marpol1: marpol1,
-  marpol2: marpol2,
-  ship1: ship1,
-  ship2: ship2,
-  barge1: barge1,
-  barge2: barge2,
+  marpol: marpol,
+  ship: ship,
+  barge: barge,
+  files: files,
 } = storeToRefs(store);
 
 const isFuelOil = computed(() => oil_type.value === "fuelOil");
 const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
 
-const emit = defineEmits(["fileChange"]);
-
-const addFilesAndEmit = (newFiles) => {
-  addFiles(newFiles);
-  emit("fileChange", files);
-};
-
-const removeFileAndEmit = (file) => {
-  removeFile(file);
-  emit("fileChange", files);
-};
-
 const onInputChange = (e) => {
-  addFiles(e.target.files);
+  store.addFiles(e.target.files);
   e.target.value = null;
-  emit("fileChange", files);
 };
 </script>

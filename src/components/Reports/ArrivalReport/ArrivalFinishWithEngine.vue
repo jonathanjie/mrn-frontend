@@ -124,7 +124,7 @@
       </div>
       <div class="col-span-3 flex flex-col space-y-2 p-3 text-gray-700">
         <div
-          v-for="(val, key) in PARKING_STATUS"
+          v-for="(val, key) in PARKING_STATUS_ARR_FWE"
           :key="val"
           class="flex align-center space-x-2"
         >
@@ -214,7 +214,7 @@ import {
 } from "@/utils/helpers.js";
 import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
 import { storeToRefs } from "pinia";
-import { TIMEZONES, OPERATIONS, PARKING_STATUS } from "@/utils/options";
+import { TIMEZONES, OPERATIONS, PARKING_STATUS_ARR_FWE } from "@/utils/options";
 import { UTCPlaceholder } from "@/constants";
 import { computed } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";

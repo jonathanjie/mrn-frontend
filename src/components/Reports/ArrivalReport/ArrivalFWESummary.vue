@@ -26,7 +26,7 @@
               @keypress="preventNaN($event, total_distance_obs)"
               placeholder="0"
               disabled
-              class="w-16 text-14 text-gray-700 focus:outline-0 bg-gray-50"
+              class="w-16 text-14 text-gray-400 focus:outline-0 bg-gray-50"
             />
             <MiniUnitDisplay>NM</MiniUnitDisplay>
           </div>
@@ -39,7 +39,7 @@
               @keypress="preventNaN($event, total_sailing_time)"
               placeholder="0"
               disabled
-              class="w-16 text-14 text-gray-700 focus:outline-0 bg-gray-50"
+              class="w-16 text-14 text-gray-400 focus:outline-0 bg-gray-50"
             />
             <MiniUnitDisplay>HRS</MiniUnitDisplay>
           </div>
@@ -72,35 +72,35 @@
           @keypress="preventNaN($event, lsfo_me_sum)"
           placeholder="000.00"
           disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
+          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-400 focus:outline-0"
         />
         <input
           v-model="lsfo_ge_sum"
           @keypress="preventNaN($event, lsfo_ge_sum)"
           placeholder="000.00"
           disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
+          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-400 focus:outline-0"
         />
         <input
           v-model="lsfo_boiler_sum"
           @keypress="preventNaN($event, lsfo_boiler_sum)"
           placeholder="000.00"
           disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
+          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-400 focus:outline-0"
         />
         <input
           v-model="lsfo_igg_sum"
           @keypress="preventNaN($event, lsfo_igg_sum)"
           placeholder="000.00"
           disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
+          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-400 focus:outline-0"
         />
         <input
           v-model="lsfo_total_sum"
           @keypress="preventNaN($event, lsfo_total_sum)"
           placeholder="000.00"
           disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
+          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-400 focus:outline-0"
         />
 
         <div class="text-blue-700 p-3 border-t">{{ $t("mgo") }}</div>
@@ -109,35 +109,35 @@
           @keypress="preventNaN($event, mgo_me_sum)"
           placeholder="000.00"
           disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
+          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-400 focus:outline-0"
         />
         <input
           v-model="mgo_ge_sum"
           @keypress="preventNaN($event, mgo_ge_sum)"
           placeholder="000.00"
           disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
+          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-400 focus:outline-0"
         />
         <input
           v-model="mgo_boiler_sum"
           @keypress="preventNaN($event, mgo_boiler_sum)"
           placeholder="000.00"
           disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
+          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-400 focus:outline-0"
         />
         <input
           v-model="mgo_igg_sum"
           @keypress="preventNaN($event, mgo_igg_sum)"
           placeholder="000.00"
           disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
+          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-400 focus:outline-0"
         />
         <input
           v-model="mgo_total_sum"
           @keypress="preventNaN($event, mgo_total_sum)"
           placeholder="000.00"
           disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
+          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-400 focus:outline-0"
         />
       </div>
     </div>

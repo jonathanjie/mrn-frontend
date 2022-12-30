@@ -11,7 +11,7 @@ const temp = {
   arrivalPortCountry: "SG",
   arrivalPortName: "PPT",
   departureDateTime: "2022-06-01T04:23:00Z",
-  departureTimeZone: 9,
+  departureTimeZone: 9, // from departure sby time zone of this leg
 
   // Distance & Time / Performance
   lastNoonReportTime: "2022-12-01T00:00:00Z",
@@ -21,7 +21,6 @@ const temp = {
   distanceEngSoFar: 1000,
   revolutionCountPrevNoon: 20000,
   propellerPitch: 2,
-  previousNoonReportCount: 2,
   voyageAvgSpeed: 200,
   voyageAvgRpm: 100,
   voyageAvgSlip: 5,
@@ -36,12 +35,7 @@ const temp = {
   freshwaterPrevROB: 200,
 
   // Actual Performance
-  prevDistanceByObservation: 2000,
-  prevSailingTime: 200,
   displacement: 2000, // from departure s/by (vessel condition)
-  prevAvgSpeed: 20,
-  prevAvgRpm: 300,
-  prevMeFoConsumption: 20,
 
   // Total Consumption
   prevLsfoBreakdown: {
@@ -200,26 +194,26 @@ export const useArrivalEOSPReportStore = defineStore(
         : ""
     );
     const speedAvg = computed(() =>
-      speedSinceNoon.value !== ""
+      speedSinceNoon.value !== "" && hoursTotal.value
         ? +(
             (temp.voyageAvgSpeed + speedSinceNoon.value) /
-            (temp.previousNoonReportCount + 1)
+            (hoursTotal.value / 24)
           ).toFixed(2)
         : ""
     );
     const rpmAvg = computed(() =>
-      rpmSinceNoon.value !== ""
+      rpmSinceNoon.value !== "" && hoursTotal.value
         ? +(
             (temp.voyageAvgRpm + rpmSinceNoon.value) /
-            (temp.previousNoonReportCount + 1)
+            (hoursTotal.value / 24)
           ).toFixed(1)
         : ""
     );
     const slipAvg = computed(() =>
-      slipSinceNoon.value !== ""
+      slipSinceNoon.value !== "" && hoursTotal.value
         ? +(
             (temp.voyageAvgSlip + slipSinceNoon.value) /
-            (temp.previousNoonReportCount + 1)
+            (hoursTotal.value / 24)
           ).toFixed(2)
         : ""
     );

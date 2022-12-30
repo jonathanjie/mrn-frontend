@@ -5,6 +5,9 @@ import { storeToRefs } from "pinia";
 import { convertLTToUTC, convertUTCToLT } from "@/utils/helpers";
 
 const temp = {
+  // Overview (get from departure sby)
+  reportingTimeZone: 9,
+
   // Consumption & Condition
   lsfoPrevROB: 200,
   mgoPrevROB: 200,
@@ -43,7 +46,7 @@ export const useDepartureCOSPReportStore = defineStore(
     const loadingCondition = curLoadingCondition;
     const voyageNo = curVoyageNo;
     const reportingDateTime = ref("");
-    const reportingTimeZone = ref("default");
+    const reportingTimeZone = ref(temp.reportingTimeZone);
     const reportingDateTimeUTC = computed(() =>
       reportingTimeZone.value !== "default" && reportingDateTime.value
         ? convertLTToUTC(

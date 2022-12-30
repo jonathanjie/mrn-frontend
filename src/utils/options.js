@@ -49,28 +49,14 @@ export const OPERATIONS = {
   survey: "survey",
 };
 
-export const START_STATUS = [
-  "anchoringStartOutside",
-  "anchoringStartInside",
-  "driftingStart",
-  "shiftingStart",
-];
-
-export const END_STATUS = [
-  "anchoringEndOutside",
-  "anchoringEndInside",
-  "driftingEnd",
-  "shiftingEnd",
-];
-
 export const ALL_FUEL_OILS = {
-  mdo: "mdo",
-  mgo: "mgo",
-  lsfo: "lsfo",
-  hfo: "hfo",
-  lpgp: "propane",
-  lpgb: "butane",
-  lng: "lng",
+  mdo: "MDO",
+  mgo: "MGO",
+  lsfo: "LSFO",
+  hfo: "HFO",
+  lpgp: "LPGP",
+  lpgb: "LPGB",
+  lng: "LNG",
 };
 
 export const ALL_LUBRICATING_OILS = {
@@ -88,9 +74,34 @@ export const LOAD_CONDITIONS = {
   westbound: "WESTBOUND",
 };
 
-export const PARKING_STATUS = {
+export const PARKING_STATUS_ARR_FWE = {
   anchoringStartOutside: "ANCHOR_START_OUTSIDE",
   anchoringStartInside: "ANCHOR_START_INSIDE",
   driftingStart: "DRIFTING_START",
   berthingStart: "BERTHING",
 };
+
+export const PARKING_STATUS_EVNT = {
+  anchoringStartOutside: "ANCHOR_START_OUTSIDE",
+  anchoringEndOutside: "ANCHOR_END_OUTSIDE",
+  anchoringStartInside: "ANCHOR_START_INSIDE",
+  anchoringEndInside: "ANCHOR_END_INSIDE",
+  driftingStart: "DRIFTING_START",
+  driftingEnd: "DRIFTING_END",
+  shiftingStart: "SHIFTING_START",
+  shiftingEnd: "SHIFTING_END",
+};
+
+export const START_STATUS = [
+  "ANCHOR_START_OUTSIDE",
+  "ANCHOR_START_INSIDE",
+  "DRIFTING_START",
+  "SHIFTING_START",
+];
+
+export const END_STATUS = [
+  "ANCHOR_END_OUTSIDE",
+  "ANCHOR_END_INSIDE",
+  "DRIFTING_END",
+  "SHIFTING_END",
+];
