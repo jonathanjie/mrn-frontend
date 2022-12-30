@@ -136,21 +136,8 @@ const home = () => {
 
 const store = useVoyageStore();
 const auth = useAuthStore();
+console.log("Role here", auth.role);
 const ship = await getShip();
 // const ship = ships[0];
-const crew = auth.role !== "manager";
-if (crew) {
-  const voyages = await getVoyages(ship.imo_reg);
-  store.voyages = voyages;
-  const reports = await getReports(ship.imo_reg);
-  let output = {};
-  for (let i of reports) {
-    for (let j of voyages) {
-      if (i.uuid == j.uuid) {
-        output[i.uuid] = i.reports.reverse();
-      }
-    }
-  }
-  store.reports = output;
-}
+const manager = auth.role === "manager";
 </script>

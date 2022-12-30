@@ -32,7 +32,6 @@ import { ref, onMounted } from "vue";
 import VoyageCard from "../../components/VoyageCard.vue";
 import { readableUTCDate } from "@/utils/helpers";
 import { ReportTypeToDisplay, Report } from "@/constants";
-import { useAuthStore } from "@/stores/useAuthStore";
 import { useShipStore } from "@/stores/useShipStore";
 import { storeToRefs } from "pinia";
 import axios from "axios";
