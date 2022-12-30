@@ -50,13 +50,13 @@ export const OPERATIONS = {
 };
 
 export const ALL_FUEL_OILS = {
-  mdo: "mdo",
-  mgo: "mgo",
-  lsfo: "lsfo",
-  hfo: "hfo",
-  lpgp: "propane",
-  lpgb: "butane",
-  lng: "lng",
+  mdo: "MDO",
+  mgo: "MGO",
+  lsfo: "LSFO",
+  hfo: "HFO",
+  lpgp: "LPGP",
+  lpgb: "LPGB",
+  lng: "LNG",
 };
 
 export const ALL_LUBRICATING_OILS = {
