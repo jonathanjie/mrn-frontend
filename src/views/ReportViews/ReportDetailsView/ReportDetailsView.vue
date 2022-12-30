@@ -82,7 +82,7 @@ const handleBack = () => {
       </div>
       <div v-else-if="report.report_type == Report.type.BUNKER">
         <BunkerReportView :report="report" />
-        <div>BUNKER</div>
+        <!-- <div>BUNKER</div> -->
       </div>
       <div v-else><div>Invalid Report Type</div></div>
     </div>
