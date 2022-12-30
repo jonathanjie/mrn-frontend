@@ -147,6 +147,12 @@
 import { ref } from "vue";
 import TableOverviewRow from "@/components/TableOverviewRow.vue";
 
+const props = defineProps({
+  stats: Array,
+});
+
+// Only enable when there are at least 7 reports inside
+// const data = props.stats;
 const data = [
   {
     report_date: "2022-12-27T18:00:02Z",

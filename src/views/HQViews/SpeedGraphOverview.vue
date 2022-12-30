@@ -115,7 +115,7 @@
             </button>
           </div>
         </div>
-        <TableOverview :data="data" />
+        <TableOverview :stats="stats" />
         <!-- <div class="flex flex-row mt-6">
           <SpeedSideNav
             :speed="speed"
@@ -224,11 +224,23 @@ const getLegs = async () => {
     });
 };
 
+const getStats = async () => {
+  return await axios
+    .get(`https://testapi.marinachain.io/marinanet/ships/1000000/stats`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+};
+
 const ship = await getShip();
 const shipFlag = ship.shipspecs.flag;
 const payloadType = shipRef[ship.ship_type];
 const portCalls = await getLegs();
 const date = new Date(portCalls[0].arrival_date).toUTCString();
+const stats = await getStats();
 
 const shipCapacity = "300,000";
 const previousCIIGrade = "A";
