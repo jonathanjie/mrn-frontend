@@ -101,9 +101,11 @@ export const useDepartureSBYReportStore = defineStore(
 
     // Cargo Operation
     const loadCondition = ref("default");
-    const loading = ref("");
-    const unloading = ref("");
-    const totalAmount = ref("");
+    const loading = ref("0");
+    const unloading = ref("0");
+    const totalAmount = computed(
+      () => +(Number(loading.value) - Number(unloading.value)).toFixed(2)
+    );
     const time = ref("");
     const cargoUnit = ref(temp.cargoUnit);
 

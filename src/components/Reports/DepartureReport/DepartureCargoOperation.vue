@@ -66,12 +66,15 @@
         >
           {{ $t("totalAmount") }}
         </div>
-        <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
+        <div
+          class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50"
+        >
           <input
             v-model="total_amount"
             @keypress="preventNaN($event, total_amount)"
             :placeholder="$t('inputDetails')"
-            class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
+            disabled
+            class="w-24 bg-gray-50 text-14 text-gray-400 focus:outline-0"
           />
           <MiniUnitDisplay>{{ cargoUnit }}</MiniUnitDisplay>
         </div>
