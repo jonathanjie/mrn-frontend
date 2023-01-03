@@ -3,6 +3,7 @@ import { ref, computed, reactive } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
 import { storeToRefs } from "pinia";
 import { convertLTToUTC } from "@/utils/helpers";
+import { IceCondition } from "@/constants";
 
 const temp = {
   // Arrival and Departure
@@ -117,7 +118,7 @@ export const useArrivalEOSPReportStore = defineStore(
     const airTemperatureWet = ref("");
     const airPressure = ref("");
     const seaTemperature = ref("");
-    const iceCondition = ref("default");
+    const iceCondition = ref(IceCondition.NONE);
 
     // Distance & Time
     const hoursSinceNoon = computed(() =>
