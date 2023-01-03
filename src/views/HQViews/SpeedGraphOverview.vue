@@ -3,7 +3,7 @@
     <div
       class="flex relative rounded-xl bg-white h-32 w-full shadow-md items-center"
     >
-      <div class="flex flex-col">
+      <div v-if="shipSuccess" class="flex flex-col">
         <div class="flex flex-row items-center justify-evenly p-5">
           <img
             src="@/assets/icons/Speed_Graph/ship_image.svg"
@@ -12,25 +12,25 @@
           <div class="flex mr-12">
             <span class="text-14 text-gray-500">{{ $t("name") }}: </span>
             <span class="ml-1.5 text-14 text-gray-700 font-bold">{{
-              vesselname
+              props.vesselname
             }}</span>
           </div>
           <div class="flex mr-12">
             <span class="text-14 text-gray-500">{{ $t("type") }}: </span>
             <span class="ml-1.5 text-14 text-gray-700 font-bold">{{
-              payloadType
+              shipRef[ship.ship_type]
             }}</span>
           </div>
           <div class="flex mr-12">
             <span class="text-14 text-gray-500">{{ $t("capacity") }}: </span>
             <span class="ml-1.5 text-14 text-gray-700 font-bold">{{
-              shipCapacity
+              ship.shipspecs.deadweight_tonnage
             }}</span>
           </div>
           <div class="flex mr-12">
             <span class="text-14 text-gray-500">{{ $t("flag") }}: </span>
             <span class="ml-1.5 text-14 text-gray-700 font-bold">{{
-              shipFlag
+              ship.shipspecs.flag
             }}</span>
           </div>
           <div class="flex mr-12">
@@ -82,9 +82,12 @@
             <span class="text-16 font-bold text-blue-800">{{
               $t("estimatedArrivalTime")
             }}</span>
-            <div class="flex bg-gray-100 rounded-2xl py-1 px-3 ml-2">
+            <div
+              v-if="legsSuccess"
+              class="flex bg-gray-100 rounded-2xl py-1 px-3 ml-2"
+            >
               <span class="text-14 font-semibold text-gray-700">{{
-                date
+                new Date(portCalls[0].arrival_date).toUTCString()
               }}</span>
             </div>
           </div>
@@ -115,7 +118,7 @@
             </button>
           </div>
         </div>
-        <TableOverview :stats="stats" />
+        <TableOverview v-if="statsSuccess" :stats="stats" />
         <!-- <div class="flex flex-row mt-6">
           <SpeedSideNav
             :speed="speed"
@@ -132,7 +135,7 @@
           $t("portCalls")
         }}</span>
         <div class="flex flex-row">
-          <div class="flex flex-col">
+          <div v-if="legsSuccess" class="flex flex-col">
             <PortCard
               v-for="port in portCalls"
               :portCountry="port.arrival_port"
@@ -150,44 +153,17 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 import TableOverview from "@/components/TableOverview.vue";
 import PortCard from "@/components/PortCard.vue";
-import { useAuthStore } from "@/stores/useAuthStore";
-import axios from "axios";
-import { useRouter, onBeforeRouteLeave } from "vue-router";
-import { useVoyageStore } from "@/stores/useVoyageStore";
+import { useStatsQuery } from "@/queries/useStatsQuery";
+import { useLegsQuery } from "@/queries/useLegsQuery";
+import { useShipQuery } from "@/queries/useShipQuery";
 
 const props = defineProps({
   vesselname: String,
   imo: String,
 });
 
-const auth = useAuthStore();
-
-// const PortCalls = [
-//   {
-//     portCountry: "SINGAPORE",
-//     origin: "Onsan, Korea",
-//     destination: "Singapore",
-//     departureTime: "19 May 2022, 23:15 UTC",
-//     arrivalTime: "31 May 2022, 04:13 UTC",
-//   },
-//   {
-//     portCountry: "ONSAN, KOREA",
-//     origin: "Juaymah, Saudi Arabia",
-//     destination: "Onsan, Korea",
-//     departureTime: "27 Apr 2022, 23:15 UTC",
-//     arrivalTime: "18 May 2022, 04:13 UTC",
-//   },
-//   {
-//     portCountry: "JUAYMAH, SAUDI ARABIA",
-//     origin: "Ras Tanura, Saudi Arabia",
-//     destination: "Juaymah, Saudi Arabia",
-//     departureTime: "26 Apr 2022, 23:15 UTC",
-//     arrivalTime: "27 Apr 2022, 04:13 UTC",
-//   },
-// ];
 const shipRef = {
   BULK: "Bulk Carrier",
   GAS: "Gas Carrier",
@@ -202,47 +178,12 @@ const shipRef = {
   RORP: "Ro-Ro Passenger Ship",
   CRUZ: "Cruise Passenger Ship",
 };
-const getShip = async () => {
-  return await axios
-    .get(`https://testapi.marinachain.io/marinanet/ships/${props.imo}`)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-};
 
-const getLegs = async () => {
-  return await axios
-    .get(`https://testapi.marinachain.io/marinanet/ships/${props.imo}/legs/`)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-};
+const { isSuccess: shipSuccess, data: ship } = useShipQuery(props.imo);
+const { isSuccess: legsSuccess, data: portCalls } = useLegsQuery(props.imo);
+const { isSuccess: statsSuccess, data: stats } = useStatsQuery(props.imo);
 
-const getStats = async () => {
-  return await axios
-    .get(`https://testapi.marinachain.io/marinanet/ships/1000000/stats`)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-};
-
-const ship = await getShip();
-const shipFlag = ship.shipspecs.flag;
-const payloadType = shipRef[ship.ship_type];
-const portCalls = await getLegs();
-const date = new Date(portCalls[0].arrival_date).toUTCString();
-const stats = await getStats();
-
-const shipCapacity = "300,000";
+// Unused variables for CII/EEXI/message feature
 const previousCIIGrade = "A";
 const eexiGrade = "2.03/2.2";
 const message =

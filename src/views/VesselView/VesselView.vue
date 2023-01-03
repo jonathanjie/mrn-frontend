@@ -24,31 +24,9 @@
             "
             >{{ $t("overview") }}</router-link
           >
-          <!-- <router-link
-            to="submitted"
-            class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
-            :class="
-              $route.name == 'vessel-submitted'
-                ? 'border-b-2 border-blue-700 text-blue-700'
-                : ''
-            "
-            >{{ $t("submitted") }}</router-link
-          >
-            {{ $t("report") }}
-          </router-link>
-          <router-link
-            to="draft"
-            class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
-            :class="
-              $route.name == 'vessel-draft'
-                ? 'border-b-2 border-blue-700 text-blue-700'
-                : ''
-            "
-            >{{ $t("draft") }}</router-link
-          > -->
         </div>
       </div>
-      <!-- Disabled modal until finilized design -->
+      <!-- Disabled modal until finalized design -->
       <!-- <GradientButton class="m-10" type="button" @click="showModal = true">>
                 <template v-slot:content>{{ $t("createNewVoyage") }}</template>  
             </GradientButton> -->

@@ -78,15 +78,11 @@
 
 <script setup>
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
-import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
-import { useVoyageStore } from "@/stores/useVoyageStore";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { useShipsQuery } from "@/queries/useShipsQuery";
 import axios from "axios";
 const router = useRouter();
-// const ships = ref(null);
-// const { isLoading, data } = useShipsQuery({ enabled: computed(() => !!ships) });
+
 const getShip = async () => {
   return await axios
     .get(`https://testapi.marinachain.io/marinanet/ships`)
@@ -134,10 +130,7 @@ const home = () => {
   }
 };
 
-const store = useVoyageStore();
 const auth = useAuthStore();
-console.log("Role here", auth.role);
 const ship = await getShip();
-// const ship = ships[0];
 const manager = auth.role === "manager";
 </script>
