@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, defineProps } from "vue";
+import { ref, computed } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 
@@ -13,21 +13,38 @@ const props = defineProps({
 const distanceToGoDisabled = ref(false);
 const edited = ref(false);
 
-const hours_since_noon = computed(() => props.report.distanceperformancedata.hours_since_noon);
-const hours_total = computed(() => props.report.distanceperformancedata.hours_total);
-const distance_to_go = computed(() => props.report.distanceperformancedata.distance_to_go);
-const remarks = computed(() => props.report.distanceperformancedata.remarks_for_changes);
-const distance_obs_since_noon = computed(() => props.report.distanceperformancedata.distance_observed_since_noon);
-const distance_obs_total = computed(() => props.report.distanceperformancedata.distance_observed_total);
-const distance_eng_since_noon = computed(() => props.report.distanceperformancedata.distance_engine_since_noon);
-const distance_eng_total = computed(() => props.report.distanceperformancedata.distance_engine_total);
-const revolution_count = computed(() => props.report.distanceperformancedata.revolution_count);
+const hours_since_noon = computed(
+  () => props.report.distanceperformancedata.hours_since_noon
+);
+const hours_total = computed(
+  () => props.report.distanceperformancedata.hours_total
+);
+const distance_to_go = computed(
+  () => props.report.distanceperformancedata.distance_to_go
+);
+const remarks = computed(
+  () => props.report.distanceperformancedata.remarks_for_changes
+);
+const distance_obs_since_noon = computed(
+  () => props.report.distanceperformancedata.distance_observed_since_noon
+);
+const distance_obs_total = computed(
+  () => props.report.distanceperformancedata.distance_observed_total
+);
+const distance_eng_since_noon = computed(
+  () => props.report.distanceperformancedata.distance_engine_since_noon
+);
+const distance_eng_total = computed(
+  () => props.report.distanceperformancedata.distance_engine_total
+);
+const revolution_count = computed(
+  () => props.report.distanceperformancedata.revolution_count
+);
 
 // const toggle = () => {
 //   distanceToGoDisabled.value = !distanceToGoDisabled.value;
 //   edited.value = true;
 // };
-
 </script>
 
 <template>

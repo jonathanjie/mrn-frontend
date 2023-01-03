@@ -1,5 +1,4 @@
 <script setup>
-import { defineProps } from "vue";
 import DepartureAndDestinationCOSP from "./components/DepartureAndDestinationCOSP.vue";
 import DepartureCOSPConsumption from "./components/DepartureCOSPConsumption.vue";
 import DepartureOverview from "../components/DepartureOverview.vue";

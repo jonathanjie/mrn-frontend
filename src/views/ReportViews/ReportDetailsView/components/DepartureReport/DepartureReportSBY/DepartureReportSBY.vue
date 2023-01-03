@@ -1,5 +1,4 @@
 <script setup>
-import { defineProps } from "vue";
 import DepartureAndDestinationSBY from "./components/DepartureAndDestinationSBY.vue";
 import DepartureSBYConsumption from "./components/DepartureSBYConsumption.vue";
 import DepartureSBYTotalConsumption from "./components/DepartureSBYTotalConsumption.vue";

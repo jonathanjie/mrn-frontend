@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineProps } from "vue";
+import { computed } from "vue";
 import {
   textInputOptions,
   format,
@@ -34,7 +34,6 @@ const arrivalPortName = computed(
   () => props.report.reportroute?.arrival_port.split(" ")[1] ?? ""
 );
 
-
 const store = useArrivalEOSPReportStore();
 const {
   plannedOperations: planned_operations,
@@ -60,14 +59,14 @@ const {
         <div class="col-span-2 row-span-2 self-center text-blue-700 p-3">
           {{ $t("portName") }}
         </div>
-        <input disabled
+        <input
+          disabled
           class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b"
-          
           v-model="departurePortCountry"
         />
-        <input disabled
+        <input
+          disabled
           class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l"
-          
           v-model="departurePortName"
         />
       </div>
@@ -107,14 +106,14 @@ const {
         <div class="col-span-2 row-span-2 self-center text-blue-700 p-3">
           {{ $t("portName") }}
         </div>
-        <input disabled
+        <input
+          disabled
           class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b"
-          
           v-model="arrivalPortCountry"
         />
-        <input disabled
+        <input
+          disabled
           class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l"
-          
           v-model="arrivalPortName"
         />
       </div>
@@ -130,7 +129,8 @@ const {
             :key="val"
             class="flex align-center space-x-2"
           >
-            <input disabled
+            <input
+              disabled
               type="checkbox"
               :id="val"
               :value="val"
@@ -139,7 +139,8 @@ const {
             <label :for="val">{{ $t(key) }}</label>
           </div>
           <div class="flex align-center space-x-2">
-            <input disabled
+            <input
+              disabled
               type="checkbox"
               id="others"
               value="others"
@@ -151,7 +152,8 @@ const {
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14 mt-5">
         <div class="col-span-2 text-blue-700 p-3">{{ $t("others") }}</div>
-        <input disabled
+        <input
+          disabled
           class="col-span-3 p-3 text-gray-700 border-l disabled:text-gray-400 disabled:bg-gray-50 focus:outline-0"
           :placeholder="$t('inputOtherPlannedOperation')"
           v-model="other_planned_operation"

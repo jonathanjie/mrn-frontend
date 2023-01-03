@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeMount, defineProps } from "vue";
+import { onBeforeMount } from "vue";
 import { useReportDetailsStore } from "./stores/useReportDetailsStore";
 import router from "@/router";
 import { Report } from "@/constants";

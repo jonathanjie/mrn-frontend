@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineProps } from "vue";
+import { computed } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 const props = defineProps({
@@ -11,16 +11,11 @@ const props = defineProps({
 const budget_distance = computed(
   () => props.report.transoceanicbudget.distance_to_go
 );
-const budget_speed = computed(
-  () => props.report.transoceanicbudget.speed
-);
+const budget_speed = computed(() => props.report.transoceanicbudget.speed);
 const me_daily = computed(
   () => props.report.transoceanicbudget.me_daily_fo_consumption
 );
-const me_rpm = computed(
-  () => props.report.transoceanicbudget.me_rpm
-);
-
+const me_rpm = computed(() => props.report.transoceanicbudget.me_rpm);
 </script>
 
 <template>
@@ -89,5 +84,3 @@ const me_rpm = computed(
     </div>
   </div>
 </template>
-
-

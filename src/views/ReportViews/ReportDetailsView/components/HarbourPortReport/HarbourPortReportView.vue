@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineProps } from "vue";
+import { computed } from "vue";
 import RadioBtnDetail from "@/components/Buttons/RadioBtnDetail.vue";
 import HarbourPortOverview from "./components/HarbourPortOverview.vue";
 import HarbourPortReport from "./components/HarbourPortReport.vue";
