@@ -22,10 +22,11 @@ const {
 </script>
 
 <template>
-  <div class="flex flex-col space-y-6 my-2 mb-6">
-    <div class="flex text-gray-700 space-x-3 text-16">
+  <div class="flex flex-col space-y-6 my-6">
+    <!-- <div class="flex text-gray-700 space-x-3 text-16">
       <span class="text-gray-500">{{ $t("arrivalPort") + ":" }}</span>
       <input
+        disabled
         type="radio"
         name="arrival_port"
         id="beforeArrival"
@@ -34,6 +35,7 @@ const {
       />
       <label for="beforeArrival" class="mr-1">{{ $t("beforeArrival") }}</label>
       <input
+        disabled
         type="radio"
         name="arrival_port"
         id="afterArrival"
@@ -41,7 +43,7 @@ const {
         v-model="arrival_port"
       />
       <label for="afterArrival">{{ $t("afterArrival") }}</label>
-    </div>
+    </div> -->
 
     <!-- Overview -->
     <BunkerOverview :report="props.report" />
@@ -50,9 +52,7 @@ const {
     <BunkeringPort :report="props.report" />
 
     <!-- Received Bunker Detail -->
-    <BunkerReceivedDetail
-      :report="props.report"
-    ></BunkerReceivedDetail>
+    <BunkerReceivedDetail :report="props.report"></BunkerReceivedDetail>
 
     <!-- Bunker Date and Time & Supplier -->
     <BunkerDateAndTime :report="props.report" />

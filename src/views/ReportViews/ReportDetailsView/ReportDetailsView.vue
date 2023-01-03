@@ -86,9 +86,8 @@ const handleBack = () => {
           <!-- <div>BUNKER</div> -->
         </div>
         <div v-else><div>Invalid Report Type</div></div>
+        <!-- <div>{{ report }}</div> -->
       </div>
-
-      <div>{{ report }}</div>
     </div>
   </div>
 </template>

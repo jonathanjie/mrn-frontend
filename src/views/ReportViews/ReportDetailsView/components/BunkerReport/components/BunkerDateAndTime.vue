@@ -1,24 +1,29 @@
-
 <script setup>
+import { computed, defineProps } from "vue";
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-import { reactive } from "vue";
-import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
-import { storeToRefs } from "pinia";
 
-const store = useBunkerReportStore();
-const {
-  alongside: alongside,
-  hoseConnection: hose_connection,
-  pumpStart: pump_start,
-  pumpStop: pump_stop,
-  hoseDisconnection: hose_disconnection,
-  awayside: awayside,
-  purchaser: purchaser,
-  bargeName: barge_name,
-  supplierName: supplier_name,
-  address: address,
-  telephoneNumber: telephone_number,
-} = storeToRefs(store);
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
+
+const alongside = computed(() => props.report.bdndata.alongside_date);
+const hose_connection = computed(
+  () => props.report.bdndata.hose_connection_date
+);
+const hose_disconnection = computed(
+  () => props.report.bdndata.hose_disconnection_date
+);
+const pump_start = computed(() => props.report.bdndata.pump_start_date);
+const pump_stop = computed(() => props.report.bdndata.pump_stop_date);
+const awayside = computed(() => props.report.bdndata.slipoff_date);
+const purchaser = computed(() => props.report.bdndata.purchaser);
+const barge_name = computed(() => props.report.bdndata.barge_name);
+const supplier_name = computed(() => props.report.bdndata.supplier_name);
+const address = computed(() => props.report.bdndata.supplier_address);
+const telephone_number = computed(() => props.report.bdndata.supplier_contact);
 </script>
 
 <template>
@@ -185,7 +190,7 @@ const {
           :placeholder="$t('inputDetails')"
           class="col-span-3 p-3 pl-4 border-t bg-white text-14 text-gray-700 focus:outline-0"
         />
-
+        
         <div
           class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50 text-14"
         >
@@ -210,5 +215,3 @@ const {
     </div>
   </div>
 </template>
-
-
