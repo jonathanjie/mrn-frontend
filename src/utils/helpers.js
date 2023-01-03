@@ -170,3 +170,63 @@ export const windSpeedToBeaufort = (wind_speed) => {
     ? 11
     : 12;
 };
+
+export const generateFuelOilData = (
+  fuelOils,
+  fuelOilBreakdowns,
+  fuelOilTotalConsumptions,
+  fuelOilRobs,
+  fuelOilDataCorrection
+) => {
+  const rtn = [];
+
+  for (const fuelOil of fuelOils) {
+    rtn.push({
+      fuel_oil_type: fuelOil,
+      total_consumption: fuelOilTotalConsumptions[fuelOil] || 0,
+      receipt: "0.00", // irrelevant for noon report
+      debunkering: "0.00", // irrelevant for noon report
+      rob: fuelOilRobs[fuelOil] || 0,
+      breakdown: Object.entries(fuelOilBreakdowns[fuelOil]).reduce(
+        (p, [k, v]) => ({ ...p, [k]: v || 0 }),
+        {}
+      ),
+      fueloildatacorrection:
+        fuelOilDataCorrection.type === fuelOil
+          ? {
+              correction: fuelOilDataCorrection.correction,
+              remarks: fuelOilDataCorrection.remarks,
+            }
+          : null,
+    });
+  }
+  return rtn;
+};
+
+export const generateLubricatingOilData = (
+  lubricatingOils,
+  lubricatingOilBreakdowns,
+  lubricatingOilRobs,
+  lubricatingOilDataCorrection
+) => {
+  const rtn = [];
+
+  for (const lubricatingOil of lubricatingOils) {
+    rtn.push({
+      fuel_oil_type: lubricatingOil,
+      total_consumption:
+        lubricatingOilBreakdowns[lubricatingOil]["total_consumption"] || 0,
+      receipt: lubricatingOilBreakdowns[lubricatingOil]["receipt"] || 0,
+      debunkering: lubricatingOilBreakdowns[lubricatingOil]["debunkering"] || 0,
+      rob: lubricatingOilRobs[lubricatingOil] || 0,
+      lubricatingoildatacorrection:
+        lubricatingOilDataCorrection.type === lubricatingOil
+          ? {
+              correction: lubricatingOilDataCorrection.correction,
+              remarks: lubricatingOilDataCorrection.remarks,
+            }
+          : null,
+    });
+  }
+  return rtn;
+};
