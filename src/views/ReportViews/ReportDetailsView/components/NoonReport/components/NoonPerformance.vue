@@ -2,7 +2,7 @@
 // import { reactive } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { computed, defineProps } from "vue";
+import { computed } from "vue";
 
 const props = defineProps({
   report: {

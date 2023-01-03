@@ -1,5 +1,4 @@
 <script setup>
-import { defineProps } from "vue";
 import ArrivalAndDeparture from "./components/ArrivalAndDeparture.vue";
 import ArrivalDetails from "./components/ArrivalDetails.vue";
 import ArrivalWeather from "./components/ArrivalWeather.vue";

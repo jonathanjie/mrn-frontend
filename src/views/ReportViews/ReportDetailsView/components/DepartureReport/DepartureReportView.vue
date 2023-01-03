@@ -1,5 +1,4 @@
 <script setup>
-import { defineProps } from "vue";
 import { Report } from "@/constants";
 import DepartureReportSBY from "./DepartureReportSBY/DepartureReportSBY.vue";
 import DepartureReportCOSP from "./DepartureReportCOSP/DepartureReportCOSP.vue";
