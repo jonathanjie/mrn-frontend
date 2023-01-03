@@ -234,9 +234,9 @@
 </template>
 
 <script setup>
-import MyVesselsDashboardIcon from "@/components/MyVesselsDashboardIcon.vue";
+import MyVesselsDashboardIcon from "@/views/HQViews/components/MyVesselsDashboardIcon.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
-import VesselCard from "@/components/VesselCard.vue";
+import VesselCard from "@/views/HQViews/components/VesselCard.vue";
 import { useShipsQuery } from "@/queries/useShipsQuery";
 // To be pulled from backend
 const sailingVessels = 0;

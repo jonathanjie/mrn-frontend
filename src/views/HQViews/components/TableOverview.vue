@@ -145,7 +145,7 @@
 
 <script setup>
 import { ref } from "vue";
-import TableOverviewRow from "@/components/TableOverviewRow.vue";
+import TableOverviewRow from "./TableOverviewRow.vue";
 
 const props = defineProps({
   stats: Array,

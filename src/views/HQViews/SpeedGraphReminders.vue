@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import ReminderCard from "@/components/ReminderCard.vue";
+import ReminderCard from "@/views/HQViews/components/ReminderCard.vue";
 
 const reminders = [
   {

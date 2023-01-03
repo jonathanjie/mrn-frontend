@@ -3,10 +3,8 @@ import { authGuard } from "@auth0/auth0-vue";
 
 // import LoginView from '@/views/LoginView.vue'from ;
 import VesselView from "@/views/VesselView/VesselView.vue";
-import VesselOverviewView from "@/views/VesselView/VesselOverviewView.vue";
-import VesselSubmittedView from "@/views/VesselView/VesselSubmittedView.vue";
-import VesselDraftView from "@/views/VesselView/VesselDraftView.vue";
-import VesselCancelledView from "@/views/VesselView/VesselCancelledView.vue";
+import VesselOverview from "@/views/VesselView/VesselOverview.vue";
+import VesselReportView from "@/views/VesselView/VesselReportView.vue";
 import AddReportToVoyageView from "@/views/ReportViews/AddReportToVoyageView/AddReportToVoyageView.vue";
 import NoonReportView from "@/views/ReportViews/AddReportToVoyageView/NoonReportView/NoonReportView.vue";
 import ArrivalReportView from "@/views/ReportViews/AddReportToVoyageView/ArrivalReportView/ArrivalReportView.vue";
@@ -59,7 +57,7 @@ const routes = [
       {
         path: "uploaded-reports",
         name: "uploaded-reports",
-        component: () => import("../views/VesselView/VesselOverviewView.vue"),
+        component: () => import("../views/VesselView/VesselReportView.vue"),
         props: true, // To pass HQ parameter to hide Add Report Button
         beforeEnter: authGuard,
       },
@@ -75,22 +73,13 @@ const routes = [
         path: "overview",
         name: "vessel-overview",
         props: true,
-        component: VesselOverviewView,
+        component: VesselOverview,
       },
       {
-        path: "submitted",
-        name: "vessel-submitted",
-        component: VesselSubmittedView,
-      },
-      {
-        path: "draft",
-        name: "vessel-draft",
-        component: VesselDraftView,
-      },
-      {
-        path: "cancelled",
-        name: "vessel-cancelled",
-        component: VesselCancelledView,
+        path: "reports",
+        name: "vessel-reports",
+        props: true,
+        component: VesselReportView,
       },
     ],
     beforeEnter: authGuard,

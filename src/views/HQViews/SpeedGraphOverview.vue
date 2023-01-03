@@ -153,8 +153,8 @@
 </template>
 
 <script setup>
-import TableOverview from "@/components/TableOverview.vue";
-import PortCard from "@/components/PortCard.vue";
+import TableOverview from "@/views/HQViews/components/TableOverview.vue";
+import PortCard from "@/views/HQViews/components/PortCard.vue";
 import { useStatsQuery } from "@/queries/useStatsQuery";
 import { useLegsQuery } from "@/queries/useLegsQuery";
 import { useShipQuery } from "@/queries/useShipQuery";
