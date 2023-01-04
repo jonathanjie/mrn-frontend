@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, defineProps } from "vue";
 import { preventNaN, windSpeedToBeaufort } from "@/utils/helpers";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { IceCondition } from "@/constants";
@@ -11,23 +11,19 @@ const props = defineProps({
   },
 });
 
-const weather = computed(() => props.report.weatherdata.weather_notation);
-const visibility = computed(() => props.report.weatherdata.visibility);
-const windDirection = computed(() => props.report.weatherdata.wind_direction);
-const windSpeed = computed(() => props.report.weatherdata.wind_speed);
-const seaDirection = computed(() => props.report.weatherdata.sea_direction);
-const seaState = computed(() => props.report.weatherdata.sea_state);
-const swellDirection = computed(() => props.report.weatherdata.swell_direction);
-const swellScale = computed(() => props.report.weatherdata.swell_scale);
-const airTemperatureDry = computed(
-  () => props.report.weatherdata.air_temperature_dry
-);
-const airTemperatureWet = computed(
-  () => props.report.weatherdata.air_temperature_wet
-);
-const airPressure = computed(() => props.report.weatherdata.air_pressure);
-const seaTemperature = computed(() => props.report.weatherdata.sea_temperature);
-const iceCondition = computed(() => props.report.weatherdata.ice_condition);
+const weather = computed(()=>props.report.weatherdata.weather_notation)
+const visibility = computed(()=>props.report.weatherdata.visibility)
+const windDirection = computed(()=>props.report.weatherdata.wind_direction)
+const windSpeed = computed(()=>props.report.weatherdata.wind_speed)
+const seaDirection = computed(()=>props.report.weatherdata.sea_direction)
+const seaState = computed(()=>props.report.weatherdata.sea_state)
+const swellDirection = computed(()=>props.report.weatherdata.swell_direction)
+const swellScale = computed(()=>props.report.weatherdata.swell_scale)
+const airTemperatureDry = computed(()=>props.report.weatherdata.air_temperature_dry)
+const airTemperatureWet = computed(()=>props.report.weatherdata.air_temperature_wet)
+const airPressure = computed(()=>props.report.weatherdata.air_pressure)
+const seaTemperature = computed(()=>props.report.weatherdata.sea_temperature)
+const iceCondition = computed(()=>props.report.weatherdata.ice_condition)
 
 const wind_speed_beaufort = computed(() =>
   windSpeedToBeaufort(windSpeed.value)
@@ -113,7 +109,9 @@ const wind_speed_beaufort = computed(() =>
       <select
         v-model="windDirection"
         class="col-span-6 xl:col-span-3 p-3 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"
-        :class="windDirection === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="
+          windDirection === 'default' ? 'text-gray-400' : 'text-gray-700'
+        "
       >
         <option selected disabled value="default">
           {{ $t("dir_16_placeholder") }}
@@ -357,3 +355,5 @@ const wind_speed_beaufort = computed(() =>
     </div>
   </div>
 </template>
+
+

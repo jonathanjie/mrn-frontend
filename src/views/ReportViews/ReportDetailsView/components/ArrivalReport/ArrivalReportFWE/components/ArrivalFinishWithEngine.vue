@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, defineProps } from "vue";
 import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
 import { storeToRefs } from "pinia";
 import { TIMEZONES, OPERATIONS, PARKING_STATUS_ARR_FWE } from "@/utils/options";
@@ -20,12 +20,8 @@ const props = defineProps({
   },
 });
 
-const reportingTimeZone = computed(
-  () => props.report.arrivalfwetimeandposition.timezone
-);
-const reportingDateTime = computed(
-  () => props.report.arrivalfwetimeandposition.time
-);
+const reportingTimeZone = computed(() => props.report.arrivalfwetimeandposition.timezone);
+const reportingDateTime = computed(() => props.report.arrivalfwetimeandposition.time);
 
 const position = computed(() =>
   parsePositionFromString(props.report.arrivalfwetimeandposition.position)

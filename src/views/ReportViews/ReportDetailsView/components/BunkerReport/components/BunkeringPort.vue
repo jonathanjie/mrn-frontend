@@ -1,20 +1,19 @@
+
 <script setup>
-import { computed, defineProps } from "vue";
 import { textInputOptions, format } from "@/utils/helpers.js";
+import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
+import { storeToRefs } from "pinia";
 import { TIMEZONES } from "@/utils/options";
 
-const props = defineProps({
-  report: {
-    type: Object,
-    required: true,
-  },
-});
-
-const portCountry = computed(() => props.report.bdndata.bunkering_port.split(" ")[0]);
-const portName = computed(() => props.report.bdndata.bunkering_port.split(" ")[1]);
-const reportingDateTime = computed(() => props.report.report_date);
-const reportingTimeZone = computed(() => props.report.report_tz);
+const store = useBunkerReportStore();
+const {
+  portCountry: port_country,
+  portName: port_name,
+  reportingDateTime: reporting_date_time,
+  reportingTimeZone: reporting_time_zone,
+} = storeToRefs(store);
 </script>
+
 
 <template>
   <div
@@ -30,14 +29,12 @@ const reportingTimeZone = computed(() => props.report.report_tz);
           {{ $t("portName") }}
         </div>
         <input
-          disabled
-          v-model="portCountry"
+          v-model="port_country"
           :placeholder="$t('inputLocode2')"
           class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
         />
         <input
-          disabled
-          v-model="portName"
+          v-model="port_name"
           :placeholder="$t('inputLocode3')"
           class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
         />
@@ -55,11 +52,11 @@ const reportingTimeZone = computed(() => props.report.report_tz);
           <select
             class="grow self-center p-3 text-14 focus:outline-0"
             :class="
-              reportingTimeZone === 'default'
+              reporting_time_zone === 'default'
                 ? 'text-gray-400'
                 : 'text-gray-700'
             "
-            v-model="reportingTimeZone"
+            v-model="reporting_time_zone"
           >
             <option selected disabled value="default">
               {{ $t("selectTimeZone") }}
@@ -73,7 +70,7 @@ const reportingTimeZone = computed(() => props.report.report_tz);
           {{ $t("dateAndTime") }}
         </div>
         <DatePicker
-          v-model="reportingDateTime"
+          v-model="reporting_date_time"
           class="col-span-3"
           textInput
           :textInputOptions="textInputOptions"
@@ -89,3 +86,4 @@ const reportingTimeZone = computed(() => props.report.report_tz);
     </div>
   </div>
 </template>
+

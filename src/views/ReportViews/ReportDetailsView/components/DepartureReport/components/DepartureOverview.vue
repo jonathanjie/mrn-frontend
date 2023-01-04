@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, defineProps } from "vue";
 // import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 // import { storeToRefs } from "pinia";
 import { textInputOptions, format } from "@/utils/helpers";
@@ -93,7 +93,9 @@ const reportingTimeZone = computed(() => props.report.report_tz);
           disabled
           class="grow self-center p-3 text-14 focus:outline-0"
           :class="
-            reportingTimeZone === 'default' ? 'text-gray-400' : 'text-gray-700'
+            reportingTimeZone === 'default'
+              ? 'text-gray-400'
+              : 'text-gray-700'
           "
           v-model="reportingTimeZone"
         >

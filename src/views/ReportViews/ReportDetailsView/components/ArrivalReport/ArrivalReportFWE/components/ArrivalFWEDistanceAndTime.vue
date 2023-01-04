@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, defineProps } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 
@@ -10,9 +10,15 @@ const props = defineProps({
   },
 });
 
-const hours = computed(() => props.report.distancetimedata.time);
-const distance_obs = computed(() => props.report.distancetimedata.distance_obs);
-const distance_eng = computed(() => props.report.distancetimedata.distance_eng);
+const hours = computed(
+  () => props.report.distancetimedata.time
+);
+const distance_obs = computed(
+  () => props.report.distancetimedata.distance_obs
+);
+const distance_eng = computed(
+  () => props.report.distancetimedata.distance_eng
+);
 const revolution_count = computed(
   () => props.report.distancetimedata.revolution_count
 );
@@ -94,3 +100,5 @@ const revolution_count = computed(
     </div>
   </div>
 </template>
+
+

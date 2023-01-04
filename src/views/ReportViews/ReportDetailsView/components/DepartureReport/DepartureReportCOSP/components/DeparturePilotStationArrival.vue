@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, defineProps } from "vue";
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { parsePositionFromString } from "@/utils/helpers.js";
@@ -10,8 +10,12 @@ const props = defineProps({
   },
 });
 
-const pilotArrName = computed(() => props.report.arrivalpilotstation.name);
-const pilotArrDate = computed(() => props.report.arrivalpilotstation.date);
+const pilotArrName = computed(
+  () => props.report.arrivalpilotstation.name
+);
+const pilotArrDate = computed(
+  () => props.report.arrivalpilotstation.date
+);
 const pilotArrDraftFwd = computed(
   () => props.report.arrivalpilotstation.draft_fwd
 );
@@ -20,10 +24,11 @@ const pilotArrDraftMid = computed(
 );
 const pilotArrDraftAft = computed(
   () => props.report.arrivalpilotstation.draft_aft
-);
+);   
 const position = computed(() =>
   parsePositionFromString(props.report.arrivalpilotstation.position)
 );
+
 </script>
 
 <template>

@@ -4,6 +4,7 @@ import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { textInputOptions, format, preventNaN } from "@/utils/helpers.js";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
+import { defineProps } from "vue";
 
 const props = defineProps({
   report: {
@@ -213,3 +214,5 @@ const {
     <div></div>
   </div>
 </template>
+
+

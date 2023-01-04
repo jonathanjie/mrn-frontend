@@ -7,7 +7,7 @@ import {
   // formatUTC
 } from "@/utils/helpers";
 // import { UTCPlaceholder } from "@/constants";
-import { computed } from "vue";
+import { computed, defineProps } from "vue";
 
 const props = defineProps({
   report: {

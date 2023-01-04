@@ -1,6 +1,6 @@
 <script setup>
 import { preventNaN } from "@/utils/helpers";
-import { computed } from "vue";
+import { computed, defineProps } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { FuelOil, LubricatingOil } from "@/constants";
 

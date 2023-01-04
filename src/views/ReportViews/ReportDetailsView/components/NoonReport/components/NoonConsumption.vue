@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, defineProps } from "vue";
 import { preventNaN } from "@/utils/helpers";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { FuelOil, LubricatingOil } from "@/constants";
@@ -99,6 +99,12 @@ const meSystemRob = computed(
     props.report.consumptionconditiondata.lubricatingoildata_set.filter(
       (fuelData) => fuelData.fuel_oil_type == "M/E System"
     )[0].rob
+);
+const meSumpBreakdown = computed(
+  () =>
+    props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+      (fuelData) => fuelData.fuel_oil_type == "M/E Sump"
+    )[0]
 );
 const meSumpRob = computed(
   () =>
@@ -325,7 +331,9 @@ const freshwaterRob = computed(
             <div class="flex col-span-4 p-3 pl-4 border-l bg-white">
               <input
                 disabled
-                v-model="fuelOilDataCorrection.fueloildatacorrection.correction"
+                v-model="
+                  fuelOilDataCorrection.fueloildatacorrection.correction
+                "
                 @keypress="
                   preventNaN(
                     $event,
@@ -344,7 +352,9 @@ const freshwaterRob = computed(
             </div>
             <textarea
               disabled
-              v-model.trim="fuelOilDataCorrection.fueloildatacorrection.remarks"
+              v-model.trim="
+                fuelOilDataCorrection.fueloildatacorrection.remarks
+              "
               placeholder="Input description here"
               class="col-span-8 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
@@ -447,6 +457,39 @@ const freshwaterRob = computed(
           >
             {{ meSystemRob }}
           </div>
+
+          <div
+            class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
+          >
+            {{ $t("meSump") }}
+          </div>
+          <input
+            disabled
+            v-model="meSumpBreakdown.total_consumption"
+            @keypress="preventNaN($event, meSumpBreakdown.total_consumption)"
+            placeholder="0"
+            class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+          />
+          <input
+            disabled
+            v-model="meSumpBreakdown.receipt"
+            @keypress="preventNaN($event, meSumpBreakdown.receipt)"
+            placeholder="0"
+            class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+          />
+          <input
+            disabled
+            v-model="meSumpBreakdown.debunkering"
+            @keypress="preventNaN($event, meSumpBreakdown.debunkering)"
+            placeholder="0"
+            class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+          />
+          <div
+            class="col-span-3 text-gray-400 p-3 border-t border-x bg-gray-25"
+          >
+            {{ meSumpRob }}
+          </div>
+
           <div
             class="col-span-2 p-3 text-blue-700 border-y border-l bg-gray-50"
           >

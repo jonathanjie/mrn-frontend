@@ -1,5 +1,6 @@
 <!-- eslint-disable vue/no-parsing-error -->
 <script setup>
+import { defineProps } from "vue";
 import ArrivalFWEDistanceAndTime from "./components/ArrivalFWEDistanceAndTime.vue";
 import ArrivalFinishWithEngine from "./components/ArrivalFinishWithEngine.vue";
 import ArrivalFWESummary from "./components/ArrivalFWESummary.vue";

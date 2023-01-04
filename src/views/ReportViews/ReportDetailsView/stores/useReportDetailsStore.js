@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { useReportQuery } from "../queries/useReportQuery";
 
 export const useReportDetailsStore = defineStore("ReportDetails", () => {
   const auth = useAuthStore();
@@ -25,13 +24,8 @@ export const useReportDetailsStore = defineStore("ReportDetails", () => {
       });
   };
 
-  const getReportQuery = (uuid) => {
-    return useReportQuery(uuid);
-  };
-
   return {
     report,
     getReport,
-    getReportQuery,
   };
 });

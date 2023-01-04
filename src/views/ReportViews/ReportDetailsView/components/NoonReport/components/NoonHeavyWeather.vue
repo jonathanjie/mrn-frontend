@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, defineProps } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 // import { useNoonReportStore } from "@/stores/useNoonReportStore";
@@ -17,19 +17,14 @@ const heavy_weather_is_active = computed(() =>
 );
 const hours = computed(() => props.report.heavyweatherdata.total_hours);
 const dist = computed(() => props.report.heavyweatherdata.observed_distance);
-const consumption = computed(
-  () => props.report.heavyweatherdata.fuel_consumption
-);
+const consumption = computed(() => props.report.heavyweatherdata.fuel_consumption);
 const weather = computed(() => props.report.heavyweatherdata.weather_notation);
-const windDirection = computed(
-  () => props.report.heavyweatherdata.wind_direction
-);
+const windDirection = computed(() => props.report.heavyweatherdata.wind_direction);
 const windSpeed = computed(() => props.report.heavyweatherdata.wind_speed);
-const seaDirection = computed(
-  () => props.report.heavyweatherdata.sea_direction
-);
+const seaDirection = computed(() => props.report.heavyweatherdata.sea_direction);
 const seaState = computed(() => props.report.heavyweatherdata.sea_state);
 const remarks = computed(() => props.report.heavyweatherdata.remarks);
+
 
 const wind_speed_beaufort = computed(() =>
   Number(windSpeed.value) < 1
@@ -196,7 +191,9 @@ const wind_speed_beaufort = computed(() =>
         disabled
         v-model="windDirection"
         class="col-span-6 xl:col-span-3 p-3 pl-4 border-b xl:border-b-0 xl:border-r bg-white text-gray-700 focus:outline-0"
-        :class="windDirection === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        :class="
+          windDirection === 'default' ? 'text-gray-400' : 'text-gray-700'
+        "
       >
         <option selected disabled value="default">
           {{ $t("dir_16_placeholder") }}

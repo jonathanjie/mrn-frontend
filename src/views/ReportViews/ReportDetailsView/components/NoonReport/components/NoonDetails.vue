@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, defineProps } from "vue";
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
 // import { useNoonReportStore } from "@/stores/useNoonReportStore";
 // import { storeToRefs } from "pinia";

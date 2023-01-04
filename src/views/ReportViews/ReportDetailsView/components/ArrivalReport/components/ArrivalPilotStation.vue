@@ -5,7 +5,7 @@ import {
   format,
   // formatUTC,
 } from "@/utils/helpers.js";
-import { computed } from "vue";
+import { computed, defineProps } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 // import { UTCPlaceholder } from "@/constants";
 import { parsePositionFromString } from "@/utils/helpers.js";

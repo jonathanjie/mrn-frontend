@@ -1,4 +1,5 @@
 <script setup>
+import { defineProps } from "vue";
 import DepartureAndDestinationSBY from "./components/DepartureAndDestinationSBY.vue";
 import DepartureSBYConsumption from "./components/DepartureSBYConsumption.vue";
 import DepartureSBYTotalConsumption from "./components/DepartureSBYTotalConsumption.vue";
@@ -36,8 +37,8 @@ const props = defineProps({
     <DepartureSBYConsumption :report="props.report" />
 
     <!-- Consumption & Condition (Harbour/In Port in Total) -->
-    <DepartureSBYTotalConsumption :report="props.report" />
-
+    <DepartureSBYTotalConsumption :report="props.report"/>
+    
     <!-- <DepartureSBYTotalConsumption :report="props.report">{{
       $t("consumptionAndConditionHarbourInPortInTotal")
     }}</DepartureSBYTotalConsumption> -->

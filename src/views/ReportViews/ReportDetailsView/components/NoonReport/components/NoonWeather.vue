@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, defineProps } from "vue";
 import { preventNaN } from "@/utils/helpers";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 // import { useNoonReportStore } from "@/stores/useNoonReportStore";
