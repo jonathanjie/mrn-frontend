@@ -56,11 +56,19 @@ import DepartureCOSPOverview from "@/components/Reports/DepartureReport/Departur
 import { storeToRefs } from "pinia";
 import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
-import { Report, FuelOil, LubricatingOil, ConsumptionType } from "@/constants";
-import { parsePositionToString, parsePortLocode } from "@/utils/helpers.js";
+import { Report, ConsumptionType } from "@/constants";
+import {
+  parsePositionToString,
+  parsePortLocode,
+  generateFuelOilData,
+  generateLubricatingOilData,
+} from "@/utils/helpers.js";
 
 const store = useDepartureCOSPReportStore();
 const {
+  fuelOils,
+  lubricatingOils,
+  machinery,
   // Overview
   reportNo,
   legNo,
@@ -110,27 +118,18 @@ const {
   sbyToRupDistanceEng,
   sbyToRupRevolutionCount,
   sbyToRupSetRPM,
-  // Budget Trans Ocean (Pilot to Pilot)
+  // Sailing Plan (Pilot to Pilot)
   budgetDistance,
   budgetSpeed,
   meDaily,
   meRPM,
   // Consumption and Condition
-  lsfoBreakdown,
-  mgoBreakdown,
-  lsfoTotalConsumption,
-  lsfoRob,
-  mgoTotalConsumption,
-  mgoRob,
+  fuelOilRobs,
+  fuelOilBreakdowns,
+  fuelOilTotalConsumptions,
   fuelOilDataCorrection,
-  mecylinderBreakdown,
-  mesystemBreakdown,
-  mesumpBreakdown,
-  gesystemBreakdown,
-  mecylinderRob,
-  mesystemRob,
-  mesumpRob,
-  gesystemRob,
+  lubricatingOilBreakdowns,
+  lubricatingOilRobs,
   lubricatingOilDataCorrection,
   freshwaterConsumed,
   freshwaterGenerated,
@@ -182,6 +181,21 @@ const sendReport = async () => {
     portName: destinationPortName.value,
   });
 
+  const fuelOilData = generateFuelOilData(
+    fuelOils,
+    fuelOilBreakdowns.value,
+    fuelOilTotalConsumptions.value,
+    fuelOilRobs.value,
+    fuelOilDataCorrection.value
+  );
+
+  const lubricatingOilData = generateLubricatingOilData(
+    lubricatingOils,
+    lubricatingOilBreakdowns.value,
+    lubricatingOilRobs.value,
+    lubricatingOilDataCorrection.value
+  );
+
   const REPORT = {
     report_type: Report.type.DEP_COSP_RUP,
     voyage: voyageNo.value,
@@ -231,107 +245,8 @@ const sendReport = async () => {
       me_rpm: meRPM.value,
     },
     consumptionconditiondata: {
-      fueloildata_set: [
-        {
-          fuel_oil_type: FuelOil.LSFO,
-          total_consumption: lsfoTotalConsumption.value || 0,
-          receipt: 0, // Does not apply for Departure COSP reports
-          debunkering: 0, // Does not apply for Departure COSP reports
-          rob: lsfoRob.value || 0,
-          breakdown: {
-            GE: lsfoBreakdown.value.ge || 0,
-            ME: lsfoBreakdown.value.me || 0,
-            BLR: lsfoBreakdown.value.blr || 0,
-            IGG: lsfoBreakdown.value.igg || 0,
-          },
-          fueloildatacorrection:
-            fuelOilDataCorrection.value.type === FuelOil.LSFO
-              ? {
-                  correction: fuelOilDataCorrection.value.correction,
-                  remarks: fuelOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: FuelOil.MGO,
-          total_consumption: mgoTotalConsumption.value || 0,
-          receipt: 0, // Does not apply for Departure COSP reports
-          debunkering: 0, // Does not apply for Departure COSP reports
-          rob: mgoRob.value || 0,
-          breakdown: {
-            GE: mgoBreakdown.value.ge || 0,
-            ME: mgoBreakdown.value.me || 0,
-            BLR: mgoBreakdown.value.blr || 0,
-            IGG: mgoBreakdown.value.igg || 0,
-          },
-          fueloildatacorrection:
-            fuelOilDataCorrection.value.type === FuelOil.MGO
-              ? {
-                  correction: fuelOilDataCorrection.value.correction,
-                  remarks: fuelOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-      ],
-      lubricatingoildata_set: [
-        {
-          fuel_oil_type: LubricatingOil.ME_CYLINDER,
-          total_consumption: mecylinderBreakdown.value.total_consumption || 0,
-          receipt: mecylinderBreakdown.value.receipt || 0,
-          debunkering: mecylinderBreakdown.value.debunkering || 0,
-          rob: mecylinderRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type ===
-            LubricatingOil.ME_CYLINDER
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: LubricatingOil.ME_SYSTEM,
-          total_consumption: mesystemBreakdown.value.total_consumption || 0,
-          receipt: mesystemBreakdown.value.receipt || 0,
-          debunkering: mesystemBreakdown.value.debunkering || 0,
-          rob: mesystemRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type === LubricatingOil.ME_SYSTEM
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: LubricatingOil.ME_SUMP,
-          total_consumption: mesumpBreakdown.value.total_consumption || 0,
-          receipt: mesumpBreakdown.value.receipt || 0,
-          debunkering: mesumpBreakdown.value.debunkering || 0,
-          rob: mesumpRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type === LubricatingOil.ME_SUMP
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: LubricatingOil.GE_SYSTEM,
-          total_consumption: gesystemBreakdown.value.total_consumption || 0,
-          receipt: gesystemBreakdown.value.receipt || 0,
-          debunkering: gesystemBreakdown.value.debunkering || 0,
-          rob: gesystemRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type === LubricatingOil.GE_SYSTEM
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-      ],
+      fueloildata_set: fuelOilData,
+      lubricatingoildata_set: lubricatingOilData,
       freshwaterdata: {
         consumed: freshwaterConsumed.value || 0,
         generated: freshwaterGenerated.value || 0,

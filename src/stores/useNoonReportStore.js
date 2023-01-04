@@ -1,11 +1,14 @@
 import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
-import { convertLTToUTC, convertUTCToLT } from "@/utils/helpers";
+import {
+  convertLTToUTC,
+  convertUTCToLT,
+  sumObjectValues,
+} from "@/utils/helpers";
 import { storeToRefs } from "pinia";
 import { IceCondition } from "@/constants";
 import { useShipStore } from "@/stores/useShipStore";
-import { sumObjectValues } from "@/utils/helpers";
 
 // TODO: retrieve from backend or generate as needed
 // API /reports/latest
