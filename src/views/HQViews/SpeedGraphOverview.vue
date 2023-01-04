@@ -138,6 +138,7 @@
           <div v-if="legsSuccess" class="flex flex-col">
             <PortCard
               v-for="port in portCalls"
+              :key="port.id"
               :portCountry="port.arrival_port"
               :origin="port.departure_port"
               :destination="port.arrival_port"
