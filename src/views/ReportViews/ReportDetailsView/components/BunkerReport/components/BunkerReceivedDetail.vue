@@ -1,3 +1,41 @@
+<script setup>
+import { computed, defineProps } from "vue";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { preventNaN } from "@/utils/helpers.js";
+// import DropZone from "@/components/FileDrop/DropZone.vue";
+// import FilePreview from "@/components/FileDrop/FilePreview.vue";
+import { ALL_FUEL_OILS, ALL_LUBRICATING_OILS } from "@/utils/options";
+
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
+
+const oil_type = computed(() =>
+  props.report.bdndata.delivered_oil_type.toUpperCase() in ALL_FUEL_OILS
+    ? "fuelOil"
+    : "lubricatingOil"
+);
+const oil = computed(() => props.report.bdndata.delivered_oil_type);
+const quantity = computed(() => props.report.bdndata.delivered_oil_type);
+const density = computed(() => props.report.bdndata.density_15);
+const sg = computed(() => props.report.bdndata.specific_gravity_15);
+const viscosity = computed(() => props.report.bdndata.viscosity_value);
+const viscosity_degree = computed(
+  () => props.report.bdndata.viscosity_temperature
+);
+const flash_point = computed(() => props.report.bdndata.flash_point);
+const sulfur_content = computed(() => props.report.bdndata.sulfur_content);
+const marpol = computed(() => props.report.bdndata.sample_sealing_marpol);
+const ship = computed(() => props.report.bdndata.sample_sealing_ship);
+const barge = computed(() => props.report.bdndata.sample_sealing_barge);
+
+const isFuelOil = computed(() => oil_type.value === "fuelOil");
+const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
+</script>
+
 <template>
   <div class="grid grid-cols-1 bg-white rounded-lg p-5 gap-4 shadow-card mb-5">
     <span class="text-gray-700 text-20">{{ $t("receivedBunkerDetail") }}</span>
@@ -10,7 +48,7 @@
     </div>
 
     <!-- Upload delivery note section -->
-    <DropZone
+    <!-- <DropZone
       class="flex drop-area border border-dashed border-sysblue-300 p-14 place-content-center rounded-lg text-16 text-gray-800 bg-gray-25"
       @files-dropped="store.addFiles"
       #default="{ dropZoneActive }"
@@ -39,16 +77,16 @@
         multiple
         @change="onInputChange"
       />
-    </DropZone>
+    </DropZone> -->
 
-    <ul class="text-14 text-gray-700 space-y-1" v-show="files.length">
+    <!-- <ul class="text-14 text-gray-700 space-y-1" v-show="files.length">
       <FilePreview
         v-for="file of files"
         :key="file.id"
         :file="file"
         @remove="store.removeFile"
       />
-    </ul>
+    </ul> -->
 
     <div class="mt-6 flex items-center">
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
@@ -60,6 +98,7 @@
         {{ $t("productType") }}
       </div>
       <select
+        disabled
         v-model="oil_type"
         class="col-span-3 p-3 text-gray-700 border-b border-r focus:outline-0"
         :class="oil_type === 'default' ? 'text-gray-400' : 'text-gray-700'"
@@ -75,6 +114,7 @@
         </option>
       </select>
       <select
+        disabled
         v-if="isFuelOil"
         v-model="oil"
         class="col-span-3 p-3 text-gray-700 border-b focus:outline-0"
@@ -92,6 +132,7 @@
         </option>
       </select>
       <select
+        disabled
         v-else-if="isLubricatingOil"
         v-model="oil"
         class="col-span-3 p-3 text-gray-700 border-b focus:outline-0"
@@ -109,6 +150,7 @@
         </option>
       </select>
       <select
+        disabled
         v-else
         v-model="oil"
         class="col-span-3 p-3 text-gray-700 border-b focus:outline-0"
@@ -241,39 +283,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { preventNaN } from "@/utils/helpers.js";
-import DropZone from "@/components/FileDrop/DropZone.vue";
-import FilePreview from "@/components/FileDrop/FilePreview.vue";
-import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
-import { storeToRefs } from "pinia";
-import { ALL_FUEL_OILS, ALL_LUBRICATING_OILS } from "@/utils/options";
-import { computed } from "vue";
-
-const store = useBunkerReportStore();
-const {
-  oilType: oil_type,
-  oil: oil,
-  quantity: quantity,
-  density: density,
-  sg: sg,
-  viscosity: viscosity,
-  viscosityDegree: viscosity_degree,
-  flashPoint: flash_point,
-  sulfurContent: sulfur_content,
-  marpol: marpol,
-  ship: ship,
-  barge: barge,
-  files: files,
-} = storeToRefs(store);
-
-const isFuelOil = computed(() => oil_type.value === "fuelOil");
-const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
-
-const onInputChange = (e) => {
-  store.addFiles(e.target.files);
-  e.target.value = null;
-};
-</script>

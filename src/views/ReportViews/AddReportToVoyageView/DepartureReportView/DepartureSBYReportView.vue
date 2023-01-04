@@ -56,17 +56,18 @@ import DepartureSBYOverview from "@/components/Reports/DepartureReport/Departure
 import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
 import { storeToRefs } from "pinia";
+import { Report, ConsumptionType, TotalConsumptionType } from "@/constants";
 import {
-  Report,
-  FuelOil,
-  LubricatingOil,
-  ConsumptionType,
-  TotalConsumptionType,
-} from "@/constants";
-import { parsePositionToString, parsePortLocode } from "@/utils/helpers.js";
+  parsePositionToString,
+  parsePortLocode,
+  generateFuelOilData,
+  generateLubricatingOilData,
+} from "@/utils/helpers.js";
 
 const store = useDepartureSBYReportStore();
 const {
+  fuelOils,
+  lubricatingOils,
   // Overview
   reportNo,
   legNo,
@@ -105,21 +106,12 @@ const {
   pilotDepLongDegree,
   pilotDepLongMinute,
   // Consumption And Condition
-  lsfoTotalConsumption,
-  lsfoRob,
-  mgoTotalConsumption,
-  mgoRob,
-  lsfoBreakdown,
-  mgoBreakdown,
+  fuelOilRobs,
+  fuelOilBreakdowns,
+  fuelOilTotalConsumptions,
   fuelOilDataCorrection,
-  mecylinderBreakdown,
-  mesystemBreakdown,
-  mesumpBreakdown,
-  gesystemBreakdown,
-  mecylinderRob,
-  mesystemRob,
-  mesumpRob,
-  gesystemRob,
+  lubricatingOilBreakdowns,
+  lubricatingOilRobs,
   lubricatingOilDataCorrection,
   freshwaterConsumed,
   freshwaterGenerated,
@@ -127,22 +119,11 @@ const {
   freshwaterDischarging,
   freshwaterRob,
   // Consumption And Condition (Total)
-  lsfoTotalConsumptionSum,
-  lsfoRobSum,
-  mgoTotalConsumptionSum,
-  mgoRobSum,
-  lsfoBreakdownSum,
-  mgoBreakdownSum,
-  fuelOilDataCorrectionSum,
-  mecylinderBreakdownSum,
-  mesystemBreakdownSum,
-  mesumpBreakdownSum,
-  gesystemBreakdownSum,
-  mecylinderRobSum,
-  mesystemRobSum,
-  mesumpRobSum,
-  gesystemRobSum,
-  lubricatingOilDataCorrectionSum,
+  fuelOilRobsSum,
+  fuelOilBreakdownsSum,
+  fuelOilTotalConsumptionsSum,
+  lubricatingOilBreakdownsSum,
+  lubricatingOilRobsSum,
   freshwaterConsumedSum,
   freshwaterGeneratedSum,
   freshwaterReceivingSum,
@@ -180,6 +161,34 @@ const sendReport = async () => {
     portName: destinationPortName.value,
   });
 
+  const fuelOilData = generateFuelOilData(
+    fuelOils,
+    fuelOilBreakdowns.value,
+    fuelOilTotalConsumptions.value,
+    fuelOilRobs.value,
+    fuelOilDataCorrection.value
+  );
+
+  const lubricatingOilData = generateLubricatingOilData(
+    lubricatingOils,
+    lubricatingOilBreakdowns.value,
+    lubricatingOilRobs.value,
+    lubricatingOilDataCorrection.value
+  );
+
+  const fuelOilDataSum = generateFuelOilData(
+    fuelOils,
+    fuelOilBreakdownsSum.value,
+    fuelOilTotalConsumptionsSum.value,
+    fuelOilRobsSum.value
+  );
+
+  const lubricatingOilDataSum = generateLubricatingOilData(
+    lubricatingOils,
+    lubricatingOilBreakdownsSum.value,
+    lubricatingOilRobsSum.value
+  );
+
   const REPORT = {
     report_type: Report.type.DEP_SBY,
     voyage: voyageNo.value,
@@ -191,7 +200,7 @@ const sendReport = async () => {
       departure_port: departurePort,
       departure_date: reportingDateTimeUTC.value,
       depature_tz: reportingTimeZone.value,
-      // should be optional
+      // TODO: should be optional in backend
       arrival_port: destinationPort || null,
       arrival_date: destinationEstimatedArrivalUTC.value || null,
       arrival_tz: destinationTimeZone.value || null,
@@ -220,107 +229,8 @@ const sendReport = async () => {
         }
       : null,
     consumptionconditiondata: {
-      fueloildata_set: [
-        {
-          fuel_oil_type: FuelOil.LSFO,
-          total_consumption: lsfoTotalConsumption.value || 0,
-          receipt: lsfoBreakdown.value.receipt || 0,
-          debunkering: lsfoBreakdown.value.debunkering || 0,
-          rob: lsfoRob.value || 0,
-          breakdown: {
-            GE: lsfoBreakdown.value.ge || 0,
-            ME: lsfoBreakdown.value.me || 0,
-            BLR: lsfoBreakdown.value.blr || 0,
-            IGG: lsfoBreakdown.value.igg || 0,
-          },
-          fueloildatacorrection:
-            fuelOilDataCorrection.value.type === FuelOil.LSFO
-              ? {
-                  correction: fuelOilDataCorrection.value.correction,
-                  remarks: fuelOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: FuelOil.MGO,
-          total_consumption: mgoTotalConsumption.value || 0,
-          receipt: mgoBreakdown.value.receipt || 0,
-          debunkering: mgoBreakdown.value.debunkering || 0,
-          rob: mgoRob.value || 0,
-          breakdown: {
-            GE: mgoBreakdown.value.ge || 0,
-            ME: mgoBreakdown.value.me || 0,
-            BLR: mgoBreakdown.value.blr || 0,
-            IGG: mgoBreakdown.value.igg || 0,
-          },
-          fueloildatacorrection:
-            fuelOilDataCorrection.value.type === FuelOil.MGO
-              ? {
-                  correction: fuelOilDataCorrection.value.correction,
-                  remarks: fuelOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-      ],
-      lubricatingoildata_set: [
-        {
-          fuel_oil_type: LubricatingOil.ME_CYLINDER,
-          total_consumption: mecylinderBreakdown.value.total_consumption || 0,
-          receipt: mecylinderBreakdown.value.receipt || 0,
-          debunkering: mecylinderBreakdown.value.debunkering || 0,
-          rob: mecylinderRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type ===
-            LubricatingOil.ME_CYLINDER
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: LubricatingOil.ME_SYSTEM,
-          total_consumption: mesystemBreakdown.value.total_consumption || 0,
-          receipt: mesystemBreakdown.value.receipt || 0,
-          debunkering: mesystemBreakdown.value.debunkering || 0,
-          rob: mesystemRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type === LubricatingOil.ME_SYSTEM
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: LubricatingOil.ME_SUMP,
-          total_consumption: mesumpBreakdown.value.total_consumption || 0,
-          receipt: mesumpBreakdown.value.receipt || 0,
-          debunkering: mesumpBreakdown.value.debunkering || 0,
-          rob: mesumpRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type === LubricatingOil.ME_SUMP
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: LubricatingOil.GE_SYSTEM,
-          total_consumption: gesystemBreakdown.value.total_consumption || 0,
-          receipt: gesystemBreakdown.value.receipt || 0,
-          debunkering: gesystemBreakdown.value.debunkering || 0,
-          rob: gesystemRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type === LubricatingOil.GE_SYSTEM
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-      ],
+      fueloildata_set: fuelOilData,
+      lubricatingoildata_set: lubricatingOilData,
       freshwaterdata: {
         consumed: freshwaterConsumed.value || 0,
         generated: freshwaterGenerated.value || 0,
@@ -331,71 +241,8 @@ const sendReport = async () => {
       consumption_type: ConsumptionType.LAST_TO_SBY,
     },
     totalconsumptiondata: {
-      fueloiltotalconsumptiondata_set: [
-        {
-          fuel_oil_type: FuelOil.LSFO,
-          total_consumption: lsfoTotalConsumptionSum.value || 0,
-          receipt: lsfoBreakdownSum.value.receipt || 0,
-          debunkering: lsfoBreakdownSum.value.debunkering || 0,
-          rob: lsfoRobSum.value || 0,
-          breakdown: {
-            GE: lsfoBreakdownSum.value.ge || 0,
-            ME: lsfoBreakdownSum.value.me || 0,
-            BLR: lsfoBreakdownSum.value.blr || 0,
-            IGG: lsfoBreakdownSum.value.igg || 0,
-          },
-          fueloiltotalconsumptiondatacorrection: null,
-        },
-        {
-          fuel_oil_type: FuelOil.MGO,
-          total_consumption: mgoTotalConsumptionSum.value || 0,
-          receipt: mgoBreakdownSum.value.receipt || 0,
-          debunkering: mgoBreakdownSum.value.debunkering || 0,
-          rob: mgoRobSum.value || 0,
-          breakdown: {
-            GE: mgoBreakdownSum.value.ge || 0,
-            ME: mgoBreakdownSum.value.me || 0,
-            BLR: mgoBreakdownSum.value.blr || 0,
-            IGG: mgoBreakdownSum.value.igg || 0,
-          },
-          fueloiltotalconsumptiondatacorrection: null,
-        },
-      ],
-      lubricatingoiltotalconsumptiondata_set: [
-        {
-          fuel_oil_type: LubricatingOil.ME_CYLINDER,
-          total_consumption:
-            mecylinderBreakdownSum.value.total_consumption || 0,
-          receipt: mecylinderBreakdownSum.value.receipt || 0,
-          debunkering: mecylinderBreakdownSum.value.debunkering || 0,
-          rob: mecylinderRobSum.value || 0,
-          lubricatingoiltotalconsumptiondatacorrection: null,
-        },
-        {
-          fuel_oil_type: LubricatingOil.ME_SYSTEM,
-          total_consumption: mesystemBreakdownSum.value.total_consumption || 0,
-          receipt: mesystemBreakdownSum.value.receipt || 0,
-          debunkering: mesystemBreakdownSum.value.debunkering || 0,
-          rob: mesystemRobSum.value || 0,
-          lubricatingoiltotalconsumptiondatacorrection: null,
-        },
-        {
-          fuel_oil_type: LubricatingOil.ME_SUMP,
-          total_consumption: mesumpBreakdownSum.value.total_consumption || 0,
-          receipt: mesumpBreakdownSum.value.receipt || 0,
-          debunkering: mesumpBreakdownSum.value.debunkering || 0,
-          rob: mesumpRobSum.value || 0,
-          lubricatingoiltotalconsumptiondatacorrection: null,
-        },
-        {
-          fuel_oil_type: LubricatingOil.GE_SYSTEM,
-          total_consumption: gesystemBreakdownSum.value.total_consumption || 0,
-          receipt: gesystemBreakdownSum.value.receipt || 0,
-          debunkering: gesystemBreakdownSum.value.debunkering || 0,
-          rob: gesystemRobSum.value || 0,
-          lubricatingoiltotalconsumptiondatacorrection: null,
-        },
-      ],
+      fueloiltotalconsumptiondata_set: fuelOilDataSum,
+      lubricatingoiltotalconsumptiondata_set: lubricatingOilDataSum,
       freshwatertotalconsumptiondata: {
         consumed: freshwaterConsumedSum.value || 0,
         generated: freshwaterGeneratedSum.value || 0,

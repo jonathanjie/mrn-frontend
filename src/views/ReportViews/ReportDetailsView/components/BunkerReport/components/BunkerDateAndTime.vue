@@ -1,3 +1,26 @@
+
+<script setup>
+import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
+import { reactive } from "vue";
+import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
+import { storeToRefs } from "pinia";
+
+const store = useBunkerReportStore();
+const {
+  alongside: alongside,
+  hoseConnection: hose_connection,
+  pumpStart: pump_start,
+  pumpStop: pump_stop,
+  hoseDisconnection: hose_disconnection,
+  awayside: awayside,
+  purchaser: purchaser,
+  bargeName: barge_name,
+  supplierName: supplier_name,
+  address: address,
+  telephoneNumber: telephone_number,
+} = storeToRefs(store);
+</script>
+
 <template>
   <div
     class="grid grid-cols-1 lg:grid-cols-2 bg-white rounded-lg p-5 gap-4 shadow-card"
@@ -188,24 +211,4 @@
   </div>
 </template>
 
-<script setup>
-import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-import { reactive } from "vue";
-import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
-import { storeToRefs } from "pinia";
 
-const store = useBunkerReportStore();
-const {
-  alongside: alongside,
-  hoseConnection: hose_connection,
-  pumpStart: pump_start,
-  pumpStop: pump_stop,
-  hoseDisconnection: hose_disconnection,
-  awayside: awayside,
-  purchaser: purchaser,
-  bargeName: barge_name,
-  supplierName: supplier_name,
-  address: address,
-  telephoneNumber: telephone_number,
-} = storeToRefs(store);
-</script>

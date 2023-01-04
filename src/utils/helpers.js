@@ -9,6 +9,14 @@ export function preventNaN(event, content) {
   }
 }
 
+export const sumObjectValues = (obj, endIndex) => {
+  endIndex = endIndex || Object.values(obj).length;
+
+  return Object.values(obj)
+    .slice(0, endIndex)
+    .reduce((a, b) => Number(a) + Number(b), 0);
+};
+
 export const textInputOptions = ref({
   format: "yyyy.MM.dd HH:mm",
 });
@@ -169,4 +177,67 @@ export const windSpeedToBeaufort = (wind_speed) => {
     : Number(wind_speed) < 64
     ? 11
     : 12;
+};
+
+// data correction parameter is optional
+export const generateFuelOilData = (
+  fuelOils,
+  fuelOilBreakdowns,
+  fuelOilTotalConsumptions,
+  fuelOilRobs,
+  fuelOilDataCorrection
+) => {
+  const rtn = [];
+
+  const dataCorrection = fuelOilDataCorrection || {};
+  for (const fuelOil of fuelOils) {
+    rtn.push({
+      fuel_oil_type: fuelOil,
+      total_consumption: fuelOilTotalConsumptions[fuelOil] || 0,
+      receipt: fuelOilBreakdowns.receipt || 0, // non-zero for DEP SBY reports
+      debunkering: fuelOilBreakdowns.debunkering || 0, // non-zero for DEP SBY reports
+      rob: fuelOilRobs[fuelOil] || 0,
+      breakdown: Object.entries(fuelOilBreakdowns[fuelOil]).reduce(
+        (p, [k, v]) => ({ ...p, [k]: v || 0 }),
+        {}
+      ),
+      fueloildatacorrection:
+        dataCorrection.type === fuelOil
+          ? {
+              correction: dataCorrection.correction,
+              remarks: dataCorrection.remarks,
+            }
+          : null,
+    });
+  }
+  return rtn;
+};
+
+// data correction parameter is optional
+export const generateLubricatingOilData = (
+  lubricatingOils,
+  lubricatingOilBreakdowns,
+  lubricatingOilRobs,
+  lubricatingOilDataCorrection
+) => {
+  const rtn = [];
+
+  for (const lubricatingOil of lubricatingOils) {
+    rtn.push({
+      fuel_oil_type: lubricatingOil,
+      total_consumption:
+        lubricatingOilBreakdowns[lubricatingOil]["total_consumption"] || 0,
+      receipt: lubricatingOilBreakdowns[lubricatingOil]["receipt"] || 0,
+      debunkering: lubricatingOilBreakdowns[lubricatingOil]["debunkering"] || 0,
+      rob: lubricatingOilRobs[lubricatingOil] || 0,
+      lubricatingoildatacorrection:
+        lubricatingOilDataCorrection.type === lubricatingOil
+          ? {
+              correction: lubricatingOilDataCorrection.correction,
+              remarks: lubricatingOilDataCorrection.remarks,
+            }
+          : null,
+    });
+  }
+  return rtn;
 };
