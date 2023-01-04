@@ -213,7 +213,7 @@ const sendReport = async () => {
   });
 
   const fuelOilData = generateFuelOilData(
-    fuelOils,
+    fuelOils.value,
     fuelOilBreakdowns.value,
     fuelOilTotalConsumptions.value,
     fuelOilRobs.value,
@@ -221,7 +221,7 @@ const sendReport = async () => {
   );
 
   const lubricatingOilData = generateLubricatingOilData(
-    lubricatingOils,
+    lubricatingOils.value,
     lubricatingOilBreakdowns.value,
     lubricatingOilRobs.value,
     lubricatingOilDataCorrection.value
