@@ -77,12 +77,11 @@
 </template>
 
 <script setup>
-import { useAuthStore } from "@/stores/useAuthStore";
 import { useAuth0 } from "@auth0/auth0-vue";
 import { ref } from "vue";
 
 // TODO: get from pinia instead of auth0; need to figure out async state tracking
-const { user, logout, getAccessTokenSilently } = useAuth0();
+const { user, logout } = useAuth0();
 
 console.log("WebHeader loads");
 let isExpanded = ref(false);
@@ -94,11 +93,4 @@ function mouseEnter() {
 function mouseLeave() {
   isExpanded.value = false;
 }
-
-// async function getToken() {
-//   const authStore = useAuthStore();
-//   const jwt = await getAccessTokenSilently();
-
-//   authStore.updateToken(jwt);
-// }
 </script>
