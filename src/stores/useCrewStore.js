@@ -1,18 +1,8 @@
 import { defineStore } from "pinia";
-import { useShipsQuery } from "@/queries/useShipsQuery";
 import { useStatsQuery } from "@/queries/useStatsQuery";
 import { useLegsQuery } from "@/queries/useLegsQuery";
-import { useShipQuery } from "@/queries/useShipQuery";
 
-export const useHQStore = defineStore("hq", () => {
-  const shipQuery = (imo) => {
-    return useShipQuery(imo);
-  };
-
-  const shipsQuery = () => {
-    return useShipsQuery();
-  };
-
+export const useCrewStore = defineStore("crew", () => {
   const legsQuery = (imo) => {
     return useLegsQuery(imo);
   };
@@ -22,8 +12,6 @@ export const useHQStore = defineStore("hq", () => {
   };
 
   return {
-    shipQuery,
-    shipsQuery,
     statsQuery,
     legsQuery,
   };

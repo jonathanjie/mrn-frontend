@@ -45,14 +45,14 @@
 
 <script setup>
 import TableOverview from "@/views/HQViews/components/TableOverview.vue";
-import { useStatsQuery } from "@/queries/useStatsQuery";
-import { useLegsQuery } from "@/queries/useLegsQuery";
+import { useCrewStore } from "@/stores/useCrewStore";
 
 const props = defineProps({
   vesselname: String,
   imo: String,
 });
 
-const { isSuccess: legsSuccess, data: portCalls } = useLegsQuery(props.imo);
-const { isSuccess: statsSuccess, data: stats } = useStatsQuery(props.imo);
+const store = useCrewStore();
+const { isSuccess: legsSuccess, data: portCalls } = store.legsQuery(props.imo);
+const { isSuccess: statsSuccess, data: stats } = store.statsQuery(props.imo);
 </script>

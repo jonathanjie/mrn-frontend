@@ -72,6 +72,7 @@ import InitializationModal from "@/components/Modals/InitializationModal.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useShipStore } from "@/stores/useShipStore";
 import { storeToRefs } from "pinia";
+import axios from "axios";
 
 const auth = useAuthStore();
 const store = useShipStore();
@@ -87,32 +88,22 @@ const props = defineProps({
 });
 
 let showModal = localStorage.getItem("addSpec") == true;
-
+const voyageData = {
+  voyage_num: nextVoyageNo.value,
+  imo_reg: props.imo,
+};
 // POST request to add in a new voyage
 const addVoyage = async (voyageData) => {
-  isFetchingVoyages.value = true;
-
-  const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/voyages/",
-    {
-      headers: {
-        Authorization: "Bearer " + auth.jwt,
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({
-        voyage_num: nextVoyageNo.value,
-        imo_reg: props.imo,
-      }),
-    }
-  );
-  console.log(response);
-
-  if (response.ok) {
-    lastVoyageNo.value += 1;
-    update.value += 1;
-  } else {
-    window.alert("ERROR: " + JSON.stringify(response.text()));
-  }
+  isFetchingVoyages = true;
+  await axios
+    .post("https://testapi.marinachain.iso/marinanet/voyages/", voyageData)
+    .then((response) => {
+      console.log(response);
+      lastVoyageNo.value += 1;
+      update.value += 1;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 };
 </script>
