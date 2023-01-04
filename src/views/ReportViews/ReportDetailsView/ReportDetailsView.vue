@@ -20,25 +20,26 @@ const props = defineProps({
 
 // Store
 const store = useReportDetailsStore();
-const { report } = storeToRefs(store);
-const { getReport } = store;
+// const { report } = storeToRefs(store);
+const { getReport, getReportQuery } = store;
 
 // API calls
 // getReport(props.uuid);
 
-onBeforeMount(() => {
-  getReport(props.uuid);
-});
+// onBeforeMount(() => {
+//   getReport(props.uuid);
+// });
 
+const { isSuccess, data: report } = getReportQuery(props.uuid);
 // Event Handlers
 const handleBack = () => {
-  router.push({ name: "vessel-overview" });
+  router.push({ name: "vessel-reports" });
 };
 </script>
 
 <template>
   <div class="bg-gray-50 min-h-screen">
-    <div v-if="report" class="flex flex-col px-24 pt-11">
+    <div v-if="isSuccess" class="flex flex-col px-24 pt-11">
       <button @click="handleBack">
         <img
           src="@/assets/icons/back_arrow.svg"
@@ -58,8 +59,6 @@ const handleBack = () => {
           "
         >
           <DepartureReportView :report="report" />
-          <!-- <div>DEPARTURE STANDBY</div> -->
-          <!-- <div>DEPARTURE COSP RUP</div> -->
         </div>
         <div
           v-else-if="
@@ -68,7 +67,6 @@ const handleBack = () => {
           "
         >
           <ArrivalReportView :report="report" />
-          <!-- <div>ARRIVAL</div> -->
         </div>
         <div
           v-else-if="
@@ -79,15 +77,14 @@ const handleBack = () => {
           "
         >
           <HarbourPortReportView :report="report" />
-          <!-- <div>HarbourPort</div> -->
         </div>
         <div v-else-if="report.report_type == Report.type.BUNKER">
           <BunkerReportView :report="report" />
-          <!-- <div>BUNKER</div> -->
         </div>
         <div v-else><div>Invalid Report Type</div></div>
-        <!-- <div>{{ report }}</div> -->
       </div>
+      
+      <div>{{ report }}</div>
     </div>
   </div>
 </template>
