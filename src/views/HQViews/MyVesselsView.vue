@@ -237,7 +237,9 @@
 import MyVesselsDashboardIcon from "@/views/HQViews/components/MyVesselsDashboardIcon.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 import VesselCard from "@/views/HQViews/components/VesselCard.vue";
-import { useShipsQuery } from "@/queries/useShipsQuery";
+import { useHQStore } from "@/stores/useHQStore";
+
+const store = useHQStore();
 // To be pulled from backend
 const sailingVessels = 0;
 const inPortVessels = 0;
@@ -269,5 +271,5 @@ const vessel = {
   updatedDate: "18 Nov 2022",
 };
 
-const { isSuccess, data: ships } = useShipsQuery();
+const { isSuccess, data: ships } = store.shipsQuery();
 </script>
