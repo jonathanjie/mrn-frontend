@@ -430,17 +430,17 @@ const fuel_options = ref({
 });
 
 const lubricating_oil_options = ref({
-  me_cylinder_oil: false,
-  me_system_oil: false,
+  me_cylinder_oil: true,
+  me_system_oil: true,
   me_sump_tank: false,
   ge_system_oil: false,
   tg_system_oil: false,
 });
 
 const machinery_options = ref({
-  main_engine: false,
-  generator_engine: false,
-  boiler: false,
+  main_engine: true,
+  generator_engine: true,
+  boiler: true,
   ge_system_oil: false,
   inert_gas_generator: false,
 });
