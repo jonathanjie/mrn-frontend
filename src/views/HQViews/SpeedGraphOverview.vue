@@ -155,9 +155,7 @@
 <script setup>
 import TableOverview from "@/views/HQViews/components/TableOverview.vue";
 import PortCard from "@/views/HQViews/components/PortCard.vue";
-import { useStatsQuery } from "@/queries/useStatsQuery";
-import { useLegsQuery } from "@/queries/useLegsQuery";
-import { useShipQuery } from "@/queries/useShipQuery";
+import { useHQStore } from "@/stores/useHQStore";
 
 const props = defineProps({
   vesselname: String,
@@ -178,10 +176,10 @@ const shipRef = {
   RORP: "Ro-Ro Passenger Ship",
   CRUZ: "Cruise Passenger Ship",
 };
-
-const { isSuccess: shipSuccess, data: ship } = useShipQuery(props.imo);
-const { isSuccess: legsSuccess, data: portCalls } = useLegsQuery(props.imo);
-const { isSuccess: statsSuccess, data: stats } = useStatsQuery(props.imo);
+const store = useHQStore();
+const { isSuccess: shipSuccess, data: ship } = store.shipQuery(props.imo);
+const { isSuccess: legsSuccess, data: portCalls } = store.legsQuery(props.imo);
+const { isSuccess: statsSuccess, data: stats } = store.statsQuery(props.imo);
 
 // Unused variables for CII/EEXI/message feature
 const previousCIIGrade = "A";

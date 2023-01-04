@@ -1,7 +1,7 @@
 import { useQuery } from "vue-query";
 import axios from "axios";
 
-export function useStatsQuery(imo) {
+export const useStatsQuery = (imo) => {
   return useQuery(["stats"], async () =>
     axios
       .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/stats`)
@@ -12,4 +12,4 @@ export function useStatsQuery(imo) {
         console.log(error.message);
       })
   );
-}
+};

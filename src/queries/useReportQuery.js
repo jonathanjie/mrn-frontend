@@ -1,7 +1,7 @@
 import { useQuery } from "vue-query";
 import axios from "axios";
 
-export function useReportQuery(voyage_uuid) {
+export const useReportQuery = (voyage_uuid) => {
   return useQuery(["voyages"], async () =>
     axios
       .get(
@@ -14,4 +14,4 @@ export function useReportQuery(voyage_uuid) {
         console.log(error.message);
       })
   );
-}
+};
