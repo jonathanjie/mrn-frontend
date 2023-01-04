@@ -15,8 +15,8 @@
     <!-- Distance & Time (R/UP Engine) & S/BY to R/UP (In Harbour)-->
     <DepartureDistanceAndTime />
 
-    <!-- Budget Trans Ocean (Pilot to Pilot) -->
-    <DepartureBudgetTransOcean />
+    <!-- Sailing Plan (Pilot to Pilot) -->
+    <DepartureSailingPlan />
 
     <!-- Consumption & Condition (S/BY to R/UP) -->
     <DepartureCOSPConsumption />
@@ -51,7 +51,7 @@ import DepartureCOSPConsumption from "@/components/Reports/DepartureReport/Depar
 import DeparturePilotStationArrival from "@/components/Reports/DepartureReport/DeparturePilotStationArrival.vue";
 import DepartureCOSPPilotStation from "@/components/Reports/DepartureReport/DepartureCOSPPilotStation.vue";
 import DepartureDistanceAndTime from "@/components/Reports/DepartureReport/DepartureDistanceAndTime.vue";
-import DepartureBudgetTransOcean from "@/components/Reports/DepartureReport/DepartureBudgetTransOcean.vue";
+import DepartureSailingPlan from "@/components/Reports/DepartureReport/DepartureSailingPlan.vue";
 import DepartureCOSPOverview from "@/components/Reports/DepartureReport/DepartureCOSPOverview.vue";
 import { storeToRefs } from "pinia";
 import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";

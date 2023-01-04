@@ -11,16 +11,11 @@ const props = defineProps({
 const budget_distance = computed(
   () => props.report.transoceanicbudget.distance_to_go
 );
-const budget_speed = computed(
-  () => props.report.transoceanicbudget.speed
-);
+const budget_speed = computed(() => props.report.transoceanicbudget.speed);
 const me_daily = computed(
   () => props.report.transoceanicbudget.me_daily_fo_consumption
 );
-const me_rpm = computed(
-  () => props.report.transoceanicbudget.me_rpm
-);
-
+const me_rpm = computed(() => props.report.transoceanicbudget.me_rpm);
 </script>
 
 <template>
@@ -28,7 +23,7 @@ const me_rpm = computed(
     <div class="col-span-2 flex items-center">
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
       <span class="text-blue-700 text-16">
-        <slot>{{ $t("budgetTransOceanPilotToPilot") }}</slot>
+        <slot>{{ $t("sailingPlanPilotToPilot") }}</slot>
       </span>
     </div>
     <div
@@ -89,5 +84,3 @@ const me_rpm = computed(
     </div>
   </div>
 </template>
-
-

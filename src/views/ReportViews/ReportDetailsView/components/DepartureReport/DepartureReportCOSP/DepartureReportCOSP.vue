@@ -6,7 +6,7 @@ import DepartureOverview from "../components/DepartureOverview.vue";
 import DeparturePilotStation from "../components/DeparturePilotStation.vue";
 import DeparturePilotStationArrival from "./components/DeparturePilotStationArrival.vue";
 import DepartureDistanceAndTime from "../components/DepartureDistanceAndTime.vue";
-import DepartureBudgetTransOcean from "./components/DepartureBudgetTransOcean.vue";
+import DepartureSailingPlan from "./components/DepartureSailingPlan.vue";
 
 const props = defineProps({
   report: {
@@ -32,8 +32,8 @@ const props = defineProps({
     <!-- Distance & Time (R/UP Engine) & S/BY to R/UP (In Harbour)-->
     <DepartureDistanceAndTime :report="props.report" />
 
-    <!-- Budget Trans Ocean (Pilot to Pilot) -->
-    <DepartureBudgetTransOcean :report="props.report" />
+    <!-- Sailing Plan (Pilot to Pilot) -->
+    <DepartureSailingPlan :report="props.report" />
 
     <!-- Consumption & Condition (S/BY to R/UP) -->
     <DepartureCOSPConsumption :report="props.report" />
