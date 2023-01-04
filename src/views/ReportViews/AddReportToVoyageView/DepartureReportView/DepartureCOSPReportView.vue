@@ -176,13 +176,14 @@ const sendReport = async () => {
     portCountry: departurePortCountry.value,
     portName: departurePortName.value,
   });
+
   const destinationPort = parsePortLocode({
     portCountry: destinationPortCountry.value,
     portName: destinationPortName.value,
   });
 
   const fuelOilData = generateFuelOilData(
-    fuelOils,
+    fuelOils.value,
     fuelOilBreakdowns.value,
     fuelOilTotalConsumptions.value,
     fuelOilRobs.value,
@@ -190,7 +191,7 @@ const sendReport = async () => {
   );
 
   const lubricatingOilData = generateLubricatingOilData(
-    lubricatingOils,
+    lubricatingOils.value,
     lubricatingOilBreakdowns.value,
     lubricatingOilRobs.value,
     lubricatingOilDataCorrection.value

@@ -179,7 +179,7 @@ export const windSpeedToBeaufort = (wind_speed) => {
     : 12;
 };
 
-// data correction parameter is optional
+// ROB & data correction parameters are optional
 export const generateFuelOilData = (
   fuelOils,
   fuelOilBreakdowns,
@@ -190,13 +190,15 @@ export const generateFuelOilData = (
   const rtn = [];
 
   const dataCorrection = fuelOilDataCorrection || {};
+  const rob = fuelOilRobs || {};
+
   for (const fuelOil of fuelOils) {
     rtn.push({
       fuel_oil_type: fuelOil,
       total_consumption: fuelOilTotalConsumptions[fuelOil] || 0,
       receipt: fuelOilBreakdowns.receipt || 0, // non-zero for DEP SBY reports
       debunkering: fuelOilBreakdowns.debunkering || 0, // non-zero for DEP SBY reports
-      rob: fuelOilRobs[fuelOil] || 0,
+      rob: rob[fuelOil] || 0, // zero for Arrival EOSP Total Consumption
       breakdown: Object.entries(fuelOilBreakdowns[fuelOil]).reduce(
         (p, [k, v]) => ({ ...p, [k]: v || 0 }),
         {}

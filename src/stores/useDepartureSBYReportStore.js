@@ -2,9 +2,8 @@ import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
 import { storeToRefs } from "pinia";
-import { convertLTToUTC } from "@/utils/helpers";
+import { convertLTToUTC, sumObjectValues } from "@/utils/helpers";
 import { useShipStore } from "@/stores/useShipStore";
-import { sumObjectValues } from "@/utils/helpers";
 
 const temp = {
   // Consumption & Condition
@@ -254,7 +253,6 @@ export const useDepartureSBYReportStore = defineStore(
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
         if (fuelOils.value.includes(fuelOil)) {
-          // console.log(fuelOil, fuelOilBreakdownsSum.value[fuelOil]);
           rtn[fuelOil] = +sumObjectValues(
             fuelOilBreakdownsSum.value[fuelOil],
             4
