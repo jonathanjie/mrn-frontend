@@ -9,6 +9,14 @@ export function preventNaN(event, content) {
   }
 }
 
+export const sumObjectValues = (obj, endIndex) => {
+  endIndex = endIndex || Object.values(obj).length;
+
+  return Object.values(obj)
+    .slice(0, endIndex)
+    .reduce((a, b) => Number(a) + Number(b), 0);
+};
+
 export const textInputOptions = ref({
   format: "yyyy.MM.dd HH:mm",
 });
@@ -171,6 +179,7 @@ export const windSpeedToBeaufort = (wind_speed) => {
     : 12;
 };
 
+// data correction parameter is optional
 export const generateFuelOilData = (
   fuelOils,
   fuelOilBreakdowns,
@@ -180,22 +189,23 @@ export const generateFuelOilData = (
 ) => {
   const rtn = [];
 
+  const dataCorrection = fuelOilDataCorrection || {};
   for (const fuelOil of fuelOils) {
     rtn.push({
       fuel_oil_type: fuelOil,
       total_consumption: fuelOilTotalConsumptions[fuelOil] || 0,
-      receipt: "0.00", // irrelevant for noon report
-      debunkering: "0.00", // irrelevant for noon report
+      receipt: fuelOilBreakdowns.receipt || 0, // non-zero for DEP SBY reports
+      debunkering: fuelOilBreakdowns.debunkering || 0, // non-zero for DEP SBY reports
       rob: fuelOilRobs[fuelOil] || 0,
       breakdown: Object.entries(fuelOilBreakdowns[fuelOil]).reduce(
         (p, [k, v]) => ({ ...p, [k]: v || 0 }),
         {}
       ),
       fueloildatacorrection:
-        fuelOilDataCorrection.type === fuelOil
+        dataCorrection.type === fuelOil
           ? {
-              correction: fuelOilDataCorrection.correction,
-              remarks: fuelOilDataCorrection.remarks,
+              correction: dataCorrection.correction,
+              remarks: dataCorrection.remarks,
             }
           : null,
     });
@@ -203,6 +213,7 @@ export const generateFuelOilData = (
   return rtn;
 };
 
+// data correction parameter is optional
 export const generateLubricatingOilData = (
   lubricatingOils,
   lubricatingOilBreakdowns,

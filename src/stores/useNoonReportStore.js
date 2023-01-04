@@ -3,7 +3,9 @@ import { ref, reactive, computed } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
 import { convertLTToUTC, convertUTCToLT } from "@/utils/helpers";
 import { storeToRefs } from "pinia";
-import { FuelOil, LubricatingOil, IceCondition } from "@/constants";
+import { IceCondition } from "@/constants";
+import { useShipStore } from "@/stores/useShipStore";
+import { sumObjectValues } from "@/utils/helpers";
 
 // TODO: retrieve from backend or generate as needed
 // API /reports/latest
@@ -42,6 +44,9 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const store = useVoyageStore();
   const { noonReportNo, curLegNo, curLoadingCondition, curVoyageNo } =
     storeToRefs(store);
+
+  const shipStore = useShipStore();
+  const { fuelOils, lubricatingOils, machinery } = storeToRefs(shipStore);
 
   // Overview
   const reportNo = noonReportNo;
@@ -188,7 +193,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
       ? +(temp.distanceLeft - Number(distanceObsSinceNoon.value)).toFixed(2)
       : ""
   );
-  const distanceToGoEdited = ref(""); // use distanceToGoEdited instead of distanceToGo if distanceToGoEdited.value != distanceToGo.value
+  const distanceToGoEdited = ref("");
   const remarksForChanges = ref("");
   const revolutionCount = ref("");
 
@@ -241,88 +246,35 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   );
 
   // Consumption and Condition
-  const sumValues = (obj) =>
-    Object.values(obj).reduce((a, b) => Number(a) + Number(b), 0);
-
-  const fuelOilBreakdowns = reactive({
-    LSFO: {
+  const fuelOilBreakdowns = reactive({});
+  for (const fuelOil of fuelOils.value) {
+    fuelOilBreakdowns[fuelOil] = {
       "M/E": "",
       "G/E": "",
       IGG: "",
       BLR: "",
-    },
-    MGO: {
-      "M/E": "",
-      "G/E": "",
-      IGG: "",
-      BLR: "",
-    },
-    MDO: {
-      "M/E": "",
-      "G/E": "",
-      IGG: "",
-      BLR: "",
-    },
-    HFO: {
-      "M/E": "",
-      "G/E": "",
-      IGG: "",
-      BLR: "",
-    },
-    LPGP: {
-      "M/E": "",
-      "G/E": "",
-      IGG: "",
-      BLR: "",
-    },
-    LPGB: {
-      "M/E": "",
-      "G/E": "",
-      IGG: "",
-      BLR: "",
-    },
-    LNG: {
-      "M/E": "",
-      "G/E": "",
-      IGG: "",
-      BLR: "",
-    },
-  });
-  const fuelOilTotalConsumptions = computed(() => {
-    return {
-      LSFO: +sumValues(fuelOilBreakdowns[FuelOil.LSFO]).toFixed(2),
-      MGO: +sumValues(fuelOilBreakdowns[FuelOil.MGO]).toFixed(2),
-      MDO: +sumValues(fuelOilBreakdowns[FuelOil.MDO]).toFixed(2),
-      HFO: +sumValues(fuelOilBreakdowns[FuelOil.HFO]).toFixed(2),
-      LPGP: +sumValues(fuelOilBreakdowns[FuelOil.LPGP]).toFixed(2),
-      LPGB: +sumValues(fuelOilBreakdowns[FuelOil.LPGB]).toFixed(2),
-      LNG: +sumValues(fuelOilBreakdowns[FuelOil.LNG]).toFixed(2),
     };
+  }
+  const fuelOilTotalConsumptions = computed(() => {
+    let rtn = {};
+    for (const fuelOil of fuelOils.value) {
+      if (fuelOils.value.includes(fuelOil)) {
+        rtn[fuelOil] = +sumObjectValues(fuelOilBreakdowns[fuelOil]).toFixed(2);
+      }
+    }
+    return rtn;
   });
   const fuelOilRobs = computed(() => {
-    return {
-      LSFO:
-        temp.prevRobs[FuelOil.LSFO] -
-        Number(fuelOilTotalConsumptions.value[FuelOil.LSFO]),
-      MGO:
-        temp.prevRobs[FuelOil.MGO] -
-        Number(fuelOilTotalConsumptions.value[FuelOil.MGO]),
-      MDO:
-        temp.prevRobs[FuelOil.MDO] -
-        Number(fuelOilTotalConsumptions.value[FuelOil.MDO]),
-      HFO:
-        temp.prevRobs[FuelOil.HFO] -
-        Number(fuelOilTotalConsumptions.value[FuelOil.HFO]),
-      LPGP:
-        temp.prevRobs[FuelOil.LPGP] -
-        Number(fuelOilTotalConsumptions.value[FuelOil.LPGP]),
-      LPGB:
-        temp.prevRobs[FuelOil.LPGB] -
-        Number(fuelOilTotalConsumptions.value[FuelOil.LPGB]),
-      LNG:
-        temp.prevRobs[FuelOil.LNG] -
-        Number(fuelOilTotalConsumptions.value[FuelOil.LNG]),
-    };
+    let rtn = {};
+    for (const fuelOil of fuelOils.value) {
+      if (fuelOils.value.includes(fuelOil)) {
+        rtn[fuelOil] = +(
+          temp.prevRobs[fuelOil] -
+          Number(fuelOilTotalConsumptions.value[fuelOil])
+        ).toFixed(2);
+      }
+    }
+    return rtn;
   });
   const fuelOilDataCorrection = reactive({
     type: "default",
@@ -330,94 +282,27 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     remarks: "",
   });
 
-  const lubricatingOilBreakdowns = reactive({
-    "M/E Cylinder": {
+  const lubricatingOilBreakdowns = reactive({});
+  for (const lubricatingOil of lubricatingOils.value) {
+    lubricatingOilBreakdowns[lubricatingOil] = {
       total_consumption: "",
       receipt: "",
       debunkering: "",
-    },
-    "M/E System": {
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
-    },
-    "M/E Sump": {
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
-    },
-    "G/E System": {
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
-    },
-    "T/C System": {
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
-    },
-  });
-  const lubricatingOilRobs = computed(() => {
-    return {
-      "M/E Cylinder": +(
-        temp.prevRobs[LubricatingOil.ME_CYLINDER] -
-        Number(
-          lubricatingOilBreakdowns[LubricatingOil.ME_CYLINDER][
-            "total_consumption"
-          ]
-        ) +
-        Number(
-          lubricatingOilBreakdowns[LubricatingOil.ME_CYLINDER]["receipt"]
-        ) -
-        Number(
-          lubricatingOilBreakdowns[LubricatingOil.ME_CYLINDER]["debunkering"]
-        )
-      ).toFixed(2),
-      "M/E System": +(
-        temp.prevRobs[LubricatingOil.ME_SYSTEM] -
-        Number(
-          lubricatingOilBreakdowns[LubricatingOil.ME_SYSTEM][
-            "total_consumption"
-          ]
-        ) +
-        Number(lubricatingOilBreakdowns[LubricatingOil.ME_SYSTEM]["receipt"]) -
-        Number(
-          lubricatingOilBreakdowns[LubricatingOil.ME_SYSTEM]["debunkering"]
-        )
-      ).toFixed(2),
-      "M/E Sump": +(
-        temp.prevRobs[LubricatingOil.ME_SUMP] -
-        Number(
-          lubricatingOilBreakdowns[LubricatingOil.ME_SUMP]["total_consumption"]
-        ) +
-        Number(lubricatingOilBreakdowns[LubricatingOil.ME_SUMP]["receipt"]) -
-        Number(lubricatingOilBreakdowns[LubricatingOil.ME_SUMP]["debunkering"])
-      ).toFixed(2),
-      "G/E System": +(
-        temp.prevRobs[LubricatingOil.GE_SYSTEM] -
-        Number(
-          lubricatingOilBreakdowns[LubricatingOil.GE_SYSTEM][
-            "total_consumption"
-          ]
-        ) +
-        Number(lubricatingOilBreakdowns[LubricatingOil.GE_SYSTEM]["receipt"]) -
-        Number(
-          lubricatingOilBreakdowns[LubricatingOil.GE_SYSTEM]["debunkering"]
-        )
-      ).toFixed(2),
-      "T/C System": +(
-        temp.prevRobs[LubricatingOil.TC_SYSTEM] -
-        Number(
-          lubricatingOilBreakdowns[LubricatingOil.TC_SYSTEM][
-            "total_consumption"
-          ]
-        ) +
-        Number(lubricatingOilBreakdowns[LubricatingOil.TC_SYSTEM]["receipt"]) -
-        Number(
-          lubricatingOilBreakdowns[LubricatingOil.TC_SYSTEM]["debunkering"]
-        )
-      ).toFixed(2),
     };
+  }
+  const lubricatingOilRobs = computed(() => {
+    let rtn = {};
+    for (const lubricatingOil of lubricatingOils.value) {
+      if (lubricatingOils.value.includes(lubricatingOil)) {
+        rtn[lubricatingOil] = +(
+          temp.prevRobs[lubricatingOil] -
+          Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
+          Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
+          Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
+        ).toFixed(2);
+      }
+    }
+    return rtn;
   });
   const lubricatingOilDataCorrection = reactive({
     type: "default",
@@ -556,6 +441,9 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     rpmAvg,
     slipAvg,
     // Consumption and Condition
+    fuelOils,
+    lubricatingOils,
+    machinery,
     fuelOilRobs,
     fuelOilBreakdowns,
     fuelOilTotalConsumptions,

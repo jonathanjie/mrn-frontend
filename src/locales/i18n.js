@@ -65,7 +65,7 @@ const i18n = createI18n({
       boiler: "Boiler",
       boilerEngine: "Boiler",
       browseFile: "browse file",
-      budgetTransOceanPilotToPilot: "Budget Trans Ocean (Pilot to Pilot)",
+      sailingPlanPilotToPilot: "Sailing Plan (Pilot to Pilot)",
       bulkCarrier: "Bulk Carrier",
       bunkerDelivery: "Bunker Delivery",
       bunkeringDebunkering: "Bunkering/De-bunkering",

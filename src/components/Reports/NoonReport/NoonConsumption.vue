@@ -38,8 +38,7 @@
             v-for="(fuelOil, index) of fuelOils"
             :key="index"
             :class="
-              getFuelOilColSpan() +
-              ' grid ' +
+              'col-span-full grid ' +
               getFuelOilCols() +
               ' ' +
               (index == fuelOils.length - 1 ? 'border-b' : '')
@@ -373,20 +372,14 @@ import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
 
-const props = defineProps({
-  fuelOils: Array,
-  lubricatingOils: Array,
-  machinery: Array,
-});
-
-const getFuelOilCols = () => "grid-cols-" + (props.machinery.length + 6);
-const getFuelOilColSpan = () => "col-span-" + (props.machinery.length + 6);
-
 const isFuelOilRemarkEnabled = ref(false);
 const isLubricatingOilRemarkEnabled = ref(false);
 
 const store = useNoonReportStore();
 const {
+  fuelOils,
+  lubricatingOils,
+  machinery,
   // fuel oil
   fuelOilTotalConsumptions: fuel_oil_total_consumptions,
   fuelOilRobs: fuel_oil_robs,
@@ -402,4 +395,6 @@ const {
   freshwaterChange: freshwater_change,
   freshwaterRob: freshwater_rob,
 } = storeToRefs(store);
+
+const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 6);
 </script>

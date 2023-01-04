@@ -54,7 +54,6 @@
 <script setup>
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 // import CustomButton from "@/components/Buttons/CustomButton.vue";
-
 import NoonOverview from "@/components/Reports/NoonReport/NoonOverview.vue";
 import NoonDetails from "@/components/Reports/NoonReport/NoonDetails.vue";
 import NoonWeather from "@/components/Reports/NoonReport/NoonWeather.vue";
@@ -63,17 +62,10 @@ import NoonDistanceAndTime from "@/components/Reports/NoonReport/NoonDistanceAnd
 import NoonPerformance from "@/components/Reports/NoonReport/NoonPerformance.vue";
 import NoonConsumption from "@/components/Reports/NoonReport/NoonConsumption.vue";
 import NoonStoppage from "@/components/Reports/NoonReport/NoonStoppage.vue";
-
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
-import {
-  Report,
-  FuelOil,
-  LubricatingOil,
-  Machinery,
-  ConsumptionType,
-} from "@/constants";
+import { Report, ConsumptionType } from "@/constants";
 import {
   parsePositionToString,
   parsePortLocode,
@@ -81,18 +73,11 @@ import {
   generateLubricatingOilData,
 } from "@/utils/helpers.js";
 
-// Temporary values to pass in before can fetch data from backend
-const fuelOils = [FuelOil.MDO, FuelOil.MGO, FuelOil.LSFO];
-const lubricatingOils = [
-  LubricatingOil.ME_SYSTEM,
-  LubricatingOil.GE_SYSTEM,
-  LubricatingOil.ME_CYLINDER,
-  LubricatingOil.TC_SYSTEM,
-];
-const machinery = [Machinery.ME, Machinery.GE, Machinery.BLR, Machinery.IGG];
-
 const store = useNoonReportStore();
 const {
+  fuelOils,
+  lubricatingOils,
+  machinery,
   // Overview
   voyageNo,
   legNo,
