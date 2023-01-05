@@ -1,9 +1,7 @@
 <script setup>
-import { onBeforeMount } from "vue";
 import { useReportDetailsStore } from "./stores/useReportDetailsStore";
 import router from "@/router";
 import { Report } from "@/constants";
-import { storeToRefs } from "pinia";
 import NoonReportView from "./components/NoonReport/NoonReportView.vue";
 import DepartureReportView from "./components/DepartureReport/DepartureReportView.vue";
 import ArrivalReportView from "./components/ArrivalReport/ArrivalReportView.vue";
@@ -20,8 +18,7 @@ const props = defineProps({
 
 // Store
 const store = useReportDetailsStore();
-// const { report } = storeToRefs(store);
-const { getReport, getReportQuery } = store;
+const { getReportQuery } = store;
 
 // API calls
 // getReport(props.uuid);
@@ -30,7 +27,7 @@ const { getReport, getReportQuery } = store;
 //   getReport(props.uuid);
 // });
 
-const { isSuccess, data: report } = getReportQuery(props.uuid);
+const { isSuccess, isFetching, data: report } = getReportQuery(props.uuid);
 // Event Handlers
 const handleBack = () => {
   router.push({ name: "vessel-reports" });
@@ -39,7 +36,8 @@ const handleBack = () => {
 
 <template>
   <div class="bg-gray-50 min-h-screen">
-    <div v-if="isSuccess" class="flex flex-col px-24 pt-11">
+    <div v-if="isFetching">Loading...</div>
+    <div v-else-if="isSuccess" class="flex flex-col px-24 pt-11">
       <button @click="handleBack">
         <img
           src="@/assets/icons/back_arrow.svg"
@@ -86,6 +84,6 @@ const handleBack = () => {
 
       <div>{{ report }}</div>
     </div>
-    <div v-else>Loading...</div>
+    <div v-else></div>
   </div>
 </template>

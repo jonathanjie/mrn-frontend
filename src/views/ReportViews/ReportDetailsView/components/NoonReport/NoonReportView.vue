@@ -5,8 +5,8 @@ import NoonWeather from "./components/NoonWeather.vue";
 import NoonHeavyWeather from "./components/NoonHeavyWeather.vue";
 import NoonDistanceAndTime from "./components/NoonDistanceAndTime.vue";
 import NoonPerformance from "./components/NoonPerformance.vue";
-import NoonConsumption from "./components/NoonConsumption.vue";
 import NoonStoppage from "./components/NoonStoppage.vue";
+import ReportConsumption from "../ReportConsumption.vue";
 
 const props = defineProps({
   report: {
@@ -40,9 +40,11 @@ const props = defineProps({
     <NoonPerformance :report="props.report" />
 
     <!-- Consumption & Condition -->
-    <NoonConsumption :report="props.report">{{
-      $t("consumptionAndConditionNoonToNoon")
-    }}</NoonConsumption>
+    <ReportConsumption :report="report">
+      <template v-slot:header>
+        {{ $t("consumptionAndConditionNoonToNoon") }}
+      </template>
+    </ReportConsumption>
 
     <!-- Stoppage or Reduction of RPM (at sea) -->
     <NoonStoppage v-if="props.report.stoppagedata" :report="props.report" />

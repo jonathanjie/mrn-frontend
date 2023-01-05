@@ -1,11 +1,11 @@
 <script setup>
 import DepartureAndDestinationCOSP from "./components/DepartureAndDestinationCOSP.vue";
-import DepartureCOSPConsumption from "./components/DepartureCOSPConsumption.vue";
 import DepartureOverview from "../components/DepartureOverview.vue";
 import DeparturePilotStation from "../components/DeparturePilotStation.vue";
 import DeparturePilotStationArrival from "./components/DeparturePilotStationArrival.vue";
 import DepartureDistanceAndTime from "../components/DepartureDistanceAndTime.vue";
 import DepartureSailingPlan from "./components/DepartureSailingPlan.vue";
+import ReportConsumption from "../../ReportConsumption.vue";
 
 const props = defineProps({
   report: {
@@ -35,6 +35,10 @@ const props = defineProps({
     <DepartureSailingPlan :report="props.report" />
 
     <!-- Consumption & Condition (S/BY to R/UP) -->
-    <DepartureCOSPConsumption :report="props.report" />
+    <ReportConsumption :report="report">
+      <template v-slot:header>
+        {{ $t("consumptionAndConditionSbyToRup") }}
+      </template>
+    </ReportConsumption>
   </div>
 </template>

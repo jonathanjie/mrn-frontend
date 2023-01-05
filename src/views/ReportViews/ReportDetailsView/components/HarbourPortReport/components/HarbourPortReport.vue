@@ -92,7 +92,6 @@ const position = computed(() => props.report.eventdata.position);
       <select
         disabled
         v-model="status"
-        :disabled="reportSubtypeIsNoon"
         class="col-span-3 p-3 border-y border-r focus:outline-0 disabled:text-gray-400 disabled:bg-gray-50"
         :class="status === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >

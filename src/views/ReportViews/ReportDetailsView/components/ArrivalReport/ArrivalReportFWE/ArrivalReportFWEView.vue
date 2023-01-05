@@ -3,9 +3,9 @@
 import ArrivalFWEDistanceAndTime from "./components/ArrivalFWEDistanceAndTime.vue";
 import ArrivalFinishWithEngine from "./components/ArrivalFinishWithEngine.vue";
 import ArrivalFWESummary from "./components/ArrivalFWESummary.vue";
-import ArrivalConsumption from "../components/ArrivalConsumption.vue";
 import ArrivalOverview from "../components/ArrivalOverview.vue";
 import ArrivalPilotStation from "../components/ArrivalPilotStation.vue";
+import ReportConsumption from "../../ReportConsumption.vue";
 
 const props = defineProps({
   report: {
@@ -30,7 +30,12 @@ const props = defineProps({
     <ArrivalFWEDistanceAndTime :report="props.report" />
 
     <!-- Consumption & Condition (S/BY - F.W.E) -->
-    <ArrivalConsumption :report="props.report" />
+    <!-- <ArrivalConsumption :report="props.report" /> -->
+    <ReportConsumption :report="report">
+      <template v-slot:header>
+        {{ $t("consumptionAndConditionSbyToFwe") }}
+      </template>
+    </ReportConsumption>
 
     <!-- ArrivalFWESummary: Actual Performance (Port to Port) & Total Consumption (Pilot to Pilot) -->
     <ArrivalFWESummary :report="props.report" />

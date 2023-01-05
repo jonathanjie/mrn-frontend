@@ -1,6 +1,6 @@
 <script setup>
 import { preventNaN } from "@/utils/helpers";
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 import { storeToRefs } from "pinia";
@@ -93,13 +93,13 @@ const {
   lubricatingOils,
   machinery,
   // fuel oil
-  fuelOilTotalConsumptions: fuelOilTotalConsumptions,
-  fuelOilRobs: fuelOilRobs,
-  fuelOilBreakdowns: fuelOilBreakdowns,
+  // fuelOilTotalConsumptions: fuelOilTotalConsumptions,
+  // fuelOilRobs: fuelOilRobs,
+  // fuelOilBreakdowns: fuelOilBreakdowns,
   // fuelOilDataCorrection: fuelOilDataCorrection,
   // lubricating oil
-  lubricatingOilBreakdowns: lubricatingOilBreakdowns,
-  lubricatingOilRobs: lubricatingOilRobs,
+  // lubricatingOilBreakdowns: lubricatingOilBreakdowns,
+  // lubricatingOilRobs: lubricatingOilRobs,
   // lubricatingOilDataCorrection: lubricatingOilDataCorrection,
   // fresh water
   //   freshwaterConsumed: freshwaterConsumed,
@@ -119,7 +119,7 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
       <div class="flex items-center">
         <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
         <span class="text-16 text-blue-700">
-          <slot name="header"></slot>
+          <slot name="header">{{ $t("consumptionAndCondition") }}</slot>
         </span>
       </div>
     </div>
@@ -178,6 +178,7 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
               {{ fuelOilData.fuel_oil_type }}
             </div>
             <input
+              disabled
               v-for="entry of Object.entries(fuelOilData.breakdown)"
               :key="entry"
               v-model="entry[1]"
@@ -191,12 +192,14 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
               {{ fuelOilData.total_consumption }}
             </div>
             <input
+              disabled
               v-model="fuelOilData.receipt"
               @keypress="preventNaN($event, fuelOilData.receipt)"
               placeholder="0"
               class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
             />
             <input
+              disabled
               v-model="fuelOilData.debunkering"
               @keypress="preventNaN($event, fuelOilData.debunkering)"
               placeholder="0"
@@ -240,6 +243,7 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
               {{ $t("correction") }}
             </div>
             <select
+              disabled
               v-model="fuelOilDataCorrection.type"
               class="col-span-4 p-3 border-l focus:outline-0"
               :class="
@@ -261,6 +265,7 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
             </select>
             <div class="flex col-span-4 p-3 pl-4 border-l bg-white">
               <input
+                disabled
                 v-model="fuelOilDataCorrection.correction"
                 @keypress="preventNaN($event, fuelOilDataCorrection.correction)"
                 placeholder="00,000.00"
@@ -326,6 +331,7 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
               {{ lubricatingOilData.fuel_oil_type }}
             </div>
             <input
+              disabled
               v-model="lubricatingOilData.total_consumption"
               @keypress="
                 preventNaN($event, lubricatingOilData.total_consumption)
@@ -334,12 +340,14 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
               class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
             />
             <input
+              disabled
               v-model="lubricatingOilData.receipt"
               @keypress="preventNaN($event, lubricatingOilData.receipt)"
               placeholder="0"
               class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
             />
             <input
+              disabled
               v-model="lubricatingOilData.debunkering"
               @keypress="preventNaN($event, lubricatingOilData.debunkering)"
               placeholder="0"
@@ -387,6 +395,7 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
               {{ $t("correction") }}
             </div>
             <select
+              disabled
               v-model="lubricatingOilDataCorrection.type"
               class="col-span-6 p-3 border-l focus:outline-0"
               :class="
@@ -408,6 +417,7 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
             </select>
             <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
               <input
+                disabled
                 v-model="lubricatingOilDataCorrection.correction"
                 @keypress="
                   preventNaN($event, lubricatingOilDataCorrection.correction)
@@ -467,12 +477,14 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
             {{ $t("remainOnBoard") }}
           </div>
           <input
+            disabled
             v-model="freshwaterConsumed"
             @keypress="preventNaN($event, freshwaterConsumed)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
+            disabled
             v-model="freshwaterGenerated"
             @keypress="preventNaN($event, freshwaterGenerated)"
             placeholder="0"
@@ -484,12 +496,14 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
             {{ freshwaterChange }}
           </div>
           <input
+            disabled
             v-model="freshwaterReceiving"
             @keypress="preventNaN($event, freshwaterReceiving)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
+            disabled
             v-model="freshwaterDischarging"
             @keypress="preventNaN($event, freshwaterDischarging)"
             placeholder="0"

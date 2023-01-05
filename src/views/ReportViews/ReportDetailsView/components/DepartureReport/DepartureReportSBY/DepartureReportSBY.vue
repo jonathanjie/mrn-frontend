@@ -1,6 +1,5 @@
 <script setup>
 import DepartureAndDestinationSBY from "./components/DepartureAndDestinationSBY.vue";
-import DepartureSBYConsumption from "./components/DepartureSBYConsumption.vue";
 import DepartureSBYTotalConsumption from "./components/DepartureSBYTotalConsumption.vue";
 import DepartureSBYPilotStation from "../components/DeparturePilotStation.vue";
 import DepartureSBYOverview from "../components/DepartureOverview.vue";
@@ -34,8 +33,6 @@ const props = defineProps({
     <DepartureSBYPilotStation :report="props.report" />
 
     <!-- Consumption & Condition (departure ver.) -->
-    <!-- <DepartureSBYConsumption :report="props.report" /> -->
-
     <ReportConsumption :report="report">
       <template v-slot:header>
         {{ $t("consumptionAndConditionLastReportToSby") }}
