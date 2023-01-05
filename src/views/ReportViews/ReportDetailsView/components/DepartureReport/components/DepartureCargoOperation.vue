@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineProps } from "vue";
+import { computed } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { CargoLoadConditions } from "@/constants";
@@ -55,10 +55,16 @@ const time = computed(() => props.report.cargooperation.time);
           <option selected disabled value="default">
             {{ $t("selectAnOption") }}
           </option>
-          <option :value="CargoLoadConditions.BALLAST">{{ $t("ballast") }}</option>
+          <option :value="CargoLoadConditions.BALLAST">
+            {{ $t("ballast") }}
+          </option>
           <option :value="CargoLoadConditions.LADEN">{{ $t("laden") }}</option>
-          <option :value="CargoLoadConditions.EASTBOUND">{{ $t("eastbound") }}</option>
-          <option :value="CargoLoadConditions.WESTBOUND">{{ $t("westbound") }}</option>
+          <option :value="CargoLoadConditions.EASTBOUND">
+            {{ $t("eastbound") }}
+          </option>
+          <option :value="CargoLoadConditions.WESTBOUND">
+            {{ $t("westbound") }}
+          </option>
         </select>
       </div>
       <div class="grid grid-cols-5">

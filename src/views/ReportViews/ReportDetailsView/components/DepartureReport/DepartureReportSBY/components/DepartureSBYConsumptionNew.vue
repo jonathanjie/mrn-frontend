@@ -1,14 +1,101 @@
+<script setup>
+import { preventNaN } from "@/utils/helpers";
+import { ref, computed } from "vue";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
+import { storeToRefs } from "pinia";
+
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
+
+const isFuelOilRemarkEnabled = computed(() =>
+  props.report.consumptionconditiondata.fueloildata_set.reduce(
+    (accum, curr) => accum || curr.fueloildatacorrection,
+    false
+  )
+    ? true
+    : false
+);
+const isLubricatingOilRemarkEnabled = computed(() =>
+  props.report.consumptionconditiondata.lubricatingoildata_set.reduce(
+    (accum, curr) => accum || curr.lubricatingoildatacorrection,
+    false
+  )
+    ? true
+    : false
+);
+
+// const isFuelOilRemarkEnabled = ref(false);
+// const isLubricatingOilRemarkEnabled = ref(false);
+
+// Freshwater Consumption
+const freshwaterConsumed = computed(
+  () => props.report.consumptionconditiondata.freshwaterdata.consumed
+);
+const freshwaterGenerated = computed(
+  () => props.report.consumptionconditiondata.freshwaterdata.generated
+);
+const freshwaterReceiving = computed(
+  () => props.report.consumptionconditiondata.freshwaterdata.received
+);
+const freshwaterDischarging = computed(
+  () => props.report.consumptionconditiondata.freshwaterdata.generated
+);
+const freshwaterChange = computed(
+  () =>
+    +props.report.consumptionconditiondata.freshwaterdata.received +
+    props.report.consumptionconditiondata.freshwaterdata.generated -
+    props.report.consumptionconditiondata.freshwaterdata.discharged -
+    props.report.consumptionconditiondata.freshwaterdata.consumed
+);
+const freshwaterRob = computed(
+  () => props.report.consumptionconditiondata.freshwaterdata.rob
+);
+
+const store = useDepartureSBYReportStore();
+const {
+  fuelOils,
+  lubricatingOils,
+  machinery,
+  // fuel oil
+  fuelOilTotalConsumptions: fuelOilTotalConsumptions,
+  fuelOilRobs: fuelOilRobs,
+  fuelOilBreakdowns: fuelOilBreakdowns,
+  fuelOilDataCorrection: fuelOilDataCorrection,
+  // lubricating oil
+  lubricatingOilBreakdowns: lubricatingOilBreakdowns,
+  lubricatingOilRobs: lubricatingOilRobs,
+  lubricatingOilDataCorrection: lubricatingOilDataCorrection,
+  // fresh water
+//   freshwaterConsumed: freshwaterConsumed,
+//   freshwaterGenerated: freshwaterGenerated,
+//   freshwaterChange: freshwaterChange,
+//   freshwaterReceiving: freshwaterReceiving,
+//   freshwaterDischarging: freshwaterDischarging,
+//   freshwaterRob: freshwaterRob,
+} = storeToRefs(store);
+
+const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
+</script>
+
 <template>
-  <div class="grid bg-white rounded-lg p-5 gap-8 shadow-card">
-    <div class="flex items-center">
-      <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
-      <span class="text-blue-700 text-16">
-        {{ $t("consumptionAndConditionSbyToFwe") }}
-      </span>
+  <div class="grid bg-white rounded-lg p-5 gap-4 shadow-card">
+    <div>
+      <div class="flex items-center">
+        <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
+        <span class="text-16 text-blue-700">
+          <slot>{{ $t("consumptionAndConditionLastReportToSby") }}</slot>
+        </span>
+      </div>
     </div>
+
     <div class="grid divide-y divide-dashed gap-8">
       <div>
-        <div class="self-center mb-4 text-16 text-gray-700">
+        <div class="self-center mb-4 text-16 text-gray-700 pt-4">
           {{ $t("fuelOilInMT") }}
         </div>
 
@@ -27,6 +114,16 @@
             class="col-span-2 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
           >
             {{ $t("totalConsumption") }}
+          </div>
+          <div
+            class="col-span-2 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
+          >
+            {{ $t("receipt") }}
+          </div>
+          <div
+            class="col-span-2 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
+          >
+            {{ $t("debunkering") }}
           </div>
           <div
             class="col-span-2 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-x bg-gray-50"
@@ -52,20 +149,36 @@
             <input
               v-for="item of machinery"
               :key="item"
-              v-model="fuel_oil_breakdowns[fuelOil][item]"
-              @keypress="preventNaN($event, fuel_oil_breakdowns[fuelOil][item])"
+              v-model="fuelOilBreakdowns[fuelOil][item]"
+              @keypress="preventNaN($event, fuelOilBreakdowns[fuelOil][item])"
               placeholder="0"
               class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
             />
             <div
               class="col-span-2 text-gray-400 p-3 border-t border-l bg-gray-25"
             >
-              {{ fuel_oil_total_consumptions[fuelOil] }}
+              {{ fuelOilTotalConsumptions[fuelOil] }}
             </div>
+            <input
+              v-model="fuelOilBreakdowns[fuelOil].receipt"
+              @keypress="
+                preventNaN($event, fuelOilBreakdowns[fuelOil].receipt)
+              "
+              placeholder="0"
+              class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+            />
+            <input
+              v-model="fuelOilBreakdowns[fuelOil].debunkering"
+              @keypress="
+                preventNaN($event, fuelOilBreakdowns[fuelOil].debunkering)
+              "
+              placeholder="0"
+              class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+            />
             <div
               class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25"
             >
-              {{ fuel_oil_robs[fuelOil] }}
+              {{ fuelOilRobs[fuelOil] }}
             </div>
           </span>
         </div>
@@ -100,10 +213,10 @@
               {{ $t("correction") }}
             </div>
             <select
-              v-model="fuel_oil_data_correction.type"
+              v-model="fuelOilDataCorrection.type"
               class="col-span-4 p-3 border-l focus:outline-0"
               :class="
-                fuel_oil_data_correction.type === 'default'
+                fuelOilDataCorrection.type === 'default'
                   ? 'text-gray-400'
                   : 'text-gray-700'
               "
@@ -121,9 +234,9 @@
             </select>
             <div class="flex col-span-4 p-3 pl-4 border-l bg-white">
               <input
-                v-model="fuel_oil_data_correction.correction"
+                v-model="fuelOilDataCorrection.correction"
                 @keypress="
-                  preventNaN($event, fuel_oil_data_correction.correction)
+                  preventNaN($event, fuelOilDataCorrection.correction)
                 "
                 placeholder="00,000.00"
                 class="w-24 text-gray-700 focus:outline-0"
@@ -136,7 +249,7 @@
               {{ $t("remarks") }}
             </div>
             <textarea
-              v-model.trim="fuel_oil_data_correction.remarks"
+              v-model.trim="fuelOilDataCorrection.remarks"
               placeholder="Input description here"
               class="col-span-8 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
@@ -189,12 +302,12 @@
             </div>
             <input
               v-model="
-                lubricating_oil_breakdowns[lubricatingOil]['total_consumption']
+                lubricatingOilBreakdowns[lubricatingOil]['total_consumption']
               "
               @keypress="
                 preventNaN(
                   $event,
-                  lubricating_oil_breakdowns[lubricatingOil][
+                  lubricatingOilBreakdowns[lubricatingOil][
                     'total_consumption'
                   ]
                 )
@@ -203,11 +316,11 @@
               class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
             />
             <input
-              v-model="lubricating_oil_breakdowns[lubricatingOil]['receipt']"
+              v-model="lubricatingOilBreakdowns[lubricatingOil]['receipt']"
               @keypress="
                 preventNaN(
                   $event,
-                  lubricating_oil_breakdowns[lubricatingOil]['receipt']
+                  lubricatingOilBreakdowns[lubricatingOil]['receipt']
                 )
               "
               placeholder="0"
@@ -215,12 +328,12 @@
             />
             <input
               v-model="
-                lubricating_oil_breakdowns[lubricatingOil]['debunkering']
+                lubricatingOilBreakdowns[lubricatingOil]['debunkering']
               "
               @keypress="
                 preventNaN(
                   $event,
-                  lubricating_oil_breakdowns[lubricatingOil]['debunkering']
+                  lubricatingOilBreakdowns[lubricatingOil]['debunkering']
                 )
               "
               placeholder="0"
@@ -229,7 +342,7 @@
             <div
               class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25"
             >
-              {{ lubricating_oil_robs[lubricatingOil] }}
+              {{ lubricatingOilRobs[lubricatingOil] }}
             </div>
           </span>
         </div>
@@ -268,10 +381,10 @@
               {{ $t("correction") }}
             </div>
             <select
-              v-model="lubricating_oil_data_correction.type"
+              v-model="lubricatingOilDataCorrection.type"
               class="col-span-6 p-3 border-l focus:outline-0"
               :class="
-                lubricating_oil_data_correction.type === 'default'
+                lubricatingOilDataCorrection.type === 'default'
                   ? 'text-gray-400'
                   : 'text-gray-700'
               "
@@ -289,9 +402,9 @@
             </select>
             <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
               <input
-                v-model="lubricating_oil_data_correction.correction"
+                v-model="lubricatingOilDataCorrection.correction"
                 @keypress="
-                  preventNaN($event, lubricating_oil_data_correction.correction)
+                  preventNaN($event, lubricatingOilDataCorrection.correction)
                 "
                 placeholder="00,000.00"
                 class="w-24 text-gray-700 focus:outline-0"
@@ -304,7 +417,7 @@
               {{ $t("remarks") }}
             </div>
             <textarea
-              v-model.trim="lubricating_oil_data_correction.remarks"
+              v-model.trim="lubricatingOilDataCorrection.remarks"
               :placeholder="$t('inputDescriptionHere')"
               class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
@@ -316,7 +429,7 @@
         <div class="self-center text-16 text-gray-700">
           {{ $t("freshWaterInTon") }}
         </div>
-        <div class="grid grid-cols-4 pt-8 text-14">
+        <div class="grid grid-cols-6 pt-8 text-14">
           <div
             class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25"
           >
@@ -333,31 +446,53 @@
             +/-
           </div>
           <div
+            class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25"
+          >
+            {{ $t("receipt") }}
+          </div>
+          <div
+            class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25"
+          >
+            {{ $t("discharging") }}
+          </div>
+          <div
             class="col-span-1 text-sysblue-800 p-3 border-t border-x border-sysblue-100 bg-sysblue-25"
           >
             {{ $t("remainOnBoard") }}
           </div>
           <input
-            v-model="freshwater_consumed"
-            @keypress="preventNaN($event, freshwater_consumed)"
+            v-model="freshwaterConsumed"
+            @keypress="preventNaN($event, freshwaterConsumed)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <input
-            v-model="freshwater_generated"
-            @keypress="preventNaN($event, freshwater_generated)"
+            v-model="freshwaterGenerated"
+            @keypress="preventNaN($event, freshwaterGenerated)"
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
           <div
             class="col-span-1 text-gray-400 p-3 border-y border-l bg-gray-25"
           >
-            {{ freshwater_change }}
+            {{ freshwaterChange }}
           </div>
+          <input
+            v-model="freshwaterReceiving"
+            @keypress="preventNaN($event, freshwaterReceiving)"
+            placeholder="0"
+            class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
+          />
+          <input
+            v-model="freshwaterDischarging"
+            @keypress="preventNaN($event, freshwaterDischarging)"
+            placeholder="0"
+            class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
+          />
           <div
             class="col-span-1 text-gray-400 p-3 border-y border-x bg-gray-25"
           >
-            {{ freshwater_rob }}
+            {{ freshwaterRob }}
           </div>
         </div>
       </div>
@@ -365,36 +500,4 @@
   </div>
 </template>
 
-<script setup>
-import { preventNaN } from "@/utils/helpers";
-import { ref } from "vue";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
-import { storeToRefs } from "pinia";
 
-const isFuelOilRemarkEnabled = ref(false);
-const isLubricatingOilRemarkEnabled = ref(false);
-
-const store = useArrivalFWEReportStore();
-const {
-  fuelOils,
-  lubricatingOils,
-  machinery,
-  // fuel oil
-  fuelOilTotalConsumptions: fuel_oil_total_consumptions,
-  fuelOilRobs: fuel_oil_robs,
-  fuelOilBreakdowns: fuel_oil_breakdowns,
-  fuelOilDataCorrection: fuel_oil_data_correction,
-  // lubricating oil
-  lubricatingOilBreakdowns: lubricating_oil_breakdowns,
-  lubricatingOilRobs: lubricating_oil_robs,
-  lubricatingOilDataCorrection: lubricating_oil_data_correction,
-  // fresh water
-  freshwaterConsumed: freshwater_consumed,
-  freshwaterGenerated: freshwater_generated,
-  freshwaterChange: freshwater_change,
-  freshwaterRob: freshwater_rob,
-} = storeToRefs(store);
-
-const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 6);
-</script>

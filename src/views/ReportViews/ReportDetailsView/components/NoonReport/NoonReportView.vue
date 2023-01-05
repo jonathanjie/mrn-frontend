@@ -7,7 +7,6 @@ import NoonDistanceAndTime from "./components/NoonDistanceAndTime.vue";
 import NoonPerformance from "./components/NoonPerformance.vue";
 import NoonConsumption from "./components/NoonConsumption.vue";
 import NoonStoppage from "./components/NoonStoppage.vue";
-import { defineProps } from "vue";
 
 const props = defineProps({
   report: {
