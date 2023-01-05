@@ -2,8 +2,10 @@ import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
 import { storeToRefs } from "pinia";
-import { convertLTToUTC } from "@/utils/helpers";
+import { convertLTToUTC, sumObjectValues } from "@/utils/helpers";
 import { PARKING_STATUS_EVNT } from "@/utils/options";
+import { useShipStore } from "@/stores/useShipStore";
+
 // TODO: fetch from database
 const temp = {
   // Finish With Engine
@@ -43,6 +45,9 @@ export const useHarbourPortReportStore = defineStore(
       curLoadingCondition,
       curVoyageNo,
     } = storeToRefs(store);
+
+    const shipStore = useShipStore();
+    const { fuelOils, lubricatingOils, machinery } = storeToRefs(shipStore);
 
     // status var
     const reportSubtypeIsPort = ref(true);
@@ -88,117 +93,72 @@ export const useHarbourPortReportStore = defineStore(
     const otherPlannedOperation = ref(temp.otherPlannedOperation);
     const operations = ref([]);
 
-    // Consumption And Condition Full
-    const lsfoBreakdown = reactive({
-      me: "",
-      ge: "",
-      blr: "",
-      igg: "",
-      receipt: "",
-      debunkering: "",
+    // Consumption And Condition
+    const fuelOilBreakdowns = reactive({});
+    for (const fuelOil of fuelOils.value) {
+      fuelOilBreakdowns[fuelOil] = {
+        "M/E": "",
+        "G/E": "",
+        IGG: "",
+        BLR: "",
+        receipt: "",
+        debunkering: "",
+      };
+    }
+    const fuelOilTotalConsumptions = computed(() => {
+      let rtn = {};
+      for (const fuelOil of fuelOils.value) {
+        if (fuelOils.value.includes(fuelOil)) {
+          rtn[fuelOil] = +sumObjectValues(
+            fuelOilBreakdowns[fuelOil],
+            4
+          ).toFixed(2);
+        }
+      }
+      return rtn;
     });
-    const mgoBreakdown = reactive({
-      me: "",
-      ge: "",
-      blr: "",
-      igg: "",
-      receipt: "",
-      debunkering: "",
+    const fuelOilRobs = computed(() => {
+      let rtn = {};
+      for (const fuelOil of fuelOils.value) {
+        if (fuelOils.value.includes(fuelOil)) {
+          rtn[fuelOil] = +(
+            temp.prevRobs[fuelOil] -
+            Number(fuelOilTotalConsumptions.value[fuelOil]) +
+            Number(fuelOilBreakdowns[fuelOil].receipt) -
+            Number(fuelOilBreakdowns[fuelOil].debunkering)
+          ).toFixed(2);
+        }
+      }
+      return rtn;
     });
-    const lsfoTotalConsumption = computed(
-      () =>
-        +(
-          Number(lsfoBreakdown.me) +
-          Number(lsfoBreakdown.ge) +
-          Number(lsfoBreakdown.blr) +
-          Number(lsfoBreakdown.igg)
-        )
-    );
-    const lsfoRob = computed(
-      () =>
-        temp.lsfoPrevROB -
-        lsfoTotalConsumption.value +
-        Number(lsfoBreakdown.receipt) -
-        Number(lsfoBreakdown.debunkering)
-    );
-    const mgoTotalConsumption = computed(
-      () =>
-        +(
-          Number(mgoBreakdown.me) +
-          Number(mgoBreakdown.ge) +
-          Number(mgoBreakdown.blr) +
-          Number(mgoBreakdown.igg)
-        ).toFixed(2)
-    );
-    const mgoRob = computed(
-      () =>
-        temp.mgoPrevROB -
-        mgoTotalConsumption.value +
-        Number(mgoBreakdown.receipt) -
-        Number(mgoBreakdown.debunkering)
-    );
     const fuelOilDataCorrection = reactive({
       type: "default",
       correction: "",
       remarks: "",
     });
 
-    const mecylinderBreakdown = reactive({
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
+    const lubricatingOilBreakdowns = reactive({});
+    for (const lubricatingOil of lubricatingOils.value) {
+      lubricatingOilBreakdowns[lubricatingOil] = {
+        total_consumption: "",
+        receipt: "",
+        debunkering: "",
+      };
+    }
+    const lubricatingOilRobs = computed(() => {
+      let rtn = {};
+      for (const lubricatingOil of lubricatingOils.value) {
+        if (lubricatingOils.value.includes(lubricatingOil)) {
+          rtn[lubricatingOil] = +(
+            temp.prevRobs[lubricatingOil] -
+            Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
+            Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
+            Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
+          ).toFixed(2);
+        }
+      }
+      return rtn;
     });
-    const mesystemBreakdown = reactive({
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
-    });
-    const mesumpBreakdown = reactive({
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
-    });
-    const gesystemBreakdown = reactive({
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
-    });
-    const mecylinderRob = computed(
-      () =>
-        +(
-          temp.mecylPrevROB -
-          Number(mecylinderBreakdown.total_consumption) +
-          Number(mecylinderBreakdown.receipt) -
-          Number(mecylinderBreakdown.debunkering)
-        ).toFixed(2)
-    );
-    const mesystemRob = computed(
-      () =>
-        +(
-          temp.mesysPrevROB -
-          Number(mesystemBreakdown.total_consumption) +
-          Number(mesystemBreakdown.receipt) -
-          Number(mesystemBreakdown.debunkering)
-        ).toFixed(2)
-    );
-    const mesumpRob = computed(
-      () =>
-        +(
-          temp.mesumpPrevROB -
-          Number(mesumpBreakdown.total_consumption) +
-          Number(mesumpBreakdown.receipt) -
-          Number(mesumpBreakdown.debunkering)
-        ).toFixed(2)
-    );
-    const gesystemRob = computed(
-      () =>
-        +(
-          temp.gesysPrevROB -
-          Number(gesystemBreakdown.total_consumption) +
-          Number(gesystemBreakdown.receipt) -
-          Number(gesystemBreakdown.debunkering)
-        ).toFixed(2)
-    );
     const lubricatingOilDataCorrection = reactive({
       type: "default",
       correction: "",
@@ -249,22 +209,16 @@ export const useHarbourPortReportStore = defineStore(
       plannedOperations,
       otherPlannedOperation,
       operations,
-      // Consumption And Condition (Full)
-      lsfoTotalConsumption,
-      lsfoRob,
-      mgoTotalConsumption,
-      mgoRob,
-      lsfoBreakdown,
-      mgoBreakdown,
+      // Consumption And Condition
+      fuelOils,
+      lubricatingOils,
+      machinery,
+      fuelOilRobs,
+      fuelOilBreakdowns,
+      fuelOilTotalConsumptions,
       fuelOilDataCorrection,
-      mecylinderBreakdown,
-      mesystemBreakdown,
-      mesumpBreakdown,
-      gesystemBreakdown,
-      mecylinderRob,
-      mesystemRob,
-      mesumpRob,
-      gesystemRob,
+      lubricatingOilBreakdowns,
+      lubricatingOilRobs,
       lubricatingOilDataCorrection,
       freshwaterConsumed,
       freshwaterGenerated,
