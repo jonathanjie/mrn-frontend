@@ -32,6 +32,37 @@ const isLubricatingOilRemarkEnabled = computed(() =>
 // const isFuelOilRemarkEnabled = ref(false);
 // const isLubricatingOilRemarkEnabled = ref(false);
 
+const fuelMachineTypes = computed(() =>
+  Object.keys(
+    props.report.consumptionconditiondata.fueloildata_set[0].breakdown
+  )
+);
+
+// Fuel Consumption
+const fuelOilDataSet = computed(
+  () => props.report.consumptionconditiondata.fueloildata_set
+);
+
+const fuelOilDataCorrection = computed(() =>
+  isFuelOilRemarkEnabled.value
+    ? props.report.consumptionconditiondata.fueloildata_set.filter(
+        (fuelData) => fuelData.fueloildatacorrection != null
+      )[0]
+    : null
+);
+
+// Lubricating Oil
+const lubricatingOilDataSet = computed(
+  () => props.report.consumptionconditiondata.lubricatingoildata_set
+);
+
+const lubricatingOilDataCorrection = computed(() =>
+  isLubricatingOilRemarkEnabled.value
+    ? props.report.consumptionconditiondata.lubricatingoildata_set.filter(
+        (fuelData) => fuelData.lubricatingoildatacorrection != null
+      )[0]
+    : null
+);
 // Freshwater Consumption
 const freshwaterConsumed = computed(
   () => props.report.consumptionconditiondata.freshwaterdata.consumed
@@ -65,18 +96,18 @@ const {
   fuelOilTotalConsumptions: fuelOilTotalConsumptions,
   fuelOilRobs: fuelOilRobs,
   fuelOilBreakdowns: fuelOilBreakdowns,
-  fuelOilDataCorrection: fuelOilDataCorrection,
+  // fuelOilDataCorrection: fuelOilDataCorrection,
   // lubricating oil
   lubricatingOilBreakdowns: lubricatingOilBreakdowns,
   lubricatingOilRobs: lubricatingOilRobs,
-  lubricatingOilDataCorrection: lubricatingOilDataCorrection,
+  // lubricatingOilDataCorrection: lubricatingOilDataCorrection,
   // fresh water
-//   freshwaterConsumed: freshwaterConsumed,
-//   freshwaterGenerated: freshwaterGenerated,
-//   freshwaterChange: freshwaterChange,
-//   freshwaterReceiving: freshwaterReceiving,
-//   freshwaterDischarging: freshwaterDischarging,
-//   freshwaterRob: freshwaterRob,
+  //   freshwaterConsumed: freshwaterConsumed,
+  //   freshwaterGenerated: freshwaterGenerated,
+  //   freshwaterChange: freshwaterChange,
+  //   freshwaterReceiving: freshwaterReceiving,
+  //   freshwaterDischarging: freshwaterDischarging,
+  //   freshwaterRob: freshwaterRob,
 } = storeToRefs(store);
 
 const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
@@ -88,7 +119,7 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
       <div class="flex items-center">
         <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
         <span class="text-16 text-blue-700">
-          <slot>{{ $t("consumptionAndConditionLastReportToSby") }}</slot>
+          <slot name="header"></slot>
         </span>
       </div>
     </div>
@@ -104,8 +135,8 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
             class="col-span-2 border-green-100 bg-green-25 px-6 border-l border-t"
           ></div>
           <div
-            v-for="item in machinery"
-            :key="item"
+            v-for="(item, index) in fuelMachineTypes"
+            :key="item + index"
             class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
           >
             {{ item }}
@@ -132,8 +163,8 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
           </div>
 
           <span
-            v-for="(fuelOil, index) of fuelOils"
-            :key="index"
+            v-for="(fuelOilData, index) of fuelOilDataSet"
+            :key="fuelOilData.fuel_oil_type + index"
             :class="
               'col-span-full grid ' +
               getFuelOilCols() +
@@ -144,41 +175,37 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
             <div
               class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
             >
-              {{ fuelOil }}
+              {{ fuelOilData.fuel_oil_type }}
             </div>
             <input
-              v-for="item of machinery"
-              :key="item"
-              v-model="fuelOilBreakdowns[fuelOil][item]"
-              @keypress="preventNaN($event, fuelOilBreakdowns[fuelOil][item])"
+              v-for="entry of Object.entries(fuelOilData.breakdown)"
+              :key="entry"
+              v-model="entry[1]"
+              @keypress="preventNaN($event, entry[1])"
               placeholder="0"
               class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
             />
             <div
               class="col-span-2 text-gray-400 p-3 border-t border-l bg-gray-25"
             >
-              {{ fuelOilTotalConsumptions[fuelOil] }}
+              {{ fuelOilData.total_consumption }}
             </div>
             <input
-              v-model="fuelOilBreakdowns[fuelOil].receipt"
-              @keypress="
-                preventNaN($event, fuelOilBreakdowns[fuelOil].receipt)
-              "
+              v-model="fuelOilData.receipt"
+              @keypress="preventNaN($event, fuelOilData.receipt)"
               placeholder="0"
               class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
             />
             <input
-              v-model="fuelOilBreakdowns[fuelOil].debunkering"
-              @keypress="
-                preventNaN($event, fuelOilBreakdowns[fuelOil].debunkering)
-              "
+              v-model="fuelOilData.debunkering"
+              @keypress="preventNaN($event, fuelOilData.debunkering)"
               placeholder="0"
               class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
             />
             <div
               class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25"
             >
-              {{ fuelOilRobs[fuelOil] }}
+              {{ fuelOilData.rob }}
             </div>
           </span>
         </div>
@@ -235,9 +262,7 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
             <div class="flex col-span-4 p-3 pl-4 border-l bg-white">
               <input
                 v-model="fuelOilDataCorrection.correction"
-                @keypress="
-                  preventNaN($event, fuelOilDataCorrection.correction)
-                "
+                @keypress="preventNaN($event, fuelOilDataCorrection.correction)"
                 placeholder="00,000.00"
                 class="w-24 text-gray-700 focus:outline-0"
               />
@@ -288,61 +313,42 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
           </div>
 
           <span
-            v-for="(lubricatingOil, index) of lubricatingOils"
-            :key="index"
+            v-for="(lubricatingOilData, index) of lubricatingOilDataSet"
+            :key="lubricatingOilData + index"
             :class="
               'col-span-10 grid grid-cols-10' +
-              (index == lubricatingOils.length - 1 ? ' border-b' : '')
+              (index == lubricatingOilData.length - 1 ? ' border-b' : '')
             "
           >
             <div
               class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
             >
-              {{ lubricatingOil }}
+              {{ lubricatingOilData.fuel_oil_type }}
             </div>
             <input
-              v-model="
-                lubricatingOilBreakdowns[lubricatingOil]['total_consumption']
-              "
+              v-model="lubricatingOilData.total_consumption"
               @keypress="
-                preventNaN(
-                  $event,
-                  lubricatingOilBreakdowns[lubricatingOil][
-                    'total_consumption'
-                  ]
-                )
+                preventNaN($event, lubricatingOilData.total_consumption)
               "
               placeholder="0"
               class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
             />
             <input
-              v-model="lubricatingOilBreakdowns[lubricatingOil]['receipt']"
-              @keypress="
-                preventNaN(
-                  $event,
-                  lubricatingOilBreakdowns[lubricatingOil]['receipt']
-                )
-              "
+              v-model="lubricatingOilData.receipt"
+              @keypress="preventNaN($event, lubricatingOilData.receipt)"
               placeholder="0"
               class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
             />
             <input
-              v-model="
-                lubricatingOilBreakdowns[lubricatingOil]['debunkering']
-              "
-              @keypress="
-                preventNaN(
-                  $event,
-                  lubricatingOilBreakdowns[lubricatingOil]['debunkering']
-                )
-              "
+              v-model="lubricatingOilData.debunkering"
+              @keypress="preventNaN($event, lubricatingOilData.debunkering)"
               placeholder="0"
               class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
             />
             <div
               class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25"
             >
-              {{ lubricatingOilRobs[lubricatingOil] }}
+              {{ lubricatingOilData.rob }}
             </div>
           </span>
         </div>
@@ -499,5 +505,3 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
     </div>
   </div>
 </template>
-
-
