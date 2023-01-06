@@ -1,7 +1,7 @@
 <template>
   <div class="flex min-h-screen z-50 fixed" :style="{ width: sidebarWidth }">
     <div
-      class="bg-blue text-cyan-100 w-64 relative -translate-x-0 inset-y-0 left-0 transition all ease-in-out delay-150 duration-200"
+      class="flex flex-col bg-blue text-cyan-100 w-64 relative -translate-x-0 inset-y-0 left-0"
     >
       <div class="absolute -right-4 top-5">
         <button @click="toggleSidebar">
@@ -72,6 +72,15 @@
           </Transition>
         </router-link> -->
       </nav>
+      <a
+        v-if="!manager"
+        href="https://forms.gle/7wW6NxrpBMdDqNmS9"
+        target="_blank"
+        class="hover:animate-none animate-bounce flex items-center rounded-lg p-1.5 text-14 mt-auto mb-5 mx-5 border border-yellow-500 bg-yellow-50 text-yellow-700"
+      >
+        <img src="@/assets/icons/feedback.svg" class="w-6 h-6 mr-1.5" />
+        {{ $t("leaveFeedback") }}
+      </a>
     </div>
   </div>
 </template>
@@ -81,6 +90,8 @@ import { collapsed, toggleSidebar, sidebarWidth } from "./state";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/useAuthStore";
 import axios from "axios";
+import CustomButton from "@/components/Buttons/CustomButton.vue";
+
 const router = useRouter();
 
 const getShip = async () => {
