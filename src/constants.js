@@ -74,6 +74,11 @@ export const IceCondition = {
 export const FuelOil = {
   LSFO: "LSFO",
   MGO: "MGO",
+  MDO: "MDO",
+  HFO: "HFO",
+  LPGP: "LPGP",
+  LPGB: "LPGB",
+  LNG: "LNG",
 };
 
 export const LubricatingOil = {
@@ -81,6 +86,14 @@ export const LubricatingOil = {
   ME_SYSTEM: "M/E System",
   ME_SUMP: "M/E Sump",
   GE_SYSTEM: "G/E System",
+  TC_SYSTEM: "T/C System",
+};
+
+export const Machinery = {
+  ME: "M/E",
+  GE: "G/E",
+  IGG: "IGG",
+  BLR: "BLR",
 };
 
 export const TotalConsumptionType = {
@@ -122,6 +135,7 @@ const constants = {
   IceCondition: IceCondition,
   FuelOil: FuelOil,
   LubricatingOil: LubricatingOil,
+  Machinery: Machinery,
   ConsumptionType: ConsumptionType,
   TotalConsumptionType: TotalConsumptionType,
   ActualPerformanceType: ActualPerformanceType,

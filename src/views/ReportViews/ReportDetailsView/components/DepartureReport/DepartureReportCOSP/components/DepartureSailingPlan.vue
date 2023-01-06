@@ -23,7 +23,7 @@ const me_rpm = computed(() => props.report.transoceanicbudget.me_rpm);
     <div class="col-span-2 flex items-center">
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
       <span class="text-blue-700 text-16">
-        <slot>{{ $t("budgetTransOceanPilotToPilot") }}</slot>
+        <slot>{{ $t("sailingPlanPilotToPilot") }}</slot>
       </span>
     </div>
     <div

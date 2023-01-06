@@ -313,7 +313,6 @@
         class="col-span-6 xl:col-span-4 p-3 border-y border-r text-14 focus:outline-0"
         :class="ice_condition === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
-        <option selected disabled value="default">{{ $t("select") }}</option>
         <option :value="IceCondition.NONE">{{ $t("na") }}</option>
         <option :value="IceCondition.LOW">{{ $t("glacier_low") }}</option>
         <option :value="IceCondition.MOD">{{ $t("glacier_mod") }}</option>

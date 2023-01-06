@@ -84,11 +84,11 @@
           {{ $t("selectOil") }}
         </option>
         <option
-          v-for="(value, label) in ALL_FUEL_OILS"
-          :value="value"
-          :key="value"
+          v-for="(fuelOil, index) in fuelOils"
+          :value="fuelOil"
+          :key="index"
         >
-          {{ $t(label) }}
+          {{ fuelOil }}
         </option>
       </select>
       <select
@@ -101,11 +101,11 @@
           {{ $t("selectOil") }}
         </option>
         <option
-          v-for="(value, label) in ALL_LUBRICATING_OILS"
-          :value="value"
-          :key="value"
+          v-for="(lubricatingOil, index) in lubricatingOils"
+          :value="lubricatingOil"
+          :key="index"
         >
-          {{ $t(label) }}
+          {{ lubricatingOil }}
         </option>
       </select>
       <select
@@ -249,8 +249,11 @@ import DropZone from "@/components/FileDrop/DropZone.vue";
 import FilePreview from "@/components/FileDrop/FilePreview.vue";
 import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
 import { storeToRefs } from "pinia";
-import { ALL_FUEL_OILS, ALL_LUBRICATING_OILS } from "@/utils/options";
 import { computed } from "vue";
+import { useShipStore } from "@/stores/useShipStore";
+
+const shipStore = useShipStore();
+const { fuelOils, lubricatingOils } = storeToRefs(shipStore);
 
 const store = useBunkerReportStore();
 const {

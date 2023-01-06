@@ -1,3 +1,20 @@
+
+<script setup>
+import { textInputOptions, format } from "@/utils/helpers.js";
+import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
+import { storeToRefs } from "pinia";
+import { TIMEZONES } from "@/utils/options";
+
+const store = useBunkerReportStore();
+const {
+  portCountry: port_country,
+  portName: port_name,
+  reportingDateTime: reporting_date_time,
+  reportingTimeZone: reporting_time_zone,
+} = storeToRefs(store);
+</script>
+
+
 <template>
   <div
     class="grid grid-cols-1 lg:grid-cols-2 bg-white rounded-lg p-5 gap-4 shadow-card"
@@ -70,17 +87,3 @@
   </div>
 </template>
 
-<script setup>
-import { textInputOptions, format } from "@/utils/helpers.js";
-import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
-import { storeToRefs } from "pinia";
-import { TIMEZONES } from "@/utils/options";
-
-const store = useBunkerReportStore();
-const {
-  portCountry: port_country,
-  portName: port_name,
-  reportingDateTime: reporting_date_time,
-  reportingTimeZone: reporting_time_zone,
-} = storeToRefs(store);
-</script>

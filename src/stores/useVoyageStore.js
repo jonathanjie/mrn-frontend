@@ -3,7 +3,12 @@ import { ref, computed } from "vue";
 
 export const useVoyageStore = defineStore("voyage", () => {
   const voyageUuid = ref("");
+  const legUuid = ref("");
 
+  const curLoadingCondition = ref("");
+  const curVoyageNo = ref(0);
+
+  const lastLegNo = ref(0);
   const lastNoonReportNo = ref(0); // Noon
   const lastDepsReportNo = ref(0); // Departure S/BY
   const lastDeprReportNo = ref(0); // Departure COSP or R/UP
@@ -15,6 +20,9 @@ export const useVoyageStore = defineStore("voyage", () => {
   const lastNoonpReportNo = ref(0); // Noon Port
   const lastNooncReportNo = ref(0); // Noon Coastal
 
+  const legNo = computed(() => {
+    return lastLegNo.value + 1;
+  });
   const noonReportNo = computed(() => {
     return lastNoonReportNo.value + 1;
   });
@@ -46,15 +54,13 @@ export const useVoyageStore = defineStore("voyage", () => {
     return lastNooncReportNo.value + 1;
   });
 
-  const curLoadingCondition = ref("");
-  const curLegNo = ref(0);
-  const curVoyageNo = ref(0);
-  const lastVoyageNo = ref(0);
-  const nextVoyageNo = ref(0);
-
   // TODO: get reportroute from voyage
   return {
     voyageUuid,
+    legUuid,
+    curLoadingCondition,
+    curVoyageNo,
+    lastLegNo,
     lastNoonReportNo,
     lastDepsReportNo,
     lastDeprReportNo,
@@ -65,6 +71,7 @@ export const useVoyageStore = defineStore("voyage", () => {
     lastEvntcReportNo,
     lastNoonpReportNo,
     lastNooncReportNo,
+    legNo,
     noonReportNo,
     depsReportNo,
     deprReportNo,
@@ -75,8 +82,5 @@ export const useVoyageStore = defineStore("voyage", () => {
     evntcReportNo,
     noonpReportNo,
     nooncReportNo,
-    curLoadingCondition,
-    curLegNo,
-    curVoyageNo,
   };
 });

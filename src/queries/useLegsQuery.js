@@ -1,7 +1,7 @@
 import { useQuery } from "vue-query";
 import axios from "axios";
 
-export function useLegsQuery(imo) {
+export const useLegsQuery = (imo) => {
   return useQuery(["legs"], async () =>
     axios
       .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/legs/`)
@@ -12,4 +12,4 @@ export function useLegsQuery(imo) {
         console.log(error.message);
       })
   );
-}
+};

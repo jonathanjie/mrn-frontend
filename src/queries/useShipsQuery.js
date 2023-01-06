@@ -1,7 +1,7 @@
 import { useQuery } from "vue-query";
 import axios from "axios";
 
-export function useShipsQuery() {
+export const useShipsQuery = () => {
   return useQuery(["ships"], async () =>
     axios
       .get(`https://testapi.marinachain.io/marinanet/ships`)
@@ -12,4 +12,4 @@ export function useShipsQuery() {
         console.log(error.message);
       })
   );
-}
+};

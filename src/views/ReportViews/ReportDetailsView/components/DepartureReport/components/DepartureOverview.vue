@@ -22,7 +22,7 @@ const reportingTimeZone = computed(() => props.report.report_tz);
 // const store = useDepartureSBYReportStore();
 // const {
 //   // depsReportNo: deps_report_no,
-//   curLegNo: cur_leg_no,
+//   lastLegNo: last_leg_no,
 //   voyageNo: voyage_no,
 //   reportingDate: reporting_date,
 //   reportingTimeZone: reporting_time_zone,

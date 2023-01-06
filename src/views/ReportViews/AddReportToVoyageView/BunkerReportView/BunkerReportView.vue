@@ -80,7 +80,7 @@ const {
   isBeforeArrival,
   // Overview
   reportNo,
-  legNo,
+  legUuid,
   voyageNo,
   reportingTimeZone,
   reportingDateTimeUTC,
@@ -123,8 +123,6 @@ const {
 } = storeToRefs(submissionStatusStore);
 
 const getPresignedUrlForFiles = async () => {
-  console.log(`${company_uuid.value}/${voyage_uuid.value}/bdn`);
-
   const response = await fetch(
     "https://majnalcwgg5jdnfpr2zdxvqubq0thpjz.lambda-url.ap-southeast-1.on.aws/",
     {
@@ -179,7 +177,7 @@ const sendReport = async () => {
   let urls = [];
   if (files.value.length) {
     urls = await getPresignedUrlForFiles();
-    console.log(urls);
+    // console.log(urls);
 
     for (const [index, file] of files.value.entries()) {
       file.presignedUrl = urls[index].presigned_url;
@@ -199,7 +197,9 @@ const sendReport = async () => {
     report_date: reportingDateTimeUTC.value,
     report_tz: reportingTimeZone.value,
     voyage: voyageNo.value,
-    voyage_leg: legNo.value,
+    voyage_leg: {
+      uuid: legUuid.value,
+    },
     bdndata: {
       bunkering_port: bunkeringPort,
       bunkering_date: reportingDateTimeUTC.value,

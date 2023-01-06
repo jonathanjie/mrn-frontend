@@ -237,7 +237,9 @@
 import MyVesselsDashboardIcon from "@/views/HQViews/components/MyVesselsDashboardIcon.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 import VesselCard from "@/views/HQViews/components/VesselCard.vue";
-import { useShipsQuery } from "@/queries/useShipsQuery";
+import { useHQStore } from "@/stores/useHQStore";
+
+const store = useHQStore();
 // To be pulled from backend
 const sailingVessels = 0;
 const inPortVessels = 0;
@@ -269,64 +271,5 @@ const vessel = {
   updatedDate: "18 Nov 2022",
 };
 
-// const vessels = [
-//   {
-//     vesselStatus: "sailing", // sailing, cargo, bunkering, waiting, etc
-//     vesselName: "MARINA A",
-//     loadType: "Oil",
-//     flag: "Panama",
-//     imoNo: "9876543",
-//     shipSize: "300,000",
-//     loadingCondition: "Westbound",
-//     reportStatus: "uploaded", // Uploaded, Error, Pending
-//     updatedDate: "18 Nov 2022",
-//   },
-//   {
-//     vesselStatus: "waiting", // sailing, cargo, bunkering, waiting, etc
-//     vesselName: "MARINA B",
-//     loadType: "Oil",
-//     flag: "Panama",
-//     imoNo: "12345678",
-//     shipSize: "300,000",
-//     loadingCondition: "Eastbound",
-//     reportStatus: "error", // uploaded, error, pending
-//     updatedDate: "18 Nov 2022",
-//   },
-//   {
-//     vesselStatus: "cargo", // sailing, cargo, bunkering, waiting, etc
-//     vesselName: "MARINA C",
-//     loadType: "Oil",
-//     flag: "Panama",
-//     imoNo: "91234567",
-//     shipSize: "300,000",
-//     loadingCondition: "Ballast",
-//     reportStatus: "pending", // uploaded, error, pending
-//     updatedDate: "18 Nov 2022",
-//   },
-//   {
-//     vesselStatus: "bunkering", // sailing, cargo, bunkering, waiting, etc
-//     vesselName: "MARINA A",
-//     loadType: "Oil",
-//     flag: "Panama",
-//     imoNo: "9876543",
-//     shipSize: "300,000",
-//     loadingCondition: "Laden",
-//     reportStatus: "uploaded", // uploaded, error, pending
-//     updatedDate: "18 Nov 2022",
-//   },
-//   {
-//     vesselStatus: "etc", // sailing, cargo, bunkering, waiting, etc
-//     vesselName: "MARINA A",
-//     loadType: "Oil",
-//     flag: "Panama",
-//     imoNo: "9876543",
-//     shipSize: "300,000",
-//     loadingCondition: "Westbound",
-//     reportStatus: "uploaded", // uploaded, error, pending
-//     updatedDate: "18 Nov 2022",
-//   },
-// ];
-
-const { isSuccess, data: ships } = useShipsQuery();
-// const ships = await getShips();
+const { isSuccess, data: ships } = store.shipsQuery();
 </script>

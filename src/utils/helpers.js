@@ -9,6 +9,10 @@ export function preventNaN(event, content) {
   }
 }
 
+export const sumObjectValues = (obj) => {
+  return Object.values(obj).reduce((a, b) => Number(a) + Number(b), 0);
+};
+
 export const textInputOptions = ref({
   format: "yyyy.MM.dd HH:mm",
 });
@@ -169,4 +173,75 @@ export const windSpeedToBeaufort = (wind_speed) => {
     : Number(wind_speed) < 64
     ? 11
     : 12;
+};
+
+// last four parameters are optional
+export const generateFuelOilData = (
+  fuelOils,
+  fuelOilBreakdowns,
+  fuelOilTotalConsumptions,
+  fuelOilRobs, // optional
+  fuelOilDataCorrection, // optional
+  fuelOilReceipts, // optional
+  fuelOilDebunkerings // optional
+) => {
+  const rtn = [];
+
+  const dataCorrection = fuelOilDataCorrection || {};
+  const rob = fuelOilRobs || {};
+  const receipts = fuelOilReceipts || {};
+  const debunkerings = fuelOilDebunkerings || {};
+
+  for (const fuelOil of fuelOils) {
+    rtn.push({
+      fuel_oil_type: fuelOil,
+      total_consumption: fuelOilTotalConsumptions[fuelOil] || 0,
+      receipt: receipts[fuelOil] || 0, // non-zero for DEP SBY & EVNT reports
+      debunkering: debunkerings[fuelOil] || 0, // non-zero for DEP SBY & EVNT reports
+      rob: rob[fuelOil] || 0, // zero for Arrival EOSP Total Consumption
+      breakdown: Object.entries(fuelOilBreakdowns[fuelOil]).reduce(
+        (p, [k, v]) => ({ ...p, [k]: v || 0 }),
+        {}
+      ),
+      fueloildatacorrection:
+        dataCorrection.type === fuelOil
+          ? {
+              correction: dataCorrection.correction,
+              remarks: dataCorrection.remarks,
+            }
+          : null,
+    });
+  }
+  return rtn;
+};
+
+// data correction parameter is optional
+export const generateLubricatingOilData = (
+  lubricatingOils,
+  lubricatingOilBreakdowns,
+  lubricatingOilRobs,
+  lubricatingOilDataCorrection
+) => {
+  const rtn = [];
+
+  const dataCorrection = lubricatingOilDataCorrection || {};
+
+  for (const lubricatingOil of lubricatingOils) {
+    rtn.push({
+      fuel_oil_type: lubricatingOil,
+      total_consumption:
+        lubricatingOilBreakdowns[lubricatingOil]["total_consumption"] || 0,
+      receipt: lubricatingOilBreakdowns[lubricatingOil]["receipt"] || 0,
+      debunkering: lubricatingOilBreakdowns[lubricatingOil]["debunkering"] || 0,
+      rob: lubricatingOilRobs[lubricatingOil] || 0,
+      lubricatingoildatacorrection:
+        dataCorrection.type === lubricatingOil
+          ? {
+              correction: dataCorrection.correction,
+              remarks: dataCorrection.remarks,
+            }
+          : null,
+    });
+  }
+  return rtn;
 };

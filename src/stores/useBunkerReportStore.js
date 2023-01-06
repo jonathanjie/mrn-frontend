@@ -6,7 +6,7 @@ import { convertLTToUTC } from "@/utils/helpers";
 
 export const useBunkerReportStore = defineStore("bunkerReport", () => {
   const store = useVoyageStore();
-  const { bdnReportNo, curLegNo, curLoadingCondition, curVoyageNo } =
+  const { bdnReportNo, lastLegNo, legUuid, curLoadingCondition, curVoyageNo } =
     storeToRefs(store);
 
   // report subtype variable
@@ -15,7 +15,7 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
   // Overview
   // TODO: fetch from backend
   const reportNo = bdnReportNo;
-  const legNo = curLegNo;
+  const legNo = lastLegNo;
   const loadingCondition = curLoadingCondition;
   const voyageNo = curVoyageNo;
   const reportingDateTime = ref("");
@@ -127,6 +127,7 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
     // Overview
     reportNo,
     legNo,
+    legUuid,
     loadingCondition,
     voyageNo,
     reportingDateTime,

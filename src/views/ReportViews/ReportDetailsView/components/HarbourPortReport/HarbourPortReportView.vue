@@ -3,9 +3,9 @@ import { computed } from "vue";
 import RadioBtnDetail from "@/components/Buttons/RadioBtnDetail.vue";
 import HarbourPortOverview from "./components/HarbourPortOverview.vue";
 import HarbourPortReport from "./components/HarbourPortReport.vue";
-import HarbourPortConsumption from "./components/HarbourPortConsumption.vue";
 
 import { Report } from "@/constants";
+import ReportConsumption from "../ReportConsumption.vue";
 
 const props = defineProps({
   report: {
@@ -61,8 +61,13 @@ console.log(reportSubtypeIsPort.value);
     <HarbourPortReport :report="props.report" />
 
     <!-- Consumption & Condition -->
-    <HarbourPortConsumption :report="props.report">{{
+    <!-- <HarbourPortConsumption :report="props.report">{{
       $t("consumptionAndConditionLastReportToEventNoon")
-    }}</HarbourPortConsumption>
+    }}</HarbourPortConsumption> -->
+    <ReportConsumption :report="report">
+      <template v-slot:header>
+        {{ $t("consumptionAndConditionLastReportToEventNoon") }}
+      </template>
+    </ReportConsumption>
   </div>
 </template>

@@ -1,17 +1,18 @@
 import { useQuery } from "vue-query";
 import axios from "axios";
 
-export function useReportQuery(voyage_uuid) {
+export const useReportQuery = (voyage_uuid) => {
   return useQuery(["voyages"], async () =>
     axios
       .get(
         `https://testapi.marinachain.io/marinanet/voyages/${voyage_uuid}/reports`
       )
       .then((response) => {
+        console.log("Report: ", response.data);
         return response.data;
       })
       .catch((error) => {
         console.log(error.message);
       })
   );
-}
+};

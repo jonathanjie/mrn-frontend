@@ -62,8 +62,12 @@ import GradientButton from "@/components/Buttons/GradientButton.vue";
 import { useHarbourPortReportStore } from "@/stores/useHarbourPortReportStore";
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
 import { storeToRefs } from "pinia";
-import { Report, ConsumptionType, FuelOil, LubricatingOil } from "@/constants";
-import { parsePositionToString } from "@/utils/helpers";
+import { Report, ConsumptionType } from "@/constants";
+import {
+  parsePositionToString,
+  generateFuelOilData,
+  generateLubricatingOilData,
+} from "@/utils/helpers";
 import { OPERATIONS } from "@/utils/options";
 
 // TODO: hacky due to the behavior of the custom component RadioBtnDetail, will update later
@@ -77,12 +81,14 @@ const updateActiveReportType = (type) => {
 
 const store = useHarbourPortReportStore();
 const {
+  fuelOils,
+  lubricatingOils,
   // status var
   reportSubtypeIsPort, // HarbourPortReportOverview.vue
   reportSubtypeIsNoon, // HarbourPortReport.vue
   // Harbour Port Overview
   reportNo,
-  legNo,
+  legUuid,
   voyageNo,
   reportingTimeZone,
   reportingDateTimeUTC,
@@ -97,22 +103,15 @@ const {
   longDegree,
   otherPlannedOperation,
   operations,
-  // Consumption And Condition (Full)
-  lsfoTotalConsumption,
-  lsfoRob,
-  mgoTotalConsumption,
-  mgoRob,
-  lsfoBreakdown,
-  mgoBreakdown,
+  // Consumption And Condition
+  fuelOilRobs,
+  fuelOilBreakdowns,
+  fuelOilReceipts,
+  fuelOilDebunkerings,
+  fuelOilTotalConsumptions,
   fuelOilDataCorrection,
-  mecylinderBreakdown,
-  mesystemBreakdown,
-  mesumpBreakdown,
-  gesystemBreakdown,
-  mecylinderRob,
-  mesystemRob,
-  mesumpRob,
-  gesystemRob,
+  lubricatingOilBreakdowns,
+  lubricatingOilRobs,
   lubricatingOilDataCorrection,
   freshwaterConsumed,
   freshwaterGenerated,
@@ -148,7 +147,6 @@ const includesOperation = (op) => operations.value.includes(op);
 const sendReport = async () => {
   isSubmissionRequested.value = true;
 
-  // TODO: need to do form validation first
   const position = parsePositionToString({
     latDir: latDir.value,
     latMinutes: latMinutes.value,
@@ -158,13 +156,32 @@ const sendReport = async () => {
     longDegree: longDegree.value,
   });
 
+  const fuelOilData = generateFuelOilData(
+    fuelOils.value,
+    fuelOilBreakdowns.value,
+    fuelOilTotalConsumptions.value,
+    fuelOilRobs.value,
+    fuelOilDataCorrection.value,
+    fuelOilReceipts.value,
+    fuelOilDebunkerings.value
+  );
+
+  const lubricatingOilData = generateLubricatingOilData(
+    lubricatingOils.value,
+    lubricatingOilBreakdowns.value,
+    lubricatingOilRobs.value,
+    lubricatingOilDataCorrection.value
+  );
+
   const REPORT = {
     report_type: getEventReportSubtype(
       reportSubtypeIsPort.value,
       reportSubtypeIsNoon.value
     ),
     voyage: voyageNo.value,
-    voyage_leg: legNo.value,
+    voyage_leg: {
+      uuid: legUuid.value,
+    },
     report_num: reportNo.value.value, // temp fix for recursive structure error
     report_date: reportingDateTimeUTC.value,
     report_tz: reportingTimeZone.value,
@@ -191,107 +208,8 @@ const sendReport = async () => {
       planned_operation_othersdetails: otherPlannedOperation.value || "NIL",
     },
     consumptionconditiondata: {
-      fueloildata_set: [
-        {
-          fuel_oil_type: FuelOil.LSFO,
-          total_consumption: lsfoTotalConsumption.value || 0,
-          receipt: lsfoBreakdown.value.receipt || 0,
-          debunkering: lsfoBreakdown.value.debunkering || 0,
-          rob: lsfoRob.value || 0,
-          breakdown: {
-            GE: lsfoBreakdown.value.ge || 0,
-            ME: lsfoBreakdown.value.me || 0,
-            BLR: lsfoBreakdown.value.blr || 0,
-            IGG: lsfoBreakdown.value.igg || 0,
-          },
-          fueloildatacorrection:
-            fuelOilDataCorrection.value.type === FuelOil.LSFO
-              ? {
-                  correction: fuelOilDataCorrection.value.correction,
-                  remarks: fuelOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: FuelOil.MGO,
-          total_consumption: mgoTotalConsumption.value || 0,
-          receipt: mgoBreakdown.value.receipt || 0,
-          debunkering: mgoBreakdown.value.debunkering || 0,
-          rob: mgoRob.value || 0,
-          breakdown: {
-            GE: mgoBreakdown.value.ge || 0,
-            ME: mgoBreakdown.value.me || 0,
-            BLR: mgoBreakdown.value.blr || 0,
-            IGG: mgoBreakdown.value.igg || 0,
-          },
-          fueloildatacorrection:
-            fuelOilDataCorrection.value.type === FuelOil.MGO
-              ? {
-                  correction: fuelOilDataCorrection.value.correction,
-                  remarks: fuelOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-      ],
-      lubricatingoildata_set: [
-        {
-          fuel_oil_type: LubricatingOil.ME_CYLINDER,
-          total_consumption: mecylinderBreakdown.value.total_consumption || 0,
-          receipt: mecylinderBreakdown.value.receipt || 0,
-          debunkering: mecylinderBreakdown.value.debunkering || 0,
-          rob: mecylinderRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type ===
-            LubricatingOil.ME_CYLINDER
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: LubricatingOil.ME_SYSTEM,
-          total_consumption: mesystemBreakdown.value.total_consumption || 0,
-          receipt: mesystemBreakdown.value.receipt || 0,
-          debunkering: mesystemBreakdown.value.debunkering || 0,
-          rob: mesystemRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type === LubricatingOil.ME_SYSTEM
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: LubricatingOil.ME_SUMP,
-          total_consumption: mesumpBreakdown.value.total_consumption || 0,
-          receipt: mesumpBreakdown.value.receipt || 0,
-          debunkering: mesumpBreakdown.value.debunkering || 0,
-          rob: mesumpRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type === LubricatingOil.ME_SUMP
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: LubricatingOil.GE_SYSTEM,
-          total_consumption: gesystemBreakdown.value.total_consumption || 0,
-          receipt: gesystemBreakdown.value.receipt || 0,
-          debunkering: gesystemBreakdown.value.debunkering || 0,
-          rob: gesystemRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type === LubricatingOil.GE_SYSTEM
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-      ],
+      fueloildata_set: fuelOilData,
+      lubricatingoildata_set: lubricatingOilData,
       freshwaterdata: {
         consumed: freshwaterConsumed.value || 0,
         generated: freshwaterGenerated.value || 0,
