@@ -32,62 +32,41 @@ import { ref, onMounted } from "vue";
 import VoyageCard from "../../components/VoyageCard.vue";
 import { readableUTCDate } from "@/utils/helpers";
 import { ReportTypeToDisplay, Report } from "@/constants";
-import { useAuthStore } from "@/stores/useAuthStore";
 import { useShipStore } from "@/stores/useShipStore";
 import { storeToRefs } from "pinia";
+import axios from "axios";
 
 const props = defineProps({
   imo: { type: String, require: true },
 });
 
-const auth = useAuthStore();
 let isEmpty = ref(false);
 
 const store = useShipStore();
 const { isFetchingVoyages, lastVoyageNo, imoReg } = storeToRefs(store);
 
-imoReg.value = 1000000; // temporary, will remove after merging with lionel's branch
-
-const getReports = async (voyage_uuid) => {
-  const response = await fetch(
-    `https://testapi.marinachain.io/marinanet/voyages/${voyage_uuid}/reports`,
-    {
-      headers: {
-        Authorization: "Bearer " + auth.jwt,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-
-  const json = response.json();
-  console.log("reports", json);
-
-  return json;
+const getVoyages = async (imo) => {
+  return await axios
+    .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 };
 
-const getVoyages = async (imo) => {
-  const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/ships/" +
-      imoReg.value +
-      "/voyages/",
-    {
-      headers: {
-        Authorization: "Bearer " + auth.jwt,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-
-  const json = response.json();
-  // console.log("voyages", json);
-
-  if (response.length == 0) {
-    isEmpty = true;
-    console.log("NO DATA");
-  }
-  return json;
+const getReports = async (voyage_uuid) => {
+  return await axios
+    .get(
+      `https://testapi.marinachain.io/marinanet/voyages/${voyage_uuid}/reports`
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 };
 
 const getLoadingCondition = async (uuid) => {
@@ -108,7 +87,7 @@ const getLoadingCondition = async (uuid) => {
   // return json.curLoadingCondition;
 };
 
-const voyages = await getVoyages(imoReg.value);
+const voyages = await getVoyages(props.imo);
 const voyageDetails = {}; // uuid : arr of voyage details
 const reports = {}; // uuid : arr of reports
 
@@ -183,4 +162,10 @@ for (let i = 0; i < voyages.length; i++) {
 onMounted(() => {
   isFetchingVoyages.value = false;
 });
+// console.log("This runs in overview view");
+// const store = useVoyageStore();
+// const voyages = store.voyages;
+// console.log("Voyages in Overview", voyages);
+// const reports = store.reports;
+// console.log("Report in Overview", voyages);
 </script>

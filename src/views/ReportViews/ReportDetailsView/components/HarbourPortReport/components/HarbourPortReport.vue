@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineProps } from "vue";
+import { computed } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import {
   preventNaN,
@@ -39,7 +39,7 @@ const distanceTravelled = computed(
 );
 const operations = computed(() => props.report.eventdata.plannedoperations);
 const plannedOperations = computed(
-  () => props.report.eventdata.plannedoperations 
+  () => props.report.eventdata.plannedoperations
 );
 const otherPlannedOperation = computed(
   () => props.report.eventdata.plannedoperations?.others ?? false
@@ -92,7 +92,6 @@ const position = computed(() => props.report.eventdata.position);
       <select
         disabled
         v-model="status"
-        :disabled="reportSubtypeIsNoon"
         class="col-span-3 p-3 border-y border-r focus:outline-0 disabled:text-gray-400 disabled:bg-gray-50"
         :class="status === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
@@ -172,7 +171,8 @@ const position = computed(() => props.report.eventdata.position);
       <input disabled class="hidden lg:block bg-white col-span-5 p-3" />
     </div>
 
-    <div v-if="plannedOperations"
+    <div
+      v-if="plannedOperations"
       class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-white text-14"
     >
       <div class="col-span-2 row-span-2 text-blue-700 p-3 border-r bg-gray-50">

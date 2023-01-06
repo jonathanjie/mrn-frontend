@@ -17,7 +17,7 @@
         <router-link
           :to="{
             name: 'speed-graph-overview',
-            params: { vesselname: vesselname, imo: imo },
+            params: { vesselname: props.vesselname, imo: props.imo },
           }"
           class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
           :class="
@@ -43,7 +43,7 @@
         <router-link
           :to="{
             name: 'uploaded-reports',
-            params: { vesselname: vesselname, imo: imo },
+            params: { vesselname: props.vesselname, imo: props.imo },
           }"
           class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
           :class="
@@ -62,12 +62,6 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
-import { useAuthStore } from "@/stores/useAuthStore";
-
-const auth = useAuthStore();
-const router = useRouter();
-
 const props = defineProps({
   vesselname: String,
   imo: String,

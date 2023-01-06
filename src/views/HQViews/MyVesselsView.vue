@@ -16,8 +16,11 @@
               <h1 class="text-gray-500 text-12">{{ $t("totalVessels") }}</h1>
             </template>
             <template v-slot:numVessels>
-              <h2 v-if="totalVessels != 0" class="text-gray-700 text-18">
-                {{ totalVessels }}
+              <h2
+                v-if="isSuccess && ships.length != 0"
+                class="text-gray-700 text-18"
+              >
+                {{ ships.length }}
               </h2>
               <h2 v-else class="text-gray-700 text-18">-</h2>
             </template>
@@ -153,8 +156,8 @@
       </div>
       <!-- Vessels list header -->
       <div class="flex mt-12 w-full items-center">
-        <h1 class="text-20 font-bold w-full">
-          {{ $t("vesselList") }} ({{ totalVessels }})
+        <h1 v-if="isSuccess" class="text-20 font-bold w-full">
+          {{ $t("vesselList") }} ({{ ships.length }})
         </h1>
         <div class="flex justify-end">
           <div
@@ -197,8 +200,23 @@
     </div>
     <!-- Vessels list content -->
     <!-- if there are no voyages in backend -->
+    <div v-if="isSuccess" class="flex flex-col">
+      <VesselCard
+        v-for="(ship, i) in ships"
+        :key="ship.name + ship.imo_reg + i"
+        :vesselName="ship.name"
+        :loadType="shipRef[ship.ship_type]"
+        :imoNo="ship.imo_reg"
+        :vesselStatus="vessel.vesselStatus"
+        :flag="ship.shipspecs.flag"
+        :shipSize="ship.shipspecs.deadweight_tonnage"
+        :loadingCondition="vessel.loadingCondition"
+        :reportStatus="vessel.reportStatus"
+        :updatedDate="vessel.updatedDate"
+      />
+    </div>
     <div
-      v-if="isEmpty"
+      v-else
       class="flex flex-col p-24 pb-52 m-12 justify-center items-center space-y-2 rounded-xl"
     >
       <img src="@/assets/icons/empty.svg" class="h-28 w-28" />
@@ -209,34 +227,6 @@
         $t("clickOnCreateNewVoyageAboveToBegin")
       }}</span>
     </div>
-    <div v-else class="flex flex-col">
-      <VesselCard
-        v-for="(ship, i) in ships"
-        :key="ship.name + ship.imo_reg + i"
-        :vesselName="ship.name"
-        :loadType="shipRef[ship.ship_type]"
-        :imoNo="ship.imo_reg"
-        :vesselStatus="vessel.vesselStatus"
-        :flag="vessel.flag"
-        :shipSize="vessel.shipSize"
-        :loadingCondition="vessel.loadingCondition"
-        :reportStatus="vessel.reportStatus"
-        :updatedDate="vessel.updatedDate"
-      />
-      <!-- To be used to test VesselCard
-      <VesselCard
-        v-for="vessel in vessels"
-        :vesselStatus="vessel.vesselStatus"
-        :vesselName="vessel.vesselName"
-        :loadType="vessel.loadType"
-        :flag="vessel.flag"
-        :imoNo="vessel.imoNo"
-        :shipSize="vessel.shipSize"
-        :loadingCondition="vessel.loadingCondition"
-        :reportStatus="vessel.reportStatus"
-        :updatedDate="vessel.updatedDate"
-      ></VesselCard> -->
-    </div>
     <hr class="mt-6 w-full bg-gray-200" />
     <!-- Pagination module -->
     <div class="hidden flex justify-center">12345678910</div>
@@ -244,18 +234,16 @@
 </template>
 
 <script setup>
-import MyVesselsDashboardIcon from "@/components/MyVesselsDashboardIcon.vue";
+import MyVesselsDashboardIcon from "@/views/HQViews/components/MyVesselsDashboardIcon.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
-import VesselCard from "@/components/VesselCard.vue";
-import { useAuthStore } from "@/stores/useAuthStore";
-// To be pulled from backend
+import VesselCard from "@/views/HQViews/components/VesselCard.vue";
+import { useHQStore } from "@/stores/useHQStore";
 
-const auth = useAuthStore();
-const totalVessels = 33;
-const sailingVessels = 20;
-const inPortVessels = 13;
+const store = useHQStore();
+// To be pulled from backend
+const sailingVessels = 0;
+const inPortVessels = 0;
 const etcVessels = 0;
-const isEmpty = false;
 
 const cargoVessels = 0;
 const bunkeringVessels = 0;
@@ -278,86 +266,10 @@ const shipRef = {
 
 const vessel = {
   vesselStatus: "sailing", // sailing, cargo, bunkering, waiting, etc
-  flag: "Panama",
-  shipSize: "300,000",
   loadingCondition: "Westbound",
   reportStatus: "uploaded", // Uploaded, Error, Pending
   updatedDate: "18 Nov 2022",
 };
 
-// const vessels = [
-//   {
-//     vesselStatus: "sailing", // sailing, cargo, bunkering, waiting, etc
-//     vesselName: "MARINA A",
-//     loadType: "Oil",
-//     flag: "Panama",
-//     imoNo: "9876543",
-//     shipSize: "300,000",
-//     loadingCondition: "Westbound",
-//     reportStatus: "uploaded", // Uploaded, Error, Pending
-//     updatedDate: "18 Nov 2022",
-//   },
-//   {
-//     vesselStatus: "waiting", // sailing, cargo, bunkering, waiting, etc
-//     vesselName: "MARINA B",
-//     loadType: "Oil",
-//     flag: "Panama",
-//     imoNo: "12345678",
-//     shipSize: "300,000",
-//     loadingCondition: "Eastbound",
-//     reportStatus: "error", // uploaded, error, pending
-//     updatedDate: "18 Nov 2022",
-//   },
-//   {
-//     vesselStatus: "cargo", // sailing, cargo, bunkering, waiting, etc
-//     vesselName: "MARINA C",
-//     loadType: "Oil",
-//     flag: "Panama",
-//     imoNo: "91234567",
-//     shipSize: "300,000",
-//     loadingCondition: "Ballast",
-//     reportStatus: "pending", // uploaded, error, pending
-//     updatedDate: "18 Nov 2022",
-//   },
-//   {
-//     vesselStatus: "bunkering", // sailing, cargo, bunkering, waiting, etc
-//     vesselName: "MARINA A",
-//     loadType: "Oil",
-//     flag: "Panama",
-//     imoNo: "9876543",
-//     shipSize: "300,000",
-//     loadingCondition: "Laden",
-//     reportStatus: "uploaded", // uploaded, error, pending
-//     updatedDate: "18 Nov 2022",
-//   },
-//   {
-//     vesselStatus: "etc", // sailing, cargo, bunkering, waiting, etc
-//     vesselName: "MARINA A",
-//     loadType: "Oil",
-//     flag: "Panama",
-//     imoNo: "9876543",
-//     shipSize: "300,000",
-//     loadingCondition: "Westbound",
-//     reportStatus: "uploaded", // uploaded, error, pending
-//     updatedDate: "18 Nov 2022",
-//   },
-// ];
-
-const getShips = async () => {
-  const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/ships/",
-    {
-      headers: {
-        Authorization: "Bearer " + auth.jwt,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-
-  const ships = response.json();
-  return ships;
-};
-
-const ships = await getShips();
+const { isSuccess, data: ships } = store.shipsQuery();
 </script>

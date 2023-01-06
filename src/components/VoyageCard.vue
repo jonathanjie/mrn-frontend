@@ -66,6 +66,7 @@
         {{ $t(category) }}
       </button>
       <CustomButton
+        v-if="auth.role !== 'manager'"
         @click="
           $router.push({
             name: 'add-report',
@@ -104,7 +105,9 @@
 import CustomButton from "./Buttons/CustomButton.vue";
 import ReportCard from ".//ReportCard.vue";
 import { computed, ref } from "vue";
+import { useAuthStore } from "@/stores/useAuthStore";
 
+const auth = useAuthStore();
 const props = defineProps({
   num: {
     type: Number,

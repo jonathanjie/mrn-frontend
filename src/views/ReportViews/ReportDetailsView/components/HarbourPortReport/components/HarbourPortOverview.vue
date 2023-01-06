@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineProps } from "vue";
+import { computed } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useHarbourPortReportStore } from "@/stores/useHarbourPortReportStore";
 import {

@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { createAuth0, useAuth0 } from "@auth0/auth0-vue";
+import { VueQueryPlugin } from "vue-query";
 
 import App from "./App.vue";
 import "./index.css";
@@ -48,7 +49,8 @@ const app = createApp(App)
     })
   )
   .use(createPinia().use(resetStore))
-  .use(VueClickAway);
+  .use(VueClickAway)
+  .use(VueQueryPlugin);
 
 vSelect.props.components.default = () => ({
   OpenIndicator: {
