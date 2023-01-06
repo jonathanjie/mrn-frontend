@@ -2,7 +2,7 @@
   <div class="bg-gray-50 min-h-screen">
     <div class="flex flex-col px-24 pt-11">
       <div class="flex items-center mx-5 mb-6">
-        <button @click="$router.push({ name: 'vessel-overview' })">
+        <button @click="$router.push({ name: 'vessel-reports' })">
           <img
             src="@/assets/icons/back_arrow.svg"
             class="fill-blue float-left"

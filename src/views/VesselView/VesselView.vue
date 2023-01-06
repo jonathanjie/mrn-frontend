@@ -61,12 +61,10 @@
 <script setup>
 import { ref } from "vue";
 import GradientButton from "../../components/Buttons/GradientButton.vue";
-import { useAuthStore } from "@/stores/useAuthStore";
 import { useShipStore } from "@/stores/useShipStore";
 import { storeToRefs } from "pinia";
 import axios from "axios";
 
-const auth = useAuthStore();
 const store = useShipStore();
 const { isFetchingVoyages, lastVoyageNo, nextVoyageNo } = storeToRefs(store);
 
