@@ -45,23 +45,11 @@ let isEmpty = ref(false);
 const store = useShipStore();
 const { isFetchingVoyages, lastVoyageNo, imoReg } = storeToRefs(store);
 
-const getVoyages = async (imo) => {
+const getAllReports = async (imo) => {
   return await axios
-    .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`)
+    .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`)
     .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-};
-
-const getReports = async (voyage_uuid) => {
-  return await axios
-    .get(
-      `https://testapi.marinachain.io/marinanet/voyages/${voyage_uuid}/reports`
-    )
-    .then((response) => {
+      console.log("Why isnt this correct", response.data);
       return response.data;
     })
     .catch((error) => {
@@ -87,13 +75,15 @@ const getLoadingCondition = async (uuid) => {
   // return json.curLoadingCondition;
 };
 
-const voyages = await getVoyages(props.imo);
+// const voyages = await getVoyages(props.imo);
+const voyages = await getAllReports(props.imo);
+
 const voyageDetails = {}; // uuid : arr of voyage details
 const reports = {}; // uuid : arr of reports
 
 for (let i = 0; i < voyages.length; i++) {
   const uuid = voyages[i].uuid;
-  const json = await getReports(uuid);
+  const json = voyages[i].reports;
   reports[uuid] = [];
   voyageDetails[uuid] = {};
 
