@@ -24,6 +24,7 @@ const temp = {
   freshwaterPrevROB: 200,
 
   // Cargo Operation (from init modal, M³/MT/TEU/CEU)
+  prevCargoTotalAmount: 100,
   cargoUnit: "M³",
 
   // Consumption & Condition (Total)
@@ -93,7 +94,12 @@ export const useDepartureSBYReportStore = defineStore(
     const loading = ref("0");
     const unloading = ref("0");
     const totalAmount = computed(
-      () => +(Number(loading.value) - Number(unloading.value)).toFixed(2)
+      () =>
+        +(
+          temp.prevCargoTotalAmount +
+          Number(loading.value) -
+          Number(unloading.value)
+        ).toFixed(2)
     );
     const time = ref("");
     const cargoUnit = ref(temp.cargoUnit);
@@ -137,18 +143,23 @@ export const useDepartureSBYReportStore = defineStore(
         "G/E": "",
         IGG: "",
         BLR: "",
-        receipt: "",
-        debunkering: "",
       };
+    }
+    const fuelOilReceipts = reactive({});
+    for (const fuelOil of fuelOils.value) {
+      fuelOilReceipts[fuelOil] = "";
+    }
+    const fuelOilDebunkerings = reactive({});
+    for (const fuelOil of fuelOils.value) {
+      fuelOilDebunkerings[fuelOil] = "";
     }
     const fuelOilTotalConsumptions = computed(() => {
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
         if (fuelOils.value.includes(fuelOil)) {
-          rtn[fuelOil] = +sumObjectValues(
-            fuelOilBreakdowns[fuelOil],
-            4
-          ).toFixed(2);
+          rtn[fuelOil] = +sumObjectValues(fuelOilBreakdowns[fuelOil]).toFixed(
+            2
+          );
         }
       }
       return rtn;
@@ -160,8 +171,8 @@ export const useDepartureSBYReportStore = defineStore(
           rtn[fuelOil] = +(
             temp.prevRobs[fuelOil] -
             Number(fuelOilTotalConsumptions.value[fuelOil]) +
-            Number(fuelOilBreakdowns[fuelOil].receipt) -
-            Number(fuelOilBreakdowns[fuelOil].debunkering)
+            Number(fuelOilReceipts[fuelOil]) -
+            Number(fuelOilDebunkerings[fuelOil])
           ).toFixed(2);
         }
       }
@@ -237,15 +248,26 @@ export const useDepartureSBYReportStore = defineStore(
             temp.fuelOilPrevBreakdown.blr +
             Number(fuelOilBreakdowns[fuelOil]["BLR"])
           ).toFixed(2),
-          receipt: +(
-            temp.fuelOilPrevBreakdown.receipt +
-            Number(fuelOilBreakdowns[fuelOil]["receipt"])
-          ).toFixed(2),
-          debunkering: +(
-            temp.fuelOilPrevBreakdown.debunkering +
-            Number(fuelOilBreakdowns[fuelOil]["debunkering"])
-          ).toFixed(2),
         };
+      }
+      return rtn;
+    });
+    const fuelOilReceiptsSum = computed(() => {
+      let rtn = {};
+      for (const fuelOil of fuelOils.value) {
+        rtn[fuelOil] = +(
+          temp.fuelOilPrevBreakdown.receipt + Number(fuelOilReceipts[fuelOil])
+        ).toFixed(2);
+      }
+      return rtn;
+    });
+    const fuelOilDebunkeringsSum = computed(() => {
+      let rtn = {};
+      for (const fuelOil of fuelOils.value) {
+        rtn[fuelOil] = +(
+          temp.fuelOilPrevBreakdown.debunkering +
+          Number(fuelOilDebunkerings[fuelOil])
+        ).toFixed(2);
       }
       return rtn;
     });
@@ -254,8 +276,7 @@ export const useDepartureSBYReportStore = defineStore(
       for (const fuelOil of fuelOils.value) {
         if (fuelOils.value.includes(fuelOil)) {
           rtn[fuelOil] = +sumObjectValues(
-            fuelOilBreakdownsSum.value[fuelOil],
-            4
+            fuelOilBreakdownsSum.value[fuelOil]
           ).toFixed(2);
         }
       }
@@ -364,6 +385,8 @@ export const useDepartureSBYReportStore = defineStore(
       machinery,
       fuelOilRobs,
       fuelOilBreakdowns,
+      fuelOilReceipts,
+      fuelOilDebunkerings,
       fuelOilTotalConsumptions,
       fuelOilDataCorrection,
       lubricatingOilBreakdowns,
@@ -378,6 +401,8 @@ export const useDepartureSBYReportStore = defineStore(
       // Consumption And Condition (Total)
       fuelOilRobsSum,
       fuelOilBreakdownsSum,
+      fuelOilReceiptsSum,
+      fuelOilDebunkeringsSum,
       fuelOilTotalConsumptionsSum,
       lubricatingOilBreakdownsSum,
       lubricatingOilRobsSum,

@@ -106,6 +106,8 @@ const {
   // Consumption And Condition
   fuelOilRobs,
   fuelOilBreakdowns,
+  fuelOilReceipts,
+  fuelOilDebunkerings,
   fuelOilTotalConsumptions,
   fuelOilDataCorrection,
   lubricatingOilBreakdowns,
@@ -155,15 +157,17 @@ const sendReport = async () => {
   });
 
   const fuelOilData = generateFuelOilData(
-    fuelOils,
+    fuelOils.value,
     fuelOilBreakdowns.value,
     fuelOilTotalConsumptions.value,
     fuelOilRobs.value,
-    fuelOilDataCorrection.value
+    fuelOilDataCorrection.value,
+    fuelOilReceipts.value,
+    fuelOilDebunkerings.value
   );
 
   const lubricatingOilData = generateLubricatingOilData(
-    lubricatingOils,
+    lubricatingOils.value,
     lubricatingOilBreakdowns.value,
     lubricatingOilRobs.value,
     lubricatingOilDataCorrection.value

@@ -109,6 +109,8 @@ const {
   fuelOilRobs,
   fuelOilBreakdowns,
   fuelOilTotalConsumptions,
+  fuelOilReceipts,
+  fuelOilDebunkerings,
   fuelOilDataCorrection,
   lubricatingOilBreakdowns,
   lubricatingOilRobs,
@@ -121,6 +123,8 @@ const {
   // Consumption And Condition (Total)
   fuelOilRobsSum,
   fuelOilBreakdownsSum,
+  fuelOilReceiptsSum,
+  fuelOilDebunkeringsSum,
   fuelOilTotalConsumptionsSum,
   lubricatingOilBreakdownsSum,
   lubricatingOilRobsSum,
@@ -162,15 +166,17 @@ const sendReport = async () => {
   });
 
   const fuelOilData = generateFuelOilData(
-    fuelOils,
+    fuelOils.value,
     fuelOilBreakdowns.value,
     fuelOilTotalConsumptions.value,
     fuelOilRobs.value,
-    fuelOilDataCorrection.value
+    fuelOilDataCorrection.value,
+    fuelOilReceipts.value,
+    fuelOilDebunkerings.value
   );
 
   const lubricatingOilData = generateLubricatingOilData(
-    lubricatingOils,
+    lubricatingOils.value,
     lubricatingOilBreakdowns.value,
     lubricatingOilRobs.value,
     lubricatingOilDataCorrection.value
@@ -180,6 +186,8 @@ const sendReport = async () => {
     fuelOils.value,
     fuelOilBreakdownsSum.value,
     fuelOilTotalConsumptionsSum.value,
+    fuelOilReceiptsSum.value,
+    fuelOilDebunkeringsSum.value,
     fuelOilRobsSum.value
   );
 
