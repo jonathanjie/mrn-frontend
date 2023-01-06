@@ -82,7 +82,7 @@ const store = useArrivalEOSPReportStore();
 const {
   // Overview
   reportNo,
-  legNo,
+  legUuid,
   voyageNo,
   reportingDateTimeUTC,
   reportingTimeZone,
@@ -236,7 +236,9 @@ const sendReport = async () => {
   const REPORT = {
     report_type: Report.type.ARR_SBY_EOSP,
     voyage: voyageNo.value,
-    voyage_leg: legNo.value,
+    voyage_leg: {
+      uuid: legUuid.value,
+    },
     report_num: reportNo.value,
     report_date: reportingDateTimeUTC.value,
     report_tz: reportingTimeZone.value,

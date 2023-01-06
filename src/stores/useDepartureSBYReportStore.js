@@ -51,14 +51,13 @@ export const useDepartureSBYReportStore = defineStore(
   "departureReportSBY",
   () => {
     const store = useVoyageStore();
-    const { depsReportNo, curLegNo, curVoyageNo } = storeToRefs(store);
+    const { voyageUuid, depsReportNo, legNo, curVoyageNo } = storeToRefs(store);
 
     const shipStore = useShipStore();
     const { fuelOils, lubricatingOils, machinery } = storeToRefs(shipStore);
 
     // Overview
     const reportNo = depsReportNo;
-    const legNo = curLegNo;
     const voyageNo = curVoyageNo;
     const reportingDateTime = ref("");
     const reportingTimeZone = ref("default");
@@ -91,8 +90,8 @@ export const useDepartureSBYReportStore = defineStore(
 
     // Cargo Operation
     const loadCondition = ref("default");
-    const loading = ref("0");
-    const unloading = ref("0");
+    const loading = ref("");
+    const unloading = ref("");
     const totalAmount = computed(
       () =>
         +(
@@ -338,6 +337,7 @@ export const useDepartureSBYReportStore = defineStore(
 
     return {
       // Overview
+      voyageUuid,
       reportNo,
       legNo,
       voyageNo,

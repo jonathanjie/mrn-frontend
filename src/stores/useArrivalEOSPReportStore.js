@@ -62,15 +62,20 @@ export const useArrivalEOSPReportStore = defineStore(
   "arrivalEOSPReport",
   () => {
     const store = useVoyageStore();
-    const { arrsReportNo, curLegNo, curLoadingCondition, curVoyageNo } =
-      storeToRefs(store);
+    const {
+      arrsReportNo,
+      lastLegNo,
+      legUuid,
+      curLoadingCondition,
+      curVoyageNo,
+    } = storeToRefs(store);
 
     const shipStore = useShipStore();
     const { fuelOils, lubricatingOils, machinery } = storeToRefs(shipStore);
 
     // Overview
     const reportNo = arrsReportNo;
-    const legNo = curLegNo;
+    const legNo = lastLegNo;
     const loadingCondition = curLoadingCondition;
     const voyageNo = curVoyageNo;
     const reportingDateTime = ref("");
@@ -387,6 +392,7 @@ export const useArrivalEOSPReportStore = defineStore(
 
     return {
       // Overview
+      legUuid,
       reportNo,
       legNo,
       loadingCondition,

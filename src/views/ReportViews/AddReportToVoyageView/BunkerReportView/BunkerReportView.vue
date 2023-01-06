@@ -80,7 +80,7 @@ const {
   isBeforeArrival,
   // Overview
   reportNo,
-  legNo,
+  legUuid,
   voyageNo,
   reportingTimeZone,
   reportingDateTimeUTC,
@@ -197,7 +197,9 @@ const sendReport = async () => {
     report_date: reportingDateTimeUTC.value,
     report_tz: reportingTimeZone.value,
     voyage: voyageNo.value,
-    voyage_leg: legNo.value,
+    voyage_leg: {
+      uuid: legUuid.value,
+    },
     bdndata: {
       bunkering_port: bunkeringPort,
       bunkering_date: reportingDateTimeUTC.value,

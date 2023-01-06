@@ -59,7 +59,7 @@ const getVoyages = async (imo) => {
 const getReports = async (voyage_uuid) => {
   return await axios
     .get(
-      `https://testapi.marinachain.io/marinanet/voyages/${voyage_uuid}/reports`
+      `https://testapi.marinachain.io/marinanet/voyages/${voyage_uuid}/reports/`
     )
     .then((response) => {
       return response.data;
@@ -88,6 +88,7 @@ const getLoadingCondition = async (uuid) => {
 };
 
 const voyages = await getVoyages(props.imo);
+console.log(voyages);
 const voyageDetails = {}; // uuid : arr of voyage details
 const reports = {}; // uuid : arr of reports
 
@@ -98,7 +99,8 @@ for (let i = 0; i < voyages.length; i++) {
   voyageDetails[uuid] = {};
 
   let curLoadingCondition = "";
-  let curLegNo = 1;
+  let lastLegNo = 1;
+  let lastLegUuid = "";
   let lastReportNo = {
     NOON: 0,
     DSBY: 0,
@@ -121,9 +123,10 @@ for (let i = 0; i < voyages.length; i++) {
       // update current load condition for every departure sby (new leg)
       curLoadingCondition = await getLoadingCondition(uuid);
     }
-    // console.log(j.report_type);
-    curLegNo = j.voyage_leg; // update current leg no for every report
+
     lastReportNo[j.report_type] = j.report_num; // update most recent report no for each type
+    lastLegNo = j.voyage_leg.leg_num; // update last leg no
+    lastLegUuid = j.voyage_leg.uuid; // update last leg uuid
 
     ret["report_type"] = j.report_type;
     ret["report_no"] = ReportTypeToDisplay[j.report_type] + " " + j.report_num;
@@ -138,10 +141,11 @@ for (let i = 0; i < voyages.length; i++) {
   }
 
   // update voyage details
-  voyageDetails[uuid]["uuid"] = uuid;
+  voyageDetails[uuid]["voyage_uuid"] = uuid;
+  voyageDetails[uuid]["leg_uuid"] = lastLegUuid;
   voyageDetails[uuid]["cur_voyage_no"] = voyages[i].voyage_num;
   voyageDetails[uuid]["cur_loading_condition"] = curLoadingCondition || "N/A";
-  voyageDetails[uuid]["cur_leg_no"] = curLegNo || "N/A";
+  voyageDetails[uuid]["last_leg_no"] = lastLegNo || "N/A";
   voyageDetails[uuid]["last_noon_report_no"] = lastReportNo["NOON"];
   voyageDetails[uuid]["last_deps_report_no"] = lastReportNo["DSBY"];
   voyageDetails[uuid]["last_depr_report_no"] = lastReportNo["DCSP"];

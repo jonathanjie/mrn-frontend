@@ -49,7 +49,8 @@ export const useHarbourPortReportStore = defineStore(
       evntpReportNo,
       noonpReportNo,
       nooncReportNo,
-      curLegNo,
+      lastLegNo,
+      legUuid,
       curLoadingCondition,
       curVoyageNo,
     } = storeToRefs(store);
@@ -73,7 +74,7 @@ export const useHarbourPortReportStore = defineStore(
         ? evntcReportNo
         : ""
     );
-    const legNo = curLegNo;
+    const legNo = lastLegNo;
     const loadingCondition = curLoadingCondition;
     const voyageNo = curVoyageNo;
     const reportingDateTime = ref("");
@@ -199,6 +200,7 @@ export const useHarbourPortReportStore = defineStore(
       reportSubtypeIsNoon, // HarbourPortReport.vue
       // Harbour Port Overview
       reportNo,
+      legUuid,
       noonpReportNo,
       nooncReportNo,
       evntpReportNo,

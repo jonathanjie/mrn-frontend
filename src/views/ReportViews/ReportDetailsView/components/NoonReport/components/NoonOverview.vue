@@ -45,7 +45,7 @@ const route_arrival_time_zone = computed(
 const store = useNoonReportStore();
 const {
   // noonReportNo: noon_report_no,
-  // curLegNo: cur_leg_no,
+  // lastLegNo: last_leg_no,
   curLoadingCondition: cur_loading_condition,
   voyageNo: voyage_no,
   // reportingDateTime: reporting_date_time,

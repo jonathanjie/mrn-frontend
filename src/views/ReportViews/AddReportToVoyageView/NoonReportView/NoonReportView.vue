@@ -79,8 +79,7 @@ const {
   lubricatingOils,
   machinery,
   // Overview
-  voyageNo,
-  legNo,
+  legUuid,
   reportNo,
   reportingTimeZone,
   reportingDateTimeUTC,
@@ -229,8 +228,6 @@ const sendReport = async () => {
 
   const REPORT = {
     report_type: Report.type.NOON,
-    voyage: voyageNo.value,
-    voyage_leg: legNo.value,
     report_num: reportNo.value,
     report_date: reportingDateTimeUTC.value,
     report_tz: reportingTimeZone.value,
@@ -238,6 +235,9 @@ const sendReport = async () => {
       time: reportingDateTimeUTC.value,
       timezone: reportingTimeZone.value,
       position: position,
+    },
+    voyage_leg: {
+      uuid: legUuid.value,
     },
     reportroute: {
       departure_port: routeDeparturePort,

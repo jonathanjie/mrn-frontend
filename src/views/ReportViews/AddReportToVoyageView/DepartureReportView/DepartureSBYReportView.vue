@@ -69,6 +69,7 @@ const {
   fuelOils,
   lubricatingOils,
   // Overview
+  voyageUuid,
   reportNo,
   legNo,
   voyageNo,
@@ -200,10 +201,15 @@ const sendReport = async () => {
   const REPORT = {
     report_type: Report.type.DEP_SBY,
     voyage: voyageNo.value,
-    voyage_leg: legNo.value,
     report_num: reportNo.value,
     report_date: reportingDateTimeUTC.value,
     report_tz: reportingTimeZone.value,
+    voyage_leg: {
+      leg_num: legNo.value,
+      voyage: {
+        uuid: voyageUuid.value,
+      },
+    },
     reportroute: {
       departure_port: departurePort,
       departure_date: reportingDateTimeUTC.value,

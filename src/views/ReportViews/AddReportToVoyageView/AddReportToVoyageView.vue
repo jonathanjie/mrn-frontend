@@ -89,8 +89,9 @@ const { isSubmissionModalVisible } = storeToRefs(submissionStatusStore);
 const store = useVoyageStore();
 const {
   voyageUuid,
+  legUuid,
   curLoadingCondition,
-  curLegNo,
+  lastLegNo,
   curVoyageNo,
   lastNoonReportNo,
   lastDepsReportNo,
@@ -107,11 +108,13 @@ const {
 const voyageDetails = history.state.voyageDetails
   ? JSON.parse(history.state.voyageDetails)
   : {};
+console.log("voyagedetails", voyageDetails);
 
 // store selected voyage details in pinia voyage store
-voyageUuid.value = voyageDetails.uuid;
+voyageUuid.value = voyageDetails.voyage_uuid;
+lastLegNo.value = voyageDetails.last_leg_no;
+legUuid.value = voyageDetails.leg_uuid;
 curLoadingCondition.value = voyageDetails.cur_loading_condition;
-curLegNo.value = voyageDetails.cur_leg_no;
 curVoyageNo.value = voyageDetails.cur_voyage_no;
 lastNoonReportNo.value = voyageDetails.last_noon_report_no;
 lastDepsReportNo.value = voyageDetails.last_deps_report_no;

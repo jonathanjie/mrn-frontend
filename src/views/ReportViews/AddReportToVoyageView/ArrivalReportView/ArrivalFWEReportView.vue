@@ -69,7 +69,7 @@ const store = useArrivalFWEReportStore();
 const {
   // Overview
   reportNo,
-  legNo,
+  legUuid,
   voyageNo,
   reportingTimeZone,
   reportingDateTimeUTC,
@@ -175,7 +175,9 @@ const sendReport = async () => {
   const REPORT = {
     report_type: Report.type.ARR_FWE,
     voyage: voyageNo.value,
-    voyage_leg: legNo.value,
+    voyage_leg: {
+      uuid: legUuid.value,
+    },
     report_num: reportNo.value,
     report_date: reportingDateTimeUTC.value,
     report_tz: reportingTimeZone.value,

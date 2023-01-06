@@ -88,7 +88,7 @@ const {
   reportSubtypeIsNoon, // HarbourPortReport.vue
   // Harbour Port Overview
   reportNo,
-  legNo,
+  legUuid,
   voyageNo,
   reportingTimeZone,
   reportingDateTimeUTC,
@@ -179,7 +179,9 @@ const sendReport = async () => {
       reportSubtypeIsNoon.value
     ),
     voyage: voyageNo.value,
-    voyage_leg: legNo.value,
+    voyage_leg: {
+      uuid: legUuid.value,
+    },
     report_num: reportNo.value.value, // temp fix for recursive structure error
     report_date: reportingDateTimeUTC.value,
     report_tz: reportingTimeZone.value,

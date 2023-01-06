@@ -45,7 +45,7 @@ const temp = {
 
 export const useNoonReportStore = defineStore("noonReport", () => {
   const store = useVoyageStore();
-  const { noonReportNo, curLegNo, curLoadingCondition, curVoyageNo } =
+  const { legUuid, noonReportNo, lastLegNo, curLoadingCondition, curVoyageNo } =
     storeToRefs(store);
 
   const shipStore = useShipStore();
@@ -53,7 +53,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
 
   // Overview
   const reportNo = noonReportNo;
-  const legNo = curLegNo;
+  const legNo = lastLegNo;
   const loadingCondition = curLoadingCondition;
   const voyageNo = curVoyageNo;
   const reportingDateTime = ref("");
@@ -373,6 +373,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     // Overview
     reportNo,
     legNo,
+    legUuid,
     loadingCondition,
     voyageNo,
     reportingDateTime,

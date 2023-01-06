@@ -68,10 +68,9 @@ const store = useDepartureCOSPReportStore();
 const {
   fuelOils,
   lubricatingOils,
-  machinery,
   // Overview
+  legUuid,
   reportNo,
-  legNo,
   voyageNo,
   reportingDateTimeUTC,
   reportingTimeZone,
@@ -200,10 +199,12 @@ const sendReport = async () => {
   const REPORT = {
     report_type: Report.type.DEP_COSP_RUP,
     voyage: voyageNo.value,
-    voyage_leg: legNo.value,
     report_num: reportNo.value,
     report_date: reportingDateTimeUTC.value,
     report_tz: reportingTimeZone.value,
+    voyage_leg: {
+      uuid: legUuid.value,
+    },
     reportroute: {
       departure_port: departurePort,
       departure_date: departureDateTimeUTC.value,
