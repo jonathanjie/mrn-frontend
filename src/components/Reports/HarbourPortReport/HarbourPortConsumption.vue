@@ -76,18 +76,14 @@
               {{ fuel_oil_total_consumptions[fuelOil] }}
             </div>
             <input
-              v-model="fuel_oil_breakdowns[fuelOil].receipt"
-              @keypress="
-                preventNaN($event, fuel_oil_breakdowns[fuelOil].receipt)
-              "
+              v-model="fuel_oil_receipts[fuelOil]"
+              @keypress="preventNaN($event, fuel_oil_receipts[fuelOil])"
               placeholder="0"
               class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
             />
             <input
-              v-model="fuel_oil_breakdowns[fuelOil].debunkering"
-              @keypress="
-                preventNaN($event, fuel_oil_breakdowns[fuelOil].debunkering)
-              "
+              v-model="fuel_oil_debunkerings[fuelOil]"
+              @keypress="preventNaN($event, fuel_oil_debunkerings[fuelOil])"
               placeholder="0"
               class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
             />
@@ -435,6 +431,8 @@ const {
   fuelOilTotalConsumptions: fuel_oil_total_consumptions,
   fuelOilRobs: fuel_oil_robs,
   fuelOilBreakdowns: fuel_oil_breakdowns,
+  fuelOilReceipts: fuel_oil_receipts,
+  fuelOilDebunkerings: fuel_oil_debunkerings,
   fuelOilDataCorrection: fuel_oil_data_correction,
   // lubricating oil
   lubricatingOilBreakdowns: lubricating_oil_breakdowns,

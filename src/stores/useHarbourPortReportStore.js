@@ -23,12 +23,20 @@ const temp = {
   prevStatus: PARKING_STATUS_EVNT.anchoringStartOutside, // only applies if there was a previous event report
 
   // Consumption & Condition
-  lsfoPrevROB: 200,
-  mgoPrevROB: 200,
-  mecylPrevROB: 200,
-  mesysPrevROB: 200,
-  mesumpPrevROB: 200,
-  gesysPrevROB: 200,
+  prevRobs: {
+    LSFO: 200,
+    MGO: 200,
+    MDO: 200,
+    HFO: 200,
+    LPGP: 200,
+    LPGB: 200,
+    LNG: 200,
+    "M/E Cylinder": 200,
+    "M/E System": 200,
+    "M/E Sump": 200,
+    "G/E System": 200,
+    "T/C System": 200,
+  },
   freshwaterPrevROB: 200,
 };
 
@@ -101,18 +109,23 @@ export const useHarbourPortReportStore = defineStore(
         "G/E": "",
         IGG: "",
         BLR: "",
-        receipt: "",
-        debunkering: "",
       };
+    }
+    const fuelOilReceipts = reactive({});
+    for (const fuelOil of fuelOils.value) {
+      fuelOilReceipts[fuelOil] = "";
+    }
+    const fuelOilDebunkerings = reactive({});
+    for (const fuelOil of fuelOils.value) {
+      fuelOilDebunkerings[fuelOil] = "";
     }
     const fuelOilTotalConsumptions = computed(() => {
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
         if (fuelOils.value.includes(fuelOil)) {
-          rtn[fuelOil] = +sumObjectValues(
-            fuelOilBreakdowns[fuelOil],
-            4
-          ).toFixed(2);
+          rtn[fuelOil] = +sumObjectValues(fuelOilBreakdowns[fuelOil]).toFixed(
+            2
+          );
         }
       }
       return rtn;
@@ -124,8 +137,8 @@ export const useHarbourPortReportStore = defineStore(
           rtn[fuelOil] = +(
             temp.prevRobs[fuelOil] -
             Number(fuelOilTotalConsumptions.value[fuelOil]) +
-            Number(fuelOilBreakdowns[fuelOil].receipt) -
-            Number(fuelOilBreakdowns[fuelOil].debunkering)
+            Number(fuelOilReceipts[fuelOil]) -
+            Number(fuelOilDebunkerings[fuelOil])
           ).toFixed(2);
         }
       }
@@ -215,6 +228,8 @@ export const useHarbourPortReportStore = defineStore(
       machinery,
       fuelOilRobs,
       fuelOilBreakdowns,
+      fuelOilReceipts,
+      fuelOilDebunkerings,
       fuelOilTotalConsumptions,
       fuelOilDataCorrection,
       lubricatingOilBreakdowns,
