@@ -9,12 +9,8 @@ export function preventNaN(event, content) {
   }
 }
 
-export const sumObjectValues = (obj, endIndex) => {
-  endIndex = endIndex || Object.values(obj).length;
-
-  return Object.values(obj)
-    .slice(0, endIndex)
-    .reduce((a, b) => Number(a) + Number(b), 0);
+export const sumObjectValues = (obj) => {
+  return Object.values(obj).reduce((a, b) => Number(a) + Number(b), 0);
 };
 
 export const textInputOptions = ref({
@@ -179,25 +175,29 @@ export const windSpeedToBeaufort = (wind_speed) => {
     : 12;
 };
 
-// ROB & data correction parameters are optional
+// last four parameters are optional
 export const generateFuelOilData = (
   fuelOils,
   fuelOilBreakdowns,
   fuelOilTotalConsumptions,
-  fuelOilRobs,
-  fuelOilDataCorrection
+  fuelOilRobs, // optional
+  fuelOilDataCorrection, // optional
+  fuelOilReceipts, // optional
+  fuelOilDebunkerings // optional
 ) => {
   const rtn = [];
 
   const dataCorrection = fuelOilDataCorrection || {};
   const rob = fuelOilRobs || {};
+  const receipts = fuelOilReceipts || {};
+  const debunkerings = fuelOilDebunkerings || {};
 
   for (const fuelOil of fuelOils) {
     rtn.push({
       fuel_oil_type: fuelOil,
       total_consumption: fuelOilTotalConsumptions[fuelOil] || 0,
-      receipt: fuelOilBreakdowns.receipt || 0, // non-zero for DEP SBY reports
-      debunkering: fuelOilBreakdowns.debunkering || 0, // non-zero for DEP SBY reports
+      receipt: receipts[fuelOil] || 0, // non-zero for DEP SBY & EVNT reports
+      debunkering: debunkerings[fuelOil] || 0, // non-zero for DEP SBY & EVNT reports
       rob: rob[fuelOil] || 0, // zero for Arrival EOSP Total Consumption
       breakdown: Object.entries(fuelOilBreakdowns[fuelOil]).reduce(
         (p, [k, v]) => ({ ...p, [k]: v || 0 }),
@@ -224,6 +224,8 @@ export const generateLubricatingOilData = (
 ) => {
   const rtn = [];
 
+  const dataCorrection = lubricatingOilDataCorrection || {};
+
   for (const lubricatingOil of lubricatingOils) {
     rtn.push({
       fuel_oil_type: lubricatingOil,
@@ -233,10 +235,10 @@ export const generateLubricatingOilData = (
       debunkering: lubricatingOilBreakdowns[lubricatingOil]["debunkering"] || 0,
       rob: lubricatingOilRobs[lubricatingOil] || 0,
       lubricatingoildatacorrection:
-        lubricatingOilDataCorrection.type === lubricatingOil
+        dataCorrection.type === lubricatingOil
           ? {
-              correction: lubricatingOilDataCorrection.correction,
-              remarks: lubricatingOilDataCorrection.remarks,
+              correction: dataCorrection.correction,
+              remarks: dataCorrection.remarks,
             }
           : null,
     });
