@@ -13,8 +13,8 @@ const props = defineProps({
 });
 
 const noonReportNum = computed(() => props.report.report_num);
-const voyageLeg = computed(() => props.report.voyage_leg);
-// const cur_loading_condition = computed(() => props.report.voyage_leg);
+const voyageLeg = computed(() => props.report.voyage_leg.leg_num);
+// const cur_loading_condition = computed(() => props.report.voyage_leg.leg_num);
 const reportingDateTime = computed(() => props.report.report_date);
 const reportingTimeZone = computed(() => props.report.report_tz);
 const route_departure_port_country = computed(

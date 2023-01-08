@@ -14,8 +14,8 @@ const props = defineProps({
 });
 
 const reportNum = computed(() => props.report.report_num);
-const legNum = computed(() => props.report.voyage_leg);
-const voyageNum = computed(() => props.report.voyage_leg);
+const legNum = computed(() => props.report.voyage_leg.leg_num);
+const voyageNum = computed(() => props.report.voyage_leg.leg_num);
 // const loading_condition = computed(()=> props.report.report_num)
 const reportingDateTime = computed(() => props.report.report_date);
 const reportingTimeZone = computed(() => props.report.report_tz);

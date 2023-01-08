@@ -13,7 +13,6 @@ export const useReportQuery = (uuid) => {
         })
         .catch((error) => {
           console.log(error.message);
-        }),
-    { refetchOnMount: true }
+        })
   );
 };
