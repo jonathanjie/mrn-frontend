@@ -2,7 +2,7 @@ import { useQuery } from "vue-query";
 import axios from "axios";
 import { UrlDomain } from "@/constants";
 
-export const useLatestDetailsQuery = (imo) => {
+export const useLatestReportDetailsQuery = (imo) => {
   return useQuery(["latestReport"], async () =>
     axios
       .get(`${UrlDomain.DEV}/marinanet/ships/${imo}/latest-details/`)

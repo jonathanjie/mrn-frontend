@@ -2,7 +2,7 @@ import { useQuery } from "vue-query";
 import axios from "axios";
 import { UrlDomain } from "@/constants";
 
-export const useGetAllReportsQuery = (imo) => {
+export const useAllReportsQuery = (imo) => {
   return useQuery(
     ["getAllReports"],
     async () =>
@@ -14,6 +14,7 @@ export const useGetAllReportsQuery = (imo) => {
         })
         .catch((error) => {
           console.log(error.message);
-        })
+        }),
+    { refetchOnWindowFocus: false }
   );
 };

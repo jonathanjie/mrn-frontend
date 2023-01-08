@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import { FuelOil, LubricatingOil, Machinery } from "@/constants";
-import { useGetAllReportsQuery } from "@/queries/useGetAllReportsQuery";
+import { useAllReportsQuery } from "@/queries/useAllReportsQuery";
+import { useLatestReportDetailsQuery } from "@/queries/useLatestReportDetailsQuery";
 
 const temp = {
   // Temporary values to pass in before can fetch data from backend
@@ -16,7 +17,6 @@ const temp = {
 };
 
 export const useShipStore = defineStore("ship", () => {
-
   const crewShipDetails = ref({});
   const companyUuid = ref("");
   const imoReg = ref("");
@@ -27,8 +27,14 @@ export const useShipStore = defineStore("ship", () => {
   });
 
   const getAllReports = (imoReg) => {
-    return useGetAllReportsQuery(imoReg);
+    return useAllReportsQuery(imoReg);
   };
+
+  const {
+    isFetching: isFetchingLatestDetails,
+    isSucess: IsSuccessLatestDetails,
+    data: latestDetails,
+  } = useLatestReportDetailsQuery(imoReg.value);
 
   const fuelOils = ref(temp.fuelOils);
   const lubricatingOils = ref(temp.lubricatingOils);
@@ -38,6 +44,9 @@ export const useShipStore = defineStore("ship", () => {
   const isFetchingVoyages = ref(false);
 
   return {
+    isFetchingLatestDetails,
+    IsSuccessLatestDetails,
+    latestDetails,
     crewShipDetails,
     companyUuid,
     imoReg,

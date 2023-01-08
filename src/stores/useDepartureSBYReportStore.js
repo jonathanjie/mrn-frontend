@@ -4,7 +4,7 @@ import { useVoyageStore } from "./useVoyageStore";
 import { storeToRefs } from "pinia";
 import { convertLTToUTC, sumObjectValues } from "@/utils/helpers";
 import { useShipStore } from "@/stores/useShipStore";
-import { useLatestDetailsQuery } from "@/queries/useLatestDetailsQuery";
+import { useLatestReportDetailsQuery } from "@/queries/useLatestReportDetailsQuery";
 
 const prevData = {
   // Consumption & Condition
@@ -104,7 +104,7 @@ export const useDepartureSBYReportStore = defineStore(
       isFetching: isFetchingPrevData,
       isSucess: IsSuccessPrevData,
       data: prevData,
-    } = useLatestDetailsQuery(imoReg.value);
+    } = useLatestReportDetailsQuery(imoReg.value);
 
     // Overview
     const reportNo = depsReportNo;
