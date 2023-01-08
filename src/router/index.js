@@ -4,7 +4,7 @@ import { authGuard } from "@auth0/auth0-vue";
 // import LoginView from '@/views/LoginView.vue'from ;
 import VesselView from "@/views/VesselView/VesselView.vue";
 import VesselOverview from "@/views/VesselView/VesselOverview.vue";
-import VesselReportView from "@/views/VesselView/VesselReportView.vue";
+import VesselReportViewWrapper from "@/views/VesselView/VesselReportViewWrapper.vue";
 import AddReportToVoyageView from "@/views/ReportViews/AddReportToVoyageView/AddReportToVoyageView.vue";
 import NoonReportView from "@/views/ReportViews/AddReportToVoyageView/NoonReportView/NoonReportView.vue";
 import ArrivalReportView from "@/views/ReportViews/AddReportToVoyageView/ArrivalReportView/ArrivalReportView.vue";
@@ -79,7 +79,7 @@ const routes = [
         path: "reports",
         name: "vessel-reports",
         props: true,
-        component: VesselReportView,
+        component: VesselReportViewWrapper,
       },
     ],
     beforeEnter: authGuard,
