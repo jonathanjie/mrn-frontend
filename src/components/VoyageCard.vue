@@ -134,7 +134,7 @@ const dest = "KR"; // make dynamic when leg_uuid added to report header
 let lastLegNo = 0;
 let lastReportNo = {};
 for (let report of props.voyage.reports) {
-  lastLegNo = report.voyage_leg;
+  lastLegNo = report.voyage_leg; // get from voyage_leg.leg_num once voyage_leg uuid is included in header
   lastReportNo[report.report_type] = report.report_num; // update most recent report no for each type
 }
 
@@ -144,16 +144,16 @@ const voyageDetails = JSON.stringify({
   cur_voyage_no: props.voyage.voyage_num,
   cur_loading_condition: "BALLAST", // TODO: dynamic
   last_leg_no: lastLegNo,
-  last_noon_report_no: lastReportNo["NOON"],
-  last_deps_report_no: lastReportNo["DSBY"],
-  last_depr_report_no: lastReportNo["DCSP"],
-  last_arrs_report_no: lastReportNo["ASBY"],
-  last_arrf_report_no: lastReportNo["AFWE"],
-  last_bdn_report_no: lastReportNo["BDN"],
-  last_evntp_report_no: lastReportNo["EVPO"],
-  last_evntc_report_no: lastReportNo["EVHB"],
-  last_noonp_report_no: lastReportNo["NNPO"],
-  last_noonc_report_no: lastReportNo["NNHB"],
+  last_noon_report_no: lastReportNo["NOON"] || 0,
+  last_deps_report_no: lastReportNo["DSBY"] || 0,
+  last_depr_report_no: lastReportNo["DCSP"] || 0,
+  last_arrs_report_no: lastReportNo["ASBY"] || 0,
+  last_arrf_report_no: lastReportNo["AFWE"] || 0,
+  last_bdn_report_no: lastReportNo["BDN"] || 0,
+  last_evntp_report_no: lastReportNo["EVPO"] || 0,
+  last_evntc_report_no: lastReportNo["EVHB"] || 0,
+  last_noonp_report_no: lastReportNo["NNPO"] || 0,
+  last_noonc_report_no: lastReportNo["NNHB"] || 0,
 });
 
 const isExpanded = ref(props.isInitiallyOpen);
