@@ -21,9 +21,6 @@ export const useShipStore = defineStore("ship", () => {
   const companyUuid = ref("");
   const imoReg = ref("");
   const shipUuid = ref("");
-  const fuelOptions = ref([]);
-  const lubeOilOptions = ref([]);
-  const machineryOptions = ref([]);
   const lastVoyageNo = ref(0);
   const nextVoyageNo = computed(() => {
     return lastVoyageNo.value + 1;

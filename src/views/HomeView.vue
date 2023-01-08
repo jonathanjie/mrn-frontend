@@ -83,13 +83,6 @@ const getShip = async () => {
     .then((response) => {
       console.log("Ship Details (home view): ", response.data);
       return updateShipDetails(response.data[0], shipStore);
-      // crewShipDetails.value = response.data[0];
-      // companyUuid.value = response.data[0].company.uuid;
-      // imoReg.value = response.data[0].imo_reg;
-      // shipUuid.value = response.data[0].uuid;
-
-      // return response.data[0];
-      // return ret;
     })
     .catch((error) => {
       console.log(error.message);
