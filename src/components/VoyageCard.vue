@@ -66,6 +66,7 @@
         {{ $t(category) }}
       </button>
       <CustomButton
+        :is-disabled="!props.isInitiallyOpen"
         v-if="auth.role !== 'manager'"
         @click="
           $router.push({
@@ -73,7 +74,7 @@
             state: { voyageDetails },
           })
         "
-        class="h-9 text-14 text-blue-700 rounded-xl ml-auto min-w-fit"
+        class="h-9 text-14 text-blue-700 rounded-xl ml-auto min-w-fit disabled:text-gray-500"
       >
         <template v-slot:content>+{{ $t("addNewReport") }}</template>
       </CustomButton>

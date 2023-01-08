@@ -24,7 +24,7 @@
     <div v-if="isFetching" class="contents">Loading...</div>
     <div v-else-if="isSuccess" class="contents">
       <VoyageCard
-        v-for="(voyage, index) in voyages"
+        v-for="(voyage, index) in orderedVoyages"
         :key="index"
         :voyage="voyage"
         :is-initially-open="index == 0"
@@ -41,7 +41,7 @@ import { useShipStore } from "@/stores/useShipStore";
 import { storeToRefs } from "pinia";
 import GradientButton from "../../components/Buttons/GradientButton.vue";
 import axios from "axios";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { UrlDomain } from "@/constants";
 // import { useCrewStore } from "@/stores/useCrewStore";
 
@@ -59,6 +59,11 @@ const {
 } = shipStore.getAllReports(props.imo);
 const { lastVoyageNo, nextVoyageNo } = storeToRefs(shipStore);
 
+// Temp fix until backend returns voyages in the right order; can delete once backend is updated
+const orderedVoyages = computed(() => {
+  return structuredClone(voyages.value).reverse();
+});
+
 // TODO: remove after MVP demo
 const isAddVoyageLoading = ref(false);
 
@@ -75,21 +80,25 @@ const isAddVoyageLoading = ref(false);
 
 // TODO: use addVoyage in crewStore; temp fix to make add voyage work
 const addVoyage = async () => {
-  isAddVoyageLoading.value = true;
-  lastVoyageNo.value = Math.max(...voyages.value.map((v) => v.voyage_num));
-  const voyageData = {
-    voyage_num: nextVoyageNo.value,
-    imo_reg: props.imo,
-  };
-  await axios
-    .post(`${UrlDomain.DEV}/marinanet/voyages/`, voyageData)
-    .then((response) => {
-      console.log(response);
-      refetch.value();
-      isAddVoyageLoading.value = false;
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
+  if (!confirm("Are you sure? You may not be able to edit previous voyages.")) {
+    return;
+  } else {
+    isAddVoyageLoading.value = true;
+    lastVoyageNo.value = Math.max(...voyages.value.map((v) => v.voyage_num));
+    const voyageData = {
+      voyage_num: nextVoyageNo.value,
+      imo_reg: props.imo,
+    };
+    await axios
+      .post(`${UrlDomain.DEV}/marinanet/voyages/`, voyageData)
+      .then((response) => {
+        console.log(response);
+        refetch.value();
+        isAddVoyageLoading.value = false;
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }
 };
 </script>
