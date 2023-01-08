@@ -16,6 +16,7 @@
     <GradientButton
       class="m-10 absolute right-0 -top-48"
       type="button"
+      :disabled="isAddVoyageLoading"
       @click="addVoyage()"
     >
       <template v-slot:content>{{ $t("createNewVoyage") }}</template>
@@ -23,7 +24,7 @@
     <div v-if="isFetching" class="contents">Loading...</div>
     <div v-else-if="isSuccess" class="contents">
       <VoyageCard
-        v-for="(voyage, index) in voyages.reverse()"
+        v-for="(voyage, index) in voyages"
         :key="index"
         :voyage="voyage"
         :is-initially-open="index == 0"
@@ -35,33 +36,60 @@
 </template>
 
 <script setup>
-import { onUpdated } from "vue";
 import VoyageCard from "../../components/VoyageCard.vue";
 import { useShipStore } from "@/stores/useShipStore";
 import { storeToRefs } from "pinia";
 import GradientButton from "../../components/Buttons/GradientButton.vue";
-import { useCrewStore } from "@/stores/useCrewStore";
+import axios from "axios";
+import { ref } from "vue";
+import { UrlDomain } from "@/constants";
+// import { useCrewStore } from "@/stores/useCrewStore";
 
 const props = defineProps({
   imo: { type: String, require: true },
 });
 
+// const crewStore = useCrewStore();
 const shipStore = useShipStore();
-const { lastVoyageNo, nextVoyageNo } = storeToRefs(shipStore);
 const {
   isSuccess,
   isFetching,
   data: voyages,
+  refetch,
 } = shipStore.getAllReports(props.imo);
+const { lastVoyageNo, nextVoyageNo } = storeToRefs(shipStore);
 
-const crewStore = useCrewStore();
-const voyageData = {
-  voyage_num: nextVoyageNo.value,
-  imo_reg: props.imo,
+// TODO: remove after MVP demo
+const isAddVoyageLoading = ref(false);
+
+// TODO: make this work instead of the addVoyage below
+// const addVoyageAndRefresh = async () => {
+//   lastVoyageNo.value = Math.max(...voyages.value.map((v) => v.voyage_num));
+//   const voyageData = {
+//     voyage_num: nextVoyageNo.value,
+//     imo_reg: props.imo,
+//   };
+//   const { isSuccess, data } = crewStore.addVoyage(voyageData);
+//   refetch.value();
+// };
+
+// TODO: use addVoyage in crewStore; temp fix to make add voyage work
+const addVoyage = async () => {
+  isAddVoyageLoading.value = true;
+  lastVoyageNo.value = Math.max(...voyages.value.map((v) => v.voyage_num));
+  const voyageData = {
+    voyage_num: nextVoyageNo.value,
+    imo_reg: props.imo,
+  };
+  await axios
+    .post(`${UrlDomain.DEV}/marinanet/voyages/`, voyageData)
+    .then((response) => {
+      console.log(response);
+      refetch.value();
+      isAddVoyageLoading.value = false;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 };
-crewStore.addVoyage(voyageData);
-
-onUpdated(() => {
-  lastVoyageNo.value = voyages.value[voyages.value.length - 1].voyage_num;
-});
 </script>
