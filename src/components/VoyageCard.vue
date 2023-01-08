@@ -73,9 +73,9 @@ const filteredData = computed(() => {
   );
 });
 
-const handleClick = () => {
+const handleClick = async () => {
   console.log("im clicked");
-  refetchLatestReportDetails();
+  await refetchLatestReportDetails();
   router.push({
     name: "add-report",
     state: { voyageDetails },
