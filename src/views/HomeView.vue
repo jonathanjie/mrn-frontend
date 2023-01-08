@@ -23,11 +23,16 @@ import InitializationModal from "@/components/Modals/InitializationModal.vue";
 import { collapsed } from "@/components/SideNav/state.js";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useAuth0 } from "@auth0/auth0-vue";
+import { useShipStore } from "@/stores/useShipStore";
 import axios from "axios";
 import { UrlDomain } from "@/constants";
+import { storeToRefs } from "pinia";
 
 const auth = useAuthStore();
 const { user, getAccessTokenSilently } = useAuth0();
+const shipStore = useShipStore();
+const { crewShipDetails, companyUuid, imoReg, shipUuid } =
+  storeToRefs(shipStore);
 
 const getUserRole = async () => {
   return await axios
@@ -45,7 +50,11 @@ const getShip = async () => {
   return await axios
     .get(`${UrlDomain.DEV}/marinanet/ships`)
     .then((response) => {
-      console.log("Ship", response.data);
+      console.log("Ship Details (home view): ", response.data);
+      crewShipDetails.value = response.data[0];
+      companyUuid.value = response.data[0].company.uuid;
+      imoReg.value = response.data[0].imo_reg;
+      shipUuid.value = response.data[0].uuid;
       return response.data[0];
     })
     .catch((error) => {
