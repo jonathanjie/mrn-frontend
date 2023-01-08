@@ -97,8 +97,16 @@ export const useDepartureSBYReportStore = defineStore(
     const { voyageUuid, depsReportNo, legNo, curVoyageNo } = storeToRefs(store);
 
     const shipStore = useShipStore();
-    const { fuelOils, lubricatingOils, machinery, imoReg } =
-      storeToRefs(shipStore);
+    const {
+      fuelOils,
+      lubricatingOils,
+      machinery,
+      imoReg,
+      refetchLatestReportDetails,
+      isFetchingLatestDetails,
+      IsSuccessLatestDetails,
+      latestDetails,
+    } = storeToRefs(shipStore);
 
     const {
       isFetching: isFetchingPrevData,

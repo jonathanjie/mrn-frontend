@@ -1,3 +1,86 @@
+<script setup>
+import CustomButton from "./Buttons/CustomButton.vue";
+import ReportCard from ".//ReportCard.vue";
+import { computed, ref } from "vue";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useShipStore } from "@/stores/useShipStore";
+import {
+  ReportTypeToDisplay,
+  ReportFilterCategories,
+  ReportTypeToFilterCategories,
+} from "@/constants";
+import { readableUTCDate } from "@/utils/helpers";
+import router from "@/router";
+
+const auth = useAuthStore();
+const shipStore = useShipStore();
+
+const { refetchLatestReportDetails } = shipStore;
+
+const props = defineProps({
+  voyage: {
+    type: Object,
+    required: true,
+    default: () => {},
+  },
+  isInitiallyOpen: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+});
+
+const start = "SG"; // make dynamic when leg_uuid added to report header
+const mid = "At Sea";
+const dest = "KR"; // make dynamic when leg_uuid added to report header
+
+let lastLegNo = 0;
+let lastReportNo = {};
+for (let report of props.voyage.reports) {
+  lastLegNo = report.voyage_leg; // get from voyage_leg.leg_num once voyage_leg uuid is included in header
+  lastReportNo[report.report_type] = report.report_num; // update most recent report no for each type
+}
+
+const voyageDetails = JSON.stringify({
+  voyage_uuid: props.voyage.uuid,
+  leg_uuid: "something",
+  cur_voyage_no: props.voyage.voyage_num,
+  cur_loading_condition: "BALLAST", // TODO: dynamic
+  last_leg_no: lastLegNo,
+  last_noon_report_no: lastReportNo["NOON"] || 0,
+  last_deps_report_no: lastReportNo["DSBY"] || 0,
+  last_depr_report_no: lastReportNo["DCSP"] || 0,
+  last_arrs_report_no: lastReportNo["ASBY"] || 0,
+  last_arrf_report_no: lastReportNo["AFWE"] || 0,
+  last_bdn_report_no: lastReportNo["BDN"] || 0,
+  last_evntp_report_no: lastReportNo["EVPO"] || 0,
+  last_evntc_report_no: lastReportNo["EVHB"] || 0,
+  last_noonp_report_no: lastReportNo["NNPO"] || 0,
+  last_noonc_report_no: lastReportNo["NNHB"] || 0,
+});
+
+const isExpanded = ref(props.isInitiallyOpen);
+const filter = ref(ReportFilterCategories.ALL);
+
+const filteredData = computed(() => {
+  if (!filter.value || filter.value == ReportFilterCategories.ALL) {
+    return props.voyage.reports;
+  }
+  return props.voyage.reports.filter(
+    (p) => ReportTypeToFilterCategories[p.report_type] === filter.value
+  );
+});
+
+const handleClick = () => {
+  console.log("im clicked")
+  refetchLatestReportDetails();
+  router.push({
+    name: "add-report",
+    state: { voyageDetails },
+  });
+};
+</script>
+
 <template>
   <!-- need to put below two components under one big div and then set min width to child -->
   <div
@@ -68,10 +151,11 @@
       <CustomButton
         v-if="auth.role !== 'manager'"
         @click="
-          $router.push({
-            name: 'add-report',
-            state: { voyageDetails },
-          })
+          handleClick()
+          // $router.push({
+          //   name: 'add-report',
+          //   state: { voyageDetails },
+          // })
         "
         class="h-9 text-14 text-blue-700 rounded-xl ml-auto min-w-fit"
       >
@@ -100,71 +184,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import CustomButton from "./Buttons/CustomButton.vue";
-import ReportCard from ".//ReportCard.vue";
-import { computed, ref } from "vue";
-import { useAuthStore } from "@/stores/useAuthStore";
-import {
-  ReportTypeToDisplay,
-  ReportFilterCategories,
-  ReportTypeToFilterCategories,
-} from "@/constants";
-import { readableUTCDate } from "@/utils/helpers";
-
-const auth = useAuthStore();
-const props = defineProps({
-  voyage: {
-    type: Object,
-    required: true,
-    default: {},
-  },
-  isInitiallyOpen: {
-    type: Boolean,
-    required: false,
-    default: false,
-  },
-});
-
-const start = "SG"; // make dynamic when leg_uuid added to report header
-const mid = "At Sea";
-const dest = "KR"; // make dynamic when leg_uuid added to report header
-
-let lastLegNo = 0;
-let lastReportNo = {};
-for (let report of props.voyage.reports) {
-  lastLegNo = report.voyage_leg; // get from voyage_leg.leg_num once voyage_leg uuid is included in header
-  lastReportNo[report.report_type] = report.report_num; // update most recent report no for each type
-}
-
-const voyageDetails = JSON.stringify({
-  voyage_uuid: props.voyage.uuid,
-  leg_uuid: "something",
-  cur_voyage_no: props.voyage.voyage_num,
-  cur_loading_condition: "BALLAST", // TODO: dynamic
-  last_leg_no: lastLegNo,
-  last_noon_report_no: lastReportNo["NOON"] || 0,
-  last_deps_report_no: lastReportNo["DSBY"] || 0,
-  last_depr_report_no: lastReportNo["DCSP"] || 0,
-  last_arrs_report_no: lastReportNo["ASBY"] || 0,
-  last_arrf_report_no: lastReportNo["AFWE"] || 0,
-  last_bdn_report_no: lastReportNo["BDN"] || 0,
-  last_evntp_report_no: lastReportNo["EVPO"] || 0,
-  last_evntc_report_no: lastReportNo["EVHB"] || 0,
-  last_noonp_report_no: lastReportNo["NNPO"] || 0,
-  last_noonc_report_no: lastReportNo["NNHB"] || 0,
-});
-
-const isExpanded = ref(props.isInitiallyOpen);
-const filter = ref(ReportFilterCategories.ALL);
-
-const filteredData = computed(() => {
-  if (!filter.value || filter.value == ReportFilterCategories.ALL) {
-    return props.voyage.reports;
-  }
-  return props.voyage.reports.filter(
-    (p) => ReportTypeToFilterCategories[p.report_type] === filter.value
-  );
-});
-</script>

@@ -30,12 +30,6 @@ export const useShipStore = defineStore("ship", () => {
     return useAllReportsQuery(imoReg);
   };
 
-  const {
-    isFetching: isFetchingLatestDetails,
-    isSucess: IsSuccessLatestDetails,
-    data: latestDetails,
-  } = useLatestReportDetailsQuery(imoReg.value);
-
   const fuelOils = ref(temp.fuelOils);
   const lubricatingOils = ref(temp.lubricatingOils);
   const machinery = ref(temp.machinery);
@@ -44,8 +38,6 @@ export const useShipStore = defineStore("ship", () => {
   const isFetchingVoyages = ref(false);
 
   return {
-    isFetchingLatestDetails,
-    IsSuccessLatestDetails,
     latestDetails,
     crewShipDetails,
     companyUuid,
