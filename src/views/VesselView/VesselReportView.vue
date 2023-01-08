@@ -77,17 +77,17 @@ const addVoyage = async () => {
     });
 };
 
-const getAllReports = async (imo) => {
-  return await axios
-    .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`)
-    .then((response) => {
-      console.log("Why isnt this correct", response.data);
-      return response.data;
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-};
+// const getAllReports = async (imo) => {
+//   return await axios
+//     .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`)
+//     .then((response) => {
+//       console.log("Why isnt this correct", response.data);
+//       return response.data;
+//     })
+//     .catch((error) => {
+//       console.log(error.message);
+//     });
+// };
 
 const getLoadingCondition = async (uuid) => {
   return "Ballast"; // temp fix
@@ -108,7 +108,7 @@ const getLoadingCondition = async (uuid) => {
 };
 
 // const voyages = await getVoyages(props.imo);
-const voyages = await getAllReports(props.imo);
+const { data: voyages } = store.getAllReports(props.imo);
 
 const voyageDetails = {}; // uuid : arr of voyage details
 const reports = {}; // uuid : arr of reports

@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import { FuelOil, LubricatingOil, Machinery } from "@/constants";
+import { useGetAllReportsQuery } from "@/queries/useGetAllReportsQuery";
 
 const temp = {
   // Temporary values to pass in before can fetch data from backend
@@ -30,6 +31,10 @@ export const useShipStore = defineStore("ship", () => {
   // TODO: relocate this variable to other store
   const isFetchingVoyages = ref(false);
 
+  const getAllReports = (imoReg) => {
+    return useGetAllReportsQuery(imoReg);
+  };
+
   return {
     companyUuid,
     imoReg,
@@ -40,5 +45,6 @@ export const useShipStore = defineStore("ship", () => {
     lubricatingOils,
     machinery,
     isFetchingVoyages,
+    getAllReports,
   };
 });
