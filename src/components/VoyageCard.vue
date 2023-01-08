@@ -1,7 +1,7 @@
 <template>
   <!-- need to put below two components under one big div and then set min width to child -->
   <div
-    class="flex h-20 mx-12 items-center rounded-xl min-w-max z-10"
+    class="flex h-20 mx-12 items-center rounded-xl min-w-fit z-10"
     :class="isExpanded ? 'bg-blue' : 'bg-white drop-shadow-md mb-6'"
   >
     <img
@@ -49,9 +49,9 @@
   </div>
   <div
     v-show="isExpanded"
-    class="min-h-fit bg-darkgray mx-12 mb-6 rounded-xl -mt-4 p-5"
+    class="min-h-fit min-w-fit bg-darkgray mx-12 mb-6 rounded-xl -mt-4 p-5"
   >
-    <div class="flex items-center py-5">
+    <div class="min-w-fit flex items-center py-5">
       <button
         v-for="category in ReportFilterCategories"
         :key="category"
@@ -91,8 +91,8 @@
             ReportTypeToDisplay[report.report_type] + ' ' + report.report_num
           "
           :report_type="report.report_type"
-          :departure="report.departure"
-          :arrival="report.arrival"
+          :departure="report.voyage_leg.departure_port"
+          :arrival="report.voyage_leg.arrival_port"
           :loading_condition="report.loading_condition"
           :date_of_report="readableUTCDate(new Date(report.report_date))"
         ></ReportCard>
@@ -127,23 +127,25 @@ const props = defineProps({
   },
 });
 
-const start = "SG"; // make dynamic when leg_uuid added to report header
+const reports = props.voyage.reports;
+const lastReportIndex = reports.length - 1;
+const lastLegNo = reports[lastReportIndex]?.voyage_leg?.leg_num;
+const lastLegUuid = reports[lastReportIndex]?.voyage_leg?.uuid;
+const start = reports[0]?.voyage_leg?.departure_port || "N/A";
 const mid = "At Sea";
-const dest = "KR"; // make dynamic when leg_uuid added to report header
+const dest = reports[lastReportIndex]?.voyage_leg?.arrival_port || "N/A"; // make dynamic when leg_uuid added to report header
 
-let lastLegNo = 0;
 let lastReportNo = {};
-for (let report of props.voyage.reports) {
-  lastLegNo = report.voyage_leg; // get from voyage_leg.leg_num once voyage_leg uuid is included in header
+for (let report of reports) {
   lastReportNo[report.report_type] = report.report_num; // update most recent report no for each type
 }
 
 const voyageDetails = JSON.stringify({
   voyage_uuid: props.voyage.uuid,
-  leg_uuid: "something",
+  leg_uuid: lastLegUuid || "",
   cur_voyage_no: props.voyage.voyage_num,
   cur_loading_condition: "BALLAST", // TODO: dynamic
-  last_leg_no: lastLegNo,
+  last_leg_no: lastLegNo || 0,
   last_noon_report_no: lastReportNo["NOON"] || 0,
   last_deps_report_no: lastReportNo["DSBY"] || 0,
   last_depr_report_no: lastReportNo["DCSP"] || 0,
