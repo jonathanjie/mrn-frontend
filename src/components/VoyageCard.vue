@@ -142,7 +142,7 @@ const voyageDetails = JSON.stringify({
   voyage_uuid: props.voyage.uuid,
   leg_uuid: "something",
   cur_voyage_no: props.voyage.voyage_num,
-  cur_loading_condition: "something",
+  cur_loading_condition: "BALLAST", // TODO: dynamic
   last_leg_no: lastLegNo,
   last_noon_report_no: lastReportNo["NOON"],
   last_deps_report_no: lastReportNo["DSBY"],
