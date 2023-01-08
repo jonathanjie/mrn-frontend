@@ -38,7 +38,6 @@ export const useShipStore = defineStore("ship", () => {
   const isFetchingVoyages = ref(false);
 
   return {
-    latestDetails,
     crewShipDetails,
     companyUuid,
     imoReg,

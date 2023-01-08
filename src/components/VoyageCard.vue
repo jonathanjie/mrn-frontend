@@ -4,6 +4,7 @@ import ReportCard from ".//ReportCard.vue";
 import { computed, ref } from "vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useShipStore } from "@/stores/useShipStore";
+import { useLatestReportDetailsStore } from "@/stores/useLatestReportDetailsStore";
 import {
   ReportTypeToDisplay,
   ReportFilterCategories,
@@ -11,11 +12,18 @@ import {
 } from "@/constants";
 import { readableUTCDate } from "@/utils/helpers";
 import router from "@/router";
+// import { storeToRefs } from "pinia";
 
 const auth = useAuthStore();
-const shipStore = useShipStore();
+// const shipStore = useShipStore();
+const latestReportDetailsStore = useLatestReportDetailsStore();
+// const {
+//   isSuccessLatestReportDetails,
+//   latestDetails,
+// } = storeToRefs(latestReportDetailsStore);
+const { refetchLatestReportDetails } = latestReportDetailsStore;
 
-const { refetchLatestReportDetails } = shipStore;
+// const { imoReg } = storeToRefs( shipStore);
 
 const props = defineProps({
   voyage: {
@@ -72,7 +80,7 @@ const filteredData = computed(() => {
 });
 
 const handleClick = () => {
-  console.log("im clicked")
+  console.log("im clicked");
   refetchLatestReportDetails();
   router.push({
     name: "add-report",
