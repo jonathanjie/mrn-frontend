@@ -55,7 +55,7 @@
       <button
         v-for="category in ReportFilterCategories"
         :key="category"
-        class="rounded-xl h-7 px-2 mr-4 text-14 min-w-fit"
+        class="rounded-xl h-7 px-2 mr-2 text-14 min-w-fit"
         :class="
           filter === category
             ? 'border border-gradientblue bg-blue-50 text-blue-700'
