@@ -79,7 +79,7 @@
         class="hover:animate-none animate-bounce flex items-center rounded-lg p-1.5 text-14 mt-auto mb-5 mx-5 border border-yellow-500 bg-yellow-50 text-yellow-700"
       >
         <img src="@/assets/icons/feedback.svg" class="w-6 h-6 mr-1.5" />
-        {{ $t("leaveFeedback") }}
+        <div v-if="!collapsed">{{ $t("leaveFeedback") }}</div>
       </a>
     </div>
   </div>
