@@ -246,7 +246,7 @@ const sendReport = async () => {
     reportroute: {
       departure_port: departurePort,
       departure_date: departureDateTimeUTC.value,
-      departure_tz: departureTimeZone.value,
+      depature_tz: departureTimeZone.value,
       arrival_port: arrivalPort,
       arrival_date: reportingDateTimeUTC.value, // irrelevant for Arrival EOSP
       arrival_tz: reportingTimeZone.value, // irrelevant for Arrival EOSP

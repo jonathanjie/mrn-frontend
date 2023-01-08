@@ -115,7 +115,7 @@ const emit = defineEmits(["close-modal"]);
 const returnToVesselOverview = () => {
   emit("close-modal");
   submissionStatusStore.$reset();
-  router.push({ name: "vessel-overview" });
+  router.push({ name: "vessel-reports" });
 };
 
 const returnToReport = () => {

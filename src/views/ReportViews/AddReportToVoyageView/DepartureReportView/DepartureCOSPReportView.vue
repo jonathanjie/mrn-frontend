@@ -209,7 +209,7 @@ const sendReport = async () => {
     reportroute: {
       departure_port: departurePort,
       departure_date: departureDateTimeUTC.value,
-      departure_tz: departureTimeZone.value,
+      depature_tz: departureTimeZone.value,
       arrival_port: destinationPort,
       arrival_date: destinationEstimatedArrivalUTC.value,
       arrival_tz: destinationTimeZone.value,
