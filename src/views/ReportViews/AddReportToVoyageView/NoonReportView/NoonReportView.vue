@@ -72,6 +72,7 @@ import {
   generateFuelOilData,
   generateLubricatingOilData,
 } from "@/utils/helpers.js";
+import { UrlDomain } from "@/constants";
 
 const store = useNoonReportStore();
 const {
@@ -242,7 +243,7 @@ const sendReport = async () => {
     reportroute: {
       departure_port: routeDeparturePort,
       departure_date: routeDepartureDateTime.value,
-      depature_tz: routeDepartureTimeZone.value,
+      departure_tz: routeDepartureTimeZone.value,
       arrival_port: routeArrivalPort,
       arrival_date: isRouteArrivalDateTimeEdited.value
         ? routeArrivalDateTimeEditedUTC.value
@@ -327,17 +328,14 @@ const sendReport = async () => {
 
   console.log("data: ", REPORT);
 
-  const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/reports/",
-    {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(REPORT),
-    }
-  );
+  const response = await fetch(`${UrlDomain.TEST}/marinanet/reports/`, {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("jwt"),
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(REPORT),
+  });
 
   try {
     const data = await response.json();
@@ -353,6 +351,8 @@ const sendReport = async () => {
     isSubmissionModalVisible.value = true;
   } catch (error) {
     console.log(error);
+    errorMessage.value = error.toString();
+    isSubmissionModalVisible.value = true;
   }
 };
 </script>

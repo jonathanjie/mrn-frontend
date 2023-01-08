@@ -63,6 +63,7 @@ import {
   generateFuelOilData,
   generateLubricatingOilData,
 } from "@/utils/helpers.js";
+import { UrlDomain } from "@/constants";
 
 const store = useDepartureSBYReportStore();
 const {
@@ -209,11 +210,18 @@ const sendReport = async () => {
       voyage: {
         uuid: voyageUuid.value,
       },
+      departure_port: departurePort,
+      departure_date: reportingDateTimeUTC.value,
+      departure_tz: reportingTimeZone.value,
+      // TODO: should be optional in backend
+      arrival_port: destinationPort || null,
+      arrival_date: destinationEstimatedArrivalUTC.value || null,
+      arrival_tz: destinationTimeZone.value || null,
     },
     reportroute: {
       departure_port: departurePort,
       departure_date: reportingDateTimeUTC.value,
-      depature_tz: reportingTimeZone.value,
+      departure_tz: reportingTimeZone.value,
       // TODO: should be optional in backend
       arrival_port: destinationPort || null,
       arrival_date: destinationEstimatedArrivalUTC.value || null,
@@ -270,17 +278,14 @@ const sendReport = async () => {
 
   console.log("data: ", REPORT);
 
-  const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/reports/",
-    {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(REPORT),
-    }
-  );
+  const response = await fetch(`${UrlDomain.TEST}/marinanet/reports/`, {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("jwt"),
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(REPORT),
+  });
 
   try {
     const data = await response.json();

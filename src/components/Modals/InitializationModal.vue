@@ -405,6 +405,7 @@ import { ref } from "vue";
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { UrlDomain } from "@/constants";
 
 const auth = useAuthStore();
 
@@ -464,7 +465,7 @@ const addSettings = () => {
     propeller_pitch: propeller_pitch.value,
   };
   const response = fetch(
-    "https://testapi.marinachain.io/marinanet/ships/" + props.imo + "/specs/",
+    `${UrlDomain.DEV}marinanet/ships/` + props.imo + "/specs/",
     {
       headers: {
         Authorization: "Bearer " + auth.jwt,

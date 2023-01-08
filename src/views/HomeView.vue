@@ -14,13 +14,14 @@ import { collapsed } from "@/components/SideNav/state.js";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useAuth0 } from "@auth0/auth0-vue";
 import axios from "axios";
+import { UrlDomain } from "@/constants";
 
 const auth = useAuthStore();
 const { user, getAccessTokenSilently } = useAuth0();
 
 const getUserRole = async () => {
   return await axios
-    .get(`https://testapi.marinachain.io/marinanet/user/`)
+    .get(`${UrlDomain.TEST}/marinanet/user/`)
     .then((response) => {
       console.log("User Role", response);
       return response.data.role;

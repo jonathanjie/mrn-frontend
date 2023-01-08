@@ -63,6 +63,7 @@ import {
   generateFuelOilData,
   generateLubricatingOilData,
 } from "@/utils/helpers.js";
+import { UrlDomain } from "@/constants";
 
 const store = useDepartureCOSPReportStore();
 const {
@@ -208,7 +209,7 @@ const sendReport = async () => {
     reportroute: {
       departure_port: departurePort,
       departure_date: departureDateTimeUTC.value,
-      depature_tz: departureTimeZone.value,
+      departure_tz: departureTimeZone.value,
       arrival_port: destinationPort,
       arrival_date: destinationEstimatedArrivalUTC.value,
       arrival_tz: destinationTimeZone.value,
@@ -262,17 +263,14 @@ const sendReport = async () => {
 
   console.log("data: ", REPORT);
 
-  const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/reports/",
-    {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(REPORT),
-    }
-  );
+  const response = await fetch(`${UrlDomain.TEST}/marinanet/reports/`, {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("jwt"),
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(REPORT),
+  });
 
   try {
     const data = await response.json();

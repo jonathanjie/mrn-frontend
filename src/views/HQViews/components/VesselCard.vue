@@ -104,6 +104,8 @@
 import { useRouter } from "vue-router";
 import axios from "axios";
 import { useVoyageStore } from "@/stores/useVoyageStore";
+import { UrlDomain } from "@/constants";
+
 const props = defineProps({
   vesselStatus: String,
   vesselName: String,
@@ -120,7 +122,7 @@ const store = useVoyageStore();
 
 const getVoyages = async (imo) => {
   return await axios
-    .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`)
+    .get(`${UrlDomain.TEST}/marinanet/ships/${imo}/voyages/`)
     .then((response) => {
       return response.data;
     })
@@ -131,7 +133,7 @@ const getVoyages = async (imo) => {
 
 const getReports = async (imo) => {
   return await axios
-    .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`)
+    .get(`${UrlDomain.TEST}/marinanet/ships/${imo}/reports/`)
     .then((response) => {
       return response.data;
     })

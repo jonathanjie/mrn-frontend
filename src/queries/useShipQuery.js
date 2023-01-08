@@ -1,10 +1,11 @@
 import { useQuery } from "vue-query";
 import axios from "axios";
+import { UrlDomain } from "@/constants";
 
 export const useShipQuery = (imo) => {
   return useQuery(["ship"], async () =>
     axios
-      .get(`https://testapi.marinachain.io/marinanet/ships/${imo}`)
+      .get(`${UrlDomain.TEST}/marinanet/ships/${imo}`)
       .then((response) => {
         return response.data;
       })

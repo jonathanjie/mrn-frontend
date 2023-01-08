@@ -91,12 +91,13 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/useAuthStore";
 import axios from "axios";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
+import { UrlDomain } from "@/constants";
 
 const router = useRouter();
 
 const getShip = async () => {
   return await axios
-    .get(`https://testapi.marinachain.io/marinanet/ships`)
+    .get(`${UrlDomain.TEST}/marinanet/ships`)
     .then((response) => {
       console.log("Ship", response.data);
       return response.data[0];
@@ -108,7 +109,7 @@ const getShip = async () => {
 
 const getVoyages = async (imo) => {
   return await axios
-    .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`)
+    .get(`${UrlDomain.TEST}/marinanet/ships/${imo}/voyages/`)
     .then((response) => {
       console.log("Voyages", response);
       return response.data;
@@ -120,7 +121,7 @@ const getVoyages = async (imo) => {
 
 const getReports = async (imo) => {
   return await axios
-    .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`)
+    .get(`${UrlDomain.TEST}/marinanet/ships/${imo}/reports/`)
     .then((response) => {
       console.log("Reports", response);
       return response.data;

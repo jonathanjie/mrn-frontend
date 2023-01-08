@@ -2,13 +2,14 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useReportQuery } from "../queries/useReportQuery";
+import { UrlDomain } from "@/constants";
 
 export const useReportDetailsStore = defineStore("ReportDetails", () => {
   const auth = useAuthStore();
   const report = ref({});
 
   const getReport = (uuid) => {
-    fetch("https://testapi.marinachain.io/marinanet/reports/" + uuid + "/", {
+    fetch(`${UrlDomain.TEST}/marinanet/reports/` + uuid + "/", {
       headers: {
         Authorization: "Bearer " + auth.jwt,
         "Content-Type": "application/json",

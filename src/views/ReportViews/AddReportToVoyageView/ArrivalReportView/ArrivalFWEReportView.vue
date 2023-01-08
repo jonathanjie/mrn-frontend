@@ -64,6 +64,7 @@ import {
   generateLubricatingOilData,
 } from "@/utils/helpers.js";
 import { OPERATIONS } from "@/utils/options";
+import { UrlDomain } from "@/constants";
 
 const store = useArrivalFWEReportStore();
 const {
@@ -249,18 +250,15 @@ const sendReport = async () => {
 
   console.log("data: ", REPORT);
 
-  const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/reports/",
-    {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(REPORT),
-    }
-  );
+  const response = await fetch(`${UrlDomain.TEST}/marinanet/reports/`, {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("jwt"),
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(REPORT),
+  });
 
   try {
     const data = await response.json();

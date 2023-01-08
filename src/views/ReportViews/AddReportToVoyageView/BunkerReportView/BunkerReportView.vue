@@ -67,6 +67,7 @@ import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
 import { Report } from "@/constants";
 import { parsePortLocode } from "@/utils/helpers";
 import axios from "axios";
+import { UrlDomain } from "@/constants";
 
 const shipStore = useShipStore();
 const { companyUuid: company_uuid } = storeToRefs(shipStore);
@@ -235,17 +236,14 @@ const sendReport = async () => {
 
   console.log("data: ", REPORT);
 
-  const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/reports/",
-    {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(REPORT),
-    }
-  );
+  const response = await fetch(`${UrlDomain.TEST}/marinanet/reports/`, {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("jwt"),
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(REPORT),
+  });
 
   try {
     const data = await response.json();

@@ -35,6 +35,7 @@ import { ReportTypeToDisplay, Report } from "@/constants";
 import { useShipStore } from "@/stores/useShipStore";
 import { storeToRefs } from "pinia";
 import axios from "axios";
+import { UrlDomain } from "@/constants";
 
 const props = defineProps({
   imo: { type: String, require: true },
@@ -47,7 +48,7 @@ const { isFetchingVoyages, lastVoyageNo, imoReg } = storeToRefs(store);
 
 const getVoyages = async (imo) => {
   return await axios
-    .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`)
+    .get(`${UrlDomain.TEST}/marinanet/ships/${imo}/voyages/`)
     .then((response) => {
       return response.data;
     })
@@ -58,9 +59,7 @@ const getVoyages = async (imo) => {
 
 const getReports = async (voyage_uuid) => {
   return await axios
-    .get(
-      `https://testapi.marinachain.io/marinanet/voyages/${voyage_uuid}/reports/`
-    )
+    .get(`${UrlDomain.TEST}/marinanet/voyages/${voyage_uuid}/reports/`)
     .then((response) => {
       return response.data;
     })
@@ -72,7 +71,7 @@ const getReports = async (voyage_uuid) => {
 const getLoadingCondition = async (uuid) => {
   return "Ballast"; // temp fix
   // const response = await fetch(
-  //   "https://testapi.marinachain.io/marinanet/reports/" + uuid,
+  //   `${UrlDomain.TEST}/marinanet/reports/` + uuid,
   //   {
   //     headers: {
   //       Authorization: "Bearer " + auth.jwt,
