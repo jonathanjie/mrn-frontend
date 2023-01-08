@@ -5,7 +5,7 @@ import { UrlDomain } from "@/constants";
 export const useShipQuery = (imo) => {
   return useQuery(["ship"], async () =>
     axios
-      .get(`${UrlDomain.TEST}/marinanet/ships/${imo}`)
+      .get(`${UrlDomain.DEV}/marinanet/ships/${imo}`)
       .then((response) => {
         return response.data;
       })

@@ -38,10 +38,10 @@
           <template v-slot:content>{{ dest }}</template>
         </CustomButton>
       </div>
-      <img src="@/assets/icons/forward.svg" class="h-6 w-6 mr-auto" />
-      <span class="text-14 text-sysblue ml-16 mr-5 min-w-fit">{{
+      <!-- <img src="@/assets/icons/forward.svg" class="h-6 w-6 mr-auto" /> -->
+      <!-- <span class="text-14 text-sysblue ml-16 mr-5 min-w-fit">{{
         $t("viewJourney")
-      }}</span>
+      }}</span> -->
     </div>
     <button @click="isExpanded = !isExpanded" class="ml-3 mr-4">
       <img src="@/assets/icons/dropdown.svg" />

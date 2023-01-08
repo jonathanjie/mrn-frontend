@@ -1,6 +1,6 @@
 export const UrlDomain = {
   DEV: "https://testapi.marinachain.io",
-  TEST: "194.233.91.95:8000",
+  TEST: "https://194.233.91.95:8000",
 };
 
 // work in progress to standardise varible names across components

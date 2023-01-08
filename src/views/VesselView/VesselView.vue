@@ -43,14 +43,14 @@
       <!-- <GradientButton class="m-10" type="button" @click="showModal = true">>
                 <template v-slot:content>{{ $t("createNewVoyage") }}</template>  
             </GradientButton> -->
-      <GradientButton
+      <!-- <GradientButton
         class="m-10"
         type="button"
         :disabled="isFetchingVoyages"
         @click="addVoyage(voyageData)"
       >
         <template v-slot:content>{{ $t("createNewVoyage") }}</template>
-      </GradientButton>
+      </GradientButton> -->
       <InitializationModal
         ref="modal"
         v-show="showModal"
@@ -60,27 +60,27 @@
       ></InitializationModal>
     </div>
     <suspense>
-      <router-view :key="update"></router-view>
+      <router-view></router-view>
     </suspense>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import GradientButton from "../../components/Buttons/GradientButton.vue";
+// import GradientButton from "../../components/Buttons/GradientButton.vue";
 import InitializationModal from "@/components/Modals/InitializationModal.vue";
-import { useAuthStore } from "@/stores/useAuthStore";
-import { useShipStore } from "@/stores/useShipStore";
-import { storeToRefs } from "pinia";
-import axios from "axios";
+// import { useAuthStore } from "@/stores/useAuthStore";
+// import { useShipStore } from "@/stores/useShipStore";
+// import { storeToRefs } from "pinia";
+// import axios from "axios";
 
-const auth = useAuthStore();
-const store = useShipStore();
-const { isFetchingVoyages, lastVoyageNo, nextVoyageNo } = storeToRefs(store);
+// const auth = useAuthStore();
+// const store = useShipStore();
+// const { /**isFetchingVoyages, lastVoyageNo,**/ nextVoyageNo } =
+// storeToRefs(store);
 
 // Variable to force replacement of router-view
-const update = ref(0);
-
+// const update = ref(0);
 const props = defineProps({
   vesselname: String,
   imo: String,
@@ -88,22 +88,4 @@ const props = defineProps({
 });
 
 let showModal = localStorage.getItem("addSpec") == true;
-const voyageData = {
-  voyage_num: nextVoyageNo.value,
-  imo_reg: props.imo,
-};
-// POST request to add in a new voyage
-const addVoyage = async (voyageData) => {
-  isFetchingVoyages = true;
-  await axios
-    .post("https://testapi.marinachain.iso/marinanet/voyages/", voyageData)
-    .then((response) => {
-      console.log(response);
-      lastVoyageNo.value += 1;
-      update.value += 1;
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-};
 </script>

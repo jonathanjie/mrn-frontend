@@ -21,7 +21,7 @@ const { user, getAccessTokenSilently } = useAuth0();
 
 const getUserRole = async () => {
   return await axios
-    .get(`${UrlDomain.TEST}/marinanet/user/`)
+    .get(`${UrlDomain.DEV}/marinanet/user/`)
     .then((response) => {
       console.log("User Role", response);
       return response.data.role;

@@ -12,18 +12,28 @@
       $t("clickOnCreateNewVoyageAboveToBegin")
     }}</span>
   </div>
-  <div v-else class="bg-gray-50 flex flex-col mt-12">
-    <VoyageCard
-      v-for="(voyage, index) in voyages.slice().reverse()"
-      :key="index"
-      :start="voyage.departure_port"
-      :mid="'At Sea'"
-      :dest="voyage.arrival_port"
-      :reports="reports[voyage.uuid]"
-      :voyage-details="JSON.stringify(voyageDetails[voyage.uuid])"
-      :num="voyage.voyage_num"
-      :is-initially-open="index == 0"
-    ></VoyageCard>
+  <div v-else class="relative bg-gray-50 flex flex-col mt-12">
+    <GradientButton
+      class="m-10 absolute right-0 -top-48"
+      type="button"
+      :disabled="isFetchingVoyages"
+      @click="addVoyage()"
+    >
+      <template v-slot:content>{{ $t("createNewVoyage") }}</template>
+    </GradientButton>
+    <div class="contents" :key="update">
+      <VoyageCard
+        v-for="(voyage, index) in voyages.slice().reverse()"
+        :key="index"
+        :start="voyage.departure_port"
+        :mid="'At Sea'"
+        :dest="voyage.arrival_port"
+        :reports="reports[voyage.uuid]"
+        :voyage-details="JSON.stringify(voyageDetails[voyage.uuid])"
+        :num="voyage.voyage_num"
+        :is-initially-open="index == 0"
+      ></VoyageCard>
+    </div>
   </div>
 </template>
 
@@ -36,19 +46,40 @@ import { useShipStore } from "@/stores/useShipStore";
 import { storeToRefs } from "pinia";
 import axios from "axios";
 import { UrlDomain } from "@/constants";
+import GradientButton from "../../components/Buttons/GradientButton.vue";
 
 const props = defineProps({
   imo: { type: String, require: true },
 });
 
-let isEmpty = ref(false);
+const isEmpty = ref(false);
+const update = ref(0);
 
 const store = useShipStore();
-const { isFetchingVoyages, lastVoyageNo, imoReg } = storeToRefs(store);
+const { isFetchingVoyages, lastVoyageNo, nextVoyageNo } = storeToRefs(store);
+
+// POST request to add in a new voyage
+const addVoyage = async () => {
+  const voyageData = {
+    voyage_num: nextVoyageNo.value,
+    imo_reg: props.imo,
+  };
+  isFetchingVoyages.value = true;
+  await axios
+    .post(`${UrlDomain.DEV}/marinanet/voyages/`, voyageData)
+    .then((response) => {
+      console.log(response);
+      lastVoyageNo.value += 1;
+      update.value += 1;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+};
 
 const getVoyages = async (imo) => {
   return await axios
-    .get(`${UrlDomain.TEST}/marinanet/ships/${imo}/voyages/`)
+    .get(`${UrlDomain.DEV}/marinanet/ships/${imo}/voyages/`)
     .then((response) => {
       return response.data;
     })
@@ -59,7 +90,7 @@ const getVoyages = async (imo) => {
 
 const getReports = async (voyage_uuid) => {
   return await axios
-    .get(`${UrlDomain.TEST}/marinanet/voyages/${voyage_uuid}/reports/`)
+    .get(`${UrlDomain.DEV}/marinanet/voyages/${voyage_uuid}/reports/`)
     .then((response) => {
       return response.data;
     })
@@ -71,7 +102,7 @@ const getReports = async (voyage_uuid) => {
 const getLoadingCondition = async (uuid) => {
   return "Ballast"; // temp fix
   // const response = await fetch(
-  //   `${UrlDomain.TEST}/marinanet/reports/` + uuid,
+  //   `${UrlDomain.DEV}/marinanet/reports/` + uuid,
   //   {
   //     headers: {
   //       Authorization: "Bearer " + auth.jwt,

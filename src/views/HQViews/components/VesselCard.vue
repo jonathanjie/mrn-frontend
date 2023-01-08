@@ -122,7 +122,7 @@ const store = useVoyageStore();
 
 const getVoyages = async (imo) => {
   return await axios
-    .get(`${UrlDomain.TEST}/marinanet/ships/${imo}/voyages/`)
+    .get(`${UrlDomain.DEV}/marinanet/ships/${imo}/voyages/`)
     .then((response) => {
       return response.data;
     })
@@ -133,7 +133,7 @@ const getVoyages = async (imo) => {
 
 const getReports = async (imo) => {
   return await axios
-    .get(`${UrlDomain.TEST}/marinanet/ships/${imo}/reports/`)
+    .get(`${UrlDomain.DEV}/marinanet/ships/${imo}/reports/`)
     .then((response) => {
       return response.data;
     })

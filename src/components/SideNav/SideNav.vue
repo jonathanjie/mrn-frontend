@@ -97,7 +97,7 @@ const router = useRouter();
 
 const getShip = async () => {
   return await axios
-    .get(`${UrlDomain.TEST}/marinanet/ships`)
+    .get(`${UrlDomain.DEV}/marinanet/ships`)
     .then((response) => {
       console.log("Ship", response.data);
       return response.data[0];
@@ -109,7 +109,7 @@ const getShip = async () => {
 
 const getVoyages = async (imo) => {
   return await axios
-    .get(`${UrlDomain.TEST}/marinanet/ships/${imo}/voyages/`)
+    .get(`${UrlDomain.DEV}/marinanet/ships/${imo}/voyages/`)
     .then((response) => {
       console.log("Voyages", response);
       return response.data;
@@ -121,7 +121,7 @@ const getVoyages = async (imo) => {
 
 const getReports = async (imo) => {
   return await axios
-    .get(`${UrlDomain.TEST}/marinanet/ships/${imo}/reports/`)
+    .get(`${UrlDomain.DEV}/marinanet/ships/${imo}/reports/`)
     .then((response) => {
       console.log("Reports", response);
       return response.data;

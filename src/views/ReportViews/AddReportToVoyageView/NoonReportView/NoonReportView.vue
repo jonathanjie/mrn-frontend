@@ -328,7 +328,7 @@ const sendReport = async () => {
 
   console.log("data: ", REPORT);
 
-  const response = await fetch(`${UrlDomain.TEST}/marinanet/reports/`, {
+  const response = await fetch(`${UrlDomain.DEV}/marinanet/reports/`, {
     headers: {
       Authorization: "Bearer " + localStorage.getItem("jwt"),
       "Content-Type": "application/json",
@@ -338,7 +338,7 @@ const sendReport = async () => {
   });
 
   try {
-    const data = await response.json();
+    const data = await response.text();
     console.log(response);
     console.log(data);
 

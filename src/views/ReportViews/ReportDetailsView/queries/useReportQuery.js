@@ -7,7 +7,7 @@ export const useReportQuery = (uuid) => {
     ["reportDetail"],
     async () =>
       axios
-        .get(`${UrlDomain.TEST}/marinanet/reports/${uuid}/`)
+        .get(`${UrlDomain.DEV}/marinanet/reports/${uuid}/`)
         .then((response) => {
           return response.data;
         })
