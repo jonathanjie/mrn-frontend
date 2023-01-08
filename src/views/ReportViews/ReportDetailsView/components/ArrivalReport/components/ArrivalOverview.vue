@@ -17,9 +17,9 @@ const props = defineProps({
 });
 
 const reportNum = computed(() => props.report.report_num);
-const legNum = computed(() => props.report.voyage_leg);
+const legNum = computed(() => props.report.voyage_leg.leg_num);
 // TODO: switch to actual voyage number
-const voyageNum = computed(() => props.report.voyage_leg);
+const voyageNum = computed(() => props.report.voyage_leg.leg_num);
 // TODO: use actual backend loading conditions
 const loadingCondition = computed(() => "NIL");
 const reportingDateTime = computed(() => props.report.report_date);

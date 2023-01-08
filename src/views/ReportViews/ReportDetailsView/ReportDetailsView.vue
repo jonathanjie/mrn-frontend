@@ -81,8 +81,8 @@ const handleBack = () => {
         </div>
         <div v-else><div>Invalid Report Type</div></div>
       </div>
-
-      <div>{{ report }}</div>
+      <!-- Uncomment For Debugging -->
+      <!-- <div>{{ report }}</div> -->
     </div>
     <div v-else></div>
   </div>

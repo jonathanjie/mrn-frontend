@@ -16,6 +16,8 @@ const temp = {
 };
 
 export const useShipStore = defineStore("ship", () => {
+
+  const crewShipDetails = ref({});
   const companyUuid = ref("");
   const imoReg = ref("");
   const shipUuid = ref("");
@@ -24,6 +26,10 @@ export const useShipStore = defineStore("ship", () => {
     return lastVoyageNo.value + 1;
   });
 
+  const getAllReports = (imoReg) => {
+    return useGetAllReportsQuery(imoReg);
+  };
+
   const fuelOils = ref(temp.fuelOils);
   const lubricatingOils = ref(temp.lubricatingOils);
   const machinery = ref(temp.machinery);
@@ -31,11 +37,8 @@ export const useShipStore = defineStore("ship", () => {
   // TODO: relocate this variable to other store
   const isFetchingVoyages = ref(false);
 
-  const getAllReports = (imoReg) => {
-    return useGetAllReportsQuery(imoReg);
-  };
-
   return {
+    crewShipDetails,
     companyUuid,
     imoReg,
     shipUuid,

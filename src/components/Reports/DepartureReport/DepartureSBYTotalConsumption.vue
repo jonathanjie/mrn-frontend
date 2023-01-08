@@ -1,3 +1,39 @@
+<script setup>
+import { preventNaN } from "@/utils/helpers";
+import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
+import { storeToRefs } from "pinia";
+import { useShipStore } from "@/stores/useShipStore";
+
+const store = useDepartureSBYReportStore();
+const {
+  fuelOils,
+  lubricatingOils,
+  machinery,
+  // fuel oil
+  fuelOilTotalConsumptionsSum: fuel_oil_total_consumptions_sum,
+  fuelOilRobsSum: fuel_oil_robs_sum,
+  fuelOilBreakdownsSum: fuel_oil_breakdowns_sum,
+  fuelOilReceiptsSum: fuel_oil_receipts_sum,
+  fuelOilDebunkeringsSum: fuel_oil_debunkerings_sum,
+  // lubricating oil
+  lubricatingOilBreakdownsSum: lubricating_oil_breakdowns_sum,
+  lubricatingOilRobsSum: lubricating_oil_robs_sum,
+  // fresh water
+  freshwaterConsumedSum: freshwater_consumed_sum,
+  freshwaterGeneratedSum: freshwater_generated_sum,
+  freshwaterChangeSum: freshwater_change_sum,
+  freshwaterReceivingSum: freshwater_receiving_sum,
+  freshwaterDischargingSum: freshwater_discharging_sum,
+  freshwaterRobSum: freshwater_rob_sum,
+  isSuccessPrevData,
+  isFetchingPrevData,
+  prevData,
+} = storeToRefs(store);
+// const { isSuccessPrevData, isFetchingPrevData, prevData } = store;
+
+const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
+</script>
+
 <template>
   <div
     class="grid bg-white rounded-lg p-5 gap-4 shadow-card border border-yellow-500"
@@ -280,34 +316,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { preventNaN } from "@/utils/helpers";
-import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
-import { storeToRefs } from "pinia";
-
-const store = useDepartureSBYReportStore();
-const {
-  fuelOils,
-  lubricatingOils,
-  machinery,
-  // fuel oil
-  fuelOilTotalConsumptionsSum: fuel_oil_total_consumptions_sum,
-  fuelOilRobsSum: fuel_oil_robs_sum,
-  fuelOilBreakdownsSum: fuel_oil_breakdowns_sum,
-  fuelOilReceiptsSum: fuel_oil_receipts_sum,
-  fuelOilDebunkeringsSum: fuel_oil_debunkerings_sum,
-  // lubricating oil
-  lubricatingOilBreakdownsSum: lubricating_oil_breakdowns_sum,
-  lubricatingOilRobsSum: lubricating_oil_robs_sum,
-  // fresh water
-  freshwaterConsumedSum: freshwater_consumed_sum,
-  freshwaterGeneratedSum: freshwater_generated_sum,
-  freshwaterChangeSum: freshwater_change_sum,
-  freshwaterReceivingSum: freshwater_receiving_sum,
-  freshwaterDischargingSum: freshwater_discharging_sum,
-  freshwaterRobSum: freshwater_rob_sum,
-} = storeToRefs(store);
-
-const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
-</script>

@@ -21,8 +21,6 @@ const reportSubtypeIsPort = computed(() =>
     : false
 );
 
-console.log("type: ", props.report.report_type);
-console.log(reportSubtypeIsPort.value);
 // TODO: hacky due to the behavior of the custom component RadioBtnDetail, will update later
 // const updateActiveReportType = (type) => {
 //   if (type === "false") {
