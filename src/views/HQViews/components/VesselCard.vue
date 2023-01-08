@@ -74,7 +74,7 @@
           </li>
         </ul>
       </div>
-      <div
+      <!-- <div
         v-if="reportStatus === 'error'"
         class="flex rounded-xl h-7 w-auto bg-red-50"
       >
@@ -85,7 +85,7 @@
             >
           </li>
         </ul>
-      </div>
+      </div> -->
       <div
         v-if="reportStatus === 'pending'"
         class="flex rounded-xl h-7 w-auto bg-orange-50"
@@ -117,7 +117,8 @@ const props = defineProps({
 });
 const router = useRouter();
 const store = useVoyageStore();
-
+console.log("Report status in vessel", props.reportStatus);
+console.log("Updated date in vessel card", props.updatedDate);
 const getVoyages = async (imo) => {
   return await axios
     .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`)

@@ -4,7 +4,7 @@ import axios from "axios";
 export const useShipsQuery = () => {
   return useQuery(["ships"], async () =>
     axios
-      .get(`https://testapi.marinachain.io/marinanet/ships`)
+      .get(`https://testapi.marinachain.io/marinanet/ships-overview/`)
       .then((response) => {
         return response.data;
       })
