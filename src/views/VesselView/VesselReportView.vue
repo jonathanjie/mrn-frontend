@@ -21,7 +21,9 @@
     >
       <template v-slot:content>{{ $t("createNewVoyage") }}</template>
     </GradientButton>
-    <div v-if="isFetching" class="contents">Loading...</div>
+    <div v-if="isFetching" class="flex items-center justify-center">
+      <img src="@/assets/icons/loading.svg" class="animate-spin h-28 w-28" />
+    </div>
     <div v-else-if="isSuccess" class="contents">
       <VoyageCard
         v-for="(voyage, index) in orderedVoyages"
