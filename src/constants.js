@@ -99,28 +99,28 @@ export const IceCondition = {
 };
 
 export const FuelOil = {
-  LSFO: "LSFO",
-  MGO: "MGO",
-  MDO: "MDO",
-  HFO: "HFO",
-  LPGP: "LPGP",
-  LPGB: "LPGB",
-  LNG: "LNG",
+  LSFO: "lsfo",
+  MGO: "mgo",
+  MDO: "mdo",
+  HFO: "hfo",
+  LPGP: "lpgPropane",
+  LPGB: "lpgButane",
+  LNG: "lng",
 };
 
 export const LubricatingOil = {
-  ME_CYLINDER: "M/E Cylinder",
-  ME_SYSTEM: "M/E System",
-  ME_SUMP: "M/E Sump",
-  GE_SYSTEM: "G/E System",
-  TC_SYSTEM: "T/C System",
+  ME_CYLINDER: "me_cylinder_oil",
+  ME_SYSTEM: "me_system_oil",
+  ME_SUMP: "me_sump_tank",
+  GE_SYSTEM: "ge_system_oil",
+  TC_SYSTEM: "tc_system_oil",
 };
 
 export const Machinery = {
-  ME: "M/E",
-  GE: "G/E",
-  IGG: "IGG",
-  BLR: "BLR",
+  ME: "main_engine",
+  GE: "generator_engine",
+  IGG: "inert_gas_generator",
+  BLR: "boiler",
 };
 
 export const TotalConsumptionType = {

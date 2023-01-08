@@ -125,7 +125,7 @@
           :key="item"
           class="p-3 border-l text-blue-700"
         >
-          {{ item }}
+          {{ $t(item) }}
         </div>
         <div class="p-3 border-l text-blue-700">{{ $t("total") }}</div>
 
@@ -134,7 +134,7 @@
           :key="index"
           :class="'col-span-full grid ' + getFuelOilCols()"
         >
-          <div class="text-blue-700 p-3 border-t">{{ fuelOil }}</div>
+          <div class="text-blue-700 p-3 border-t">{{ $t(fuelOil) }}</div>
           <input
             v-for="item of machinery"
             :key="item"
