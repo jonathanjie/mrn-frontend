@@ -51,13 +51,13 @@
       >
         <template v-slot:content>{{ $t("createNewVoyage") }}</template>
       </GradientButton> -->
-      <InitializationModal
+      <!-- <InitializationModal
         ref="modal"
         v-show="showModal"
         @close-modal="showModal = false"
         :vesselname="vesselname"
         :imo="imo"
-      ></InitializationModal>
+      ></InitializationModal> -->
     </div>
     <suspense>
       <router-view></router-view>
@@ -68,7 +68,7 @@
 <script setup>
 import { ref } from "vue";
 // import GradientButton from "../../components/Buttons/GradientButton.vue";
-import InitializationModal from "@/components/Modals/InitializationModal.vue";
+// import InitializationModal from "@/components/Modals/InitializationModal.vue";
 // import { useAuthStore } from "@/stores/useAuthStore";
 // import { useShipStore } from "@/stores/useShipStore";
 // import { storeToRefs } from "pinia";

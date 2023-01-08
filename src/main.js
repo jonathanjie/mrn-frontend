@@ -14,29 +14,6 @@ import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 import resetStore from "@/plugins/resetStore";
 
-// TODO: fix router for custom login; typeof useAuth0 is undefined after initialization
-// router.beforeEach(async (to, from) => {
-//     const publicPages = ['/login'];
-//     const authRequired = !publicPages.includes(to.path);
-//     const isAuthenticated = false;
-
-//     console.log("Route from to ", from, to)
-
-//     console.log('typeof', typeof useAuth0())
-
-//     // before creating auth0 instance in app
-//     if (typeof useAuth0() != 'undefined') {
-//         console.log('update value' )
-//         isAuthenticated = useAuth0().isAuthenticated;
-//     }
-
-//     if (authRequired && !isAuthenticated) {
-//         console.log('REDIRECTED TO LOGIN',isAuthenticated )
-//         return '/login';
-//     }
-
-//   })
-
 const app = createApp(App)
   .use(i18n)
   .use(router)
@@ -54,7 +31,6 @@ const app = createApp(App)
 
 vSelect.props.components.default = () => ({
   OpenIndicator: {
-    // TODO: replace icon as needed
     render: () => h("span", "🕖"),
   },
 });

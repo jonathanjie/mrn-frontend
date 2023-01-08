@@ -1,5 +1,4 @@
 <template>
-  <!-- TODO: router view for login page -->
   <!-- <router-view v-if="!isAuthenticated" class="bg-gray-50 min-h-screen"></router-view> -->
   <div v-if="isAuthenticated" class="flex items-start items-stretch">
     <Suspense>
