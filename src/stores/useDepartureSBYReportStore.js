@@ -4,6 +4,49 @@ import { useVoyageStore } from "./useVoyageStore";
 import { storeToRefs } from "pinia";
 import { convertLTToUTC, sumObjectValues } from "@/utils/helpers";
 import { useShipStore } from "@/stores/useShipStore";
+import { useLatestDetailsQuery } from "@/queries/useLatestDetailsQuery";
+
+const prevData = {
+  // Consumption & Condition
+  prevRobs: {
+    LSFO: 200,
+    MGO: 200,
+    MDO: 200,
+    HFO: 200,
+    LPGP: 200,
+    LPGB: 200,
+    LNG: 200,
+    "M/E Cylinder": 200,
+    "M/E System": 200,
+    "M/E Sump": 200,
+    "G/E System": 200,
+    "T/C System": 200,
+  },
+  freshwaterPrevROB: 200,
+
+  // Cargo Operation (from init modal, M³/MT/TEU/CEU)
+  prevCargoTotalAmount: 100,
+  cargoUnit: "M³",
+
+  // Consumption & Condition (Total)
+  fuelOilPrevBreakdown: {
+    me: 10,
+    ge: 10,
+    blr: 10,
+    igg: 10,
+    receipt: 20,
+    debunkering: 10,
+  },
+  lubricatingOilPrevBreakdown: {
+    total_consumption: 10,
+    receipt: 20,
+    debunkering: 10,
+  },
+  freshwaterPrevConsumed: 100,
+  freshwaterPrevEvaporated: 100,
+  freshwaterPrevReceiving: 10,
+  freshwaterPrevDischarging: 5,
+};
 
 const temp = {
   // Consumption & Condition
@@ -54,7 +97,14 @@ export const useDepartureSBYReportStore = defineStore(
     const { voyageUuid, depsReportNo, legNo, curVoyageNo } = storeToRefs(store);
 
     const shipStore = useShipStore();
-    const { fuelOils, lubricatingOils, machinery } = storeToRefs(shipStore);
+    const { fuelOils, lubricatingOils, machinery, imoReg } =
+      storeToRefs(shipStore);
+
+    const {
+      isFetching: isFetchingPrevData,
+      isSucess: IsSuccessPrevData,
+      data: prevData,
+    } = useLatestDetailsQuery(imoReg.value);
 
     // Overview
     const reportNo = depsReportNo;
@@ -336,6 +386,9 @@ export const useDepartureSBYReportStore = defineStore(
     const freshwaterRobSum = freshwaterRob;
 
     return {
+      isFetchingPrevData,
+      IsSuccessPrevData,
+      prevData,
       // Overview
       voyageUuid,
       reportNo,

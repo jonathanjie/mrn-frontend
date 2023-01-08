@@ -45,17 +45,51 @@ const getUserRole = async () => {
       console.log(error.message);
     });
 };
+const updateShipDetails = (shipDetails, shipStore) => {
+  const {
+    crewShipDetails,
+    companyUuid,
+    imoReg,
+    shipUuid,
+    fuelOils,
+    lubricatingOils,
+    machinery,
+  } = storeToRefs(shipStore);
 
+  crewShipDetails.value = shipDetails;
+  companyUuid.value = shipDetails.company.uuid;
+  imoReg.value = shipDetails.imo_reg;
+  shipUuid.value = shipDetails.uuid;
+  fuelOils.value = Object.entries(shipDetails.shipspecs.fuel_options)
+    .filter((option) => option[1] == true)
+    .map((x) => x[0]);
+  lubricatingOils.value = Object.entries(
+    shipDetails.shipspecs.lubricating_oil_options
+  )
+    .filter((option) => option[1] == true)
+    .map((x) => x[0]);
+  machinery.value = Object.entries(shipDetails.shipspecs.machinery_options)
+    .filter((option) => option[1] == true)
+    .map((x) => x[0]);
+  console.log(fuelOils.value);
+  console.log(lubricatingOils.value);
+  console.log(machinery.value);
+
+  return shipDetails;
+};
 const getShip = async () => {
   return await axios
     .get(`${UrlDomain.DEV}/marinanet/ships`)
     .then((response) => {
       console.log("Ship Details (home view): ", response.data);
-      crewShipDetails.value = response.data[0];
-      companyUuid.value = response.data[0].company.uuid;
-      imoReg.value = response.data[0].imo_reg;
-      shipUuid.value = response.data[0].uuid;
-      return response.data[0];
+      return updateShipDetails(response.data[0], shipStore);
+      // crewShipDetails.value = response.data[0];
+      // companyUuid.value = response.data[0].company.uuid;
+      // imoReg.value = response.data[0].imo_reg;
+      // shipUuid.value = response.data[0].uuid;
+
+      // return response.data[0];
+      // return ret;
     })
     .catch((error) => {
       console.log(error.message);
