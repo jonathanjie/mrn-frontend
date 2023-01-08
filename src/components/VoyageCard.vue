@@ -11,7 +11,7 @@
     <span
       class="text-14 font-bold px-1 min-w-fit"
       :class="isExpanded ? 'text-white' : 'text-gray-700'"
-      >{{ $t("voyageNoCaps") }} {{ num }}</span
+      >{{ $t("voyageNoCaps") }} {{ voyage.voyage_num }}</span
     >
     <div
       class="flex bg-gray-50 h-12 m-3 items-center rounded-xl w-full min-w-fit ml-20"
@@ -53,7 +53,7 @@
   >
     <div class="flex items-center py-5">
       <button
-        v-for="category in categories"
+        v-for="category in ReportFilterCategories"
         :key="category"
         class="rounded-xl h-7 px-2 mr-4 text-14 min-w-fit"
         :class="
@@ -85,16 +85,16 @@
         v-for="(report, index) in filteredData.slice().reverse()"
         :key="index"
       >
-        <!-- <div>{{ report }}</div> -->
-        <!-- <div>{{ report.uuid }}</div> -->
         <ReportCard
           :uuid="report.uuid"
-          :report_no="report.report_no"
+          :report_no="
+            ReportTypeToDisplay[report.report_type] + ' ' + report.report_num
+          "
           :report_type="report.report_type"
           :departure="report.departure"
           :arrival="report.arrival"
           :loading_condition="report.loading_condition"
-          :date_of_report="report.date_of_report"
+          :date_of_report="readableUTCDate(new Date(report.report_date))"
         ></ReportCard>
       </div>
     </div>
@@ -106,74 +106,65 @@ import CustomButton from "./Buttons/CustomButton.vue";
 import ReportCard from ".//ReportCard.vue";
 import { computed, ref } from "vue";
 import { useAuthStore } from "@/stores/useAuthStore";
+import {
+  ReportTypeToDisplay,
+  ReportFilterCategories,
+  ReportTypeToFilterCategories,
+} from "@/constants";
+import { readableUTCDate } from "@/utils/helpers";
 
 const auth = useAuthStore();
 const props = defineProps({
-  num: {
-    type: Number,
+  voyage: {
+    type: Object,
     required: true,
-    default: 0,
-  },
-  start: {
-    type: String,
-    required: true,
-    default: "Singapore",
-  },
-  mid: {
-    type: String,
-    required: true,
-    default: "Singapore",
-  },
-  dest: {
-    type: String,
-    required: true,
-    default: "Ulsan, Korea",
+    default: {},
   },
   isInitiallyOpen: {
     type: Boolean,
     required: false,
     default: false,
   },
-  reports: {
-    type: Array,
-    required: true,
-    default: [],
-  },
-  voyageDetails: {
-    type: String,
-    required: true,
-    default: "",
-  },
+});
+
+const start = "SG"; // make dynamic when leg_uuid added to report header
+const mid = "At Sea";
+const dest = "KR"; // make dynamic when leg_uuid added to report header
+
+let lastLegNo = 0;
+let lastReportNo = {};
+for (let report of props.voyage.reports) {
+  lastLegNo = report.voyage_leg;
+  lastReportNo[report.report_type] = report.report_num; // update most recent report no for each type
+}
+
+const voyageDetails = JSON.stringify({
+  voyage_uuid: props.voyage.uuid,
+  leg_uuid: "something",
+  cur_voyage_no: props.voyage.voyage_num,
+  cur_loading_condition: "something",
+  last_leg_no: lastLegNo,
+  last_noon_report_no: lastReportNo["NOON"],
+  last_deps_report_no: lastReportNo["DSBY"],
+  last_depr_report_no: lastReportNo["DCSP"],
+  last_arrs_report_no: lastReportNo["ASBY"],
+  last_arrf_report_no: lastReportNo["AFWE"],
+  last_bdn_report_no: lastReportNo["BDN"],
+  last_evntp_report_no: lastReportNo["EVPO"],
+  last_evntc_report_no: lastReportNo["EVHB"],
+  last_noonp_report_no: lastReportNo["NNPO"],
+  last_noonc_report_no: lastReportNo["NNHB"],
 });
 
 const isExpanded = ref(props.isInitiallyOpen);
-const filter = ref("allReports");
+const filter = ref(ReportFilterCategories.ALL);
 
 const filteredData = computed(() => {
-  if (!filter.value || filter.value == "allReports") {
-    return props.reports;
+  if (!filter.value || filter.value == ReportFilterCategories.ALL) {
+    return props.voyage.reports;
   }
-  return props.reports.filter(
-    (p) => reportTypeEnumToString[p.report_type] === filter.value
+  return props.voyage.reports.filter(
+    (p) => ReportTypeToFilterCategories[p.report_type] === filter.value
   );
 });
-
-const reportTypeEnumToString = {
-  NOON: "noon",
-  DSBY: "departure",
-  DCSP: "departure",
-  ASBY: "arrival",
-  AFWE: "arrival",
-  BDN: "bunkerDelivery",
-  EVNT: "inHarbourOrPort",
-};
-
-const categories = [
-  "allReports",
-  "departure",
-  "arrival",
-  "noon",
-  "bunkerDelivery",
-  "inHarbourOrPort",
-];
 </script>

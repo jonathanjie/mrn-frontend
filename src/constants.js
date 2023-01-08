@@ -36,6 +36,28 @@ export const ReportTypeToDisplay = {
   NNHB: "NOONHB",
 };
 
+export const ReportFilterCategories = {
+  ALL: "allReports",
+  DEP: "departure",
+  ARR: "arrival",
+  NOON: "noon",
+  BDN: "bunkerDelivery",
+  EVNT: "inHarbourOrPort",
+};
+
+export const ReportTypeToFilterCategories = {
+  NOON: "noon",
+  DSBY: "departure",
+  DCSP: "departure",
+  ASBY: "arrival",
+  AFWE: "arrival",
+  BDN: "bunkerDelivery",
+  EVPO: "inHarbourOrPort",
+  EVHB: "inHarbourOrPort",
+  NNPO: "inHarbourOrPort",
+  NNHB: "inHarbourOrPort",
+};
+
 export const ErrorFieldsToDisplay = {
   noonreporttimeandposition: "Reporting Noon",
   weatherdata: "Weather",
@@ -137,6 +159,8 @@ const constants = {
   Report: Report,
   Direction: Direction,
   ReportTypeToDisplay: ReportTypeToDisplay,
+  ReportFilterCategories: ReportFilterCategories,
+  ReportTypeToFilterCategories: ReportTypeToFilterCategories,
   IceCondition: IceCondition,
   FuelOil: FuelOil,
   LubricatingOil: LubricatingOil,
