@@ -43,7 +43,7 @@ const getUserRole = async () => {
 
 const getShip = async () => {
   return await axios
-    .get(`https://testapi.marinachain.io/marinanet/ships`)
+    .get(`${UrlDomain.DEV}/marinanet/ships`)
     .then((response) => {
       console.log("Ship", response.data);
       return response.data[0];

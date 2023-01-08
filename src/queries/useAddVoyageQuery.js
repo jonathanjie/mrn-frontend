@@ -1,12 +1,13 @@
 import { useQuery } from "vue-query";
 import axios from "axios";
+import { UrlDomain } from "@/constants";
 
 export const useAddVoyageQuery = (voyageData) => {
   return useQuery(
     ["addVoyages"],
     async () =>
       await axios
-        .post("https://testapi.marinachain.io/marinanet/voyages/", voyageData)
+        .post(`${UrlDomain.DEV}/marinanet/voyages/`, voyageData)
         .then((response) => {
           console.log("Added voyage successfuly", response);
         })
