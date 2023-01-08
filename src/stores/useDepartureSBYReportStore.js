@@ -4,7 +4,7 @@ import { useVoyageStore } from "./useVoyageStore";
 import { storeToRefs } from "pinia";
 import { convertLTToUTC, sumObjectValues } from "@/utils/helpers";
 import { useShipStore } from "@/stores/useShipStore";
-import { useLatestDetailsQuery } from "@/queries/useLatestDetailsQuery";
+import { useLatestReportDetailsQuery } from "@/queries/useLatestReportDetailsQuery";
 
 const prevData = {
   // Consumption & Condition
@@ -97,14 +97,22 @@ export const useDepartureSBYReportStore = defineStore(
     const { voyageUuid, depsReportNo, legNo, curVoyageNo } = storeToRefs(store);
 
     const shipStore = useShipStore();
-    const { fuelOils, lubricatingOils, machinery, imoReg } =
-      storeToRefs(shipStore);
+    const {
+      fuelOils,
+      lubricatingOils,
+      machinery,
+      imoReg,
+      refetchLatestReportDetails,
+      isFetchingLatestDetails,
+      IsSuccessLatestDetails,
+      latestDetails,
+    } = storeToRefs(shipStore);
 
     const {
       isFetching: isFetchingPrevData,
       isSucess: IsSuccessPrevData,
       data: prevData,
-    } = useLatestDetailsQuery(imoReg.value);
+    } = useLatestReportDetailsQuery(imoReg.value);
 
     // Overview
     const reportNo = depsReportNo;

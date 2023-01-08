@@ -2,18 +2,18 @@ import { useQuery } from "vue-query";
 import axios from "axios";
 import { UrlDomain } from "@/constants";
 
-export const useGetAllReportsQuery = (imo) => {
+export const useLatestReportDetailsQuery = (imo) => {
   return useQuery(
-    ["getAllReports"],
+    ["latestReport"],
     async () =>
-      await axios
-        .get(`${UrlDomain.DEV}/marinanet/ships/${imo}/reports/`)
+      axios
+        .get(`${UrlDomain.DEV}/marinanet/ships/${imo}/latest-details/`)
         .then((response) => {
-          console.log(response.data);
           return response.data;
         })
         .catch((error) => {
           console.log(error.message);
-        })
+        }),
+    { enabled: imo ? true : false, refetchOnWindowFocus: false }
   );
 };
