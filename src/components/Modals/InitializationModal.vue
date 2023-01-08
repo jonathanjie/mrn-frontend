@@ -404,9 +404,7 @@
 import { ref } from "vue";
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
-import { useAuthStore } from "@/stores/useAuthStore";
-
-const auth = useAuthStore();
+import axios from "axios";
 
 // List to export options from checkboxes
 let lubricatingOthersFlag = ref(true);
@@ -415,8 +413,6 @@ const lubricatingOthers = ref("");
 const machineryOthers = ref("");
 
 const propeller_pitch = ref(0);
-const flag = "Panama";
-const deadweight_tonnage = "2000.00";
 const ship_type = ref("");
 const cargo_unit = ref("");
 const fuel_options = ref({
@@ -432,7 +428,7 @@ const fuel_options = ref({
 const lubricating_oil_options = ref({
   me_cylinder_oil: true,
   me_system_oil: true,
-  me_sump_tank: false,
+  me_sump_tank: true,
   ge_system_oil: false,
   tg_system_oil: false,
 });
@@ -446,6 +442,8 @@ const machinery_options = ref({
 });
 
 const props = defineProps({
+  flag: String,
+  deadweight_tonnage: String,
   vesselname: String,
   imo: String,
 });
@@ -454,8 +452,8 @@ const emit = defineEmits(["close-modal"]);
 
 const addSettings = () => {
   const settings = {
-    flag,
-    deadweight_tonnage,
+    flag: "Panama",
+    deadweight_tonnage: "2000.0",
     ship_type: ship_type.value,
     cargo_unit: cargo_unit.value,
     fuel_options: fuel_options.value,
@@ -463,18 +461,17 @@ const addSettings = () => {
     machinery_options: machinery_options.value,
     propeller_pitch: propeller_pitch.value,
   };
-  const response = fetch(
-    "https://testapi.marinachain.io/marinanet/ships/" + props.imo + "/specs/",
-    {
-      headers: {
-        Authorization: "Bearer " + auth.jwt,
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(settings),
-    }
-  );
   console.log(settings);
-  emit("close-modal");
+  axios
+    .post(
+      `https://testapi.marinachain.io/marinanet/ships/${props.imo}/specs/`,
+      settings
+    )
+    .then(() => {
+      emit("close-modal");
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 };
 </script>

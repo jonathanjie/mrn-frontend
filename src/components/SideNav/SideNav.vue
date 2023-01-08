@@ -22,7 +22,6 @@
           <img v-else src="@/assets/marina_logo.svg" class="w-100" />
         </button>
       </div>
-
       <nav>
         <div class="py-2"></div>
         <!-- temporary fix to jump to specific vessel page for demo -->
@@ -45,8 +44,8 @@
           :to="{
             name: 'vessel-overview',
             params: {
-              vesselname: ship.name,
-              imo: ship.imo_reg,
+              vesselname: props.vesselname,
+              imo: props.imo,
             },
           }"
           class="flex py-4 px-7 space-x-3 hover:bg-blue-700/[0.24]"
@@ -80,57 +79,23 @@
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/useAuthStore";
-import axios from "axios";
 const router = useRouter();
 
-const getShip = async () => {
-  return await axios
-    .get(`https://testapi.marinachain.io/marinanet/ships`)
-    .then((response) => {
-      console.log("Ship", response.data);
-      return response.data[0];
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-};
-
-const getVoyages = async (imo) => {
-  return await axios
-    .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/voyages/`)
-    .then((response) => {
-      console.log("Voyages", response);
-      return response.data;
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-};
-
-const getReports = async (imo) => {
-  return await axios
-    .get(`https://testapi.marinachain.io/marinanet/ships/${imo}/reports/`)
-    .then((response) => {
-      console.log("Reports", response);
-      return response.data;
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-};
-
+const props = defineProps({
+  vesselname: String,
+  imo: String,
+});
 // Home Button
 const home = () => {
   if (manager) {
     router.push({ path: "/my-vessels" });
   } else {
     router.push({
-      path: `/vessels/${ship.name}/${ship.imo_reg}/overview`,
+      path: `/vessels/${props.vesselname}/${props.imo}/overview`,
     });
   }
 };
 
 const auth = useAuthStore();
-const ship = await getShip();
 const manager = auth.role === "manager";
 </script>
