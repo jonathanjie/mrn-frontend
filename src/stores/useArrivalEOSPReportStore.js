@@ -2,7 +2,11 @@ import { defineStore } from "pinia";
 import { ref, computed, reactive } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
 import { storeToRefs } from "pinia";
-import { convertLTToUTC, sumObjectValues } from "@/utils/helpers";
+import {
+  convertLTToUTC,
+  sumObjectValues,
+  calculateNewAverage,
+} from "@/utils/helpers";
 import { IceCondition, Machinery } from "@/constants";
 import { useShipStore } from "@/stores/useShipStore";
 import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
@@ -53,6 +57,7 @@ export const useArrivalEOSPReportStore = defineStore(
       fuelOilRobs: fuel_oil_robs,
       lubeOilRobs,
       freshwaterRob: freshwater_rob,
+      hoursAtSea,
     } = storeToRefs(detailsStore);
 
     // Overview
@@ -198,25 +203,31 @@ export const useArrivalEOSPReportStore = defineStore(
     );
     const speedAvg = computed(() =>
       speedSinceNoon.value !== "" && hoursTotal.value
-        ? +(
-            (Number(speedAverage.value) + Number(speedSinceNoon.value)) /
-            (Number(hoursTotal.value) / 24)
+        ? +calculateNewAverage(
+            Number(speedAverage.value),
+            Number(speedSinceNoon.value),
+            Number(hoursAtSea.value) / 24,
+            Number(hoursTotal.value) / 24
           ).toFixed(2)
         : ""
     );
     const rpmAvg = computed(() =>
       rpmSinceNoon.value !== "" && hoursTotal.value
-        ? +(
-            (Number(rpmAverage.value) + Number(rpmSinceNoon.value)) /
-            (Number(hoursTotal.value) / 24)
+        ? +calculateNewAverage(
+            Number(rpmAverage.value),
+            Number(rpmSinceNoon.value),
+            Number(hoursAtSea.value) / 24,
+            Number(hoursTotal.value) / 24
           ).toFixed(1)
         : ""
     );
     const slipAvg = computed(() =>
       slipSinceNoon.value !== "" && hoursTotal.value
-        ? +(
-            (Number(slipAverage.value) + Number(slipSinceNoon.value)) /
-            (Number(hoursTotal.value) / 24)
+        ? +calculateNewAverage(
+            Number(slipAverage.value),
+            Number(slipSinceNoon.value),
+            Number(hoursAtSea.value) / 24,
+            Number(hoursTotal.value) / 24
           ).toFixed(2)
         : ""
     );
