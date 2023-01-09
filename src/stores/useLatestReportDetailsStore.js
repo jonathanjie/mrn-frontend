@@ -51,6 +51,14 @@ export const useLatestReportDetailsStore = defineStore(
       () => latestReportDetails.value.fuel_oil_cons_port_to_port
     );
     const fuelOilRobs = computed(() => latestReportDetails.value.fuel_oil_robs);
+    const hoursAtSea = computed(
+      () =>
+        +(
+          Math.abs(
+            Date.parse(lastReportDate.value) - Date.parse(departureDate.value)
+          ) / 36e5
+        ).toFixed(2)
+    );
     const id = computed(() => latestReportDetails.value.id);
     const lastReportDate = computed(
       () => latestReportDetails.value.last_report_date
@@ -105,6 +113,7 @@ export const useLatestReportDetailsStore = defineStore(
       fuelOilConsPilotToPilot,
       fuelOilConsPortToPort,
       fuelOilRobs,
+      hoursAtSea,
       id,
       lastReportDate,
       lastReportType,
