@@ -2,6 +2,7 @@ import { defineStore, storeToRefs } from "pinia";
 import { useLatestReportDetailsQuery } from "@/queries/useLatestReportDetailsQuery";
 import { useShipStore } from "./useShipStore";
 import { computed } from "vue";
+import { Report } from "@/constants";
 
 export const useLatestReportDetailsStore = defineStore(
   "latestReportDetails",
@@ -66,6 +67,26 @@ export const useLatestReportDetailsStore = defineStore(
     const lastReportType = computed(
       () => latestReportDetails.value.last_report_type
     );
+    const validReportTypes = computed(() => {
+      switch (lastReportType.value) {
+        case Report.type.DEP_SBY:
+          return [Report.type.DEP_COSP_RUP, Report.type.BUNKER];
+        case Report.type.DEP_COSP_RUP || Report.type.NOON:
+          return [Report.type.NOON, Report.type.ARR_SBY_EOSP];
+        case Report.type.ARR_SBY_EOSP:
+          return [Report.type.ARR_FWE];
+        case Report.type.ARR_FWE:
+          return [Report.type.DEP_SBY, Report.type.BUNKER];
+        case Report.type.BUNKER:
+          return [
+            Report.type.DEP_SBY,
+            Report.type.DEP_COSP_RUP,
+            Report.type.BUNKER,
+          ];
+        default:
+          return [];
+      }
+    });
     const loadCondition = computed(
       () => latestReportDetails.value.load_condition
     );
@@ -128,6 +149,7 @@ export const useLatestReportDetailsStore = defineStore(
       speedAverage,
       totalHours,
       voyageLeg,
+      validReportTypes,
     };
   }
 );

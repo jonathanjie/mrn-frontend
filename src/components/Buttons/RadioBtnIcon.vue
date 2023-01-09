@@ -2,12 +2,15 @@
   <!-- TODO: button needs to only display icons and not the content when container grid size is smaller than content-->
   <button
     @click="updateActiveBtn"
-    class="flex bg-white text-gray-700 font-bold text-14 py-3 px-4 h-16 min-w-fit rounded-xl inline-flex items-center"
+    class="flex font-bold text-14 py-3 px-4 h-16 min-w-fit rounded-xl inline-flex items-center"
     :class="
-      this.type == this.active
-        ? 'border-gradientblue border-2 text-gradientblue'
-        : 'text-gray-700'
+      this.disabled
+        ? 'bg-gray-50 border border-gray-300 text-gray-400'
+        : this.type == this.active
+        ? 'bg-white border-gradientblue border-2 text-gradientblue'
+        : 'bg-white text-gray-700'
     "
+    :disabled="this.disabled"
   >
     <img
       v-if="active == this.type"
@@ -37,6 +40,11 @@ export default {
     active: {
       type: String,
       required: true,
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      defauolt: false,
     },
   },
   methods: {

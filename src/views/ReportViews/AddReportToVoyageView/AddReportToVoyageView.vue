@@ -19,6 +19,7 @@
           :content="$t('noon')"
           type="noon"
           :active="reportType"
+          :disabled="!validReportTypes.includes(Report.type.NOON)"
           @onUpdateBtn="updateActiveReportType"
         >
         </RadioBtnIcon>
@@ -27,6 +28,10 @@
           :content="$t('departure')"
           type="departure"
           :active="reportType"
+          :disabled="
+            !validReportTypes.includes(Report.type.DEP_COSP_RUP) &&
+            !validReportTypes.includes(Report.type.DEP_SBY)
+          "
           @onUpdateBtn="updateActiveReportType"
         >
         </RadioBtnIcon>
@@ -35,6 +40,10 @@
           :content="$t('arrival')"
           type="arrival"
           :active="reportType"
+          :disabled="
+            !validReportTypes.includes(Report.type.ARR_FWE) &&
+            !validReportTypes.includes(Report.type.ARR_SBY_EOSP)
+          "
           @onUpdateBtn="updateActiveReportType"
         >
         </RadioBtnIcon>
@@ -51,6 +60,7 @@
           :content="$t('bunkerDelivery')"
           type="bunker-delivery"
           :active="reportType"
+          :disabled="!validReportTypes.includes(Report.type.BUNKER)"
           @onUpdateBtn="updateActiveReportType"
         >
         </RadioBtnIcon>
@@ -75,6 +85,8 @@ import { storeToRefs } from "pinia";
 import SubmissionResultsModal from "@/components/Modals/SubmissionResultsModal.vue";
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
 // import { onBeforeRouteLeave } from "vue-router";
+import { useLatestReportDetailsStore } from "@/stores/useLatestReportDetailsStore";
+import { Report } from "@/constants";
 
 const reportType = ref("");
 
@@ -86,6 +98,9 @@ const updateActiveReportType = (type) => {
 const submissionStatusStore = useSubmissionStatusStore();
 const { isSubmissionModalVisible } = storeToRefs(submissionStatusStore);
 // const showModal = ref(isSubmissionRequested.value);
+
+const detailsStore = useLatestReportDetailsStore();
+const { validReportTypes } = storeToRefs(detailsStore);
 
 const store = useVoyageStore();
 const {
