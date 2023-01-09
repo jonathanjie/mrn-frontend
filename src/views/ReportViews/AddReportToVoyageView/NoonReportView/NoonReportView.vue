@@ -338,7 +338,7 @@ const sendReport = async () => {
   });
 
   try {
-    const data = await response.text();
+    const data = await response.json();
     console.log(response);
     console.log(data);
 
