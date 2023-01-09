@@ -6,70 +6,29 @@ import { convertLTToUTC, sumObjectValues } from "@/utils/helpers";
 import { useShipStore } from "@/stores/useShipStore";
 import { useLatestReportDetailsQuery } from "@/queries/useLatestReportDetailsQuery";
 import { Machinery } from "@/constants";
-
-const prevData = {
-  // Consumption & Condition
-  prevRobs: {
-    LSFO: 200,
-    MGO: 200,
-    MDO: 200,
-    HFO: 200,
-    LPGP: 200,
-    LPGB: 200,
-    LNG: 200,
-    "M/E Cylinder": 200,
-    "M/E System": 200,
-    "M/E Sump": 200,
-    "G/E System": 200,
-    "T/C System": 200,
-  },
-  freshwaterPrevROB: 200,
-
-  // Cargo Operation (from init modal, M³/MT/TEU/CEU)
-  prevCargoTotalAmount: 100,
-  cargoUnit: "M³",
-
-  // Consumption & Condition (Total)
-  fuelOilPrevBreakdown: {
-    me: 10,
-    ge: 10,
-    blr: 10,
-    igg: 10,
-    receipt: 20,
-    debunkering: 10,
-  },
-  lubricatingOilPrevBreakdown: {
-    total_consumption: 10,
-    receipt: 20,
-    debunkering: 10,
-  },
-  freshwaterPrevConsumed: 100,
-  freshwaterPrevEvaporated: 100,
-  freshwaterPrevReceiving: 10,
-  freshwaterPrevDischarging: 5,
-};
+import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
 
 const temp = {
   // Consumption & Condition
-  prevRobs: {
-    LSFO: 200,
-    MGO: 200,
-    MDO: 200,
-    HFO: 200,
-    LPGP: 200,
-    LPGB: 200,
-    LNG: 200,
-    "M/E Cylinder": 200,
-    "M/E System": 200,
-    "M/E Sump": 200,
-    "G/E System": 200,
-    "T/C System": 200,
-  },
-  freshwaterPrevROB: 200,
+  // prevRobs: {
+  //   LSFO: 200,
+  //   MGO: 200,
+  //   MDO: 200,
+  //   HFO: 200,
+  //   LPGP: 200,
+  //   LPGB: 200,
+  //   LNG: 200,
+  //   "M/E Cylinder": 200,
+  //   "M/E System": 200,
+  //   "M/E Sump": 200,
+  //   "G/E System": 200,
+  //   "T/C System": 200,
+  // },
+  // freshwaterPrevROB: 200,
 
   // Cargo Operation (from init modal, M³/MT/TEU/CEU)
   prevCargoTotalAmount: 100,
-  cargoUnit: "M³",
+  // cargoUnit: "M³",
 
   // Consumption & Condition (Total)
   fuelOilPrevBreakdown: {
@@ -94,27 +53,29 @@ const temp = {
 export const useDepartureSBYReportStore = defineStore(
   "departureReportSBY",
   () => {
+    // SubsStores
     const store = useVoyageStore();
     const { voyageUuid, depsReportNo, legNo, curVoyageNo } = storeToRefs(store);
 
-    const shipStore = useShipStore();
+    const detailsStore = useLatestReportDetailsStore();
     const {
-      fuelOils,
-      lubricatingOils,
-      machinery,
-      imoReg,
-      refetchLatestReportDetails,
-      isFetchingLatestDetails,
-      IsSuccessLatestDetails,
-      latestDetails,
-    } = storeToRefs(shipStore);
+      fuelOilRobs: prevFuelOilRobs,
+      lubeOilRobs: prevLubeOilRobs,
+      freshwaterRob: prevFreshWaterRob,
+    } = storeToRefs(detailsStore);
 
+    const shipStore = useShipStore();
+    const { fuelOils, lubricatingOils, machinery, imoReg, crewShipDetails } =
+      storeToRefs(shipStore);
+
+      // Queries
     const {
       isFetching: isFetchingPrevData,
       isSucess: IsSuccessPrevData,
       data: prevData,
     } = useLatestReportDetailsQuery(imoReg.value);
 
+    // refs
     // Overview
     const reportNo = depsReportNo;
     const voyageNo = curVoyageNo;
@@ -160,7 +121,7 @@ export const useDepartureSBYReportStore = defineStore(
         ).toFixed(2)
     );
     const time = ref("");
-    const cargoUnit = ref(temp.cargoUnit);
+    const cargoUnit = computed(crewShipDetails.value.shipspecs.cargo_unit);
 
     // Vessel Condition at Departure
     const draftFwd = ref("");
@@ -217,7 +178,7 @@ export const useDepartureSBYReportStore = defineStore(
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
         rtn[fuelOil] = +(
-          temp.prevRobs[fuelOil] -
+          prevFuelOilRobs[fuelOil] -
           Number(fuelOilTotalConsumptions.value[fuelOil]) +
           Number(fuelOilReceipts[fuelOil]) -
           Number(fuelOilDebunkerings[fuelOil])
@@ -243,7 +204,7 @@ export const useDepartureSBYReportStore = defineStore(
       let rtn = {};
       for (const lubricatingOil of lubricatingOils.value) {
         rtn[lubricatingOil] = +(
-          temp.prevRobs[lubricatingOil] -
+          prevLubeOilRobs[lubricatingOil] -
           Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
           Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
           Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
@@ -266,7 +227,7 @@ export const useDepartureSBYReportStore = defineStore(
     );
     const freshwaterRob = computed(
       () =>
-        temp.freshwaterPrevROB +
+        prevFreshWaterRob +
         Number(freshwaterReceiving.value) -
         Number(freshwaterDischarging.value) +
         freshwaterChange.value

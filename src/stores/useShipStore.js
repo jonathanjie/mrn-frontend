@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import { FuelOil, LubricatingOil, Machinery } from "@/constants";
 import { useAllReportsQuery } from "@/queries/useAllReportsQuery";
-import { useLatestReportDetailsQuery } from "@/queries/useLatestReportDetailsQuery";
 
 const temp = {
   // Temporary values to pass in before can fetch data from backend

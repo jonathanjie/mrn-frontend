@@ -19,13 +19,28 @@ export const useLatestReportDetailsStore = defineStore(
 
     const arrivalDate = computed(() => latestReportDetails.value.arrival_date);
     const arrivalPort = computed(() => latestReportDetails.value.arrival_port);
+    const arrivalPortCountry = computed(
+      () => latestReportDetails.value.arrival_port.split(" ")[0]
+    );
+    const arrivalPortName = computed(
+      () => latestReportDetails.value.arrival_port.split(" ")[1]
+    );
+
     const arrivalTz = computed(() => latestReportDetails.value.arrival_tz);
+
     const departureDate = computed(
       () => latestReportDetails.value.departure_date
     );
     const departurePort = computed(
       () => latestReportDetails.value.departure_port
     );
+    const departurePortCountry = computed(
+      () => latestReportDetails.value.departure_port.split(" ")[0]
+    );
+    const departurePortName = computed(
+      () => latestReportDetails.value.departure_port.split(" ")[1]
+    );
+
     const departureTz = computed(() => latestReportDetails.value.departure_tz);
     const displacementAtDeparture = computed(
       () => latestReportDetails.value.displacement_at_departure
@@ -131,9 +146,13 @@ export const useLatestReportDetailsStore = defineStore(
       // latestReportDetails,
       arrivalDate,
       arrivalPort,
+      arrivalPortCountry,
+      arrivalPortName,
       arrivalTz,
       departureDate,
       departurePort,
+      departurePortCountry,
+      departurePortName,
       departureTz,
       displacementAtDeparture,
       distanceEngineTotal,

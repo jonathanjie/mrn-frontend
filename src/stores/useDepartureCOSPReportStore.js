@@ -9,25 +9,26 @@ import {
 } from "@/utils/helpers";
 import { useShipStore } from "@/stores/useShipStore";
 import { Machinery } from "@/constants";
+import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
 
 const temp = {
   // Overview (get from departure sby)
-  reportingTimeZone: 9,
+  // reportingTimeZone: 9,
 
   // Departure and Destination
-  departurePortCountry: "KR",
-  departurePortName: "PUS",
-  departureTimeZone: "-6",
-  departureDateTimeUTC: "2022-12-01T00:00:00Z",
-  destinationPortCountry: "SG",
-  destinationPortName: "PPT",
-  destinationTimeZone: "-4",
-  destinationEstimatedArrival: "2022-12-06T00:00:00Z",
+  // departurePortCountry: "KR",
+  // departurePortName: "PUS",
+  // departureTimeZone: "-6",
+  // departureDateTimeUTC: "2022-12-01T00:00:00Z",
+  // destinationPortCountry: "SG",
+  // destinationPortName: "PPT",
+  // destinationTimeZone: "-4",
+  // destinationEstimatedArrival: "2022-12-06T00:00:00Z",
 
   // Distance & Time
   prevSbyTime: "2022-12-01T00:00:00Z",
   revolutionCountAtSby: 20000,
-  propellerPitch: 2,
+  // propellerPitch: 2,
 
   // Consumption & Condition
   prevRobs: {
@@ -62,13 +63,29 @@ export const useDepartureCOSPReportStore = defineStore(
     const shipStore = useShipStore();
     const { fuelOils, lubricatingOils, machinery } = storeToRefs(shipStore);
 
+    const detailsStore = useLatestReportDetailsStore();
+    const {
+      departurePortCountry,
+      departurePortName,
+      departureDate: departureDateTimeUTC,
+      departureTz: departureTimeZone,
+      arrivalPortCountry: destinationPortCountry,
+      arrivalPortName: destinationPortName,
+      arrivalTz: destinationTimeZone,
+      arrivalDate: destinationEstimatedArrival,
+      propellerPitch,
+      fuelOilRobs: prevFuelOilRobs,
+      lubeOilRobs: prevLubeOilRobs,
+    } = storeToRefs(detailsStore);
+
     // Overview
     const reportNo = deprReportNo;
     const legNo = lastLegNo;
     const loadingCondition = curLoadingCondition;
     const voyageNo = curVoyageNo;
     const reportingDateTime = ref("");
-    const reportingTimeZone = ref(temp.reportingTimeZone);
+    // const reportingTimeZone = ref(temp.reportingTimeZone);
+    const reportingTimeZone = ref(departureTimeZone);
     const reportingDateTimeUTC = computed(() =>
       reportingTimeZone.value !== "default" && reportingDateTime.value
         ? convertLTToUTC(
@@ -79,10 +96,10 @@ export const useDepartureCOSPReportStore = defineStore(
     );
 
     // Departure and Destination
-    const departurePortCountry = ref(temp.departurePortCountry);
-    const departurePortName = ref(temp.departurePortName);
-    const departureTimeZone = ref(temp.departureTimeZone);
-    const departureDateTimeUTC = ref(temp.departureDateTimeUTC);
+    // const departurePortCountry = ref(temp.departurePortCountry);
+    // const departurePortName = ref(temp.departurePortName);
+    // const departureTimeZone = ref(temp.departureTimeZone);
+    // const departureDateTimeUTC = ref(departureDate.value);
     const departureDateTime = computed(() =>
       departureTimeZone.value !== "default" && departureDateTimeUTC.value
         ? convertUTCToLT(
@@ -91,10 +108,10 @@ export const useDepartureCOSPReportStore = defineStore(
           )
         : ""
     );
-    const destinationPortCountry = ref(temp.destinationPortCountry);
-    const destinationPortName = ref(temp.destinationPortName);
-    const destinationTimeZone = ref(temp.destinationTimeZone);
-    const destinationEstimatedArrival = ref(temp.destinationEstimatedArrival);
+    // const destinationPortCountry = ref(temp.destinationPortCountry);
+    // const destinationPortName = ref(temp.destinationPortName);
+    // const destinationTimeZone = ref(temp.destinationTimeZone);
+    // const destinationEstimatedArrival = ref(temp.destinationEstimatedArrival);
     const destinationEstimatedArrivalUTC = computed(() =>
       destinationTimeZone.value !== "default" &&
       destinationEstimatedArrival.value
@@ -169,7 +186,7 @@ export const useDepartureCOSPReportStore = defineStore(
         ? +(
             (Number(sbyToRupRevolutionCount.value) -
               temp.revolutionCountAtSby) *
-            temp.propellerPitch
+            propellerPitch
           ).toFixed(2)
         : ""
     );
@@ -202,7 +219,7 @@ export const useDepartureCOSPReportStore = defineStore(
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
         rtn[fuelOil] = +(
-          temp.prevRobs[fuelOil] -
+          prevFuelOilRobs[fuelOil] -
           Number(fuelOilTotalConsumptions.value[fuelOil])
         ).toFixed(2);
       }
@@ -226,7 +243,7 @@ export const useDepartureCOSPReportStore = defineStore(
       let rtn = {};
       for (const lubricatingOil of lubricatingOils.value) {
         rtn[lubricatingOil] = +(
-          temp.prevRobs[lubricatingOil] -
+          prevLubeOilRobs[lubricatingOil] -
           Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
           Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
           Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
