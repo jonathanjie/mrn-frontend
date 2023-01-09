@@ -8,7 +8,7 @@ import { useLatestReportDetailsQuery } from "@/queries/useLatestReportDetailsQue
 import { Machinery } from "@/constants";
 import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
 
-const prevData = {
+const temp = {
   // Consumption & Condition
   // prevRobs: {
   //   LSFO: 200,
@@ -28,49 +28,7 @@ const prevData = {
 
   // Cargo Operation (from init modal, M³/MT/TEU/CEU)
   prevCargoTotalAmount: 100,
-  cargoUnit: "M³",
-
-  // Consumption & Condition (Total)
-  fuelOilPrevBreakdown: {
-    me: 10,
-    ge: 10,
-    blr: 10,
-    igg: 10,
-    receipt: 20,
-    debunkering: 10,
-  },
-  lubricatingOilPrevBreakdown: {
-    total_consumption: 10,
-    receipt: 20,
-    debunkering: 10,
-  },
-  freshwaterPrevConsumed: 100,
-  freshwaterPrevEvaporated: 100,
-  freshwaterPrevReceiving: 10,
-  freshwaterPrevDischarging: 5,
-};
-
-const temp = {
-  // Consumption & Condition
-  prevRobs: {
-    LSFO: 200,
-    MGO: 200,
-    MDO: 200,
-    HFO: 200,
-    LPGP: 200,
-    LPGB: 200,
-    LNG: 200,
-    "M/E Cylinder": 200,
-    "M/E System": 200,
-    "M/E Sump": 200,
-    "G/E System": 200,
-    "T/C System": 200,
-  },
-  freshwaterPrevROB: 200,
-
-  // Cargo Operation (from init modal, M³/MT/TEU/CEU)
-  prevCargoTotalAmount: 100,
-  cargoUnit: "M³",
+  // cargoUnit: "M³",
 
   // Consumption & Condition (Total)
   fuelOilPrevBreakdown: {
@@ -95,6 +53,7 @@ const temp = {
 export const useDepartureSBYReportStore = defineStore(
   "departureReportSBY",
   () => {
+    // SubsStores
     const store = useVoyageStore();
     const { voyageUuid, depsReportNo, legNo, curVoyageNo } = storeToRefs(store);
 
@@ -109,12 +68,14 @@ export const useDepartureSBYReportStore = defineStore(
     const { fuelOils, lubricatingOils, machinery, imoReg, crewShipDetails } =
       storeToRefs(shipStore);
 
+      // Queries
     const {
       isFetching: isFetchingPrevData,
       isSucess: IsSuccessPrevData,
       data: prevData,
     } = useLatestReportDetailsQuery(imoReg.value);
 
+    // refs
     // Overview
     const reportNo = depsReportNo;
     const voyageNo = curVoyageNo;

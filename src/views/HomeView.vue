@@ -31,8 +31,6 @@ import { storeToRefs } from "pinia";
 const auth = useAuthStore();
 const { user, getAccessTokenSilently } = useAuth0();
 const shipStore = useShipStore();
-const { crewShipDetails, companyUuid, imoReg, shipUuid } =
-  storeToRefs(shipStore);
 
 const getUserRole = async () => {
   return await axios

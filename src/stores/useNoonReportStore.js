@@ -23,9 +23,13 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const detailsStore = useLatestReportDetailsStore();
   const {
     departurePort,
+    departurePortCountry,
+    departurePortName,
     departureTz,
     departureDate,
     arrivalPort,
+    arrivalPortCountry,
+    arrivalPortName,
     arrivalTz,
     arrivalDate,
     lastReportDate,
@@ -61,8 +65,8 @@ export const useNoonReportStore = defineStore("noonReport", () => {
 
   // Departure and Destination
   // TODO: replace dummy values
-  const routeDeparturePortCountry = ref(departurePort.value.slice(0, 2));
-  const routeDeparturePortName = ref(departurePort.value.slice(3, 6));
+  const routeDeparturePortCountry = ref(departurePortCountry.value);
+  const routeDeparturePortName = ref(departurePortName.value);
   const routeDepartureDateTimeUTC = ref(new Date(departureDate.value));
   const routeDepartureTimeZone = ref(departureTz.value);
   const routeDepartureDateTime = computed(() =>
@@ -74,8 +78,8 @@ export const useNoonReportStore = defineStore("noonReport", () => {
         )
       : ""
   );
-  const routeArrivalPortCountry = ref(arrivalPort.value.slice(0, 2));
-  const routeArrivalPortName = ref(departurePort.value.slice(3, 6));
+  const routeArrivalPortCountry = ref(arrivalPortCountry.value);
+  const routeArrivalPortName = ref(arrivalPortName.value);
   const routeArrivalTimeZone = ref(arrivalTz.value);
   const isRouteArrivalDateTimeEdited = ref(false);
   const routeArrivalDateTimeUTC = ref(new Date(arrivalDate.value));
