@@ -3,41 +3,12 @@ import { ref, reactive, computed } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
 import { storeToRefs } from "pinia";
 import { convertLTToUTC, sumObjectValues } from "@/utils/helpers";
-import { PARKING_STATUS_EVNT } from "@/utils/options";
 import { useShipStore } from "@/stores/useShipStore";
 import { Machinery } from "@/constants";
+import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
 
 const temp = {
-  // Finish With Engine
-  plannedOperations: [
-    "waiting",
-    "crewChange",
-    "cargoOpBerth",
-    "bunkeringDebunkering",
-    "receivingProvisionSpareParts",
-  ],
   otherPlannedOperation: "",
-  // fetch above from most recent arrival eosp/sby
-
-  // Harbour Port Report
-  prevStatus: PARKING_STATUS_EVNT.anchoringStartOutside, // only applies if there was a previous event report
-
-  // Consumption & Condition
-  prevRobs: {
-    LSFO: 200,
-    MGO: 200,
-    MDO: 200,
-    HFO: 200,
-    LPGP: 200,
-    LPGB: 200,
-    LNG: 200,
-    "M/E Cylinder": 200,
-    "M/E System": 200,
-    "M/E Sump": 200,
-    "G/E System": 200,
-    "T/C System": 200,
-  },
-  freshwaterPrevROB: 200,
 };
 
 export const useHarbourPortReportStore = defineStore(
@@ -57,6 +28,14 @@ export const useHarbourPortReportStore = defineStore(
 
     const shipStore = useShipStore();
     const { fuelOils, lubricatingOils, machinery } = storeToRefs(shipStore);
+    const detailsStore = useLatestReportDetailsStore();
+    const {
+      parkingStatus,
+      fuelOilRobs: fuel_oil_robs,
+      lubeOilRobs,
+      freshwaterRob: freshwater_rob,
+      plannedOperations: planned_operations,
+    } = storeToRefs(detailsStore);
 
     // status var
     const reportSubtypeIsPort = ref(true);
@@ -89,8 +68,8 @@ export const useHarbourPortReportStore = defineStore(
     );
 
     // Harbour Port Report
-    const prevStatus = ref(temp.prevStatus);
-    const status = ref(temp.prevStatus);
+    const prevStatus = ref(parkingStatus.value);
+    const status = ref(parkingStatus.value);
     const distanceTravelled = ref("");
     const latDir = ref("default");
     const latMinutes = ref("");
@@ -98,7 +77,7 @@ export const useHarbourPortReportStore = defineStore(
     const longDir = ref("default");
     const longMinutes = ref("");
     const longDegree = ref("");
-    const plannedOperations = ref(temp.plannedOperations);
+    const plannedOperations = ref(planned_operations.value);
     const otherPlannedOperation = ref(temp.otherPlannedOperation);
     const operations = ref([]);
 
@@ -128,7 +107,7 @@ export const useHarbourPortReportStore = defineStore(
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
         rtn[fuelOil] = +(
-          temp.prevRobs[fuelOil] -
+          fuel_oil_robs.value[fuelOil] -
           Number(fuelOilTotalConsumptions.value[fuelOil]) +
           Number(fuelOilReceipts[fuelOil]) -
           Number(fuelOilDebunkerings[fuelOil])
@@ -154,7 +133,7 @@ export const useHarbourPortReportStore = defineStore(
       let rtn = {};
       for (const lubricatingOil of lubricatingOils.value) {
         rtn[lubricatingOil] = +(
-          temp.prevRobs[lubricatingOil] -
+          lubeOilRobs.value[lubricatingOil] -
           Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
           Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
           Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
@@ -173,14 +152,17 @@ export const useHarbourPortReportStore = defineStore(
     const freshwaterReceiving = ref("");
     const freshwaterDischarging = ref("");
     const freshwaterChange = computed(
-      () => +(freshwaterGenerated.value - freshwaterConsumed.value).toFixed(2)
+      () =>
+        +(
+          Number(freshwaterGenerated.value) - Number(freshwaterConsumed.value)
+        ).toFixed(2)
     );
     const freshwaterRob = computed(
       () =>
-        temp.freshwaterPrevROB +
+        Number(freshwater_rob.value) +
         Number(freshwaterReceiving.value) -
         Number(freshwaterDischarging.value) +
-        freshwaterChange.value
+        Number(freshwaterChange.value)
     );
 
     return {
