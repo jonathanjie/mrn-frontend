@@ -1,5 +1,5 @@
 <template>
-  <SideNav :vesselname="ship.name" :imo="ship.imo_reg" />
+  <SideNav :vesselname="ship.name" :imo="ship.imo_reg.toString()" />
   <div class="grow h-screen" :class="collapsed ? 'ml-20' : 'ml-64'">
     <!-- TODO: change to fixed, not sticky -->
     <WebHeader class="sticky top-0 z-40" />

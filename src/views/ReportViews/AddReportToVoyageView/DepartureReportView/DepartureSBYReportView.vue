@@ -94,8 +94,7 @@ const {
 } = storeToRefs(store);
 
 const latestReportDetailsStore = useLatestReportDetailsStore();
-const { isFetchingLatestReportDetails, isSuccessLatestReportDetails, latestDetails } =
-  storeToRefs(latestReportDetailsStore);
+const { latestReportDetails } = storeToRefs(latestReportDetailsStore);
 
 const submissionStatusStore = useSubmissionStatusStore();
 const {
@@ -267,7 +266,7 @@ const sendReport = async () => {
 
 <template>
   <div class="flex flex-col space-y-6 my-6">
-    <div v-if="isSuccessLatestReportDetails">{{latestDetails}}</div>
+    <div >{{ latestReportDetails }}</div>
     <!-- Overview -->
     <DepartureSBYOverview />
 

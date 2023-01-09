@@ -6,6 +6,7 @@ import { convertLTToUTC, sumObjectValues } from "@/utils/helpers";
 import { useShipStore } from "@/stores/useShipStore";
 import { useLatestReportDetailsQuery } from "@/queries/useLatestReportDetailsQuery";
 import { Machinery } from "@/constants";
+import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
 
 const prevData = {
   // Consumption & Condition
@@ -97,17 +98,16 @@ export const useDepartureSBYReportStore = defineStore(
     const store = useVoyageStore();
     const { voyageUuid, depsReportNo, legNo, curVoyageNo } = storeToRefs(store);
 
-    const shipStore = useShipStore();
+    const detailsStore = useLatestReportDetailsStore();
     const {
-      fuelOils,
-      lubricatingOils,
-      machinery,
-      imoReg,
-      refetchLatestReportDetails,
-      isFetchingLatestDetails,
-      IsSuccessLatestDetails,
-      latestDetails,
-    } = storeToRefs(shipStore);
+      fuelOilRobs: prevFuelOilRobs,
+      lubeOilRobs: prevLubeOilRobs,
+      freshwaterRob: prevFreshWaterRob,
+    } = storeToRefs(detailsStore);
+
+    const shipStore = useShipStore();
+    const { fuelOils, lubricatingOils, machinery, imoReg, crewShipDetails } =
+      storeToRefs(shipStore);
 
     const {
       isFetching: isFetchingPrevData,
@@ -160,7 +160,7 @@ export const useDepartureSBYReportStore = defineStore(
         ).toFixed(2)
     );
     const time = ref("");
-    const cargoUnit = ref(temp.cargoUnit);
+    const cargoUnit = computed(crewShipDetails.value.shipspecs.cargo_unit);
 
     // Vessel Condition at Departure
     const draftFwd = ref("");
@@ -217,7 +217,7 @@ export const useDepartureSBYReportStore = defineStore(
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
         rtn[fuelOil] = +(
-          temp.prevRobs[fuelOil] -
+          prevFuelOilRobs[fuelOil] -
           Number(fuelOilTotalConsumptions.value[fuelOil]) +
           Number(fuelOilReceipts[fuelOil]) -
           Number(fuelOilDebunkerings[fuelOil])
@@ -243,7 +243,7 @@ export const useDepartureSBYReportStore = defineStore(
       let rtn = {};
       for (const lubricatingOil of lubricatingOils.value) {
         rtn[lubricatingOil] = +(
-          temp.prevRobs[lubricatingOil] -
+          prevLubeOilRobs[lubricatingOil] -
           Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
           Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
           Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
@@ -266,7 +266,7 @@ export const useDepartureSBYReportStore = defineStore(
     );
     const freshwaterRob = computed(
       () =>
-        temp.freshwaterPrevROB +
+        prevFreshWaterRob +
         Number(freshwaterReceiving.value) -
         Number(freshwaterDischarging.value) +
         freshwaterChange.value
