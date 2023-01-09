@@ -14,9 +14,10 @@
   </div> -->
   <div class="relative bg-gray-50 flex flex-col mt-12">
     <GradientButton
+      v-if="isSuccessLatestReportDetails"
       class="m-10 absolute right-0 -top-48"
       type="button"
-      :disabled="isAddVoyageLoading"
+      :disabled="isAddVoyageLoading || !isAddVoyageEnabled"
       @click="addVoyage()"
     >
       <template v-slot:content>{{ $t("createNewVoyage") }}</template>
@@ -45,11 +46,17 @@ import GradientButton from "../../components/Buttons/GradientButton.vue";
 import axios from "axios";
 import { ref, computed } from "vue";
 import { UrlDomain } from "@/constants";
+import { useLatestReportDetailsStore } from "@/stores/useLatestReportDetailsStore";
+
 // import { useCrewStore } from "@/stores/useCrewStore";
 
 const props = defineProps({
   imo: { type: String, require: true },
 });
+
+const detailsStore = useLatestReportDetailsStore();
+const { isSuccessLatestReportDetails, isAddVoyageEnabled } =
+  storeToRefs(detailsStore);
 
 // const crewStore = useCrewStore();
 const shipStore = useShipStore();

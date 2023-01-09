@@ -87,6 +87,16 @@ export const useLatestReportDetailsStore = defineStore(
           return [];
       }
     });
+    const isAddVoyageEnabled = computed(() => {
+      return (
+        lastReportType.value === Report.type.ARR_FWE ||
+        lastReportType.value === Report.type.BUNKER ||
+        lastReportType.value === Report.type.EVENT_HARBOUR ||
+        lastReportType.value === Report.type.EVENT_PORT ||
+        lastReportType.value === Report.type.NOON_HARBOUR ||
+        lastReportType.value === Report.type.NOON_PORT
+      );
+    });
     const loadCondition = computed(
       () => latestReportDetails.value.load_condition
     );
@@ -150,6 +160,7 @@ export const useLatestReportDetailsStore = defineStore(
       totalHours,
       voyageLeg,
       validReportTypes,
+      isAddVoyageEnabled,
     };
   }
 );

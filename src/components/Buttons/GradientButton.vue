@@ -1,7 +1,13 @@
 <template>
   <button
     @click="onClick"
-    class="bg-gradient-to-r from-gradientblue to-gradientgreen text-white font-bold text-14 py-2 px-4 h-10 rounded-lg inline-flex items-center"
+    class="text-white font-bold text-14 py-2 px-4 h-10 rounded-lg inline-flex items-center"
+    :class="
+      disabled
+        ? 'bg-gray-500'
+        : 'bg-gradient-to-r from-gradientblue to-gradientgreen '
+    "
+    :disabled="disabled"
   >
     <slot name="icon"></slot>
     <slot name="content">{{ $t("fallbackContent") }}</slot>
@@ -13,6 +19,10 @@ export default {
   props: {
     onClick: {
       type: Function,
+      required: false,
+    },
+    disabled: {
+      type: Boolean,
       required: false,
     },
   },
