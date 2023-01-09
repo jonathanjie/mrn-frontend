@@ -65,7 +65,7 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
             :key="item"
             class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
           >
-            {{ item }}
+            {{ $t(item) }}
           </div>
           <div
             class="col-span-2 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
@@ -101,7 +101,7 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
             <div
               class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
             >
-              {{ fuelOil }}
+              {{ $t(fuelOil) }}
             </div>
             <input
               v-for="item of machinery"
@@ -183,7 +183,7 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
             <div
               class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
             >
-              {{ lubricatingOil }}
+              {{ $t(lubricatingOil) }}
             </div>
             <input
               v-model="

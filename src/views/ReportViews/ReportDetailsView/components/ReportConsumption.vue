@@ -139,7 +139,7 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
             :key="item + index"
             class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
           >
-            {{ item }}
+            {{ $t(item) }}
           </div>
           <div
             class="col-span-2 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
@@ -260,7 +260,7 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
                 :value="fuelOil"
                 :key="fuelOil"
               >
-                {{ fuelOil }}
+                {{ $t(fuelOil) }}
               </option>
             </select>
             <div class="flex col-span-4 p-3 pl-4 border-l bg-white">
@@ -412,7 +412,7 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
                 :value="lubricatingOil"
                 :key="lubricatingOil"
               >
-                {{ lubricatingOil }}
+                {{ $t(lubricatingOil) }}
               </option>
             </select>
             <div class="flex col-span-6 p-3 pl-4 border-l bg-white">

@@ -284,7 +284,7 @@
                 :value="lubricatingOil"
                 :key="lubricatingOil"
               >
-                {{ lubricatingOil }}
+                {{ $t(lubricatingOil) }}
               </option>
             </select>
             <div class="flex col-span-6 p-3 pl-4 border-l bg-white">

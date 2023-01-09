@@ -7,7 +7,7 @@ import {
   sumObjectValues,
 } from "@/utils/helpers";
 import { storeToRefs } from "pinia";
-import { IceCondition } from "@/constants";
+import { IceCondition, Machinery } from "@/constants";
 import { useShipStore } from "@/stores/useShipStore";
 
 // TODO: retrieve from backend or generate as needed
@@ -251,32 +251,27 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   // Consumption and Condition
   const fuelOilBreakdowns = reactive({});
   for (const fuelOil of fuelOils.value) {
-    fuelOilBreakdowns[fuelOil] = {
-      "M/E": "",
-      "G/E": "",
-      IGG: "",
-      BLR: "",
-    };
+    fuelOilBreakdowns[fuelOil] = {};
+    fuelOilBreakdowns[fuelOil][Machinery.ME] = "";
+    fuelOilBreakdowns[fuelOil][Machinery.GE] = "";
+    fuelOilBreakdowns[fuelOil][Machinery.IGG] = "";
+    fuelOilBreakdowns[fuelOil][Machinery.BLR] = "";
   }
   const fuelOilTotalConsumptions = computed(() => {
     let rtn = {};
     for (const fuelOil of fuelOils.value) {
-      if (fuelOils.value.includes(fuelOil)) {
-        rtn[fuelOil] = +sumObjectValues(fuelOilBreakdowns[fuelOil]).toFixed(2);
-      }
+      rtn[fuelOil] = +sumObjectValues(fuelOilBreakdowns[fuelOil]).toFixed(2);
     }
     return rtn;
   });
   const fuelOilRobs = computed(() => {
     let rtn = {};
     for (const fuelOil of fuelOils.value) {
-      if (fuelOils.value.includes(fuelOil)) {
-        rtn[fuelOil] = +(
-          temp.prevRobs[fuelOil] -
-          Number(fuelOilTotalConsumptions.value[fuelOil])
-        ).toFixed(2);
-      }
+      rtn[fuelOil] = +(
+        temp.prevRobs[fuelOil] - Number(fuelOilTotalConsumptions.value[fuelOil])
+      ).toFixed(2);
     }
+
     return rtn;
   });
   const fuelOilDataCorrection = reactive({
@@ -296,15 +291,14 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const lubricatingOilRobs = computed(() => {
     let rtn = {};
     for (const lubricatingOil of lubricatingOils.value) {
-      if (lubricatingOils.value.includes(lubricatingOil)) {
-        rtn[lubricatingOil] = +(
-          temp.prevRobs[lubricatingOil] -
-          Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
-          Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
-          Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
-        ).toFixed(2);
-      }
+      rtn[lubricatingOil] = +(
+        temp.prevRobs[lubricatingOil] -
+        Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
+        Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
+        Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
+      ).toFixed(2);
     }
+
     return rtn;
   });
   const lubricatingOilDataCorrection = reactive({

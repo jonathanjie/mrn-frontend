@@ -88,7 +88,7 @@
           :value="fuelOil"
           :key="index"
         >
-          {{ fuelOil }}
+          {{ $t(fuelOil) }}
         </option>
       </select>
       <select
@@ -105,7 +105,7 @@
           :value="lubricatingOil"
           :key="index"
         >
-          {{ lubricatingOil }}
+          {{ $t(lubricatingOil) }}
         </option>
       </select>
       <select

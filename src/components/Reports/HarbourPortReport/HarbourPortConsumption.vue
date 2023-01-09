@@ -24,7 +24,7 @@
             :key="item"
             class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
           >
-            {{ item }}
+            {{ $t(item) }}
           </div>
           <div
             class="col-span-2 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
@@ -60,7 +60,7 @@
             <div
               class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
             >
-              {{ fuelOil }}
+              {{ $t(fuelOil) }}
             </div>
             <input
               v-for="item of machinery"
@@ -141,7 +141,7 @@
                 :value="fuelOil"
                 :key="fuelOil"
               >
-                {{ fuelOil }}
+                {{ $t(fuelOil) }}
               </option>
             </select>
             <div class="flex col-span-4 p-3 pl-4 border-l bg-white">
@@ -210,7 +210,7 @@
             <div
               class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
             >
-              {{ lubricatingOil }}
+              {{ $t(lubricatingOil) }}
             </div>
             <input
               v-model="
@@ -309,7 +309,7 @@
                 :value="lubricatingOil"
                 :key="lubricatingOil"
               >
-                {{ lubricatingOil }}
+                {{ $t(lubricatingOil) }}
               </option>
             </select>
             <div class="flex col-span-6 p-3 pl-4 border-l bg-white">

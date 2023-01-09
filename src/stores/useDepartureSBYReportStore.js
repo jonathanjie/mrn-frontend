@@ -5,6 +5,7 @@ import { storeToRefs } from "pinia";
 import { convertLTToUTC, sumObjectValues } from "@/utils/helpers";
 import { useShipStore } from "@/stores/useShipStore";
 import { useLatestReportDetailsQuery } from "@/queries/useLatestReportDetailsQuery";
+import { Machinery } from "@/constants";
 
 const prevData = {
   // Consumption & Condition
@@ -194,44 +195,33 @@ export const useDepartureSBYReportStore = defineStore(
 
     // Consumption And Condition
     const fuelOilBreakdowns = reactive({});
-    for (const fuelOil of fuelOils.value) {
-      fuelOilBreakdowns[fuelOil] = {
-        "M/E": "",
-        "G/E": "",
-        IGG: "",
-        BLR: "",
-      };
-    }
     const fuelOilReceipts = reactive({});
-    for (const fuelOil of fuelOils.value) {
-      fuelOilReceipts[fuelOil] = "";
-    }
     const fuelOilDebunkerings = reactive({});
     for (const fuelOil of fuelOils.value) {
+      fuelOilBreakdowns[fuelOil] = {};
+      fuelOilBreakdowns[fuelOil][Machinery.ME] = "";
+      fuelOilBreakdowns[fuelOil][Machinery.GE] = "";
+      fuelOilBreakdowns[fuelOil][Machinery.IGG] = "";
+      fuelOilBreakdowns[fuelOil][Machinery.BLR] = "";
+      fuelOilReceipts[fuelOil] = "";
       fuelOilDebunkerings[fuelOil] = "";
     }
     const fuelOilTotalConsumptions = computed(() => {
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
-        if (fuelOils.value.includes(fuelOil)) {
-          rtn[fuelOil] = +sumObjectValues(fuelOilBreakdowns[fuelOil]).toFixed(
-            2
-          );
-        }
+        rtn[fuelOil] = +sumObjectValues(fuelOilBreakdowns[fuelOil]).toFixed(2);
       }
       return rtn;
     });
     const fuelOilRobs = computed(() => {
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
-        if (fuelOils.value.includes(fuelOil)) {
-          rtn[fuelOil] = +(
-            temp.prevRobs[fuelOil] -
-            Number(fuelOilTotalConsumptions.value[fuelOil]) +
-            Number(fuelOilReceipts[fuelOil]) -
-            Number(fuelOilDebunkerings[fuelOil])
-          ).toFixed(2);
-        }
+        rtn[fuelOil] = +(
+          temp.prevRobs[fuelOil] -
+          Number(fuelOilTotalConsumptions.value[fuelOil]) +
+          Number(fuelOilReceipts[fuelOil]) -
+          Number(fuelOilDebunkerings[fuelOil])
+        ).toFixed(2);
       }
       return rtn;
     });
@@ -252,14 +242,12 @@ export const useDepartureSBYReportStore = defineStore(
     const lubricatingOilRobs = computed(() => {
       let rtn = {};
       for (const lubricatingOil of lubricatingOils.value) {
-        if (lubricatingOils.value.includes(lubricatingOil)) {
-          rtn[lubricatingOil] = +(
-            temp.prevRobs[lubricatingOil] -
-            Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
-            Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
-            Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
-          ).toFixed(2);
-        }
+        rtn[lubricatingOil] = +(
+          temp.prevRobs[lubricatingOil] -
+          Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
+          Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
+          Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
+        ).toFixed(2);
       }
       return rtn;
     });
@@ -288,24 +276,31 @@ export const useDepartureSBYReportStore = defineStore(
     const fuelOilBreakdownsSum = computed(() => {
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
-        rtn[fuelOil] = {
-          "M/E": +(
-            temp.fuelOilPrevBreakdown.me +
-            Number(fuelOilBreakdowns[fuelOil]["M/E"])
-          ).toFixed(2),
-          "G/E": +(
-            temp.fuelOilPrevBreakdown.ge +
-            Number(fuelOilBreakdowns[fuelOil]["G/E"])
-          ).toFixed(2),
-          IGG: +(
-            temp.fuelOilPrevBreakdown.igg +
-            Number(fuelOilBreakdowns[fuelOil]["IGG"])
-          ).toFixed(2),
-          BLR: +(
-            temp.fuelOilPrevBreakdown.blr +
-            Number(fuelOilBreakdowns[fuelOil]["BLR"])
-          ).toFixed(2),
-        };
+        rtn[fuelOil] = {};
+        rtn[fuelOil][Machinery.ME] = fuelOilBreakdowns[fuelOil][Machinery.ME]
+          ? +(
+              temp.fuelOilPrevBreakdown.me +
+              Number(fuelOilBreakdowns[fuelOil][Machinery.ME])
+            ).toFixed(2)
+          : temp.fuelOilPrevBreakdown.me;
+        rtn[fuelOil][Machinery.GE] = fuelOilBreakdowns[fuelOil][Machinery.GE]
+          ? +(
+              temp.fuelOilPrevBreakdown.ge +
+              Number(fuelOilBreakdowns[fuelOil][Machinery.GE])
+            ).toFixed(2)
+          : temp.fuelOilPrevBreakdown.ge;
+        rtn[fuelOil][Machinery.IGG] = fuelOilBreakdowns[fuelOil][Machinery.IGG]
+          ? +(
+              temp.fuelOilPrevBreakdown.igg +
+              Number(fuelOilBreakdowns[fuelOil][Machinery.IGG])
+            ).toFixed(2)
+          : temp.fuelOilPrevBreakdown.igg;
+        rtn[fuelOil][Machinery.BLR] = fuelOilBreakdowns[fuelOil][Machinery.BLR]
+          ? +(
+              temp.fuelOilPrevBreakdown.blr +
+              Number(fuelOilBreakdowns[fuelOil][Machinery.BLR])
+            ).toFixed(2)
+          : temp.fuelOilPrevBreakdown.blr;
       }
       return rtn;
     });

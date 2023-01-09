@@ -248,28 +248,22 @@ export const useArrivalEOSPReportStore = defineStore(
     // Consumption and condition
     const fuelOilBreakdowns = reactive({});
     for (const fuelOil of fuelOils.value) {
-      fuelOilBreakdowns[fuelOil] = {
-        "M/E": "",
-        "G/E": "",
-        IGG: "",
-        BLR: "",
-      };
+      fuelOilBreakdowns[fuelOil] = {};
+      fuelOilBreakdowns[fuelOil][Machinery.ME] = "";
+      fuelOilBreakdowns[fuelOil][Machinery.GE] = "";
+      fuelOilBreakdowns[fuelOil][Machinery.IGG] = "";
+      fuelOilBreakdowns[fuelOil][Machinery.BLR] = "";
     }
     const fuelOilTotalConsumptions = computed(() => {
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
-        if (fuelOils.value.includes(fuelOil)) {
-          rtn[fuelOil] = +sumObjectValues(fuelOilBreakdowns[fuelOil]).toFixed(
-            2
-          );
-        }
+        rtn[fuelOil] = +sumObjectValues(fuelOilBreakdowns[fuelOil]).toFixed(2);
       }
       return rtn;
     });
     const fuelOilRobs = computed(() => {
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
-        console.log(fuel_oil_robs.value);
         rtn[fuelOil] = +(
           fuel_oil_robs.value[fuelOil] -
           Number(fuelOilTotalConsumptions.value[fuelOil])
@@ -294,14 +288,12 @@ export const useArrivalEOSPReportStore = defineStore(
     const lubricatingOilRobs = computed(() => {
       let rtn = {};
       for (const lubricatingOil of lubricatingOils.value) {
-        if (lubricatingOils.value.includes(lubricatingOil)) {
-          rtn[lubricatingOil] = +(
-            lubeOilRobs.value[lubricatingOil] -
-            Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
-            Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
-            Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
-          ).toFixed(2);
-        }
+        rtn[lubricatingOil] = +(
+          lubeOilRobs.value[lubricatingOil] -
+          Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
+          Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
+          Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
+        ).toFixed(2);
       }
       return rtn;
     });
@@ -330,7 +322,7 @@ export const useArrivalEOSPReportStore = defineStore(
       hoursTotal.value
         ? (
             Object.values(fuelOilBreakdowns).reduce(
-              (total, fuelOil) => total + fuelOil["M/E"],
+              (total, fuelOil) => total + fuelOil[Machinery.ME],
               0
             ) /
             (hoursTotal.value * 24)
@@ -371,11 +363,9 @@ export const useArrivalEOSPReportStore = defineStore(
     const fuelOilTotalConsumptionsSum = computed(() => {
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
-        if (fuelOils.value.includes(fuelOil)) {
-          rtn[fuelOil] = +sumObjectValues(
-            fuelOilBreakdownsSum.value[fuelOil]
-          ).toFixed(2);
-        }
+        rtn[fuelOil] = +sumObjectValues(
+          fuelOilBreakdownsSum.value[fuelOil]
+        ).toFixed(2);
       }
       return rtn;
     });
