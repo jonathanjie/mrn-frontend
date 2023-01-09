@@ -10,21 +10,21 @@ import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
 
 const prevData = {
   // Consumption & Condition
-  prevRobs: {
-    LSFO: 200,
-    MGO: 200,
-    MDO: 200,
-    HFO: 200,
-    LPGP: 200,
-    LPGB: 200,
-    LNG: 200,
-    "M/E Cylinder": 200,
-    "M/E System": 200,
-    "M/E Sump": 200,
-    "G/E System": 200,
-    "T/C System": 200,
-  },
-  freshwaterPrevROB: 200,
+  // prevRobs: {
+  //   LSFO: 200,
+  //   MGO: 200,
+  //   MDO: 200,
+  //   HFO: 200,
+  //   LPGP: 200,
+  //   LPGB: 200,
+  //   LNG: 200,
+  //   "M/E Cylinder": 200,
+  //   "M/E System": 200,
+  //   "M/E Sump": 200,
+  //   "G/E System": 200,
+  //   "T/C System": 200,
+  // },
+  // freshwaterPrevROB: 200,
 
   // Cargo Operation (from init modal, M³/MT/TEU/CEU)
   prevCargoTotalAmount: 100,
