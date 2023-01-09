@@ -65,8 +65,11 @@ export const useLatestReportDetailsStore = defineStore(
     const parkingStatus = computed(
       () => latestReportDetails.value.parking_status
     );
-    const plannedOperations = computed(
-      () => latestReportDetails.value.planned_operations
+    // object with key : val operation: boolean to array
+    const plannedOperations = computed(() =>
+      Object.keys(latestReportDetails.value.planned_operations).filter(
+        (key) => latestReportDetails.value.planned_operations[key]
+      )
     );
     const propellerPitch = computed(
       () => latestReportDetails.value.propeller_pitch

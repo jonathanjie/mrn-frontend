@@ -5,45 +5,10 @@ import { storeToRefs } from "pinia";
 import { convertLTToUTC, sumObjectValues } from "@/utils/helpers";
 import { useShipStore } from "@/stores/useShipStore";
 import { Machinery } from "@/constants";
+import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
 
 const temp = {
-  // Finish With Engine
-  plannedOperations: [
-    "waiting",
-    "crewChange",
-    "cargoOpBerth",
-    "bunkeringDebunkering",
-    "receivingProvisionSpareParts",
-    "others",
-  ],
   otherPlannedOperation: "Sign contract",
-  // fetch above from most recent arrival eosp/sby
-
-  // Distance & Time / Performance
-  sbyTime: "2022-12-01T00:00:00Z",
-  revolutionCountAtSby: 20000,
-  propellerPitch: 2,
-
-  // Consumption & Condition
-  prevRobs: {
-    LSFO: 200,
-    MGO: 200,
-    MDO: 200,
-    HFO: 200,
-    LPGP: 200,
-    LPGB: 200,
-    LNG: 200,
-    "M/E Cylinder": 200,
-    "M/E System": 200,
-    "M/E Sump": 200,
-    "G/E System": 200,
-    "T/C System": 200,
-  },
-  freshwaterPrevROB: 200,
-
-  // Actual Performance
-  prevDistanceByObservation: 2000,
-  prevSailingTime: 200,
 
   // Total Consumption
   fuelOilPrevBreakdown: {
@@ -63,6 +28,19 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
 
   const shipStore = useShipStore();
   const { fuelOils, lubricatingOils, machinery } = storeToRefs(shipStore);
+
+  const detailsStore = useLatestReportDetailsStore();
+  const {
+    plannedOperations: planned_operations,
+    departureDate,
+    lastReportDate,
+    distanceObservedTotal,
+    revolutionCount: revolution_count,
+    propellerPitch,
+    fuelOilRobs: fuel_oil_robs,
+    lubeOilRobs,
+    freshwaterRob: freshwater_rob,
+  } = storeToRefs(detailsStore);
 
   // Overview
   const reportNo = arrfReportNo;
@@ -86,7 +64,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   const longDir = ref("default");
   const longMinute = ref("");
   const longDegree = ref("");
-  const plannedOperations = ref(temp.plannedOperations);
+  const plannedOperations = ref(planned_operations.value);
   const otherPlannedOperation = ref(temp.otherPlannedOperation);
   const operations = ref([]);
   const status = ref("");
@@ -122,9 +100,10 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
 
   // Distance & Time (S/BY to F.W.E)
   const hours = computed(() =>
-    reportingDateTime.value
+    reportingDateTimeUTC.value
       ? +(
-          (Date.parse(reportingDateTime.value) - Date.parse(temp.sbyTime)) /
+          (Date.parse(reportingDateTimeUTC.value) -
+            Date.parse(lastReportDate.value)) /
           (1000 * 60 * 60)
         ).toFixed(0)
       : ""
@@ -133,8 +112,8 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   const distanceEng = computed(() =>
     revolutionCount.value
       ? +(
-          (Number(revolutionCount.value) - temp.revolutionCountAtSby) *
-          temp.propellerPitch
+          (Number(revolutionCount.value) - Number(revolution_count.value)) *
+          Number(propellerPitch.value)
         ).toFixed(2)
       : ""
   );
@@ -160,7 +139,8 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     let rtn = {};
     for (const fuelOil of fuelOils.value) {
       rtn[fuelOil] = +(
-        temp.prevRobs[fuelOil] - Number(fuelOilTotalConsumptions.value[fuelOil])
+        fuel_oil_robs.value[fuelOil] -
+        Number(fuelOilTotalConsumptions.value[fuelOil])
       ).toFixed(2);
     }
     return rtn;
@@ -183,7 +163,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     let rtn = {};
     for (const lubricatingOil of lubricatingOils.value) {
       rtn[lubricatingOil] = +(
-        temp.prevRobs[lubricatingOil] -
+        lubeOilRobs.value[lubricatingOil] -
         Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
         Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
         Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
@@ -203,16 +183,25 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     () => +(freshwaterGenerated.value - freshwaterConsumed.value).toFixed(2)
   );
   const freshwaterRob = computed(
-    () => temp.freshwaterPrevROB + freshwaterChange.value
+    () => freshwater_rob.value + freshwaterChange.value
   );
 
   // Actual Performance
-  const totalDistanceObs = computed(
-    () =>
-      +(temp.prevDistanceByObservation + Number(distanceObs.value)).toFixed(2)
+  const totalDistanceObs = computed(() =>
+    distanceObs.value
+      ? +(
+          Number(distanceObservedTotal.value) + Number(distanceObs.value)
+        ).toFixed(2)
+      : ""
   );
-  const totalSailingTime = computed(
-    () => +(temp.prevSailingTime + Number(hours.value)).toFixed(2)
+  const totalSailingTime = computed(() =>
+    reportingDateTimeUTC.value
+      ? +(
+          (Date.parse(reportingDateTimeUTC.value) -
+            Date.parse(departureDate.value)) /
+          (1000 * 60 * 60)
+        ).toFixed(0)
+      : ""
   );
   const fuelOilBreakdownsSum = computed(() => {
     let rtn = {};
