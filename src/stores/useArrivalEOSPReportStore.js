@@ -117,18 +117,18 @@ export const useArrivalEOSPReportStore = defineStore(
 
     // Distance & Time
     const hoursSinceNoon = computed(() =>
-      reportingDateTime.value
+      reportingDateTimeUTC.value
         ? +(
-            (Date.parse(reportingDateTime.value) -
+            (Date.parse(reportingDateTimeUTC.value) -
               Date.parse(lastReportDate.value)) /
             (1000 * 60 * 60)
           ).toFixed(0)
         : ""
     );
     const hoursTotal = computed(() =>
-      reportingDateTime.value
+      reportingDateTimeUTC.value
         ? +(
-            (Date.parse(reportingDateTime.value) -
+            (Date.parse(reportingDateTimeUTC.value) -
               Date.parse(departureDate.value)) /
             (1000 * 60 * 60)
           ).toFixed(0)
@@ -138,7 +138,8 @@ export const useArrivalEOSPReportStore = defineStore(
     const distanceObsTotal = computed(() =>
       distanceObsSinceNoon.value
         ? +(
-            distanceObservedTotal.value + Number(distanceObsSinceNoon.value)
+            Number(distanceObservedTotal.value) +
+            Number(distanceObsSinceNoon.value)
           ).toFixed(2)
         : ""
     );
@@ -152,14 +153,17 @@ export const useArrivalEOSPReportStore = defineStore(
     );
     const distanceEngTotal = computed(() =>
       distanceEngSinceNoon.value
-        ? +(distanceEngSinceNoon.value + distanceEngineTotal.value).toFixed(2)
+        ? +(
+            Number(distanceEngSinceNoon.value) +
+            Number(distanceEngineTotal.value)
+          ).toFixed(2)
         : ""
     );
     const distanceToGo = computed(() =>
       distanceObsSinceNoon.value
-        ? +(distance_to_go.value - Number(distanceObsSinceNoon.value)).toFixed(
-            2
-          )
+        ? +(
+            Number(distance_to_go.value) - Number(distanceObsSinceNoon.value)
+          ).toFixed(2)
         : ""
     );
     const distanceToGoEdited = ref(""); // use distanceToGoEdited instead of distanceToGo if distanceToGoEdited.value != distanceToGo.value
@@ -169,16 +173,16 @@ export const useArrivalEOSPReportStore = defineStore(
     // Performance
     const speedSinceNoon = computed(() =>
       distanceObsSinceNoon.value && hoursSinceNoon.value
-        ? +(Number(distanceObsSinceNoon.value) / hoursSinceNoon.value).toFixed(
-            2
-          )
+        ? +(
+            Number(distanceObsSinceNoon.value) / Number(hoursSinceNoon.value)
+          ).toFixed(2)
         : ""
     );
     const rpmSinceNoon = computed(() =>
       revolutionCount.value && hoursSinceNoon.value
         ? +(
-            (Number(revolutionCount.value) - revolution_count.value) /
-            (hoursSinceNoon.value * 60)
+            (Number(revolutionCount.value) - Number(revolution_count.value)) /
+            (Number(hoursSinceNoon.value) * 60)
           ).toFixed(1)
         : ""
     );
@@ -186,32 +190,33 @@ export const useArrivalEOSPReportStore = defineStore(
       distanceEngSinceNoon.value && distanceObsSinceNoon.value
         ? +(
             100 *
-            ((distanceEngSinceNoon.value - Number(distanceObsSinceNoon.value)) /
-              distanceEngSinceNoon.value)
+            ((Number(distanceEngSinceNoon.value) -
+              Number(distanceObsSinceNoon.value)) /
+              Number(distanceEngSinceNoon.value))
           ).toFixed(2)
         : ""
     );
     const speedAvg = computed(() =>
       speedSinceNoon.value !== "" && hoursTotal.value
         ? +(
-            (speedAverage.value + speedSinceNoon.value) /
-            (hoursTotal.value / 24)
+            (Number(speedAverage.value) + Number(speedSinceNoon.value)) /
+            (Number(hoursTotal.value) / 24)
           ).toFixed(2)
         : ""
     );
     const rpmAvg = computed(() =>
       rpmSinceNoon.value !== "" && hoursTotal.value
         ? +(
-            (rpmAverage.value + rpmSinceNoon.value) /
-            (hoursTotal.value / 24)
+            (Number(rpmAverage.value) + Number(rpmSinceNoon.value)) /
+            (Number(hoursTotal.value) / 24)
           ).toFixed(1)
         : ""
     );
     const slipAvg = computed(() =>
       slipSinceNoon.value !== "" && hoursTotal.value
         ? +(
-            (slipAverage.value + slipSinceNoon.value) /
-            (hoursTotal.value / 24)
+            (Number(slipAverage.value) + Number(slipSinceNoon.value)) /
+            (Number(hoursTotal.value) / 24)
           ).toFixed(2)
         : ""
     );
