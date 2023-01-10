@@ -43,7 +43,7 @@
             :placeholder="$t('inputDetails')"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
-          <MiniUnitDisplay>{{ cargoUnit }}</MiniUnitDisplay>
+          <MiniUnitDisplay>{{ $t(cargoUnit) }}</MiniUnitDisplay>
         </div>
 
         <div
@@ -58,7 +58,7 @@
             :placeholder="$t('inputDetails')"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
-          <MiniUnitDisplay>{{ cargoUnit }}</MiniUnitDisplay>
+          <MiniUnitDisplay>{{ $t(cargoUnit) }}</MiniUnitDisplay>
         </div>
 
         <div
@@ -76,7 +76,7 @@
             disabled
             class="w-24 bg-gray-50 text-14 text-gray-400 focus:outline-0"
           />
-          <MiniUnitDisplay>{{ cargoUnit }}</MiniUnitDisplay>
+          <MiniUnitDisplay>{{ $t(cargoUnit) }}</MiniUnitDisplay>
         </div>
 
         <div
