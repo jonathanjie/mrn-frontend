@@ -12,23 +12,17 @@ const props = defineProps({
 });
 
 const speedSinceNoon = computed(
-  () => props.report.distanceperformancedata.speed_since_noon
+  () => props.report.performancedata.speed_since_last
 );
 const rpmSinceNoon = computed(
-  () => props.report.distanceperformancedata.rpm_since_noon
+  () => props.report.performancedata.rpm_since_last
 );
 const slipSinceNoon = computed(
-  () => props.report.distanceperformancedata.slip_since_noon
+  () => props.report.performancedata.slip_since_last
 );
-const speedAverage = computed(
-  () => props.report.distanceperformancedata.speed_avg
-);
-const rpmAverage = computed(
-  () => props.report.distanceperformancedata.rpm_average
-);
-const slipAverage = computed(
-  () => props.report.distanceperformancedata.slip_average
-);
+const speedAverage = computed(() => props.report.performancedata.speed_average);
+const rpmAverage = computed(() => props.report.performancedata.rpm_average);
+const slipAverage = computed(() => props.report.performancedata.slip_average);
 
 // const store = useNoonReportStore();
 // const {
