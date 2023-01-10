@@ -128,7 +128,6 @@ export const convertLTToUTC = (date, offset) => {
 
   // TODO: Fix this janky catch
   return date.toString() == "Invalid Date" ? null : date.toISOString();
-
 };
 
 export const convertUTCToLT = (date, offset) => {
@@ -229,7 +228,7 @@ export const generateLubricatingOilData = (
 
   for (const lubricatingOil of lubricatingOils) {
     rtn.push({
-      fuel_oil_type: lubricatingOil,
+      lubricating_oil_type: lubricatingOil,
       total_consumption:
         lubricatingOilBreakdowns[lubricatingOil]["total_consumption"] || 0,
       receipt: lubricatingOilBreakdowns[lubricatingOil]["receipt"] || 0,
