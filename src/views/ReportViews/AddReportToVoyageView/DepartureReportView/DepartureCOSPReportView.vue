@@ -119,6 +119,8 @@ const {
   sbyToRupDistanceEng,
   sbyToRupRevolutionCount,
   sbyToRupSetRPM,
+  distanceObsTotal,
+  distanceEngTotal,
   // Sailing Plan (Pilot to Pilot)
   budgetDistance,
   budgetSpeed,
@@ -243,8 +245,15 @@ const sendReport = async () => {
       distance_eng: sbyToRupDistanceEng.value,
       revolution_count: sbyToRupRevolutionCount.value,
       set_rpm: sbyToRupSetRPM.value,
+      distance_observed_since_last: sbyToRupDistanceObs.value,
+      distance_observed_total: distanceObsTotal.value,
+      distance_engine_since_last: sbyToRupDistanceEng.value,
+      distance_engine_total: distanceEngTotal.value,
+      distance_to_go: 0,
+      hours_total: 0,
+      hours_since_last: 0,
     },
-    transoceanicbudget: {
+    sailingplan: {
       distance_to_go: budgetDistance.value,
       speed: budgetSpeed.value,
       me_daily_fo_consumption: meDaily.value,

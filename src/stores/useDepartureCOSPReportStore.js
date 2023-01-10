@@ -77,6 +77,8 @@ export const useDepartureCOSPReportStore = defineStore(
       fuelOilRobs: prevFuelOilRobs,
       lubeOilRobs: prevLubeOilRobs,
       freshwaterRob: prevFreshWaterRobs,
+      distanceObservedTotal,
+      distanceEngineTotal,
     } = storeToRefs(detailsStore);
 
     // Overview
@@ -196,6 +198,22 @@ export const useDepartureCOSPReportStore = defineStore(
     );
     const sbyToRupRevolutionCount = ref("");
     const sbyToRupSetRPM = ref("");
+    const distanceObsTotal = computed(() =>
+      sbyToRupDistanceObs.value
+        ? +(
+            Number(distanceObservedTotal.value) +
+            Number(sbyToRupDistanceObs.value)
+          ).toFixed(2)
+        : ""
+    );
+    const distanceEngTotal = computed(() =>
+      sbyToRupDistanceEng.value
+        ? +(
+            Number(sbyToRupDistanceEng.value) +
+            Number(distanceEngineTotal.value)
+          ).toFixed(2)
+        : ""
+    );
 
     // Sailing Plan (Pilot to Pilot)
     const budgetDistance = ref("");
@@ -328,6 +346,8 @@ export const useDepartureCOSPReportStore = defineStore(
       sbyToRupDistanceEng,
       sbyToRupRevolutionCount,
       sbyToRupSetRPM,
+      distanceObsTotal,
+      distanceEngTotal,
       // Sailing Plan (Pilot to Pilot)
       budgetDistance,
       budgetSpeed,
