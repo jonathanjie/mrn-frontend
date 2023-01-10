@@ -7,7 +7,7 @@ export const useCrewStore = defineStore("crew", () => {
   const legsQuery = (imo) => {
     return useLegsQuery(imo);
   };
-
+  
   const statsQuery = (imo) => {
     return useStatsQuery(imo);
   };
