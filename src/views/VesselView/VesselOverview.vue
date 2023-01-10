@@ -9,9 +9,9 @@
           v-if="legsSuccess"
           class="flex bg-gray-100 rounded-2xl py-1 px-3 ml-2"
         >
-          <span class="text-14 font-semibold text-gray-700">{{
+          <!-- <span class="text-14 font-semibold text-gray-700">{{
             new Date(portCalls[0].arrival_date).toUTCString()
-          }}</span>
+          }}</span> -->
         </div>
       </div>
       <!-- <div class="hidden flex h-12 bg-gray-100 rounded-lg align-center p-px">

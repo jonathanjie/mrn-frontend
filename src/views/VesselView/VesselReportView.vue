@@ -93,7 +93,10 @@ const addVoyage = async () => {
     return;
   } else {
     isAddVoyageLoading.value = true;
-    lastVoyageNo.value = Math.max(...voyages.value.map((v) => v.voyage_num));
+    lastVoyageNo.value =
+      voyages.value.length == 0
+        ? 0
+        : Math.max(...voyages.value.map((v) => v.voyage_num));
     const voyageData = {
       voyage_num: nextVoyageNo.value,
       imo_reg: props.imo,

@@ -126,7 +126,9 @@ export const convertLTToUTC = (date, offset) => {
     );
   }
 
-  return date.toISOString();
+  // TODO: Fix this janky catch
+  return date.toString() == "Invalid Date" ? null : date.toISOString();
+
 };
 
 export const convertUTCToLT = (date, offset) => {
@@ -139,8 +141,7 @@ export const convertUTCToLT = (date, offset) => {
       date.getTime() + 3600000 * (parseFloat(offset) + calcOffset / 60)
     );
   }
-
-  return date.toISOString();
+  return date.toString() == "Invalid Date" ? null : date.toISOString();
 };
 
 export const parsePortLocode = ({ portCountry, portName }) => {
