@@ -102,6 +102,10 @@ const {
   distanceObs,
   distanceEng,
   revolutionCount,
+  distanceObsTotal,
+  distanceEngTotal,
+  hoursTotal,
+  distanceToGo,
   // Consumption and Condition
   fuelOils,
   lubricatingOils,
@@ -214,11 +218,15 @@ const sendReport = async () => {
         }
       : null,
     distancetimedata: {
-      time: hours.value,
-      distance_obs: distanceObs.value,
-      distance_eng: distanceEng.value,
       revolution_count: revolutionCount.value,
       set_rpm: 0, // irrelevant for Arrival FWE report
+      distance_observed_since_last: distanceObs.value,
+      distance_observed_total: distanceObsTotal.value,
+      distance_engine_since_last: distanceEng.value,
+      distance_engine_total: distanceEngTotal.value,
+      distance_to_go: distanceToGo.value,
+      hours_total: hoursTotal.value,
+      hours_since_last: hours.value,
     },
     consumptionconditiondata: {
       fueloildata_set: fuelOilData,
