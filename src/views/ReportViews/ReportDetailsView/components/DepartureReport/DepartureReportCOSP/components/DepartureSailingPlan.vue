@@ -8,14 +8,12 @@ const props = defineProps({
     required: true,
   },
 });
-const budget_distance = computed(
-  () => props.report.transoceanicbudget.distance_to_go
-);
-const budget_speed = computed(() => props.report.transoceanicbudget.speed);
+const budget_distance = computed(() => props.report.sailingplan.distance_to_go);
+const budget_speed = computed(() => props.report.sailingplan.speed);
 const me_daily = computed(
-  () => props.report.transoceanicbudget.me_daily_fo_consumption
+  () => props.report.sailingplan.me_daily_fo_consumption
 );
-const me_rpm = computed(() => props.report.transoceanicbudget.me_rpm);
+const me_rpm = computed(() => props.report.sailingplan.me_rpm);
 </script>
 
 <template>

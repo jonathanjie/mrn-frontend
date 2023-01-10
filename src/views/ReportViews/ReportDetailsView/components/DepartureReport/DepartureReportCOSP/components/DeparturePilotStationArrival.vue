@@ -10,19 +10,35 @@ const props = defineProps({
   },
 });
 
-const pilotArrName = computed(() => props.report.arrivalpilotstation.name);
-const pilotArrDate = computed(() => props.report.arrivalpilotstation.date);
-const pilotArrDraftFwd = computed(
-  () => props.report.arrivalpilotstation.draft_fwd
+const pilotArrName = computed(() =>
+  props.report.arrivalpilotstation === null
+    ? ""
+    : props.report.arrivalpilotstation.name
 );
-const pilotArrDraftMid = computed(
-  () => props.report.arrivalpilotstation.draft_mid
+const pilotArrDate = computed(() =>
+  props.report.arrivalpilotstation === null
+    ? ""
+    : props.report.arrivalpilotstation.date
 );
-const pilotArrDraftAft = computed(
-  () => props.report.arrivalpilotstation.draft_aft
+const pilotArrDraftFwd = computed(() =>
+  props.report.arrivalpilotstation === null
+    ? ""
+    : props.report.arrivalpilotstation.draft_fwd
+);
+const pilotArrDraftMid = computed(() =>
+  props.report.arrivalpilotstation === null
+    ? ""
+    : props.report.arrivalpilotstation.draft_mid
+);
+const pilotArrDraftAft = computed(() =>
+  props.report.arrivalpilotstation === null
+    ? ""
+    : props.report.arrivalpilotstation.draft_aft
 );
 const position = computed(() =>
-  parsePositionFromString(props.report.arrivalpilotstation.position)
+  props.report.arrivalpilotstation === null
+    ? ""
+    : parsePositionFromString(props.report.arrivalpilotstation.position)
 );
 </script>
 

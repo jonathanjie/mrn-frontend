@@ -15,7 +15,11 @@ const props = defineProps({
 const isActive = computed(() =>
   props.report.departurepilotstation ? true : false
 );
-const pilot_dep_name = computed(() => props.report.departurepilotstation.name);
+const pilot_dep_name = computed(() =>
+  props.report.departurepilotstation.name === null
+    ? ""
+    : props.report.departurepilotstation.name
+);
 const pilot_dep_date_time = computed(
   () => props.report.departurepilotstation.date
 );
