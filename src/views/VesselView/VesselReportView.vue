@@ -14,7 +14,7 @@
   </div> -->
   <div class="relative bg-gray-50 flex flex-col mt-12">
     <GradientButton
-      v-if="isSuccessLatestReportDetails"
+      v-if="isSuccessLatestReportDetails && manager != true"
       class="m-10 absolute right-0 -top-48"
       type="button"
       :disabled="isAddVoyageLoading || !isAddVoyageEnabled"
@@ -47,9 +47,10 @@ import axios from "axios";
 import { ref, computed } from "vue";
 import { UrlDomain } from "@/constants";
 import { useLatestReportDetailsStore } from "@/stores/useLatestReportDetailsStore";
-
+import { useAuthStore } from "@/stores/useAuthStore";
 // import { useCrewStore } from "@/stores/useCrewStore";
-
+const authStore = useAuthStore();
+const manager = authStore.role === "manager";
 const props = defineProps({
   imo: { type: String, require: true },
 });

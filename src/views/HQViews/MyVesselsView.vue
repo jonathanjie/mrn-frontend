@@ -174,7 +174,6 @@
           <CustomButton
             class="hidden text-14 text-sm font-bold mr-4 pr-7 whitespace-nowrap text-blue-700"
             type="button"
-            @click=""
           >
             <template v-slot:icon
               ><img
@@ -186,7 +185,6 @@
           <CustomButton
             class="hidden text-14 text-sm font-bold mr-4 pr-7 whitespace-nowrap text-blue-700"
             type="button"
-            @click=""
           >
             <template v-slot:icon
               ><img
