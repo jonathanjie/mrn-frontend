@@ -286,8 +286,8 @@ const sendReport = async () => {
       sea_temperature: seaTemperature.value,
       ice_condition: iceCondition.value,
     },
-    distanceperformancedata: {
-      hours_since_noon: hoursSinceNoon.value || 0,
+    distancetimedata: {
+      hours_since_last: hoursSinceNoon.value || 0,
       hours_total: hoursTotal.value || 0,
       distance_to_go:
         distanceToGoEdited.value &&
@@ -297,14 +297,17 @@ const sendReport = async () => {
       remarks_for_changes: remarksForChanges.value
         ? remarksForChanges.value
         : "NIL",
-      distance_observed_since_noon: distanceObsSinceNoon.value,
+      distance_observed_since_last: distanceObsSinceNoon.value,
       distance_observed_total: distanceObsTotal.value,
-      distance_engine_since_noon: distanceEngSinceNoon.value,
+      distance_engine_since_last: distanceEngSinceNoon.value,
       distance_engine_total: distanceEngTotal.value,
       revolution_count: revolutionCount.value,
-      speed_since_noon: speedSinceNoon.value,
-      rpm_since_noon: rpmSinceNoon.value,
-      slip_since_noon: slipSinceNoon.value,
+      set_rpm: null,
+    },
+    performancedata: {
+      speed_since_last: speedSinceNoon.value,
+      rpm_since_last: rpmSinceNoon.value,
+      slip_since_last: slipSinceNoon.value,
       speed_average: speedAvg.value,
       rpm_average: rpmAvg.value,
       slip_average: slipAvg.value,

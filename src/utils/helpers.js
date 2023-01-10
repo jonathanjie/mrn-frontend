@@ -126,7 +126,8 @@ export const convertLTToUTC = (date, offset) => {
     );
   }
 
-  return date.toISOString();
+  // TODO: Fix this janky catch
+  return date.toString() == "Invalid Date" ? null : date.toISOString();
 };
 
 export const convertUTCToLT = (date, offset) => {
@@ -139,8 +140,7 @@ export const convertUTCToLT = (date, offset) => {
       date.getTime() + 3600000 * (parseFloat(offset) + calcOffset / 60)
     );
   }
-
-  return date.toISOString();
+  return date.toString() == "Invalid Date" ? null : date.toISOString();
 };
 
 export const parsePortLocode = ({ portCountry, portName }) => {
@@ -228,7 +228,7 @@ export const generateLubricatingOilData = (
 
   for (const lubricatingOil of lubricatingOils) {
     rtn.push({
-      fuel_oil_type: lubricatingOil,
+      lubricating_oil_type: lubricatingOil,
       total_consumption:
         lubricatingOilBreakdowns[lubricatingOil]["total_consumption"] || 0,
       receipt: lubricatingOilBreakdowns[lubricatingOil]["receipt"] || 0,

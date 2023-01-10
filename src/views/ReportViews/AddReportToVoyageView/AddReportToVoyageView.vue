@@ -52,6 +52,12 @@
           :content="$t('inHarbourOrPort')"
           type="harbour-port"
           :active="reportType"
+          :disabled="
+            !validReportTypes.includes(Report.type.EVENT_HARBOUR) &&
+            !validReportTypes.includes(Report.type.EVENT_PORT) &&
+            !validReportTypes.includes(Report.type.NOON_HARBOUR) &&
+            !validReportTypes.includes(Report.type.NOON_PORT)
+          "
           @onUpdateBtn="updateActiveReportType"
         >
         </RadioBtnIcon>

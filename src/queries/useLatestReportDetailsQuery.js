@@ -13,7 +13,8 @@ export const useLatestReportDetailsQuery = (imo) => {
         })
         .catch((error) => {
           console.log(error.message);
+          throw new Error("helps \n" + error.message);
         }),
-    { enabled: imo ? true : false, refetchOnWindowFocus: false }
+    { enabled: imo ? true : false, refetchOnWindowFocus: false, retry: 1 }
   );
 };

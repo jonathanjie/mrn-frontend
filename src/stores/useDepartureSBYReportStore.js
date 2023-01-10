@@ -180,7 +180,7 @@ export const useDepartureSBYReportStore = defineStore(
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
         rtn[fuelOil] = +(
-          prevFuelOilRobs[fuelOil] -
+          (Number(prevFuelOilRobs.value[fuelOil]) || 0) -
           Number(fuelOilTotalConsumptions.value[fuelOil]) +
           Number(fuelOilReceipts[fuelOil]) -
           Number(fuelOilDebunkerings[fuelOil])
@@ -206,7 +206,7 @@ export const useDepartureSBYReportStore = defineStore(
       let rtn = {};
       for (const lubricatingOil of lubricatingOils.value) {
         rtn[lubricatingOil] = +(
-          prevLubeOilRobs[lubricatingOil] -
+          (Number(prevLubeOilRobs.value[lubricatingOil]) || 0) -
           Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
           Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
           Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
@@ -229,7 +229,7 @@ export const useDepartureSBYReportStore = defineStore(
     );
     const freshwaterRob = computed(
       () =>
-        prevFreshWaterRob +
+        (Number(prevFreshWaterRob.value) || 0) +
         Number(freshwaterReceiving.value) -
         Number(freshwaterDischarging.value) +
         freshwaterChange.value

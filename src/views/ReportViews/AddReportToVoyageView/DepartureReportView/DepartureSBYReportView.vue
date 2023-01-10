@@ -169,13 +169,6 @@ const sendReport = async () => {
       voyage: {
         uuid: voyageUuid.value,
       },
-      departure_port: departurePort,
-      departure_date: reportingDateTimeUTC.value,
-      departure_tz: reportingTimeZone.value,
-      // TODO: should be optional in backend
-      arrival_port: destinationPort || null,
-      arrival_date: destinationEstimatedArrivalUTC.value || null,
-      arrival_tz: destinationTimeZone.value || null,
     },
     reportroute: {
       departure_port: departurePort,
@@ -259,6 +252,7 @@ const sendReport = async () => {
     }
     isSubmissionModalVisible.value = true;
   } catch (error) {
+    isSubmissionRequested.value = false;
     console.log(error);
   }
 };
