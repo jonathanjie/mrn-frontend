@@ -5,7 +5,9 @@
         v-for="title in tabTitles"
         :key="title"
         @click="
-          title in validTabTitles ? (selectedTitle = title) : selectedTitle
+          validTabTitles.includes(title)
+            ? (selectedTitle = title)
+            : selectedTitle
         "
         class="py-2 px-3 text-14 cursor-pointer"
         :class="
