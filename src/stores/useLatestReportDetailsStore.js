@@ -165,10 +165,7 @@ export const useLatestReportDetailsStore = defineStore(
     const validReportTypes = computed(() => {
       switch (lastReportType.value) {
         case Report.type.DEP_SBY:
-          return [
-            Report.type.DEP_COSP_RUP,
-            Report.type.BUNKER,
-          ];
+          return [Report.type.DEP_COSP_RUP, Report.type.BUNKER];
         case Report.type.DEP_COSP_RUP || Report.type.NOON:
           return [
             Report.type.NOON,
@@ -205,6 +202,7 @@ export const useLatestReportDetailsStore = defineStore(
             Report.type.NOON_HARBOUR,
             Report.type.NOON_PORT,
           ];
+        // TODO: handle case for EVENT; may result in any moment of sea path
         case "":
         case undefined:
         case null:
