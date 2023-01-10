@@ -86,12 +86,14 @@
               v-if="legsSuccess"
               class="flex bg-gray-100 rounded-2xl py-1 px-3 ml-2"
             >
-              <span class="text-14 font-semibold text-gray-700">{{
-                new Date(portCalls[0].arrival_date).toUTCString()
-              }}</span>
+              <span
+                v-if="portCalls[0].arrival_date !== undefined"
+                class="text-14 font-semibold text-gray-700"
+                >{{ new Date(portCalls[0].arrival_date).toUTCString() }}</span
+              >
             </div>
           </div>
-          <div
+          <!-- <div
             class="hidden flex h-12 bg-gray-100 rounded-lg align-center p-px"
           >
             <button
@@ -116,7 +118,7 @@
                 >{{ $t("voyage") }}</span
               >
             </button>
-          </div>
+          </div> -->
         </div>
         <TableOverview v-if="statsSuccess" :stats="stats" />
         <!-- <div class="flex flex-row mt-6">
@@ -157,34 +159,22 @@
 import TableOverview from "@/views/HQViews/components/TableOverview.vue";
 import PortCard from "@/views/HQViews/components/PortCard.vue";
 import { useHQStore } from "@/stores/useHQStore";
+import constants from "@/constants";
 
 const props = defineProps({
   vesselname: String,
   imo: String,
 });
 
-const shipRef = {
-  BULK: "Bulk Carrier",
-  GAS: "Gas Carrier",
-  OIL: "Oil Tanker",
-  CNTR: "Container Ship",
-  RORO: "Ro-Ro Cargo Ship",
-  GCGO: "General Cargo Ship",
-  REFC: "Refrigerated Cargo Carrier",
-  COMB: "Combination Carrier",
-  LNGC: "LNG Carrier",
-  RORV: "Ro-Ro Cargo Ship (Vehicle Carrier)",
-  RORP: "Ro-Ro Passenger Ship",
-  CRUZ: "Cruise Passenger Ship",
-};
+const shipRef = constants.shipRefs;
 const store = useHQStore();
 const { isSuccess: shipSuccess, data: ship } = store.shipQuery(props.imo);
 const { isSuccess: legsSuccess, data: portCalls } = store.legsQuery(props.imo);
 const { isSuccess: statsSuccess, data: stats } = store.statsQuery(props.imo);
 
 // Unused variables for CII/EEXI/message feature
-const previousCIIGrade = "A";
-const eexiGrade = "2.03/2.2";
-const message =
-  "Low CII grade message goes here. [Provide action to follow up]";
+// const previousCIIGrade = "A";
+// const eexiGrade = "2.03/2.2";
+// const message =
+//   "Low CII grade message goes here. [Provide action to follow up]";
 </script>

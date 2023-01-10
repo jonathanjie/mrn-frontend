@@ -63,7 +63,7 @@
         <span class="text-14 text-gray-700">{{ props.loadingCondition }}</span>
       </div>
       <div
-        v-if="reportStatus === 'uploaded'"
+        v-if="reportStatus === 'uploaded' && reportStatus !== undefined"
         class="flex rounded-xl h-7 w-auto bg-green-50"
       >
         <ul class="list-disc p-0.5 text-14">
@@ -74,20 +74,8 @@
           </li>
         </ul>
       </div>
-      <!-- <div
-        v-if="reportStatus === 'error'"
-        class="flex rounded-xl h-7 w-auto bg-red-50"
-      >
-        <ul class="list-disc p-0.5 text-14">
-          <li class="text-red-500">
-            <span class="text-red-700"
-              >{{ $t("errorStatus") }}: {{ props.updatedDate }}</span
-            >
-          </li>
-        </ul>
-      </div> -->
       <div
-        v-if="reportStatus === 'pending'"
+        v-if="reportStatus === 'pending' && reportStatus !== undefined"
         class="flex rounded-xl h-7 w-auto bg-orange-50"
       >
         <ul class="list-disc p-0.5 text-14">
@@ -102,9 +90,6 @@
 
 <script setup>
 import { useRouter } from "vue-router";
-import axios from "axios";
-import { useVoyageStore } from "@/stores/useVoyageStore";
-import { UrlDomain } from "@/constants";
 
 const props = defineProps({
   vesselStatus: String,
@@ -118,45 +103,8 @@ const props = defineProps({
   updatedDate: String,
 });
 const router = useRouter();
-const store = useVoyageStore();
-console.log("Report status in vessel", props.reportStatus);
-console.log("Updated date in vessel card", props.updatedDate);
-const getVoyages = async (imo) => {
-  return await axios
-    .get(`${UrlDomain.DEV}/marinanet/ships/${imo}/voyages/`)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-};
-
-const getReports = async (imo) => {
-  return await axios
-    .get(`${UrlDomain.DEV}/marinanet/ships/${imo}/reports/`)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-};
 
 const navigate = async () => {
-  const voyages = await getVoyages(props.imoNo);
-  const reports = await getReports(props.imoNo);
-  store.voyages = voyages;
-  let output = {};
-  for (let i of reports) {
-    for (let j of voyages) {
-      if (i.uuid == j.uuid) {
-        output[i.uuid] = i.reports.reverse();
-      }
-    }
-  }
-  store.reports = output;
-  console.log("This thing runs");
   router.push({
     name: "speed-graph-overview",
     params: { vesselname: props.vesselName, imo: props.imoNo },

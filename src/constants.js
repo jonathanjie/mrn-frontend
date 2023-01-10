@@ -154,6 +154,21 @@ export const ActualPerformanceType = {
 
 export const UTCPlaceholder = "YYYY.MM.DD HH:MM (UTC)";
 
+export const shipRefs = {
+  BULK: "Bulk Carrier",
+  GAS: "Gas Carrier",
+  OIL: "Oil Tanker",
+  CNTR: "Container Ship",
+  RORO: "Ro-Ro Cargo Ship",
+  GCGO: "General Cargo Ship",
+  REFC: "Refrigerated Cargo Carrier",
+  COMB: "Combination Carrier",
+  LNGC: "LNG Carrier",
+  RORV: "Ro-Ro Cargo Ship (Vehicle Carrier)",
+  RORP: "Ro-Ro Passenger Ship",
+  CRUZ: "Cruise Passenger Ship",
+};
+
 const constants = {
   SRID: "4326",
   Report: Report,
@@ -169,6 +184,7 @@ const constants = {
   TotalConsumptionType: TotalConsumptionType,
   ActualPerformanceType: ActualPerformanceType,
   UTCPlaceholder: UTCPlaceholder,
+  shipRefs: shipRefs,
 };
 
 export default constants;

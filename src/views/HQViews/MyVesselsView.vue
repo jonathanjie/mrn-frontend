@@ -208,8 +208,8 @@
         :loadType="shipRef[ship.ship_type]"
         :imoNo="ship.imo_reg"
         :vesselStatus="vessel.vesselStatus"
-        :flag="ship.flag"
-        :shipSize="ship.deadweight_tonnage"
+        :flag="ship.shipspecs.flag"
+        :shipSize="ship.shipspecs.deadweight_tonnage"
         :loadingCondition="ship.load_condition"
         :reportStatus="reportStatus(ship.last_report_date)"
         :updatedDate="dateConverter(ship.last_report_date)"
@@ -238,6 +238,7 @@ import MyVesselsDashboardIcon from "@/views/HQViews/components/MyVesselsDashboar
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 import VesselCard from "@/views/HQViews/components/VesselCard.vue";
 import { useHQStore } from "@/stores/useHQStore";
+import constants from "@/constants";
 
 const store = useHQStore();
 // To be pulled from backend
@@ -249,41 +250,34 @@ const cargoVessels = 0;
 const bunkeringVessels = 0;
 const waitingVessels = 0;
 
-const shipRef = {
-  BULK: "Bulk Carrier",
-  GAS: "Gas Carrier",
-  OIL: "Oil Tanker",
-  CNTR: "Container Ship",
-  RORO: "Ro-Ro Cargo Ship",
-  GCGO: "General Cargo Ship",
-  REFC: "Refrigerated Cargo Carrier",
-  COMB: "Combination Carrier",
-  LNGC: "LNG Carrier",
-  RORV: "Ro-Ro Cargo Ship (Vehicle Carrier)",
-  RORP: "Ro-Ro Passenger Ship",
-  CRUZ: "Cruise Passenger Ship",
-};
+const shipRef = constants.shipRefs;
 
 const vessel = {
   vesselStatus: "sailing", // sailing, cargo, bunkering, waiting, etc
-  reportStatus: "uploaded", // Uploaded, Pending
 };
 
 const reportStatus = (lastReportDate) => {
-  let reportTimeDiff =
-    (new Date().getTime() - new Date(lastReportDate).getTime()) /
-    (1000 * 3600 * 24);
-  console.log("Difference in day", reportTimeDiff);
-  if (reportTimeDiff > 1) {
-    return "pending";
+  if (lastReportDate === undefined) {
+    return undefined;
   } else {
-    return "uploaded";
+    let reportTimeDiff =
+      (new Date().getTime() - new Date(lastReportDate).getTime()) /
+      (1000 * 3600 * 24);
+    if (reportTimeDiff > 1) {
+      return "pending";
+    } else {
+      return "uploaded";
+    }
   }
 };
 
 const dateConverter = (date) => {
-  const init = new Date(date).toDateString().split(" ");
-  return init[2] + " " + init[1] + " " + init[3];
+  if (date === undefined) {
+    return "No value";
+  } else {
+    const init = new Date(date).toDateString().split(" ");
+    return init[2] + " " + init[1] + " " + init[3];
+  }
 };
 
 const { isSuccess, data: ships } = store.shipsQuery();
