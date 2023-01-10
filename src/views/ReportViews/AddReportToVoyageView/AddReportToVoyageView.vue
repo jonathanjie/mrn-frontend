@@ -11,7 +11,6 @@
         </button>
         <span class="mx-5 text-20 text-blue">{{ $t("submitNewReport") }}</span>
       </div>
-      <div>{{ validReportTypes }}</div>
       <div
         class="grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 gap-5 justify-items-stretch pb-8"
       >
