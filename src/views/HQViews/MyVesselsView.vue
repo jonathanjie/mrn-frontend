@@ -208,11 +208,11 @@
         :loadType="shipRef[ship.ship_type]"
         :imoNo="ship.imo_reg"
         :vesselStatus="vessel.vesselStatus"
-        :flag="ship.shipspecs.flag"
-        :shipSize="ship.shipspecs.deadweight_tonnage"
-        :loadingCondition="vessel.loadingCondition"
-        :reportStatus="vessel.reportStatus"
-        :updatedDate="vessel.updatedDate"
+        :flag="ship.flag"
+        :shipSize="ship.deadweight_tonnage"
+        :loadingCondition="ship.load_condition"
+        :reportStatus="reportStatus(ship.last_report_date)"
+        :updatedDate="dateConverter(ship.last_report_date)"
       />
     </div>
     <div
@@ -266,9 +266,24 @@ const shipRef = {
 
 const vessel = {
   vesselStatus: "sailing", // sailing, cargo, bunkering, waiting, etc
-  loadingCondition: "Westbound",
-  reportStatus: "uploaded", // Uploaded, Error, Pending
-  updatedDate: "18 Nov 2022",
+  reportStatus: "uploaded", // Uploaded, Pending
+};
+
+const reportStatus = (lastReportDate) => {
+  let reportTimeDiff =
+    (new Date().getTime() - new Date(lastReportDate).getTime()) /
+    (1000 * 3600 * 24);
+  console.log("Difference in day", reportTimeDiff);
+  if (reportTimeDiff > 1) {
+    return "pending";
+  } else {
+    return "uploaded";
+  }
+};
+
+const dateConverter = (date) => {
+  const init = new Date(date).toDateString().split(" ");
+  return init[2] + " " + init[1] + " " + init[3];
 };
 
 const { isSuccess, data: ships } = store.shipsQuery();
