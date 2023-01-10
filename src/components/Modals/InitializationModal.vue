@@ -106,7 +106,7 @@
               <div class="grid grid-cols-3 gap-2">
                 <div class="flex align-center">
                   <input
-                    v-model="fuel_options.mdo"
+                    v-model="fuel_options.MDO"
                     type="checkbox"
                     id="mdo"
                     name="mdo"
@@ -118,7 +118,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="fuel_options.mgo"
+                    v-model="fuel_options.MGO"
                     type="checkbox"
                     id="mgo"
                     name="mgo"
@@ -130,7 +130,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="fuel_options.lsfo"
+                    v-model="fuel_options.LSFO"
                     type="checkbox"
                     id="lsfo"
                     name="lsfo"
@@ -142,7 +142,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="fuel_options.hfo"
+                    v-model="fuel_options.HFO"
                     type="checkbox"
                     id="hfo"
                     name="hfo"
@@ -154,7 +154,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="fuel_options.lpgPropane"
+                    v-model="fuel_options.LPGP"
                     type="checkbox"
                     id="lpgp"
                     name="lpgp"
@@ -166,7 +166,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="fuel_options.lpg_butane"
+                    v-model="fuel_options.LPGB"
                     type="checkbox"
                     id="lpgb"
                     name="lpgb"
@@ -178,7 +178,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="fuel_options.lng"
+                    v-model="fuel_options.LNG"
                     type="checkbox"
                     id="lng"
                     name="lng"
@@ -417,13 +417,13 @@ const propeller_pitch = ref(0);
 const ship_type = ref("");
 const cargo_unit = ref("");
 const fuel_options = ref({
-  mdo: false,
-  mgo: false,
-  lsfo: false,
-  hfo: false,
-  lpg_propane: false,
-  lpg_butane: false,
-  lng: false,
+  MDO: false,
+  MGO: false,
+  LSFO: false,
+  HFO: false,
+  LPGP: false,
+  LPGB: false,
+  LNG: false,
 });
 
 const lubricating_oil_options = ref({
