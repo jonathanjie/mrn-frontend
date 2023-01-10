@@ -73,12 +73,14 @@ export const useDepartureCOSPReportStore = defineStore(
       arrivalPortName: destinationPortName,
       arrivalTz: destinationTimeZone,
       arrivalDate: destinationEstimatedArrival,
+      lastReportDate,
       propellerPitch,
       fuelOilRobs: prevFuelOilRobs,
       lubeOilRobs: prevLubeOilRobs,
       freshwaterRob: prevFreshWaterRobs,
       distanceObservedTotal,
       distanceEngineTotal,
+      distanceToGo: distance_to_go,
     } = storeToRefs(detailsStore);
 
     // Overview
@@ -214,7 +216,31 @@ export const useDepartureCOSPReportStore = defineStore(
           ).toFixed(2)
         : ""
     );
-
+    const distanceToGo = computed(() =>
+      sbyToRupDistanceObs.value
+        ? +(
+            Number(distance_to_go.value) - Number(sbyToRupDistanceObs.value)
+          ).toFixed(2)
+        : ""
+    );
+    const hoursSinceLast = computed(() =>
+      reportingDateTimeUTC.value && reportingTimeZone.value !== "default"
+        ? +(
+            (Date.parse(reportingDateTimeUTC.value) -
+              Date.parse(lastReportDate.value)) /
+            (1000 * 60 * 60)
+          ).toFixed(0)
+        : ""
+    );
+    const hoursTotal = computed(() =>
+      hoursSinceLast.value
+        ? +(
+            (Date.parse(reportingDateTimeUTC.value) -
+              Date.parse(departureDateTimeUTC.value)) /
+            36e5
+          ).toFixed(0)
+        : ""
+    );
     // Sailing Plan (Pilot to Pilot)
     const budgetDistance = ref("");
     const budgetSpeed = ref("");
@@ -348,6 +374,9 @@ export const useDepartureCOSPReportStore = defineStore(
       sbyToRupSetRPM,
       distanceObsTotal,
       distanceEngTotal,
+      distanceToGo,
+      hoursSinceLast,
+      hoursTotal,
       // Sailing Plan (Pilot to Pilot)
       budgetDistance,
       budgetSpeed,
