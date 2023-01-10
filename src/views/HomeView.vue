@@ -36,7 +36,7 @@ const getUserRole = async () => {
   return await axios
     .get(`${UrlDomain.DEV}/marinanet/user/`)
     .then((response) => {
-      console.log("User Role", response);
+      // console.log("User Role", response);
       return response.data.role;
     })
     .catch((error) => {
@@ -69,9 +69,9 @@ const updateShipDetails = (shipDetails, shipStore) => {
   machinery.value = Object.entries(shipDetails.shipspecs.machinery_options)
     .filter((option) => option[1] == true)
     .map((x) => x[0]);
-  console.log(fuelOils.value);
-  console.log(lubricatingOils.value);
-  console.log(machinery.value);
+  // console.log(fuelOils.value);
+  // console.log(lubricatingOils.value);
+  // console.log(machinery.value);
 
   return shipDetails;
 };
@@ -79,7 +79,7 @@ const getShip = async () => {
   return await axios
     .get(`${UrlDomain.DEV}/marinanet/ships`)
     .then((response) => {
-      console.log("Ship Details (home view): ", response.data);
+      // console.log("Ship Details (home view): ", response.data);
       return updateShipDetails(response.data[0], shipStore);
     })
     .catch((error) => {

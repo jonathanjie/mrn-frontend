@@ -97,7 +97,7 @@ import { ref } from "vue";
 const { user, logout } = useAuth0();
 const auth = useAuthStore();
 
-console.log("WebHeader loads");
+// console.log("WebHeader loads");
 let isExpanded = ref(false);
 
 function mouseEnter() {

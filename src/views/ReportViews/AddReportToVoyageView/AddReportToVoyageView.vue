@@ -124,7 +124,7 @@ const {
 const voyageDetails = history.state.voyageDetails
   ? JSON.parse(history.state.voyageDetails)
   : {};
-console.log("voyagedetails", voyageDetails);
+// console.log("voyagedetails", voyageDetails);
 
 // store selected voyage details in pinia voyage store
 voyageUuid.value = voyageDetails.voyage_uuid;

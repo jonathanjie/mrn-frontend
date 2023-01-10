@@ -106,6 +106,7 @@ const {
   pilotArrLongDir,
   pilotArrLongDegree,
   pilotArrLongMinute,
+  shouldPilotArrDataBeSent,
   // R/UP Engine / Distance & Time
   rupEngLatDir,
   rupEngLatDegree,
@@ -209,7 +210,7 @@ const sendReport = async () => {
     reportroute: {
       departure_port: departurePort,
       departure_date: departureDateTimeUTC.value,
-      depature_tz: departureTimeZone.value,
+      departure_tz: departureTimeZone.value,
       arrival_port: destinationPort,
       arrival_date: destinationEstimatedArrivalUTC.value,
       arrival_tz: destinationTimeZone.value,
@@ -221,14 +222,16 @@ const sendReport = async () => {
           position: pilotDepPosition,
         }
       : null,
-    arrivalpilotstation: {
-      name: pilotArrName.value,
-      date: pilotArrDateTimeUTC.value,
-      position: pilotArrPosition,
-      draft_fwd: pilotArrDraftFwd.value,
-      draft_mid: pilotArrDraftMid.value,
-      draft_aft: pilotArrDraftAft.value,
-    },
+    arrivalpilotstation: shouldPilotArrDataBeSent.value
+      ? {
+          name: pilotArrName.value,
+          date: pilotArrDateTimeUTC.value,
+          position: pilotArrPosition,
+          draft_fwd: pilotArrDraftFwd.value,
+          draft_mid: pilotArrDraftMid.value,
+          draft_aft: pilotArrDraftAft.value,
+        }
+      : null,
     departurerunup: {
       time: reportingDateTimeUTC.value,
       timezone: reportingTimeZone.value,

@@ -9,7 +9,7 @@ export const useAllReportsQuery = (imo) => {
       await axios
         .get(`${UrlDomain.DEV}/marinanet/ships/${imo}/reports/`)
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           return response.data;
         })
         .catch((error) => {

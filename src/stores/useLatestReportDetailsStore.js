@@ -17,70 +17,125 @@ export const useLatestReportDetailsStore = defineStore(
       data: latestReportDetails,
     } = useLatestReportDetailsQuery(imoReg.value);
 
-    const arrivalDate = computed(() => latestReportDetails.value.arrival_date);
-    const arrivalPort = computed(() => latestReportDetails.value.arrival_port);
-    const arrivalPortCountry = computed(
-      () => latestReportDetails.value.arrival_port.split(" ")[0]
+    const arrivalDate = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.arrival_date
+        : ""
     );
-    const arrivalPortName = computed(
-      () => latestReportDetails.value.arrival_port.split(" ")[1]
+    const arrivalPort = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.arrival_port
+        : ""
     );
-
-    const arrivalTz = computed(() => latestReportDetails.value.arrival_tz);
-
-    const departureDate = computed(
-      () => latestReportDetails.value.departure_date
+    const arrivalPortCountry = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.arrival_port.split(" ")[0]
+        : ""
     );
-    const departurePort = computed(
-      () => latestReportDetails.value.departure_port
-    );
-    const departurePortCountry = computed(
-      () => latestReportDetails.value.departure_port.split(" ")[0]
-    );
-    const departurePortName = computed(
-      () => latestReportDetails.value.departure_port.split(" ")[1]
+    const arrivalPortName = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.arrival_port.split(" ")[1]
+        : ""
     );
 
-    const departureTz = computed(() => latestReportDetails.value.departure_tz);
-    const displacementAtDeparture = computed(
-      () => latestReportDetails.value.displacement_at_departure
+    const arrivalTz = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.arrival_tz
+        : ""
     );
-    const distanceEngineTotal = computed(
-      () => latestReportDetails.value.distance_engine_total
+
+    const departureDate = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.departure_date
+        : ""
     );
-    const distanceObservedTotal = computed(
-      () => latestReportDetails.value.distance_observed_total
+    const departurePort = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.departure_port
+        : ""
     );
-    const distanceToGo = computed(
-      () => latestReportDetails.value.distance_to_go
+    const departurePortCountry = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.departure_port.split(" ")[0]
+        : ""
     );
-    const freshwaterRob = computed(
-      () => latestReportDetails.value.freshwater_rob
+    const departurePortName = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.departure_port.split(" ")[1]
+        : ""
     );
-    const fuelOilConsInHarbourPort = computed(
-      () => latestReportDetails.value.fuel_oil_cons_in_harbour_port
+
+    const departureTz = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.departure_tz
+        : ""
     );
-    const fuelOilConsPilotToPilot = computed(
-      () => latestReportDetails.value.fuel_oil_cons_pilot_to_pilot
+    const displacementAtDeparture = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.displacement_at_departure
+        : ""
     );
-    const fuelOilConsPortToPort = computed(
-      () => latestReportDetails.value.fuel_oil_cons_port_to_port
+    const distanceEngineTotal = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.distance_engine_total
+        : ""
     );
-    const fuelOilRobs = computed(() => latestReportDetails.value.fuel_oil_robs);
-    const hoursAtSea = computed(
-      () =>
-        +(
-          Math.abs(
-            Date.parse(lastReportDate.value) - Date.parse(departureDate.value)
-          ) / 36e5
-        ).toFixed(2)
+    const distanceObservedTotal = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.distance_observed_total
+        : ""
     );
-    const id = computed(() => latestReportDetails.value.id);
-    const lastReportDate = computed(
-      () => latestReportDetails.value.last_report_date
+    const distanceToGo = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.distance_to_go
+        : ""
     );
-    const lastReportType = computed(
-      () => latestReportDetails.value.last_report_type
+    const freshwaterRob = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.freshwater_rob
+        : ""
+    );
+    const fuelOilConsInHarbourPort = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.fuel_oil_cons_in_harbour_port
+        : ""
+    );
+    const fuelOilConsPilotToPilot = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.fuel_oil_cons_pilot_to_pilot
+        : ""
+    );
+    const fuelOilConsPortToPort = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.fuel_oil_cons_port_to_port
+        : ""
+    );
+    const fuelOilRobs = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.fuel_oil_robs
+        : ""
+    );
+    const hoursAtSea = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? +(
+            Math.abs(
+              Date.parse(lastReportDate.value) - Date.parse(departureDate.value)
+            ) / 36e5
+          ).toFixed(2)
+        : ""
+    );
+    const id = computed(() =>
+      isSuccessLatestReportDetails.value ? latestReportDetails.value.id : ""
+    );
+    const lastReportDate = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.last_report_date
+        : ""
+    );
+    const lastReportType = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.last_report_type
+        : ""
     );
     const validReportTypes = computed(() => {
       switch (lastReportType.value) {
@@ -112,32 +167,64 @@ export const useLatestReportDetailsStore = defineStore(
         lastReportType.value === Report.type.NOON_PORT
       );
     });
-    const loadCondition = computed(
-      () => latestReportDetails.value.load_condition
+    const loadCondition = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.load_condition
+        : ""
     );
-    const lubeOilRobs = computed(() => latestReportDetails.value.lube_oil_robs);
-    const parkingStatus = computed(
-      () => latestReportDetails.value.parking_status
+    const lubeOilRobs = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.lube_oil_robs
+        : ""
+    );
+    const parkingStatus = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.parking_status
+        : ""
     );
     // object with key : val operation: boolean to array
     const plannedOperations = computed(() =>
-      Object.keys(latestReportDetails.value.planned_operations).filter(
-        (key) => latestReportDetails.value.planned_operations[key]
-      )
+      isSuccessLatestReportDetails.value
+        ? Object.keys(latestReportDetails.value.planned_operations).filter(
+            (key) => latestReportDetails.value.planned_operations[key]
+          )
+        : []
     );
-    const propellerPitch = computed(
-      () => latestReportDetails.value.propeller_pitch
+    const propellerPitch = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.propeller_pitch
+        : ""
     );
-    const revolutionCount = computed(
-      () => latestReportDetails.value.revolution_count
+    const revolutionCount = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.revolution_count
+        : ""
     );
-    const rpmAverage = computed(() => latestReportDetails.value.rpm_average);
-    const slipAverage = computed(() => latestReportDetails.value.slip_average);
-    const speedAverage = computed(
-      () => latestReportDetails.value.speed_average
+    const rpmAverage = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.rpm_average
+        : ""
     );
-    const totalHours = computed(() => latestReportDetails.value.total_hours);
-    const voyageLeg = computed(() => latestReportDetails.value.voyage_leg);
+    const slipAverage = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.slip_average
+        : ""
+    );
+    const speedAverage = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.speed_average
+        : ""
+    );
+    const totalHours = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.total_hours
+        : ""
+    );
+    const voyageLeg = computed(() =>
+      isSuccessLatestReportDetails.value
+        ? latestReportDetails.value.voyage_leg
+        : ""
+    );
 
     return {
       refetchLatestReportDetails,

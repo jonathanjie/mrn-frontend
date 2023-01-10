@@ -68,7 +68,7 @@ export const useDepartureSBYReportStore = defineStore(
     const { fuelOils, lubricatingOils, machinery, imoReg, crewShipDetails } =
       storeToRefs(shipStore);
 
-      // Queries
+    // Queries
     const {
       isFetching: isFetchingPrevData,
       isSucess: IsSuccessPrevData,
@@ -121,7 +121,9 @@ export const useDepartureSBYReportStore = defineStore(
         ).toFixed(2)
     );
     const time = ref("");
-    const cargoUnit = computed(crewShipDetails.value.shipspecs.cargo_unit);
+    const cargoUnit = computed(
+      () => crewShipDetails.value.shipspecs.cargo_unit
+    );
 
     // Vessel Condition at Departure
     const draftFwd = ref("");

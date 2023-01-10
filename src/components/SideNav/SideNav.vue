@@ -92,7 +92,7 @@ const router = useRouter();
 
 const props = defineProps({
   vesselname: String,
-  imo: Number,
+  imo: String,
 });
 
 // Home Button

@@ -74,7 +74,7 @@ const filteredData = computed(() => {
 });
 
 const handleClick = async () => {
-  console.log("im clicked");
+  // console.log("im clicked");
   await refetchLatestReportDetails();
   router.push({
     name: "add-report",

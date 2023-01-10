@@ -180,7 +180,7 @@ const sendReport = async () => {
     reportroute: {
       departure_port: departurePort,
       departure_date: reportingDateTimeUTC.value,
-      depature_tz: reportingTimeZone.value,
+      departure_tz: reportingTimeZone.value,
       // TODO: should be optional in backend
       arrival_port: destinationPort || null,
       arrival_date: destinationEstimatedArrivalUTC.value || null,

@@ -31,21 +31,21 @@ const temp = {
   // propellerPitch: 2,
 
   // Consumption & Condition
-  prevRobs: {
-    LSFO: 200,
-    MGO: 200,
-    MDO: 200,
-    HFO: 200,
-    LPGP: 200,
-    LPGB: 200,
-    LNG: 200,
-    "M/E Cylinder": 200,
-    "M/E System": 200,
-    "M/E Sump": 200,
-    "G/E System": 200,
-    "T/C System": 200,
-  },
-  freshwaterPrevROB: 200,
+  // prevRobs: {
+  //   LSFO: 200,
+  //   MGO: 200,
+  //   MDO: 200,
+  //   HFO: 200,
+  //   LPGP: 200,
+  //   LPGB: 200,
+  //   LNG: 200,
+  //   "M/E Cylinder": 200,
+  //   "M/E System": 200,
+  //   "M/E Sump": 200,
+  //   "G/E System": 200,
+  //   "T/C System": 200,
+  // },
+  // freshwaterPrevROB: 200,
 };
 
 export const useDepartureCOSPReportStore = defineStore(
@@ -76,6 +76,7 @@ export const useDepartureCOSPReportStore = defineStore(
       propellerPitch,
       fuelOilRobs: prevFuelOilRobs,
       lubeOilRobs: prevLubeOilRobs,
+      freshwaterRob: prevFreshWaterRobs,
     } = storeToRefs(detailsStore);
 
     // Overview
@@ -144,6 +145,9 @@ export const useDepartureCOSPReportStore = defineStore(
     const pilotDepLongMinute = ref("");
 
     // Pilot Station - Arrival
+    const shouldPilotArrDataBeSent = computed(
+      () => pilotArrName.value || pilotArrDateTime.value
+    );
     const pilotArrName = ref("");
     const pilotArrDateTime = ref("");
     const pilotArrDateTimeUTC = computed(() =>
@@ -186,7 +190,7 @@ export const useDepartureCOSPReportStore = defineStore(
         ? +(
             (Number(sbyToRupRevolutionCount.value) -
               temp.revolutionCountAtSby) *
-            propellerPitch
+            Number(propellerPitch.value)
           ).toFixed(2)
         : ""
     );
@@ -219,7 +223,7 @@ export const useDepartureCOSPReportStore = defineStore(
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
         rtn[fuelOil] = +(
-          prevFuelOilRobs[fuelOil] -
+          Number(prevFuelOilRobs.value[fuelOil]) -
           Number(fuelOilTotalConsumptions.value[fuelOil])
         ).toFixed(2);
       }
@@ -243,7 +247,7 @@ export const useDepartureCOSPReportStore = defineStore(
       let rtn = {};
       for (const lubricatingOil of lubricatingOils.value) {
         rtn[lubricatingOil] = +(
-          prevLubeOilRobs[lubricatingOil] -
+          Number(prevLubeOilRobs.value[lubricatingOil]) -
           Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
           Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
           Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
@@ -263,7 +267,7 @@ export const useDepartureCOSPReportStore = defineStore(
       () => +(freshwaterGenerated.value - freshwaterConsumed.value).toFixed(2)
     );
     const freshwaterRob = computed(
-      () => temp.freshwaterPrevROB + freshwaterChange.value
+      () => prevFreshWaterRobs.value + freshwaterChange.value
     );
 
     return {
@@ -299,6 +303,7 @@ export const useDepartureCOSPReportStore = defineStore(
       pilotDepLongDegree,
       pilotDepLongMinute,
       // Pilot Station - Arrival
+      shouldPilotArrDataBeSent,
       pilotArrName,
       pilotArrDateTime,
       pilotArrDateTimeUTC,
