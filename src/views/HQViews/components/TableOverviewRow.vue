@@ -14,7 +14,7 @@
       <div
         class="flex px-3.5 py-3 justify-center"
         :class="
-          index === 6
+          index === props.values.length - 1
             ? 'bg-yellow-50 border border-yellow-200 rounded-r-lg'
             : 'border-l border-t border-gray-200'
         "
@@ -37,7 +37,7 @@
       <div
         class="flex px-3.5 py-3 justify-center"
         :class="
-          index === 6
+          index === props.values.length - 1
             ? 'bg-yellow-50 border border-yellow-200 rounded-r-lg'
             : 'border-l border-t border-gray-200'
         "
@@ -56,7 +56,7 @@
       <div
         class="flex px-3.5 py-3 justify-center"
         :class="
-          index === 6
+          index === props.reportType.length - 1
             ? 'bg-yellow-50 border border-yellow-200 rounded-r-lg'
             : 'border-l border-t border-gray-200'
         "
@@ -119,7 +119,7 @@
       <div
         class="flex px-3.5 py-3 justify-center"
         :class="
-          index === 6
+          index === row1.length - 1
             ? 'bg-yellow-50 border-x border-t border-yellow-200 rounded-tr-lg'
             : 'border-l border-t border-gray-200'
         "
@@ -143,7 +143,7 @@
       <div
         class="flex px-3.5 py-3 justify-center"
         :class="
-          index === 6
+          index === row2.length - 1
             ? 'bg-yellow-50 border border-yellow-200 rounded-br-lg'
             : 'border-l border-y border-gray-200'
         "
@@ -178,13 +178,34 @@ const reportTypes = {
   NNHB: "Noon in Harbour",
   NNPO: "Noon in Port",
 };
+console.log("Props", props);
+let colGrid = "";
+if (props.values != undefined) {
+  colGrid =
+    props.values.length > 7
+      ? "grid-cols-7"
+      : "grid-cols-" + props.values.length.toString();
+  // + (props.header === "Date" || props.header === "Distance"
+} else if (props.distanceToGo != undefined) {
+  colGrid =
+    props.distanceToGo.length > 7
+      ? "grid-cols-7"
+      : "grid-cols-" + props.distanceToGo.length.toString();
+} else {
+  colGrid =
+    props.fuelFoc.length > 7
+      ? "grid-cols-7"
+      : "grid-cols-" + props.fuelFoc.length.toString();
+}
 
+console.log("Tis the custom grid col", colGrid);
 let row1 = undefined;
 let row2 = undefined;
 if (props.header === "Distance") {
   row1 = props.distanceToGo;
   row2 = props.distanceOBS;
 } else if (props.fuelFoc !== undefined) {
+  console.log(props.fuelFoc);
   row1 = props.fuelFoc;
   row2 = props.fuelRob;
 }
