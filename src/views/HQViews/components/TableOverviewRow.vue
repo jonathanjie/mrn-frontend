@@ -1,7 +1,12 @@
 <template>
   <div
-    v-if="props.header === 'Speed'"
-    class="grid grid-cols-9 w-full rounded-lg w-full border mb-3"
+    v-if="props.header === 'Speed' && props.values != undefined"
+    class="grid w-full rounded-lg w-full border mb-3"
+    :class="
+      props.values.length > 7
+        ? 'grid-cols-9'
+        : 'grid-cols-' + (props.values.length + 2).toString()
+    "
   >
     <!-- Table header -->
     <div
@@ -24,8 +29,13 @@
     </div>
   </div>
   <div
-    v-else-if="props.header === 'Date'"
-    class="grid grid-cols-9 grid-rows-2 w-full rounded-lg w-full border mb-3"
+    v-else-if="props.header === 'Date' && props.values != undefined"
+    class="grid grid-rows-2 w-full rounded-lg w-full border mb-3"
+    :class="
+      props.values.length > 7
+        ? 'grid-cols-9'
+        : 'grid-cols-' + (props.values.length + 2).toString()
+    "
   >
     <!-- Table header -->
     <div
@@ -93,8 +103,13 @@
     </div>
   </div>
   <div
-    v-else
-    class="grid grid-cols-9 grid-rows-2 w-full rounded-lg w-full border mb-3"
+    v-else-if="row1 != undefined && row2 != undefined"
+    class="grid grid-rows-2 w-full rounded-lg w-full border mb-3"
+    :class="
+      row1.length > 7
+        ? 'grid-cols-9'
+        : 'grid-cols-' + (row1.length + 2).toString()
+    "
   >
     <!-- Table header -->
     <div
@@ -178,27 +193,7 @@ const reportTypes = {
   NNHB: "Noon in Harbour",
   NNPO: "Noon in Port",
 };
-console.log("Props", props);
-let colGrid = "";
-if (props.values != undefined) {
-  colGrid =
-    props.values.length > 7
-      ? "grid-cols-7"
-      : "grid-cols-" + props.values.length.toString();
-  // + (props.header === "Date" || props.header === "Distance"
-} else if (props.distanceToGo != undefined) {
-  colGrid =
-    props.distanceToGo.length > 7
-      ? "grid-cols-7"
-      : "grid-cols-" + props.distanceToGo.length.toString();
-} else {
-  colGrid =
-    props.fuelFoc.length > 7
-      ? "grid-cols-7"
-      : "grid-cols-" + props.fuelFoc.length.toString();
-}
 
-console.log("Tis the custom grid col", colGrid);
 let row1 = undefined;
 let row2 = undefined;
 if (props.header === "Distance") {
