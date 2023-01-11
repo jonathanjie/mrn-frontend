@@ -17,6 +17,7 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import SideNav from "@/components/SideNav/SideNav.vue";
 import WebHeader from "@/components/WebHeader.vue";
 import InitializationModal from "@/components/Modals/InitializationModal.vue";
@@ -94,7 +95,7 @@ const jwt = await getAccessTokenSilently();
 console.log("Token", jwt);
 axios.defaults.headers.common["Authorization"] = "Bearer " + jwt;
 
-let showModal = false;
+let showModal = ref(false);
 const ship = await getShip();
 console.log(ship);
 if (ship.shipspecs == undefined) {
