@@ -289,7 +289,7 @@ const data = props.stats;
 //   },
 // ];
 
-const latestData = data[data.length - 1];
+const latestData = data[0];
 let selectedSpeed = ref(true);
 const dateList = [];
 const reportType = [];
@@ -320,10 +320,10 @@ for (let fuel in fuelObject) {
     let tempCount = 0;
     for (let fuel_type in obj.fuel_stats) {
       let fuel_item = obj.fuel_stats[fuel_type];
-      tempCount = tempCount + 1;
       if (fuel_item.fuel_oil_type === fuel) {
         fuelObject[fuel]["foc"].push(fuel_item.total_consumption);
         fuelObject[fuel]["rob"].push(fuel_item.rob);
+        tempCount = tempCount + 1;
       }
     }
     for (let tempFuel in fuelObject) {

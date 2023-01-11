@@ -7,7 +7,7 @@ export const useStatsQuery = (imo) => {
     axios
       .get(`${UrlDomain.DEV}/marinanet/ships/${imo}/stats`)
       .then((response) => {
-        return response.data;
+        return response.data.reverse();
       })
       .catch((error) => {
         console.log(error.message);
