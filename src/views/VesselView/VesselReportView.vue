@@ -14,7 +14,7 @@
   </div> -->
   <div class="relative bg-gray-50 flex flex-col mt-12">
     <GradientButton
-      v-if="isSuccessLatestReportDetails && manager != true"
+      v-if="isSuccessLatestReportDetails && manager !== true"
       class="m-10 absolute right-0 -top-48"
       type="button"
       :disabled="isAddVoyageLoading || !isAddVoyageEnabled"

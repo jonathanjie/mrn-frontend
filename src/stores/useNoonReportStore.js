@@ -180,8 +180,9 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const distanceEngSinceNoon = computed(() =>
     revolutionCount.value
       ? +(
-          (Number(revolutionCount.value) - Number(revolution_count.value)) *
-          Number(propellerPitch.value)
+          ((Number(revolutionCount.value) - Number(revolution_count.value)) *
+            Number(propellerPitch.value)) /
+          1852
         ).toFixed(2)
       : ""
   );
@@ -192,12 +193,11 @@ export const useNoonReportStore = defineStore("noonReport", () => {
         ).toFixed(2)
       : ""
   );
-  const distanceToGo = computed(() =>
-    distanceObsSinceNoon.value
-      ? +(
-          Number(distance_to_go.value) - Number(distanceObsSinceNoon.value)
-        ).toFixed(2)
-      : ""
+  const distanceToGo = computed(
+    () =>
+      +(
+        Number(distance_to_go.value) - (Number(distanceObsSinceNoon.value) || 0)
+      ).toFixed(2)
   );
   const distanceToGoEdited = ref("");
   const remarksForChanges = ref("");

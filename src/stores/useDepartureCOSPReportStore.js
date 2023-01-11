@@ -11,43 +11,6 @@ import { useShipStore } from "@/stores/useShipStore";
 import { Machinery } from "@/constants";
 import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
 
-const temp = {
-  // Overview (get from departure sby)
-  // reportingTimeZone: 9,
-
-  // Departure and Destination
-  // departurePortCountry: "KR",
-  // departurePortName: "PUS",
-  // departureTimeZone: "-6",
-  // departureDateTimeUTC: "2022-12-01T00:00:00Z",
-  // destinationPortCountry: "SG",
-  // destinationPortName: "PPT",
-  // destinationTimeZone: "-4",
-  // destinationEstimatedArrival: "2022-12-06T00:00:00Z",
-
-  // Distance & Time
-  prevSbyTime: "2022-12-01T00:00:00Z",
-  revolutionCountAtSby: 20000,
-  // propellerPitch: 2,
-
-  // Consumption & Condition
-  // prevRobs: {
-  //   LSFO: 200,
-  //   MGO: 200,
-  //   MDO: 200,
-  //   HFO: 200,
-  //   LPGP: 200,
-  //   LPGB: 200,
-  //   LNG: 200,
-  //   "M/E Cylinder": 200,
-  //   "M/E System": 200,
-  //   "M/E Sump": 200,
-  //   "G/E System": 200,
-  //   "T/C System": 200,
-  // },
-  // freshwaterPrevROB: 200,
-};
-
 export const useDepartureCOSPReportStore = defineStore(
   "departureReportCOSP",
   () => {
@@ -75,6 +38,7 @@ export const useDepartureCOSPReportStore = defineStore(
       arrivalDate: destinationEstimatedArrival,
       lastReportDate,
       propellerPitch,
+      revolutionCount: revolution_count,
       fuelOilRobs: prevFuelOilRobs,
       lubeOilRobs: prevLubeOilRobs,
       freshwaterRob: prevFreshWaterRobs,
@@ -183,21 +147,13 @@ export const useDepartureCOSPReportStore = defineStore(
       reportingDateTimeUTC.value
         ? +(
             (Date.parse(reportingDateTimeUTC.value) -
-              Date.parse(temp.prevSbyTime)) /
+              Date.parse(departureDateTimeUTC.value)) /
             (1000 * 60 * 60)
           ).toFixed(0)
         : ""
     );
     const sbyToRupDistanceObs = ref("");
-    const sbyToRupDistanceEng = computed(() =>
-      sbyToRupRevolutionCount.value
-        ? +(
-            (Number(sbyToRupRevolutionCount.value) -
-              temp.revolutionCountAtSby) *
-            Number(propellerPitch.value)
-          ).toFixed(2)
-        : ""
-    );
+    const sbyToRupDistanceEng = ref("");
     const sbyToRupRevolutionCount = ref("");
     const sbyToRupSetRPM = ref("");
     const distanceObsTotal = computed(() =>
@@ -216,24 +172,8 @@ export const useDepartureCOSPReportStore = defineStore(
           ).toFixed(2)
         : ""
     );
-    const distanceToGo = computed(() =>
-      sbyToRupDistanceObs.value
-        ? +(
-            Number(distance_to_go.value) - Number(sbyToRupDistanceObs.value)
-          ).toFixed(2)
-        : ""
-    );
-    const hoursSinceLast = computed(() =>
-      reportingDateTimeUTC.value && reportingTimeZone.value !== "default"
-        ? +(
-            (Date.parse(reportingDateTimeUTC.value) -
-              Date.parse(lastReportDate.value)) /
-            (1000 * 60 * 60)
-          ).toFixed(0)
-        : ""
-    );
     const hoursTotal = computed(() =>
-      hoursSinceLast.value
+      sbyToRupTime.value
         ? +(
             (Date.parse(reportingDateTimeUTC.value) -
               Date.parse(departureDateTimeUTC.value)) /
@@ -374,8 +314,6 @@ export const useDepartureCOSPReportStore = defineStore(
       sbyToRupSetRPM,
       distanceObsTotal,
       distanceEngTotal,
-      distanceToGo,
-      hoursSinceLast,
       hoursTotal,
       // Sailing Plan (Pilot to Pilot)
       budgetDistance,

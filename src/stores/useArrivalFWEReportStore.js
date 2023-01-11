@@ -114,8 +114,9 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   const distanceEng = computed(() =>
     revolutionCount.value
       ? +(
-          (Number(revolutionCount.value) - Number(revolution_count.value)) *
-          Number(propellerPitch.value)
+          ((Number(revolutionCount.value) - Number(revolution_count.value)) *
+            Number(propellerPitch.value)) /
+          1852
         ).toFixed(2)
       : ""
   );
@@ -152,10 +153,11 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
         ).toFixed(0)
       : ""
   );
-  const distanceToGo = computed(() =>
-    distanceObs.value
-      ? +(Number(distance_to_go.value) - Number(distanceObs.value)).toFixed(2)
-      : ""
+  const distanceToGo = computed(
+    () =>
+      +(
+        Number(distance_to_go.value) - (Number(distanceObs.value) || 0)
+      ).toFixed(2)
   );
 
   // Consumption & Condition (S/BY to F.W.E)

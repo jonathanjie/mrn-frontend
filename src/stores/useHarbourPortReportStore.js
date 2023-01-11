@@ -68,8 +68,8 @@ export const useHarbourPortReportStore = defineStore(
     );
 
     // Harbour Port Report
-    const prevStatus = ref(parkingStatus.value);
-    const status = ref(parkingStatus.value);
+    const prevStatus = ref(parkingStatus.value || "default");
+    const status = ref(parkingStatus.value || "default");
     const distanceTravelled = ref("");
     const latDir = ref("default");
     const latMinutes = ref("");

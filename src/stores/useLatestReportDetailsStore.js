@@ -104,6 +104,12 @@ export const useLatestReportDetailsStore = defineStore(
         ? latestReportDetails.value.distance_to_go
         : ""
     );
+    const distanceSbyToCosp = computed(() =>
+      isSuccessLatestReportDetails.value &&
+      latestReportDetails.value.distance_standby_to_cosp
+        ? latestReportDetails.value.distance_standby_to_cosp
+        : ""
+    );
     const freshwaterRob = computed(() =>
       isSuccessLatestReportDetails.value &&
       latestReportDetails.value.freshwater_rob
@@ -195,7 +201,6 @@ export const useLatestReportDetailsStore = defineStore(
         case Report.type.BUNKER:
           return [
             Report.type.DEP_SBY,
-            Report.type.DEP_COSP_RUP,
             Report.type.BUNKER,
             Report.type.EVENT_HARBOUR,
             Report.type.EVENT_PORT,
@@ -312,6 +317,7 @@ export const useLatestReportDetailsStore = defineStore(
       distanceEngineTotal,
       distanceObservedTotal,
       distanceToGo,
+      distanceSbyToCosp,
       freshwaterRob,
       fuelOilConsInHarbourPort,
       fuelOilConsPilotToPilot,

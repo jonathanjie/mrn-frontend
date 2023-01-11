@@ -175,8 +175,7 @@
             v-model="sby_to_rup_distance_eng"
             @keypress="preventNaN($event, sby_to_rup_distance_eng)"
             placeholder="0"
-            disabled
-            class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
+            class="w-24 text-14 text-gray-700 focus:outline-0 bg-white"
           />
           <MiniUnitDisplay>NM</MiniUnitDisplay>
         </div>
