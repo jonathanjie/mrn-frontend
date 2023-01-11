@@ -429,8 +429,8 @@ const fuel_options = ref({
 const lubricating_oil_options = ref({
   me_cylinder_oil: true,
   me_system_oil: true,
-  me_sump_tank: true,
-  ge_system_oil: false,
+  me_sump_tank: false,
+  ge_system_oil: true,
   tg_system_oil: false,
 });
 
