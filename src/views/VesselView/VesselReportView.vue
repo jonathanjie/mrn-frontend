@@ -94,10 +94,17 @@ const addVoyage = async () => {
     return;
   } else {
     isAddVoyageLoading.value = true;
-    lastVoyageNo.value =
-      voyages.value.length == 0
-        ? 0
-        : Math.max(...voyages.value.map((v) => v.voyage_num));
+    if (voyages.value.length == 0) {
+      do {
+        var inputVoyage = parseInt(
+          prompt("Enter voyage number above 0", ""),
+          10
+        );
+      } while (isNaN(inputVoyage) || inputVoyage < 1);
+      lastVoyageNo.value = Number(inputVoyage);
+    } else {
+      lastVoyageNo.value = Math.max(...voyages.value.map((v) => v.voyage_num));
+    }
     const voyageData = {
       voyage_num: nextVoyageNo.value,
       imo_reg: props.imo,

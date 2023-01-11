@@ -82,8 +82,9 @@ const getShip = async () => {
     .then((response) => {
       // console.log("Ship Details (home view): ", response.data);
       if (response.data[0].shipspecs != undefined) {
-        return updateShipDetails(response.data[0], shipStore);
+        updateShipDetails(response.data[0], shipStore);
       }
+      return response.data[0];
     })
     .catch((error) => {
       console.log(error.message);
