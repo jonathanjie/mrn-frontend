@@ -95,11 +95,11 @@ const jwt = await getAccessTokenSilently();
 console.log("Token", jwt);
 axios.defaults.headers.common["Authorization"] = "Bearer " + jwt;
 
-let showModal = ref(false);
+let showModal = ref(true);
 const ship = await getShip();
 
-if (ship.shipspecs == undefined) {
-  showModal = true;
+if (ship.shipspecs != undefined) {
+  showModal = false;
 }
 
 const role = await getUserRole();
