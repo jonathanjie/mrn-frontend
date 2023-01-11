@@ -112,8 +112,8 @@
                     name="mdo"
                     value="mdo"
                   />
-                  <label class="ml-2 text-14 text-gray-700" for="mdo">
-                    {{ $t("mdo") }}
+                  <label class="ml-2 text-14 text-gray-700">
+                    {{ $t("MDO") }}
                   </label>
                 </div>
                 <div class="flex align-center">
@@ -125,7 +125,7 @@
                     value="mgo"
                   />
                   <label class="ml-2 text-14 text-gray-700" for="mgo">
-                    {{ $t("mgo") }}
+                    {{ $t("MGO") }}
                   </label>
                 </div>
                 <div class="flex align-center">
@@ -137,7 +137,7 @@
                     value="lsfo"
                   />
                   <label class="ml-2 text-14 text-gray-700" for="lsfo">
-                    {{ $t("lsfo") }}
+                    {{ $t("LSFO") }}
                   </label>
                 </div>
                 <div class="flex align-center">
@@ -149,7 +149,7 @@
                     value="hfo"
                   />
                   <label class="ml-2 text-14 text-gray-700" for="hfo">
-                    {{ $t("hfo") }}
+                    {{ $t("HFO") }}
                   </label>
                 </div>
                 <div class="flex align-center">
@@ -161,7 +161,7 @@
                     value="lpgp"
                   />
                   <label class="ml-2 text-14 text-gray-700" for="lpgp">
-                    {{ $t("lpgp") }}
+                    {{ $t("LPGP") }}
                   </label>
                 </div>
                 <div class="flex align-center">
@@ -173,7 +173,7 @@
                     value="lpgb"
                   />
                   <label class="ml-2 text-14 text-gray-700" for="lpgb">
-                    {{ $t("lpgb") }}
+                    {{ $t("LPGB") }}
                   </label>
                 </div>
                 <div class="flex align-center">
@@ -185,7 +185,7 @@
                     value="lng"
                   />
                   <label class="ml-2 text-14 text-gray-700" for="lng">
-                    {{ $t("lng") }}
+                    {{ $t("LNG") }}
                   </label>
                 </div>
               </div>

@@ -80,7 +80,10 @@ const getShip = async () => {
     .get(`${UrlDomain.DEV}/marinanet/ships`)
     .then((response) => {
       // console.log("Ship Details (home view): ", response.data);
-      return updateShipDetails(response.data[0], shipStore);
+      if (response.data[0].shipsspecs != undefined) {
+        updateShipDetails(response.data[0], shipStore);
+      }
+      return response.data[0];
     })
     .catch((error) => {
       console.log(error.message);
@@ -88,11 +91,13 @@ const getShip = async () => {
 };
 
 const jwt = await getAccessTokenSilently();
+console.log("Token", jwt);
 axios.defaults.headers.common["Authorization"] = "Bearer " + jwt;
 
 let showModal = false;
 const ship = await getShip();
-if (ship.shipspecs === null) {
+console.log(ship);
+if (ship.shipspecs == undefined) {
   showModal = true;
 }
 

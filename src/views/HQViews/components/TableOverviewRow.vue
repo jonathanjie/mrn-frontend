@@ -168,9 +168,9 @@ const props = defineProps({
 
 const reportTypes = {
   NOON: "Noon",
-  DSBY: "Depart S.B",
-  DCSP: "Depart COSP",
-  ASBY: "Arr SB",
+  DSBY: "Dep S/BY",
+  DCSP: "Dep COSP",
+  ASBY: "Arr S/BY",
   AFWE: "Arr F.W.E",
   BDN: "Bunker",
   EVHB: "Event in Harbour",
