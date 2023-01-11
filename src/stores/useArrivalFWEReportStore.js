@@ -35,6 +35,8 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     departureDate,
     lastReportDate,
     distanceObservedTotal,
+    distanceEngineTotal,
+    distanceToGo: distance_to_go,
     revolutionCount: revolution_count,
     propellerPitch,
     fuelOilRobs: fuel_oil_robs,
@@ -117,7 +119,44 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
         ).toFixed(2)
       : ""
   );
+  const distanceObsTotal = computed(() =>
+    distanceObs.value
+      ? +(
+          Number(distanceObservedTotal.value) + Number(distanceObs.value)
+        ).toFixed(2)
+      : ""
+  );
+  const distanceEngTotal = computed(() =>
+    distanceEng.value
+      ? +(
+          Number(distanceEng.value) + Number(distanceEngineTotal.value)
+        ).toFixed(2)
+      : ""
+  );
   const revolutionCount = ref("");
+  const hoursSinceLast = computed(() =>
+    reportingDateTimeUTC.value && reportingTimeZone.value !== "default"
+      ? +(
+          (Date.parse(reportingDateTimeUTC.value) -
+            Date.parse(lastReportDate.value)) /
+          (1000 * 60 * 60)
+        ).toFixed(0)
+      : ""
+  );
+  const hoursTotal = computed(() =>
+    hoursSinceLast.value
+      ? +(
+          (Date.parse(reportingDateTimeUTC.value) -
+            Date.parse(departureDate.value)) /
+          36e5
+        ).toFixed(0)
+      : ""
+  );
+  const distanceToGo = computed(() =>
+    distanceObs.value
+      ? +(Number(distance_to_go.value) - Number(distanceObs.value)).toFixed(2)
+      : ""
+  );
 
   // Consumption & Condition (S/BY to F.W.E)
   const fuelOilBreakdowns = reactive({});
@@ -284,6 +323,10 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     distanceObs,
     distanceEng,
     revolutionCount,
+    distanceObsTotal,
+    distanceEngTotal,
+    hoursTotal,
+    distanceToGo,
     // Consumption and Condition
     fuelOils,
     lubricatingOils,
