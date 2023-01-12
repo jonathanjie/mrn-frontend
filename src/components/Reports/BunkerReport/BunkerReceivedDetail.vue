@@ -146,16 +146,6 @@
         class="col-span-6 p-3 pl-4 border-b text-gray-700 focus:outline-0"
       />
 
-      <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50">
-        {{ $t("specificGravityAt15") }}
-      </div>
-      <input
-        v-model="sg"
-        @keypress="preventNaN($event, sg)"
-        placeholder="000.00"
-        class="col-span-6 p-3 pl-4 border-b text-gray-700 focus:outline-0"
-      />
-
       <div
         class="flex col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50"
       >
@@ -261,7 +251,6 @@ const {
   oil: oil,
   quantity: quantity,
   density: density,
-  sg: sg,
   viscosity: viscosity,
   viscosityDegree: viscosity_degree,
   flashPoint: flash_point,
