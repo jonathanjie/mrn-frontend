@@ -108,11 +108,11 @@ const addVoyage = async () => {
     if (voyages.value.length == 0) {
       do {
         var inputVoyage = parseInt(
-          prompt("Enter voyage number above 0", ""),
+          prompt("Enter initial voyage number above 0.", ""),
           10
         );
       } while (isNaN(inputVoyage) || inputVoyage < 1);
-      lastVoyageNo.value = Number(inputVoyage);
+      lastVoyageNo.value = Number(inputVoyage) - 1;
     } else {
       lastVoyageNo.value = Math.max(...voyages.value.map((v) => v.voyage_num));
     }

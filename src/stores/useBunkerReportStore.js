@@ -38,7 +38,6 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
   const oil = ref("default");
   const quantity = ref("");
   const density = ref("");
-  const sg = ref("");
   const viscosity = ref("");
   const viscosityDegree = ref("");
   const flashPoint = ref("");
@@ -141,7 +140,6 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
     oil,
     quantity,
     density,
-    sg,
     viscosity,
     viscosityDegree,
     flashPoint,

@@ -354,7 +354,6 @@ const sendReport = async () => {
     isSubmissionModalVisible.value = true;
   } catch (error) {
     console.log(error);
-    errorMessage.value = error.toString();
     isSubmissionModalVisible.value = true;
   }
 };
