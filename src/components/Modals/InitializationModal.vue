@@ -474,7 +474,7 @@ const addSettings = () => {
     ),
     propeller_pitch: propeller_pitch.value,
   };
-
+  console.log("Init modal data", JSON.stringify(settings));
   axios
     .post(`${UrlDomain.DEV}/marinanet/ships/`, settings)
     .then(() => {
