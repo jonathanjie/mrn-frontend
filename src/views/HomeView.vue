@@ -57,23 +57,15 @@ const updateShipDetails = (shipDetails, shipStore) => {
   } = storeToRefs(shipStore);
 
   crewShipDetails.value = shipDetails;
+  console.log(shipDetails);
+
   companyUuid.value = shipDetails.company.uuid;
   imoReg.value = shipDetails.imo_reg;
   shipUuid.value = shipDetails.uuid;
-  fuelOils.value = Object.entries(shipDetails.shipspecs.fuel_options)
-    .filter((option) => option[1] == true)
-    .map((x) => x[0]);
-  lubricatingOils.value = Object.entries(
-    shipDetails.shipspecs.lubricating_oil_options
-  )
-    .filter((option) => option[1] == true)
-    .map((x) => x[0]);
-  machinery.value = Object.entries(shipDetails.shipspecs.machinery_options)
-    .filter((option) => option[1] == true)
-    .map((x) => x[0]);
-  // console.log(fuelOils.value);
-  // console.log(lubricatingOils.value);
-  // console.log(machinery.value);
+  fuelOils.value = shipDetails.shipspecs.fuel_options;
+  lubricatingOils.value = shipDetails.shipspecs.lubricating_oil_options;
+  machinery.value = shipDetails.shipspecs.machinery_options;
+  console.log(shipDetails.shipspecs.fuel_options);
 
   return shipDetails;
 };
