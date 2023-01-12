@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from "vue";
 import DepartureAndDestinationSBY from "./components/DepartureAndDestinationSBY.vue";
 import DepartureSBYTotalConsumption from "./components/DepartureSBYTotalConsumption.vue";
 import DepartureSBYPilotStation from "../components/DeparturePilotStation.vue";
@@ -13,6 +14,10 @@ const props = defineProps({
     required: true,
   },
 });
+
+const isFirstReport = computed(
+  () => props.report.report_num == 1 && props.report.voyage_leg.leg_num == 1
+);
 </script>
 
 <template>
@@ -40,8 +45,11 @@ const props = defineProps({
     </ReportConsumption>
 
     <!-- Consumption & Condition (Harbour/In Port in Total) -->
-    <DepartureSBYTotalConsumption :report="props.report"/>
-    
+    <DepartureSBYTotalConsumption
+      v-if="!isFirstReport"
+      :report="props.report"
+    />
+
     <!-- <DepartureSBYTotalConsumption :report="props.report">{{
       $t("consumptionAndConditionHarbourInPortInTotal")
     }}</DepartureSBYTotalConsumption> -->
