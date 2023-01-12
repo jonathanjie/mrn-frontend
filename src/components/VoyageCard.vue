@@ -39,7 +39,7 @@ const voyageLegs = computed(() => props.voyage.voyage_legs);
 const reports = computed(() =>
   props.voyage.voyage_legs.reduce((acc, curr) => curr.reports.concat(acc), [])
 );
-console.log("reports ",reports.value)
+console.log("reports ", reports.value);
 
 const lastReportIndex = reports.value.length - 1;
 const lastLegNo = reports[lastReportIndex]?.voyage_leg?.leg_num;
@@ -83,9 +83,10 @@ const filteredData = computed(() => {
   );
 });
 
-console.log(filteredData.value)
+console.log(filteredData.value);
 
 const handleClick = async () => {
+  console.log(voyageLegs.value);
   storedVoyageLegs.value = voyageLegs.value;
   await refetchLatestReportDetails();
   router.push({
