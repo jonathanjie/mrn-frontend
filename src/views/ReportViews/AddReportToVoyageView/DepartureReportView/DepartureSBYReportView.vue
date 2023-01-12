@@ -181,8 +181,8 @@ const sendReport = async () => {
     },
     cargooperation: {
       load_condition: loadCondition.value,
-      loading: loading.value,
-      unloading: unloading.value,
+      loading: loading.value || 0,
+      unloading: unloading.value || 0,
       total: totalAmount.value,
       time: time.value,
     },
