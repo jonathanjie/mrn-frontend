@@ -262,7 +262,7 @@
                     id="othersOil"
                     name="othersOil"
                     value="othersOil"
-                    v-on:click="lubricatingOthersFlag = !lubricatingOthersFlag"
+                    @click="lubricatingOthersFlag = !lubricatingOthersFlag"
                   />
                   <label class="ml-2 text-14 text-gray-700" for="othersOil">
                     {{ $t("others") }}
@@ -388,7 +388,7 @@
             <GradientButton
               class="px-6 py-2 text-14 mr-1 mb-1"
               type="button"
-              v-on:click="addSettings()"
+              @click="addSettings()"
             >
               <template v-slot:content>{{ $t("saveDetails") }}</template>
             </GradientButton>

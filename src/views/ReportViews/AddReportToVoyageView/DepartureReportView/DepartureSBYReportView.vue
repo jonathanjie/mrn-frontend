@@ -183,8 +183,8 @@ const sendReport = async () => {
       load_condition: loadCondition.value,
       loading: loading.value || 0,
       unloading: unloading.value || 0,
-      total: totalAmount.value,
-      time: time.value,
+      total: totalAmount.value || 0,
+      time: time.value || 0,
     },
     departurevesselcondition: {
       draft_fwd: draftFwd.value,
@@ -289,15 +289,15 @@ const sendReport = async () => {
     <!-- <CustomButton
           class="p-3 text-14"
           type="button"
-          v-on:click="saveChanges()"
+          @click="saveChanges()"
         >
           <template v-slot:content>{{ $t("saveChanges") }}</template>
         </CustomButton> -->
     <GradientButton
       class="p-3 text-14"
       type="button"
-      v-on:click="sendReport()"
-      :disabled="isSubmissionRequested"
+      @click="sendReport()"
+      :is-disabled="isSubmissionRequested"
     >
       <!-- TODO: need alternate function for saving changes to backend -->
       <template v-slot:content>{{ $t("sendReport") }}</template>

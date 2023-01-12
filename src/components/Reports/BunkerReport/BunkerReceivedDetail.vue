@@ -101,7 +101,9 @@
           {{ $t("selectOil") }}
         </option>
         <option
-          v-for="(lubricatingOil, index) in lubricatingOils"
+          v-for="(lubricatingOil, index) in lubricatingOils.filter(
+            (oil) => oil !== LubricatingOil.ME_SUMP
+          )"
           :value="lubricatingOil"
           :key="index"
         >
@@ -241,6 +243,7 @@ import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { useShipStore } from "@/stores/useShipStore";
+import { LubricatingOil } from "@/constants";
 
 const shipStore = useShipStore();
 const { fuelOils, lubricatingOils } = storeToRefs(shipStore);

@@ -44,6 +44,7 @@ const getUserRole = async () => {
       console.log(error.message);
     });
 };
+
 const updateShipDetails = (shipDetails, shipStore) => {
   const {
     crewShipDetails,
@@ -76,6 +77,7 @@ const updateShipDetails = (shipDetails, shipStore) => {
 
   return shipDetails;
 };
+
 const getShip = async () => {
   return await axios
     .get(`${UrlDomain.DEV}/marinanet/ships`)

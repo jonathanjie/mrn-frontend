@@ -123,12 +123,9 @@
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("estimatedTimeOfArrival") }}
         </div>
-        <div class="col-span-3 relative flex items-center">
+        <div class="col-span-3 bg-white relative flex items-center">
           <DatePicker
-            :value="destination_estimated_arrival.toUpperCase()"
-            @input="
-              destination_estimated_arrival = $event.target.value.toUpperCase()
-            "
+            v-model="destination_estimated_arrival"
             class="grow"
             textInput
             :textInputOptions="textInputOptions"

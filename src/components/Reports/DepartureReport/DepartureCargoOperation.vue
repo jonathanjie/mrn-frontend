@@ -88,7 +88,7 @@
           <input
             v-model="time"
             @keypress="preventNaN($event, time)"
-            :placeholder="$t('inputDetails')"
+            placeholder="0"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
           <MiniUnitDisplay>HRS</MiniUnitDisplay>
