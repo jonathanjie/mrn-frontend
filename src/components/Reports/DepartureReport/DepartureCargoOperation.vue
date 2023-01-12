@@ -73,7 +73,7 @@
             v-model="total_amount"
             @keypress="preventNaN($event, total_amount)"
             :placeholder="$t('inputDetails')"
-            disabled
+            :disabled="!isFirstReport"
             class="w-24 bg-gray-50 text-14 text-gray-400 focus:outline-0"
           />
           <MiniUnitDisplay>{{ $t(cargoUnit) }}</MiniUnitDisplay>
@@ -113,5 +113,8 @@ const {
   totalAmount: total_amount,
   time: time,
   cargoUnit: cargoUnit,
+  legNo,
+  reportNo,
 } = storeToRefs(store);
+const isFirstReport = computed(() => reportNo == 1 && legNo == 1);
 </script>

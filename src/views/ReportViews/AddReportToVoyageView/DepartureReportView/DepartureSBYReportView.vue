@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from "vue";
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 // import CustomButton from "@/components/Buttons/CustomButton.vue";
 import DepartureAndDestinationSBY from "@/components/Reports/DepartureReport/DepartureAndDestinationSBY.vue";
@@ -158,6 +159,8 @@ const sendReport = async () => {
     lubricatingOilRobsSum.value
   );
 
+  const isFirstReport = computed(() => reportNo == 1 && legNo == 1);
+
   const REPORT = {
     report_type: Report.type.DEP_SBY,
     voyage: voyageNo.value,
@@ -281,7 +284,7 @@ const sendReport = async () => {
     <DepartureSBYConsumption />
 
     <!-- Consumption & Condition (Harbour/In Port in Total) -->
-    <DepartureSBYTotalConsumption />
+    <DepartureSBYTotalConsumption v-if="!isFirstReport" />
   </div>
 
   <!-- Save and Send -->
