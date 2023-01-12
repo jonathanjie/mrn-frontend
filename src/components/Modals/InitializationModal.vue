@@ -422,7 +422,6 @@ const fuelOrder = ["LSFO", "HFO", "MDO", "MGO", "LPGP", "LPGB", "LNG"];
 const lubricatingOilOrder = [
   "me_cylinder_oil",
   "me_system_oil",
-  "me_system_oil",
   "me_sump_tank",
   "ge_system_oil",
   "tg_system_oil",
