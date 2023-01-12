@@ -169,7 +169,7 @@ export const useDepartureCOSPReportStore = defineStore(
         ? +(
             Number(sbyToRupDistanceEng.value) +
             Number(distanceEngineTotal.value)
-          ).toFixed(2)
+          ).toFixed(0)
         : ""
     );
     const hoursTotal = computed(() =>
