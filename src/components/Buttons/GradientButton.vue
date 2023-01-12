@@ -3,11 +3,11 @@
     @click="onClick"
     class="text-white font-bold text-14 py-2 px-4 h-10 rounded-lg inline-flex items-center"
     :class="
-      disabled
-        ? 'bg-gray-500'
-        : 'bg-gradient-to-r from-gradientblue to-gradientgreen '
+      isDisabled
+        ? 'bg-gray-500 '
+        : 'bg-gradient-to-r from-gradientblue to-gradientgreen hover:bg-gradient-to-r hover:from-gradientgreen hover:to-gradientblue'
     "
-    :disabled="disabled"
+    :disabled="isDisabled"
   >
     <slot name="icon"></slot>
     <slot name="content">{{ $t("fallbackContent") }}</slot>
@@ -21,7 +21,7 @@ export default {
       type: Function,
       required: false,
     },
-    disabled: {
+    isDisabled: {
       type: Boolean,
       required: false,
     },

@@ -13,6 +13,7 @@ export const useAddVoyageQuery = (voyageData) => {
         })
         .catch((error) => {
           console.log(error.message);
-        })
+        }),
+    { refetchOnWindowFocus: false, retry: 1 }
   );
 };

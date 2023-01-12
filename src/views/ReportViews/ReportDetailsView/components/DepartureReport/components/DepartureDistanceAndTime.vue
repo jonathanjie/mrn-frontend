@@ -1,3 +1,28 @@
+<script setup>
+import { textInputOptions, format, preventNaN } from "@/utils/helpers.js";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
+import { storeToRefs } from "pinia";
+import { TIMEZONES } from "@/utils/options";
+
+const store = useDepartureCOSPReportStore();
+const {
+  reportingDateTime: reporting_date_time,
+  reportingTimeZone: reporting_time_zone,
+  rupEngLatDir: rup_eng_lat_dir,
+  rupEngLatDegree: rup_eng_lat_degree,
+  rupEngLatMinute: rup_eng_lat_minute,
+  rupEngLongDir: rup_eng_long_dir,
+  rupEngLongDegree: rup_eng_long_degree,
+  rupEngLongMinute: rup_eng_long_minute,
+  sbyToRupTime: sby_to_rup_time,
+  sbyToRupDistanceObs: sby_to_rup_distance_obs,
+  sbyToRupDistanceEng: sby_to_rup_distance_eng,
+  sbyToRupRevolutionCount: sby_to_rup_revolution_count,
+  sbyToRupSetRPM: sby_to_rup_set_rpm,
+} = storeToRefs(store);
+</script>
+
 <template>
   <div
     class="grid bg-white rounded-lg p-5 gap-4 divide-y divide-dashed shadow-card"
@@ -201,27 +226,4 @@
   </div>
 </template>
 
-<script setup>
-import { textInputOptions, format, preventNaN } from "@/utils/helpers.js";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
-import { storeToRefs } from "pinia";
-import { TIMEZONES } from "@/utils/options";
 
-const store = useDepartureCOSPReportStore();
-const {
-  reportingDateTime: reporting_date_time,
-  reportingTimeZone: reporting_time_zone,
-  rupEngLatDir: rup_eng_lat_dir,
-  rupEngLatDegree: rup_eng_lat_degree,
-  rupEngLatMinute: rup_eng_lat_minute,
-  rupEngLongDir: rup_eng_long_dir,
-  rupEngLongDegree: rup_eng_long_degree,
-  rupEngLongMinute: rup_eng_long_minute,
-  sbyToRupTime: sby_to_rup_time,
-  sbyToRupDistanceObs: sby_to_rup_distance_obs,
-  sbyToRupDistanceEng: sby_to_rup_distance_eng,
-  sbyToRupRevolutionCount: sby_to_rup_revolution_count,
-  sbyToRupSetRPM: sby_to_rup_set_rpm,
-} = storeToRefs(store);
-</script>

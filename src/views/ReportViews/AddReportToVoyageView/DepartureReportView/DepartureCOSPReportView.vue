@@ -27,15 +27,15 @@
     <!-- <CustomButton
           class="p-3 text-14"
           type="button"
-          v-on:click="saveChanges()"
+          @click="saveChanges()"
         >
           <template v-slot:content>{{ $t("saveChanges") }}</template>
         </CustomButton> -->
     <GradientButton
       class="p-3 text-14"
       type="button"
-      v-on:click="sendReport()"
-      :disabled="isSubmissionRequested"
+      @click="sendReport()"
+      :is-disabled="isSubmissionRequested"
     >
       <!-- TODO: need alternate function for saving changes to backend -->
       <template v-slot:content>{{ $t("sendReport") }}</template>
@@ -243,18 +243,15 @@ const sendReport = async () => {
       position: departureRupPosition,
     },
     distancetimedata: {
-      time: sbyToRupTime.value,
-      distance_obs: sbyToRupDistanceObs.value,
-      distance_eng: sbyToRupDistanceEng.value,
       revolution_count: sbyToRupRevolutionCount.value,
       set_rpm: sbyToRupSetRPM.value,
       distance_observed_since_last: sbyToRupDistanceObs.value,
       distance_observed_total: distanceObsTotal.value,
       distance_engine_since_last: sbyToRupDistanceEng.value,
       distance_engine_total: distanceEngTotal.value,
-      distance_to_go: distanceToGo.value,
+      distance_to_go: budgetDistance.value,
       hours_total: hoursTotal.value,
-      hours_since_last: hoursSinceLast.value,
+      hours_since_last: sbyToRupTime.value,
     },
     sailingplan: {
       distance_to_go: budgetDistance.value,

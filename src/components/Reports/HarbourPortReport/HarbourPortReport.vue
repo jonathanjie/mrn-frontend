@@ -131,11 +131,7 @@
       >
         <div class="flex align-center space-x-2">
           <input
-            :disabled="
-              report_subtype_is_noon ||
-              !START_STATUS.includes(status) ||
-              !planned_operations.includes('waiting')
-            "
+            :disabled="report_subtype_is_noon || !START_STATUS.includes(status)"
             type="checkbox"
             id="waiting"
             value="waiting"
@@ -145,9 +141,7 @@
           <label
             for="waiting"
             :class="
-              report_subtype_is_noon ||
-              !START_STATUS.includes(status) ||
-              !planned_operations.includes('waiting')
+              report_subtype_is_noon || !START_STATUS.includes(status)
                 ? 'text-gray-400'
                 : ''
             "

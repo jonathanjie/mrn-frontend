@@ -40,7 +40,7 @@
           <input
             v-model="loading"
             @keypress="preventNaN($event, loading)"
-            :placeholder="$t('inputDetails')"
+            placeholder="0"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
           <MiniUnitDisplay>{{ $t(cargoUnit) }}</MiniUnitDisplay>
@@ -55,7 +55,7 @@
           <input
             v-model="unloading"
             @keypress="preventNaN($event, unloading)"
-            :placeholder="$t('inputDetails')"
+            placeholder="0"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
           <MiniUnitDisplay>{{ $t(cargoUnit) }}</MiniUnitDisplay>
@@ -73,7 +73,7 @@
             v-model="total_amount"
             @keypress="preventNaN($event, total_amount)"
             :placeholder="$t('inputDetails')"
-            disabled
+            :disabled="!isFirstReport"
             class="w-24 bg-gray-50 text-14 text-gray-400 focus:outline-0"
           />
           <MiniUnitDisplay>{{ $t(cargoUnit) }}</MiniUnitDisplay>
@@ -88,7 +88,7 @@
           <input
             v-model="time"
             @keypress="preventNaN($event, time)"
-            :placeholder="$t('inputDetails')"
+            placeholder="0"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
           <MiniUnitDisplay>HRS</MiniUnitDisplay>
@@ -99,6 +99,7 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
@@ -113,5 +114,8 @@ const {
   totalAmount: total_amount,
   time: time,
   cargoUnit: cargoUnit,
+  legNo,
+  reportNo,
 } = storeToRefs(store);
+const isFirstReport = computed(() => reportNo == 1 && legNo == 1);
 </script>

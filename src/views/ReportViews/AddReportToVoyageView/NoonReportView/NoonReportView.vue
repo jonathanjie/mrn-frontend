@@ -34,15 +34,15 @@
       <!-- <CustomButton
         class="p-3 text-14"
         type="button"
-        v-on:click="saveChanges()"
+        @click="saveChanges()"
       >
         <template v-slot:content>{{ $t("saveChanges") }}</template>
       </CustomButton> -->
       <GradientButton
         class="p-3 text-14"
         type="button"
-        v-on:click="sendReport()"
-        :disabled="isSubmissionRequested"
+        @click="sendReport()"
+        :is-disabled="isSubmissionRequested"
       >
         <!-- TODO: need alternate function for saving changes to backend -->
         <template v-slot:content>{{ $t("sendReport") }}</template>
@@ -354,7 +354,6 @@ const sendReport = async () => {
     isSubmissionModalVisible.value = true;
   } catch (error) {
     console.log(error);
-    errorMessage.value = error.toString();
     isSubmissionModalVisible.value = true;
   }
 };

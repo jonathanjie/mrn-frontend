@@ -131,7 +131,7 @@ const wind_speed_beaufort = computed(() =>
         <option value="SW">{{ $t("dir_16_SW") }}</option>
         <option value="WSW">{{ $t("dir_16_WSW") }}</option>
         <option value="W">{{ $t("dir_16_W") }}</option>
-        <option value="NWN">{{ $t("dir_16_NWN") }}</option>
+        <option value="WNW">{{ $t("dir_16_WNW") }}</option>
         <option value="NW">{{ $t("dir_16_NW") }}</option>
         <option value="NNW">{{ $t("dir_16_NNW") }}</option>
       </select>

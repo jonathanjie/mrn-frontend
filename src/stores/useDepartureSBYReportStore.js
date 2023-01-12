@@ -112,7 +112,7 @@ export const useDepartureSBYReportStore = defineStore(
     const loadCondition = ref("default");
     const loading = ref("");
     const unloading = ref("");
-    const totalAmount = computed(
+    const totalAmountComputed = computed(
       () =>
         +(
           temp.prevCargoTotalAmount +
@@ -120,6 +120,7 @@ export const useDepartureSBYReportStore = defineStore(
           Number(unloading.value)
         ).toFixed(2)
     );
+    const totalAmountStatic = ref(0.0);
     const time = ref("");
     const cargoUnit = computed(
       () => crewShipDetails.value.shipspecs.cargo_unit
@@ -176,7 +177,7 @@ export const useDepartureSBYReportStore = defineStore(
       }
       return rtn;
     });
-    const fuelOilRobs = computed(() => {
+    const fuelOilRobsComputed = computed(() => {
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
         rtn[fuelOil] = +(
@@ -188,6 +189,7 @@ export const useDepartureSBYReportStore = defineStore(
       }
       return rtn;
     });
+    const fuelOilRobsStatic = reactive({});
     const fuelOilDataCorrection = reactive({
       type: "default",
       correction: "",
@@ -202,7 +204,7 @@ export const useDepartureSBYReportStore = defineStore(
         debunkering: "",
       };
     }
-    const lubricatingOilRobs = computed(() => {
+    const lubricatingOilRobsComputed = computed(() => {
       let rtn = {};
       for (const lubricatingOil of lubricatingOils.value) {
         rtn[lubricatingOil] = +(
@@ -214,6 +216,8 @@ export const useDepartureSBYReportStore = defineStore(
       }
       return rtn;
     });
+
+    const lubricatingOilRobsStatic = reactive({});
     const lubricatingOilDataCorrection = reactive({
       type: "default",
       correction: "",
@@ -227,13 +231,15 @@ export const useDepartureSBYReportStore = defineStore(
     const freshwaterChange = computed(
       () => +(freshwaterGenerated.value - freshwaterConsumed.value).toFixed(2)
     );
-    const freshwaterRob = computed(
+
+    const freshwaterRobComputed = computed(
       () =>
         (Number(prevFreshWaterRob.value) || 0) +
         Number(freshwaterReceiving.value) -
         Number(freshwaterDischarging.value) +
         freshwaterChange.value
     );
+    const freshwaterRobStatic = ref("");
 
     // Consumption and Condition (Total)
     const fuelOilBreakdownsSum = computed(() => {
@@ -297,7 +303,7 @@ export const useDepartureSBYReportStore = defineStore(
       }
       return rtn;
     });
-    const fuelOilRobsSum = fuelOilRobs;
+    const fuelOilRobsSum = fuelOilRobsComputed;
 
     const lubricatingOilBreakdownsSum = computed(() => {
       let rtn = {};
@@ -319,7 +325,7 @@ export const useDepartureSBYReportStore = defineStore(
       }
       return rtn;
     });
-    const lubricatingOilRobsSum = lubricatingOilRobs;
+    const lubricatingOilRobsSum = lubricatingOilRobsComputed;
 
     const freshwaterConsumedSum = computed(
       () =>
@@ -349,7 +355,7 @@ export const useDepartureSBYReportStore = defineStore(
       () =>
         +(freshwaterGeneratedSum.value - freshwaterConsumedSum.value).toFixed(2)
     );
-    const freshwaterRobSum = freshwaterRob;
+    const freshwaterRobSum = freshwaterRobComputed;
 
     return {
       isFetchingPrevData,
@@ -376,7 +382,8 @@ export const useDepartureSBYReportStore = defineStore(
       loadCondition,
       loading,
       unloading,
-      totalAmount,
+      totalAmountComputed,
+      totalAmountStatic,
       time,
       cargoUnit,
       // Vessel Condition at Departure
@@ -402,21 +409,24 @@ export const useDepartureSBYReportStore = defineStore(
       fuelOils,
       lubricatingOils,
       machinery,
-      fuelOilRobs,
+      fuelOilRobsComputed,
+      fuelOilRobsStatic,
       fuelOilBreakdowns,
       fuelOilReceipts,
       fuelOilDebunkerings,
       fuelOilTotalConsumptions,
       fuelOilDataCorrection,
+      lubricatingOilRobsComputed,
+      lubricatingOilRobsStatic,
       lubricatingOilBreakdowns,
-      lubricatingOilRobs,
       lubricatingOilDataCorrection,
       freshwaterConsumed,
       freshwaterGenerated,
       freshwaterReceiving,
       freshwaterDischarging,
       freshwaterChange,
-      freshwaterRob,
+      freshwaterRobComputed,
+      freshwaterRobStatic,
       // Consumption And Condition (Total)
       fuelOilRobsSum,
       fuelOilBreakdownsSum,

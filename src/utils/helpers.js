@@ -18,6 +18,10 @@ export const textInputOptions = ref({
 });
 
 export function format(date) {
+  if (date == null) {
+    return null;
+  }
+
   const day = ("0" + date.getDate()).slice(-2);
   const month = ("0" + (date.getMonth() + 1)).slice(-2);
   const year = date.getFullYear();
@@ -28,6 +32,10 @@ export function format(date) {
 }
 
 export function formatUTC(date) {
+  if (date == null) {
+    return null;
+  }
+  
   const day = ("0" + date.getUTCDate()).slice(-2);
   const month = ("0" + (date.getUTCMonth() + 1)).slice(-2);
   const year = date.getUTCFullYear();
@@ -93,6 +101,20 @@ export const parsePositionToString = ({
 };
 
 export const parsePositionFromString = (positionString) => {
+  if (
+    positionString == "" ||
+    (positionString == null) | (positionString == undefined)
+  ) {
+    return {
+      latDegree: "",
+      latMinutes: "",
+      latDir: "",
+      longDegree: "",
+      longMinutes: "",
+      longDir: "",
+    };
+  }
+
   const splitString = positionString.split(" ");
 
   const rawLat = splitString[1].slice(1);
@@ -119,6 +141,9 @@ export const convertLTToUTC = (date, offset) => {
   const userOffset = parseFloat(offset) * -60;
   const calcOffset = date.getTimezoneOffset();
 
+  if (date == null || date == "") {
+    return null;
+  }
   // calculate based on timezone input
   if (userOffset !== calcOffset) {
     date = new Date(
@@ -200,7 +225,7 @@ export const generateFuelOilData = (
       debunkering: debunkerings[fuelOil] || 0, // non-zero for DEP SBY & EVNT reports
       rob: rob[fuelOil] || 0, // zero for Arrival EOSP Total Consumption
       breakdown: Object.entries(fuelOilBreakdowns[fuelOil]).reduce(
-        (p, [k, v]) => ({ ...p, [k]: v || 0 }),
+        (p, [k, v]) => ({ ...p, [k]: Number(v) || 0 }),
         {}
       ),
       fueloildatacorrection:

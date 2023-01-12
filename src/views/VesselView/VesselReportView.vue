@@ -14,10 +14,10 @@
   </div> -->
   <div class="relative bg-gray-50 flex flex-col mt-12">
     <GradientButton
-      v-if="isSuccessLatestReportDetails && manager != true"
+      v-if="isSuccessLatestReportDetails && manager !== true"
       class="m-10 absolute right-0 -top-48"
       type="button"
-      :disabled="isAddVoyageLoading || !isAddVoyageEnabled"
+      :is-disabled="isAddVoyageLoading || !isAddVoyageEnabled"
       @click="addVoyage()"
     >
       <template v-slot:content>{{ $t("createNewVoyage") }}</template>
@@ -108,11 +108,11 @@ const addVoyage = async () => {
     if (voyages.value.length == 0) {
       do {
         var inputVoyage = parseInt(
-          prompt("Enter voyage number above 0", ""),
+          prompt("Enter initial voyage number above 0.", ""),
           10
         );
       } while (isNaN(inputVoyage) || inputVoyage < 1);
-      lastVoyageNo.value = Number(inputVoyage);
+      lastVoyageNo.value = Number(inputVoyage) - 1;
     } else {
       lastVoyageNo.value = Math.max(...voyages.value.map((v) => v.voyage_num));
     }

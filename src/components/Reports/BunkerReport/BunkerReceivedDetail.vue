@@ -101,7 +101,9 @@
           {{ $t("selectOil") }}
         </option>
         <option
-          v-for="(lubricatingOil, index) in lubricatingOils"
+          v-for="(lubricatingOil, index) in lubricatingOils.filter(
+            (oil) => oil !== LubricatingOil.ME_SUMP
+          )"
           :value="lubricatingOil"
           :key="index"
         >
@@ -142,16 +144,6 @@
       <input
         v-model="density"
         @keypress="preventNaN($event, density)"
-        placeholder="000.00"
-        class="col-span-6 p-3 pl-4 border-b text-gray-700 focus:outline-0"
-      />
-
-      <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50">
-        {{ $t("specificGravityAt15") }}
-      </div>
-      <input
-        v-model="sg"
-        @keypress="preventNaN($event, sg)"
         placeholder="000.00"
         class="col-span-6 p-3 pl-4 border-b text-gray-700 focus:outline-0"
       />
@@ -251,6 +243,7 @@ import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { useShipStore } from "@/stores/useShipStore";
+import { LubricatingOil } from "@/constants";
 
 const shipStore = useShipStore();
 const { fuelOils, lubricatingOils } = storeToRefs(shipStore);
@@ -261,7 +254,6 @@ const {
   oil: oil,
   quantity: quantity,
   density: density,
-  sg: sg,
   viscosity: viscosity,
   viscosityDegree: viscosity_degree,
   flashPoint: flash_point,

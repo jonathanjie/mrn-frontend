@@ -144,20 +144,13 @@
       >
         <div class="flex align-center space-x-2">
           <input
-            :disabled="!planned_operations.includes('waiting')"
             type="checkbox"
             id="waiting"
             value="waiting"
             v-model="operations"
             @click="resetOperations"
           />
-          <label
-            for="waiting"
-            :class="
-              planned_operations.includes('waiting') ? '' : 'text-gray-400'
-            "
-            >{{ $t("waiting") }}</label
-          >
+          <label for="waiting">{{ $t("waiting") }}</label>
         </div>
         <div
           v-for="(val, key) in OPERATIONS"
@@ -174,11 +167,7 @@
             :value="val"
             v-model="operations"
           />
-          <label
-            :for="val"
-            :class="planned_operations.includes(val) ? '' : 'text-gray-400'"
-            >{{ $t(key) }}</label
-          >
+          <label :for="val">{{ $t(key) }}</label>
         </div>
         <div v-if="other_planned_operation" class="flex align-center space-x-2">
           <input

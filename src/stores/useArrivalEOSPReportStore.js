@@ -151,9 +151,10 @@ export const useArrivalEOSPReportStore = defineStore(
     const distanceEngSinceNoon = computed(() =>
       revolutionCount.value
         ? +(
-            (Number(revolutionCount.value) - revolution_count.value) *
-            propellerPitch.value
-          ).toFixed(2)
+            ((Number(revolutionCount.value) - revolution_count.value) *
+              propellerPitch.value) /
+            1852
+          ).toFixed(0)
         : ""
     );
     const distanceEngTotal = computed(() =>
@@ -161,15 +162,15 @@ export const useArrivalEOSPReportStore = defineStore(
         ? +(
             Number(distanceEngSinceNoon.value) +
             Number(distanceEngineTotal.value)
-          ).toFixed(2)
+          ).toFixed(0)
         : ""
     );
-    const distanceToGo = computed(() =>
-      distanceObsSinceNoon.value
-        ? +(
-            Number(distance_to_go.value) - Number(distanceObsSinceNoon.value)
-          ).toFixed(2)
-        : ""
+    const distanceToGo = computed(
+      () =>
+        +(
+          Number(distance_to_go.value) -
+          (Number(distanceObsSinceNoon.value) || 0)
+        ).toFixed(2)
     );
     const distanceToGoEdited = ref(""); // use distanceToGoEdited instead of distanceToGo if distanceToGoEdited.value != distanceToGo.value
     const remarksForChanges = ref("");

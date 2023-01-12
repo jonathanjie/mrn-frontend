@@ -13,12 +13,12 @@
             class="flex items-center justify-between p-5 border-b border-solid border-slate-200 rounded-t"
           >
             <h3 class="text-3xl font-semibold">{{ $t("generalInfo") }}</h3>
-            <button
+            <!-- <button
               class="p-1 ml-auto bg-transparent border-0 text-black opacity-50 float-right text-3xl leading-none font-semibold"
               @click="close"
             >
               <span class="h-6 w-6 text-3xl block"> x </span>
-            </button>
+            </button> -->
           </div>
           <!--body-->
           <div class="relative flex-auto w-auto text-14 m-6 space-y-6">
@@ -103,7 +103,7 @@
               <p class="leading-relaxed mb-4 text-gray-700">
                 {{ $t("fuelOilOption") }}
               </p>
-              <div class="grid grid-cols-3 gap-2">
+              <div class="grid grid-cols-3 gap-2 items-center">
                 <div class="flex align-center">
                   <input
                     v-model="fuel_options[0]"
@@ -195,7 +195,7 @@
               <p class="leading-relaxed mb-4 text-gray-700">
                 {{ $t("lubricatingOilType") }}
               </p>
-              <div class="grid grid-cols-3 gap-5">
+              <div class="grid grid-cols-3 gap-5 items-center">
                 <div class="flex align-center">
                   <input
                     v-model="lubricating_oil_options[0]"
@@ -262,7 +262,7 @@
                     id="othersOil"
                     name="othersOil"
                     value="othersOil"
-                    v-on:click="lubricatingOthersFlag = !lubricatingOthersFlag"
+                    @click="lubricatingOthersFlag = !lubricatingOthersFlag"
                   />
                   <label class="ml-2 text-14 text-gray-700" for="othersOil">
                     {{ $t("others") }}
@@ -282,7 +282,7 @@
               <p class="leading-relaxed mb-4 text-gray-700">
                 {{ $t("machineryType") }}
               </p>
-              <div class="grid grid-cols-3 gap-5">
+              <div class="grid grid-cols-3 gap-5 items-center">
                 <div class="flex align-center">
                   <input
                     v-model="machinery_options[0]"
@@ -369,7 +369,7 @@
                 input="number"
                 v-model.lazy="propeller_pitch"
                 id="propellerPitch"
-                placeholder="Input number"
+                placeholder="0"
                 class="w-full p-3 pl-4 border bg-white text-14 text-gray-500 mt-2"
               />
             </div>
@@ -388,7 +388,7 @@
             <GradientButton
               class="px-6 py-2 text-14 mr-1 mb-1"
               type="button"
-              v-on:click="addSettings()"
+              @click="addSettings()"
             >
               <template v-slot:content>{{ $t("saveDetails") }}</template>
             </GradientButton>
@@ -413,7 +413,7 @@ let machineryOthersFlag = ref(true);
 const lubricatingOthers = ref("");
 const machineryOthers = ref("");
 
-const propeller_pitch = ref(0);
+const propeller_pitch = ref("");
 const ship_type = ref("");
 const cargo_unit = ref("");
 
@@ -452,6 +452,7 @@ const close = () => {
   console.log("Close modal");
   emit("close-modal");
 };
+
 const addSettings = () => {
   const settings = {
     flag: "Panama",
@@ -480,7 +481,8 @@ const addSettings = () => {
       emit("close-modal");
     })
     .catch((error) => {
-      console.log(error.message);
+      console.log(error.response);
+      alert(JSON.stringify(error.response.data));
     });
 };
 </script>

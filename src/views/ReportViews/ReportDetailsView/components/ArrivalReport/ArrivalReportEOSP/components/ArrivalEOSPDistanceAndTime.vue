@@ -14,31 +14,29 @@ const distanceToGoDisabled = ref(false);
 const edited = ref(false);
 
 const hours_since_noon = computed(
-  () => props.report.distanceperformancedata.hours_since_noon
+  () => props.report.distancetimedata.hours_since_last
 );
-const hours_total = computed(
-  () => props.report.distanceperformancedata.hours_total
-);
+const hours_total = computed(() => props.report.distancetimedata.hours_total);
 const distance_to_go = computed(
-  () => props.report.distanceperformancedata.distance_to_go
+  () => props.report.distancetimedata.distance_to_go
 );
 const remarks = computed(
-  () => props.report.distanceperformancedata.remarks_for_changes
+  () => props.report.distancetimedata.remarks_for_changes
 );
 const distance_obs_since_noon = computed(
-  () => props.report.distanceperformancedata.distance_observed_since_noon
+  () => props.report.distancetimedata.distance_observed_since_last
 );
 const distance_obs_total = computed(
-  () => props.report.distanceperformancedata.distance_observed_total
+  () => props.report.distancetimedata.distance_observed_total
 );
 const distance_eng_since_noon = computed(
-  () => props.report.distanceperformancedata.distance_engine_since_noon
+  () => props.report.distancetimedata.distance_engine_since_last
 );
 const distance_eng_total = computed(
-  () => props.report.distanceperformancedata.distance_engine_total
+  () => props.report.distancetimedata.distance_engine_total
 );
 const revolution_count = computed(
-  () => props.report.distanceperformancedata.revolution_count
+  () => props.report.distancetimedata.revolution_count
 );
 
 // const toggle = () => {

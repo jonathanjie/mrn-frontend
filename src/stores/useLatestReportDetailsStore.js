@@ -3,12 +3,15 @@ import { useLatestReportDetailsQuery } from "@/queries/useLatestReportDetailsQue
 import { useShipStore } from "./useShipStore";
 import { computed } from "vue";
 import { Report } from "@/constants";
+import { useVoyageStore } from "./useVoyageStore";
 
 export const useLatestReportDetailsStore = defineStore(
   "latestReportDetails",
   () => {
     const shipStore = useShipStore();
     const { imoReg } = storeToRefs(shipStore);
+    const voyageStore = useVoyageStore();
+    const { reports } = storeToRefs(voyageStore);
 
     const {
       refetch: refetchLatestReportDetails,
@@ -104,6 +107,12 @@ export const useLatestReportDetailsStore = defineStore(
         ? latestReportDetails.value.distance_to_go
         : ""
     );
+    const distanceSbyToCosp = computed(() =>
+      isSuccessLatestReportDetails.value &&
+      latestReportDetails.value.distance_standby_to_cosp
+        ? latestReportDetails.value.distance_standby_to_cosp
+        : ""
+    );
     const freshwaterRob = computed(() =>
       isSuccessLatestReportDetails.value &&
       latestReportDetails.value.freshwater_rob
@@ -163,9 +172,20 @@ export const useLatestReportDetailsStore = defineStore(
         : ""
     );
     const validReportTypes = computed(() => {
+      
+      if (reports.value.length == 0) {
+        return [Report.type.DEP_SBY];
+      }
       switch (lastReportType.value) {
         case Report.type.DEP_SBY:
-          return [Report.type.DEP_COSP_RUP, Report.type.BUNKER];
+          return [
+            Report.type.DEP_COSP_RUP,
+            Report.type.BUNKER,
+            Report.type.EVENT_HARBOUR,
+            Report.type.EVENT_PORT,
+            Report.type.NOON_HARBOUR,
+            Report.type.NOON_PORT,
+          ];
         case Report.type.DEP_COSP_RUP || Report.type.NOON:
           return [
             Report.type.NOON,
@@ -195,7 +215,6 @@ export const useLatestReportDetailsStore = defineStore(
         case Report.type.BUNKER:
           return [
             Report.type.DEP_SBY,
-            Report.type.DEP_COSP_RUP,
             Report.type.BUNKER,
             Report.type.EVENT_HARBOUR,
             Report.type.EVENT_PORT,
@@ -312,6 +331,7 @@ export const useLatestReportDetailsStore = defineStore(
       distanceEngineTotal,
       distanceObservedTotal,
       distanceToGo,
+      distanceSbyToCosp,
       freshwaterRob,
       fuelOilConsInHarbourPort,
       fuelOilConsPilotToPilot,

@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from "vue";
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 // import CustomButton from "@/components/Buttons/CustomButton.vue";
 import DepartureAndDestinationSBY from "@/components/Reports/DepartureReport/DepartureAndDestinationSBY.vue";
@@ -158,6 +159,8 @@ const sendReport = async () => {
     lubricatingOilRobsSum.value
   );
 
+  const isFirstReport = computed(() => reportNo == 1 && legNo == 1);
+
   const REPORT = {
     report_type: Report.type.DEP_SBY,
     voyage: voyageNo.value,
@@ -181,10 +184,10 @@ const sendReport = async () => {
     },
     cargooperation: {
       load_condition: loadCondition.value,
-      loading: loading.value,
-      unloading: unloading.value,
-      total: totalAmount.value,
-      time: time.value,
+      loading: loading.value || 0,
+      unloading: unloading.value || 0,
+      total: totalAmount.value || 0,
+      time: time.value || 0,
     },
     departurevesselcondition: {
       draft_fwd: draftFwd.value,
@@ -281,7 +284,7 @@ const sendReport = async () => {
     <DepartureSBYConsumption />
 
     <!-- Consumption & Condition (Harbour/In Port in Total) -->
-    <DepartureSBYTotalConsumption />
+    <DepartureSBYTotalConsumption v-if="!isFirstReport" />
   </div>
 
   <!-- Save and Send -->
@@ -289,15 +292,15 @@ const sendReport = async () => {
     <!-- <CustomButton
           class="p-3 text-14"
           type="button"
-          v-on:click="saveChanges()"
+          @click="saveChanges()"
         >
           <template v-slot:content>{{ $t("saveChanges") }}</template>
         </CustomButton> -->
     <GradientButton
       class="p-3 text-14"
       type="button"
-      v-on:click="sendReport()"
-      :disabled="isSubmissionRequested"
+      @click="sendReport()"
+      :is-disabled="isSubmissionRequested"
     >
       <!-- TODO: need alternate function for saving changes to backend -->
       <template v-slot:content>{{ $t("sendReport") }}</template>

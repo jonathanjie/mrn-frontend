@@ -90,7 +90,7 @@ import { useVoyageStore } from "@/stores/useVoyageStore";
 import { storeToRefs } from "pinia";
 import SubmissionResultsModal from "@/components/Modals/SubmissionResultsModal.vue";
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
-// import { onBeforeRouteLeave } from "vue-router";
+import { onBeforeRouteLeave } from "vue-router";
 import { useLatestReportDetailsStore } from "@/stores/useLatestReportDetailsStore";
 import { Report } from "@/constants";
 
@@ -156,7 +156,12 @@ lastNooncReportNo.value = voyageDetails.last_noonc_report_no;
 //   const answer = window.confirm(
 //     "Do you really want to leave? You have unsaved changes!"
 //   );
+//   // router.push({ name: "vessel-reports" });
 //   // cancel the navigation and stay on the same page
 //   if (!answer) return false;
 // });
+addEventListener("beforeunload", (event) => {
+  event.preventDefault();
+  router.push({ name: "vessel-reports" });
+});
 </script>

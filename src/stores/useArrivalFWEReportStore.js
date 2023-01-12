@@ -36,7 +36,6 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     lastReportDate,
     distanceObservedTotal,
     distanceEngineTotal,
-    distanceToGo: distance_to_go,
     revolutionCount: revolution_count,
     propellerPitch,
     fuelOilRobs: fuel_oil_robs,
@@ -114,9 +113,10 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   const distanceEng = computed(() =>
     revolutionCount.value
       ? +(
-          (Number(revolutionCount.value) - Number(revolution_count.value)) *
-          Number(propellerPitch.value)
-        ).toFixed(2)
+          ((Number(revolutionCount.value) - Number(revolution_count.value)) *
+            Number(propellerPitch.value)) /
+          1852
+        ).toFixed(0)
       : ""
   );
   const distanceObsTotal = computed(() =>
@@ -130,7 +130,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     distanceEng.value
       ? +(
           Number(distanceEng.value) + Number(distanceEngineTotal.value)
-        ).toFixed(2)
+        ).toFixed(0)
       : ""
   );
   const revolutionCount = ref("");
@@ -150,11 +150,6 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
             Date.parse(departureDate.value)) /
           36e5
         ).toFixed(0)
-      : ""
-  );
-  const distanceToGo = computed(() =>
-    distanceObs.value
-      ? +(Number(distance_to_go.value) - Number(distanceObs.value)).toFixed(2)
       : ""
   );
 
@@ -326,7 +321,6 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     distanceObsTotal,
     distanceEngTotal,
     hoursTotal,
-    distanceToGo,
     // Consumption and Condition
     fuelOils,
     lubricatingOils,

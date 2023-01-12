@@ -11,17 +11,21 @@ import {
 import { readableUTCDate } from "@/utils/helpers";
 import { useRouter } from "vue-router";
 import { useLatestReportDetailsStore } from "@/stores/useLatestReportDetailsStore";
+import { useVoyageStore } from "@/stores/useVoyageStore";
+import { storeToRefs } from "pinia";
 
 const router = useRouter();
 const auth = useAuthStore();
 const latestReportDetailsStore = useLatestReportDetailsStore();
 const { refetchLatestReportDetails } = latestReportDetailsStore;
+const voyageStore = useVoyageStore();
+const { reports: storeReports } = storeToRefs(voyageStore);
 
 const props = defineProps({
   voyage: {
     type: Object,
     required: true,
-    default: {},
+    default: () => {},
   },
   isInitiallyOpen: {
     type: Boolean,
@@ -30,16 +34,18 @@ const props = defineProps({
   },
 });
 
-const reports = props.voyage.reports;
-const lastReportIndex = reports.length - 1;
+const reports = computed(() => props.voyage.reports);
+// console.log("reports: ", reports.value);
+
+const lastReportIndex = reports.value.length - 1;
 const lastLegNo = reports[lastReportIndex]?.voyage_leg?.leg_num;
 const lastLegUuid = reports[lastReportIndex]?.voyage_leg?.uuid;
-const start = reports[0]?.voyage_leg?.departure_port || "N/A";
+const start = reports.value[0]?.voyage_leg?.departure_port || "N/A";
 const mid = "At Sea";
-const dest = reports[lastReportIndex]?.voyage_leg?.arrival_port || "N/A"; // make dynamic when leg_uuid added to report header
+const dest = reports.value[lastReportIndex]?.voyage_leg?.arrival_port || "N/A"; // make dynamic when leg_uuid added to report header
 
 let lastReportNo = {};
-for (let report of reports) {
+for (let report of reports.value) {
   lastReportNo[report.report_type] = report.report_num; // update most recent report no for each type
 }
 
@@ -75,6 +81,8 @@ const filteredData = computed(() => {
 
 const handleClick = async () => {
   // console.log("im clicked");
+  // console.log("reports: ", reports.value);
+  storeReports.value = reports.value;
   await refetchLatestReportDetails();
   router.push({
     name: "add-report",

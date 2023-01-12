@@ -35,15 +35,15 @@
       <!-- <CustomButton
         class="p-3 text-14"
         type="button"
-        v-on:click="saveChanges()"
+        @click="saveChanges()"
       >
         <template v-slot:content>{{ $t("saveChanges") }}</template>
       </CustomButton> -->
       <GradientButton
         class="p-3 text-14"
         type="button"
-        v-on:click="sendReport()"
-        :disabled="isSubmissionRequested"
+        @click="sendReport()"
+        :is-disabled="isSubmissionRequested"
       >
         <!-- TODO: need alternate function for saving changes to backend -->
         <template v-slot:content>{{ $t("sendReport") }}</template>
@@ -190,7 +190,7 @@ const sendReport = async () => {
       time: reportingDateTimeUTC.value,
       timezone: reportingTimeZone.value,
       position: position,
-      distance_travelled: distanceTravelled.value,
+      distance_travelled: distanceTravelled.value || 0,
       parking_status: status.value,
     },
     plannedoperations: {

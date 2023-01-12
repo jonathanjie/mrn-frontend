@@ -87,10 +87,18 @@
               placeholder="0"
               class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
             />
+            <input
+              v-if="isFirstReport"
+              v-model="fue[fuelOil]"
+              @keypress="preventNaN($event, fuelOilRobsStatic[fuelOil])"
+              placeholder="0"
+              class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+            />
             <div
+              v-else
               class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25"
             >
-              {{ fuel_oil_robs[fuelOil] }}
+              {{ fuelOilRobsComputed[fuelOil] }}
             </div>
           </span>
         </div>
@@ -251,10 +259,20 @@
               placeholder="0"
               class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
             />
+            <input
+              v-if="isFirstReport"
+              v-model="lubricatingOilRobsStatic[lubricatingOil]"
+              @keypress="
+                preventNaN($event, lubricatingOilRobsStatic[lubricatingOil])
+              "
+              placeholder="0"
+              class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+            />
             <div
+              v-else
               class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25"
             >
-              {{ lubricating_oil_robs[lubricatingOil] }}
+              {{ lubricatingOilRobsComputed[lubricatingOil] }}
             </div>
           </span>
         </div>
@@ -401,10 +419,19 @@
             placeholder="0"
             class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
           />
+          <input
+            v-if="isFirstReport"
+            v-model="freshwaterRobStatic"
+            disabled=""
+            @keypress="preventNaN($event, freshwater_discharging)"
+            placeholder="0"
+            class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
+          />
           <div
+            v-else
             class="col-span-1 text-gray-400 p-3 border-y border-x bg-gray-25"
           >
-            {{ freshwater_rob }}
+            {{ freshwaterRobComputed }}
           </div>
         </div>
       </div>
@@ -414,7 +441,7 @@
 
 <script setup>
 import { preventNaN } from "@/utils/helpers";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 import { storeToRefs } from "pinia";
@@ -427,8 +454,14 @@ const {
   fuelOils,
   lubricatingOils,
   machinery,
+  // Overview
+  reportNo,
+  legNo,
   // fuel oil
   fuelOilTotalConsumptions: fuel_oil_total_consumptions,
+  // fuelOilRobs: fuel_oil_robs,
+  fuelOilRobsComputed,
+  fuelOilRobsStatic,
   fuelOilRobs: fuel_oil_robs,
   fuelOilBreakdowns: fuel_oil_breakdowns,
   fuelOilReceipts: fuel_oil_receipts,
@@ -436,7 +469,8 @@ const {
   fuelOilDataCorrection: fuel_oil_data_correction,
   // lubricating oil
   lubricatingOilBreakdowns: lubricating_oil_breakdowns,
-  lubricatingOilRobs: lubricating_oil_robs,
+  lubricatingOilRobsComputed,
+  lubricatingOilRobsStatic,
   lubricatingOilDataCorrection: lubricating_oil_data_correction,
   // fresh water
   freshwaterConsumed: freshwater_consumed,
@@ -444,8 +478,11 @@ const {
   freshwaterChange: freshwater_change,
   freshwaterReceiving: freshwater_receiving,
   freshwaterDischarging: freshwater_discharging,
-  freshwaterRob: freshwater_rob,
+  freshwaterRobComputed,
+  freshwaterRobStatic,
 } = storeToRefs(store);
+
+const isFirstReport = computed(() => reportNo == 1 && legNo == 1);
 
 const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
 </script>

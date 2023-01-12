@@ -111,6 +111,10 @@ const {
 } = storeToRefs(store);
 
 const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
+
+console.log(fuelOils.value);
+console.log(lubricatingOils.value);
+console.log(machinery.value);
 </script>
 
 <template>
