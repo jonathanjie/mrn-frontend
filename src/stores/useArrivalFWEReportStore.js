@@ -105,8 +105,8 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
       ? +(
           (Date.parse(reportingDateTimeUTC.value) -
             Date.parse(lastReportDate.value)) /
-          (1000 * 60 * 60)
-        ).toFixed(0)
+          36e5
+        ).toFixed(2)
       : ""
   );
   const distanceObs = ref("");
@@ -139,8 +139,8 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
       ? +(
           (Date.parse(reportingDateTimeUTC.value) -
             Date.parse(lastReportDate.value)) /
-          (1000 * 60 * 60)
-        ).toFixed(0)
+          36e5
+        ).toFixed(2)
       : ""
   );
   const hoursTotal = computed(() =>
@@ -149,7 +149,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
           (Date.parse(reportingDateTimeUTC.value) -
             Date.parse(departureDate.value)) /
           36e5
-        ).toFixed(0)
+        ).toFixed(2)
       : ""
   );
 
@@ -233,8 +233,8 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
       ? +(
           (Date.parse(reportingDateTimeUTC.value) -
             Date.parse(departureDate.value)) /
-          (1000 * 60 * 60)
-        ).toFixed(0)
+          36e5
+        ).toFixed(2)
       : ""
   );
   const fuelOilBreakdownsSum = computed(() => {

@@ -155,8 +155,8 @@ export const useNoonReportStore = defineStore("noonReport", () => {
       ? +(
           (Date.parse(reportingDateTimeUTC.value) -
             Date.parse(lastReportDate.value)) /
-          (1000 * 60 * 60)
-        ).toFixed(0)
+          36e5
+        ).toFixed(2)
       : ""
   );
   const hoursTotal = computed(() =>
@@ -165,7 +165,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
           (Date.parse(reportingDateTimeUTC.value) -
             Date.parse(departureDate.value)) /
           36e5
-        ).toFixed(0)
+        ).toFixed(2)
       : ""
   );
   const distanceObsSinceNoon = ref("");

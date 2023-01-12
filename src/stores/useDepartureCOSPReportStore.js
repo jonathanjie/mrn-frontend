@@ -148,8 +148,8 @@ export const useDepartureCOSPReportStore = defineStore(
         ? +(
             (Date.parse(reportingDateTimeUTC.value) -
               Date.parse(departureDateTimeUTC.value)) /
-            (1000 * 60 * 60)
-          ).toFixed(0)
+            36e5
+          ).toFixed(2)
         : ""
     );
     const sbyToRupDistanceObs = ref("");
@@ -178,7 +178,7 @@ export const useDepartureCOSPReportStore = defineStore(
             (Date.parse(reportingDateTimeUTC.value) -
               Date.parse(departureDateTimeUTC.value)) /
             36e5
-          ).toFixed(0)
+          ).toFixed(2)
         : ""
     );
     // Sailing Plan (Pilot to Pilot)
