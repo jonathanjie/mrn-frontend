@@ -11,7 +11,7 @@ export const useLatestReportDetailsStore = defineStore(
     const shipStore = useShipStore();
     const { imoReg } = storeToRefs(shipStore);
     const voyageStore = useVoyageStore();
-    const { reports } = storeToRefs(voyageStore);
+    const { voyageLegs } = storeToRefs(voyageStore);
 
     const {
       refetch: refetchLatestReportDetails,
@@ -172,8 +172,7 @@ export const useLatestReportDetailsStore = defineStore(
         : ""
     );
     const validReportTypes = computed(() => {
-      
-      if (reports.value.length == 0) {
+      if (voyageLegs.value.length == 0) {
         return [Report.type.DEP_SBY];
       }
       switch (lastReportType.value) {

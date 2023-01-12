@@ -19,7 +19,7 @@ const auth = useAuthStore();
 const latestReportDetailsStore = useLatestReportDetailsStore();
 const { refetchLatestReportDetails } = latestReportDetailsStore;
 const voyageStore = useVoyageStore();
-const { reports: storeReports } = storeToRefs(voyageStore);
+const { voyageLegs: storedVoyageLegs } = storeToRefs(voyageStore);
 
 const props = defineProps({
   voyage: {
@@ -34,8 +34,12 @@ const props = defineProps({
   },
 });
 
-const reports = computed(() => props.voyage.reports);
+const voyageLegs = computed(() => props.voyage.voyage_legs);
 // console.log("reports: ", reports.value);
+const reports = computed(() =>
+  props.voyage.voyage_legs.reduce((acc, curr) => curr.reports.concat(acc), [])
+);
+console.log("reports ",reports.value)
 
 const lastReportIndex = reports.value.length - 1;
 const lastLegNo = reports[lastReportIndex]?.voyage_leg?.leg_num;
@@ -72,17 +76,17 @@ const filter = ref(ReportFilterCategories.ALL);
 
 const filteredData = computed(() => {
   if (!filter.value || filter.value == ReportFilterCategories.ALL) {
-    return props.voyage.reports;
+    return reports.value;
   }
-  return props.voyage.reports.filter(
+  return reports.value.filter(
     (p) => ReportTypeToFilterCategories[p.report_type] === filter.value
   );
 });
 
+console.log(filteredData.value)
+
 const handleClick = async () => {
-  // console.log("im clicked");
-  // console.log("reports: ", reports.value);
-  storeReports.value = reports.value;
+  storedVoyageLegs.value = voyageLegs.value;
   await refetchLatestReportDetails();
   router.push({
     name: "add-report",

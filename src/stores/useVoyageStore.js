@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 
 export const useVoyageStore = defineStore("voyage", () => {
-  const reports = ref("");
+  const voyageLegs = ref([]);
   const voyageUuid = ref("");
   const legUuid = ref("");
 
@@ -57,7 +57,7 @@ export const useVoyageStore = defineStore("voyage", () => {
 
   // TODO: get reportroute from voyage
   return {
-    reports,
+    voyageLegs,
     voyageUuid,
     legUuid,
     curLoadingCondition,

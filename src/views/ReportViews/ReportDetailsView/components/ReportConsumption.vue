@@ -37,6 +37,7 @@ const fuelMachineTypes = computed(() =>
     props.report.consumptionconditiondata.fueloildata_set[0].breakdown
   )
 );
+console.log("fuel machine types: ", fuelMachineTypes.value);
 
 // Fuel Consumption
 const fuelOilDataSet = computed(
