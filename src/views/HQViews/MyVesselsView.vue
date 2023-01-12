@@ -232,6 +232,16 @@
     <hr class="mt-6 w-full bg-gray-200" />
     <!-- Pagination module -->
     <div class="hidden flex justify-center">12345678910</div>
+    <div class="class flex px-12 pt-12-w-full">
+      <span class="text-20 font-strong text-blue-800"
+        >Vessel Report Summary</span
+      >
+      <VesselReportCard
+        v-for="(vessel, index) in vesselReport"
+        :key="index"
+        :Something="vessel"
+      />
+    </div>
   </div>
 </template>
 
@@ -239,6 +249,7 @@
 import MyVesselsDashboardIcon from "@/views/HQViews/components/MyVesselsDashboardIcon.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 import VesselCard from "@/views/HQViews/components/VesselCard.vue";
+import VesselReportCard from "./components/VesselReportCard.vue";
 import { useHQStore } from "@/stores/useHQStore";
 import constants from "@/constants";
 
@@ -276,6 +287,33 @@ const reportStatus = (lastReportDate) => {
 // const vesselStatus = (lastReportType) => {
 
 // }
+
+const vesselReport = {
+  vessel_name: "FC ADONIS",
+  date: "0900LT 20 OCT 2022",
+  arrival_port: "Yokkaichi, Japan",
+  arrival_date: "20000LT, 24 OCT 2022",
+  speed_since_last: "12.8",
+  rpm_since_last: "170",
+  speed_average: "12.57",
+  weather: "Cloudy",
+  wind_direction: "ENE",
+  wind_speed: "7kn(BF3)",
+  sea_direction: "EN",
+  sea_state: "6kn(Condition 3)",
+  distance_to_go: "700",
+  distance_total: "1000",
+  fuel_type: {
+    lsfo: {
+      foc: "14.2",
+      rob: "132.36",
+    },
+    mgo: {
+      foc: "0",
+      rob: "58.71",
+    },
+  },
+};
 
 const dateConverter = (date) => {
   if (date === undefined) {

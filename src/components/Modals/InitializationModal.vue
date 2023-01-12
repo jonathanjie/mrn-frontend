@@ -475,14 +475,13 @@ const addSettings = () => {
     propeller_pitch: propeller_pitch.value,
   };
 
-  console.log("Init modal", JSON.stringify(settings));
-  // axios
-  //   .post(`${UrlDomain.DEV}/marinanet/ships/`, settings)
-  //   .then(() => {
-  //     emit("close-modal");
-  //   })
-  //   .catch((error) => {
-  //     console.log(error.message);
-  //   });
+  axios
+    .post(`${UrlDomain.DEV}/marinanet/ships/`, settings)
+    .then(() => {
+      emit("close-modal");
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 };
 </script>
