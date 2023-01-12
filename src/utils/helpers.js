@@ -93,6 +93,20 @@ export const parsePositionToString = ({
 };
 
 export const parsePositionFromString = (positionString) => {
+  if (
+    positionString == "" ||
+    (positionString == null) | (positionString == undefined)
+  ) {
+    return {
+      latDegree: "",
+      latMinutes: "",
+      latDir: "",
+      longDegree: "",
+      longMinutes: "",
+      longDir: "",
+    };
+  }
+
   const splitString = positionString.split(" ");
 
   const rawLat = splitString[1].slice(1);

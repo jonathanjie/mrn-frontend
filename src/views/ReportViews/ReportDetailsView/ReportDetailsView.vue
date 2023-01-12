@@ -28,6 +28,7 @@ const { getReportQuery } = store;
 // });
 
 const { isSuccess, isFetching, data: report } = getReportQuery(props.uuid);
+
 // Event Handlers
 const handleBack = () => {
   router.push({ name: "vessel-reports" });

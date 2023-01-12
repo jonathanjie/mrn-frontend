@@ -3,14 +3,17 @@ import axios from "axios";
 import { UrlDomain } from "@/constants";
 
 export const useVoyageQuery = (imo) => {
-  return useQuery(["voyages"], async () =>
-    axios
-      .get(`${UrlDomain.DEV}/marinanet/ships/${imo}/voyages/`)
-      .then((response) => {
-        return response.data;
-      })
-      .catch((error) => {
-        console.log(error.message);
-      })
+  return useQuery(
+    ["voyages"],
+    async () =>
+      axios
+        .get(`${UrlDomain.DEV}/marinanet/ships/${imo}/voyages/`)
+        .then((response) => {
+          return response.data;
+        })
+        .catch((error) => {
+          console.log(error.message);
+        }),
+    { refetchOnWindowFocus: false, retry: 1 }
   );
 };

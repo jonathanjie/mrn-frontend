@@ -5,6 +5,7 @@ import {
   preventNaN,
   textInputOptions,
   format,
+  parsePositionFromString,
   // formatUTC,
 } from "@/utils/helpers.js";
 import {
@@ -44,7 +45,9 @@ const plannedOperations = computed(
 const otherPlannedOperation = computed(
   () => props.report.eventdata.plannedoperations?.others ?? false
 );
-const position = computed(() => props.report.eventdata.position);
+const position = computed(() =>
+  parsePositionFromString(props.report.eventdata.position)
+);
 
 // const reporting_date_time_utc = computed(() =>
 //   reportingDateTimeUTC.value
