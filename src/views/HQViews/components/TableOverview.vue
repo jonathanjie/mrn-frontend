@@ -305,9 +305,7 @@ for (let report in data) {
   let date = new Date(obj.report_date).toDateString().split(" ");
   dateList.push(date[2] + " " + date[1]);
   reportType.push(obj.report_type ?? "");
-  console.log("The code reached here");
   speedList.push(obj.speed ?? "0");
-  console.log("Did the code reached here");
   distanceOBSList.push(obj.distance_observed ?? "0");
   distanceToGoList.push(obj.distance_to_go ?? "0");
   for (let fuel_type in obj.fuel_stats) {

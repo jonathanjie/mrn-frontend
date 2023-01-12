@@ -201,13 +201,23 @@
     <div v-if="isSuccess" class="flex flex-col">
       <VesselCard
         v-for="(ship, i) in ships"
-        :key="ship.name + ship.imo_reg + i"
-        :vesselName="ship.name"
-        :loadType="shipRef[ship.ship_type]"
-        :imoNo="ship.imo_reg"
-        :vesselStatus="vessel.vesselStatus"
-        :flag="ship.flag"
-        :shipSize="ship.deadweight_tonnage"
+        :key="i"
+        :vesselName="ship.name == null ? 'Invalid Ship' : ship.name"
+        :loadType="
+          ship.ship_type == null ? 'Invalid Ship' : shipRef[ship.ship_type]
+        "
+        :imoNo="ship.imo_reg == null ? 'Invalid Ship' : ship.imo_reg"
+        :vesselStatus="
+          ship_last_report_type == null
+            ? 'No report uploaded'
+            : vesselStatus(ship_last_report_type)
+        "
+        :flag="ship.flag == null ? 'Invalid Ship' : ship_flag"
+        :shipSize="
+          ship.deadweight_tonnage == null
+            ? 'Invalid Ship'
+            : ship.deadweight_tonnage
+        "
         :loadingCondition="
           ship.load_condition != null
             ? ship.load_condition
@@ -232,7 +242,7 @@
     <hr class="mt-6 w-full bg-gray-200" />
     <!-- Pagination module -->
     <div class="hidden flex justify-center">12345678910</div>
-    <div class="class flex px-12 pt-12-w-full">
+    <!-- <div class="class flex px-12 pt-12-w-full">
       <span class="text-20 font-strong text-blue-800"
         >Vessel Report Summary</span
       >
@@ -241,7 +251,7 @@
         :key="index"
         :Something="vessel"
       />
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -249,7 +259,7 @@
 import MyVesselsDashboardIcon from "@/views/HQViews/components/MyVesselsDashboardIcon.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 import VesselCard from "@/views/HQViews/components/VesselCard.vue";
-import VesselReportCard from "./components/VesselReportCard.vue";
+// import VesselReportCard from "./components/VesselReportCard.vue";
 import { useHQStore } from "@/stores/useHQStore";
 import constants from "@/constants";
 
@@ -284,9 +294,21 @@ const reportStatus = (lastReportDate) => {
   }
 };
 
-// const vesselStatus = (lastReportType) => {
+// const reportType = {
+//   NOON: "sailing",
+//   DSBY: "sailing",
+//   DCSP: "sailing",
+//   ASBY: "sailing",
+//   AFWE: "waiting",
+//   BDN: "waiting",
 
-// }
+//   EVPO: "waiting" -> follow operation,
+//   EVHB: "waiting" -> follow operation,
+//   NNPO: "waiting" -> follow operation,
+//   NNHB: "in port" -> follow operation,
+// };
+
+const vesselStatus = (lastReportType) => {};
 
 const vesselReport = {
   vessel_name: "FC ADONIS",
