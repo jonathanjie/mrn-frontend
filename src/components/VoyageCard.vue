@@ -11,11 +11,15 @@ import {
 import { readableUTCDate } from "@/utils/helpers";
 import { useRouter } from "vue-router";
 import { useLatestReportDetailsStore } from "@/stores/useLatestReportDetailsStore";
+import { useVoyageStore } from "@/stores/useVoyageStore";
+import { storeToRefs } from "pinia";
 
 const router = useRouter();
 const auth = useAuthStore();
 const latestReportDetailsStore = useLatestReportDetailsStore();
 const { refetchLatestReportDetails } = latestReportDetailsStore;
+const voyageStore = useVoyageStore();
+const { reports: storeReports } = storeToRefs(voyageStore);
 
 const props = defineProps({
   voyage: {
@@ -30,11 +34,12 @@ const props = defineProps({
   },
 });
 
-const reports = props.voyage.reports;
-const lastReportIndex = reports.length - 1;
+const reports = computed(() => props.voyage.reports);
+storeReports.value = reports.value;
+const lastReportIndex = reports.value.length - 1;
 const lastLegNo = reports[lastReportIndex]?.voyage_leg?.leg_num;
 const lastLegUuid = reports[lastReportIndex]?.voyage_leg?.uuid;
-const start = reports[0]?.voyage_leg?.departure_port || "N/A";
+const start = reports.value[0]?.voyage_leg?.departure_port || "N/A";
 const mid = "At Sea";
 const dest = reports[lastReportIndex]?.voyage_leg?.arrival_port || "N/A"; // make dynamic when leg_uuid added to report header
 

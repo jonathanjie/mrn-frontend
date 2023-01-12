@@ -3,12 +3,15 @@ import { useLatestReportDetailsQuery } from "@/queries/useLatestReportDetailsQue
 import { useShipStore } from "./useShipStore";
 import { computed } from "vue";
 import { Report } from "@/constants";
+import { useVoyageStore } from "./useVoyageStore";
 
 export const useLatestReportDetailsStore = defineStore(
   "latestReportDetails",
   () => {
     const shipStore = useShipStore();
     const { imoReg } = storeToRefs(shipStore);
+    const voyageStore = useVoyageStore;
+    const { reports } = storeToRefs(voyageStore);
 
     const {
       refetch: refetchLatestReportDetails,
@@ -169,6 +172,9 @@ export const useLatestReportDetailsStore = defineStore(
         : ""
     );
     const validReportTypes = computed(() => {
+      if (reports.value.length == 0) {
+        return [Report.type.DEP_SBY];
+      }
       switch (lastReportType.value) {
         case Report.type.DEP_SBY:
           return [
