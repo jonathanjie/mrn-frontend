@@ -154,7 +154,7 @@ export const useArrivalEOSPReportStore = defineStore(
             ((Number(revolutionCount.value) - revolution_count.value) *
               propellerPitch.value) /
             1852
-          ).toFixed(2)
+          ).toFixed(0)
         : ""
     );
     const distanceEngTotal = computed(() =>
@@ -162,7 +162,7 @@ export const useArrivalEOSPReportStore = defineStore(
         ? +(
             Number(distanceEngSinceNoon.value) +
             Number(distanceEngineTotal.value)
-          ).toFixed(2)
+          ).toFixed(0)
         : ""
     );
     const distanceToGo = computed(

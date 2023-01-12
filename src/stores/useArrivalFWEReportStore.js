@@ -117,7 +117,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
           ((Number(revolutionCount.value) - Number(revolution_count.value)) *
             Number(propellerPitch.value)) /
           1852
-        ).toFixed(2)
+        ).toFixed(0)
       : ""
   );
   const distanceObsTotal = computed(() =>
@@ -131,7 +131,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     distanceEng.value
       ? +(
           Number(distanceEng.value) + Number(distanceEngineTotal.value)
-        ).toFixed(2)
+        ).toFixed(0)
       : ""
   );
   const revolutionCount = ref("");
