@@ -190,7 +190,7 @@ const sendReport = async () => {
       time: reportingDateTimeUTC.value,
       timezone: reportingTimeZone.value,
       position: position,
-      distance_travelled: distanceTravelled.value,
+      distance_travelled: distanceTravelled.value || 0,
       parking_status: status.value,
     },
     plannedoperations: {

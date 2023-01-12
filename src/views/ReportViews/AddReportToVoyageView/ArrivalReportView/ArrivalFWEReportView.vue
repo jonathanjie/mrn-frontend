@@ -224,7 +224,7 @@ const sendReport = async () => {
       distance_observed_total: distanceObsTotal.value,
       distance_engine_since_last: distanceEng.value,
       distance_engine_total: distanceEngTotal.value,
-      distance_to_go: distanceToGo.value,
+      distance_to_go: 0,
       hours_total: hoursTotal.value,
       hours_since_last: hours.value,
     },

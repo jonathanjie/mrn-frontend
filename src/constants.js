@@ -73,7 +73,7 @@ export const ErrorFieldsToDisplay = {
   arrivalpilotstation: "Pilot Station - Arrival",
   departurerunup: "R/UP Engine",
   distancetimedata: "Distance & Time",
-  transoceanicbudget: "Budget Trans Ocean",
+  sailingplan: "Sailing Plam",
   actualperformancedata: "Actual Performance",
   arrivalstandbytimeandposition: "S/BY for Arrival",
   heavyweatherdata: "Heavy Weather Condition",

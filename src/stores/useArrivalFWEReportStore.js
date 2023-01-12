@@ -36,7 +36,6 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     lastReportDate,
     distanceObservedTotal,
     distanceEngineTotal,
-    distanceToGo: distance_to_go,
     revolutionCount: revolution_count,
     propellerPitch,
     fuelOilRobs: fuel_oil_robs,
@@ -152,12 +151,6 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
           36e5
         ).toFixed(0)
       : ""
-  );
-  const distanceToGo = computed(
-    () =>
-      +(
-        Number(distance_to_go.value) - (Number(distanceObs.value) || 0)
-      ).toFixed(2)
   );
 
   // Consumption & Condition (S/BY to F.W.E)
@@ -328,7 +321,6 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     distanceObsTotal,
     distanceEngTotal,
     hoursTotal,
-    distanceToGo,
     // Consumption and Condition
     fuelOils,
     lubricatingOils,
