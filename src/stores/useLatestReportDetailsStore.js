@@ -185,7 +185,16 @@ export const useLatestReportDetailsStore = defineStore(
             Report.type.NOON_HARBOUR,
             Report.type.NOON_PORT,
           ];
-        case Report.type.DEP_COSP_RUP || Report.type.NOON:
+        case Report.type.DEP_COSP_RUP:
+          return [
+            Report.type.NOON,
+            Report.type.ARR_SBY_EOSP,
+            Report.type.EVENT_HARBOUR,
+            Report.type.EVENT_PORT,
+            Report.type.NOON_HARBOUR,
+            Report.type.NOON_PORT,
+          ];
+        case Report.type.NOON:
           return [
             Report.type.NOON,
             Report.type.ARR_SBY_EOSP,
