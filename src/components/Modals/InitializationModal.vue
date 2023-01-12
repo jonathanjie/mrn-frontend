@@ -475,7 +475,7 @@ const addSettings = () => {
   };
   console.log("Init modal data", JSON.stringify(settings));
   axios
-    .post(`${UrlDomain.DEV}/marinanet/ships/`, settings)
+    .post(`${UrlDomain.DEV}/marinanet/ships/${props.imo}/specs/`, settings)
     .then(() => {
       emit("close-modal");
     })

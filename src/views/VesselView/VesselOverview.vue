@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full px-12 p-10">
+  <div v-if="statsSuccess && stats[0] != undefined" class="w-full px-12 p-10">
     <div class="flex justify-between items-center mb-5">
       <div class="flex">
         <span class="text-16 font-bold text-blue-800">{{
@@ -39,7 +39,19 @@
         </button>
       </div> -->
     </div>
-    <TableOverview v-if="statsSuccess" :stats="stats" />
+    <TableOverview :stats="stats" />
+  </div>
+  <div
+    v-else
+    class="flex flex-col p-24 pb-52 m-12 justify-center items-center space-y-2 rounded-xl"
+  >
+    <img src="@/assets/icons/empty.svg" class="h-28 w-28" />
+    <span class="text-lg font-bold text-gray-800 pt-3">{{
+      $t("noReportCreated")
+    }}</span>
+    <span class="text-14 text-gray-500">{{
+      $t("addNewReportToContinue")
+    }}</span>
   </div>
 </template>
 

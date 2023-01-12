@@ -1,5 +1,8 @@
 <template>
-  <div class="flex flex-col w-full bg-gray-100 rounded-lg mt-4 p-4">
+  <div
+    v-if="latestData != undefined"
+    class="flex flex-col w-full bg-gray-100 rounded-lg mt-4 p-4"
+  >
     <div class="grid grid-cols-2 gap-x-3.5 w-full">
       <!-- Speed/Distance To Go -->
       <button
@@ -38,7 +41,7 @@
           <span
             class="text-16 font-bold"
             :class="selectedSpeed ? 'text-white' : 'text-blue-500'"
-            >{{ latestData.distance_observed }}</span
+            >{{ latestData.distance_observed ?? "" }}</span
           >
         </div>
       </button>
@@ -301,8 +304,10 @@ for (let report in data) {
   let obj = data[report];
   let date = new Date(obj.report_date).toDateString().split(" ");
   dateList.push(date[2] + " " + date[1]);
-  reportType.push(obj.report_type);
+  reportType.push(obj.report_type ?? "");
+  console.log("The code reached here");
   speedList.push(obj.speed ?? "0");
+  console.log("Did the code reached here");
   distanceOBSList.push(obj.distance_observed ?? "0");
   distanceToGoList.push(obj.distance_to_go ?? "0");
   for (let fuel_type in obj.fuel_stats) {

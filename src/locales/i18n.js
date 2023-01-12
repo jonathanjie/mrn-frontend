@@ -534,6 +534,8 @@ const i18n = createI18n({
       generator_engine: "G/E",
       inert_gas_generator: "IGG",
       boiler: "BLR",
+      noReportCreated: "No report created",
+      addNewReportToContinue: "Add a new report to continue",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser
