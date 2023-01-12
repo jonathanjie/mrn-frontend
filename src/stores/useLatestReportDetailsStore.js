@@ -10,7 +10,7 @@ export const useLatestReportDetailsStore = defineStore(
   () => {
     const shipStore = useShipStore();
     const { imoReg } = storeToRefs(shipStore);
-    const voyageStore = useVoyageStore;
+    const voyageStore = useVoyageStore();
     const { reports } = storeToRefs(voyageStore);
 
     const {
@@ -172,6 +172,7 @@ export const useLatestReportDetailsStore = defineStore(
         : ""
     );
     const validReportTypes = computed(() => {
+      
       if (reports.value.length == 0) {
         return [Report.type.DEP_SBY];
       }

@@ -25,7 +25,7 @@ const props = defineProps({
   voyage: {
     type: Object,
     required: true,
-    default: {},
+    default: () => {},
   },
   isInitiallyOpen: {
     type: Boolean,
@@ -35,16 +35,17 @@ const props = defineProps({
 });
 
 const reports = computed(() => props.voyage.reports);
-storeReports.value = reports.value;
+// console.log("reports: ", reports.value);
+
 const lastReportIndex = reports.value.length - 1;
 const lastLegNo = reports[lastReportIndex]?.voyage_leg?.leg_num;
 const lastLegUuid = reports[lastReportIndex]?.voyage_leg?.uuid;
 const start = reports.value[0]?.voyage_leg?.departure_port || "N/A";
 const mid = "At Sea";
-const dest = reports[lastReportIndex]?.voyage_leg?.arrival_port || "N/A"; // make dynamic when leg_uuid added to report header
+const dest = reports.value[lastReportIndex]?.voyage_leg?.arrival_port || "N/A"; // make dynamic when leg_uuid added to report header
 
 let lastReportNo = {};
-for (let report of reports) {
+for (let report of reports.value) {
   lastReportNo[report.report_type] = report.report_num; // update most recent report no for each type
 }
 
@@ -80,6 +81,8 @@ const filteredData = computed(() => {
 
 const handleClick = async () => {
   // console.log("im clicked");
+  // console.log("reports: ", reports.value);
+  storeReports.value = reports.value;
   await refetchLatestReportDetails();
   router.push({
     name: "add-report",
