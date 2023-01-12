@@ -206,9 +206,13 @@
         :loadType="shipRef[ship.ship_type]"
         :imoNo="ship.imo_reg"
         :vesselStatus="vessel.vesselStatus"
-        :flag="ship.shipspecs.flag"
-        :shipSize="ship.shipspecs.deadweight_tonnage"
-        :loadingCondition="ship.load_condition"
+        :flag="ship.flag"
+        :shipSize="ship.deadweight_tonnage"
+        :loadingCondition="
+          ship.load_condition != null
+            ? ship.load_condition
+            : 'No report uploaded'
+        "
         :reportStatus="reportStatus(ship.last_report_date)"
         :updatedDate="dateConverter(ship.last_report_date)"
       />
@@ -268,6 +272,10 @@ const reportStatus = (lastReportDate) => {
     }
   }
 };
+
+// const vesselStatus = (lastReportType) => {
+
+// }
 
 const dateConverter = (date) => {
   if (date === undefined) {
