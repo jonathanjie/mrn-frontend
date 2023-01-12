@@ -18,6 +18,10 @@ export const textInputOptions = ref({
 });
 
 export function format(date) {
+  if (date == null) {
+    return null;
+  }
+
   const day = ("0" + date.getDate()).slice(-2);
   const month = ("0" + (date.getMonth() + 1)).slice(-2);
   const year = date.getFullYear();
@@ -28,6 +32,10 @@ export function format(date) {
 }
 
 export function formatUTC(date) {
+  if (date == null) {
+    return null;
+  }
+  
   const day = ("0" + date.getUTCDate()).slice(-2);
   const month = ("0" + (date.getUTCMonth() + 1)).slice(-2);
   const year = date.getUTCFullYear();
@@ -133,6 +141,9 @@ export const convertLTToUTC = (date, offset) => {
   const userOffset = parseFloat(offset) * -60;
   const calcOffset = date.getTimezoneOffset();
 
+  if (date == null || date == "") {
+    return null;
+  }
   // calculate based on timezone input
   if (userOffset !== calcOffset) {
     date = new Date(
