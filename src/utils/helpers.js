@@ -200,7 +200,7 @@ export const generateFuelOilData = (
       debunkering: debunkerings[fuelOil] || 0, // non-zero for DEP SBY & EVNT reports
       rob: rob[fuelOil] || 0, // zero for Arrival EOSP Total Consumption
       breakdown: Object.entries(fuelOilBreakdowns[fuelOil]).reduce(
-        (p, [k, v]) => ({ ...p, [k]: v || 0 }),
+        (p, [k, v]) => ({ ...p, [k]: Number(v) || 0 }),
         {}
       ),
       fueloildatacorrection:
