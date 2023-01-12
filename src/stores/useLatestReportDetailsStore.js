@@ -171,7 +171,14 @@ export const useLatestReportDetailsStore = defineStore(
     const validReportTypes = computed(() => {
       switch (lastReportType.value) {
         case Report.type.DEP_SBY:
-          return [Report.type.DEP_COSP_RUP, Report.type.BUNKER];
+          return [
+            Report.type.DEP_COSP_RUP,
+            Report.type.BUNKER,
+            Report.type.EVENT_HARBOUR,
+            Report.type.EVENT_PORT,
+            Report.type.NOON_HARBOUR,
+            Report.type.NOON_PORT,
+          ];
         case Report.type.DEP_COSP_RUP || Report.type.NOON:
           return [
             Report.type.NOON,
