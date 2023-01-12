@@ -42,8 +42,8 @@ const reports = computed(() =>
 // console.log("reports ", reports.value);
 
 const lastReportIndex = reports.value.length - 1;
-const lastLegNo = reports[lastReportIndex]?.voyage_leg?.leg_num;
-const lastLegUuid = reports[lastReportIndex]?.voyage_leg?.uuid;
+const lastLegNo = reports.value[lastReportIndex]?.voyage_leg?.leg_num;
+const lastLegUuid = reports.value[lastReportIndex]?.voyage_leg?.uuid;
 const start = reports.value[0]?.voyage_leg?.departure_port || "N/A";
 const mid = "At Sea";
 const dest = reports.value[lastReportIndex]?.voyage_leg?.arrival_port || "N/A"; // make dynamic when leg_uuid added to report header
