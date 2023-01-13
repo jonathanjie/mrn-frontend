@@ -2,8 +2,6 @@
 import { computed } from "vue";
 import { textInputOptions, format } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useNoonReportStore } from "@/stores/useNoonReportStore";
-import { storeToRefs } from "pinia";
 
 const props = defineProps({
   report: {
@@ -16,7 +14,7 @@ const noonReportNum = computed(() => props.report.report_num);
 const voyageNum = computed(() => props.report.voyage_leg.voyage.voyage_num);
 const voyageLeg = computed(() => props.report.voyage_leg.leg_num);
 const cur_loading_condition = computed(
-  () => props.report.voyage_leg?.load_condition
+  () => props.report.voyage_leg.load_condition
 );
 const reportingDateTime = computed(() => props.report.report_date);
 const reportingTimeZone = computed(() => props.report.report_tz);
@@ -44,24 +42,6 @@ const route_arrival_date = computed(
 const route_arrival_time_zone = computed(
   () => props.report.reportroute.arrival_tz
 );
-
-// const store = useNoonReportStore();
-// const {
-//   // noonReportNo: noon_report_no,
-//   // lastLegNo: last_leg_no,
-//   // curLoadingCondition: cur_loading_condition,
-//   // voyageNo: voyage_no,
-//   // reportingDateTime: reporting_date_time,
-//   // reportingTimeZone: reporting_time_zone,
-//   // routeDeparturePortCountry: route_departure_port_country,
-//   // routeDeparturePortName: route_departure_port_name,
-//   // routeDepartureDate: route_departure_date,
-//   // routeDepartureTimeZone: route_departure_time_zone,
-//   // routeArrivalPortCountry: route_arrival_port_country,
-//   // routeArrivalPortName: route_arrival_port_name,
-//   // routeArrivalDate: route_arrival_date,
-//   // routeArrivalTimeZone: route_arrival_time_zone,
-// } = storeToRefs(store);
 </script>
 
 <template>

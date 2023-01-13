@@ -19,20 +19,12 @@ const props = defineProps({
 
 const report_no = computed(() => props.report.report_num);
 const leg_no = computed(() => props.report.voyage_leg.leg_num);
-const voyage_no = computed(() => props.report.voyage_leg.leg_num);
-// const loading_condition = computed(()=> props.report.report_num)
+const voyage_no = computed(() => props.report.voyage_leg.voyage.voyage_num);
+const loading_condition = computed(
+  () => props.report.voyage_leg.load_condition
+);
 const reporting_date_time = computed(() => props.report.report_date);
 const reporting_time_zone = computed(() => props.report.report_tz);
-
-const store = useHarbourPortReportStore();
-// TODO: Switch to use real loading condition from backend
-const { loadingCondition: loading_condition } = storeToRefs(store);
-
-// const reporting_date_time_utc = computed(() =>
-//   reportingDateTimeUTC.value
-//     ? formatUTC(new Date(reportingDateTimeUTC.value))
-//     : UTCPlaceholder
-// );
 </script>
 
 <template>
