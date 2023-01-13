@@ -2,14 +2,15 @@ import { useQuery } from "vue-query";
 import axios from "axios";
 import { UrlDomain } from "@/constants";
 import { useHQStore } from "@/stores/useHQStore";
-import { storeToRefs } from "pinia";
 
 export const useShipsQuery = () => {
   return useQuery(["ships"], async () =>
     axios
       .get(`${UrlDomain.DEV}/marinanet/ships-overview`)
       .then((response) => {
-        const { shipCount, shipStatus } = storeToRefs(useHQStore());
+        const store = useHQStore();
+        const shipCount = store.shipCount;
+        const shipStatus = store.shipStatus;
         shipCount.etcVessels = 0;
         shipCount.bunkeringVessels = 0;
         shipCount.cargoVessels = 0;
