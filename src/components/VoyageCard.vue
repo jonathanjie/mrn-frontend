@@ -33,9 +33,9 @@ const props = defineProps({
     default: false,
   },
 });
+console.log("voyage!!", props.voyage);
 
 const voyageLegs = computed(() => props.voyage.voyage_legs);
-// console.log("reports: ", reports.value);
 const reports = computed(() =>
   props.voyage.voyage_legs.reduce((acc, curr) => curr.reports.concat(acc), [])
 );
@@ -44,8 +44,8 @@ const lastReportIndex = reports.value.length - 1;
 const lastLegIndex = props.voyage.voyage_legs.length - 1;
 // console.log("reports ", reports.value);
 
-const lastLegNo = props.voyage.voyage_legs[lastLegIndex].leg_num;
-const lastLegUuid = props.voyage.voyage_legs[lastLegIndex].uuid;
+const lastLegNo = props.voyage.voyage_legs[lastLegIndex]?.leg_num;
+const lastLegUuid = props.voyage.voyage_legs[lastLegIndex]?.uuid;
 const start = reports.value[0]?.departure_port || "N/A";
 const mid = "At Sea";
 const dest = reports.value[lastReportIndex]?.arrival_port || "N/A";
@@ -54,12 +54,11 @@ let lastReportNo = {};
 for (let report of reports.value) {
   lastReportNo[report.report_type] = report.report_num;
 }
-// console.log("voyage!!", props.voyage);
 const voyageDetails = JSON.stringify({
   voyage_uuid: props.voyage.uuid,
   leg_uuid: lastLegUuid || "",
   cur_voyage_no: props.voyage.voyage_num,
-  cur_loading_condition: props.voyage.voyage_legs[0].load_condition, // make dynamic for all legs
+  cur_loading_condition: props.voyage.voyage_legs[0]?.load_condition, // make dynamic for all legs
   last_leg_no: lastLegNo || 0,
   last_noon_report_no: lastReportNo["NOON"] || 0,
   last_deps_report_no: lastReportNo["DSBY"] || 0,
@@ -88,6 +87,7 @@ const filteredData = computed(() => {
 console.log(filteredData.value);
 
 const handleClick = async () => {
+  console.log(voyageLegs.value);
   storedVoyageLegs.value = voyageLegs.value;
   await refetchLatestReportDetails();
   router.push({
