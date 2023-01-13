@@ -100,8 +100,8 @@ const handleClick = async () => {
 <template>
   <!-- need to put below two components under one big div and then set min width to child -->
   <div
-    class="flex h-20 mx-12 items-center rounded-xl min-w-fit z-10"
-    :class="isExpanded ? 'bg-blue' : 'bg-white drop-shadow-md mb-6'"
+    class="flex h-20 mx-12 items-center rounded-xl min-w-fit z-10 mt-10"
+    :class="isExpanded ? 'bg-blue' : 'bg-white drop-shadow-md'"
   >
     <img
       src="@/assets/icons/selected_blue_gradient.svg"
@@ -148,7 +148,7 @@ const handleClick = async () => {
   </div>
   <div
     v-show="isExpanded"
-    class="min-h-fit min-w-fit bg-darkgray mx-12 mb-6 rounded-xl -mt-4 p-5"
+    class="min-h-fit min-w-fit bg-darkgray mx-12 rounded-xl -mt-4 p-5"
   >
     <div class="min-w-fit flex items-center py-5">
       <button

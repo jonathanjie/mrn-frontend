@@ -12,7 +12,7 @@
     <div v-if="isFetching" class="flex items-center justify-center mt-40">
       <img src="@/assets/icons/loading.svg" class="animate-spin h-28 w-28" />
     </div>
-    <div v-else-if="isSuccess && voyages.length !== 0" class="contents mt-10">
+    <div v-else-if="isSuccess && voyages.length !== 0" class="contents">
       <VoyageCard
         v-for="(voyage, index) in orderedVoyages"
         :key="index"
@@ -21,6 +21,7 @@
       >
       </VoyageCard>
     </div>
+    <!-- if there are no voyages in backend -->
     <div
       v-else
       class="flex flex-col p-24 pb-52 m-12 justify-center items-center space-y-2 rounded-xl"
@@ -34,7 +35,6 @@
       }}</span>
     </div>
   </div>
-  <!-- if there are no voyages in backend -->
 </template>
 
 <script setup>
