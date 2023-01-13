@@ -7,7 +7,7 @@ import DepartureReportView from "./components/DepartureReport/DepartureReportVie
 import ArrivalReportView from "./components/ArrivalReport/ArrivalReportView.vue";
 import HarbourPortReportView from "./components/HarbourPortReport/HarbourPortReportView.vue";
 import BunkerReportView from "./components/BunkerReport/BunkerReportView.vue";
-
+import { useAuthStore } from "@/stores/useAuthStore";
 // Props
 const props = defineProps({
   uuid: {
@@ -18,6 +18,7 @@ const props = defineProps({
 
 // Store
 const store = useReportDetailsStore();
+const auth = useAuthStore();
 const { getReportQuery } = store;
 
 // API calls
@@ -31,7 +32,11 @@ const { isSuccess, isFetching, data: report } = getReportQuery(props.uuid);
 
 // Event Handlers
 const handleBack = () => {
-  router.push({ name: "vessel-reports" });
+  if (auth.role == "crew") {
+    router.push({ name: "vessel-reports" });
+  } else {
+    router.push({ name: "uploaded-reports" });
+  }
 };
 </script>
 
