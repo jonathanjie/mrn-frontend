@@ -25,6 +25,7 @@ $dp__border_radius: 0px;
 $dp__input_padding: 12px 12px;
 $dp__input_icon_padding: 14px;
 
+@import "@/assets/css/global.css";
 @import "node_modules/@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss";
 
 .dp__theme_light {
