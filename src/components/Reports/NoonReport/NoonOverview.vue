@@ -229,13 +229,12 @@
         </div>
         <div class="flex col-span-3 bg-white text-gray-700">
           <select
-            class="grow self-center p-3 text-14 focus:outline-0 disabled:bg-gray-50"
+            class="grow self-center p-3 text-14 focus:outline-0"
             :class="
               route_arrival_time_zone === 'default'
                 ? 'text-gray-400'
                 : 'text-gray-700'
             "
-            :disabled="dateEditIsDisabled"
             v-model="route_arrival_time_zone"
           >
             <option selected disabled value="default">

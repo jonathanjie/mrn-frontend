@@ -9,13 +9,15 @@ export const useShipsQuery = () => {
       .get(`${UrlDomain.DEV}/marinanet/ships-overview`)
       .then((response) => {
         const store = useHQStore();
-        store.shipCount.etcVessels = 0;
-        store.shipCount.bunkeringVessels = 0;
-        store.shipCount.cargoVessels = 0;
-        store.shipCount.inPortVessels = 0;
-        store.shipCount.sailingVessels = 0;
-        store.shipCount.waitingVessels = 0;
-        store.shipStatus.length = 0;
+        const shipCount = store.shipCount;
+        const shipStatus = store.shipStatus;
+        shipCount.etcVessels = 0;
+        shipCount.bunkeringVessels = 0;
+        shipCount.cargoVessels = 0;
+        shipCount.inPortVessels = 0;
+        shipCount.sailingVessels = 0;
+        shipCount.waitingVessels = 0;
+        shipStatus.length = 0;
         const ships = response.data;
         const eventTypes = { EVPO: "", EVHB: "", NNPO: "", NNHB: "" };
 

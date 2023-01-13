@@ -180,7 +180,7 @@ console.log(machinery.value);
             <div
               class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
             >
-              {{ fuelOilData.fuel_oil_type }}
+              {{ $t(fuelOilData.fuel_oil_type) }}
             </div>
             <input
               disabled
@@ -189,10 +189,10 @@ console.log(machinery.value);
               v-model="entry[1]"
               @keypress="preventNaN($event, entry[1])"
               placeholder="0"
-              class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+              class="col-span-1 p-3 pl-4 border-t border-l bg-gray-50 text-gray-700 focus:outline-0"
             />
             <div
-              class="col-span-2 text-gray-400 p-3 border-t border-l bg-gray-25"
+              class="col-span-2 text-gray-400 p-3 border-t border-l bg-gray-50"
             >
               {{ fuelOilData.total_consumption }}
             </div>
@@ -201,17 +201,17 @@ console.log(machinery.value);
               v-model="fuelOilData.receipt"
               @keypress="preventNaN($event, fuelOilData.receipt)"
               placeholder="0"
-              class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+              class="col-span-2 p-3 pl-4 border-t border-l bg-gray-50 text-gray-700 focus:outline-0"
             />
             <input
               disabled
               v-model="fuelOilData.debunkering"
               @keypress="preventNaN($event, fuelOilData.debunkering)"
               placeholder="0"
-              class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+              class="col-span-2 p-3 pl-4 border-t border-l bg-gray-50 text-gray-700 focus:outline-0"
             />
             <div
-              class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25"
+              class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-50"
             >
               {{ fuelOilData.rob }}
             </div>
@@ -268,7 +268,7 @@ console.log(machinery.value);
                 {{ $t(fuelOil) }}
               </option>
             </select>
-            <div class="flex col-span-4 p-3 pl-4 border-l bg-white">
+            <div class="flex col-span-4 p-3 pl-4 border-l bg-gray-50">
               <input
                 disabled
                 v-model="fuelOilDataCorrection.correction"
@@ -286,7 +286,7 @@ console.log(machinery.value);
             <textarea
               v-model.trim="fuelOilDataCorrection.remarks"
               placeholder="Input description here"
-              class="col-span-8 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
+              class="col-span-8 row-span-2 border-t border-l p-3 pl-4 bg-gray-50 text-gray-700 focus:outline-0"
             ></textarea>
           </div>
         </div>
@@ -327,13 +327,13 @@ console.log(machinery.value);
             :key="lubricatingOilData + index"
             :class="
               'col-span-10 grid grid-cols-10' +
-              (index == lubricatingOilData.length - 1 ? ' border-b' : '')
+              (index == lubricatingOils.length - 1 ? ' border-b' : '')
             "
           >
             <div
               class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
             >
-              {{ lubricatingOilData.fuel_oil_type }}
+              {{ $t(lubricatingOilData.lubricating_oil_type) }}
             </div>
             <input
               disabled
@@ -342,24 +342,24 @@ console.log(machinery.value);
                 preventNaN($event, lubricatingOilData.total_consumption)
               "
               placeholder="0"
-              class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+              class="col-span-2 p-3 pl-4 border-t border-l bg-gray-50 text-gray-700 focus:outline-0"
             />
             <input
               disabled
               v-model="lubricatingOilData.receipt"
               @keypress="preventNaN($event, lubricatingOilData.receipt)"
               placeholder="0"
-              class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+              class="col-span-2 p-3 pl-4 border-t border-l bg-gray-50 text-gray-700 focus:outline-0"
             />
             <input
               disabled
               v-model="lubricatingOilData.debunkering"
               @keypress="preventNaN($event, lubricatingOilData.debunkering)"
               placeholder="0"
-              class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+              class="col-span-2 p-3 pl-4 border-t border-l bg-gray-50 text-gray-700 focus:outline-0"
             />
             <div
-              class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25"
+              class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-50"
             >
               {{ lubricatingOilData.rob }}
             </div>
@@ -486,17 +486,17 @@ console.log(machinery.value);
             v-model="freshwaterConsumed"
             @keypress="preventNaN($event, freshwaterConsumed)"
             placeholder="0"
-            class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
+            class="col-span-1 p-3 pl-4 border-y border-l bg-gray-50 text-gray-700 focus:outline-0"
           />
           <input
             disabled
             v-model="freshwaterGenerated"
             @keypress="preventNaN($event, freshwaterGenerated)"
             placeholder="0"
-            class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
+            class="col-span-1 p-3 pl-4 border-y border-l bg-gray-50 text-gray-700 focus:outline-0"
           />
           <div
-            class="col-span-1 text-gray-400 p-3 border-y border-l bg-gray-25"
+            class="col-span-1 text-gray-400 p-3 border-y border-l bg-gray-50"
           >
             {{ freshwaterChange }}
           </div>
@@ -505,17 +505,17 @@ console.log(machinery.value);
             v-model="freshwaterReceiving"
             @keypress="preventNaN($event, freshwaterReceiving)"
             placeholder="0"
-            class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
+            class="col-span-1 p-3 pl-4 border-y border-l bg-gray-50 text-gray-700 focus:outline-0"
           />
           <input
             disabled
             v-model="freshwaterDischarging"
             @keypress="preventNaN($event, freshwaterDischarging)"
             placeholder="0"
-            class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
+            class="col-span-1 p-3 pl-4 border-y border-l bg-gray-50 text-gray-700 focus:outline-0"
           />
           <div
-            class="col-span-1 text-gray-400 p-3 border-y border-x bg-gray-25"
+            class="col-span-1 text-gray-400 p-3 border-y border-x bg-gray-50"
           >
             {{ freshwaterRob }}
           </div>

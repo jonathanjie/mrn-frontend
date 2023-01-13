@@ -15,13 +15,10 @@ const props = defineProps({
 
 const reportNum = computed(() => props.report.report_num);
 const legNum = computed(() => props.report.voyage_leg.leg_num);
-const voyageNum = computed(() => props.report.voyage_leg.leg_num);
-// const loading_condition = computed(()=> props.report.report_num)
+const voyageNum = computed(() => props.report.voyage_leg.voyage.voyage_num);
+const loadingCondition = computed(() => props.report.voyage_leg.load_condition);
 const reportingDateTime = computed(() => props.report.report_date);
 const reportingTimeZone = computed(() => props.report.report_tz);
-
-const store = useBunkerReportStore();
-const { loadingCondition: loadingCondition } = storeToRefs(store);
 </script>
 
 <template>
