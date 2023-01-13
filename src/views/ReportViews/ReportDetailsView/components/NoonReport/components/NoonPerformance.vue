@@ -49,13 +49,13 @@ const slipAverage = computed(() => props.report.performancedata.slip_average);
         <div class="col-span-2 text-blue-700 p-3 border-r border-b">
           {{ $t("speed") }}
         </div>
-        <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
+        <div class="flex col-span-3 p-2 pl-4 border-b bg-gray-50">
           <input
             disabled
             v-model="speedSinceNoon"
             @keypress="preventNaN($event, speedSinceNoon)"
             placeholder="0"
-            class="w-16 text-gray-700 focus:outline-0 bg-white"
+            class="w-16 text-gray-700 focus:outline-0 bg-gray-50"
           />
           <MiniUnitDisplay>KNOTS</MiniUnitDisplay>
         </div>
@@ -67,18 +67,18 @@ const slipAverage = computed(() => props.report.performancedata.slip_average);
           v-model="rpmSinceNoon"
           @keypress="preventNaN($event, rpmSinceNoon)"
           placeholder="0"
-          class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0 bg-white"
+          class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0 bg-gray-50"
         />
         <div class="col-span-2 text-blue-700 p-3 border-r">
           {{ $t("slip") }}
         </div>
-        <div class="flex col-span-3 p-2 pl-4 bg-white">
+        <div class="flex col-span-3 p-2 pl-4 bg-gray-50">
           <input
             disabled
             v-model="slipSinceNoon"
             @keypress="preventNaN($event, slipSinceNoon)"
             placeholder="0"
-            class="w-24 text-gray-700 focus:outline-0 bg-white"
+            class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
           />
           <MiniUnitDisplay>%</MiniUnitDisplay>
         </div>
@@ -90,13 +90,13 @@ const slipAverage = computed(() => props.report.performancedata.slip_average);
         <div class="col-span-2 text-blue-700 p-3 border-r border-b">
           {{ $t("averageSpeed") }}
         </div>
-        <div class="flex col-span-3 p-2 pl-4 border-b bg-white">
+        <div class="flex col-span-3 p-2 pl-4 border-b bg-gray-50">
           <input
             disabled
             v-model="speedAverage"
             @keypress="preventNaN($event, speedAverage)"
             placeholder="0"
-            class="w-16 text-gray-700 focus:outline-0 bg-white"
+            class="w-16 text-gray-700 focus:outline-0 bg-gray-50"
           />
           <MiniUnitDisplay>KNOTS</MiniUnitDisplay>
         </div>
@@ -108,18 +108,18 @@ const slipAverage = computed(() => props.report.performancedata.slip_average);
           v-model="rpmAverage"
           @keypress="preventNaN($event, rpmAverage)"
           placeholder="0"
-          class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0 bg-white"
+          class="col-span-3 p-3 pl-4 border-b text-gray-700 focus:outline-0 bg-gray-50"
         />
         <div class="col-span-2 text-blue-700 p-3 border-r">
           {{ $t("slip") }}
         </div>
-        <div class="flex col-span-3 p-2 pl-4 bg-white">
+        <div class="flex col-span-3 p-2 pl-4 bg-gray-50">
           <input
             disabled
             v-model="slipAverage"
             @keypress="preventNaN($event, slipAverage)"
             placeholder="0"
-            class="w-24 text-gray-700 focus:outline-0 bg-white"
+            class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
           />
           <MiniUnitDisplay>%</MiniUnitDisplay>
         </div>

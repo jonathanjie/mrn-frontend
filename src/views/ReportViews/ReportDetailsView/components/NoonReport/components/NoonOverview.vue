@@ -78,8 +78,8 @@ const route_arrival_time_zone = computed(
           cur_loading_condition
         }}</MiniUnitDisplay>
       </div>
-      <div class="hidden xl:block bg-gray-50 col-span-2 row-span-1"></div>
-      <input class="hidden xl:block bg-gray-50 col-span-3 p-3" disabled />
+      <div class="hidden xl:block bg-white col-span-2 row-span-1"></div>
+      <input class="hidden xl:block bg-white col-span-3 p-3" disabled />
     </div>
     <div
       class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14 border xl:mb-6"
