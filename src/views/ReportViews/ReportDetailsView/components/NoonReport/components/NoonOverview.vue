@@ -13,8 +13,11 @@ const props = defineProps({
 });
 
 const noonReportNum = computed(() => props.report.report_num);
+const voyageNum = computed(() => props.report.voyage_leg.voyage.voyage_num);
 const voyageLeg = computed(() => props.report.voyage_leg.leg_num);
-// const cur_loading_condition = computed(() => props.report.voyage_leg.leg_num);
+const cur_loading_condition = computed(
+  () => props.report.voyage_leg?.load_condition
+);
 const reportingDateTime = computed(() => props.report.report_date);
 const reportingTimeZone = computed(() => props.report.report_tz);
 const route_departure_port_country = computed(
@@ -42,23 +45,23 @@ const route_arrival_time_zone = computed(
   () => props.report.reportroute.arrival_tz
 );
 
-const store = useNoonReportStore();
-const {
-  // noonReportNo: noon_report_no,
-  // lastLegNo: last_leg_no,
-  curLoadingCondition: cur_loading_condition,
-  voyageNo: voyage_no,
-  // reportingDateTime: reporting_date_time,
-  // reportingTimeZone: reporting_time_zone,
-  // routeDeparturePortCountry: route_departure_port_country,
-  // routeDeparturePortName: route_departure_port_name,
-  // routeDepartureDate: route_departure_date,
-  // routeDepartureTimeZone: route_departure_time_zone,
-  // routeArrivalPortCountry: route_arrival_port_country,
-  // routeArrivalPortName: route_arrival_port_name,
-  // routeArrivalDate: route_arrival_date,
-  // routeArrivalTimeZone: route_arrival_time_zone,
-} = storeToRefs(store);
+// const store = useNoonReportStore();
+// const {
+//   // noonReportNo: noon_report_no,
+//   // lastLegNo: last_leg_no,
+//   // curLoadingCondition: cur_loading_condition,
+//   // voyageNo: voyage_no,
+//   // reportingDateTime: reporting_date_time,
+//   // reportingTimeZone: reporting_time_zone,
+//   // routeDeparturePortCountry: route_departure_port_country,
+//   // routeDeparturePortName: route_departure_port_name,
+//   // routeDepartureDate: route_departure_date,
+//   // routeDepartureTimeZone: route_departure_time_zone,
+//   // routeArrivalPortCountry: route_arrival_port_country,
+//   // routeArrivalPortName: route_arrival_port_name,
+//   // routeArrivalDate: route_arrival_date,
+//   // routeArrivalTimeZone: route_arrival_time_zone,
+// } = storeToRefs(store);
 </script>
 
 <template>
@@ -73,11 +76,11 @@ const {
       <div class="col-span-2 text-blue-700 p-3 border-r border-b">
         {{ $t("reportNo") }}
       </div>
-      <div class="col-span-3 p-3 border-b text-gray-700 bg-gray-50">
+      <div class="col-span-3 p-3 border-b text-gray-700 bg-white">
         {{ noonReportNum }}
       </div>
       <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("legNo") }}</div>
-      <div class="col-span-3 p-3 text-gray-700 bg-gray-50">
+      <div class="col-span-3 p-3 text-gray-700 bg-white">
         {{ voyageLeg }}
       </div>
     </div>
@@ -87,8 +90,8 @@ const {
       <div class="col-span-2 text-blue-700 p-3 border-l border-y">
         {{ $t("voyageNo") }}
       </div>
-      <div class="flex items-center col-span-3 p-3 border">
-        <div class="text-gray-700 bg-gray-50">{{ voyage_no }}</div>
+      <div class="flex items-center col-span-3 p-3 border bg-white">
+        <div class="text-gray-700">{{ voyageNum }}</div>
         <MiniUnitDisplay class="ml-2 mr-auto">{{
           cur_loading_condition
         }}</MiniUnitDisplay>
@@ -105,7 +108,7 @@ const {
       <DatePicker
         disabled
         v-model="reportingDateTime"
-        class="col-span-3"
+        class="col-span-3 bg-white"
         textInput
         :textInputOptions="textInputOptions"
         :format="format"
@@ -126,10 +129,7 @@ const {
       <div class="flex col-span-3 bg-white">
         <select
           disabled
-          class="grow self-center p-3 text-14 focus:outline-0"
-          :class="
-            reportingTimeZone === 'default' ? 'text-gray-400' : 'text-gray-700'
-          "
+          class="grow self-center p-3 text-14 focus:outline-0 text-gray-700"
           v-model="reportingTimeZone"
         >
           <option selected disabled value="default">
@@ -188,12 +188,12 @@ const {
         <input
           v-model="route_departure_port_country"
           disabled
-          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 bg-gray-50"
+          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 bg-white"
         />
         <input
           v-model="route_departure_port_name"
           disabled
-          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 bg-gray-50"
+          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 bg-white"
         />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14 mt-4">
@@ -220,7 +220,7 @@ const {
         <div class="flex col-span-3 bg-white">
           <select
             disabled
-            class="grow self-center p-3 text-14 text-gray-900 bg-gray-50 focus:outline-0"
+            class="grow self-center p-3 text-14 text-gray-900 bg-white focus:outline-0"
             v-model="route_departure_time_zone"
           >
             <option selected disabled value="default">
@@ -279,12 +279,14 @@ const {
           {{ $t("portName") }}
         </div>
         <input
+          disabled
           v-model="route_arrival_port_country"
-          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
+          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 bg-white"
         />
         <input
+          disabled
           v-model="route_arrival_port_name"
-          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
+          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 bg-white"
         />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14 mt-4">

@@ -195,7 +195,7 @@ const wind_speed_beaufort = computed(() =>
           v-model="wind_speed"
           @keypress="preventNaN($event, wind_speed)"
           placeholder="00.0"
-          class="text-14 w-24 text-gray-700 focus:outline-0"
+          class="text-14 w-24 text-gray-700 focus:outline-0 bg-white"
         />
         <MiniUnitDisplay>KNOT</MiniUnitDisplay>
       </div>
@@ -337,7 +337,7 @@ const wind_speed_beaufort = computed(() =>
           v-model="air_temperature_dry"
           @keypress="preventNaN($event, air_temperature_dry)"
           placeholder="00.0"
-          class="text-14 w-24 pl-2 text-gray-700 focus:outline-0"
+          class="text-14 w-24 pl-2 text-gray-700 bg-white focus:outline-0"
         />
         <MiniUnitDisplay>°C</MiniUnitDisplay>
       </div>
@@ -352,7 +352,7 @@ const wind_speed_beaufort = computed(() =>
           v-model="air_temperature_wet"
           @keypress="preventNaN($event, air_temperature_wet)"
           placeholder="00.0"
-          class="text-14 w-24 pl-2 text-gray-700 focus:outline-0"
+          class="text-14 w-24 pl-2 text-gray-700 bg-white focus:outline-0"
         />
         <MiniUnitDisplay>°C</MiniUnitDisplay>
       </div>
@@ -370,7 +370,7 @@ const wind_speed_beaufort = computed(() =>
           v-model="air_pressure"
           @keypress="preventNaN($event, air_pressure)"
           placeholder="00"
-          class="text-14 w-24 pl-2 text-gray-700 focus:outline-0"
+          class="text-14 w-24 pl-2 text-gray-700 focus:outline-0 bg-white"
         />
         <MiniUnitDisplay>mbar</MiniUnitDisplay>
       </div>
@@ -388,7 +388,7 @@ const wind_speed_beaufort = computed(() =>
           v-model="sea_temperature"
           @keypress="preventNaN($event, sea_temperature)"
           placeholder="00.0"
-          class="text-14 w-24 pl-2 text-gray-700 focus:outline-0"
+          class="text-14 w-24 pl-2 text-gray-700 focus:outline-0 bg-white"
         />
         <MiniUnitDisplay>°C</MiniUnitDisplay>
       </div>
