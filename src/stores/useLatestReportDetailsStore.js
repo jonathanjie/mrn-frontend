@@ -113,6 +113,12 @@ export const useLatestReportDetailsStore = defineStore(
         ? latestReportDetails.value.distance_standby_to_cosp
         : ""
     );
+    const timeSbyToCosp = computed(() =>
+      isSuccessLatestReportDetails.value &&
+      latestReportDetails.value.time_standby_to_cosp
+        ? latestReportDetails.value.time_standby_to_cosp
+        : ""
+    );
     const freshwaterRob = computed(() =>
       isSuccessLatestReportDetails.value &&
       latestReportDetails.value.freshwater_rob
@@ -141,17 +147,6 @@ export const useLatestReportDetailsStore = defineStore(
       isSuccessLatestReportDetails.value &&
       latestReportDetails.value.fuel_oil_robs
         ? latestReportDetails.value.fuel_oil_robs
-        : ""
-    );
-    const hoursAtSea = computed(() =>
-      isSuccessLatestReportDetails.value &&
-      lastReportDate.value &&
-      departureDate.value
-        ? +(
-            Math.abs(
-              Date.parse(lastReportDate.value) - Date.parse(departureDate.value)
-            ) / 36e5
-          ).toFixed(2)
         : ""
     );
     const id = computed(() =>
@@ -195,14 +190,7 @@ export const useLatestReportDetailsStore = defineStore(
             Report.type.NOON_PORT,
           ];
         case Report.type.NOON:
-          return [
-            Report.type.NOON,
-            Report.type.ARR_SBY_EOSP,
-            Report.type.EVENT_HARBOUR,
-            Report.type.EVENT_PORT,
-            Report.type.NOON_HARBOUR,
-            Report.type.NOON_PORT,
-          ];
+          return [Report.type.NOON, Report.type.ARR_SBY_EOSP];
         case Report.type.ARR_SBY_EOSP:
           return [
             Report.type.ARR_FWE,
@@ -345,7 +333,6 @@ export const useLatestReportDetailsStore = defineStore(
       fuelOilConsPilotToPilot,
       fuelOilConsPortToPort,
       fuelOilRobs,
-      hoursAtSea,
       id,
       lastReportDate,
       lastReportType,
@@ -362,6 +349,7 @@ export const useLatestReportDetailsStore = defineStore(
       voyageLeg,
       validReportTypes,
       isAddVoyageEnabled,
+      timeSbyToCosp,
     };
   }
 );

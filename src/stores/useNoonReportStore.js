@@ -22,12 +22,10 @@ export const useNoonReportStore = defineStore("noonReport", () => {
 
   const detailsStore = useLatestReportDetailsStore();
   const {
-    departurePort,
     departurePortCountry,
     departurePortName,
     departureTz,
     departureDate,
-    arrivalPort,
     arrivalPortCountry,
     arrivalPortName,
     arrivalTz,
@@ -44,7 +42,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     fuelOilRobs: fuel_oil_robs,
     lubeOilRobs,
     freshwaterRob: freshwater_rob,
-    hoursAtSea,
+    timeSbyToCosp,
   } = storeToRefs(detailsStore);
 
   // Overview
@@ -164,7 +162,8 @@ export const useNoonReportStore = defineStore("noonReport", () => {
       ? +(
           (Date.parse(reportingDateTimeUTC.value) -
             Date.parse(departureDate.value)) /
-          36e5
+            36e5 -
+          timeSbyToCosp.value
         ).toFixed(2)
       : ""
   );
@@ -227,6 +226,18 @@ export const useNoonReportStore = defineStore("noonReport", () => {
         ).toFixed(2)
       : ""
   );
+  // pilot to pilot hours
+  const hoursAtSea = computed(() =>
+    lastReportDate.value && departureDate.value
+      ? +(
+          Math.abs(
+            Date.parse(lastReportDate.value) - Date.parse(departureDate.value)
+          ) /
+            36e5 -
+          Number(timeSbyToCosp.value)
+        ).toFixed(2)
+      : ""
+  );
   const speedAvg = computed(() =>
     speedSinceNoon.value !== "" && hoursTotal.value
       ? +calculateNewAverage(
@@ -249,11 +260,10 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   );
   const slipAvg = computed(() =>
     slipSinceNoon.value !== "" && hoursTotal.value
-      ? +calculateNewAverage(
-          Number(slipAverage.value),
-          Number(slipSinceNoon.value),
-          Number(hoursAtSea.value) / 24,
-          Number(hoursTotal.value) / 24
+      ? +(
+          100 *
+          ((Number(distanceEngTotal.value) - Number(distanceObsTotal.value)) /
+            Number(distanceEngTotal.value))
         ).toFixed(2)
       : ""
   );
@@ -303,7 +313,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     let rtn = {};
     for (const lubricatingOil of lubricatingOils.value) {
       rtn[lubricatingOil] = +(
-        lubeOilRobs.value[lubricatingOil] -
+        Number(lubeOilRobs.value[lubricatingOil]) -
         Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
         Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
         Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)

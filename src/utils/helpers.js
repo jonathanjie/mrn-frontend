@@ -283,9 +283,9 @@ export const calculateNewAverage = (
   console.log(oldAverage, newDataPoint, numPrevDataPoints, numCurDataPoints);
   if (numCurDataPoints === 0) {
     return 0;
-  } else if (numPrevDataPoints === 0) {
-    return newDataPoint / numCurDataPoints;
+  } else if (oldAverage === 0 && numPrevDataPoints === numCurDataPoints) {
+    return newDataPoint;
   } else {
-    return (oldAverage / numPrevDataPoints + newDataPoint) / numCurDataPoints;
+    return (oldAverage * numPrevDataPoints + newDataPoint) / numCurDataPoints;
   }
 };
