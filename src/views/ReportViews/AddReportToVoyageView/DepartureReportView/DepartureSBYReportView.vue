@@ -255,7 +255,10 @@ const sendReport = async () => {
     }
     isSubmissionModalVisible.value = true;
   } catch (error) {
-    isSubmissionRequested.value = false;
+    errorMessage.value = {
+      unexpectedError: ["Please contact the administrator."],
+    };
+    isSubmissionModalVisible.value = true;
     console.log(error);
   }
 };
