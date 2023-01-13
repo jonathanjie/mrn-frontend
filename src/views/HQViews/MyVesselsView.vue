@@ -1,8 +1,8 @@
 <template>
-  <div class="bg-gray-100 min-h-screen">
+  <div v-if="isSuccess" class="bg-gray-100 min-h-screen">
     <div class="flex flex-wrap px-12 pt-12 w-full">
       <div class="flex flex-wrap w-full mb-6">
-        <h1 class="text-20 font-bold mb-4">Vessels Dashboard</h1>
+        <h1 class="text-20 font-bold mb-4">{{ $t("vesselsDashboard") }}</h1>
         <!-- Vessels dashboard -->
         <div class="grid xl:grid-cols-4 grid-cols-2 gap-x-5 w-full">
           <MyVesselsDashboardIcon>
@@ -16,10 +16,7 @@
               <h1 class="text-gray-500 text-12">{{ $t("totalVessels") }}</h1>
             </template>
             <template v-slot:numVessels>
-              <h2
-                v-if="isSuccess && ships.length != 0"
-                class="text-gray-700 text-18"
-              >
+              <h2 v-if="ships.length != 0" class="text-gray-700 text-18">
                 {{ ships.length }}
               </h2>
               <h2 v-else class="text-gray-700 text-18">-</h2>
@@ -38,8 +35,11 @@
               </h1>
             </template>
             <template v-slot:numVessels>
-              <h2 v-if="sailingVessels != 0" class="text-gray-700 text-18">
-                {{ sailingVessels }}
+              <h2
+                v-if="shipCount.sailingVessels != 0"
+                class="text-gray-700 text-18"
+              >
+                {{ shipCount.sailingVessels }}
               </h2>
               <h2 v-else class="text-gray-700 text-18">-</h2>
             </template>
@@ -55,8 +55,11 @@
               <h1 class="text-gray-500 text-12">{{ $t("inPortVessels") }}</h1>
             </template>
             <template v-slot:numVessels>
-              <h2 v-if="inPortVessels != 0" class="text-gray-700 text-18">
-                {{ inPortVessels }}
+              <h2
+                v-if="shipCount.inPortVessels != 0"
+                class="text-gray-700 text-18"
+              >
+                {{ shipCount.inPortVessels }}
               </h2>
               <h2 v-else class="text-gray-700 text-18">-</h2>
             </template>
@@ -72,8 +75,11 @@
               <h1 class="text-gray-500 text-12">{{ $t("etcVessels") }}</h1>
             </template>
             <template v-slot:numVessels>
-              <h2 v-if="etcVessels != 0" class="text-gray-700 text-18">
-                {{ etcVessels }}
+              <h2
+                v-if="shipCount.etcVessels != 0"
+                class="text-gray-700 text-18"
+              >
+                {{ shipCount.etcVessels }}
               </h2>
               <h2 v-else class="text-gray-700 text-18">-</h2>
             </template>
@@ -95,7 +101,7 @@
               >{{ $t("sailingVessels") }}:
             </span>
             <span class="text-12 font-bold text-gray-700"
-              >{{ sailingVessels }} vessels</span
+              >{{ shipCount.sailingVessels }} vessels</span
             >
           </div>
         </div>
@@ -110,7 +116,7 @@
               >{{ $t("cargoOperation") }}:
             </span>
             <span class="text-12 font-bold text-gray-700"
-              >{{ cargoVessels }} vessels</span
+              >{{ shipCount.cargoVessels }} vessels</span
             >
           </div>
         </div>
@@ -123,7 +129,7 @@
           <div class="my-3 ml-2">
             <span class="text-12 text-gray-700">{{ $t("bunkering") }}: </span>
             <span class="text-12 font-bold text-gray-700"
-              >{{ bunkeringVessels }} vessels</span
+              >{{ shipCount.bunkeringVessels }} vessels</span
             >
           </div>
         </div>
@@ -136,7 +142,7 @@
           <div class="my-3 ml-2">
             <span class="text-12 text-gray-700">{{ $t("waiting") }}: </span>
             <span class="text-12 font-bold text-gray-700"
-              >{{ waitingVessels }} vessels</span
+              >{{ shipCount.waitingVessels }} vessels</span
             >
           </div>
         </div>
@@ -149,7 +155,7 @@
           <div class="my-3 ml-2">
             <span class="text-12 text-gray-700">{{ $t("etcVessels") }}: </span>
             <span class="text-12 font-bold text-gray-700"
-              >{{ etcVessels }} vessels</span
+              >{{ shipCount.etcVessels }} vessels</span
             >
           </div>
         </div>
@@ -200,14 +206,24 @@
     <!-- if there are no voyages in backend -->
     <div v-if="isSuccess" class="flex flex-col">
       <VesselCard
-        v-for="(ship, i) in ships"
-        :key="ship.name + ship.imo_reg + i"
-        :vesselName="ship.name"
-        :loadType="shipRef[ship.ship_type]"
-        :imoNo="ship.imo_reg"
-        :vesselStatus="vessel.vesselStatus"
-        :flag="ship.flag"
-        :shipSize="ship.deadweight_tonnage"
+        v-for="(ship, index) in ships"
+        :key="ship"
+        :vesselName="ship.name == null ? 'Invalid Ship' : ship.name"
+        :loadType="
+          ship.ship_type == null ? 'Invalid Ship' : shipRef[ship.ship_type]
+        "
+        :imoNo="ship.imo_reg == null ? 'Invalid Ship' : ship.imo_reg"
+        :vesselStatus="
+          ship.last_report_type === null
+            ? 'No report uploaded'
+            : shipStatus[index]
+        "
+        :flag="ship.flag == null ? 'Invalid Ship' : ship.flag"
+        :shipSize="
+          ship.deadweight_tonnage == null
+            ? 'Invalid Ship'
+            : ship.deadweight_tonnage
+        "
         :loadingCondition="
           ship.load_condition != null
             ? ship.load_condition
@@ -232,7 +248,7 @@
     <hr class="mt-6 w-full bg-gray-200" />
     <!-- Pagination module -->
     <div class="hidden flex justify-center">12345678910</div>
-    <div class="class flex px-12 pt-12-w-full">
+    <!-- <div class="class flex px-12 pt-12-w-full">
       <span class="text-20 font-strong text-blue-800"
         >Vessel Report Summary</span
       >
@@ -241,7 +257,19 @@
         :key="index"
         :Something="vessel"
       />
-    </div>
+    </div> -->
+  </div>
+  <div
+    v-else
+    class="flex flex-col p-24 pb-52 m-12 justify-center items-center space-y-2 rounded-xl"
+  >
+    <img src="@/assets/icons/empty.svg" class="h-28 w-28" />
+    <span class="text-lg font-bold text-gray-800 pt-3">{{
+      $t("noVoyageCreated")
+    }}</span>
+    <span class="text-14 text-gray-500">{{
+      $t("clickOnCreateNewVoyageAboveToBegin")
+    }}</span>
   </div>
 </template>
 
@@ -249,26 +277,14 @@
 import MyVesselsDashboardIcon from "@/views/HQViews/components/MyVesselsDashboardIcon.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 import VesselCard from "@/views/HQViews/components/VesselCard.vue";
-import VesselReportCard from "./components/VesselReportCard.vue";
+// import VesselReportCard from "./components/VesselReportCard.vue";
 import { useHQStore } from "@/stores/useHQStore";
 import constants from "@/constants";
 
 const store = useHQStore();
-// To be pulled from backend
-const sailingVessels = 0;
-const inPortVessels = 0;
-const etcVessels = 0;
-
-const cargoVessels = 0;
-const bunkeringVessels = 0;
-const waitingVessels = 0;
 
 const shipRef = constants.shipRefs;
-
-const vessel = {
-  vesselStatus: "sailing", // sailing, cargo, bunkering, waiting, etc
-};
-
+const { shipCount, shipStatus } = store;
 const reportStatus = (lastReportDate) => {
   if (lastReportDate === undefined) {
     return undefined;
@@ -284,37 +300,6 @@ const reportStatus = (lastReportDate) => {
   }
 };
 
-// const vesselStatus = (lastReportType) => {
-
-// }
-
-const vesselReport = {
-  vessel_name: "FC ADONIS",
-  date: "0900LT 20 OCT 2022",
-  arrival_port: "Yokkaichi, Japan",
-  arrival_date: "20000LT, 24 OCT 2022",
-  speed_since_last: "12.8",
-  rpm_since_last: "170",
-  speed_average: "12.57",
-  weather: "Cloudy",
-  wind_direction: "ENE",
-  wind_speed: "7kn(BF3)",
-  sea_direction: "EN",
-  sea_state: "6kn(Condition 3)",
-  distance_to_go: "700",
-  distance_total: "1000",
-  fuel_type: {
-    lsfo: {
-      foc: "14.2",
-      rob: "132.36",
-    },
-    mgo: {
-      foc: "0",
-      rob: "58.71",
-    },
-  },
-};
-
 const dateConverter = (date) => {
   if (date === undefined) {
     return "No value";
@@ -325,4 +310,31 @@ const dateConverter = (date) => {
 };
 
 const { isSuccess, data: ships } = store.shipsQuery();
+
+// const vesselReport = {
+//   vessel_name: "FC ADONIS",
+//   date: "0900LT 20 OCT 2022",
+//   arrival_port: "Yokkaichi, Japan",
+//   arrival_date: "20000LT, 24 OCT 2022",
+//   speed_since_last: "12.8",
+//   rpm_since_last: "170",
+//   speed_average: "12.57",
+//   weather: "Cloudy",
+//   wind_direction: "ENE",
+//   wind_speed: "7kn(BF3)",
+//   sea_direction: "EN",
+//   sea_state: "6kn(Condition 3)",
+//   distance_to_go: "700",
+//   distance_total: "1000",
+//   fuel_type: {
+//     lsfo: {
+//       foc: "14.2",
+//       rob: "132.36",
+//     },
+//     mgo: {
+//       foc: "0",
+//       rob: "58.71",
+//     },
+//   },
+// };
 </script>

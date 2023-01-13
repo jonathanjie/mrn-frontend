@@ -66,7 +66,7 @@
         v-if="reportStatus === 'uploaded' && reportStatus !== undefined"
         class="flex rounded-xl h-7 w-auto bg-green-50"
       >
-        <ul class="list-disc p-0.5 text-14">
+        <ul class="list-disc p-0.5 text-14 ml-6 mr-3">
           <li class="text-green-500">
             <span class="text-green-700"
               >{{ $t("uploadedStatus") }}: {{ props.updatedDate }}</span
@@ -76,9 +76,9 @@
       </div>
       <div
         v-if="reportStatus === 'pending' && reportStatus !== undefined"
-        class="flex rounded-xl h-7 w-auto bg-orange-50"
+        class="flex rounded-xl h-7 w-auto bg-orange-50 mr-28"
       >
-        <ul class="list-disc p-0.5 text-14">
+        <ul class="list-disc p-0.5 text-14 ml-6 mr-3">
           <li class="text-orange-500">
             <span class="text-orange-700">{{ $t("pendingStatus") }}</span>
           </li>
