@@ -2,7 +2,7 @@
   <div v-if="isSuccess" class="bg-gray-100 min-h-screen">
     <div class="flex flex-wrap px-12 pt-12 w-full">
       <div class="flex flex-wrap w-full mb-6">
-        <h1 class="text-20 font-bold mb-4">Vessels Dashboard</h1>
+        <h1 class="text-20 font-bold mb-4">{{ $t("vesselsDashboard") }}</h1>
         <!-- Vessels dashboard -->
         <div class="grid xl:grid-cols-4 grid-cols-2 gap-x-5 w-full">
           <MyVesselsDashboardIcon>

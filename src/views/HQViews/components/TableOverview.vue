@@ -26,7 +26,7 @@
           <span
             class="text-16 font-bold"
             :class="selectedSpeed ? 'text-white' : 'text-blue-600'"
-            >{{ latestData.speed }}</span
+            >{{ latestData.speed ?? "0" }}</span
           >
         </div>
         <div
@@ -41,7 +41,7 @@
           <span
             class="text-16 font-bold"
             :class="selectedSpeed ? 'text-white' : 'text-blue-500'"
-            >{{ latestData.distance_observed ?? "" }}</span
+            >{{ latestData.distance_observed ?? "0" }}</span
           >
         </div>
       </button>
@@ -317,6 +317,8 @@ for (let report in data) {
     }
   }
 }
+
+console.log("Speed List", speedList);
 
 for (let fuel in fuelObject) {
   for (let report in data) {
