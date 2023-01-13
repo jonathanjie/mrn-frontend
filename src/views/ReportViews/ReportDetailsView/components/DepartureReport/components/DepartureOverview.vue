@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from "vue";
-import { textInputOptions, format, convertUTCtoLT } from "@/utils/helpers";
+import { textInputOptions, format, convertUTCToLT } from "@/utils/helpers";
 import { TIMEZONES } from "@/utils/options";
 
 const props = defineProps({
@@ -14,7 +14,7 @@ const reportNum = computed(() => props.report.report_num);
 const legNum = computed(() => props.report.voyage_leg.leg_num);
 const voyageNum = computed(() => props.report.voyage_leg.voyage.voyage_num);
 const reportingDate = computed(() =>
-  convertUTCtoLT(new Date(props.report.report_date), props.report.report_tz)
+  convertUTCToLT(new Date(props.report.report_date), props.report.report_tz)
 );
 const reportingTimeZone = computed(() => props.report.report_tz);
 </script>

@@ -3,12 +3,10 @@ import {
   textInputOptions,
   format,
   preventNaN,
-  convertUTCtoLT,
+  convertUTCToLT,
   parsePositionFromString,
 } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
-import { storeToRefs } from "pinia";
 import { TIMEZONES } from "@/utils/options";
 import { computed } from "vue";
 
@@ -20,7 +18,7 @@ const props = defineProps({
 });
 
 const reportingDateTime = computed(() =>
-  convertUTCtoLT(new Date(props.report.report_date), props.report.report_tz)
+  convertUTCToLT(new Date(props.report.report_date), props.report.report_tz)
 );
 const reportingTimeZone = computed(() => props.report.report_tz);
 const position = computed(() =>

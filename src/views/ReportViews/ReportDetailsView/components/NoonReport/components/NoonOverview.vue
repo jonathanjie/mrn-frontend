@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from "vue";
-import { textInputOptions, format } from "@/utils/helpers.js";
+import { textInputOptions, format, convertUTCToLT } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 
 const props = defineProps({
@@ -16,7 +16,9 @@ const voyageLeg = computed(() => props.report.voyage_leg.leg_num);
 const cur_loading_condition = computed(
   () => props.report.voyage_leg.load_condition
 );
-const reportingDateTime = computed(() => props.report.report_date);
+const reportingDateTime = computed(() =>
+  convertUTCToLT(new Date(props.report.report_date), props.report.report_tz)
+);
 const reportingTimeZone = computed(() => props.report.report_tz);
 const route_departure_port_country = computed(
   () => props.report.reportroute.departure_port.split(" ")[0]
@@ -56,11 +58,11 @@ const route_arrival_time_zone = computed(
       <div class="col-span-2 text-blue-700 p-3 border-r border-b">
         {{ $t("reportNo") }}
       </div>
-      <div class="col-span-3 p-3 border-b text-gray-700 bg-white">
+      <div class="col-span-3 p-3 border-b text-gray-700 bg-gray-50">
         {{ noonReportNum }}
       </div>
       <div class="col-span-2 text-blue-700 p-3 border-r">{{ $t("legNo") }}</div>
-      <div class="col-span-3 p-3 text-gray-700 bg-white">
+      <div class="col-span-3 p-3 text-gray-700 bg-gray-50">
         {{ voyageLeg }}
       </div>
     </div>
@@ -70,14 +72,14 @@ const route_arrival_time_zone = computed(
       <div class="col-span-2 text-blue-700 p-3 border-l border-y">
         {{ $t("voyageNo") }}
       </div>
-      <div class="flex items-center col-span-3 p-3 border bg-white">
+      <div class="flex items-center col-span-3 p-3 border bg-gray-50">
         <div class="text-gray-700">{{ voyageNum }}</div>
         <MiniUnitDisplay class="ml-2 mr-auto">{{
           cur_loading_condition
         }}</MiniUnitDisplay>
       </div>
-      <div class="hidden xl:block bg-white col-span-2 row-span-1"></div>
-      <input class="hidden xl:block bg-white col-span-3 p-3" disabled />
+      <div class="hidden xl:block bg-gray-50 col-span-2 row-span-1"></div>
+      <input class="hidden xl:block bg-gray-50 col-span-3 p-3" disabled />
     </div>
     <div
       class="col-span-2 xl:col-span-1 grid grid-cols-5 row-span-1 bg-gray-50 text-14 border xl:mb-6"
@@ -88,7 +90,7 @@ const route_arrival_time_zone = computed(
       <DatePicker
         disabled
         v-model="reportingDateTime"
-        class="col-span-3 bg-white"
+        class="col-span-3"
         textInput
         :textInputOptions="textInputOptions"
         :format="format"
@@ -106,7 +108,7 @@ const route_arrival_time_zone = computed(
       <div class="col-span-2 text-blue-700 p-3 border-r">
         {{ $t("reportingTimeZone") }}
       </div>
-      <div class="flex col-span-3 bg-white">
+      <div class="flex col-span-3 bg-gray-50">
         <select
           disabled
           class="grow self-center p-3 text-14 focus:outline-0 text-gray-700"
@@ -168,12 +170,12 @@ const route_arrival_time_zone = computed(
         <input
           v-model="route_departure_port_country"
           disabled
-          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 bg-white"
+          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 bg-gray-50"
         />
         <input
           v-model="route_departure_port_name"
           disabled
-          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 bg-white"
+          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 bg-gray-50"
         />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14 mt-4">
@@ -197,10 +199,10 @@ const route_arrival_time_zone = computed(
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("timeZone") }}
         </div>
-        <div class="flex col-span-3 bg-white">
+        <div class="flex col-span-3 bg-gray-50">
           <select
             disabled
-            class="grow self-center p-3 text-14 text-gray-900 bg-white focus:outline-0"
+            class="grow self-center p-3 text-14 text-gray-900 bg-gray-50 focus:outline-0"
             v-model="route_departure_time_zone"
           >
             <option selected disabled value="default">
@@ -261,12 +263,12 @@ const route_arrival_time_zone = computed(
         <input
           disabled
           v-model="route_arrival_port_country"
-          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 bg-white"
+          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 bg-gray-50"
         />
         <input
           disabled
           v-model="route_arrival_port_name"
-          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 bg-white"
+          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 bg-gray-50"
         />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14 mt-4">
@@ -290,15 +292,10 @@ const route_arrival_time_zone = computed(
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("timeZone") }}
         </div>
-        <div class="flex col-span-3 bg-white text-gray-700">
+        <div class="flex col-span-3 bg-gray-50 text-gray-700">
           <select
             disabled
-            class="grow self-center p-3 text-14 focus:outline-0"
-            :class="
-              route_arrival_time_zone === 'default'
-                ? 'text-gray-400'
-                : 'text-gray-700'
-            "
+            class="grow self-center p-3 text-14 bg-gray-50 focus:outline-0 text-gray-700"
             v-model="route_arrival_time_zone"
           >
             <option selected disabled value="default">

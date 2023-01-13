@@ -1,9 +1,12 @@
 <script setup>
 import { computed } from "vue";
-import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-// import { useNoonReportStore } from "@/stores/useNoonReportStore";
-// import { storeToRefs } from "pinia";
-import { parsePositionFromString } from "@/utils/helpers.js";
+import {
+  preventNaN,
+  textInputOptions,
+  format,
+  parsePositionFromString,
+  convertUTCToLT,
+} from "@/utils/helpers.js";
 
 const props = defineProps({
   report: {
@@ -13,22 +16,12 @@ const props = defineProps({
 });
 
 const reporting_time_zone = computed(() => props.report.report_tz);
-const reporting_date_time = computed(() => props.report.report_date);
+const reporting_date_time = computed(() =>
+  convertUTCToLT(new Date(props.report.report_date), props.report.report_tz)
+);
 const position = computed(() =>
   parsePositionFromString(props.report.noonreporttimeandposition.position)
 );
-
-// const store = useNoonReportStore();
-// const {
-//   reportingTimeZone: reporting_time_zone,
-//   reportingDateTime: reporting_date_time,
-//   latDir: lat_dir,
-//   latMinutes: lat_minutes,
-//   latDegree: lat_degree,
-//   longDir: long_dir,
-//   longMinutes: long_minutes,
-//   longDegree: long_degree,
-// } = storeToRefs(store);
 </script>
 
 <template>
