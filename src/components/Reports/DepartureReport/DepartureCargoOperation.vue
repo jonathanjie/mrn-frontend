@@ -67,14 +67,20 @@
           {{ $t("totalAmount") }}
         </div>
         <div
-          class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50"
+          class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t"
+          :class="isFirstReport ? 'bg-white' : 'bg-gray-50'"
         >
           <input
             v-model="total_amount"
             @keypress="preventNaN($event, total_amount)"
-            :placeholder="$t('inputDetails')"
+            placeholder="0"
             :disabled="!isFirstReport"
-            class="w-24 bg-gray-50 text-14 text-gray-400 focus:outline-0"
+            class="w-24 text-14 focus:outline-0"
+            :class="
+              isFirstReport
+                ? 'bg-white text-gray-700'
+                : 'bg-gray-50 text-gray-400'
+            "
           />
           <MiniUnitDisplay>{{ $t(cargoUnit) }}</MiniUnitDisplay>
         </div>
@@ -99,7 +105,6 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
@@ -108,14 +113,12 @@ import { LOAD_CONDITIONS } from "@/utils/options";
 
 const store = useDepartureSBYReportStore();
 const {
+  isFirstReport,
   loadCondition: load_condition,
   loading: loading,
   unloading: unloading,
   totalAmount: total_amount,
   time: time,
   cargoUnit: cargoUnit,
-  legNo,
-  reportNo,
 } = storeToRefs(store);
-const isFirstReport = computed(() => reportNo == 1 && legNo == 1);
 </script>

@@ -9,45 +9,24 @@ import { Machinery } from "@/constants";
 import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
 
 const temp = {
-  // Consumption & Condition
-  // prevRobs: {
-  //   LSFO: 200,
-  //   MGO: 200,
-  //   MDO: 200,
-  //   HFO: 200,
-  //   LPGP: 200,
-  //   LPGB: 200,
-  //   LNG: 200,
-  //   "M/E Cylinder": 200,
-  //   "M/E System": 200,
-  //   "M/E Sump": 200,
-  //   "G/E System": 200,
-  //   "T/C System": 200,
-  // },
-  // freshwaterPrevROB: 200,
+  fuelOilPrevBreakdown: {
+    receipt: 0,
+    debunkering: 0,
+  },
 
   // Cargo Operation (from init modal, M³/MT/TEU/CEU)
   prevCargoTotalAmount: 100,
-  // cargoUnit: "M³",
 
   // Consumption & Condition (Total)
-  fuelOilPrevBreakdown: {
-    me: 10,
-    ge: 10,
-    blr: 10,
-    igg: 10,
-    receipt: 20,
-    debunkering: 10,
-  },
   lubricatingOilPrevBreakdown: {
-    total_consumption: 10,
-    receipt: 20,
-    debunkering: 10,
+    total_consumption: 0,
+    receipt: 0,
+    debunkering: 0,
   },
-  freshwaterPrevConsumed: 100,
-  freshwaterPrevEvaporated: 100,
-  freshwaterPrevReceiving: 10,
-  freshwaterPrevDischarging: 5,
+  freshwaterPrevConsumed: 0,
+  freshwaterPrevEvaporated: 0,
+  freshwaterPrevReceiving: 0,
+  freshwaterPrevDischarging: 0,
 };
 
 export const useDepartureSBYReportStore = defineStore(
@@ -62,6 +41,7 @@ export const useDepartureSBYReportStore = defineStore(
       fuelOilRobs: prevFuelOilRobs,
       lubeOilRobs: prevLubeOilRobs,
       freshwaterRob: prevFreshWaterRob,
+      fuelOilConsInHarbourPort,
     } = storeToRefs(detailsStore);
 
     const shipStore = useShipStore();
@@ -76,6 +56,10 @@ export const useDepartureSBYReportStore = defineStore(
     } = useLatestReportDetailsQuery(imoReg.value);
 
     // refs
+    const isFirstReport = computed(
+      () => reportNo.value === 1 && legNo.value === 1
+    );
+
     // Overview
     const reportNo = depsReportNo;
     const voyageNo = curVoyageNo;
@@ -246,30 +230,49 @@ export const useDepartureSBYReportStore = defineStore(
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
         rtn[fuelOil] = {};
-        rtn[fuelOil][Machinery.ME] = fuelOilBreakdowns[fuelOil][Machinery.ME]
-          ? +(
-              temp.fuelOilPrevBreakdown.me +
-              Number(fuelOilBreakdowns[fuelOil][Machinery.ME])
-            ).toFixed(2)
-          : temp.fuelOilPrevBreakdown.me;
-        rtn[fuelOil][Machinery.GE] = fuelOilBreakdowns[fuelOil][Machinery.GE]
-          ? +(
-              temp.fuelOilPrevBreakdown.ge +
-              Number(fuelOilBreakdowns[fuelOil][Machinery.GE])
-            ).toFixed(2)
-          : temp.fuelOilPrevBreakdown.ge;
-        rtn[fuelOil][Machinery.IGG] = fuelOilBreakdowns[fuelOil][Machinery.IGG]
-          ? +(
-              temp.fuelOilPrevBreakdown.igg +
-              Number(fuelOilBreakdowns[fuelOil][Machinery.IGG])
-            ).toFixed(2)
-          : temp.fuelOilPrevBreakdown.igg;
-        rtn[fuelOil][Machinery.BLR] = fuelOilBreakdowns[fuelOil][Machinery.BLR]
-          ? +(
-              temp.fuelOilPrevBreakdown.blr +
-              Number(fuelOilBreakdowns[fuelOil][Machinery.BLR])
-            ).toFixed(2)
-          : temp.fuelOilPrevBreakdown.blr;
+        if (Object.keys(fuelOilConsInHarbourPort.value).length !== 0) {
+          rtn[fuelOil][Machinery.ME] = fuelOilBreakdowns[fuelOil][Machinery.ME]
+            ? +(
+                Number(fuelOilConsInHarbourPort.value[fuelOil][Machinery.ME]) +
+                Number(fuelOilBreakdowns[fuelOil][Machinery.ME])
+              ).toFixed(2)
+            : Number(fuelOilConsInHarbourPort.value[fuelOil][Machinery.ME]);
+          rtn[fuelOil][Machinery.GE] = fuelOilBreakdowns[fuelOil][Machinery.GE]
+            ? +(
+                Number(fuelOilConsInHarbourPort.value[fuelOil][Machinery.GE]) +
+                Number(fuelOilBreakdowns[fuelOil][Machinery.GE])
+              ).toFixed(2)
+            : Number(fuelOilConsInHarbourPort.value[fuelOil][Machinery.GE]);
+          rtn[fuelOil][Machinery.IGG] = fuelOilBreakdowns[fuelOil][
+            Machinery.IGG
+          ]
+            ? +(
+                Number(fuelOilConsInHarbourPort.value[fuelOil][Machinery.IGG]) +
+                Number(fuelOilBreakdowns[fuelOil][Machinery.IGG])
+              ).toFixed(2)
+            : Number(fuelOilConsInHarbourPort.value[fuelOil][Machinery.IGG]);
+          rtn[fuelOil][Machinery.BLR] = fuelOilBreakdowns[fuelOil][
+            Machinery.BLR
+          ]
+            ? +(
+                Number(fuelOilConsInHarbourPort.value[fuelOil][Machinery.BLR]) +
+                Number(fuelOilBreakdowns[fuelOil][Machinery.BLR])
+              ).toFixed(2)
+            : Number(fuelOilConsInHarbourPort.value[fuelOil][Machinery.BLR]);
+        } else {
+          rtn[fuelOil][Machinery.ME] = Number(
+            fuelOilBreakdowns[fuelOil][Machinery.ME]
+          );
+          rtn[fuelOil][Machinery.GE] = Number(
+            fuelOilBreakdowns[fuelOil][Machinery.GE]
+          );
+          rtn[fuelOil][Machinery.IGG] = Number(
+            fuelOilBreakdowns[fuelOil][Machinery.IGG]
+          );
+          rtn[fuelOil][Machinery.BLR] = Number(
+            fuelOilBreakdowns[fuelOil][Machinery.BLR]
+          );
+        }
       }
       return rtn;
     });
@@ -361,6 +364,7 @@ export const useDepartureSBYReportStore = defineStore(
       isFetchingPrevData,
       IsSuccessPrevData,
       prevData,
+      isFirstReport,
       // Overview
       voyageUuid,
       reportNo,

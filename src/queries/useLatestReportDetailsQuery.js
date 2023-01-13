@@ -9,6 +9,7 @@ export const useLatestReportDetailsQuery = (imo) => {
       axios
         .get(`${UrlDomain.DEV}/marinanet/ships/${imo}/latest-details/`)
         .then((response) => {
+          console.log(response.data);
           return response.data;
         })
         .catch((error) => {

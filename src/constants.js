@@ -81,6 +81,7 @@ export const ErrorFieldsToDisplay = {
   arrivalfwetimeandposition: "Finish With Engine",
   eventdata: "Report",
   bdndata: "BDN",
+  unexpectedError: "Unexpected Error",
 };
 
 export const Direction = {

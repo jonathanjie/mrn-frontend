@@ -111,7 +111,7 @@ const i18n = createI18n({
       cruisePassenger: "Cruise Passenger Ship",
       currentVoyage: "Current Voyage",
       dateAndTime: "Date & time",
-      dateOfReport: "Date of report",
+      dateOfReport: "Date of report (UTC)",
       debunkering: "De-Bunkering",
       deliverdOil: "Delivered Oil",
       deliveredOil: "Delivered Oil",

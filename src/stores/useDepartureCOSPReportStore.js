@@ -53,7 +53,6 @@ export const useDepartureCOSPReportStore = defineStore(
     const loadingCondition = curLoadingCondition;
     const voyageNo = curVoyageNo;
     const reportingDateTime = ref("");
-    // const reportingTimeZone = ref(temp.reportingTimeZone);
     const reportingTimeZone = ref(departureTimeZone);
     const reportingDateTimeUTC = computed(() =>
       reportingTimeZone.value !== "default" && reportingDateTime.value
@@ -65,10 +64,6 @@ export const useDepartureCOSPReportStore = defineStore(
     );
 
     // Departure and Destination
-    // const departurePortCountry = ref(temp.departurePortCountry);
-    // const departurePortName = ref(temp.departurePortName);
-    // const departureTimeZone = ref(temp.departureTimeZone);
-    // const departureDateTimeUTC = ref(departureDate.value);
     const departureDateTime = computed(() =>
       departureTimeZone.value !== "default" && departureDateTimeUTC.value
         ? convertUTCToLT(
@@ -77,10 +72,6 @@ export const useDepartureCOSPReportStore = defineStore(
           )
         : ""
     );
-    // const destinationPortCountry = ref(temp.destinationPortCountry);
-    // const destinationPortName = ref(temp.destinationPortName);
-    // const destinationTimeZone = ref(temp.destinationTimeZone);
-    // const destinationEstimatedArrival = ref(temp.destinationEstimatedArrival);
     const destinationEstimatedArrivalUTC = computed(() =>
       destinationTimeZone.value !== "default" &&
       destinationEstimatedArrival.value
@@ -148,8 +139,8 @@ export const useDepartureCOSPReportStore = defineStore(
         ? +(
             (Date.parse(reportingDateTimeUTC.value) -
               Date.parse(departureDateTimeUTC.value)) /
-            (1000 * 60 * 60)
-          ).toFixed(0)
+            36e5
+          ).toFixed(2)
         : ""
     );
     const sbyToRupDistanceObs = ref("");
@@ -178,7 +169,7 @@ export const useDepartureCOSPReportStore = defineStore(
             (Date.parse(reportingDateTimeUTC.value) -
               Date.parse(departureDateTimeUTC.value)) /
             36e5
-          ).toFixed(0)
+          ).toFixed(2)
         : ""
     );
     // Sailing Plan (Pilot to Pilot)

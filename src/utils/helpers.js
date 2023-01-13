@@ -35,7 +35,7 @@ export function formatUTC(date) {
   if (date == null) {
     return null;
   }
-  
+
   const day = ("0" + date.getUTCDate()).slice(-2);
   const month = ("0" + (date.getUTCMonth() + 1)).slice(-2);
   const year = date.getUTCFullYear();
@@ -220,10 +220,10 @@ export const generateFuelOilData = (
   for (const fuelOil of fuelOils) {
     rtn.push({
       fuel_oil_type: fuelOil,
-      total_consumption: fuelOilTotalConsumptions[fuelOil] || 0,
-      receipt: receipts[fuelOil] || 0, // non-zero for DEP SBY & EVNT reports
-      debunkering: debunkerings[fuelOil] || 0, // non-zero for DEP SBY & EVNT reports
-      rob: rob[fuelOil] || 0, // zero for Arrival EOSP Total Consumption
+      total_consumption: Number(fuelOilTotalConsumptions[fuelOil]) || 0,
+      receipt: Number(receipts[fuelOil]) || 0, // non-zero for DEP SBY & EVNT reports
+      debunkering: Number(debunkerings[fuelOil]) || 0, // non-zero for DEP SBY & EVNT reports
+      rob: Number(rob[fuelOil]) || 0, // zero for Arrival EOSP Total Consumption
       breakdown: Object.entries(fuelOilBreakdowns[fuelOil]).reduce(
         (p, [k, v]) => ({ ...p, [k]: Number(v) || 0 }),
         {}
@@ -255,10 +255,12 @@ export const generateLubricatingOilData = (
     rtn.push({
       lubricating_oil_type: lubricatingOil,
       total_consumption:
-        lubricatingOilBreakdowns[lubricatingOil]["total_consumption"] || 0,
-      receipt: lubricatingOilBreakdowns[lubricatingOil]["receipt"] || 0,
-      debunkering: lubricatingOilBreakdowns[lubricatingOil]["debunkering"] || 0,
-      rob: lubricatingOilRobs[lubricatingOil] || 0,
+        Number(lubricatingOilBreakdowns[lubricatingOil]["total_consumption"]) ||
+        0,
+      receipt: Number(lubricatingOilBreakdowns[lubricatingOil]["receipt"]) || 0,
+      debunkering:
+        Number(lubricatingOilBreakdowns[lubricatingOil]["debunkering"]) || 0,
+      rob: Number(lubricatingOilRobs[lubricatingOil]) || 0,
       lubricatingoildatacorrection:
         dataCorrection.type === lubricatingOil
           ? {
@@ -278,6 +280,7 @@ export const calculateNewAverage = (
   numPrevDataPoints,
   numCurDataPoints
 ) => {
+  console.log(oldAverage, newDataPoint, numPrevDataPoints, numCurDataPoints);
   if (numCurDataPoints === 0) {
     return 0;
   } else if (numPrevDataPoints === 0) {

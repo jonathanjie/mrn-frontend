@@ -1,31 +1,18 @@
 <template>
-  <!-- if there are no voyages in backend -->
-  <!-- <div
-    v-if="lastVoyageNo === 0"
-    class="flex flex-col bg-gray-100 p-24 pb-52 m-12 justify-center content-center items-center space-y-2 rounded-xl"
-  >
-    <img src="@/assets/icons/empty.svg" class="h-28 w-28" />
-    <span class="text-lg font-bold text-gray-800 pt-3">{{
-      $t("noVoyageCreated")
-    }}</span>
-    <span class="text-14 text-gray-500">{{
-      $t("clickOnCreateNewVoyageAboveToBegin")
-    }}</span>
-  </div> -->
-  <div class="relative bg-gray-50 flex flex-col mt-12">
+  <div class="relative bg-gray-50 flex flex-col">
     <GradientButton
       v-if="isSuccessLatestReportDetails && manager !== true"
-      class="m-10 absolute right-0 -top-48"
+      class="m-10 absolute right-0 -top-32"
       type="button"
       :is-disabled="isAddVoyageLoading || !isAddVoyageEnabled"
       @click="addVoyage()"
     >
       <template v-slot:content>{{ $t("createNewVoyage") }}</template>
     </GradientButton>
-    <div v-if="isFetching" class="flex items-center justify-center">
+    <div v-if="isFetching" class="flex items-center justify-center mt-40">
       <img src="@/assets/icons/loading.svg" class="animate-spin h-28 w-28" />
     </div>
-    <div v-else-if="isSuccess" class="contents">
+    <div v-else-if="isSuccess && voyages.length !== 0" class="contents">
       <VoyageCard
         v-for="(voyage, index) in orderedVoyages"
         :key="index"
@@ -34,6 +21,7 @@
       >
       </VoyageCard>
     </div>
+    <!-- if there are no voyages in backend -->
     <div
       v-else
       class="flex flex-col p-24 pb-52 m-12 justify-center items-center space-y-2 rounded-xl"

@@ -1,5 +1,4 @@
 <script setup>
-import { computed } from "vue";
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 // import CustomButton from "@/components/Buttons/CustomButton.vue";
 import DepartureAndDestinationSBY from "@/components/Reports/DepartureReport/DepartureAndDestinationSBY.vue";
@@ -20,10 +19,10 @@ import {
   generateLubricatingOilData,
 } from "@/utils/helpers.js";
 import { UrlDomain } from "@/constants";
-import { useLatestReportDetailsStore } from "@/stores/useLatestReportDetailsStore";
 
 const store = useDepartureSBYReportStore();
 const {
+  isFirstReport,
   fuelOils,
   lubricatingOils,
   // Overview
@@ -44,7 +43,8 @@ const {
   loadCondition,
   loading,
   unloading,
-  totalAmount,
+  totalAmountComputed,
+  totalAmountStatic,
   time,
   // Vessel Condition at Departure
   draftFwd,
@@ -65,20 +65,23 @@ const {
   pilotDepLongDegree,
   pilotDepLongMinute,
   // Consumption And Condition
-  fuelOilRobs,
+  fuelOilRobsComputed,
+  fuelOilRobsStatic,
   fuelOilBreakdowns,
-  fuelOilTotalConsumptions,
   fuelOilReceipts,
   fuelOilDebunkerings,
+  fuelOilTotalConsumptions,
   fuelOilDataCorrection,
+  lubricatingOilRobsComputed,
+  lubricatingOilRobsStatic,
   lubricatingOilBreakdowns,
-  lubricatingOilRobs,
   lubricatingOilDataCorrection,
   freshwaterConsumed,
   freshwaterGenerated,
   freshwaterReceiving,
   freshwaterDischarging,
-  freshwaterRob,
+  freshwaterRobComputed,
+  freshwaterRobStatic,
   // Consumption And Condition (Total)
   fuelOilRobsSum,
   fuelOilBreakdownsSum,
@@ -93,9 +96,6 @@ const {
   freshwaterDischargingSum,
   freshwaterRobSum,
 } = storeToRefs(store);
-
-const latestReportDetailsStore = useLatestReportDetailsStore();
-const { latestReportDetails } = storeToRefs(latestReportDetailsStore);
 
 const submissionStatusStore = useSubmissionStatusStore();
 const {
@@ -131,7 +131,7 @@ const sendReport = async () => {
     fuelOils.value,
     fuelOilBreakdowns.value,
     fuelOilTotalConsumptions.value,
-    fuelOilRobs.value,
+    isFirstReport.value ? fuelOilRobsStatic.value : fuelOilRobsComputed.value,
     fuelOilDataCorrection.value,
     fuelOilReceipts.value,
     fuelOilDebunkerings.value
@@ -140,7 +140,9 @@ const sendReport = async () => {
   const lubricatingOilData = generateLubricatingOilData(
     lubricatingOils.value,
     lubricatingOilBreakdowns.value,
-    lubricatingOilRobs.value,
+    isFirstReport.value
+      ? lubricatingOilRobsStatic.value
+      : lubricatingOilRobsComputed.value,
     lubricatingOilDataCorrection.value
   );
 
@@ -158,8 +160,6 @@ const sendReport = async () => {
     lubricatingOilBreakdownsSum.value,
     lubricatingOilRobsSum.value
   );
-
-  const isFirstReport = computed(() => reportNo == 1 && legNo == 1);
 
   const REPORT = {
     report_type: Report.type.DEP_SBY,
@@ -184,19 +184,21 @@ const sendReport = async () => {
     },
     cargooperation: {
       load_condition: loadCondition.value,
-      loading: loading.value || 0,
-      unloading: unloading.value || 0,
-      total: totalAmount.value || 0,
-      time: time.value || 0,
+      loading: Number(loading.value) || 0,
+      unloading: Number(unloading.value) || 0,
+      total: isFirstReport.value
+        ? Number(totalAmountStatic.value) || 0
+        : Number(totalAmountComputed.value) || 0,
+      time: Number(time.value) || 0,
     },
     departurevesselcondition: {
-      draft_fwd: draftFwd.value,
-      draft_mid: draftMid.value,
-      draft_aft: draftAft.value,
-      constant: constant.value,
-      gm: gm.value,
-      ballast: ballast.value,
-      displacement: displacement.value,
+      draft_fwd: Number(draftFwd.value),
+      draft_mid: Number(draftMid.value),
+      draft_aft: Number(draftAft.value),
+      constant: Number(constant.value),
+      gm: Number(gm.value),
+      ballast: Number(ballast.value),
+      displacement: Number(displacement.value),
     },
     departurepilotstation: shouldPilotDepDataBeSent.value
       ? {
@@ -209,26 +211,35 @@ const sendReport = async () => {
       fueloildata_set: fuelOilData,
       lubricatingoildata_set: lubricatingOilData,
       freshwaterdata: {
-        consumed: freshwaterConsumed.value || 0,
-        generated: freshwaterGenerated.value || 0,
-        received: freshwaterReceiving.value || 0,
-        discharged: freshwaterDischarging.value || 0,
-        rob: freshwaterRob.value || 0,
+        consumed: Number(freshwaterConsumed.value) || 0,
+        generated: Number(freshwaterGenerated.value) || 0,
+        received: Number(freshwaterReceiving.value) || 0,
+        discharged: Number(freshwaterDischarging.value) || 0,
+        rob: isFirstReport.value
+          ? Number(freshwaterRobStatic.value) || 0
+          : Number(freshwaterRobComputed.value) || 0,
       },
       consumption_type: ConsumptionType.LAST_TO_SBY,
     },
-    totalconsumptiondata: {
-      fueloiltotalconsumptiondata_set: fuelOilDataSum,
-      lubricatingoiltotalconsumptiondata_set: lubricatingOilDataSum,
-      freshwatertotalconsumptiondata: {
-        consumed: freshwaterConsumedSum.value || 0,
-        generated: freshwaterGeneratedSum.value || 0,
-        received: freshwaterReceivingSum.value || 0,
-        discharged: freshwaterDischargingSum.value || 0,
-        rob: freshwaterRobSum.value || 0,
-      },
-      consumption_type: TotalConsumptionType.IN_HARBOUR_PORT,
-    },
+    totalconsumptiondata: !isFirstReport.value
+      ? {
+          fueloiltotalconsumptiondata_set: fuelOilDataSum,
+          lubricatingoiltotalconsumptiondata_set: lubricatingOilDataSum,
+          freshwatertotalconsumptiondata: {
+            consumed: Number(freshwaterConsumedSum.value) || 0,
+            generated: Number(freshwaterGeneratedSum.value) || 0,
+            received: Number(freshwaterReceivingSum.value) || 0,
+            discharged: Number(freshwaterDischargingSum.value) || 0,
+            rob: Number(freshwaterRobSum.value) || 0,
+          },
+          consumption_type: TotalConsumptionType.IN_HARBOUR_PORT,
+        }
+      : {
+          fueloiltotalconsumptiondata_set: [],
+          lubricatingoiltotalconsumptiondata_set: [],
+          consumption_type: TotalConsumptionType.IN_HARBOUR_PORT,
+        },
+    // can change the above to null once the database is updated
   };
 
   console.log("data: ", REPORT);
@@ -255,7 +266,10 @@ const sendReport = async () => {
     }
     isSubmissionModalVisible.value = true;
   } catch (error) {
-    isSubmissionRequested.value = false;
+    errorMessage.value = {
+      unexpectedError: ["Please contact the administrator."],
+    };
+    isSubmissionModalVisible.value = true;
     console.log(error);
   }
 };

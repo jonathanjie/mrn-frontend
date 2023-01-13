@@ -11,18 +11,6 @@ import { IceCondition, Machinery } from "@/constants";
 import { useShipStore } from "@/stores/useShipStore";
 import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
 
-const temp = {
-  // Total Consumption
-  fuelOilPrevBreakdown: {
-    me: 10,
-    ge: 10,
-    blr: 10,
-    igg: 10,
-    receipt: 20,
-    debunkering: 10,
-  },
-};
-
 export const useArrivalEOSPReportStore = defineStore(
   "arrivalEOSPReport",
   () => {
@@ -58,6 +46,7 @@ export const useArrivalEOSPReportStore = defineStore(
       lubeOilRobs,
       freshwaterRob: freshwater_rob,
       hoursAtSea,
+      fuelOilConsPilotToPilot,
     } = storeToRefs(detailsStore);
 
     // Overview
@@ -126,8 +115,8 @@ export const useArrivalEOSPReportStore = defineStore(
         ? +(
             (Date.parse(reportingDateTimeUTC.value) -
               Date.parse(lastReportDate.value)) /
-            (1000 * 60 * 60)
-          ).toFixed(0)
+            36e5
+          ).toFixed(2)
         : ""
     );
     const hoursTotal = computed(() =>
@@ -135,8 +124,8 @@ export const useArrivalEOSPReportStore = defineStore(
         ? +(
             (Date.parse(reportingDateTimeUTC.value) -
               Date.parse(departureDate.value)) /
-            (1000 * 60 * 60)
-          ).toFixed(0)
+            36e5
+          ).toFixed(2)
         : ""
     );
     const distanceObsSinceNoon = ref("");
@@ -350,30 +339,36 @@ export const useArrivalEOSPReportStore = defineStore(
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
         rtn[fuelOil] = {};
-        rtn[fuelOil][Machinery.ME] = fuelOilBreakdowns[fuelOil][Machinery.ME]
-          ? +(
-              temp.fuelOilPrevBreakdown.me +
-              Number(fuelOilBreakdowns[fuelOil][Machinery.ME])
-            ).toFixed(2)
-          : temp.fuelOilPrevBreakdown.me;
-        rtn[fuelOil][Machinery.GE] = fuelOilBreakdowns[fuelOil][Machinery.GE]
-          ? +(
-              temp.fuelOilPrevBreakdown.ge +
-              Number(fuelOilBreakdowns[fuelOil][Machinery.GE])
-            ).toFixed(2)
-          : temp.fuelOilPrevBreakdown.ge;
-        rtn[fuelOil][Machinery.IGG] = fuelOilBreakdowns[fuelOil][Machinery.IGG]
-          ? +(
-              temp.fuelOilPrevBreakdown.igg +
-              Number(fuelOilBreakdowns[fuelOil][Machinery.IGG])
-            ).toFixed(2)
-          : temp.fuelOilPrevBreakdown.igg;
-        rtn[fuelOil][Machinery.BLR] = fuelOilBreakdowns[fuelOil][Machinery.BLR]
-          ? +(
-              temp.fuelOilPrevBreakdown.blr +
-              Number(fuelOilBreakdowns[fuelOil][Machinery.BLR])
-            ).toFixed(2)
-          : temp.fuelOilPrevBreakdown.blr;
+        if (Object.keys(fuelOilConsPilotToPilot.value).length !== 0) {
+          rtn[fuelOil][Machinery.ME] = fuelOilBreakdowns[fuelOil][Machinery.ME]
+            ? +(
+                Number(fuelOilConsPilotToPilot.value[fuelOil][Machinery.ME]) +
+                Number(fuelOilBreakdowns[fuelOil][Machinery.ME])
+              ).toFixed(2)
+            : Number(fuelOilConsPilotToPilot.value[fuelOil][Machinery.ME]);
+          rtn[fuelOil][Machinery.GE] = fuelOilBreakdowns[fuelOil][Machinery.GE]
+            ? +(
+                Number(fuelOilConsPilotToPilot.value[fuelOil][Machinery.GE]) +
+                Number(fuelOilBreakdowns[fuelOil][Machinery.GE])
+              ).toFixed(2)
+            : Number(fuelOilConsPilotToPilot.value[fuelOil][Machinery.GE]);
+          rtn[fuelOil][Machinery.IGG] = fuelOilBreakdowns[fuelOil][
+            Machinery.IGG
+          ]
+            ? +(
+                Number(fuelOilConsPilotToPilot.value[fuelOil][Machinery.IGG]) +
+                Number(fuelOilBreakdowns[fuelOil][Machinery.IGG])
+              ).toFixed(2)
+            : Number(fuelOilConsPilotToPilot.value[fuelOil][Machinery.IGG]);
+          rtn[fuelOil][Machinery.BLR] = fuelOilBreakdowns[fuelOil][
+            Machinery.BLR
+          ]
+            ? +(
+                Number(fuelOilConsPilotToPilot.value[fuelOil][Machinery.BLR]) +
+                Number(fuelOilBreakdowns[fuelOil][Machinery.BLR])
+              ).toFixed(2)
+            : Number(fuelOilConsPilotToPilot.value[fuelOil][Machinery.BLR]);
+        }
       }
       return rtn;
     });

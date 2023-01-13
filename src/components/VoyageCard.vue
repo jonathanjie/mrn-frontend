@@ -19,7 +19,7 @@ const auth = useAuthStore();
 const latestReportDetailsStore = useLatestReportDetailsStore();
 const { refetchLatestReportDetails } = latestReportDetailsStore;
 const voyageStore = useVoyageStore();
-const { reports: storeReports } = storeToRefs(voyageStore);
+const { voyageLegs: storedVoyageLegs } = storeToRefs(voyageStore);
 
 const props = defineProps({
   voyage: {
@@ -33,27 +33,32 @@ const props = defineProps({
     default: false,
   },
 });
+console.log("voyage!!", props.voyage);
 
-const reports = computed(() => props.voyage.reports);
-// console.log("reports: ", reports.value);
+const voyageLegs = computed(() => props.voyage.voyage_legs);
+const reports = computed(() =>
+  props.voyage.voyage_legs.reduce((acc, curr) => curr.reports.concat(acc), [])
+);
 
 const lastReportIndex = reports.value.length - 1;
-const lastLegNo = reports[lastReportIndex]?.voyage_leg?.leg_num;
-const lastLegUuid = reports[lastReportIndex]?.voyage_leg?.uuid;
-const start = reports.value[0]?.voyage_leg?.departure_port || "N/A";
+const lastLegIndex = props.voyage.voyage_legs.length - 1;
+// console.log("reports ", reports.value);
+
+const lastLegNo = props.voyage.voyage_legs[lastLegIndex]?.leg_num;
+const lastLegUuid = props.voyage.voyage_legs[lastLegIndex]?.uuid;
+const start = reports.value[0]?.departure_port || "N/A";
 const mid = "At Sea";
-const dest = reports.value[lastReportIndex]?.voyage_leg?.arrival_port || "N/A"; // make dynamic when leg_uuid added to report header
+const dest = reports.value[lastReportIndex]?.arrival_port || "N/A";
 
 let lastReportNo = {};
 for (let report of reports.value) {
-  lastReportNo[report.report_type] = report.report_num; // update most recent report no for each type
+  lastReportNo[report.report_type] = report.report_num;
 }
-
 const voyageDetails = JSON.stringify({
   voyage_uuid: props.voyage.uuid,
   leg_uuid: lastLegUuid || "",
   cur_voyage_no: props.voyage.voyage_num,
-  cur_loading_condition: "BALLAST", // TODO: dynamic
+  cur_loading_condition: props.voyage.voyage_legs[0]?.load_condition, // make dynamic for all legs
   last_leg_no: lastLegNo || 0,
   last_noon_report_no: lastReportNo["NOON"] || 0,
   last_deps_report_no: lastReportNo["DSBY"] || 0,
@@ -72,17 +77,18 @@ const filter = ref(ReportFilterCategories.ALL);
 
 const filteredData = computed(() => {
   if (!filter.value || filter.value == ReportFilterCategories.ALL) {
-    return props.voyage.reports;
+    return reports.value;
   }
-  return props.voyage.reports.filter(
+  return reports.value.filter(
     (p) => ReportTypeToFilterCategories[p.report_type] === filter.value
   );
 });
 
+console.log(filteredData.value);
+
 const handleClick = async () => {
-  // console.log("im clicked");
-  // console.log("reports: ", reports.value);
-  storeReports.value = reports.value;
+  console.log(voyageLegs.value);
+  storedVoyageLegs.value = voyageLegs.value;
   await refetchLatestReportDetails();
   router.push({
     name: "add-report",
@@ -94,8 +100,8 @@ const handleClick = async () => {
 <template>
   <!-- need to put below two components under one big div and then set min width to child -->
   <div
-    class="flex h-20 mx-12 items-center rounded-xl min-w-fit z-10"
-    :class="isExpanded ? 'bg-blue' : 'bg-white drop-shadow-md mb-6'"
+    class="flex h-20 mx-12 items-center rounded-xl min-w-fit z-10 mt-10"
+    :class="isExpanded ? 'bg-blue' : 'bg-white drop-shadow-md'"
   >
     <img
       src="@/assets/icons/selected_blue_gradient.svg"
@@ -142,7 +148,7 @@ const handleClick = async () => {
   </div>
   <div
     v-show="isExpanded"
-    class="min-h-fit min-w-fit bg-darkgray mx-12 mb-6 rounded-xl -mt-4 p-5"
+    class="min-h-fit min-w-fit bg-darkgray mx-12 rounded-xl -mt-4 p-5"
   >
     <div class="min-w-fit flex items-center py-5">
       <button
@@ -186,9 +192,12 @@ const handleClick = async () => {
             ReportTypeToDisplay[report.report_type] + ' ' + report.report_num
           "
           :report_type="report.report_type"
-          :departure="report.voyage_leg.departure_port"
-          :arrival="report.voyage_leg.arrival_port"
-          :loading_condition="report.loading_condition"
+          :departure="report.departure_port"
+          :arrival="report.arrival_port"
+          :loading_condition="
+            voyage.voyage_legs.filter((leg) => leg.id === report.voyage_leg)[0]
+              .load_condition
+          "
           :date_of_report="readableUTCDate(new Date(report.report_date))"
         ></ReportCard>
       </div>

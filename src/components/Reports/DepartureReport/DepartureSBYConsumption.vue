@@ -89,10 +89,10 @@
             />
             <input
               v-if="isFirstReport"
-              v-model="fue[fuelOil]"
+              v-model="fuelOilRobsStatic[fuelOil]"
               @keypress="preventNaN($event, fuelOilRobsStatic[fuelOil])"
               placeholder="0"
-              class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+              class="col-span-2 p-3 pl-4 border-t border-x bg-white text-gray-700 focus:outline-0"
             />
             <div
               v-else
@@ -266,7 +266,7 @@
                 preventNaN($event, lubricatingOilRobsStatic[lubricatingOil])
               "
               placeholder="0"
-              class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+              class="col-span-2 p-3 pl-4 border-t border-x bg-white text-gray-700 focus:outline-0"
             />
             <div
               v-else
@@ -422,10 +422,9 @@
           <input
             v-if="isFirstReport"
             v-model="freshwaterRobStatic"
-            disabled=""
             @keypress="preventNaN($event, freshwater_discharging)"
             placeholder="0"
-            class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
+            class="col-span-1 p-3 pl-4 border-y border-x bg-white text-gray-700 focus:outline-0"
           />
           <div
             v-else
@@ -441,7 +440,7 @@
 
 <script setup>
 import { preventNaN } from "@/utils/helpers";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 import { storeToRefs } from "pinia";
@@ -451,6 +450,7 @@ const isLubricatingOilRemarkEnabled = ref(false);
 
 const store = useDepartureSBYReportStore();
 const {
+  isFirstReport,
   fuelOils,
   lubricatingOils,
   machinery,
@@ -481,8 +481,6 @@ const {
   freshwaterRobComputed,
   freshwaterRobStatic,
 } = storeToRefs(store);
-
-const isFirstReport = computed(() => reportNo == 1 && legNo == 1);
 
 const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
 </script>
