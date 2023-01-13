@@ -9,16 +9,6 @@ import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
 
 const temp = {
   otherPlannedOperation: "Sign contract",
-
-  // Total Consumption
-  fuelOilPrevBreakdown: {
-    me: 10,
-    ge: 10,
-    blr: 10,
-    igg: 10,
-    receipt: 20,
-    debunkering: 10,
-  },
 };
 
 export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
@@ -41,6 +31,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     fuelOilRobs: fuel_oil_robs,
     lubeOilRobs,
     freshwaterRob: freshwater_rob,
+    fuelOilConsPortToPort,
   } = storeToRefs(detailsStore);
 
   // Overview
@@ -105,8 +96,8 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
       ? +(
           (Date.parse(reportingDateTimeUTC.value) -
             Date.parse(lastReportDate.value)) /
-          36e5
-        ).toFixed(2)
+          (1000 * 60 * 60)
+        ).toFixed(0)
       : ""
   );
   const distanceObs = ref("");
@@ -139,8 +130,8 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
       ? +(
           (Date.parse(reportingDateTimeUTC.value) -
             Date.parse(lastReportDate.value)) /
-          36e5
-        ).toFixed(2)
+          (1000 * 60 * 60)
+        ).toFixed(0)
       : ""
   );
   const hoursTotal = computed(() =>
@@ -149,7 +140,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
           (Date.parse(reportingDateTimeUTC.value) -
             Date.parse(departureDate.value)) /
           36e5
-        ).toFixed(2)
+        ).toFixed(0)
       : ""
   );
 
@@ -233,38 +224,40 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
       ? +(
           (Date.parse(reportingDateTimeUTC.value) -
             Date.parse(departureDate.value)) /
-          36e5
-        ).toFixed(2)
+          (1000 * 60 * 60)
+        ).toFixed(0)
       : ""
   );
   const fuelOilBreakdownsSum = computed(() => {
     let rtn = {};
     for (const fuelOil of fuelOils.value) {
       rtn[fuelOil] = {};
-      rtn[fuelOil][Machinery.ME] = fuelOilBreakdowns[fuelOil][Machinery.ME]
-        ? +(
-            temp.fuelOilPrevBreakdown.me +
-            Number(fuelOilBreakdowns[fuelOil][Machinery.ME])
-          ).toFixed(2)
-        : temp.fuelOilPrevBreakdown.me;
-      rtn[fuelOil][Machinery.GE] = fuelOilBreakdowns[fuelOil][Machinery.GE]
-        ? +(
-            temp.fuelOilPrevBreakdown.ge +
-            Number(fuelOilBreakdowns[fuelOil][Machinery.GE])
-          ).toFixed(2)
-        : temp.fuelOilPrevBreakdown.ge;
-      rtn[fuelOil][Machinery.IGG] = fuelOilBreakdowns[fuelOil][Machinery.IGG]
-        ? +(
-            temp.fuelOilPrevBreakdown.igg +
-            Number(fuelOilBreakdowns[fuelOil][Machinery.IGG])
-          ).toFixed(2)
-        : temp.fuelOilPrevBreakdown.igg;
-      rtn[fuelOil][Machinery.BLR] = fuelOilBreakdowns[fuelOil][Machinery.BLR]
-        ? +(
-            temp.fuelOilPrevBreakdown.blr +
-            Number(fuelOilBreakdowns[fuelOil][Machinery.BLR])
-          ).toFixed(2)
-        : temp.fuelOilPrevBreakdown.blr;
+      if (Object.keys(fuelOilConsPortToPort.value).length !== 0) {
+        rtn[fuelOil][Machinery.ME] = fuelOilBreakdowns[fuelOil][Machinery.ME]
+          ? +(
+              Number(fuelOilConsPortToPort.value[fuelOil][Machinery.ME]) +
+              Number(fuelOilBreakdowns[fuelOil][Machinery.ME])
+            ).toFixed(2)
+          : Number(fuelOilConsPortToPort.value[fuelOil][Machinery.ME]);
+        rtn[fuelOil][Machinery.GE] = fuelOilBreakdowns[fuelOil][Machinery.GE]
+          ? +(
+              Number(fuelOilConsPortToPort.value[fuelOil][Machinery.GE]) +
+              Number(fuelOilBreakdowns[fuelOil][Machinery.GE])
+            ).toFixed(2)
+          : Number(fuelOilConsPortToPort.value[fuelOil][Machinery.GE]);
+        rtn[fuelOil][Machinery.IGG] = fuelOilBreakdowns[fuelOil][Machinery.IGG]
+          ? +(
+              Number(fuelOilConsPortToPort.value[fuelOil][Machinery.IGG]) +
+              Number(fuelOilBreakdowns[fuelOil][Machinery.IGG])
+            ).toFixed(2)
+          : Number(fuelOilConsPortToPort.value[fuelOil][Machinery.IGG]);
+        rtn[fuelOil][Machinery.BLR] = fuelOilBreakdowns[fuelOil][Machinery.BLR]
+          ? +(
+              Number(fuelOilConsPortToPort.value[fuelOil][Machinery.BLR]) +
+              Number(fuelOilBreakdowns[fuelOil][Machinery.BLR])
+            ).toFixed(2)
+          : Number(fuelOilConsPortToPort.value[fuelOil][Machinery.BLR]);
+      }
     }
     return rtn;
   });

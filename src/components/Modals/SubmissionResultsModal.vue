@@ -51,7 +51,13 @@
                     </div>
                     <div class="text-gray-700">
                       <!-- Assuming only one error can be returned / is relevant per field -->
-                      {{ Array.isArray(val) ? val[0] : val }}
+                      {{
+                        Array.isArray(val)
+                          ? val.length == 1
+                            ? val[0]
+                            : val.filter((x) => Object.keys(x).length !== 0)
+                          : val
+                      }}
                     </div>
                   </li>
                 </div>
