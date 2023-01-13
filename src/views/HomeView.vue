@@ -37,7 +37,6 @@ const getUserRole = async () => {
   return await axios
     .get(`${UrlDomain.DEV}/marinanet/user/`)
     .then((response) => {
-      // console.log("User Role", response);
       return response.data.role;
     })
     .catch((error) => {

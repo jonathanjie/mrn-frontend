@@ -317,7 +317,7 @@ for (let report in data) {
     }
   }
 }
-console.log("fuel Object item", fuelObject);
+
 for (let fuel in fuelObject) {
   for (let report in data) {
     let obj = data[report];

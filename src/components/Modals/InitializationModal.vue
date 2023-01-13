@@ -15,7 +15,7 @@
             <h3 class="text-3xl font-semibold">{{ $t("generalInfo") }}</h3>
             <!-- <button
               class="p-1 ml-auto bg-transparent border-0 text-black opacity-50 float-right text-3xl leading-none font-semibold"
-              @click="close"
+              @click="$emit("close-modal");"
             >
               <span class="h-6 w-6 text-3xl block"> x </span>
             </button> -->
@@ -448,11 +448,6 @@ const props = defineProps({
 
 const emit = defineEmits(["close-modal"]);
 
-const close = () => {
-  console.log("Close modal");
-  emit("close-modal");
-};
-
 const addSettings = () => {
   const settings = {
     flag: "Panama",
@@ -474,7 +469,6 @@ const addSettings = () => {
     ),
     propeller_pitch: propeller_pitch.value,
   };
-  console.log("Init modal data", JSON.stringify(settings));
   axios
     .post(`${UrlDomain.DEV}/marinanet/ships/${props.imo}/specs/`, settings)
     .then(() => {
