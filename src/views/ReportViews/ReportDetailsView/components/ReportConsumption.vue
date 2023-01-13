@@ -180,7 +180,7 @@ console.log(machinery.value);
             <div
               class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
             >
-              {{ fuelOilData.fuel_oil_type }}
+              {{ $t(fuelOilData.fuel_oil_type) }}
             </div>
             <input
               disabled
@@ -327,13 +327,13 @@ console.log(machinery.value);
             :key="lubricatingOilData + index"
             :class="
               'col-span-10 grid grid-cols-10' +
-              (index == lubricatingOilData.length - 1 ? ' border-b' : '')
+              (index == lubricatingOils.length - 1 ? ' border-b' : '')
             "
           >
             <div
               class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
             >
-              {{ lubricatingOilData.fuel_oil_type }}
+              {{ $t(lubricatingOilData.lubricating_oil_type) }}
             </div>
             <input
               disabled

@@ -30,24 +30,26 @@ const me_rpm = computed(() => props.report.sailingplan.me_rpm);
       <span class="col-span-2 text-blue-700 border-b p-3 self-center">{{
         $t("distance")
       }}</span>
-      <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-white">
+      <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-gray-50">
         <input
           v-model="budget_distance"
+          disabled
           @keypress="preventNaN($event, budget_distance)"
           placeholder="00000"
-          class="w-24 text-gray-700 focus:outline-0"
+          class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <MiniUnitDisplay>NM</MiniUnitDisplay>
       </div>
       <span class="col-span-2 text-blue-700 p-3 self-center">{{
         $t("speed")
       }}</span>
-      <div class="flex col-span-3 p-2 pl-4 border-l bg-white">
+      <div class="flex col-span-3 p-2 pl-4 border-l bg-gray-50">
         <input
           v-model="budget_speed"
+          disabled
           @keypress="preventNaN($event, budget_speed)"
           placeholder="00.00"
-          class="w-24 text-gray-700 focus:outline-0"
+          class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <MiniUnitDisplay>KNOTS</MiniUnitDisplay>
       </div>
@@ -58,24 +60,26 @@ const me_rpm = computed(() => props.report.sailingplan.me_rpm);
       <span class="col-span-2 text-blue-700 border-b p-3 self-center">{{
         $t("meDailyFOCons")
       }}</span>
-      <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-white">
+      <div class="flex col-span-3 p-2 pl-4 border-b border-l bg-gray-50">
         <input
+          disabled
           v-model="me_daily"
           @keypress="preventNaN($event, me_daily)"
           placeholder="000.00"
-          class="w-24 text-gray-700 focus:outline-0"
+          class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <MiniUnitDisplay>M/T</MiniUnitDisplay>
       </div>
       <span class="col-span-2 text-blue-700 p-3 self-center">{{
         $t("meRPM")
       }}</span>
-      <div class="flex col-span-3 p-2 pl-4 border-l bg-white">
+      <div class="flex col-span-3 p-2 pl-4 border-l bg-gray-50">
         <input
+          disabled
           v-model="me_rpm"
           @keypress="preventNaN($event, me_rpm)"
           placeholder="000.00"
-          class="w-24 text-gray-700 focus:outline-0"
+          class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <MiniUnitDisplay>RPM</MiniUnitDisplay>
       </div>

@@ -352,10 +352,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const stoppageEnding = ref("");
   const stoppageEndingUTC = computed(() =>
     reportingTimeZone.value !== "default" && stoppageEndingUTC.value
-      ? convertLTToUTC(
-          new Date(stoppageEndingUTC.value),
-          reportingTimeZone.value
-        )
+      ? convertLTToUTC(new Date(stoppageEnding.value), reportingTimeZone.value)
       : ""
   );
   const stoppageDuration = ref("");
