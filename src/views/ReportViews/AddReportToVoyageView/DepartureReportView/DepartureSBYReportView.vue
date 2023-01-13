@@ -247,6 +247,13 @@ const sendReport = async () => {
       : {
           fueloiltotalconsumptiondata_set: [],
           lubricatingoiltotalconsumptiondata_set: [],
+          freshwatertotalconsumptiondata: {
+            consumed: 0,
+            generated: 0,
+            received: 0,
+            discharged: 0,
+            rob: 0,
+          },
           consumption_type: TotalConsumptionType.IN_HARBOUR_PORT,
         },
     // can change the above to null once the database is updated
