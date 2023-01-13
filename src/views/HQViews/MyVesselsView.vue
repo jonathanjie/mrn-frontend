@@ -284,7 +284,8 @@ import constants from "@/constants";
 const store = useHQStore();
 
 const shipRef = constants.shipRefs;
-const { shipCount, shipStatus } = store;
+const shipCount = store.shipCount;
+const shipStatus = store.shipStatus;
 const reportStatus = (lastReportDate) => {
   if (lastReportDate === undefined) {
     return undefined;

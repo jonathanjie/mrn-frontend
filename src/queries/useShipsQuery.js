@@ -2,21 +2,20 @@ import { useQuery } from "vue-query";
 import axios from "axios";
 import { UrlDomain } from "@/constants";
 import { useHQStore } from "@/stores/useHQStore";
-import { storeToRefs } from "pinia";
 
 export const useShipsQuery = () => {
   return useQuery(["ships"], async () =>
     axios
       .get(`${UrlDomain.DEV}/marinanet/ships-overview`)
       .then((response) => {
-        const { shipCount, shipStatus } = storeToRefs(useHQStore());
-        shipCount.etcVessels = 0;
-        shipCount.bunkeringVessels = 0;
-        shipCount.cargoVessels = 0;
-        shipCount.inPortVessels = 0;
-        shipCount.sailingVessels = 0;
-        shipCount.waitingVessels = 0;
-        shipStatus.length = 0;
+        const store = useHQStore();
+        store.shipCount.etcVessels = 0;
+        store.shipCount.bunkeringVessels = 0;
+        store.shipCount.cargoVessels = 0;
+        store.shipCount.inPortVessels = 0;
+        store.shipCount.sailingVessels = 0;
+        store.shipCount.waitingVessels = 0;
+        store.shipStatus.length = 0;
         const ships = response.data;
         const eventTypes = { EVPO: "", EVHB: "", NNPO: "", NNHB: "" };
 
@@ -34,11 +33,11 @@ export const useShipsQuery = () => {
           // Sailing/Waiting
           if (ship.last_report_type in reportType) {
             const status = reportType[ship.last_report_type];
-            shipStatus.push(reportType[ship.last_report_type]);
+            store.shipStatus.push(reportType[ship.last_report_type]);
             if (status == "sailing") {
-              shipCount.sailingVessels++;
+              store.shipCount.sailingVessels++;
             } else {
-              shipCount.waitingVessels++;
+              store.shipCount.waitingVessels++;
             }
             // Event
           } else if (
@@ -47,28 +46,28 @@ export const useShipsQuery = () => {
           ) {
             const keys = Object.keys(ship.last_operation).sort();
             if (ship.last_operation[keys[1]] || ship.last_operation[keys[2]]) {
-              shipCount.inPortVessels++;
-              shipCount.cargoVessels++;
-              shipStatus.push("cargo");
+              store.shipCount.inPortVessels++;
+              store.shipCount.cargoVessels++;
+              store.shipStatus.push("cargo");
             } else if (ship.last_operation[keys[0]]) {
-              shipCount.inPortVessels++;
-              shipCount.bunkeringVessels++;
-              shipStatus.push("bunkering");
+              store.shipCount.inPortVessels++;
+              store.shipCount.bunkeringVessels++;
+              store.shipStatus.push("bunkering");
             } else if (
               ship.last_operation[keys[4]] ||
               ship.last_operation[keys[5]]
             ) {
-              shipCount.etcVessels++;
-              shipStatus.push("etc");
+              store.shipCount.etcVessels++;
+              store.shipStatus.push("etc");
             } else {
-              shipCount.inPortVessels++;
-              shipCount.waitingVessels++;
-              shipStatus.push("waiting");
+              store.shipCount.inPortVessels++;
+              store.shipCount.waitingVessels++;
+              store.shipStatus.push("waiting");
             }
             // ETC catch
           } else {
-            shipCount.etcVessels++;
-            shipStatus.push("etc");
+            store.shipCount.etcVessels++;
+            store.shipStatus.push("etc");
           }
         }
         return response.data;
