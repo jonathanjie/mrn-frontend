@@ -21,12 +21,12 @@
           <span
             class="text-12"
             :class="selectedSpeed ? 'text-white' : 'text-gray-700'"
-            >{{ $t("speed") }}:</span
+            >{{ $t("speed") }}</span
           >
           <span
             class="text-16 font-bold"
             :class="selectedSpeed ? 'text-white' : 'text-blue-600'"
-            >{{ latestData.speed }}</span
+            >{{ latestData.speed ?? "0" }} knots</span
           >
         </div>
         <div
@@ -41,7 +41,7 @@
           <span
             class="text-16 font-bold"
             :class="selectedSpeed ? 'text-white' : 'text-blue-500'"
-            >{{ latestData.distance_observed ?? "" }}</span
+            >{{ latestData.distance_observed ?? "0" }} nm</span
           >
         </div>
       </button>
@@ -305,9 +305,7 @@ for (let report in data) {
   let date = new Date(obj.report_date).toDateString().split(" ");
   dateList.push(date[2] + " " + date[1]);
   reportType.push(obj.report_type ?? "");
-  console.log("The code reached here");
   speedList.push(obj.speed ?? "0");
-  console.log("Did the code reached here");
   distanceOBSList.push(obj.distance_observed ?? "0");
   distanceToGoList.push(obj.distance_to_go ?? "0");
   for (let fuel_type in obj.fuel_stats) {
@@ -319,7 +317,9 @@ for (let report in data) {
     }
   }
 }
-console.log("fuel Object item", fuelObject);
+
+console.log("Speed List", speedList);
+
 for (let fuel in fuelObject) {
   for (let report in data) {
     let obj = data[report];
