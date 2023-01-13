@@ -130,7 +130,7 @@
       }}</span>
     </div>
     <!-- Values -->
-    <div v-if="row1 !== undefined" v-for="(value, index) in row1">
+    <div v-for="(value, index) in row1" :key="index">
       <div
         class="flex px-3.5 py-3 justify-center"
         :class="
@@ -154,7 +154,7 @@
         $t("rob")
       }}</span>
     </div>
-    <div v-if="row2 !== undefined" v-for="(value, index) in row2">
+    <div v-for="(value, index) in row2" :key="index">
       <div
         class="flex px-3.5 py-3 justify-center"
         :class="
@@ -194,12 +194,10 @@ const reportTypes = {
   NNPO: "Noon in Port",
 };
 
-let row1 = undefined;
-let row2 = undefined;
-if (props.header === "Distance") {
-  row1 = props.distanceToGo;
-  row2 = props.distanceOBS;
-} else if (props.fuelFoc !== undefined) {
+let row1 = props.header === "Distance" ? props.distanceToGo : undefined;
+let row2 = props.header === "Distance" ? props.distanceOBS : undefined;
+
+if (props.fuelFoc !== undefined) {
   console.log(props.fuelFoc);
   row1 = props.fuelFoc;
   row2 = props.fuelRob;

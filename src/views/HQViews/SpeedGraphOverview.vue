@@ -165,7 +165,7 @@ const props = defineProps({
   vesselname: String,
   imo: String,
 });
-
+console.log("SpeedGraphLoads");
 const shipRef = constants.shipRefs;
 const store = useHQStore();
 const { isSuccess: shipSuccess, data: ship } = store.shipQuery(props.imo);
