@@ -137,6 +137,16 @@ const sendReport = async () => {
     fuelOilDebunkerings.value
   );
 
+  // console.log(
+  //   fuelOils.value,
+  //   fuelOilBreakdowns.value,
+  //   fuelOilTotalConsumptions.value,
+  //   isFirstReport.value,
+  //   fuelOilDataCorrection.value,
+  //   fuelOilReceipts.value,
+  //   fuelOilDebunkerings.value
+  // );
+
   const lubricatingOilData = generateLubricatingOilData(
     lubricatingOils.value,
     lubricatingOilBreakdowns.value,
