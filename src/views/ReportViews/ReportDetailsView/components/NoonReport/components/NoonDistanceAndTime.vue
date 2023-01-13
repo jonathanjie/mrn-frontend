@@ -87,14 +87,14 @@ const edited = ref(false);
         {{ $t("time") }}
       </div>
       <div
-        class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50"
+        class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t bg-white"
       >
         <input
           disabled
           v-model="hoursSinceNoon"
           @keypress="preventNaN($event, hoursSinceNoon)"
           placeholder="0"
-          class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
+          class="w-24 text-14 text-gray-700 focus:outline-0 bg-white"
         />
         <MiniUnitDisplay>HRS</MiniUnitDisplay>
       </div>
@@ -104,14 +104,14 @@ const edited = ref(false);
         {{ $t("total") }}
       </div>
       <div
-        class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-y lg:border-b-0 bg-gray-50"
+        class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-y lg:border-b-0 bg-white"
       >
         <input
           disabled
           v-model="hoursTotal"
           @keypress="preventNaN($event, hoursTotal)"
           placeholder="0"
-          class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
+          class="w-24 text-14 text-gray-700 focus:outline-0 bg-white"
         />
         <MiniUnitDisplay>HRS</MiniUnitDisplay>
       </div>
@@ -122,8 +122,7 @@ const edited = ref(false);
         {{ $t("distanceToGo") }}
       </div>
       <div
-        class="flex items-center col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t"
-        :class="distanceToGoDisabled ? 'bg-gray-50' : 'bg-white'"
+        class="flex items-center col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t bg-white"
       >
         <input
           v-if="!edited"
@@ -131,7 +130,7 @@ const edited = ref(false);
           v-model="distanceToGo"
           @keypress="preventNaN($event, distanceToGo)"
           placeholder="0"
-          class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
+          class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50 bg-white"
         />
         <!-- <input
           v-else
@@ -147,7 +146,7 @@ const edited = ref(false);
           @click="toggle"
           class="ml-auto h-4 w-4 cursor-pointer"
         /> -->
-        <MiniUnitDisplay class="ml-2">NM</MiniUnitDisplay>
+        <MiniUnitDisplay class="ml-auto">NM</MiniUnitDisplay>
       </div>
       <div
         class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-b lg:border-b-0 border-l lg:border-l-0 border-t bg-gray-50 text-14"
@@ -158,8 +157,7 @@ const edited = ref(false);
         v-model="remarks"
         :placeholder="$t('inputRemarks')"
         :disabled="distanceToGoDisabled"
-        class="col-span-6 lg:col-span-3 p-3 pl-4 border-x border-t text-14 text-gray-700 focus:outline-0"
-        :class="distanceToGoDisabled ? 'bg-gray-50' : 'bg-white'"
+        class="col-span-6 lg:col-span-3 p-3 pl-4 border-x border-t text-14 text-gray-700 focus:outline-0 bg-white"
       />
 
       <div
@@ -183,14 +181,14 @@ const edited = ref(false);
         {{ $t("total") }}
       </div>
       <div
-        class="flex col-span-6 lg:col-span-3 p-2 pl-4 border lg:border-b-0 bg-gray-50"
+        class="flex col-span-6 lg:col-span-3 p-2 pl-4 border lg:border-b-0 bg-white"
       >
         <input
           disabled
           v-model="distanceObservedTotal"
           @keypress="preventNaN($event, distanceObservedTotal)"
           placeholder="0"
-          class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
+          class="w-24 text-14 text-gray-700 focus:outline-0 bg-white"
         />
         <MiniUnitDisplay>NM</MiniUnitDisplay>
       </div>
@@ -201,14 +199,14 @@ const edited = ref(false);
         {{ $t("distanceByEngine") }}
       </div>
       <div
-        class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t lg:border bg-gray-50"
+        class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t lg:border bg-white"
       >
         <input
           disabled
           v-model="distanceEngineSinceNoon"
           @keypress="preventNaN($event, distanceEngineSinceNoon)"
           placeholder="0"
-          class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
+          class="w-24 text-14 text-gray-700 focus:outline-0 bg-white"
         />
         <MiniUnitDisplay>NM</MiniUnitDisplay>
       </div>
@@ -217,13 +215,13 @@ const edited = ref(false);
       >
         {{ $t("total") }}
       </div>
-      <div class="flex col-span-6 lg:col-span-3 p-2 pl-4 border bg-gray-50">
+      <div class="flex col-span-6 lg:col-span-3 p-2 pl-4 border bg-white">
         <input
           disabled
           v-model="distanceEngineTotal"
           @keypress="preventNaN($event, distanceEngineTotal)"
           placeholder="0"
-          class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
+          class="w-24 text-14 text-gray-700 focus:outline-0 bg-white"
         />
         <MiniUnitDisplay>NM</MiniUnitDisplay>
       </div>

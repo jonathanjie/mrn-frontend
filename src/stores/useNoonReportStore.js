@@ -38,7 +38,6 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     propellerPitch,
     speedAverage,
     rpmAverage,
-    slipAverage,
     fuelOilRobs: fuel_oil_robs,
     lubeOilRobs,
     freshwaterRob: freshwater_rob,
@@ -272,10 +271,13 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const fuelOilBreakdowns = reactive({});
   for (const fuelOil of fuelOils.value) {
     fuelOilBreakdowns[fuelOil] = {};
-    fuelOilBreakdowns[fuelOil][Machinery.ME] = "";
-    fuelOilBreakdowns[fuelOil][Machinery.GE] = "";
-    fuelOilBreakdowns[fuelOil][Machinery.IGG] = "";
-    fuelOilBreakdowns[fuelOil][Machinery.BLR] = "";
+    for (const machine of machinery.value) {
+      fuelOilBreakdowns[fuelOil][machine] = "";
+    }
+    // fuelOilBreakdowns[fuelOil][Machinery.ME] = "";
+    // fuelOilBreakdowns[fuelOil][Machinery.GE] = "";
+    // fuelOilBreakdowns[fuelOil][Machinery.IGG] = "";
+    // fuelOilBreakdowns[fuelOil][Machinery.BLR] = "";
   }
   const fuelOilTotalConsumptions = computed(() => {
     let rtn = {};
@@ -288,7 +290,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     let rtn = {};
     for (const fuelOil of fuelOils.value) {
       rtn[fuelOil] = +(
-        fuel_oil_robs.value[fuelOil] -
+        Number(fuel_oil_robs.value[fuelOil]) -
         Number(fuelOilTotalConsumptions.value[fuelOil])
       ).toFixed(2);
     }
