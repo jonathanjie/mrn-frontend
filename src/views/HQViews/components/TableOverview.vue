@@ -21,12 +21,12 @@
           <span
             class="text-12"
             :class="selectedSpeed ? 'text-white' : 'text-gray-700'"
-            >{{ $t("speed") }}:</span
+            >{{ $t("speed") }}</span
           >
           <span
             class="text-16 font-bold"
             :class="selectedSpeed ? 'text-white' : 'text-blue-600'"
-            >{{ latestData.speed ?? "0" }}</span
+            >{{ latestData.speed ?? "0" }} knots</span
           >
         </div>
         <div
@@ -41,7 +41,7 @@
           <span
             class="text-16 font-bold"
             :class="selectedSpeed ? 'text-white' : 'text-blue-500'"
-            >{{ latestData.distance_observed ?? "0" }}</span
+            >{{ latestData.distance_observed ?? "0" }} nm</span
           >
         </div>
       </button>
