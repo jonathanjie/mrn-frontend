@@ -120,14 +120,14 @@ const {
   iceCondition,
   // Distance & Time
   hoursSinceNoon,
-  hoursTotal,
+  hoursSbyToEosp,
   distanceToGo,
   distanceToGoEdited,
   remarksForChanges,
   distanceObsSinceNoon,
-  distanceObsTotal,
+  distanceObsSbyToEosp,
   distanceEngSinceNoon,
-  distanceEngTotal,
+  distanceEngSbyToEosp,
   revolutionCount,
   // Performance
   speedSinceNoon,
@@ -288,7 +288,7 @@ const sendReport = async () => {
     },
     distancetimedata: {
       hours_since_last: hoursSinceNoon.value || 0,
-      hours_total: hoursTotal.value || 0,
+      hours_total: hoursSbyToEosp.value || 0,
       distance_to_go:
         distanceToGoEdited.value &&
         distanceToGoEdited.value !== distanceToGo.value
@@ -301,9 +301,9 @@ const sendReport = async () => {
         ? null
         : "NIL",
       distance_observed_since_last: Number(distanceObsSinceNoon.value),
-      distance_observed_total: Number(distanceObsTotal.value),
+      distance_observed_total: Number(distanceObsSbyToEosp.value),
       distance_engine_since_last: Number(distanceEngSinceNoon.value),
-      distance_engine_total: Number(distanceEngTotal.value),
+      distance_engine_total: Number(distanceEngSbyToEosp.value),
       revolution_count: Number(revolutionCount.value),
       set_rpm: null,
     },

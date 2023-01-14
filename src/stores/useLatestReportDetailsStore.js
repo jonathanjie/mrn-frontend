@@ -312,7 +312,18 @@ export const useLatestReportDetailsStore = defineStore(
         ? latestReportDetails.value.cargo_total_at_departure
         : ""
     );
-
+    const revolutionCountSbyToCosp = computed(() =>
+      isSuccessLatestReportDetails.value &&
+      latestReportDetails.value.revolution_count_standby_to_cosp
+        ? latestReportDetails.value.revolution_count_standby_to_cosp
+        : ""
+    );
+    const timeStoppedAtSea = computed(() =>
+      isSuccessLatestReportDetails.value &&
+      latestReportDetails.value.time_stopped_at_sea
+        ? latestReportDetails.value.time_stopped_at_sea
+        : ""
+    );
     return {
       refetchLatestReportDetails,
       isFetchingLatestReportDetails,
@@ -357,6 +368,8 @@ export const useLatestReportDetailsStore = defineStore(
       isAddVoyageEnabled,
       timeSbyToCosp,
       cargoTotal,
+      revolutionCountSbyToCosp,
+      timeStoppedAtSea,
     };
   }
 );

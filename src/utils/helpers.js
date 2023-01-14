@@ -120,11 +120,12 @@ export const parsePositionFromString = (positionString) => {
   const rawLat = splitString[1].slice(1);
   const rawLong = splitString[2].slice(0, -1);
 
-  const latDegree = rawLat.split(".")[0];
-  const latMinutes = rawLat.split(".")[1] * 60;
+  const latDegree = Math.abs(rawLat.split(".")[0]);
+  console.log("sadf", latDegree);
+  const latMinutes = parseInt(Number("0." + rawLat.split(".")[1]) * 60);
   const latDir = Math.sign(+rawLat) === -1 ? "S" : "N";
-  const longDegree = rawLong.split(".")[0];
-  const longMinutes = rawLong.split(".")[1] * 60;
+  const longDegree = Math.abs(rawLong.split(".")[0]);
+  const longMinutes = parseInt(Number("0." + rawLong.split(".")[1]) * 60);
   const longDir = Math.sign(+rawLong) === -1 ? "E" : "W";
 
   return {

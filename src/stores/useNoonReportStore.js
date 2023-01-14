@@ -5,10 +5,9 @@ import {
   convertLTToUTC,
   convertUTCToLT,
   sumObjectValues,
-  calculateNewAverage,
 } from "@/utils/helpers";
 import { storeToRefs } from "pinia";
-import { IceCondition, Machinery } from "@/constants";
+import { IceCondition } from "@/constants";
 import { useShipStore } from "@/stores/useShipStore";
 import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
 
@@ -36,12 +35,13 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     distanceEngineTotal,
     revolutionCount: revolution_count,
     propellerPitch,
-    speedAverage,
-    rpmAverage,
     fuelOilRobs: fuel_oil_robs,
     lubeOilRobs,
     freshwaterRob: freshwater_rob,
     timeSbyToCosp,
+    distanceSbyToCosp,
+    revolutionCountSbyToCosp,
+    timeStoppedAtSea,
   } = storeToRefs(detailsStore);
 
   // Overview
@@ -156,18 +156,36 @@ export const useNoonReportStore = defineStore("noonReport", () => {
         ).toFixed(2)
       : ""
   );
-  const hoursTotal = computed(() =>
-    hoursSinceNoon.value
+  const hoursCospToEosp = computed(() =>
+    reportingDateTimeUTC.value
       ? +(
           (Date.parse(reportingDateTimeUTC.value) -
             Date.parse(departureDate.value)) /
             36e5 -
-          timeSbyToCosp.value
+          Number(timeSbyToCosp.value)
+        ).toFixed(2)
+      : ""
+  );
+  const hoursSbyToFwe = computed(() =>
+    reportingDateTimeUTC.value
+      ? +(
+          (Date.parse(reportingDateTimeUTC.value) -
+            Date.parse(departureDate.value)) /
+          36e5
         ).toFixed(2)
       : ""
   );
   const distanceObsSinceNoon = ref("");
-  const distanceObsTotal = computed(() =>
+  const distanceObsCospToEosp = computed(() =>
+    distanceObsSinceNoon.value
+      ? +(
+          Number(distanceObservedTotal.value) +
+          Number(distanceObsSinceNoon.value) -
+          Number(distanceSbyToCosp.value)
+        ).toFixed(2)
+      : ""
+  );
+  const distanceObsSbyToFwe = computed(() =>
     distanceObsSinceNoon.value
       ? +(
           Number(distanceObservedTotal.value) +
@@ -184,7 +202,17 @@ export const useNoonReportStore = defineStore("noonReport", () => {
         ).toFixed(0)
       : ""
   );
-  const distanceEngTotal = computed(() =>
+  const distanceEngCospToEosp = computed(() =>
+    distanceEngSinceNoon.value
+      ? +(
+          Number(distanceEngSinceNoon.value) +
+          Number(distanceEngineTotal.value) -
+          Number(distanceSbyToCosp.value)
+        ) // TODO: change this to distance eng value returned by backend
+          .toFixed(0)
+      : ""
+  );
+  const distanceEngSbyToFwe = computed(() =>
     distanceEngSinceNoon.value
       ? +(
           Number(distanceEngSinceNoon.value) + Number(distanceEngineTotal.value)
@@ -225,44 +253,30 @@ export const useNoonReportStore = defineStore("noonReport", () => {
         ).toFixed(2)
       : ""
   );
-  // pilot to pilot hours
-  const hoursAtSea = computed(() =>
-    lastReportDate.value && departureDate.value
-      ? +(
-          Math.abs(
-            Date.parse(lastReportDate.value) - Date.parse(departureDate.value)
-          ) /
-            36e5 -
-          Number(timeSbyToCosp.value)
-        ).toFixed(2)
-      : ""
-  );
   const speedAvg = computed(() =>
-    speedSinceNoon.value !== "" && hoursTotal.value
-      ? +calculateNewAverage(
-          Number(speedAverage.value),
-          Number(speedSinceNoon.value),
-          Number(hoursAtSea.value) / 24,
-          Number(hoursTotal.value) / 24
+    speedSinceNoon.value && hoursCospToEosp.value
+      ? +(
+          Number(distanceObsCospToEosp.value) /
+          (Number(hoursCospToEosp.value) - Number(timeStoppedAtSea.value))
         ).toFixed(2)
       : ""
   );
   const rpmAvg = computed(() =>
-    rpmSinceNoon.value !== "" && hoursTotal.value
-      ? +calculateNewAverage(
-          Number(rpmAverage.value),
-          Number(rpmSinceNoon.value),
-          Number(hoursAtSea.value) / 24,
-          Number(hoursTotal.value) / 24
+    rpmSinceNoon.value && hoursCospToEosp.value
+      ? +(
+          (Number(revolutionCount.value) -
+            Number(revolutionCountSbyToCosp.value)) /
+          (Number(hoursCospToEosp.value) - Number(timeStoppedAtSea.value))
         ).toFixed(1)
       : ""
   );
   const slipAvg = computed(() =>
-    slipSinceNoon.value !== "" && hoursTotal.value
+    distanceEngCospToEosp.value && distanceObsCospToEosp.value
       ? +(
           100 *
-          ((Number(distanceEngTotal.value) - Number(distanceObsTotal.value)) /
-            Number(distanceEngTotal.value))
+          ((Number(distanceEngCospToEosp.value) -
+            Number(distanceObsCospToEosp.value)) /
+            Number(distanceEngCospToEosp.value))
         ).toFixed(2)
       : ""
   );
@@ -440,16 +454,19 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     heavyRemarks,
     isHeavyWeatherEnabled,
     shouldHeavyWeatherDataBeSent,
-    // DistanceTime
+    // Distance & Time
     hoursSinceNoon,
-    hoursTotal,
+    hoursSbyToFwe,
+    hoursCospToEosp,
     distanceToGo,
     distanceToGoEdited,
     remarksForChanges,
     distanceObsSinceNoon,
-    distanceObsTotal,
+    distanceObsCospToEosp,
+    distanceObsSbyToFwe,
     distanceEngSinceNoon,
-    distanceEngTotal,
+    distanceEngCospToEosp,
+    distanceEngSbyToFwe,
     revolutionCount,
     // Performance
     speedSinceNoon,

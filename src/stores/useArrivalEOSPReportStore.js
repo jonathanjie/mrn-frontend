@@ -2,11 +2,7 @@ import { defineStore } from "pinia";
 import { ref, computed, reactive } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
 import { storeToRefs } from "pinia";
-import {
-  convertLTToUTC,
-  sumObjectValues,
-  calculateNewAverage,
-} from "@/utils/helpers";
+import { convertLTToUTC, sumObjectValues } from "@/utils/helpers";
 import { IceCondition, Machinery } from "@/constants";
 import { useShipStore } from "@/stores/useShipStore";
 import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
@@ -38,14 +34,15 @@ export const useArrivalEOSPReportStore = defineStore(
       distanceEngineTotal,
       revolutionCount: revolution_count,
       propellerPitch,
-      speedAverage,
-      rpmAverage,
       displacementAtDeparture,
       fuelOilRobs: fuel_oil_robs,
       lubeOilRobs,
       freshwaterRob: freshwater_rob,
       fuelOilConsPilotToPilot,
       timeSbyToCosp,
+      distanceSbyToCosp,
+      revolutionCountSbyToCosp,
+      timeStoppedAtSea,
     } = storeToRefs(detailsStore);
 
     // Overview
@@ -118,7 +115,17 @@ export const useArrivalEOSPReportStore = defineStore(
           ).toFixed(2)
         : ""
     );
-    const hoursTotal = computed(() =>
+    const hoursCospToEosp = computed(() =>
+      reportingDateTimeUTC.value
+        ? +(
+            (Date.parse(reportingDateTimeUTC.value) -
+              Date.parse(departureDate.value)) /
+              36e5 -
+            Number(timeSbyToCosp.value)
+          ).toFixed(2)
+        : ""
+    );
+    const hoursSbyToFwe = computed(() =>
       reportingDateTimeUTC.value
         ? +(
             (Date.parse(reportingDateTimeUTC.value) -
@@ -128,7 +135,16 @@ export const useArrivalEOSPReportStore = defineStore(
         : ""
     );
     const distanceObsSinceNoon = ref("");
-    const distanceObsTotal = computed(() =>
+    const distanceObsCospToEosp = computed(() =>
+      distanceObsSinceNoon.value
+        ? +(
+            Number(distanceObservedTotal.value) +
+            Number(distanceObsSinceNoon.value) -
+            Number(distanceSbyToCosp.value)
+          ).toFixed(2)
+        : ""
+    );
+    const distanceObsSbyToFwe = computed(() =>
       distanceObsSinceNoon.value
         ? +(
             Number(distanceObservedTotal.value) +
@@ -140,12 +156,22 @@ export const useArrivalEOSPReportStore = defineStore(
       revolutionCount.value
         ? +(
             ((Number(revolutionCount.value) - revolution_count.value) *
-              propellerPitch.value) /
+              Number(propellerPitch.value)) /
             1852
           ).toFixed(0)
         : ""
     );
-    const distanceEngTotal = computed(() =>
+    const distanceEngCospToEosp = computed(() =>
+      distanceEngSinceNoon.value
+        ? +(
+            Number(distanceEngSinceNoon.value) +
+            Number(distanceEngineTotal.value) -
+            Number(distanceSbyToCosp.value)
+          ) // TODO: change this to distance eng value returned by backend
+            .toFixed(0)
+        : ""
+    );
+    const distanceEngSbyToFwe = computed(() =>
       distanceEngSinceNoon.value
         ? +(
             Number(distanceEngSinceNoon.value) +
@@ -190,44 +216,30 @@ export const useArrivalEOSPReportStore = defineStore(
           ).toFixed(2)
         : ""
     );
-    // pilot to pilot hours
-    const hoursAtSea = computed(() =>
-      lastReportDate.value && departureDate.value
-        ? +(
-            Math.abs(
-              Date.parse(lastReportDate.value) - Date.parse(departureDate.value)
-            ) /
-              36e5 -
-            Number(timeSbyToCosp.value)
-          ).toFixed(2)
-        : ""
-    );
     const speedAvg = computed(() =>
-      speedSinceNoon.value !== "" && hoursTotal.value
-        ? +calculateNewAverage(
-            Number(speedAverage.value),
-            Number(speedSinceNoon.value),
-            Number(hoursAtSea.value) / 24,
-            Number(hoursTotal.value) / 24
+      speedSinceNoon.value && hoursCospToEosp.value
+        ? +(
+            Number(distanceObsCospToEosp.value) /
+            (Number(hoursCospToEosp.value) - Number(timeStoppedAtSea.value))
           ).toFixed(2)
         : ""
     );
     const rpmAvg = computed(() =>
-      rpmSinceNoon.value !== "" && hoursTotal.value
-        ? +calculateNewAverage(
-            Number(rpmAverage.value),
-            Number(rpmSinceNoon.value),
-            Number(hoursAtSea.value) / 24,
-            Number(hoursTotal.value) / 24
+      rpmSinceNoon.value && hoursCospToEosp.value
+        ? +(
+            (Number(revolutionCount.value) -
+              Number(revolutionCountSbyToCosp.value)) /
+            (Number(hoursCospToEosp.value) - Number(timeStoppedAtSea.value))
           ).toFixed(1)
         : ""
     );
     const slipAvg = computed(() =>
-      slipSinceNoon.value !== "" && hoursTotal.value
+      distanceEngCospToEosp.value && distanceObsCospToEosp.value
         ? +(
             100 *
-            ((Number(distanceEngTotal.value) - Number(distanceObsTotal.value)) /
-              Number(distanceEngTotal.value))
+            ((Number(distanceEngCospToEosp.value) -
+              Number(distanceObsCospToEosp.value)) /
+              Number(distanceEngCospToEosp.value))
           ).toFixed(2)
         : ""
     );
@@ -284,7 +296,7 @@ export const useArrivalEOSPReportStore = defineStore(
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
         rtn[fuelOil] = +(
-          fuel_oil_robs.value[fuelOil] -
+          Number(fuel_oil_robs.value[fuelOil]) -
           Number(fuelOilTotalConsumptions.value[fuelOil])
         ).toFixed(2);
       }
@@ -308,7 +320,7 @@ export const useArrivalEOSPReportStore = defineStore(
       let rtn = {};
       for (const lubricatingOil of lubricatingOils.value) {
         rtn[lubricatingOil] = +(
-          lubeOilRobs.value[lubricatingOil] -
+          Number(lubeOilRobs.value[lubricatingOil]) -
           Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
           Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
           Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
@@ -332,19 +344,19 @@ export const useArrivalEOSPReportStore = defineStore(
     );
 
     // Actual performance
-    const totalDistanceObs = distanceObsTotal;
-    const totalSailingTime = hoursTotal;
-    const displacement = ref(displacementAtDeparture.value);
+    const totalDistanceObs = distanceObsCospToEosp;
+    const totalSailingTime = hoursCospToEosp;
+    const displacement = displacementAtDeparture.value;
     const avgSpeed = speedAvg;
     const avgRpm = rpmAvg;
     const meFoConsumption = computed(() =>
-      hoursTotal.value
+      hoursCospToEosp.value
         ? (
             Object.values(fuelOilBreakdowns).reduce(
               (total, fuelOil) => total + fuelOil[Machinery.ME],
               0
             ) /
-            (hoursTotal.value * 24)
+            (Number(hoursCospToEosp.value) * 24)
           ).toFixed(2)
         : ""
     );
@@ -361,34 +373,10 @@ export const useArrivalEOSPReportStore = defineStore(
                 ).toFixed(2)
               : Number(fuelOilConsPilotToPilot.value[fuelOil][machine]);
           }
-          // rtn[fuelOil][Machinery.ME] = fuelOilBreakdowns[fuelOil][Machinery.ME]
-          //   ? +(
-          //       Number(fuelOilConsPilotToPilot.value[fuelOil][Machinery.ME]) +
-          //       Number(fuelOilBreakdowns[fuelOil][Machinery.ME])
-          //     ).toFixed(2)
-          //   : Number(fuelOilConsPilotToPilot.value[fuelOil][Machinery.ME]);
-          // rtn[fuelOil][Machinery.GE] = fuelOilBreakdowns[fuelOil][Machinery.GE]
-          //   ? +(
-          //       Number(fuelOilConsPilotToPilot.value[fuelOil][Machinery.GE]) +
-          //       Number(fuelOilBreakdowns[fuelOil][Machinery.GE])
-          //     ).toFixed(2)
-          //   : Number(fuelOilConsPilotToPilot.value[fuelOil][Machinery.GE]);
-          // rtn[fuelOil][Machinery.IGG] = fuelOilBreakdowns[fuelOil][
-          //   Machinery.IGG
-          // ]
-          //   ? +(
-          //       Number(fuelOilConsPilotToPilot.value[fuelOil][Machinery.IGG]) +
-          //       Number(fuelOilBreakdowns[fuelOil][Machinery.IGG])
-          //     ).toFixed(2)
-          //   : Number(fuelOilConsPilotToPilot.value[fuelOil][Machinery.IGG]);
-          // rtn[fuelOil][Machinery.BLR] = fuelOilBreakdowns[fuelOil][
-          //   Machinery.BLR
-          // ]
-          //   ? +(
-          //       Number(fuelOilConsPilotToPilot.value[fuelOil][Machinery.BLR]) +
-          //       Number(fuelOilBreakdowns[fuelOil][Machinery.BLR])
-          //     ).toFixed(2)
-          //   : Number(fuelOilConsPilotToPilot.value[fuelOil][Machinery.BLR]);
+        } else {
+          for (const machine of machinery.value) {
+            rtn[fuelOil][machine] = Number(fuelOilBreakdowns[fuelOil][machine]);
+          }
         }
       }
       return rtn;
@@ -447,14 +435,17 @@ export const useArrivalEOSPReportStore = defineStore(
       iceCondition,
       // Distance & Time
       hoursSinceNoon,
-      hoursTotal,
+      hoursCospToEosp,
+      hoursSbyToFwe,
       distanceToGo,
       distanceToGoEdited,
       remarksForChanges,
       distanceObsSinceNoon,
-      distanceObsTotal,
+      distanceObsCospToEosp,
+      distanceObsSbyToFwe,
       distanceEngSinceNoon,
-      distanceEngTotal,
+      distanceEngCospToEosp,
+      distanceEngSbyToFwe,
       revolutionCount,
       // Performance
       speedSinceNoon,

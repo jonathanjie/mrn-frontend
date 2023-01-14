@@ -44,6 +44,7 @@ const position = computed(() =>
     ? ""
     : parsePositionFromString(props.report.arrivalpilotstation.position)
 );
+console.log(props.report.arrivalpilotstation.position, position.value);
 </script>
 
 <template>
@@ -81,9 +82,10 @@ const position = computed(() =>
         {{ $t("name") }}
       </div>
       <input
-        v-model="pilot_arr_name"
+        v-model="pilotArrName"
+        disabled
         :placeholder="$t('inputName')"
-        class="col-span-3 p-3 pl-4 border-y border-r bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-3 p-3 pl-4 border-y border-r bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <div
         class="col-span-2 text-blue-700 p-3 border-x border-b xl:border-b-0 bg-gray-50 text-14"
@@ -91,11 +93,12 @@ const position = computed(() =>
         {{ $t("requiredTimeOfArrival") }}
       </div>
       <div
-        class="col-span-3 relative flex items-center border-r border-b xl:border-b-0"
+        class="col-span-3 relative flex items-center border-r border-b xl:border-b-0 bg-gray-50"
       >
         <DatePicker
-          v-model="pilot_arr_date_time"
-          class="grow"
+          disabled
+          v-model="pilotArrDate"
+          class="grow bg-gray-50"
           textInput
           :textInputOptions="textInputOptions"
           :format="format"
@@ -106,11 +109,11 @@ const position = computed(() =>
             <img src="" />
           </template>
         </DatePicker>
-        <MiniUnitDisplay
+        <!-- <MiniUnitDisplay
           class="absolute right-0 min-w-fit"
           :class="pilot_arr_date_time ? 'mr-9' : 'mr-2'"
           >{{ pilot_arr_date_time_utc }}</MiniUnitDisplay
-        >
+        > -->
       </div>
       <input
         class="hidden xl:block bg-white col-span-5 p-3 border-t"
@@ -127,36 +130,36 @@ const position = computed(() =>
       <div class="col-span-1 text-blue-700 p-3 border-b my-auto self-center">
         {{ $t("fwd") }}
       </div>
-      <div class="flex col-span-5 p-2 pl-4 border-b border-x bg-white">
+      <div class="flex col-span-5 p-2 pl-4 border-b border-x bg-gray-50">
         <input
-          v-model="pilot_arr_draft_fwd"
-          @keypress="preventNaN($event, pilot_arr_draft_fwd)"
+          v-model="pilotArrDraftFwd"
           placeholder="00.00"
-          class="w-24 text-gray-700 focus:outline-0"
+          disabled
+          class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <MiniUnitDisplay>M</MiniUnitDisplay>
       </div>
       <div class="col-span-1 text-blue-700 p-3 border-b my-auto self-center">
         {{ $t("mid") }}
       </div>
-      <div class="flex col-span-5 p-2 pl-4 border-b border-x bg-white">
+      <div class="flex col-span-5 p-2 pl-4 border-b border-x bg-gray-50">
         <input
-          v-model="pilot_arr_draft_mid"
-          @keypress="preventNaN($event, pilot_arr_draft_mid)"
+          v-model="pilotArrDraftMid"
           placeholder="00.00"
-          class="w-24 text-gray-700 focus:outline-0"
+          disabled
+          class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <MiniUnitDisplay>M</MiniUnitDisplay>
       </div>
       <div class="col-span-1 text-blue-700 p-3 my-auto self-center">
         {{ $t("aft") }}
       </div>
-      <div class="flex col-span-5 p-2 pl-4 border-x bg-white">
+      <div class="flex col-span-5 p-2 pl-4 border-x bg-gray-50">
         <input
-          v-model="pilot_arr_draft_aft"
-          @keypress="preventNaN($event, pilot_arr_draft_aft)"
+          v-model="pilotArrDraftAft"
           placeholder="00.00"
-          class="w-24 text-gray-700 focus:outline-0"
+          disabled
+          class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <MiniUnitDisplay>M</MiniUnitDisplay>
       </div>
@@ -168,23 +171,21 @@ const position = computed(() =>
         >{{ $t("longitude") }}</span
       >
       <input
-        v-model="pilot_arr_long_degree"
-        @keypress="preventNaN($event, pilot_arr_long_degree)"
+        v-model="position.longDegree"
         placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        disabled
+        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="pilot_arr_long_minute"
-        @keypress="preventNaN($event, pilot_arr_long_minute)"
+        v-model="position.longMinutes"
         placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        disabled
+        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <select
-        v-model="pilot_arr_long_dir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0"
-        :class="
-          pilot_arr_long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
-        "
+        v-model="position.longDir"
+        class="col-span-3 p-3 text-14 border-l focus:outline-0 bg-gray-50 text-gray-700"
+        disabled
       >
         <option selected disabled value="default">
           {{ $t("eastAndWest") }}
@@ -199,23 +200,21 @@ const position = computed(() =>
         >{{ $t("latitude") }}</span
       >
       <input
-        v-model="pilot_arr_lat_degree"
-        @keypress="preventNaN($event, pilot_arr_lat_degree)"
+        v-model="position.latDegree"
         placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        disabled
+        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="pilot_arr_lat_minute"
-        @keypress="preventNaN($event, pilot_arr_lat_minute)"
+        v-model="position.latMinutes"
         placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        disabled
+        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <select
-        v-model="pilot_arr_lat_dir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0"
-        :class="
-          pilot_arr_lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
-        "
+        v-model="position.latDir"
+        disabled
+        class="col-span-3 p-3 text-14 border-l focus:outline-0 bg-gray-50 text-gray-700"
       >
         <option selected disabled value="default">
           {{ $t("southAndNorth") }}

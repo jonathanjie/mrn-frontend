@@ -239,50 +239,10 @@ export const useDepartureSBYReportStore = defineStore(
                 ).toFixed(2)
               : Number(fuelOilConsInHarbourPort.value[fuelOil][machine]);
           }
-          // rtn[fuelOil][Machinery.ME] = fuelOilBreakdowns[fuelOil][Machinery.ME]
-          //   ? +(
-          //       Number(fuelOilConsInHarbourPort.value[fuelOil][Machinery.ME]) +
-          //       Number(fuelOilBreakdowns[fuelOil][Machinery.ME])
-          //     ).toFixed(2)
-          //   : Number(fuelOilConsInHarbourPort.value[fuelOil][Machinery.ME]);
-          // rtn[fuelOil][Machinery.GE] = fuelOilBreakdowns[fuelOil][Machinery.GE]
-          //   ? +(
-          //       Number(fuelOilConsInHarbourPort.value[fuelOil][Machinery.GE]) +
-          //       Number(fuelOilBreakdowns[fuelOil][Machinery.GE])
-          //     ).toFixed(2)
-          //   : Number(fuelOilConsInHarbourPort.value[fuelOil][Machinery.GE]);
-          // rtn[fuelOil][Machinery.IGG] = fuelOilBreakdowns[fuelOil][
-          //   Machinery.IGG
-          // ]
-          //   ? +(
-          //       Number(fuelOilConsInHarbourPort.value[fuelOil][Machinery.IGG]) +
-          //       Number(fuelOilBreakdowns[fuelOil][Machinery.IGG])
-          //     ).toFixed(2)
-          //   : Number(fuelOilConsInHarbourPort.value[fuelOil][Machinery.IGG]);
-          // rtn[fuelOil][Machinery.BLR] = fuelOilBreakdowns[fuelOil][
-          //   Machinery.BLR
-          // ]
-          //   ? +(
-          //       Number(fuelOilConsInHarbourPort.value[fuelOil][Machinery.BLR]) +
-          //       Number(fuelOilBreakdowns[fuelOil][Machinery.BLR])
-          //     ).toFixed(2)
-          //   : Number(fuelOilConsInHarbourPort.value[fuelOil][Machinery.BLR]);
         } else {
           for (const machine of machinery.value) {
             rtn[fuelOil][machine] = Number(fuelOilBreakdowns[fuelOil][machine]);
           }
-          // rtn[fuelOil][Machinery.ME] = Number(
-          //   fuelOilBreakdowns[fuelOil][Machinery.ME]
-          // );
-          // rtn[fuelOil][Machinery.GE] = Number(
-          //   fuelOilBreakdowns[fuelOil][Machinery.GE]
-          // );
-          // rtn[fuelOil][Machinery.IGG] = Number(
-          //   fuelOilBreakdowns[fuelOil][Machinery.IGG]
-          // );
-          // rtn[fuelOil][Machinery.BLR] = Number(
-          //   fuelOilBreakdowns[fuelOil][Machinery.BLR]
-          // );
         }
       }
       return rtn;

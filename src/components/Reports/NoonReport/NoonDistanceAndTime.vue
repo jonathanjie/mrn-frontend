@@ -185,14 +185,14 @@ const toggle = () => {
 
 const {
   hoursSinceNoon: hours_since_noon,
-  hoursTotal: hours_total,
+  hoursCospToEosp: hours_total,
   distanceToGo: distance_to_go,
   distanceToGoEdited: distance_to_go_edited,
   remarksForChanges: remarks,
   distanceObsSinceNoon: distance_obs_since_noon,
-  distanceObsTotal: distance_obs_total,
+  distanceObsCospToEosp: distance_obs_total,
   distanceEngSinceNoon: distance_eng_since_noon,
-  distanceEngTotal: distance_eng_total,
+  distanceEngCospToEosp: distance_eng_total,
   revolutionCount: revolution_count,
 } = storeToRefs(store);
 </script>
