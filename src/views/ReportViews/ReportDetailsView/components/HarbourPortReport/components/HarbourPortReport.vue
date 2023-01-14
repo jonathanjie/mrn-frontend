@@ -95,7 +95,7 @@ const position = computed(() =>
       <select
         disabled
         v-model="status"
-        class="col-span-3 p-3 border-y border-r focus:outline-0 disabled:text-gray-400 disabled:bg-gray-50"
+        class="col-span-3 p-3 border-y border-r focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
         :class="status === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
