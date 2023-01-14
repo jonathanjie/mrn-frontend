@@ -192,8 +192,8 @@ const handleClick = async () => {
             ReportTypeToDisplay[report.report_type] + ' ' + report.report_num
           "
           :report_type="report.report_type"
-          :departure="report.departure_port"
-          :arrival="report.arrival_port"
+          :departure="report.departure_port || '-'"
+          :arrival="report.arrival_port || '-'"
           :loading_condition="
             voyage.voyage_legs.filter((leg) => leg.id === report.voyage_leg)[0]
               .load_condition

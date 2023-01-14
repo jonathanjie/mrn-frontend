@@ -110,6 +110,7 @@ const i18n = createI18n({
       crewChange: "Crew change",
       cruisePassenger: "Cruise Passenger Ship",
       currentVoyage: "Current Voyage",
+      COSPtoEOSP: "COSP to EOSP",
       dateAndTime: "Date & time",
       dateOfReport: "Date of report (UTC)",
       debunkering: "De-Bunkering",

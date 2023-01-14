@@ -127,16 +127,16 @@ const {
   heavySeaState,
   heavyRemarks,
   shouldHeavyWeatherDataBeSent,
-  // DistanceTime
+  // Distance & Time
   hoursSinceNoon,
-  hoursTotal,
+  hoursSbyToFwe,
   distanceToGo,
   distanceToGoEdited,
   remarksForChanges,
   distanceObsSinceNoon,
-  distanceObsTotal,
+  distanceObsSbyToFwe,
   distanceEngSinceNoon,
-  distanceEngTotal,
+  distanceEngSbyToFwe,
   revolutionCount,
   // Performance
   speedSinceNoon,
@@ -267,7 +267,7 @@ const sendReport = async () => {
     },
     distancetimedata: {
       hours_since_last: Number(hoursSinceNoon.value) || 0,
-      hours_total: Number(hoursTotal.value) || 0,
+      hours_total: Number(hoursSbyToFwe.value) || 0,
       distance_to_go:
         distanceToGoEdited.value &&
         distanceToGoEdited.value !== distanceToGo.value
@@ -280,9 +280,9 @@ const sendReport = async () => {
         ? null
         : "NIL",
       distance_observed_since_last: Number(distanceObsSinceNoon.value),
-      distance_observed_total: Number(distanceObsTotal.value),
+      distance_observed_total: Number(distanceObsSbyToFwe.value),
       distance_engine_since_last: Number(distanceEngSinceNoon.value),
-      distance_engine_total: Number(distanceEngTotal.value),
+      distance_engine_total: Number(distanceEngSbyToFwe.value),
       revolution_count: Number(revolutionCount.value),
       set_rpm: 0, // irrelevant for Noon Report
     },

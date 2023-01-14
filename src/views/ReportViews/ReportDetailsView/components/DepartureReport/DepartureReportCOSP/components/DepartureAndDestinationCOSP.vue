@@ -30,7 +30,7 @@ const departureTimeZone = computed(
 );
 
 const destinationPortCountry = computed(
-  () => props.report.reportroute?.arrival_port.split(" ")[1] ?? ""
+  () => props.report.reportroute?.arrival_port.split(" ")[0] ?? ""
 );
 const destinationPortName = computed(
   () => props.report.reportroute?.arrival_port.split(" ")[1] ?? ""

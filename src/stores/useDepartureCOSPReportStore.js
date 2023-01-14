@@ -163,15 +163,8 @@ export const useDepartureCOSPReportStore = defineStore(
           ).toFixed(0)
         : ""
     );
-    const hoursTotal = computed(() =>
-      sbyToRupTime.value
-        ? +(
-            (Date.parse(reportingDateTimeUTC.value) -
-              Date.parse(departureDateTimeUTC.value)) /
-            36e5
-          ).toFixed(2)
-        : ""
-    );
+    const hoursTotal = sbyToRupTime;
+
     // Sailing Plan (Pilot to Pilot)
     const budgetDistance = ref("");
     const budgetSpeed = ref("");

@@ -85,7 +85,7 @@ const slipAverage = computed(() => props.report.performancedata.slip_average);
       </div>
     </div>
     <div class="col-span-2 lg:col-span-1 text-14">
-      <div class="pb-2">{{ $t("currentVoyage") }}</div>
+      <div class="pb-2">{{ $t("COSPtoEOSP") }}</div>
       <div class="grid grid-cols-5 border bg-gray-50">
         <div class="col-span-2 text-blue-700 p-3 border-r border-b">
           {{ $t("averageSpeed") }}
