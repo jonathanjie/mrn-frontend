@@ -22,7 +22,6 @@ const props = defineProps({
   },
 });
 
-
 const shipStore = useShipStore();
 const { companyUuid: company_uuid } = storeToRefs(shipStore);
 
@@ -104,44 +103,28 @@ const getPresignedUrlForFiles = async () => {
   }
 };
 
-const uploadFilesToS3 = async () => {
-  const boundary =
-    "----WebKitFormBoundary" + Math.random().toString(36).slice(2);
-  const config = {
-    headers: {
-      "Content-Type": `multipart/form-data; boundary=${boundary}`,
-    },
-  };
+const uploadFile = async (file) => {
+  // set up the request data
+  let formData = new FormData();
+  formData.append("file", file.file);
+  const url = `${file.presignedUrl}`;
 
-  for (const file of files.value) {
-    const url = `${file.presignedUrl}`;
-    const data = file.file;
+  // track status and upload file
+  file.status = "loading";
+  let response = await fetch(url, { method: "PUT", body: formData });
 
-    try {
-      // TODO: batch request
-      const response = await axios.put(url, data, config);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-      isUploadToS3Successful.value = false;
-    }
-  }
+  // change status to indicate the success of the upload request
+  file.status = response.ok;
+
+  return response;
+};
+
+const uploadFiles = (files) => {
+  return Promise.all(files.map((file) => uploadFile(file)));
 };
 
 const sendReport = async () => {
   isSubmissionRequested.value = true;
-
-  let urls = [];
-  if (files.value.length) {
-    urls = await getPresignedUrlForFiles();
-    // console.log(urls);
-
-    for (const [index, file] of files.value.entries()) {
-      file.presignedUrl = urls[index].presigned_url;
-    }
-
-    await uploadFilesToS3();
-  }
 
   const bunkeringPort = parsePortLocode({
     portCountry: portCountry.value,
@@ -200,6 +183,22 @@ const sendReport = async () => {
     body: JSON.stringify(REPORT),
   });
 
+  const response = () => {
+    
+  }
+
+  let urls = [];
+  if (files.value.length) {
+    urls = await getPresignedUrlForFiles();
+    // console.log(urls);
+
+    for (const [index, file] of files.value.entries()) {
+      file.presignedUrl = urls[index].presigned_url;
+    }
+
+    await uploadFiles(files.value);
+  }
+
   try {
     if (isUploadToS3Successful.value) {
       const data = await response.json();
@@ -229,6 +228,8 @@ const sendReport = async () => {
     isSubmissionModalVisible.value = true;
   }
 };
+
+const handleclick = () => console.log("file: ", files.value[0]);
 </script>
 
 <template>
@@ -252,7 +253,9 @@ const sendReport = async () => {
       />
       <label for="afterArrival">{{ $t("afterArrival") }}</label>
     </div>
-
+    <div>
+      <button @click="handleclick()">click me</button>
+    </div>
     <!-- Overview -->
     <BunkerOverview />
 
@@ -260,7 +263,7 @@ const sendReport = async () => {
     <BunkeringPort />
 
     <!-- Received Bunker Detail -->
-    <BunkerReceivedDetail :is-create="props.isCreate"/>
+    <BunkerReceivedDetail :is-create="props.isCreate" />
 
     <!-- Bunker Date and Time & Supplier -->
     <BunkerDateAndTime />
