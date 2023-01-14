@@ -6,10 +6,6 @@ import { convertLTToUTC, sumObjectValues } from "@/utils/helpers";
 import { useShipStore } from "@/stores/useShipStore";
 import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
 
-const temp = {
-  otherPlannedOperation: "Sign contract",
-};
-
 export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   const store = useVoyageStore();
   const { arrfReportNo, lastLegNo, legUuid, curLoadingCondition, curVoyageNo } =
@@ -23,7 +19,8 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     departurePort,
     departureTz,
     arrivalPort,
-    plannedOperations: planned_operations,
+    plannedOperations,
+    otherPlannedOperation,
     departureDate,
     lastReportDate,
     distanceObservedTotal,
@@ -65,8 +62,6 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   const longDir = ref("default");
   const longMinute = ref("");
   const longDegree = ref("");
-  const plannedOperations = ref(planned_operations.value);
-  const otherPlannedOperation = ref(temp.otherPlannedOperation);
   const operations = ref([]);
   const status = ref("");
 

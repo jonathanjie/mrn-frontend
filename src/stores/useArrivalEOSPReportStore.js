@@ -40,7 +40,7 @@ export const useArrivalEOSPReportStore = defineStore(
       freshwaterRob: freshwater_rob,
       fuelOilConsPilotToPilot,
       timeSbyToCosp,
-      distanceSbyToCosp,
+      distanceObsSbyToCosp,
       revolutionCountSbyToCosp,
       timeStoppedAtSea,
       distanceEngSbyToCosp,
@@ -108,7 +108,7 @@ export const useArrivalEOSPReportStore = defineStore(
 
     // Distance & Time
     const hoursSinceNoon = computed(() =>
-      reportingDateTimeUTC.value
+      reportingDateTimeUTC.value && reportingTimeZone.value !== "default"
         ? +(
             (Date.parse(reportingDateTimeUTC.value) -
               Date.parse(lastReportDate.value)) /
@@ -141,7 +141,7 @@ export const useArrivalEOSPReportStore = defineStore(
         ? +(
             Number(distanceObservedTotal.value) +
             Number(distanceObsSinceNoon.value) -
-            Number(distanceSbyToCosp.value)
+            Number(distanceObsSbyToCosp.value)
           ).toFixed(2)
         : ""
     );
@@ -347,7 +347,7 @@ export const useArrivalEOSPReportStore = defineStore(
     // Actual performance
     const totalDistanceObs = distanceObsCospToEosp;
     const totalSailingTime = hoursCospToEosp;
-    const displacement = displacementAtDeparture.value;
+    const displacement = displacementAtDeparture;
     const avgSpeed = speedAvg;
     const avgRpm = rpmAvg;
     const meFoConsumption = computed(() =>
@@ -357,7 +357,7 @@ export const useArrivalEOSPReportStore = defineStore(
               (total, fuelOil) => total + fuelOil[Machinery.ME],
               0
             ) /
-            (Number(hoursCospToEosp.value) * 24)
+            (Number(hoursCospToEosp.value) / 24)
           ).toFixed(2)
         : ""
     );

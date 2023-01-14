@@ -81,12 +81,15 @@
       <span class="col-span-2 text-blue-700 p-3 border-b text-14 self-center">{{
         $t("duration")
       }}</span>
-      <div class="flex col-span-3 p-2 pl-4 bg-white text-14 border-l border-b">
+      <div
+        class="flex col-span-3 p-2 pl-4 bg-gray-50 text-14 border-l border-b"
+      >
         <input
+          disabled
           v-model="duration"
           @keypress="preventNaN($event, duration)"
           placeholder="0"
-          class="w-24 text-gray-700 focus:outline-0"
+          class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <MiniUnitDisplay>HRS</MiniUnitDisplay>
       </div>

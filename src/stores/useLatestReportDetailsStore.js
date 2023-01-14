@@ -271,6 +271,13 @@ export const useLatestReportDetailsStore = defineStore(
           )
         : []
     );
+    const otherPlannedOperation = computed(() =>
+      isSuccessLatestReportDetails.value &&
+      latestReportDetails.value.planned_operations
+        ? latestReportDetails.value.planned_operations
+            .planned_operation_othersdetails
+        : ""
+    );
     const propellerPitch = computed(() =>
       isSuccessLatestReportDetails.value &&
       latestReportDetails.value.propeller_pitch
@@ -364,6 +371,7 @@ export const useLatestReportDetailsStore = defineStore(
       lubeOilRobs,
       parkingStatus,
       plannedOperations,
+      otherPlannedOperation,
       propellerPitch,
       revolutionCount,
       rpmAverage,

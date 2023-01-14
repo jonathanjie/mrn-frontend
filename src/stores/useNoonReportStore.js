@@ -233,7 +233,11 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const speedSinceNoon = computed(() =>
     distanceObsSinceNoon.value && hoursSinceNoon.value
       ? +(
-          Number(distanceObsSinceNoon.value) / Number(hoursSinceNoon.value)
+          Number(distanceObsSinceNoon.value) /
+          (Number(hoursSinceNoon.value) -
+            (stoppageChangedRPM.value === "0"
+              ? Number(stoppageDuration.value)
+              : 0))
         ).toFixed(2)
       : ""
   );
@@ -241,7 +245,11 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     revolutionCount.value && hoursSinceNoon.value
       ? +(
           (Number(revolutionCount.value) - Number(revolution_count.value)) /
-          (Number(hoursSinceNoon.value) * 60)
+          ((Number(hoursSinceNoon.value) -
+            (stoppageChangedRPM.value === "0"
+              ? Number(stoppageDuration.value)
+              : 0)) *
+            60)
         ).toFixed(1)
       : ""
   );
@@ -259,7 +267,11 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     speedSinceNoon.value && hoursCospToEosp.value
       ? +(
           Number(distanceObsCospToEosp.value) /
-          (Number(hoursCospToEosp.value) - Number(timeStoppedAtSea.value))
+          (Number(hoursCospToEosp.value) -
+            Number(timeStoppedAtSea.value) -
+            (stoppageChangedRPM.value === "0"
+              ? Number(stoppageDuration.value)
+              : 0))
         ).toFixed(2)
       : ""
   );
@@ -268,7 +280,11 @@ export const useNoonReportStore = defineStore("noonReport", () => {
       ? +(
           (Number(revolutionCount.value) -
             Number(revolutionCountSbyToCosp.value)) /
-          ((Number(hoursCospToEosp.value) - Number(timeStoppedAtSea.value)) *
+          ((Number(hoursCospToEosp.value) -
+            Number(timeStoppedAtSea.value) -
+            (stoppageChangedRPM.value === "0"
+              ? Number(stoppageDuration.value)
+              : 0)) *
             60)
         ).toFixed(1)
       : ""
@@ -311,7 +327,6 @@ export const useNoonReportStore = defineStore("noonReport", () => {
         Number(fuelOilTotalConsumptions.value[fuelOil])
       ).toFixed(2);
     }
-
     return rtn;
   });
   const fuelOilDataCorrection = reactive({
@@ -338,7 +353,6 @@ export const useNoonReportStore = defineStore("noonReport", () => {
         Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
       ).toFixed(2);
     }
-
     return rtn;
   });
   const lubricatingOilDataCorrection = reactive({
@@ -368,11 +382,25 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   );
   const stoppageEnding = ref("");
   const stoppageEndingUTC = computed(() =>
-    reportingTimeZone.value !== "default" && stoppageEndingUTC.value
+    reportingTimeZone.value !== "default" && stoppageEnding.value
       ? convertLTToUTC(new Date(stoppageEnding.value), reportingTimeZone.value)
       : ""
   );
-  const stoppageDuration = ref("");
+  const stoppageDuration = computed(() =>
+    stoppageBeginningUTC.value && stoppageEndingUTC.value
+      ? (
+          (Date.parse(stoppageEndingUTC.value) -
+            Date.parse(stoppageBeginningUTC.value)) /
+          36e5
+        ).toFixed(2)
+      : stoppageBeginningUTC.value && reportingDateTimeUTC.value
+      ? (
+          (Date.parse(reportingDateTimeUTC.value) -
+            Date.parse(stoppageBeginningUTC.value)) /
+          36e5
+        ).toFixed(2)
+      : ""
+  );
   const stoppageChangedRPM = ref("");
   const stoppageReason = ref("default");
   const stoppageRemarks = ref("");
