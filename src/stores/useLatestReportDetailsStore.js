@@ -171,57 +171,57 @@ export const useLatestReportDetailsStore = defineStore(
         return [Report.type.DEP_SBY];
       }
       switch (lastReportType.value) {
-        // case Report.type.DEP_SBY:
-        //   return [
-        //     Report.type.DEP_COSP_RUP,
-        //     Report.type.BUNKER,
-        //     Report.type.EVENT_HARBOUR,
-        //     Report.type.EVENT_PORT,
-        //     Report.type.NOON_HARBOUR,
-        //     Report.type.NOON_PORT,
-        //   ];
-        // case Report.type.DEP_COSP_RUP:
-        //   return [
-        //     Report.type.NOON,
-        //     Report.type.ARR_SBY_EOSP,
-        //     Report.type.EVENT_HARBOUR,
-        //     Report.type.EVENT_PORT,
-        //     Report.type.NOON_HARBOUR,
-        //     Report.type.NOON_PORT,
-        //   ];
-        // case Report.type.NOON:
-        //   return [Report.type.NOON, Report.type.ARR_SBY_EOSP];
-        // case Report.type.ARR_SBY_EOSP:
-        //   return [
-        //     Report.type.ARR_FWE,
-        //     Report.type.EVENT_HARBOUR,
-        //     Report.type.EVENT_PORT,
-        //     Report.type.NOON_HARBOUR,
-        //     Report.type.NOON_PORT,
-        //   ];
-        // case Report.type.ARR_FWE:
-        //   return [
-        //     Report.type.DEP_SBY,
-        //     Report.type.BUNKER,
-        //     Report.type.EVENT_HARBOUR,
-        //     Report.type.EVENT_PORT,
-        //     Report.type.NOON_HARBOUR,
-        //     Report.type.NOON_PORT,
-        //   ];
-        // case Report.type.BUNKER:
-        //   return [
-        //     Report.type.DEP_SBY,
-        //     Report.type.BUNKER,
-        //     Report.type.EVENT_HARBOUR,
-        //     Report.type.EVENT_PORT,
-        //     Report.type.NOON_HARBOUR,
-        //     Report.type.NOON_PORT,
-        //   ];
-        // // TODO: handle case for EVENT; may result in any moment of sea path
-        // case "":
-        // case undefined:
-        // case null:
-        //   return [Report.type.DEP_SBY];
+        case Report.type.DEP_SBY:
+          return [
+            Report.type.DEP_COSP_RUP,
+            Report.type.BUNKER,
+            Report.type.EVENT_HARBOUR,
+            Report.type.EVENT_PORT,
+            Report.type.NOON_HARBOUR,
+            Report.type.NOON_PORT,
+          ];
+        case Report.type.DEP_COSP_RUP:
+          return [
+            Report.type.NOON,
+            Report.type.ARR_SBY_EOSP,
+            Report.type.EVENT_HARBOUR,
+            Report.type.EVENT_PORT,
+            Report.type.NOON_HARBOUR,
+            Report.type.NOON_PORT,
+          ];
+        case Report.type.NOON:
+          return [Report.type.NOON, Report.type.ARR_SBY_EOSP];
+        case Report.type.ARR_SBY_EOSP:
+          return [
+            Report.type.ARR_FWE,
+            Report.type.EVENT_HARBOUR,
+            Report.type.EVENT_PORT,
+            Report.type.NOON_HARBOUR,
+            Report.type.NOON_PORT,
+          ];
+        case Report.type.ARR_FWE:
+          return [
+            Report.type.DEP_SBY,
+            Report.type.BUNKER,
+            Report.type.EVENT_HARBOUR,
+            Report.type.EVENT_PORT,
+            Report.type.NOON_HARBOUR,
+            Report.type.NOON_PORT,
+          ];
+        case Report.type.BUNKER:
+          return [
+            Report.type.DEP_SBY,
+            Report.type.BUNKER,
+            Report.type.EVENT_HARBOUR,
+            Report.type.EVENT_PORT,
+            Report.type.NOON_HARBOUR,
+            Report.type.NOON_PORT,
+          ];
+        // TODO: handle case for EVENT; may result in any moment of sea path
+        case "":
+        case undefined:
+        case null:
+          return [Report.type.DEP_SBY];
 
         default:
           return Object.values(Report.type);
