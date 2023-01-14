@@ -306,6 +306,12 @@ export const useLatestReportDetailsStore = defineStore(
         ? latestReportDetails.value.voyage_leg
         : ""
     );
+    const cargoTotal = computed(() =>
+      isSuccessLatestReportDetails.value &&
+      latestReportDetails.value.cargo_total_at_departure
+        ? latestReportDetails.value.cargo_total_at_departure
+        : ""
+    );
 
     return {
       refetchLatestReportDetails,
@@ -350,6 +356,7 @@ export const useLatestReportDetailsStore = defineStore(
       validReportTypes,
       isAddVoyageEnabled,
       timeSbyToCosp,
+      cargoTotal,
     };
   }
 );

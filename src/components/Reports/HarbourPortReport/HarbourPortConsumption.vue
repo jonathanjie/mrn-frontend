@@ -17,7 +17,7 @@
 
         <div class="grid mb-4 text-14" :class="getFuelOilCols()">
           <div
-            class="col-span-2 border-green-100 bg-green-25 px-6 border-l border-t"
+            class="col-span-1 border-green-100 bg-green-25 px-6 border-l border-t"
           ></div>
           <div
             v-for="item in machinery"
@@ -27,22 +27,22 @@
             {{ $t(item) }}
           </div>
           <div
-            class="col-span-2 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
+            class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
           >
             {{ $t("totalConsumption") }}
           </div>
           <div
-            class="col-span-2 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
+            class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
           >
             {{ $t("receipt") }}
           </div>
           <div
-            class="col-span-2 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
+            class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
           >
             {{ $t("debunkering") }}
           </div>
           <div
-            class="col-span-2 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-x bg-gray-50"
+            class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-x bg-gray-50"
           >
             {{ $t("remainOnBoard") }}
           </div>
@@ -58,7 +58,7 @@
             "
           >
             <div
-              class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
+              class="col-span-1 p-3 text-blue-700 border-t border-l bg-gray-50"
             >
               {{ $t(fuelOil) }}
             </div>
@@ -71,7 +71,7 @@
               class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
             />
             <div
-              class="col-span-2 text-gray-400 p-3 border-t border-l bg-gray-25"
+              class="col-span-1 text-gray-400 p-3 border-t border-l bg-gray-25"
             >
               {{ fuel_oil_total_consumptions[fuelOil] }}
             </div>
@@ -79,16 +79,16 @@
               v-model="fuel_oil_receipts[fuelOil]"
               @keypress="preventNaN($event, fuel_oil_receipts[fuelOil])"
               placeholder="0"
-              class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+              class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
             />
             <input
               v-model="fuel_oil_debunkerings[fuelOil]"
               @keypress="preventNaN($event, fuel_oil_debunkerings[fuelOil])"
               placeholder="0"
-              class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+              class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
             />
             <div
-              class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25"
+              class="col-span-1 text-gray-400 p-3 border-t border-x bg-gray-25"
             >
               {{ fuel_oil_robs[fuelOil] }}
             </div>
@@ -447,5 +447,5 @@ const {
   freshwaterRob: freshwater_rob,
 } = storeToRefs(store);
 
-const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
+const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 5);
 </script>

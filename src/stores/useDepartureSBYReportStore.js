@@ -5,7 +5,6 @@ import { storeToRefs } from "pinia";
 import { convertLTToUTC, sumObjectValues } from "@/utils/helpers";
 import { useShipStore } from "@/stores/useShipStore";
 import { useLatestReportDetailsQuery } from "@/queries/useLatestReportDetailsQuery";
-import { Machinery } from "@/constants";
 import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
 
 const temp = {
@@ -13,9 +12,6 @@ const temp = {
     receipt: 0,
     debunkering: 0,
   },
-
-  // Cargo Operation (from init modal, M³/MT/TEU/CEU)
-  prevCargoTotalAmount: 100,
 
   // Consumption & Condition (Total)
   lubricatingOilPrevBreakdown: {
@@ -42,6 +38,7 @@ export const useDepartureSBYReportStore = defineStore(
       lubeOilRobs: prevLubeOilRobs,
       freshwaterRob: prevFreshWaterRob,
       fuelOilConsInHarbourPort,
+      cargoTotal,
     } = storeToRefs(detailsStore);
 
     const shipStore = useShipStore();
@@ -99,7 +96,7 @@ export const useDepartureSBYReportStore = defineStore(
     const totalAmountComputed = computed(
       () =>
         +(
-          temp.prevCargoTotalAmount +
+          Number(cargoTotal.value) +
           Number(loading.value) -
           Number(unloading.value)
         ).toFixed(2)
