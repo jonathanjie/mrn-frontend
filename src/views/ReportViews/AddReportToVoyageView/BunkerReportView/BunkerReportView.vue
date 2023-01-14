@@ -232,7 +232,6 @@ const sendReport = async () => {
   }
 };
 
-const handleclick = () => console.log("file: ", files.value[0]);
 </script>
 
 <template>
@@ -255,9 +254,6 @@ const handleclick = () => console.log("file: ", files.value[0]);
         v-model="isBeforeArrival"
       />
       <label for="afterArrival">{{ $t("afterArrival") }}</label>
-    </div>
-    <div>
-      <button @click="handleclick()">click me</button>
     </div>
     <!-- Overview -->
     <BunkerOverview />
