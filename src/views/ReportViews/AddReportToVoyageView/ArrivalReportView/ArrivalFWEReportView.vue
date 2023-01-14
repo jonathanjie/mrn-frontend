@@ -212,38 +212,38 @@ const sendReport = async () => {
           name: pilotArrName.value,
           date: pilotArrDateTimeUTC.value,
           position: pilotArrPosition,
-          draft_fwd: pilotArrDraftFwd.value,
-          draft_mid: pilotArrDraftMid.value,
-          draft_aft: pilotArrDraftAft.value,
+          draft_fwd: Number(pilotArrDraftFwd.value),
+          draft_mid: Number(pilotArrDraftMid.value),
+          draft_aft: Number(pilotArrDraftAft.value),
         }
       : null,
     distancetimedata: {
-      revolution_count: revolutionCount.value,
+      revolution_count: Number(revolutionCount.value),
       set_rpm: 0, // irrelevant for Arrival FWE report
-      distance_observed_since_last: distanceObs.value,
-      distance_observed_total: distanceObsTotal.value,
-      distance_engine_since_last: distanceEng.value,
-      distance_engine_total: distanceEngTotal.value,
+      distance_observed_since_last: Number(distanceObs.value),
+      distance_observed_total: Number(distanceObsTotal.value),
+      distance_engine_since_last: Number(distanceEng.value),
+      distance_engine_total: Number(distanceEngTotal.value),
       distance_to_go: 0,
-      hours_total: hoursTotal.value,
-      hours_since_last: hours.value,
+      hours_total: Number(hoursTotal.value),
+      hours_since_last: Number(hours.value),
     },
     consumptionconditiondata: {
       fueloildata_set: fuelOilData,
       lubricatingoildata_set: lubricatingOilData,
       freshwaterdata: {
-        consumed: freshwaterConsumed.value || 0,
-        generated: freshwaterGenerated.value || 0,
+        consumed: Number(freshwaterConsumed.value) || 0,
+        generated: Number(freshwaterGenerated.value) || 0,
         received: 0, // Does not apply for Arrival FWE reports
         discharged: 0, // Does not apply for Arrival FWE reports
-        rob: freshwaterRob.value || 0,
+        rob: Number(freshwaterRob.value) || 0,
       },
       consumption_type: ConsumptionType.SBY_TO_FWE,
     },
     actualperformancedata: {
       actual_performance_type: ActualPerformanceType.PORT_TO_PORT,
-      distance_obs_total: totalDistanceObs.value,
-      sailing_time: totalSailingTime.value,
+      distance_obs_total: Number(totalDistanceObs.value),
+      sailing_time: Number(totalSailingTime.value),
       displacement: 0, // Does not apply for Arrival FWE reports
       speed_average: 0, // Does not apply for Arrival FWE reports
       rpm_average: 0, // Does not apply for Arrival FWE reports

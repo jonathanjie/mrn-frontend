@@ -275,15 +275,15 @@ const sendReport = async () => {
       weather_notation: weather.value,
       visibility: visibility.value,
       wind_direction: windDirection.value,
-      wind_speed: windSpeed.value,
+      wind_speed: Number(windSpeed.value),
       sea_direction: seaDirection.value,
       sea_state: seaState.value,
       swell_direction: swellDirection.value,
       swell_scale: swellScale.value,
-      air_pressure: airPressure.value,
-      air_temperature_dry: airTemperatureDry.value,
-      air_temperature_wet: airTemperatureWet.value,
-      sea_temperature: seaTemperature.value,
+      air_pressure: Number(airPressure.value),
+      air_temperature_dry: Number(airTemperatureDry.value),
+      air_temperature_wet: Number(airTemperatureWet.value),
+      sea_temperature: Number(seaTemperature.value),
       ice_condition: iceCondition.value,
     },
     distancetimedata: {
@@ -292,58 +292,58 @@ const sendReport = async () => {
       distance_to_go:
         distanceToGoEdited.value &&
         distanceToGoEdited.value !== distanceToGo.value
-          ? distanceToGoEdited.value
-          : distanceToGo.value || 0,
+          ? Number(distanceToGoEdited.value)
+          : Number(distanceToGo.value) || 0,
       remarks_for_changes: remarksForChanges.value
         ? remarksForChanges.value
         : distanceToGoEdited.value !== distanceToGo.value
         ? null
         : "NIL",
-      distance_observed_since_last: distanceObsSinceNoon.value,
-      distance_observed_total: distanceObsTotal.value,
-      distance_engine_since_last: distanceEngSinceNoon.value,
-      distance_engine_total: distanceEngTotal.value,
-      revolution_count: revolutionCount.value,
+      distance_observed_since_last: Number(distanceObsSinceNoon.value),
+      distance_observed_total: Number(distanceObsTotal.value),
+      distance_engine_since_last: Number(distanceEngSinceNoon.value),
+      distance_engine_total: Number(distanceEngTotal.value),
+      revolution_count: Number(revolutionCount.value),
       set_rpm: null,
     },
     performancedata: {
-      speed_since_last: speedSinceNoon.value,
-      rpm_since_last: rpmSinceNoon.value,
-      slip_since_last: slipSinceNoon.value,
-      speed_average: speedAvg.value,
-      rpm_average: rpmAvg.value,
-      slip_average: slipAvg.value,
+      speed_since_last: Number(speedSinceNoon.value),
+      rpm_since_last: Number(rpmSinceNoon.value),
+      slip_since_last: Number(slipSinceNoon.value),
+      speed_average: Number(speedAvg.value),
+      rpm_average: Number(rpmAvg.value),
+      slip_average: Number(slipAvg.value),
     },
     arrivalpilotstation: shouldPilotArrDataBeSent.value
       ? {
           name: pilotArrName.value,
           date: pilotArrDateTimeUTC.value,
           position: pilotArrPosition,
-          draft_fwd: pilotArrDraftFwd.value,
-          draft_mid: pilotArrDraftMid.value,
-          draft_aft: pilotArrDraftAft.value,
+          draft_fwd: Number(pilotArrDraftFwd.value),
+          draft_mid: Number(pilotArrDraftMid.value),
+          draft_aft: Number(pilotArrDraftAft.value),
         }
       : null,
     consumptionconditiondata: {
       fueloildata_set: fuelOilData,
       lubricatingoildata_set: lubricatingOilData,
       freshwaterdata: {
-        consumed: freshwaterConsumed.value || 0,
-        generated: freshwaterGenerated.value || 0,
+        consumed: Number(freshwaterConsumed.value) || 0,
+        generated: Number(freshwaterGenerated.value) || 0,
         received: 0, // Does not apply for Arrival EOSP reports
         discharged: 0, // Does not apply for Arrival EOSP reports
-        rob: freshwaterRob.value || 0,
+        rob: Number(freshwaterRob.value) || 0,
       },
       consumption_type: ConsumptionType.NOON_TO_SBY,
     },
     actualperformancedata: {
       actual_performance_type: ActualPerformanceType.PILOT_TO_PILOT,
-      distance_obs_total: totalDistanceObs.value,
-      sailing_time: totalSailingTime.value,
-      displacement: displacement.value,
-      speed_average: avgSpeed.value,
-      rpm_average: avgRpm.value,
-      me_average_daily_fo_consumption: meFoConsumption.value,
+      distance_obs_total: Number(totalDistanceObs.value),
+      sailing_time: Number(totalSailingTime.value),
+      displacement: Number(displacement.value),
+      speed_average: Number(avgSpeed.value),
+      rpm_average: Number(avgRpm.value),
+      me_average_daily_fo_consumption: Number(meFoConsumption.value),
     },
     totalconsumptiondata: {
       fueloiltotalconsumptiondata_set: fuelOilDataSum,
