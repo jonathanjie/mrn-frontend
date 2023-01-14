@@ -40,13 +40,12 @@ export const useArrivalEOSPReportStore = defineStore(
       propellerPitch,
       speedAverage,
       rpmAverage,
-      slipAverage,
       displacementAtDeparture,
       fuelOilRobs: fuel_oil_robs,
       lubeOilRobs,
       freshwaterRob: freshwater_rob,
-      hoursAtSea,
       fuelOilConsPilotToPilot,
+      timeSbyToCosp,
     } = storeToRefs(detailsStore);
 
     // Overview
@@ -79,7 +78,7 @@ export const useArrivalEOSPReportStore = defineStore(
         : departureDateTime.value
     );
     const arrivalPortCountry = ref(arrivalPort.value.slice(0, 2));
-    const arrivalPortName = ref(departurePort.value.slice(3, 6));
+    const arrivalPortName = ref(arrivalPort.value.slice(3, 6));
     const plannedOperations = ref([]);
     const isOtherPlannedOperationEnabled = computed(() =>
       plannedOperations.value.includes("others")
@@ -191,6 +190,18 @@ export const useArrivalEOSPReportStore = defineStore(
           ).toFixed(2)
         : ""
     );
+    // pilot to pilot hours
+    const hoursAtSea = computed(() =>
+      lastReportDate.value && departureDate.value
+        ? +(
+            Math.abs(
+              Date.parse(lastReportDate.value) - Date.parse(departureDate.value)
+            ) /
+              36e5 -
+            Number(timeSbyToCosp.value)
+          ).toFixed(2)
+        : ""
+    );
     const speedAvg = computed(() =>
       speedSinceNoon.value !== "" && hoursTotal.value
         ? +calculateNewAverage(
@@ -213,11 +224,10 @@ export const useArrivalEOSPReportStore = defineStore(
     );
     const slipAvg = computed(() =>
       slipSinceNoon.value !== "" && hoursTotal.value
-        ? +calculateNewAverage(
-            Number(slipAverage.value),
-            Number(slipSinceNoon.value),
-            Number(hoursAtSea.value) / 24,
-            Number(hoursTotal.value) / 24
+        ? +(
+            100 *
+            ((Number(distanceEngTotal.value) - Number(distanceObsTotal.value)) /
+              Number(distanceEngTotal.value))
           ).toFixed(2)
         : ""
     );

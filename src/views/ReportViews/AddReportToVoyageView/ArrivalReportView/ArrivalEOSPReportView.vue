@@ -296,7 +296,8 @@ const sendReport = async () => {
           : Number(distanceToGo.value) || 0,
       remarks_for_changes: remarksForChanges.value
         ? remarksForChanges.value
-        : distanceToGoEdited.value !== distanceToGo.value
+        : distanceToGoEdited.value != "" &&
+          distanceToGoEdited.value !== distanceToGo.value
         ? null
         : "NIL",
       distance_observed_since_last: Number(distanceObsSinceNoon.value),

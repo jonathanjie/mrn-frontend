@@ -65,8 +65,9 @@ const reporting_time_zone = computed(() => props.report.report_tz);
       <div class="col-span-2 text-blue-700 p-3 border-r">
         {{ $t("reportingDateAndTime") }}
       </div>
-      <div class="col-span-3 relative flex items-center bg-white">
+      <div class="col-span-3 relative flex items-center bg-gray-50">
         <DatePicker
+          disabled
           v-model="reporting_date_time"
           class="grow"
           textInput
@@ -92,9 +93,10 @@ const reporting_time_zone = computed(() => props.report.report_tz);
       <div class="col-span-2 text-blue-700 p-3 border-r">
         {{ $t("reportingTimeZone") }}
       </div>
-      <div class="flex col-span-3 bg-white">
+      <div class="flex col-span-3 bg-gray-50">
         <select
-          class="grow self-center p-3 text-14 focus:outline-0"
+          disabled
+          class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50"
           :class="
             reporting_time_zone === 'default'
               ? 'text-gray-400'

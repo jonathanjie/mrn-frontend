@@ -1,4 +1,3 @@
-
 <script setup>
 import { textInputOptions, format } from "@/utils/helpers.js";
 import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
@@ -14,7 +13,6 @@ const {
 } = storeToRefs(store);
 </script>
 
-
 <template>
   <div
     class="grid grid-cols-1 lg:grid-cols-2 bg-white rounded-lg p-5 gap-4 shadow-card"
@@ -29,12 +27,14 @@ const {
           {{ $t("portName") }}
         </div>
         <input
-          v-model="port_country"
+          :value="port_country.toUpperCase()"
+          @input="port_country = $event.target.value.toUpperCase()"
           :placeholder="$t('inputLocode2')"
           class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
         />
         <input
-          v-model="port_name"
+          :value="port_name.toUpperCase()"
+          @input="port_name = $event.target.value.toUpperCase()"
           :placeholder="$t('inputLocode3')"
           class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
         />
@@ -86,4 +86,3 @@ const {
     </div>
   </div>
 </template>
-

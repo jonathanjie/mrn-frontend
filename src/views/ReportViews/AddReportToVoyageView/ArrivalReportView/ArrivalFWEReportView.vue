@@ -62,12 +62,19 @@ import {
   parsePositionToString,
   generateFuelOilData,
   generateLubricatingOilData,
+  parsePortLocode,
 } from "@/utils/helpers.js";
 import { OPERATIONS } from "@/utils/options";
 import { UrlDomain } from "@/constants";
 
 const store = useArrivalFWEReportStore();
 const {
+  departurePortCountry,
+  departurePortName,
+  departureDateTime,
+  departureTimeZone,
+  arrivalPortCountry,
+  arrivalPortName,
   // Overview
   reportNo,
   legUuid,
@@ -105,7 +112,6 @@ const {
   distanceObsTotal,
   distanceEngTotal,
   hoursTotal,
-  distanceToGo,
   // Consumption and Condition
   fuelOils,
   lubricatingOils,
@@ -156,6 +162,16 @@ const sendReport = async () => {
     longDegree: longDegree.value,
   });
 
+  const departurePort = parsePortLocode({
+    portCountry: departurePortCountry.value,
+    portName: departurePortName.value,
+  });
+
+  const arrivalPort = parsePortLocode({
+    portCountry: arrivalPortCountry.value,
+    portName: arrivalPortName.value,
+  });
+
   const fuelOilData = generateFuelOilData(
     fuelOils.value,
     fuelOilBreakdowns.value,
@@ -186,6 +202,14 @@ const sendReport = async () => {
     report_num: reportNo.value,
     report_date: reportingDateTimeUTC.value,
     report_tz: reportingTimeZone.value,
+    reportroute: {
+      departure_port: departurePort,
+      departure_date: departureDateTime.value,
+      departure_tz: departureTimeZone.value,
+      arrival_port: arrivalPort,
+      arrival_date: reportingDateTimeUTC.value,
+      arrival_tz: reportingTimeZone.value,
+    },
     arrivalfwetimeandposition: {
       time: reportingDateTimeUTC.value,
       timezone: reportingTimeZone.value,
@@ -227,6 +251,7 @@ const sendReport = async () => {
       distance_to_go: 0,
       hours_total: Number(hoursTotal.value),
       hours_since_last: Number(hours.value),
+      remarks_for_changes: "NIL",
     },
     consumptionconditiondata: {
       fueloildata_set: fuelOilData,

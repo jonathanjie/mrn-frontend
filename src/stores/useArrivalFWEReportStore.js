@@ -4,7 +4,6 @@ import { useVoyageStore } from "./useVoyageStore";
 import { storeToRefs } from "pinia";
 import { convertLTToUTC, sumObjectValues } from "@/utils/helpers";
 import { useShipStore } from "@/stores/useShipStore";
-import { Machinery } from "@/constants";
 import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
 
 const temp = {
@@ -21,6 +20,9 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
 
   const detailsStore = useLatestReportDetailsStore();
   const {
+    departurePort,
+    departureTz,
+    arrivalPort,
     plannedOperations: planned_operations,
     departureDate,
     lastReportDate,
@@ -33,6 +35,13 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     freshwaterRob: freshwater_rob,
     fuelOilConsPortToPort,
   } = storeToRefs(detailsStore);
+
+  const departurePortCountry = ref(departurePort.value.slice(0, 2));
+  const departurePortName = ref(departurePort.value.slice(3, 6));
+  const departureDateTime = ref(departureDate);
+  const departureTimeZone = ref(departureTz);
+  const arrivalPortCountry = ref(arrivalPort.value.slice(0, 2));
+  const arrivalPortName = ref(departurePort.value.slice(3, 6));
 
   // Overview
   const reportNo = arrfReportNo;
@@ -283,6 +292,12 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   });
 
   return {
+    departurePortCountry,
+    departurePortName,
+    departureDateTime,
+    departureTimeZone,
+    arrivalPortCountry,
+    arrivalPortName,
     // Overview
     reportNo,
     legUuid,

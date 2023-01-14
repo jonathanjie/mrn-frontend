@@ -38,12 +38,10 @@ const reportingDateTime = computed(() => props.report.eventdata?.time ?? "");
 const distanceTravelled = computed(
   () => props.report.eventdata?.distance_travelled ?? 0
 );
-const operations = computed(() => props.report.eventdata.plannedoperations);
-const plannedOperations = computed(
-  () => props.report.eventdata.plannedoperations
-);
+const operations = computed(() => props.report.plannedoperations);
+const plannedOperations = computed(() => props.report.plannedoperations);
 const otherPlannedOperation = computed(
-  () => props.report.eventdata.plannedoperations?.others ?? false
+  () => props.report.plannedoperations?.others ?? false
 );
 const position = computed(() =>
   parsePositionFromString(props.report.eventdata.position)
@@ -95,8 +93,7 @@ const position = computed(() =>
       <select
         disabled
         v-model="status"
-        class="col-span-3 p-3 border-y border-r focus:outline-0 disabled:text-gray-400 disabled:bg-gray-50"
-        :class="status === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        class="col-span-3 p-3 border-y border-r focus:outline-0 bg-gray-50 text-gray-700"
       >
         <option selected disabled value="default">
           {{ $t("selectEvent") }}
@@ -114,13 +111,10 @@ const position = computed(() =>
       >
         {{ $t("timeZone") }}
       </div>
-      <div class="flex col-span-3 border-b border-r bg-white">
+      <div class="flex col-span-3 border-b border-r bg-gray-50">
         <select
           disabled
-          class="grow self-center p-3 text-14 focus:outline-0"
-          :class="
-            reportingTimeZone === 'default' ? 'text-gray-400' : 'text-gray-700'
-          "
+          class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50 text-gray-700"
           v-model="reportingTimeZone"
         >
           <option selected disabled value="default">
@@ -136,7 +130,9 @@ const position = computed(() =>
       >
         {{ $t("dateAndTime") }}
       </div>
-      <div class="col-span-3 relative flex items-center border-b border-r">
+      <div
+        class="col-span-3 relative flex items-center border-b border-r bg-gray-50"
+      >
         <DatePicker
           disabled
           v-model="reportingDateTime"
@@ -160,13 +156,13 @@ const position = computed(() =>
       <div class="col-span-2 text-blue-700 p-3 border-x border-b bg-gray-50">
         {{ $t("distanceTravelled") }}
       </div>
-      <div class="flex col-span-3 p-2 pl-4 bg-white border-b border-r">
+      <div class="flex col-span-3 p-2 pl-4 bg-gray-50 border-b border-r">
         <input
           disabled
           v-model="distanceTravelled"
           @keypress="preventNaN($event, distanceTravelled)"
           placeholder="0"
-          class="w-16 text-14 text-gray-700 focus:outline-0"
+          class="w-16 text-14 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <MiniUnitDisplay>NM</MiniUnitDisplay>
       </div>
@@ -182,7 +178,7 @@ const position = computed(() =>
         {{ $t("operations") }}
       </div>
       <div
-        class="col-span-3 flex flex-col space-y-2 p-3 text-gray-700"
+        class="col-span-3 flex flex-col space-y-2 p-3 text-gray-700 bg-gray-50"
         :class="
           reportSubtypeIsNoon || END_STATUS.includes(status) ? 'bg-gray-50' : ''
         "
@@ -200,7 +196,7 @@ const position = computed(() =>
             :class="
               reportSubtypeIsNoon ||
               !START_STATUS.includes(status) ||
-              !plannedOperations.includes('waiting')
+              !plannedOperations.waiting
                 ? 'text-gray-400'
                 : ''
             "
@@ -224,7 +220,7 @@ const position = computed(() =>
             :class="
               reportSubtypeIsNoon ||
               !START_STATUS.includes(status) ||
-              !plannedOperations.includes(val)
+              !plannedOperations.val
                 ? 'text-gray-400'
                 : ''
             "
@@ -244,7 +240,7 @@ const position = computed(() =>
             :class="
               reportSubtypeIsNoon ||
               !START_STATUS.includes(status) ||
-              !plannedOperations.includes('others')
+              !plannedOperations.others
                 ? 'text-gray-400'
                 : ''
             "
@@ -265,22 +261,19 @@ const position = computed(() =>
         v-model="position.longDegree"
         @keypress="preventNaN($event, position.longDegree)"
         placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-gray-700 focus:outline-0"
+        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-gray-700 focus:outline-0"
       />
       <input
         disabled
         v-model="position.longMinutes"
         @keypress="preventNaN($event, position.longMinutes)"
         placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-gray-700 focus:outline-0"
+        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-gray-700 focus:outline-0"
       />
       <select
         disabled
         v-model="position.longDir"
-        class="col-span-3 p-3 border-l focus:outline-0"
-        :class="
-          position.longDir === 'default' ? 'text-gray-400' : 'text-gray-700'
-        "
+        class="col-span-3 p-3 border-l focus:outline-0 bg-gray-50"
       >
         <option selected disabled value="default">
           {{ $t("eastAndWest") }}
@@ -301,22 +294,19 @@ const position = computed(() =>
         v-model="position.latDegree"
         @keypress="preventNaN($event, position.latDegree)"
         placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-gray-700 focus:outline-0"
+        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-gray-700 focus:outline-0"
       />
       <input
         disabled
         v-model="position.latMinutes"
         @keypress="preventNaN($event, position.latMinutes)"
         placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-gray-700 focus:outline-0"
+        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-gray-700 focus:outline-0"
       />
       <select
         disabled
         v-model="position.latDir"
-        class="col-span-3 p-3 border-l focus:outline-0"
-        :class="
-          position.latDir === 'default' ? 'text-gray-400' : 'text-gray-700'
-        "
+        class="col-span-3 p-3 border-l focus:outline-0 bg-gray-50 text-gray-700"
       >
         <option selected disabled value="default">
           {{ $t("southAndNorth") }}

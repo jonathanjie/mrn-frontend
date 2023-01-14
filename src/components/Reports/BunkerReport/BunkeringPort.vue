@@ -12,13 +12,15 @@
           {{ $t("portName") }}
         </div>
         <input
-          v-model="port_country"
           :placeholder="$t('inputLocode2')"
           class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
+          :value="port_country.toUpperCase()"
+          @input="port_country = $event.target.value.toUpperCase()"
         />
         <input
-          v-model="port_name"
           :placeholder="$t('inputLocode3')"
+          :value="port_name.toUpperCase()"
+          @input="port_name = $event.target.value.toUpperCase()"
           class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
         />
       </div>
@@ -52,29 +54,39 @@
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("dateAndTime") }}
         </div>
-        <DatePicker
-          v-model="reporting_date_time"
-          class="col-span-3"
-          textInput
-          :textInputOptions="textInputOptions"
-          :format="format"
-          :modelValue="string"
-          :placeholder="$t('selectDateAndTime')"
-        >
-          <template #input-icon>
-            <img src="" />
-          </template>
-        </DatePicker>
+        <div class="col-span-3 relative flex items-center bg-white">
+          <DatePicker
+            v-model="reporting_date_time"
+            class="col-span-3 grow"
+            textInput
+            :textInputOptions="textInputOptions"
+            :format="format"
+            :modelValue="string"
+            :placeholder="$t('selectDateAndTime')"
+          >
+            <template #input-icon>
+              <img src="" />
+            </template>
+          </DatePicker>
+          <MiniUnitDisplay
+            class="absolute right-0 min-w-fit"
+            :class="reporting_date_time ? 'mr-9' : 'mr-2'"
+            >{{ reporting_date_time_utc }}</MiniUnitDisplay
+          >
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { textInputOptions, format } from "@/utils/helpers.js";
+import { textInputOptions, format, formatUTC } from "@/utils/helpers.js";
 import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
 import { storeToRefs } from "pinia";
+import { computed } from "vue";
 import { TIMEZONES } from "@/utils/options";
+import { UTCPlaceholder } from "@/constants";
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 
 const store = useBunkerReportStore();
 const {
@@ -82,5 +94,12 @@ const {
   portName: port_name,
   reportingDateTime: reporting_date_time,
   reportingTimeZone: reporting_time_zone,
+  reportingDateTimeUTC,
 } = storeToRefs(store);
+
+const reporting_date_time_utc = computed(() =>
+  reportingDateTimeUTC.value
+    ? formatUTC(new Date(reportingDateTimeUTC.value))
+    : UTCPlaceholder
+);
 </script>

@@ -192,7 +192,7 @@ console.log(machinery.value);
               class="col-span-1 p-3 pl-4 border-t border-l bg-gray-50 text-gray-700 focus:outline-0"
             />
             <div
-              class="col-span-1 text-gray-400 p-3 border-t border-l bg-gray-50"
+              class="col-span-1 text-gray-700 p-3 border-t border-l bg-gray-50"
             >
               {{ fuelOilData.total_consumption }}
             </div>
@@ -211,7 +211,7 @@ console.log(machinery.value);
               class="col-span-1 p-3 pl-4 border-t border-l bg-gray-50 text-gray-700 focus:outline-0"
             />
             <div
-              class="col-span-1 text-gray-400 p-3 border-t border-x bg-gray-50"
+              class="col-span-1 text-gray-700 p-3 border-t border-x bg-gray-50"
             >
               {{ fuelOilData.rob }}
             </div>
@@ -253,7 +253,7 @@ console.log(machinery.value);
               class="col-span-4 p-3 border-l focus:outline-0"
               :class="
                 fuelOilDataCorrection.type === 'default'
-                  ? 'text-gray-400'
+                  ? 'text-gray-700'
                   : 'text-gray-700'
               "
             >
@@ -359,7 +359,7 @@ console.log(machinery.value);
               class="col-span-2 p-3 pl-4 border-t border-l bg-gray-50 text-gray-700 focus:outline-0"
             />
             <div
-              class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-50"
+              class="col-span-2 text-gray-700 p-3 border-t border-x bg-gray-50"
             >
               {{ lubricatingOilData.rob }}
             </div>
@@ -405,7 +405,7 @@ console.log(machinery.value);
               class="col-span-6 p-3 border-l focus:outline-0"
               :class="
                 lubricatingOilDataCorrection.type === 'default'
-                  ? 'text-gray-400'
+                  ? 'text-gray-700'
                   : 'text-gray-700'
               "
             >
@@ -496,7 +496,7 @@ console.log(machinery.value);
             class="col-span-1 p-3 pl-4 border-y border-l bg-gray-50 text-gray-700 focus:outline-0"
           />
           <div
-            class="col-span-1 text-gray-400 p-3 border-y border-l bg-gray-50"
+            class="col-span-1 text-gray-700 p-3 border-y border-l bg-gray-50"
           >
             {{ freshwaterChange }}
           </div>
@@ -515,7 +515,7 @@ console.log(machinery.value);
             class="col-span-1 p-3 pl-4 border-y border-l bg-gray-50 text-gray-700 focus:outline-0"
           />
           <div
-            class="col-span-1 text-gray-400 p-3 border-y border-x bg-gray-50"
+            class="col-span-1 text-gray-700 p-3 border-y border-x bg-gray-50"
           >
             {{ freshwaterRob }}
           </div>

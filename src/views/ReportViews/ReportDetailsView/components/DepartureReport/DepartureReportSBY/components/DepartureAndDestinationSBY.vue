@@ -70,13 +70,15 @@ const destinationTimeZone = computed(
         </div>
         <input
           disabled
-          v-model="departurePortCountry"
+          :value="departurePortCountry.toUpperCase()"
+          @input="departurePortCountry = $event.target.value.toUpperCase()"
           :placeholder="$t('inputLocode2')"
           class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 bg-gray-50"
         />
         <input
           disabled
-          v-model="departurePortName"
+          :value="departurePortName.toUpperCase()"
+          @input="departurePortName = $event.target.value.toUpperCase()"
           :placeholder="$t('inputLocode3')"
           class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 bg-gray-50"
         />

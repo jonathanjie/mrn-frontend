@@ -68,6 +68,7 @@ import { Report } from "@/constants";
 import { parsePortLocode } from "@/utils/helpers";
 import axios from "axios";
 import { UrlDomain } from "@/constants";
+import { ref } from "vue";
 
 const shipStore = useShipStore();
 const { companyUuid: company_uuid } = storeToRefs(shipStore);
@@ -92,7 +93,6 @@ const {
   oil,
   quantity,
   density,
-  sg,
   viscosity,
   viscosityDegree,
   flashPoint,
@@ -122,6 +122,8 @@ const {
   isSubmissionSuccessful,
   errorMessage,
 } = storeToRefs(submissionStatusStore);
+
+const isUploadToS3Successful = ref(true);
 
 const getPresignedUrlForFiles = async () => {
   const response = await fetch(
@@ -168,6 +170,7 @@ const uploadFilesToS3 = async () => {
       console.log(response);
     } catch (error) {
       console.error(error);
+      isUploadToS3Successful.value = false;
     }
   }
 };
@@ -212,7 +215,6 @@ const sendReport = async () => {
       delivered_oil_type: oil.value,
       delivered_quantity: Number(quantity.value),
       density_15: Number(density.value),
-      specific_gravity_15: Number(sg.value),
       viscosity_value: Number(viscosity.value),
       viscosity_temperature: Number(viscosityDegree.value),
       flash_point: Number(flashPoint.value),
@@ -246,16 +248,25 @@ const sendReport = async () => {
   });
 
   try {
-    const data = await response.json();
-    console.log(response);
-    console.log(data);
+    if (isUploadToS3Successful.value) {
+      const data = await response.json();
+      console.log(response);
+      console.log(data);
 
-    if (response.ok) {
-      isSubmissionSuccessful.value = true;
-      store.$reset();
+      if (response.ok) {
+        isSubmissionSuccessful.value = true;
+        store.$reset();
+      } else {
+        errorMessage.value = data;
+      }
     } else {
-      errorMessage.value = data;
+      errorMessage.value = {
+        unexpectedError: [
+          "Failed to upload file. Please contact the administrator.",
+        ],
+      };
     }
+
     isSubmissionModalVisible.value = true;
   } catch (error) {
     console.log(error);
