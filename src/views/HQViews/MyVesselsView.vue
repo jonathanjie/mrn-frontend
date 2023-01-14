@@ -90,7 +90,6 @@
       <div
         class="flex bg-white w-full h-16 rounded-xl items-center p-3.5 mt-6 justify-evenly shadow"
       >
-        <!-- Sailing Icon -->
         <div class="flex">
           <img
             src="@/assets/icons/My_Vessels/sailing_icon.svg"
@@ -101,11 +100,10 @@
               >{{ $t("sailingVessels") }}:
             </span>
             <span class="text-12 font-bold text-gray-700"
-              >{{ shipCount.sailingVessels }} vessels</span
+              >{{ shipCount.sailingVessels ?? 0 }} vessels</span
             >
           </div>
         </div>
-        <!-- Cargo operation icon (Need to check background color) -->
         <div class="flex">
           <img
             src="@/assets/icons/My_Vessels/cargo_icon.svg"
@@ -116,11 +114,10 @@
               >{{ $t("cargoOperation") }}:
             </span>
             <span class="text-12 font-bold text-gray-700"
-              >{{ shipCount.cargoVessels }} vessels</span
+              >{{ shipCount.cargoVessels ?? 0 }} vessels</span
             >
           </div>
         </div>
-        <!-- Bunkering Icon (Need to check background color) -->
         <div class="flex">
           <img
             src="@/assets/icons/My_Vessels/bunkering_icon.svg"
@@ -129,11 +126,10 @@
           <div class="my-3 ml-2">
             <span class="text-12 text-gray-700">{{ $t("bunkering") }}: </span>
             <span class="text-12 font-bold text-gray-700"
-              >{{ shipCount.bunkeringVessels }} vessels</span
+              >{{ shipCount.bunkeringVessels ?? 0 }} vessels</span
             >
           </div>
         </div>
-        <!-- Waiting Icon -->
         <div class="flex">
           <img
             src="@/assets/icons/My_Vessels/waiting_icon.svg"
@@ -142,11 +138,10 @@
           <div class="my-3 ml-2">
             <span class="text-12 text-gray-700">{{ $t("waiting") }}: </span>
             <span class="text-12 font-bold text-gray-700"
-              >{{ shipCount.waitingVessels }} vessels</span
+              >{{ shipCount.waitingVessels ?? 0 }} vessels</span
             >
           </div>
         </div>
-        <!-- Etc Icon -->
         <div class="flex">
           <img
             src="@/assets/icons/My_Vessels/etc_icon.svg"
@@ -155,17 +150,17 @@
           <div class="my-3 ml-2">
             <span class="text-12 text-gray-700">{{ $t("etcVessels") }}: </span>
             <span class="text-12 font-bold text-gray-700"
-              >{{ shipCount.etcVessels }} vessels</span
+              >{{ shipCount.etcVessels ?? 0 }} vessels</span
             >
           </div>
         </div>
       </div>
       <!-- Vessels list header -->
       <div class="flex mt-12 w-full items-center">
-        <h1 v-if="isSuccess" class="text-20 font-bold w-full">
+        <h1 class="text-20 font-bold w-full">
           {{ $t("vesselList") }} ({{ ships.length }})
         </h1>
-        <div class="flex justify-end">
+        <!-- <div class="flex justify-end">
           <div
             class="hidden flex bg-white border border-gray-300 w-60 h-10 rounded-lg mr-4"
           >
@@ -176,7 +171,6 @@
               icon="search"
             />
           </div>
-          <!-- Need to figure out table filter and export CSV -->
           <CustomButton
             class="hidden text-14 text-sm font-bold mr-4 pr-7 whitespace-nowrap text-blue-700"
             type="button"
@@ -199,20 +193,20 @@
             /></template>
             <template v-slot:content>{{ $t("exportCSV") }}</template>
           </CustomButton>
-        </div>
+        </div> -->
       </div>
     </div>
     <!-- Vessels list content -->
     <!-- if there are no voyages in backend -->
-    <div v-if="isSuccess" class="flex flex-col">
+    <div class="flex flex-col">
       <VesselCard
         v-for="(ship, index) in ships"
-        :key="ship"
+        :key="ship.id"
         :vesselName="ship.name == null ? 'Invalid Ship' : ship.name"
+        :imoNo="ship.imo_reg == null ? 'Invalid Ship' : ship.imo_reg"
         :loadType="
           ship.ship_type == null ? 'Invalid Ship' : shipRef[ship.ship_type]
         "
-        :imoNo="ship.imo_reg == null ? 'Invalid Ship' : ship.imo_reg"
         :vesselStatus="
           ship.last_report_type === null
             ? 'No report uploaded'
@@ -233,7 +227,7 @@
         :updatedDate="dateConverter(ship.last_report_date)"
       />
     </div>
-    <div
+    <!-- <div
       v-else
       class="flex flex-col p-24 pb-52 m-12 justify-center items-center space-y-2 rounded-xl"
     >
@@ -244,7 +238,7 @@
       <span class="text-14 text-gray-500">{{
         $t("clickOnCreateNewVoyageAboveToBegin")
       }}</span>
-    </div>
+    </div> -->
     <hr class="mt-6 w-full bg-gray-200" />
     <!-- Pagination module -->
     <div class="hidden flex justify-center">12345678910</div>
@@ -272,14 +266,13 @@
 
 <script setup>
 import MyVesselsDashboardIcon from "@/views/HQViews/components/MyVesselsDashboardIcon.vue";
-import CustomButton from "@/components/Buttons/CustomButton.vue";
+// import CustomButton from "@/components/Buttons/CustomButton.vue";
 import VesselCard from "@/views/HQViews/components/VesselCard.vue";
 // import VesselReportCard from "./components/VesselReportCard.vue";
 import { useHQStore } from "@/stores/useHQStore";
 import constants from "@/constants";
 
 const store = useHQStore();
-
 const shipRef = constants.shipRefs;
 const { shipCount, shipStatus } = store;
 const reportStatus = (lastReportDate) => {

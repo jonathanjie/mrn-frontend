@@ -3,7 +3,7 @@
     <div
       class="flex relative rounded-xl bg-white h-32 w-full shadow-md items-center"
     >
-      <div v-if="!shipSuccess" class="flex flex-col">
+      <div v-if="shipSuccess" class="flex flex-col">
         <div class="flex flex-row items-center justify-evenly p-5">
           <img
             src="@/assets/icons/Speed_Graph/ship_image.svg"
@@ -84,7 +84,7 @@
               $t("estimatedArrivalTime")
             }}</span>
             <div
-              v-if="!legsSuccess"
+              v-if="legsSuccess"
               class="flex bg-gray-100 rounded-2xl py-1 px-3 ml-2"
             >
               <span
@@ -123,7 +123,7 @@
             </button>
           </div> -->
         </div>
-        <TableOverview v-if="!statsSuccess" :stats="stats" />
+        <TableOverview v-if="statsSuccess" :stats="stats" />
         <!-- <div class="flex flex-row mt-6">
           <SpeedSideNav
             :speed="speed"
@@ -173,9 +173,9 @@ const props = defineProps({
 console.log(props);
 const shipRef = constants.shipRefs;
 const store = useHQStore();
-const { isFetching: shipSuccess, data: ship } = store.shipQuery(props.imo);
-const { isFetching: legsSuccess, data: portCalls } = store.legsQuery(props.imo);
-const { isFetching: statsSuccess, data: stats } = store.statsQuery(props.imo);
+const { isSuccess: shipSuccess, data: ship } = store.shipQuery(props.imo);
+const { isSuccess: legsSuccess, data: portCalls } = store.legsQuery(props.imo);
+const { isSuccess: statsSuccess, data: stats } = store.statsQuery(props.imo);
 
 // Unused variables for CII/EEXI/message feature
 // const previousCIIGrade = "A";

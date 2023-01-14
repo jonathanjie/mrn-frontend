@@ -6,7 +6,7 @@
     <div class="grid grid-cols-2 gap-x-3.5 w-full">
       <!-- Speed/Distance To Go -->
       <button
-        @click="selectedSpeed = true"
+        @click="selectSpeed"
         class="grid relative grid-cols-2 gap-x-2.5 rounded-lg w-full p-2.5 items-center"
         :class="selectedSpeed ? 'bg-blue-800' : 'bg-white'"
       >
@@ -47,7 +47,7 @@
       </button>
       <!-- FOC/ROB -->
       <button
-        @click="selectedSpeed = false"
+        @click="selectFuel"
         class="grid relative grid-cols-2 gap-x-2.5 rounded-lg w-full p-2.5 items-center"
         :class="!selectedSpeed ? 'bg-blue-800' : 'bg-white'"
       >
@@ -134,7 +134,7 @@
         />
       </div>
       <div v-else>
-        <div v-for="(value, key) in fuelObject">
+        <div v-for="(value, key) in fuelObject" :key="_id">
           <TableOverviewRow
             :header="key.toUpperCase()"
             :fuelFoc="value.foc"
@@ -153,6 +153,16 @@ import TableOverviewRow from "./TableOverviewRow.vue";
 const props = defineProps({
   stats: Array,
 });
+
+let selectedSpeed = ref(true);
+
+const selectSpeed = () => {
+  selectedSpeed.value = true;
+};
+
+const selectFuel = () => {
+  selectedSpeed.value = false;
+};
 
 const data = props.stats;
 // const data = [
@@ -292,7 +302,7 @@ const data = props.stats;
 // ];
 
 const latestData = data[0];
-let selectedSpeed = ref(true);
+
 const dateList = [];
 const reportType = [];
 const speedList = [];
