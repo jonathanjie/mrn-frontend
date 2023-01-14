@@ -100,7 +100,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
       ? +(
           (Date.parse(reportingDateTimeUTC.value) -
             Date.parse(lastReportDate.value)) /
-          (1000 * 60 * 60)
+          36e5
         ).toFixed(0)
       : ""
   );
@@ -134,7 +134,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
       ? +(
           (Date.parse(reportingDateTimeUTC.value) -
             Date.parse(lastReportDate.value)) /
-          (1000 * 60 * 60)
+          36e5
         ).toFixed(0)
       : ""
   );
@@ -231,7 +231,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
       ? +(
           (Date.parse(reportingDateTimeUTC.value) -
             Date.parse(departureDate.value)) /
-          (1000 * 60 * 60)
+          36e5
         ).toFixed(0)
       : ""
   );
@@ -246,11 +246,13 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
                 Number(fuelOilConsPortToPort.value[fuelOil][machine]) +
                 Number(fuelOilBreakdowns[fuelOil][machine])
               ).toFixed(2)
-            : Number(fuelOilConsPortToPort.value[fuelOil][machine]);
+            : +Number(fuelOilConsPortToPort.value[fuelOil][machine]).toFixed(2);
         }
       } else {
         for (const machine of machinery.value) {
-          rtn[fuelOil][machine] = Number(fuelOilBreakdowns[fuelOil][machine]);
+          rtn[fuelOil][machine] = +Number(
+            fuelOilBreakdowns[fuelOil][machine]
+          ).toFixed(2);
         }
       }
     }
