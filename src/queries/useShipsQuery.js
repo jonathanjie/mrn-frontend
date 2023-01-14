@@ -35,11 +35,11 @@ export const useShipsQuery = () => {
           // Sailing/Waiting
           if (ship.last_report_type in reportType) {
             const status = reportType[ship.last_report_type];
-            shipStatus.push(reportType[ship.last_report_type]);
+            store.shipStatus.push(reportType[ship.last_report_type]);
             if (status == "sailing") {
-              shipCount.sailingVessels++;
+              store.shipCount.sailingVessels++;
             } else {
-              shipCount.waitingVessels++;
+              store.shipCount.waitingVessels++;
             }
             // Event
           } else if (
@@ -48,28 +48,28 @@ export const useShipsQuery = () => {
           ) {
             const keys = Object.keys(ship.last_operation).sort();
             if (ship.last_operation[keys[1]] || ship.last_operation[keys[2]]) {
-              shipCount.inPortVessels++;
-              shipCount.cargoVessels++;
-              shipStatus.push("cargo");
+              store.shipCount.inPortVessels++;
+              store.shipCount.cargoVessels++;
+              store.shipStatus.push("cargo");
             } else if (ship.last_operation[keys[0]]) {
-              shipCount.inPortVessels++;
-              shipCount.bunkeringVessels++;
-              shipStatus.push("bunkering");
+              store.shipCount.inPortVessels++;
+              store.shipCount.bunkeringVessels++;
+              store.shipStatus.push("bunkering");
             } else if (
               ship.last_operation[keys[4]] ||
               ship.last_operation[keys[5]]
             ) {
-              shipCount.etcVessels++;
-              shipStatus.push("etc");
+              store.shipCount.etcVessels++;
+              store.shipStatus.push("etc");
             } else {
-              shipCount.inPortVessels++;
-              shipCount.waitingVessels++;
-              shipStatus.push("waiting");
+              store.shipCount.inPortVessels++;
+              store.shipCount.waitingVessels++;
+              store.shipStatus.push("waiting");
             }
             // ETC catch
           } else {
-            shipCount.etcVessels++;
-            shipStatus.push("etc");
+            store.shipCount.etcVessels++;
+            store.shipStatus.push("etc");
           }
         }
         return response.data;

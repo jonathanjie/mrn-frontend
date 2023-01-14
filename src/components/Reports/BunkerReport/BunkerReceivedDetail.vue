@@ -1,6 +1,52 @@
+<script setup>
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { preventNaN } from "@/utils/helpers.js";
+import DropZone from "@/components/FileDrop/DropZone.vue";
+import FilePreview from "@/components/FileDrop/FilePreview.vue";
+import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import { useShipStore } from "@/stores/useShipStore";
+import { LubricatingOil } from "@/constants";
+
+const props = defineProps({
+  isCreate: {
+    type: Boolean,
+    required: true,
+  },
+});
+
+const shipStore = useShipStore();
+const { fuelOils, lubricatingOils } = storeToRefs(shipStore);
+
+const store = useBunkerReportStore();
+const {
+  oilType: oil_type,
+  oil: oil,
+  quantity: quantity,
+  density: density,
+  viscosity: viscosity,
+  viscosityDegree: viscosity_degree,
+  flashPoint: flash_point,
+  sulfurContent: sulfur_content,
+  marpol: marpol,
+  ship: ship,
+  barge: barge,
+  files: files,
+} = storeToRefs(store);
+
+const isFuelOil = computed(() => oil_type.value === "fuelOil");
+const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
+
+const onInputChange = (e) => {
+  store.addFiles(e.target.files);
+  e.target.value = null;
+};
+</script>
+
 <template>
   <div class="grid grid-cols-1 bg-white rounded-lg p-5 gap-4 shadow-card mb-5">
-    <span class="text-gray-700 text-20">{{ $t("receivedBunkerDetail") }}</span>
+    <span class="text-gray-700 text-20">{{ $t("receivedBunkerDetail") }} </span>
 
     <div class="flex items-center">
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
@@ -11,6 +57,7 @@
 
     <!-- Upload delivery note section -->
     <DropZone
+      v-if="props.isCreate"
       class="flex drop-area border border-dashed border-sysblue-300 p-14 place-content-center rounded-lg text-16 text-gray-800 bg-gray-25"
       @files-dropped="store.addFiles"
       #default="{ dropZoneActive }"
@@ -41,14 +88,18 @@
       />
     </DropZone>
 
-    <ul class="text-14 text-gray-700 space-y-1" v-show="files.length">
-      <FilePreview
-        v-for="file of files"
-        :key="file.id"
-        :file="file"
-        @remove="store.removeFile"
-      />
-    </ul>
+    <div v-if="props.isCreate">
+      <ul class="text-14 text-gray-700 space-y-1" v-show="files.length">
+        <FilePreview
+          v-for="file of files"
+          :key="file.id"
+          :file="file"
+          @remove="store.removeFile"
+        />
+      </ul>
+    </div>
+    <div v-else><a href="google.com" target="_blank">google.com</a></div>
+    <!-- <div><a href="google.com" target="_blank">google.com</a></div> -->
 
     <div class="mt-6 flex items-center">
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
@@ -233,42 +284,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { preventNaN } from "@/utils/helpers.js";
-import DropZone from "@/components/FileDrop/DropZone.vue";
-import FilePreview from "@/components/FileDrop/FilePreview.vue";
-import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
-import { storeToRefs } from "pinia";
-import { computed } from "vue";
-import { useShipStore } from "@/stores/useShipStore";
-import { LubricatingOil } from "@/constants";
-
-const shipStore = useShipStore();
-const { fuelOils, lubricatingOils } = storeToRefs(shipStore);
-
-const store = useBunkerReportStore();
-const {
-  oilType: oil_type,
-  oil: oil,
-  quantity: quantity,
-  density: density,
-  viscosity: viscosity,
-  viscosityDegree: viscosity_degree,
-  flashPoint: flash_point,
-  sulfurContent: sulfur_content,
-  marpol: marpol,
-  ship: ship,
-  barge: barge,
-  files: files,
-} = storeToRefs(store);
-
-const isFuelOil = computed(() => oil_type.value === "fuelOil");
-const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
-
-const onInputChange = (e) => {
-  store.addFiles(e.target.files);
-  e.target.value = null;
-};
-</script>

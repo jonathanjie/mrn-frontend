@@ -49,8 +49,9 @@ const wind_speed_beaufort = computed(() =>
           {{ $t("weatherNotation") }}
         </div>
         <select
+          disabled
           v-model="weather"
-          class="col-span-3 p-3 text-14 focus:outline-0"
+          class="col-span-3 p-3 text-14 focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
           :class="weather === 'default' ? 'text-gray-400' : 'text-gray-700'"
         >
           <option selected disabled value="default">{{ $t("select") }}</option>
@@ -80,8 +81,9 @@ const wind_speed_beaufort = computed(() =>
           {{ $t("visibility") }}
         </div>
         <select
+          disabled
           v-model="visibility"
-          class="col-span-3 p-3 text-14 focus:outline-0"
+          class="col-span-3 p-3 text-14 focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
           :class="visibility === 'default' ? 'text-gray-400' : 'text-gray-700'"
         >
           <option selected disabled value="default">{{ $t("select") }}</option>
@@ -111,8 +113,9 @@ const wind_speed_beaufort = computed(() =>
         {{ $t("direction") }}
       </div>
       <select
+        disabled
         v-model="windDirection"
-        class="col-span-6 xl:col-span-3 p-3 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-6 xl:col-span-3 p-3 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
         :class="windDirection === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
@@ -142,6 +145,7 @@ const wind_speed_beaufort = computed(() =>
       </div>
       <div class="col-span-3 flex xl:col-span-2 p-3 border-r bg-white">
         <input
+          disabled
           v-model="windSpeed"
           @keypress="preventNaN($event, windSpeed)"
           placeholder="00.0"
@@ -168,8 +172,9 @@ const wind_speed_beaufort = computed(() =>
         {{ $t("direction") }}
       </div>
       <select
+        disabled
         v-model="seaDirection"
-        class="col-span-6 xl:col-span-3 p-3 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-6 xl:col-span-3 p-3 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
         :class="seaDirection === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
@@ -190,8 +195,9 @@ const wind_speed_beaufort = computed(() =>
         {{ $t("force") }}
       </div>
       <select
+        disabled
         v-model="seaState"
-        class="col-span-6 xl:col-span-3 p-3 text-14 focus:outline-0"
+        class="col-span-6 xl:col-span-3 p-3 text-14 focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
         :class="seaState === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
@@ -222,8 +228,9 @@ const wind_speed_beaufort = computed(() =>
         {{ $t("direction") }}
       </div>
       <select
+        disabled
         v-model="swellDirection"
-        class="col-span-6 xl:col-span-3 p-3 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-6 xl:col-span-3 p-3 border-b xl:border-b-0 xl:border-r bg-white text-14 text-gray-700 focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
         :class="
           swellDirection === 'default' ? 'text-gray-400' : 'text-gray-700'
         "
@@ -246,8 +253,9 @@ const wind_speed_beaufort = computed(() =>
         {{ $t("scale") }}
       </div>
       <select
+        disabled
         v-model="swellScale"
-        class="col-span-6 xl:col-span-3 p-3 text-14 focus:outline-0"
+        class="col-span-6 xl:col-span-3 p-3 text-14 focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
         :class="swellScale === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">{{ $t("select") }}</option>
@@ -279,10 +287,11 @@ const wind_speed_beaufort = computed(() =>
         class="col-span-6 flex xl:col-span-3 xl:border-r border-b xl:border-b-0 p-2 bg-white"
       >
         <input
+          disabled
           v-model="airTemperatureDry"
           @keypress="preventNaN($event, airTemperatureDry)"
           placeholder="00.0"
-          class="text-14 w-24 pl-2 text-gray-700 focus:outline-0"
+          class="text-14 w-24 pl-2 text-gray-700 focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
         />
         <MiniUnitDisplay>°C</MiniUnitDisplay>
       </div>
@@ -293,10 +302,11 @@ const wind_speed_beaufort = computed(() =>
       </div>
       <div class="col-span-6 flex xl:col-span-3 p-2 bg-white">
         <input
+          disabled
           v-model="airTemperatureWet"
           @keypress="preventNaN($event, airTemperatureWet)"
           placeholder="00.0"
-          class="text-14 w-24 pl-2 text-gray-700 focus:outline-0"
+          class="text-14 w-24 pl-2 text-gray-700 focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
         />
         <MiniUnitDisplay>°C</MiniUnitDisplay>
       </div>
@@ -310,10 +320,11 @@ const wind_speed_beaufort = computed(() =>
       </div>
       <div class="col-span-6 xl:col-span-4 flex border-y border-r p-2 bg-white">
         <input
+          disabled
           v-model="airPressure"
           @keypress="preventNaN($event, airPressure)"
           placeholder="00"
-          class="text-14 w-24 pl-2 text-gray-700 focus:outline-0"
+          class="text-14 w-24 pl-2 text-gray-700 focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
         />
         <MiniUnitDisplay>mbar</MiniUnitDisplay>
       </div>
@@ -327,10 +338,11 @@ const wind_speed_beaufort = computed(() =>
       </div>
       <div class="col-span-6 xl:col-span-4 flex border-y border-r p-2 bg-white">
         <input
+          disabled
           v-model="seaTemperature"
           @keypress="preventNaN($event, seaTemperature)"
           placeholder="00.0"
-          class="text-14 w-24 pl-2 text-gray-700 focus:outline-0"
+          class="text-14 w-24 pl-2 text-gray-700 focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
         />
         <MiniUnitDisplay>°C</MiniUnitDisplay>
       </div>
@@ -343,8 +355,9 @@ const wind_speed_beaufort = computed(() =>
         {{ $t("glacierIceCondition") }}
       </div>
       <select
+        disabled
         v-model="iceCondition"
-        class="col-span-6 xl:col-span-4 p-3 border-y border-r text-14 focus:outline-0"
+        class="col-span-6 xl:col-span-4 p-3 border-y border-r text-14 focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
         :class="iceCondition === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">{{ $t("select") }}</option>

@@ -1,58 +1,3 @@
-<template>
-  <div class="flex flex-col space-y-6 my-2 mb-6">
-    <div class="flex text-gray-700 space-x-3 text-16">
-      <span class="text-gray-500">{{ $t("arrivalPort") + ":" }}</span>
-      <input
-        type="radio"
-        name="before_or_after_arrival"
-        id="beforeArrival"
-        :value="true"
-        v-model="isBeforeArrival"
-      />
-      <label for="beforeArrival" class="mr-1">{{ $t("beforeArrival") }}</label>
-      <input
-        type="radio"
-        name="before_or_after_arrival"
-        id="afterArrival"
-        :value="false"
-        v-model="isBeforeArrival"
-      />
-      <label for="afterArrival">{{ $t("afterArrival") }}</label>
-    </div>
-
-    <!-- Overview -->
-    <BunkerOverview />
-
-    <!-- Bunkering Port -->
-    <BunkeringPort />
-
-    <!-- Received Bunker Detail -->
-    <BunkerReceivedDetail />
-
-    <!-- Bunker Date and Time & Supplier -->
-    <BunkerDateAndTime />
-
-    <!-- Save and Send -->
-    <div class="flex justify-end space-x-4 my-6">
-      <!-- <CustomButton
-        class="p-3 text-14"
-        type="button"
-        @click="saveChanges()"
-      >
-        <template v-slot:content>{{ $t("saveChanges") }}</template>
-      </CustomButton> -->
-      <GradientButton
-        class="p-3 text-14"
-        type="button"
-        @click="sendReport()"
-        :is-disabled="isSubmissionRequested"
-      >
-        <template v-slot:content>{{ $t("sendReport") }}</template>
-      </GradientButton>
-    </div>
-  </div>
-</template>
-
 <script setup>
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 import BunkerOverview from "@/components/Reports/BunkerReport/BunkerOverview.vue";
@@ -69,6 +14,14 @@ import { parsePortLocode } from "@/utils/helpers";
 import axios from "axios";
 import { UrlDomain } from "@/constants";
 import { ref } from "vue";
+
+const props = defineProps({
+  isCreate: {
+    type: Boolean,
+    required: true,
+  },
+});
+
 
 const shipStore = useShipStore();
 const { companyUuid: company_uuid } = storeToRefs(shipStore);
@@ -277,3 +230,58 @@ const sendReport = async () => {
   }
 };
 </script>
+
+<template>
+  <div class="flex flex-col space-y-6 my-2 mb-6">
+    <div class="flex text-gray-700 space-x-3 text-16">
+      <span class="text-gray-500">{{ $t("arrivalPort") + ":" }}</span>
+      <input
+        type="radio"
+        name="before_or_after_arrival"
+        id="beforeArrival"
+        :value="true"
+        v-model="isBeforeArrival"
+      />
+      <label for="beforeArrival" class="mr-1">{{ $t("beforeArrival") }}</label>
+      <input
+        type="radio"
+        name="before_or_after_arrival"
+        id="afterArrival"
+        :value="false"
+        v-model="isBeforeArrival"
+      />
+      <label for="afterArrival">{{ $t("afterArrival") }}</label>
+    </div>
+
+    <!-- Overview -->
+    <BunkerOverview />
+
+    <!-- Bunkering Port -->
+    <BunkeringPort />
+
+    <!-- Received Bunker Detail -->
+    <BunkerReceivedDetail :is-create="props.isCreate"/>
+
+    <!-- Bunker Date and Time & Supplier -->
+    <BunkerDateAndTime />
+
+    <!-- Save and Send -->
+    <div v-if="props.isCreate" class="flex justify-end space-x-4 my-6">
+      <!-- <CustomButton
+        class="p-3 text-14"
+        type="button"
+        @click="saveChanges()"
+      >
+        <template v-slot:content>{{ $t("saveChanges") }}</template>
+      </CustomButton> -->
+      <GradientButton
+        class="p-3 text-14"
+        type="button"
+        @click="sendReport()"
+        :is-disabled="isSubmissionRequested"
+      >
+        <template v-slot:content>{{ $t("sendReport") }}</template>
+      </GradientButton>
+    </div>
+  </div>
+</template>
