@@ -2,13 +2,17 @@
   <div class="bg-gray-50 min-h-screen">
     <div class="flex flex-col px-12 pt-14">
       <div class="flex items-center mx-5 mb-6">
-        <button @click="$router.push({ name: 'my-vessels' })">
+        <router-link
+          :to="{
+            name: 'my-vessels',
+          }"
+        >
           <img
             src="@/assets/icons/Speed_Graph/back_arrow.svg"
             class="fill-blue float-left"
             type="button"
           />
-        </button>
+        </router-link>
         <span class="ml-2 text-20 text-blue-800 font-bold">{{
           $t("backToMyVessel")
         }}</span>
