@@ -3,7 +3,7 @@
     <div
       class="flex relative rounded-xl bg-white h-32 w-full shadow-md items-center"
     >
-      <div v-if="shipSuccess" class="flex flex-col">
+      <div v-if="!shipSuccess" class="flex flex-col">
         <div class="flex flex-row items-center justify-evenly p-5">
           <img
             src="@/assets/icons/Speed_Graph/ship_image.svg"
@@ -74,6 +74,7 @@
           </div>
         </div> -->
       </div>
+      <div v-else></div>
     </div>
     <div class="divide-y divide-solid w-full">
       <div>
@@ -83,7 +84,7 @@
               $t("estimatedArrivalTime")
             }}</span>
             <div
-              v-if="legsSuccess"
+              v-if="!legsSuccess"
               class="flex bg-gray-100 rounded-2xl py-1 px-3 ml-2"
             >
               <span
@@ -91,7 +92,9 @@
                 class="text-14 font-semibold text-gray-700"
                 >{{ new Date(portCalls[0].arrival_date).toUTCString() }}</span
               >
+              <span v-else></span>
             </div>
+            <div v-else></div>
           </div>
           <!-- <div
             class="hidden flex h-12 bg-gray-100 rounded-lg align-center p-px"
@@ -120,7 +123,7 @@
             </button>
           </div> -->
         </div>
-        <TableOverview v-if="statsSuccess" :stats="stats" />
+        <TableOverview v-if="!statsSuccess" :stats="stats" />
         <!-- <div class="flex flex-row mt-6">
           <SpeedSideNav
             :speed="speed"
@@ -137,7 +140,7 @@
           $t("portCalls")
         }}</span>
         <div class="flex flex-row">
-          <div v-if="legsSuccess" class="flex flex-col">
+          <div v-if="!legsSuccess" class="flex flex-col">
             <PortCard
               v-for="port in portCalls"
               :key="port.id"
@@ -148,6 +151,7 @@
               :arrivalTime="port.arrival_date"
             ></PortCard>
           </div>
+          <div v-else></div>
           <!-- <SpeedGraphReminders></SpeedGraphReminders> -->
         </div>
       </div>
@@ -165,12 +169,13 @@ const props = defineProps({
   vesselname: String,
   imo: String,
 });
-console.log("SpeedGraphLoads");
+
+console.log(props);
 const shipRef = constants.shipRefs;
 const store = useHQStore();
-const { isSuccess: shipSuccess, data: ship } = store.shipQuery(props.imo);
-const { isSuccess: legsSuccess, data: portCalls } = store.legsQuery(props.imo);
-const { isSuccess: statsSuccess, data: stats } = store.statsQuery(props.imo);
+const { isFetching: shipSuccess, data: ship } = store.shipQuery(props.imo);
+const { isFetching: legsSuccess, data: portCalls } = store.legsQuery(props.imo);
+const { isFetching: statsSuccess, data: stats } = store.statsQuery(props.imo);
 
 // Unused variables for CII/EEXI/message feature
 // const previousCIIGrade = "A";

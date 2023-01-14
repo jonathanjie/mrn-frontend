@@ -265,10 +265,7 @@
   >
     <img src="@/assets/icons/empty.svg" class="h-28 w-28" />
     <span class="text-lg font-bold text-gray-800 pt-3">{{
-      $t("noVoyageCreated")
-    }}</span>
-    <span class="text-14 text-gray-500">{{
-      $t("clickOnCreateNewVoyageAboveToBegin")
+      $t("noVesselCreated")
     }}</span>
   </div>
 </template>
