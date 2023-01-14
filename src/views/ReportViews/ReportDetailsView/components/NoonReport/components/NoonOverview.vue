@@ -111,7 +111,7 @@ const route_arrival_time_zone = computed(
       <div class="flex col-span-3 bg-gray-50">
         <select
           disabled
-          class="grow self-center p-3 text-14 focus:outline-0 text-gray-700"
+          class="grow self-center p-3 text-14 focus:outline-0 text-gray-700 bg-gray-50"
           v-model="reportingTimeZone"
         >
           <option selected disabled value="default">

@@ -38,10 +38,10 @@ const position = computed(() =>
       >
         {{ $t("timeZone") }}
       </div>
-      <div class="flex col-span-3 border-b">
+      <div class="flex col-span-3 border-b bg-gray-50">
         <select
           disabled
-          class="grow self-center p-3 text-14 focus:outline-0"
+          class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50"
           :class="
             reporting_time_zone === 'default'
               ? 'text-gray-400'
@@ -121,19 +121,19 @@ const position = computed(() =>
         @keypress="preventNaN($event, position.longDegree)"
         placeholder="000 (Degree)"
         disabled
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <input
         v-model="position.longMinutes"
         @keypress="preventNaN($event, position.longMinutes)"
         placeholder="000 (Minutes)"
         disabled
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <select
         disabled
         v-model="position.longDir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0"
+        class="col-span-3 p-3 text-14 border-l focus:outline-0 bg-gray-50"
         :class="
           position.longDir === 'default' ? 'text-gray-400' : 'text-gray-700'
         "
@@ -155,19 +155,19 @@ const position = computed(() =>
         @keypress="preventNaN($event, position.latDegree)"
         placeholder="000 (Degree)"
         disabled
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <input
         v-model="position.latMinutes"
         @keypress="preventNaN($event, position.latMinutes)"
         placeholder="000 (Minutes)"
         disabled
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <select
         disabled
         v-model="position.latDir"
-        class="col-span-3 p-3 text-14 border-l bg-white focus:outline-0 text-gray-700"
+        class="col-span-3 p-3 text-14 border-l bg-gray-50 focus:outline-0 text-gray-700 bg-gray-50"
       >
         <option selected disabled value="default">
           {{ $t("southAndNorth") }}

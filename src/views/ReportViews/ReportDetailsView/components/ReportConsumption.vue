@@ -37,7 +37,7 @@ const fuelMachineTypes = computed(() =>
     props.report.consumptionconditiondata.fueloildata_set[0].breakdown
   )
 );
-console.log("fuel machine types: ", fuelMachineTypes.value);
+// console.log("fuel machine types: ", fuelMachineTypes.value);
 
 // Fuel Consumption
 const fuelOilDataSet = computed(
@@ -47,10 +47,12 @@ const fuelOilDataSet = computed(
 const fuelOilDataCorrection = computed(() =>
   isFuelOilRemarkEnabled.value
     ? props.report.consumptionconditiondata.fueloildata_set.filter(
-        (fuelData) => fuelData.fueloildatacorrection != null
+        (fuelData) => fuelData.fueloildatacorrection !== null
       )[0]
     : null
 );
+
+console.log(fuelOilDataCorrection.value);
 
 // Lubricating Oil
 const lubricatingOilDataSet = computed(
@@ -60,10 +62,12 @@ const lubricatingOilDataSet = computed(
 const lubricatingOilDataCorrection = computed(() =>
   isLubricatingOilRemarkEnabled.value
     ? props.report.consumptionconditiondata.lubricatingoildata_set.filter(
-        (fuelData) => fuelData.lubricatingoildatacorrection != null
+        (fuelData) => fuelData.lubricatingoildatacorrection !== null
       )[0]
     : null
 );
+
+console.log("correction", JSON.stringify(lubricatingOilDataCorrection.value));
 // Freshwater Consumption
 const freshwaterConsumed = computed(
   () => props.report.consumptionconditiondata.freshwaterdata.consumed
@@ -89,27 +93,7 @@ const freshwaterRob = computed(
 );
 
 const store = useDepartureSBYReportStore();
-const {
-  fuelOils,
-  lubricatingOils,
-  machinery,
-  // fuel oil
-  // fuelOilTotalConsumptions: fuelOilTotalConsumptions,
-  // fuelOilRobs: fuelOilRobs,
-  // fuelOilBreakdowns: fuelOilBreakdowns,
-  // fuelOilDataCorrection: fuelOilDataCorrection,
-  // lubricating oil
-  // lubricatingOilBreakdowns: lubricatingOilBreakdowns,
-  // lubricatingOilRobs: lubricatingOilRobs,
-  // lubricatingOilDataCorrection: lubricatingOilDataCorrection,
-  // fresh water
-  //   freshwaterConsumed: freshwaterConsumed,
-  //   freshwaterGenerated: freshwaterGenerated,
-  //   freshwaterChange: freshwaterChange,
-  //   freshwaterReceiving: freshwaterReceiving,
-  //   freshwaterDischarging: freshwaterDischarging,
-  //   freshwaterRob: freshwaterRob,
-} = storeToRefs(store);
+const { fuelOils, lubricatingOils, machinery } = storeToRefs(store);
 
 const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 5);
 
@@ -249,13 +233,8 @@ console.log(machinery.value);
             </div>
             <select
               disabled
-              v-model="fuelOilDataCorrection.type"
-              class="col-span-4 p-3 border-l focus:outline-0"
-              :class="
-                fuelOilDataCorrection.type === 'default'
-                  ? 'text-gray-700'
-                  : 'text-gray-700'
-              "
+              v-model="fuelOilDataCorrection.fuel_oil_type"
+              class="col-span-4 p-3 border-l focus:outline-0 bg-gray-50 text-gray-700"
             >
               <option selected disabled value="default">
                 {{ $t("selectType") }}
@@ -271,10 +250,15 @@ console.log(machinery.value);
             <div class="flex col-span-4 p-3 pl-4 border-l bg-gray-50">
               <input
                 disabled
-                v-model="fuelOilDataCorrection.correction"
-                @keypress="preventNaN($event, fuelOilDataCorrection.correction)"
+                v-model="fuelOilDataCorrection.fueloildatacorrection.correction"
+                @keypress="
+                  preventNaN(
+                    $event,
+                    fuelOilDataCorrection.fueloildatacorrection.correction
+                  )
+                "
                 placeholder="00,000.00"
-                class="w-24 text-gray-700 focus:outline-0"
+                class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
               />
               <MiniUnitDisplay>MT</MiniUnitDisplay>
             </div>
@@ -284,7 +268,8 @@ console.log(machinery.value);
               {{ $t("remarks") }}
             </div>
             <textarea
-              v-model.trim="fuelOilDataCorrection.remarks"
+              disabled
+              v-model.trim="fuelOilDataCorrection.fueloildatacorrection.remarks"
               placeholder="Input description here"
               class="col-span-8 row-span-2 border-t border-l p-3 pl-4 bg-gray-50 text-gray-700 focus:outline-0"
             ></textarea>
@@ -401,13 +386,8 @@ console.log(machinery.value);
             </div>
             <select
               disabled
-              v-model="lubricatingOilDataCorrection.type"
-              class="col-span-6 p-3 border-l focus:outline-0"
-              :class="
-                lubricatingOilDataCorrection.type === 'default'
-                  ? 'text-gray-700'
-                  : 'text-gray-700'
-              "
+              v-model="lubricatingOilDataCorrection.lubricating_oil_type"
+              class="col-span-6 p-3 border-l focus:outline-0 bg-gray-50 text-gray-700"
             >
               <option selected disabled value="default">
                 {{ $t("selectType") }}
@@ -420,15 +400,22 @@ console.log(machinery.value);
                 {{ $t(lubricatingOil) }}
               </option>
             </select>
-            <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
+            <div class="flex col-span-6 p-3 pl-4 border-l bg-gray-50">
               <input
                 disabled
-                v-model="lubricatingOilDataCorrection.correction"
+                v-model="
+                  lubricatingOilDataCorrection.lubricatingoildatacorrection
+                    .correction
+                "
                 @keypress="
-                  preventNaN($event, lubricatingOilDataCorrection.correction)
+                  preventNaN(
+                    $event,
+                    lubricatingOilDataCorrection.lubricatingoildatacorrection
+                      .correction
+                  )
                 "
                 placeholder="00,000.00"
-                class="w-24 text-gray-700 focus:outline-0"
+                class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
               />
               <MiniUnitDisplay>MT</MiniUnitDisplay>
             </div>
@@ -438,9 +425,13 @@ console.log(machinery.value);
               {{ $t("remarks") }}
             </div>
             <textarea
-              v-model.trim="lubricatingOilDataCorrection.remarks"
+              disabled
+              v-model.trim="
+                lubricatingOilDataCorrection.lubricatingoildatacorrection
+                  .remarks
+              "
               :placeholder="$t('inputDescriptionHere')"
-              class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
+              class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-gray-50 text-gray-700 focus:outline-0"
             ></textarea>
           </div>
         </div>
