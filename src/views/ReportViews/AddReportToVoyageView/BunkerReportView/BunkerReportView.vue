@@ -126,6 +126,11 @@ const uploadFiles = (files) => {
 const sendReport = async () => {
   isSubmissionRequested.value = true;
 
+  let urls = [];
+  if (files.value.length) {
+    urls = await getPresignedUrlForFiles();
+  }
+
   const bunkeringPort = parsePortLocode({
     portCountry: portCountry.value,
     portName: portName.value,
@@ -182,16 +187,14 @@ const sendReport = async () => {
     method: "POST",
     body: JSON.stringify(REPORT),
   });
+  console.log(response.status);
 
-  const response = () => {
-    
-  }
-
-  let urls = [];
-  if (files.value.length) {
-    urls = await getPresignedUrlForFiles();
+  if (
+    files.value.length &&
+    (response.status == 200 || response.status == 201)
+  ) {
     // console.log(urls);
-
+    console.log("why am i here");
     for (const [index, file] of files.value.entries()) {
       file.presignedUrl = urls[index].presigned_url;
     }
