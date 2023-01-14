@@ -231,12 +231,9 @@
       v-else
       class="flex flex-col p-24 pb-52 m-12 justify-center items-center space-y-2 rounded-xl"
     >
-      <img src="@/assets/icons/empty.svg" class="h-28 w-28" />
-      <span class="text-lg font-bold text-gray-800 pt-3">{{
+      <img src="@/assets/icons/empty.svg" class="h-28 w-28" /
+      <span class="text-lg font-bold text-gray-800 pt-3">{
         $t("noVesselCreated")
-      }}</span>
-      <span class="text-14 text-gray-500">{{
-        $t("clickOnCreateNewVoyageAboveToBegin")
       }}</span>
     </div> -->
     <hr class="mt-6 w-full bg-gray-200" />
