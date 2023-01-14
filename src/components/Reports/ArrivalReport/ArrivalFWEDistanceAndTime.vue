@@ -10,7 +10,7 @@
       <div
         class="col-span-2 text-blue-700 p-3 border-l border-t bg-gray-50 text-14"
       >
-        {{ $t("time") }}
+        {{ $t("totalHours") }}
       </div>
       <div
         class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50"
