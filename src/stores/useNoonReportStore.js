@@ -39,7 +39,8 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     lubeOilRobs,
     freshwaterRob: freshwater_rob,
     timeSbyToCosp,
-    distanceSbyToCosp,
+    distanceEngSbyToCosp,
+    distanceObsSbyToCosp,
     revolutionCountSbyToCosp,
     timeStoppedAtSea,
   } = storeToRefs(detailsStore);
@@ -181,7 +182,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
       ? +(
           Number(distanceObservedTotal.value) +
           Number(distanceObsSinceNoon.value) -
-          Number(distanceSbyToCosp.value)
+          Number(distanceObsSbyToCosp.value)
         ).toFixed(2)
       : ""
   );
@@ -207,9 +208,8 @@ export const useNoonReportStore = defineStore("noonReport", () => {
       ? +(
           Number(distanceEngSinceNoon.value) +
           Number(distanceEngineTotal.value) -
-          Number(distanceSbyToCosp.value)
-        ) // TODO: change this to distance eng value returned by backend
-          .toFixed(0)
+          Number(distanceEngSbyToCosp.value)
+        ).toFixed(0)
       : ""
   );
   const distanceEngSbyToFwe = computed(() =>
@@ -232,7 +232,9 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   // Performance
   const speedSinceNoon = computed(() =>
     distanceObsSinceNoon.value && hoursSinceNoon.value
-      ? +(Number(distanceObsSinceNoon.value) / hoursSinceNoon.value).toFixed(2)
+      ? +(
+          Number(distanceObsSinceNoon.value) / Number(hoursSinceNoon.value)
+        ).toFixed(2)
       : ""
   );
   const rpmSinceNoon = computed(() =>
@@ -266,7 +268,8 @@ export const useNoonReportStore = defineStore("noonReport", () => {
       ? +(
           (Number(revolutionCount.value) -
             Number(revolutionCountSbyToCosp.value)) /
-          (Number(hoursCospToEosp.value) - Number(timeStoppedAtSea.value))
+          ((Number(hoursCospToEosp.value) - Number(timeStoppedAtSea.value)) *
+            60)
         ).toFixed(1)
       : ""
   );

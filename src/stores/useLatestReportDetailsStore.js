@@ -107,10 +107,16 @@ export const useLatestReportDetailsStore = defineStore(
         ? latestReportDetails.value.distance_to_go
         : ""
     );
-    const distanceSbyToCosp = computed(() =>
+    const distanceObsSbyToCosp = computed(() =>
       isSuccessLatestReportDetails.value &&
-      latestReportDetails.value.distance_standby_to_cosp
-        ? latestReportDetails.value.distance_standby_to_cosp
+      latestReportDetails.value.distance_obs_standby_to_cosp
+        ? latestReportDetails.value.distance_obs_standby_to_cosp
+        : ""
+    );
+    const distanceEngSbyToCosp = computed(() =>
+      isSuccessLatestReportDetails.value &&
+      latestReportDetails.value.distance_eng_standby_to_cosp
+        ? latestReportDetails.value.distance_eng_standby_to_cosp
         : ""
     );
     const timeSbyToCosp = computed(() =>
@@ -344,7 +350,8 @@ export const useLatestReportDetailsStore = defineStore(
       distanceEngineTotal,
       distanceObservedTotal,
       distanceToGo,
-      distanceSbyToCosp,
+      distanceObsSbyToCosp,
+      distanceEngSbyToCosp,
       freshwaterRob,
       fuelOilConsInHarbourPort,
       fuelOilConsPilotToPilot,

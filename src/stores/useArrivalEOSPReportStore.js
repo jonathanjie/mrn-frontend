@@ -43,6 +43,7 @@ export const useArrivalEOSPReportStore = defineStore(
       distanceSbyToCosp,
       revolutionCountSbyToCosp,
       timeStoppedAtSea,
+      distanceEngSbyToCosp,
     } = storeToRefs(detailsStore);
 
     // Overview
@@ -166,9 +167,8 @@ export const useArrivalEOSPReportStore = defineStore(
         ? +(
             Number(distanceEngSinceNoon.value) +
             Number(distanceEngineTotal.value) -
-            Number(distanceSbyToCosp.value)
-          ) // TODO: change this to distance eng value returned by backend
-            .toFixed(0)
+            Number(distanceEngSbyToCosp.value)
+          ).toFixed(0)
         : ""
     );
     const distanceEngSbyToFwe = computed(() =>
@@ -229,7 +229,8 @@ export const useArrivalEOSPReportStore = defineStore(
         ? +(
             (Number(revolutionCount.value) -
               Number(revolutionCountSbyToCosp.value)) /
-            (Number(hoursCospToEosp.value) - Number(timeStoppedAtSea.value))
+            ((Number(hoursCospToEosp.value) - Number(timeStoppedAtSea.value)) *
+              60)
           ).toFixed(1)
         : ""
     );
