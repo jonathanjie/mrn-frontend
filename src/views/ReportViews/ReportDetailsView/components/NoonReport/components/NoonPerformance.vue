@@ -49,7 +49,7 @@ const slipAverage = computed(() => props.report.performancedata.slip_average);
         <div class="col-span-2 text-blue-700 p-3 border-r border-b">
           {{ $t("speed") }}
         </div>
-        <div class="flex col-span-3 p-2 pl-4 border-b">
+        <div class="flex col-span-3 p-2 pl-4 border-b bg-gray-50">
           <input
             disabled
             v-model="speedSinceNoon"
@@ -59,7 +59,7 @@ const slipAverage = computed(() => props.report.performancedata.slip_average);
           />
           <MiniUnitDisplay>KNOTS</MiniUnitDisplay>
         </div>
-        <div class="col-span-2 text-blue-700 p-3 border-r border-b">
+        <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50">
           {{ $t("rpm") }}
         </div>
         <input
@@ -72,7 +72,7 @@ const slipAverage = computed(() => props.report.performancedata.slip_average);
         <div class="col-span-2 text-blue-700 p-3 border-r">
           {{ $t("slip") }}
         </div>
-        <div class="flex col-span-3 p-2 pl-4">
+        <div class="flex col-span-3 p-2 pl-4 bg-gray-50">
           <input
             disabled
             v-model="slipSinceNoon"
@@ -90,7 +90,7 @@ const slipAverage = computed(() => props.report.performancedata.slip_average);
         <div class="col-span-2 text-blue-700 p-3 border-r border-b">
           {{ $t("averageSpeed") }}
         </div>
-        <div class="flex col-span-3 p-2 pl-4 border-b">
+        <div class="flex col-span-3 p-2 pl-4 border-b bg-gray-50">
           <input
             disabled
             v-model="speedAverage"
@@ -113,7 +113,7 @@ const slipAverage = computed(() => props.report.performancedata.slip_average);
         <div class="col-span-2 text-blue-700 p-3 border-r">
           {{ $t("slip") }}
         </div>
-        <div class="flex col-span-3 p-2 pl-4">
+        <div class="flex col-span-3 p-2 pl-4 bg-gray-50">
           <input
             disabled
             v-model="slipAverage"

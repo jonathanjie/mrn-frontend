@@ -104,7 +104,7 @@
       <div class="grid grid-cols-5 border bg-gray-50 text-14 mt-5">
         <div class="col-span-2 text-blue-700 p-3">{{ $t("others") }}</div>
         <input
-          class="col-span-3 p-3 text-gray-700 border-l disabled:text-gray-400 disabled:bg-gray-50 focus:outline-0"
+          class="col-span-3 p-3 text-gray-700 border-l disabled:text-gray-500 disabled:bg-gray-50 focus:outline-0"
           :placeholder="$t('inputOtherPlannedOperation')"
           :disabled="!is_other_planned_operation_enabled"
           v-model="other_planned_operation"

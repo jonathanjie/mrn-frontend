@@ -18,8 +18,7 @@ const props = defineProps({
 
 const reportNum = computed(() => props.report.report_num);
 const legNum = computed(() => props.report.voyage_leg.leg_num);
-// TODO: switch to actual voyage number
-const voyageNum = computed(() => props.report.voyage_leg.leg_num);
+const voyageNum = computed(() => props.report.voyage_leg.voyage.voyage_num);
 // TODO: use actual backend loading conditions
 const loadingCondition = computed(() => "NIL");
 const reportingDateTime = computed(() => props.report.report_date);
@@ -77,8 +76,10 @@ const reportingTimeZone = computed(() => props.report.report_tz);
       </div>
       <div class="col-span-3 relative flex items-center">
         <DatePicker
+          disabled
           v-model="reportingDateTime"
-          class="grow"
+          class=""
+          input-class="col-span-3 text-gray-500 bg-gray-50 border-b"
           textInput
           :textInputOptions="textInputOptions"
           :format="format"
@@ -104,7 +105,8 @@ const reportingTimeZone = computed(() => props.report.report_tz);
       </div>
       <div class="flex col-span-3 bg-white min-w-fit">
         <select
-          class="grow self-center p-3 text-14 focus:outline-0"
+          disabled
+          class="grow self-center p-3 text-14 focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
           :class="
             reportingTimeZone === 'default' ? 'text-gray-400' : 'text-gray-700'
           "

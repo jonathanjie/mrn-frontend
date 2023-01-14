@@ -63,10 +63,10 @@ const revolution_count = computed(
         class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50"
       >
         <input
+          disabled
           v-model="hours_since_noon"
           @keypress="preventNaN($event, hours_since_noon)"
           placeholder="0"
-          disabled
           class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <MiniUnitDisplay>HRS</MiniUnitDisplay>
@@ -80,10 +80,10 @@ const revolution_count = computed(
         class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-y lg:border-b-0 bg-gray-50"
       >
         <input
+          disabled
           v-model="hours_total"
           @keypress="preventNaN($event, hours_total)"
           placeholder="0"
-          disabled
           class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <MiniUnitDisplay>HRS</MiniUnitDisplay>
@@ -100,10 +100,10 @@ const revolution_count = computed(
       >
         <input
           v-if="!edited"
+          disabled
           v-model="distance_to_go"
           @keypress="preventNaN($event, distance_to_go)"
           placeholder="0"
-          disabled
           class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <!-- <input
@@ -120,6 +120,7 @@ const revolution_count = computed(
           @click="toggle"
           class="ml-auto h-4 w-4 cursor-pointer"
         /> -->
+        <div class="ml-auto h-4 w-4"></div>
         <MiniUnitDisplay class="ml-2">NM</MiniUnitDisplay>
       </div>
       <div
@@ -130,7 +131,7 @@ const revolution_count = computed(
       <input
         v-model="remarks"
         :placeholder="$t('inputRemarks')"
-        :disabled="distanceToGoDisabled"
+        disabled
         class="col-span-6 lg:col-span-3 p-3 pl-4 border-x border-t text-14 text-gray-700 focus:outline-0"
         :class="distanceToGoDisabled ? 'bg-gray-50' : 'bg-white'"
       />
@@ -142,6 +143,7 @@ const revolution_count = computed(
       </div>
       <div class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t">
         <input
+          disabled
           v-model="distance_obs_since_noon"
           @keypress="preventNaN($event, distance_obs_since_noon)"
           placeholder="0"
@@ -158,10 +160,10 @@ const revolution_count = computed(
         class="flex col-span-6 lg:col-span-3 p-2 pl-4 border lg:border-b-0 bg-gray-50"
       >
         <input
+          disabled
           v-model="distance_obs_total"
           @keypress="preventNaN($event, distance_obs_total)"
           placeholder="0"
-          disabled
           class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <MiniUnitDisplay>NM</MiniUnitDisplay>
@@ -205,6 +207,7 @@ const revolution_count = computed(
         {{ $t("revolutionCounter") }}
       </div>
       <input
+        disabled
         v-model="revolution_count"
         @keypress="preventNaN($event, revolution_count)"
         placeholder="0"

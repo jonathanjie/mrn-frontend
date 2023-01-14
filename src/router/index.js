@@ -9,7 +9,7 @@ import AddReportToVoyageView from "@/views/ReportViews/AddReportToVoyageView/Add
 import NoonReportView from "@/views/ReportViews/AddReportToVoyageView/NoonReportView/NoonReportView.vue";
 import ArrivalReportView from "@/views/ReportViews/AddReportToVoyageView/ArrivalReportView/ArrivalReportView.vue";
 import DepartureReportView from "@/views/ReportViews/AddReportToVoyageView/DepartureReportView/DepartureReportView.vue";
-import BunkerReportView from "@/views/ReportViews/AddReportToVoyageView/BunkerReportView/BunkerReportView.vue";
+import BunkerReportViewWrapper from "@/views/ReportViews/AddReportToVoyageView/BunkerReportView/BunkerReportViewWrapper.vue";
 import HarbourPortReportView from "@/views/ReportViews/AddReportToVoyageView/HarbourPortReportView/HarbourPortReportView.vue";
 import ReportDetailsViewWrapper from "@/views/ReportViews/ReportDetailsView/ReportDetailsViewWrapper.vue";
 
@@ -112,7 +112,7 @@ const routes = [
       {
         path: "bunker-delivery",
         name: "bunker-delivery",
-        component: BunkerReportView,
+        component: BunkerReportViewWrapper,
       },
     ],
     beforeEnter: authGuard,

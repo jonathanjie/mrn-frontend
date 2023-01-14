@@ -182,10 +182,13 @@ export const useDepartureCOSPReportStore = defineStore(
     const fuelOilBreakdowns = reactive({});
     for (const fuelOil of fuelOils.value) {
       fuelOilBreakdowns[fuelOil] = {};
-      fuelOilBreakdowns[fuelOil][Machinery.ME] = "";
-      fuelOilBreakdowns[fuelOil][Machinery.GE] = "";
-      fuelOilBreakdowns[fuelOil][Machinery.IGG] = "";
-      fuelOilBreakdowns[fuelOil][Machinery.BLR] = "";
+      for (const machine of machinery.value) {
+        fuelOilBreakdowns[fuelOil][machine] = "";
+      }
+      // fuelOilBreakdowns[fuelOil][Machinery.ME] = "";
+      // fuelOilBreakdowns[fuelOil][Machinery.GE] = "";
+      // fuelOilBreakdowns[fuelOil][Machinery.IGG] = "";
+      // fuelOilBreakdowns[fuelOil][Machinery.BLR] = "";
     }
     const fuelOilTotalConsumptions = computed(() => {
       let rtn = {};

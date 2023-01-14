@@ -28,7 +28,7 @@ const departureDateTime = computed(
 );
 
 const arrivalPortCountry = computed(
-  () => props.report.reportroute?.arrival_port.split(" ")[1] ?? ""
+  () => props.report.reportroute?.arrival_port.split(" ")[0] ?? ""
 );
 const arrivalPortName = computed(
   () => props.report.reportroute?.arrival_port.split(" ")[1] ?? ""
@@ -61,12 +61,12 @@ const {
         </div>
         <input
           disabled
-          class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b"
+          class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b disabled:text-gray-500 disabled:bg-gray-50"
           v-model="departurePortCountry"
         />
         <input
           disabled
-          class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l"
+          class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l disabled:text-gray-500 disabled:bg-gray-50"
           v-model="departurePortName"
         />
       </div>
@@ -108,12 +108,12 @@ const {
         </div>
         <input
           disabled
-          class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b"
+          class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b disabled:text-gray-500 disabled:bg-gray-50"
           v-model="arrivalPortCountry"
         />
         <input
           disabled
-          class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l"
+          class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l disabled:text-gray-500 disabled:bg-gray-50"
           v-model="arrivalPortName"
         />
       </div>
@@ -154,7 +154,7 @@ const {
         <div class="col-span-2 text-blue-700 p-3">{{ $t("others") }}</div>
         <input
           disabled
-          class="col-span-3 p-3 text-gray-700 border-l disabled:text-gray-400 disabled:bg-gray-50 focus:outline-0"
+          class="col-span-3 p-3 text-gray-700 border-l disabled:text-gray-500 disabled:bg-gray-50 focus:outline-0"
           :placeholder="$t('inputOtherPlannedOperation')"
           v-model="other_planned_operation"
         />

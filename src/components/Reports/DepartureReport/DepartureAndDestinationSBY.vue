@@ -102,14 +102,14 @@
           @input="destination_port_country = $event.target.value.toUpperCase()"
           :placeholder="$t('inputLocode2')"
           :disabled="!is_destination_enabled"
-          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 disabled:bg-gray-50 disabled:text-gray-400"
+          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 disabled:bg-gray-50 disabled:text-gray-500"
         />
         <input
           :value="destination_port_name.toUpperCase()"
           @input="destination_port_name = $event.target.value.toUpperCase()"
           :placeholder="$t('inputLocode3')"
           :disabled="!is_destination_enabled"
-          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 disabled:bg-gray-50 disabled:text-gray-400"
+          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 disabled:bg-gray-50 disabled:text-gray-500"
         />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14">

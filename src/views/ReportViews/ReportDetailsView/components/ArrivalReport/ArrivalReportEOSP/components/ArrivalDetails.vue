@@ -19,8 +19,6 @@ const props = defineProps({
   },
 });
 
-console.log("wtf", props.report);
-
 const reportingTimeZone = computed(() => props.report.report_tz);
 const reportingDateTime = computed(() => props.report.report_date);
 
@@ -104,19 +102,19 @@ console.log("datetime: ", reportingDateTime);
         v-model="position.latDegree"
         @keypress="preventNaN($event, position.latDegree)"
         placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
       />
       <input
         disabled
         v-model="position.latMinutes"
         @keypress="preventNaN($event, position.latMinutes)"
         placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
       />
       <select
         disabled
         v-model="position.latDir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0 focus:outline-0"
+        class="col-span-3 p-3 text-14 border-l focus:outline-0 focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
         :class="
           position.latDir === 'default' ? 'text-gray-400' : 'text-gray-700'
         "
@@ -138,19 +136,19 @@ console.log("datetime: ", reportingDateTime);
         v-model="position.longDegree"
         @keypress="preventNaN($event, position.longDegree)"
         placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
       />
       <input
         disabled
         v-model="position.longMinutes"
         @keypress="preventNaN($event, position.longMinutes)"
         placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
       />
       <select
         disabled
         v-model="position.longDir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0"
+        class="col-span-3 p-3 text-14 border-l focus:outline-0 disabled:text-gray-500 disabled:bg-gray-50"
         :class="
           position.longDir === 'default' ? 'text-gray-400' : 'text-gray-700'
         "

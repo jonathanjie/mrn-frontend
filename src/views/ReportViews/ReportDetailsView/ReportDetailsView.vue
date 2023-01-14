@@ -20,7 +20,7 @@ const props = defineProps({
 const store = useReportDetailsStore();
 const auth = useAuthStore();
 const { getReportQuery } = store;
-
+const authStore = useAuthStore;
 // API calls
 // getReport(props.uuid);
 
@@ -51,8 +51,8 @@ const handleBack = () => {
           type="button"
         />
       </button>
-      <div>REPORT TYPE: {{ report.report_type }}</div>
-      <div>
+      <div class="mt-5">REPORT TYPE: {{ report.report_type }}</div>
+      <div class="mb-5">
         <div v-if="report.report_type == Report.type.NOON">
           <NoonReportView :report="report" />
         </div>

@@ -3,6 +3,7 @@ import { computed } from "vue";
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { parsePositionFromString } from "@/utils/helpers.js";
+
 const props = defineProps({
   report: {
     type: Object,
@@ -10,6 +11,9 @@ const props = defineProps({
   },
 });
 
+const isActive = computed(() =>
+  props.report.arrivalpilotstation ? true : false
+);
 const pilotArrName = computed(() =>
   props.report.arrivalpilotstation === null
     ? ""
@@ -43,9 +47,31 @@ const position = computed(() =>
 </script>
 
 <template>
-  <div class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4 shadow-card">
-    <div class="col-span-2 flex items-center">
+  <div
+    v-if="!isActive"
+    @click="isActive = !isActive"
+    class="flex items-center bg-white rounded-lg p-5 shadow-card cursor-pointer"
+  >
+    <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
+    <img
+      src="@/assets/icons/checkboxes/unchecked_square.svg"
+      class="mr-2 h-5 w-5"
+    />
+    <span class="text-blue-700 text-16">{{ $t("pilotStationArrival") }}</span>
+  </div>
+  <div
+    v-else
+    class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4 shadow-card"
+  >
+    <div
+      class="col-span-2 flex items-center cursor-pointer"
+      @click="isActive = !isActive"
+    >
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
+      <img
+        src="@/assets/icons/checkboxes/checked_square.svg"
+        class="mr-2 h-5 w-5"
+      />
       <span class="text-blue-700 text-16">
         {{ $t("pilotStationArrival") }}
       </span>
@@ -55,26 +81,37 @@ const position = computed(() =>
         {{ $t("name") }}
       </div>
       <input
-        v-model="pilotArrName"
+        v-model="pilot_arr_name"
         :placeholder="$t('inputName')"
         class="col-span-3 p-3 pl-4 border-y border-r bg-white text-14 text-gray-700 focus:outline-0"
       />
-      <div class="col-span-2 text-blue-700 p-3 border-x bg-gray-50 text-14">
+      <div
+        class="col-span-2 text-blue-700 p-3 border-x border-b xl:border-b-0 bg-gray-50 text-14"
+      >
         {{ $t("requiredTimeOfArrival") }}
       </div>
-      <DatePicker
-        v-model="pilotArrDate"
-        class="col-span-3 border-r"
-        textInput
-        :textInputOptions="textInputOptions"
-        :format="format"
-        :modelValue="string"
-        :placeholder="$t('pleaseSelectDateAndTime')"
+      <div
+        class="col-span-3 relative flex items-center border-r border-b xl:border-b-0"
       >
-        <template #input-icon>
-          <img src="" />
-        </template>
-      </DatePicker>
+        <DatePicker
+          v-model="pilot_arr_date_time"
+          class="grow"
+          textInput
+          :textInputOptions="textInputOptions"
+          :format="format"
+          :modelValue="string"
+          :placeholder="$t('selectDateAndTime')"
+        >
+          <template #input-icon>
+            <img src="" />
+          </template>
+        </DatePicker>
+        <MiniUnitDisplay
+          class="absolute right-0 min-w-fit"
+          :class="pilot_arr_date_time ? 'mr-9' : 'mr-2'"
+          >{{ pilot_arr_date_time_utc }}</MiniUnitDisplay
+        >
+      </div>
       <input
         class="hidden xl:block bg-white col-span-5 p-3 border-t"
         disabled
@@ -92,8 +129,8 @@ const position = computed(() =>
       </div>
       <div class="flex col-span-5 p-2 pl-4 border-b border-x bg-white">
         <input
-          v-model="pilotArrDraftFwd"
-          @keypress="preventNaN($event, pilotArrDraftFwd)"
+          v-model="pilot_arr_draft_fwd"
+          @keypress="preventNaN($event, pilot_arr_draft_fwd)"
           placeholder="00.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -104,8 +141,8 @@ const position = computed(() =>
       </div>
       <div class="flex col-span-5 p-2 pl-4 border-b border-x bg-white">
         <input
-          v-model="pilotArrDraftMid"
-          @keypress="preventNaN($event, pilotArrDraftMid)"
+          v-model="pilot_arr_draft_mid"
+          @keypress="preventNaN($event, pilot_arr_draft_mid)"
           placeholder="00.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -116,8 +153,8 @@ const position = computed(() =>
       </div>
       <div class="flex col-span-5 p-2 pl-4 border-x bg-white">
         <input
-          v-model="pilotArrDraftAft"
-          @keypress="preventNaN($event, pilotArrDraftAft)"
+          v-model="pilot_arr_draft_aft"
+          @keypress="preventNaN($event, pilot_arr_draft_aft)"
           placeholder="00.00"
           class="w-24 text-gray-700 focus:outline-0"
         />
@@ -128,56 +165,25 @@ const position = computed(() =>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
       <span
         class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
-        >{{ $t("latitude") }}</span
-      >
-      <input
-        v-model="position.latDegree"
-        @keypress="preventNaN($event, position.latDegree)"
-        placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
-      />
-      <input
-        v-model="position.latMinutes"
-        @keypress="preventNaN($event, position.latMinutes)"
-        placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
-      />
-      <select
-        v-model="position.latDir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0"
-        :class="
-          position.latDir === 'default' ? 'text-gray-400' : 'text-gray-700'
-        "
-      >
-        <option selected disabled value="default">
-          {{ $t("southAndNorth") }}
-        </option>
-        <option value="S">{{ $t("south") }}</option>
-        <option value="N">{{ $t("north") }}</option>
-      </select>
-    </div>
-    <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-      <span
-        class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
         >{{ $t("longitude") }}</span
       >
       <input
-        v-model="position.longDegree"
-        @keypress="preventNaN($event, position.longDegree)"
+        v-model="pilot_arr_long_degree"
+        @keypress="preventNaN($event, pilot_arr_long_degree)"
         placeholder="000 (Degree)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="position.longMinutes"
-        @keypress="preventNaN($event, position.longMinutes)"
+        v-model="pilot_arr_long_minute"
+        @keypress="preventNaN($event, pilot_arr_long_minute)"
         placeholder="000 (Minutes)"
         class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
-        v-model="position.longDir"
+        v-model="pilot_arr_long_dir"
         class="col-span-3 p-3 text-14 border-l focus:outline-0"
         :class="
-          position.longDir === 'default' ? 'text-gray-400' : 'text-gray-700'
+          pilot_arr_long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
         "
       >
         <option selected disabled value="default">
@@ -185,6 +191,37 @@ const position = computed(() =>
         </option>
         <option value="E">{{ $t("east") }}</option>
         <option value="W">{{ $t("west") }}</option>
+      </select>
+    </div>
+    <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
+      <span
+        class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
+        >{{ $t("latitude") }}</span
+      >
+      <input
+        v-model="pilot_arr_lat_degree"
+        @keypress="preventNaN($event, pilot_arr_lat_degree)"
+        placeholder="000 (Degree)"
+        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+      />
+      <input
+        v-model="pilot_arr_lat_minute"
+        @keypress="preventNaN($event, pilot_arr_lat_minute)"
+        placeholder="000 (Minutes)"
+        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+      />
+      <select
+        v-model="pilot_arr_lat_dir"
+        class="col-span-3 p-3 text-14 border-l focus:outline-0"
+        :class="
+          pilot_arr_lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
+        "
+      >
+        <option selected disabled value="default">
+          {{ $t("southAndNorth") }}
+        </option>
+        <option value="S">{{ $t("south") }}</option>
+        <option value="N">{{ $t("north") }}</option>
       </select>
     </div>
   </div>
