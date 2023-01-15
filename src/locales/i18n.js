@@ -67,6 +67,7 @@ const i18n = createI18n({
       sailingPlanPilotToPilot: "Sailing Plan (Pilot to Pilot)",
       bulkCarrier: "Bulk Carrier",
       bunkerDelivery: "Bunker Delivery",
+      bunkerDeliveryNote: "Bunker Delivery Note",
       bunkeringDebunkering: "Bunkering/De-bunkering",
       bunkeringPort: "Bunkering Port",
       cancel: "Cancel",
