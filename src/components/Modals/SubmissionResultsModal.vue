@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      v-if="errorMessage"
+      v-if="isSubmissionResponse"
       class="bg-slate-400 overflow-auto fixed inset-0 z-50 justify-center items-center flex"
     >
       <div
@@ -114,8 +114,12 @@ import { ErrorFieldsToDisplay } from "@/constants";
 const router = useRouter();
 
 const submissionStatusStore = useSubmissionStatusStore();
-const { isSubmissionRequested, isSubmissionSuccessful, errorMessage } =
-  storeToRefs(submissionStatusStore);
+const {
+  isSubmissionRequested,
+  isSubmissionSuccessful,
+  isSubmissionResponse,
+  errorMessage,
+} = storeToRefs(submissionStatusStore);
 
 const emit = defineEmits(["close-modal"]);
 
@@ -128,5 +132,6 @@ const returnToVesselOverview = () => {
 const returnToReport = () => {
   emit("close-modal");
   isSubmissionRequested.value = false;
+  isSubmissionResponse.value = false;
 };
 </script>
