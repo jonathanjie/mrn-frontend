@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="props.header === 'Speed' && props.values != undefined"
-    class="grid w-full rounded-lg w-full border mb-3"
+    class="grid w-full rounded-lg w-full mb-3"
     :class="gridCol"
   >
     <!-- Table header -->
@@ -11,13 +11,13 @@
       <span class="text-14 font-bold text-gray-800">{{ props.header }}</span>
     </div>
     <!-- Values -->
-    <div v-for="(value, index) in props.values">
+    <div v-for="(value, index) in props.values" :key="value.id">
       <div
         class="flex px-3.5 py-3 justify-center"
         :class="
           index === props.values.length - 1
             ? 'bg-yellow-50 border border-yellow-200 rounded-r-lg'
-            : 'border-l border-t border-gray-200'
+            : 'border-l border-y border-gray-200'
         "
       >
         <span class="text-14 font-semibold text-gray-800">{{ value }}</span>
@@ -26,41 +26,41 @@
   </div>
   <div
     v-else-if="props.header === 'Date' && props.values != undefined"
-    class="grid grid-rows-2 w-full rounded-lg w-full border mb-3"
+    class="grid grid-rows-2 w-full rounded-lg w-full mb-3"
     :class="gridCol"
   >
     <!-- Table header -->
     <div
-      class="flex px-3.5 py-3 bg-sysblue-25 rounded-tl-lg border-y border-l border-blue-200 col-span-2 items-center"
+      class="flex px-3.5 py-3 bg-sysblue-25 border-l border-y rounded-tl-lg col-span-2 items-center"
     >
       <span class="text-14 font-bold text-gray-800">{{ props.header }}</span>
     </div>
-    <div v-for="(value, index) in props.values">
+    <div v-for="(value, index) in props.values" :key="value.id">
       <div
         class="flex px-3.5 py-3 justify-center"
         :class="
           index === props.values.length - 1
-            ? 'bg-yellow-50 border border-yellow-200 rounded-r-lg'
-            : 'border-l border-t border-gray-200'
+            ? 'bg-yellow-50 border-t border-x border-yellow-200 rounded-tr-lg'
+            : 'border-t border-l border-gray-200'
         "
       >
         <span class="text-14 font-semibold text-gray-800">{{ value }}</span>
       </div>
     </div>
     <div
-      class="flex px-3.5 py-3 bg-sysblue-25 rounded-bl-lg border-y border-l border-blue-200 col-span-2 items-center"
+      class="flex px-3.5 py-3 bg-sysblue-25 border-b border-l rounded-bl-lg border-blue-200 col-span-2 items-center"
     >
       <span class="text-14 font-bold text-gray-800">{{
         $t("reportType")
       }}</span>
     </div>
-    <div v-for="(value, index) in props.reportType">
+    <div v-for="(value, index) in props.reportType" :key="value.id">
       <div
         class="flex px-3.5 py-3 justify-center"
         :class="
           index === props.reportType.length - 1
-            ? 'bg-yellow-50 border border-yellow-200 rounded-r-lg'
-            : 'border-l border-t border-gray-200'
+            ? 'bg-yellow-50 border-x border-y border-yellow-200 rounded-br-lg'
+            : 'border-l border-y border-gray-200'
         "
       >
         <img
@@ -96,7 +96,7 @@
   </div>
   <div
     v-else-if="row1 != undefined && row2 != undefined"
-    class="grid grid-rows-2 w-full rounded-lg w-full border mb-3"
+    class="grid grid-rows-2 w-full rounded-lg w-full mb-3"
     :class="gridCol"
   >
     <!-- Table header -->
@@ -182,8 +182,8 @@ const reportTypes = {
   NNPO: "Noon in Port",
 };
 
-let row1 = props.header === "Distance" ? props.distanceToGo : undefined;
-let row2 = props.header === "Distance" ? props.distanceOBS : undefined;
+let row1 = props.header === "Distance" ? props.distanceOBS : undefined;
+let row2 = props.header === "Distance" ? props.distanceToGo : undefined;
 
 if (props.fuelFoc !== undefined) {
   console.log(props.fuelFoc);
