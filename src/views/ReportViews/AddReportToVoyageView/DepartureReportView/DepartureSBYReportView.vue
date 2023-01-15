@@ -260,7 +260,7 @@ const sendReport = async () => {
     // can change the above to null once the database is updated
   };
 
-  console.log("data: ", REPORT);
+  // console.log("data: ", REPORT);
 
   isSubmissionModalVisible.value = true;
   const response = await fetch(`${UrlDomain.DEV}/marinanet/reports/`, {
@@ -274,8 +274,8 @@ const sendReport = async () => {
 
   try {
     const data = await response.json();
-    console.log(response);
-    console.log(data);
+    // console.log(response);
+    // console.log(data);
 
     if (response.ok) {
       isSubmissionSuccessful.value = true;
@@ -292,7 +292,7 @@ const sendReport = async () => {
     };
     // isSubmissionModalVisible.value = true;
   }
-  isSubmissionResponse.value=true
+  isSubmissionResponse.value = true;
 };
 </script>
 

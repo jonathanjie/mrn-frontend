@@ -64,5 +64,5 @@ defineProps({
   scrubber: String,
 });
 
-console.log("Card details was opened");
+// console.log("Card details was opened");
 </script>

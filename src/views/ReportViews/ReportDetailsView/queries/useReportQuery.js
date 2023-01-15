@@ -9,7 +9,7 @@ export const useReportQuery = (uuid) => {
       axios
         .get(`${UrlDomain.DEV}/marinanet/reports/${uuid}/`)
         .then((response) => {
-          console.log("report view", response.data);
+          // console.log("report view", response.data);
           return response.data;
         })
         .catch((error) => {

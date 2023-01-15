@@ -18,6 +18,7 @@ const router = useRouter();
 const auth = useAuthStore();
 const latestReportDetailsStore = useLatestReportDetailsStore();
 const { refetchLatestReportDetails } = latestReportDetailsStore;
+const { departurePort, arrivalPort } = storeToRefs(latestReportDetailsStore);
 const voyageStore = useVoyageStore();
 const { voyageLegs: storedVoyageLegs } = storeToRefs(voyageStore);
 
@@ -33,7 +34,6 @@ const props = defineProps({
     default: false,
   },
 });
-// console.log("voyage!!", props.voyage);
 
 const voyageLegs = computed(() => props.voyage.voyage_legs);
 const reports = computed(() =>
@@ -42,18 +42,22 @@ const reports = computed(() =>
 
 const lastReportIndex = reports.value.length - 1;
 const lastLegIndex = props.voyage.voyage_legs.length - 1;
-// console.log("reports ", reports.value);
 
 const lastLegNo = props.voyage.voyage_legs[lastLegIndex]?.leg_num;
 const lastLegUuid = props.voyage.voyage_legs[lastLegIndex]?.uuid;
-const start = reports.value[0]?.departure_port || "N/A";
+const start = reports.value[0]?.departure_port || departurePort.value || "N/A";
 const mid = "At Sea";
-const dest = reports.value[lastReportIndex]?.arrival_port || "N/A";
+const dest =
+  reports.value[lastReportIndex]?.arrival_port || arrivalPort.value || "N/A";
 
 let lastReportNo = {};
 for (let report of reports.value) {
-  lastReportNo[report.report_type] = report.report_num;
+  lastReportNo[report.report_type] = Math.max(
+    report.report_num,
+    lastReportNo[report.report_type] || 0
+  );
 }
+
 const voyageDetails = JSON.stringify({
   voyage_uuid: props.voyage.uuid,
   leg_uuid: lastLegUuid || "",
@@ -196,7 +200,7 @@ const handleClick = async () => {
           :arrival="report.arrival_port || '-'"
           :loading_condition="
             voyage.voyage_legs.filter((leg) => leg.id === report.voyage_leg)[0]
-              .load_condition
+              .load_condition || '-'
           "
           :date_of_report="readableUTCDate(new Date(report.report_date))"
         ></ReportCard>

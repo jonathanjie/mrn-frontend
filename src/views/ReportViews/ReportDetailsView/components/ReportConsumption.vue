@@ -87,7 +87,7 @@ const freshwaterChange = computed(
 const freshwaterRob = computed(
   () => props.report.consumptionconditiondata.freshwaterdata.rob
 );
-console.log(fuelMachineTypes.value.length);
+// console.log(fuelMachineTypes.value.length);
 
 const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 5);
 </script>

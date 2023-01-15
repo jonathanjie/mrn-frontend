@@ -293,8 +293,7 @@ const sendReport = async () => {
       consumption_type: TotalConsumptionType.PORT_TO_PORT,
     },
   };
-
-  console.log("data: ", REPORT);
+  // console.log("data: ", REPORT);
 
   isSubmissionModalVisible.value = true;
   const response = await fetch(`${UrlDomain.DEV}/marinanet/reports/`, {
@@ -308,8 +307,8 @@ const sendReport = async () => {
 
   try {
     const data = await response.json();
-    console.log(response);
-    console.log(data);
+    // console.log(response);
+    // console.log(data);
 
     if (response.ok) {
       isSubmissionSuccessful.value = true;

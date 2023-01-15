@@ -14,7 +14,7 @@
     </div>
     <div v-else-if="isSuccess && voyages.length !== 0" class="contents">
       <VoyageCard
-        v-for="(voyage, index) in orderedVoyages"
+        v-for="(voyage, index) in voyages"
         :key="index"
         :voyage="voyage"
         :is-initially-open="index == 0"
@@ -68,10 +68,10 @@ const {
 } = shipStore.getAllReports(props.imo);
 const { lastVoyageNo, nextVoyageNo } = storeToRefs(shipStore);
 
-// Temp fix until backend returns voyages in the right order; can delete once backend is updated
-const orderedVoyages = computed(() => {
-  return structuredClone(voyages.value);
-});
+// // Temp fix until backend returns voyages in the right order; can delete once backend is updated
+// const orderedVoyages = computed(() => {
+//   return structuredClone(voyages.value);
+// });
 
 // TODO: remove after MVP demo
 const isAddVoyageLoading = ref(false);
@@ -111,7 +111,7 @@ const addVoyage = async () => {
     await axios
       .post(`${UrlDomain.DEV}/marinanet/voyages/`, voyageData)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         refetch.value();
         isAddVoyageLoading.value = false;
       })

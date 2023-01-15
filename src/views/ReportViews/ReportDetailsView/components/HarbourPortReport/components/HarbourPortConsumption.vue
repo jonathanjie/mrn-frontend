@@ -74,7 +74,7 @@ const fuelOilDataCorrection = computed(() =>
       )[0]
     : null
 );
-console.log("fuel correction value: ", fuelOilDataCorrection.value);
+// console.log("fuel correction value: ", fuelOilDataCorrection.value);
 // Lubricating Oil Consumption
 const meCylinderBreakdown = computed(
   () =>
