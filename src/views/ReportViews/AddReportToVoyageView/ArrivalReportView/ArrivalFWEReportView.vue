@@ -276,7 +276,13 @@ const sendReport = async () => {
     },
     totalconsumptiondata: {
       fueloiltotalconsumptiondata_set: fuelOilDataSum,
-      freshwatertotalconsumptiondata: null,
+      freshwatertotalconsumptiondata: {
+        consumed: 0,
+        generated: 0,
+        received: 0,
+        discharged: 0,
+        rob: 0,
+      },
       consumption_type: TotalConsumptionType.PORT_TO_PORT,
     },
   };

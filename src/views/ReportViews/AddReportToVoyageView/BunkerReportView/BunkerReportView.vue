@@ -11,7 +11,6 @@ import { useVoyageStore } from "@/stores/useVoyageStore";
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
 import { Report } from "@/constants";
 import { parsePortLocode } from "@/utils/helpers";
-import axios from "axios";
 import { UrlDomain } from "@/constants";
 import { ref } from "vue";
 
@@ -77,6 +76,13 @@ const {
 
 const isUploadToS3Successful = ref(true);
 
+const getFileNames = () => {
+  console.log(
+    files.value.map((file) => file.name + "." + file.type.split("/")[1])
+  );
+  return files.value.map((file) => file.name + "." + file.type.split("/")[1]);
+};
+
 const getPresignedUrlForFiles = async () => {
   const response = await fetch(
     "https://majnalcwgg5jdnfpr2zdxvqubq0thpjz.lambda-url.ap-southeast-1.on.aws/",
@@ -86,9 +92,8 @@ const getPresignedUrlForFiles = async () => {
       },
       method: "POST",
       body: JSON.stringify({
-        file_prefix: `${company_uuid.value}/${voyage_uuid.value}/bdn`,
-        file_count: files.value.length,
-        file_extension: files.value[0].type.split("/")[1],
+        file_directory: `${company_uuid.value}/${voyage_uuid.value}/bdn`,
+        filenames: getFileNames(),
       }),
     }
   );
@@ -147,6 +152,7 @@ const sendReport = async () => {
       uuid: legUuid.value,
     },
     bdndata: {
+      is_before_arrival: isBeforeArrival.value,
       bunkering_port: bunkeringPort,
       bunkering_date: reportingDateTimeUTC.value,
       bdn_file: files.value.length
