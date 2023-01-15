@@ -544,6 +544,7 @@ const i18n = createI18n({
       lpgp: "LPG-Propane",
       lpgb: "LPG-Butane",
       made: "Made",
+      unauthorizedAccess: "Unauthorized Access",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser

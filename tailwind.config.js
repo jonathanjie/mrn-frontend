@@ -116,6 +116,7 @@ module.exports = {
       16: ["16px", "24px"],
       18: ["18px", "26px"],
       20: ["20px", "30px"], // huge
+      30: ["30px", "28px"],
     },
   },
   variants: {

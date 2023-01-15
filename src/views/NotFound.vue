@@ -1,7 +1,40 @@
 <template>
-  <div class="w-full bg-gray">
-    <h1 class="text-20 font-bold text-white">FORBIDDEN PAGE</h1>
+  <div
+    class="flex flex-col p-24 pb-52 m-12 justify-center items-center space-y-2 rounded-xl"
+  >
+    <img src="@/assets/icons/unauthorized_logo.svg" class="h-75 w-75" />
+    <span class="text-30 font-bold text-gray-700 pt-3">{{
+      $t("unauthorizedAccess")
+    }}</span>
+    <span class="text-18 text-gray-700"
+      >Sorry, the page you are looking for is not publicly available.</span
+    >
+    <GradientButton
+      class="px-3.5 py-3 text-16 mt-6"
+      type="button"
+      @click="home()"
+    >
+      <template v-slot:content>Back to Home</template>></GradientButton
+    >
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import GradientButton from "@/components/Buttons/GradientButton.vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/useAuthStore";
+const router = useRouter();
+
+const home = () => {
+  if (manager) {
+    router.push({ path: "/my-vessels" });
+  } else {
+    // router.push({
+    //   path: `/vessels/${props.vesselname}/${props.imo}/overview`,
+    // });
+  }
+};
+
+const auth = useAuthStore();
+const manager = auth.role === "manager";
+</script>

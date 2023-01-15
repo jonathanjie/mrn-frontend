@@ -300,16 +300,14 @@ const data = props.stats;
 //     ],
 //   },
 // ];
-
 const latestData = data[0];
-
-const dateList = [];
-const reportType = [];
-const speedList = [];
-const distanceOBSList = [];
-const distanceToGoList = [];
-const fuelObject = {};
-for (let report in data) {
+let dateList = [];
+let reportType = [];
+let speedList = [];
+let distanceOBSList = [];
+let distanceToGoList = [];
+let fuelObject = {};
+for (let report in data.reverse()) {
   let obj = data[report];
   let date = new Date(obj.report_date).toDateString().split(" ");
   dateList.push(date[2] + " " + date[1]);
@@ -344,7 +342,6 @@ for (let report in data) {
       tempCount = fuelObject[fuel_item.fuel_oil_type]["rob"].length;
     }
   }
-  console.log(tempCount);
   for (let tempFuel in fuelObject) {
     if (fuelObject[tempFuel].foc.length < tempCount) {
       fuelObject[tempFuel].foc.push("0");
@@ -352,6 +349,12 @@ for (let report in data) {
     }
   }
 }
+
+dateList = dateList.reverse();
+reportType = reportType.reverse();
+speedList = speedList.reverse();
+distanceOBSList = distanceOBSList.reverse();
+distanceToGoList = distanceToGoList.reverse();
 
 for (let fuel in fuelObject) {
   fuelObject[fuel].foc = fuelObject[fuel].foc.reverse();
