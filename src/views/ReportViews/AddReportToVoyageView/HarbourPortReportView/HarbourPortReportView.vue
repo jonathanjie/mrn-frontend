@@ -46,7 +46,12 @@
         :is-disabled="isSubmissionRequested"
       >
         <!-- TODO: need alternate function for saving changes to backend -->
-        <template v-slot:content>{{ $t("sendReport") }}</template>
+        <template v-if="isSubmissionRequested" v-slot:content>
+          <div>Loading...</div>
+        </template>
+        <template v-else v-slot:content>
+          <div>{{ $t("sendReport") }}</div>
+        </template>
       </GradientButton>
     </div>
   </div>
