@@ -92,7 +92,7 @@ const destinationTimeZone = computed(
         <div class="flex col-span-3 border-b bg-gray-50 text-gray-700">
           <select
             disabled
-            class="grow self-center p-3 text-14 focus:outline-0"
+            class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50"
             v-model="reportingTimeZone"
           >
             <option selected disabled value="default">

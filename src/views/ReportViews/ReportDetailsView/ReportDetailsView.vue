@@ -1,13 +1,14 @@
 <script setup>
 import { useReportDetailsStore } from "./stores/useReportDetailsStore";
 import router from "@/router";
-import { Report } from "@/constants";
+import { Report, ReportTypeToDisplay } from "@/constants";
 import NoonReportView from "./components/NoonReport/NoonReportView.vue";
 import DepartureReportView from "./components/DepartureReport/DepartureReportView.vue";
 import ArrivalReportView from "./components/ArrivalReport/ArrivalReportView.vue";
 import HarbourPortReportView from "./components/HarbourPortReport/HarbourPortReportView.vue";
 import BunkerReportView from "./components/BunkerReport/BunkerReportView.vue";
 import { useAuthStore } from "@/stores/useAuthStore";
+
 // Props
 const props = defineProps({
   uuid: {
@@ -51,7 +52,11 @@ const handleBack = () => {
           type="button"
         />
       </button>
-      <div class="mt-5">REPORT TYPE: {{ report.report_type }}</div>
+      <div
+        class="mt-5 text-20 text-blue-700 rounded-xl bg-white flex py-1 px-3 max-w-fit border border-2 border-blue-700"
+      >
+        {{ ReportTypeToDisplay[report.report_type] }}
+      </div>
       <div class="mb-5">
         <div v-if="report.report_type == Report.type.NOON">
           <NoonReportView :report="report" />
