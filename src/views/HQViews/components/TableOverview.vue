@@ -164,142 +164,142 @@ const selectFuel = () => {
   selectedSpeed.value = false;
 };
 
-//const data = props.stats;
-const data = [
-  {
-    report_date: "2022-12-27T18:00:02Z",
-    report_type: "ASBY",
-    speed: "5.00",
-    distance_observed: "30",
-    distance_to_go: "10",
-    fuel_stats: [
-      {
-        fuel_oil_type: "HFO",
-        total_consumption: "100.00",
-        rob: "100.00",
-      },
-      {
-        fuel_oil_type: "LSFO",
-        total_consumption: "100.00",
-        rob: "900.00",
-      },
-    ],
-  },
-  {
-    report_date: "2022-12-21T12:00:00Z",
-    report_type: "NOON",
-    speed: "1.50",
-    distance_observed: "20",
-    distance_to_go: "4000",
-    fuel_stats: [
-      {
-        fuel_oil_type: "HFO",
-        total_consumption: "200.00",
-        rob: "200.00",
-      },
-      {
-        fuel_oil_type: "LSFO",
-        total_consumption: "200.00",
-        rob: "200.00",
-      },
-    ],
-  },
-  {
-    report_date: "2022-12-21T12:00:00Z",
-    report_type: "NOON",
-    speed: "1.50",
-    distance_observed: "20",
-    distance_to_go: "4000",
-    fuel_stats: [
-      // {
-      //   fuel_oil_type: "HFO",
-      //   total_consumption: "300.00",
-      //   rob: "300.00",
-      // },
-      {
-        fuel_oil_type: "LSFO",
-        total_consumption: "300.00",
-        rob: "300.00",
-      },
-    ],
-  },
-  {
-    report_date: "2022-12-21T12:00:00Z",
-    report_type: "NOON",
-    speed: "1.50",
-    distance_observed: "20",
-    distance_to_go: "4000",
-    fuel_stats: [
-      {
-        fuel_oil_type: "HFO",
-        total_consumption: "400.00",
-        rob: "400.00",
-      },
-      {
-        fuel_oil_type: "LSFO",
-        total_consumption: "400.00",
-        rob: "400.00",
-      },
-    ],
-  },
-  {
-    report_date: "2022-12-21T12:00:00Z",
-    report_type: "NOON",
-    speed: "1.50",
-    distance_observed: "20",
-    distance_to_go: "4000",
-    fuel_stats: [
-      {
-        fuel_oil_type: "HFO",
-        total_consumption: "500.00",
-        rob: "500.00",
-      },
-      {
-        fuel_oil_type: "LSFO",
-        total_consumption: "500.00",
-        rob: "500.00",
-      },
-    ],
-  },
-  {
-    report_date: "2022-12-21T12:00:00Z",
-    report_type: "NOON",
-    speed: "1.50",
-    distance_observed: "20",
-    distance_to_go: "4000",
-    fuel_stats: [
-      {
-        fuel_oil_type: "HFO",
-        total_consumption: "600.00",
-        rob: "600.00",
-      },
-      {
-        fuel_oil_type: "LSFO",
-        total_consumption: "600.00",
-        rob: "600.00",
-      },
-    ],
-  },
-  {
-    report_date: "2022-12-21T12:00:00Z",
-    report_type: "NOON",
-    speed: "1.50",
-    distance_observed: "20",
-    distance_to_go: "4000",
-    fuel_stats: [
-      {
-        fuel_oil_type: "HFO",
-        total_consumption: "100.00",
-        rob: "900.00",
-      },
-      // {
-      //   fuel_oil_type: "LSFO",
-      //   total_consumption: "100.00",
-      //   rob: "900.00",
-      // },
-    ],
-  },
-];
+const data = props.stats;
+// const data = [
+//   {
+//     report_date: "2022-12-27T18:00:02Z",
+//     report_type: "ASBY",
+//     speed: "5.00",
+//     distance_observed: "30",
+//     distance_to_go: "10",
+//     fuel_stats: [
+//       {
+//         fuel_oil_type: "HFO",
+//         total_consumption: "100.00",
+//         rob: "100.00",
+//       },
+//       {
+//         fuel_oil_type: "LSFO",
+//         total_consumption: "100.00",
+//         rob: "900.00",
+//       },
+//     ],
+//   },
+//   {
+//     report_date: "2022-12-21T12:00:00Z",
+//     report_type: "NOON",
+//     speed: "1.50",
+//     distance_observed: "20",
+//     distance_to_go: "4000",
+//     fuel_stats: [
+//       {
+//         fuel_oil_type: "HFO",
+//         total_consumption: "0",
+//         rob: "200.00",
+//       },
+//       {
+//         fuel_oil_type: "LSFO",
+//         total_consumption: "200.00",
+//         rob: "200.00",
+//       },
+//     ],
+//   },
+//   {
+//     report_date: "2022-12-21T12:00:00Z",
+//     report_type: "NOON",
+//     speed: "1.50",
+//     distance_observed: "20",
+//     distance_to_go: "4000",
+//     fuel_stats: [
+//       // {
+//       //   fuel_oil_type: "HFO",
+//       //   total_consumption: "300.00",
+//       //   rob: "300.00",
+//       // },
+//       {
+//         fuel_oil_type: "LSFO",
+//         total_consumption: "300.00",
+//         rob: "300.00",
+//       },
+//     ],
+//   },
+//   {
+//     report_date: "2022-12-21T12:00:00Z",
+//     report_type: "NOON",
+//     speed: "1.50",
+//     distance_observed: "20",
+//     distance_to_go: "4000",
+//     fuel_stats: [
+//       {
+//         fuel_oil_type: "HFO",
+//         total_consumption: "400.00",
+//         rob: "400.00",
+//       },
+//       {
+//         fuel_oil_type: "LSFO",
+//         total_consumption: "400.00",
+//         rob: "400.00",
+//       },
+//     ],
+//   },
+//   {
+//     report_date: "2022-12-21T12:00:00Z",
+//     report_type: "NOON",
+//     speed: "1.50",
+//     distance_observed: "20",
+//     distance_to_go: "4000",
+//     fuel_stats: [
+//       {
+//         fuel_oil_type: "HFO",
+//         total_consumption: "500.00",
+//         rob: "500.00",
+//       },
+//       {
+//         fuel_oil_type: "LSFO",
+//         total_consumption: "500.00",
+//         rob: "500.00",
+//       },
+//     ],
+//   },
+//   {
+//     report_date: "2022-12-21T12:00:00Z",
+//     report_type: "NOON",
+//     speed: "1.50",
+//     distance_observed: "20",
+//     distance_to_go: "4000",
+//     fuel_stats: [
+//       {
+//         fuel_oil_type: "HFO",
+//         total_consumption: "600.00",
+//         rob: "600.00",
+//       },
+//       {
+//         fuel_oil_type: "LSFO",
+//         total_consumption: "600.00",
+//         rob: "600.00",
+//       },
+//     ],
+//   },
+//   {
+//     report_date: "2022-12-21T12:00:00Z",
+//     report_type: "NOON",
+//     speed: "1.50",
+//     distance_observed: "20",
+//     distance_to_go: "4000",
+//     fuel_stats: [
+//       {
+//         fuel_oil_type: "HFO",
+//         total_consumption: "100.00",
+//         rob: "900.00",
+//       },
+//       // {
+//       //   fuel_oil_type: "LSFO",
+//       //   total_consumption: "100.00",
+//       //   rob: "900.00",
+//       // },
+//     ],
+//   },
+// ];
 
 const latestData = data[0];
 

@@ -111,7 +111,7 @@
       <span
         v-if="props.header === 'Distance'"
         class="text-14 font-bold text-blue-500"
-        >{{ $t("obs") }}</span
+        >{{ $t("made") }}</span
       >
       <span v-else class="text-14 font-bold text-blue-500">{{
         $t("foc")
