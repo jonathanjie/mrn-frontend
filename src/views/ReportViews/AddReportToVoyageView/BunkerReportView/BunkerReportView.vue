@@ -13,6 +13,7 @@ import { Report } from "@/constants";
 import { parsePortLocode } from "@/utils/helpers";
 import { UrlDomain } from "@/constants";
 import { ref } from "vue";
+import axios from "axios";
 
 const props = defineProps({
   isCreate: {
@@ -109,19 +110,17 @@ const getPresignedUrlForFiles = async () => {
 
 const uploadFile = async (file) => {
   // set up the request data
-  let formData = new FormData();
-  formData.append("file", file.file);
-  // console.log("need to be binary", file.file);
   const url = `${file.presignedUrl}`;
 
   // track status and upload file
   file.status = "loading";
+
   let response = await fetch(url, {
+    method: "PUT",
+    body: file.file,
     headers: {
       "Content-Type": "multipart/form-data",
     },
-    method: "PUT",
-    body: formData,
   });
 
   // change status to indicate the success of the upload request
@@ -287,12 +286,7 @@ const sendReport = async () => {
       >
         <template v-slot:content>{{ $t("saveChanges") }}</template>
       </CustomButton> -->
-      <GradientButton
-        class="p-3 text-14"
-        type="button"
-        @click="sendReport()"
-        :is-disabled="isSubmissionRequested"
-      >
+      <GradientButton class="p-3 text-14" type="button" @click="sendReport()">
         <template v-slot:content>{{ $t("sendReport") }}</template>
       </GradientButton>
     </div>

@@ -10,7 +10,8 @@ export const useLatestReportDetailsStore = defineStore(
   "latestReportDetails",
   () => {
     const shipStore = useShipStore();
-    const { fuelOils, lubricatingOils, machinery, imoReg } = storeToRefs(shipStore);
+    const { fuelOils, lubricatingOils, machinery, imoReg } =
+      storeToRefs(shipStore);
     const voyageStore = useVoyageStore();
     const { voyageLegs } = storeToRefs(voyageStore);
 
@@ -255,14 +256,7 @@ export const useLatestReportDetailsStore = defineStore(
             Report.type.NOON_PORT,
           ];
         case Report.type.DEP_COSP_RUP:
-          return [
-            Report.type.NOON,
-            Report.type.ARR_SBY_EOSP,
-            Report.type.EVENT_HARBOUR,
-            Report.type.EVENT_PORT,
-            Report.type.NOON_HARBOUR,
-            Report.type.NOON_PORT,
-          ];
+          return [Report.type.NOON, Report.type.ARR_SBY_EOSP];
         case Report.type.NOON:
           return [Report.type.NOON, Report.type.ARR_SBY_EOSP];
         case Report.type.ARR_SBY_EOSP:
