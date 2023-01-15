@@ -141,6 +141,7 @@ const submissionStatusStore = useSubmissionStatusStore();
 const {
   isSubmissionRequested,
   isSubmissionModalVisible,
+  isSubmissionResponse,
   isSubmissionSuccessful,
   errorMessage,
 } = storeToRefs(submissionStatusStore);
@@ -294,11 +295,11 @@ const sendReport = async () => {
 
   console.log("data: ", REPORT);
 
+  isSubmissionModalVisible.value = true;
   const response = await fetch(`${UrlDomain.DEV}/marinanet/reports/`, {
     headers: {
       Authorization: "Bearer " + localStorage.getItem("jwt"),
       "Content-Type": "application/json",
-      Accept: "application/json",
     },
     method: "POST",
     body: JSON.stringify(REPORT),
@@ -315,13 +316,12 @@ const sendReport = async () => {
     } else {
       errorMessage.value = data;
     }
-    isSubmissionModalVisible.value = true;
   } catch (error) {
     console.log(error);
     errorMessage.value = {
       unexpectedError: ["Please contact the administrator."],
     };
-    isSubmissionModalVisible.value = true;
   }
+  isSubmissionResponse.value = true;
 };
 </script>
