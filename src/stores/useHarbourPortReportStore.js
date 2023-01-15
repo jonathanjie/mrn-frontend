@@ -4,12 +4,7 @@ import { useVoyageStore } from "./useVoyageStore";
 import { storeToRefs } from "pinia";
 import { convertLTToUTC, sumObjectValues } from "@/utils/helpers";
 import { useShipStore } from "@/stores/useShipStore";
-import { Machinery } from "@/constants";
 import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
-
-const temp = {
-  otherPlannedOperation: "",
-};
 
 export const useHarbourPortReportStore = defineStore(
   "harbourPortReport",
@@ -34,7 +29,8 @@ export const useHarbourPortReportStore = defineStore(
       fuelOilRobs: fuel_oil_robs,
       lubeOilRobs,
       freshwaterRob: freshwater_rob,
-      plannedOperations: planned_operations,
+      plannedOperations,
+      otherPlannedOperation,
     } = storeToRefs(detailsStore);
 
     // status var
@@ -77,8 +73,6 @@ export const useHarbourPortReportStore = defineStore(
     const longDir = ref("default");
     const longMinutes = ref("");
     const longDegree = ref("");
-    const plannedOperations = ref(planned_operations.value);
-    const otherPlannedOperation = ref(temp.otherPlannedOperation);
     const operations = ref([]);
 
     // Consumption And Condition
