@@ -32,7 +32,7 @@ export function format(date) {
   const hour = ("0" + date.getHours()).slice(-2);
   const minute = ("0" + date.getMinutes()).slice(-2);
 
-  return `${year}.${month}.${day} ${hour}:${minute} (LT)`;
+  return `${year}.${month}.${day} ${hour}:${minute}`;
 }
 
 export function formatUTC(date) {
