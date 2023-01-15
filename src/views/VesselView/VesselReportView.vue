@@ -70,7 +70,7 @@ const { lastVoyageNo, nextVoyageNo } = storeToRefs(shipStore);
 
 // Temp fix until backend returns voyages in the right order; can delete once backend is updated
 const orderedVoyages = computed(() => {
-  return structuredClone(voyages.value).reverse();
+  return structuredClone(voyages.value);
 });
 
 // TODO: remove after MVP demo
