@@ -3,7 +3,6 @@
     <div class="flex flex-wrap px-12 pt-12 w-full">
       <div class="flex flex-wrap w-full mb-6">
         <h1 class="text-20 font-bold mb-4">{{ $t("vesselsDashboard") }}</h1>
-        <!-- Vessels dashboard -->
         <div class="grid xl:grid-cols-4 grid-cols-2 gap-x-5 w-full">
           <MyVesselsDashboardIcon>
             <template v-slot:img>
@@ -90,7 +89,6 @@
       <div
         class="flex bg-white w-full h-16 rounded-xl items-center p-3.5 mt-6 justify-evenly shadow"
       >
-        <!-- Sailing Icon -->
         <div class="flex">
           <img
             src="@/assets/icons/My_Vessels/sailing_icon.svg"
@@ -105,7 +103,6 @@
             >
           </div>
         </div>
-        <!-- Cargo operation icon (Need to check background color) -->
         <div class="flex">
           <img
             src="@/assets/icons/My_Vessels/cargo_icon.svg"
@@ -120,7 +117,6 @@
             >
           </div>
         </div>
-        <!-- Bunkering Icon (Need to check background color) -->
         <div class="flex">
           <img
             src="@/assets/icons/My_Vessels/bunkering_icon.svg"
@@ -133,7 +129,6 @@
             >
           </div>
         </div>
-        <!-- Waiting Icon -->
         <div class="flex">
           <img
             src="@/assets/icons/My_Vessels/waiting_icon.svg"
@@ -146,7 +141,6 @@
             >
           </div>
         </div>
-        <!-- Etc Icon -->
         <div class="flex">
           <img
             src="@/assets/icons/My_Vessels/etc_icon.svg"
@@ -160,12 +154,11 @@
           </div>
         </div>
       </div>
-      <!-- Vessels list header -->
       <div class="flex mt-12 w-full items-center">
-        <h1 v-if="isSuccess" class="text-20 font-bold w-full">
+        <h1 class="text-20 font-bold w-full">
           {{ $t("vesselList") }} ({{ ships.length }})
         </h1>
-        <div class="flex justify-end">
+        <!-- <div class="flex justify-end">
           <div
             class="hidden flex bg-white border border-gray-300 w-60 h-10 rounded-lg mr-4"
           >
@@ -176,7 +169,6 @@
               icon="search"
             />
           </div>
-          <!-- Need to figure out table filter and export CSV -->
           <CustomButton
             class="hidden text-14 text-sm font-bold mr-4 pr-7 whitespace-nowrap text-blue-700"
             type="button"
@@ -199,20 +191,18 @@
             /></template>
             <template v-slot:content>{{ $t("exportCSV") }}</template>
           </CustomButton>
-        </div>
+        </div> -->
       </div>
     </div>
-    <!-- Vessels list content -->
-    <!-- if there are no voyages in backend -->
-    <div v-if="isSuccess" class="flex flex-col">
+    <div class="flex flex-col">
       <VesselCard
         v-for="(ship, index) in ships"
-        :key="ship"
+        :key="ship.id"
         :vesselName="ship.name == null ? 'Invalid Ship' : ship.name"
+        :imoNo="ship.imo_reg == null ? 'Invalid Ship' : ship.imo_reg"
         :loadType="
           ship.ship_type == null ? 'Invalid Ship' : shipRef[ship.ship_type]
         "
-        :imoNo="ship.imo_reg == null ? 'Invalid Ship' : ship.imo_reg"
         :vesselStatus="
           ship.last_report_type === null
             ? 'No report uploaded'
@@ -233,31 +223,8 @@
         :updatedDate="dateConverter(ship.last_report_date)"
       />
     </div>
-    <div
-      v-else
-      class="flex flex-col p-24 pb-52 m-12 justify-center items-center space-y-2 rounded-xl"
-    >
-      <img src="@/assets/icons/empty.svg" class="h-28 w-28" />
-      <span class="text-lg font-bold text-gray-800 pt-3">{{
-        $t("noVesselCreated")
-      }}</span>
-      <span class="text-14 text-gray-500">{{
-        $t("clickOnCreateNewVoyageAboveToBegin")
-      }}</span>
-    </div>
     <hr class="mt-6 w-full bg-gray-200" />
-    <!-- Pagination module -->
     <div class="hidden flex justify-center">12345678910</div>
-    <!-- <div class="class flex px-12 pt-12-w-full">
-      <span class="text-20 font-strong text-blue-800"
-        >Vessel Report Summary</span
-      >
-      <VesselReportCard
-        v-for="(vessel, index) in vesselReport"
-        :key="index"
-        :Something="vessel"
-      />
-    </div> -->
   </div>
   <div
     v-else
@@ -265,30 +232,23 @@
   >
     <img src="@/assets/icons/empty.svg" class="h-28 w-28" />
     <span class="text-lg font-bold text-gray-800 pt-3">{{
-      $t("noVoyageCreated")
-    }}</span>
-    <span class="text-14 text-gray-500">{{
-      $t("clickOnCreateNewVoyageAboveToBegin")
+      $t("noVesselCreated")
     }}</span>
   </div>
 </template>
 
 <script setup>
 import MyVesselsDashboardIcon from "@/views/HQViews/components/MyVesselsDashboardIcon.vue";
-import CustomButton from "@/components/Buttons/CustomButton.vue";
 import VesselCard from "@/views/HQViews/components/VesselCard.vue";
-// import VesselReportCard from "./components/VesselReportCard.vue";
 import { useHQStore } from "@/stores/useHQStore";
 import constants from "@/constants";
-
-const store = useHQStore();
+import { UrlDomain } from "@/constants";
+import axios from "axios";
 
 const shipRef = constants.shipRefs;
-const shipCount = store.shipCount;
-const shipStatus = store.shipStatus;
 const reportStatus = (lastReportDate) => {
   if (lastReportDate === undefined) {
-    return undefined;
+    return "";
   } else {
     let reportTimeDiff =
       (new Date().getTime() - new Date(lastReportDate).getTime()) /
@@ -310,32 +270,77 @@ const dateConverter = (date) => {
   }
 };
 
-const { isSuccess, data: ships } = store.shipsQuery();
+const getShips = async () => {
+  return await axios
+    .get(`${UrlDomain.DEV}/marinanet/ships-overview`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+};
+const store = useHQStore();
+const shipCount = store.shipCount;
+const shipStatus = store.shipStatus;
+const ships = await getShips();
+shipCount.etcVessels = 0;
+shipCount.bunkeringVessels = 0;
+shipCount.cargoVessels = 0;
+shipCount.inPortVessels = 0;
+shipCount.sailingVessels = 0;
+shipCount.waitingVessels = 0;
+shipStatus.length = 0;
+const eventTypes = { EVPO: "", EVHB: "", NNPO: "", NNHB: "" };
 
-// const vesselReport = {
-//   vessel_name: "FC ADONIS",
-//   date: "0900LT 20 OCT 2022",
-//   arrival_port: "Yokkaichi, Japan",
-//   arrival_date: "20000LT, 24 OCT 2022",
-//   speed_since_last: "12.8",
-//   rpm_since_last: "170",
-//   speed_average: "12.57",
-//   weather: "Cloudy",
-//   wind_direction: "ENE",
-//   wind_speed: "7kn(BF3)",
-//   sea_direction: "EN",
-//   sea_state: "6kn(Condition 3)",
-//   distance_to_go: "700",
-//   distance_total: "1000",
-//   fuel_type: {
-//     lsfo: {
-//       foc: "14.2",
-//       rob: "132.36",
-//     },
-//     mgo: {
-//       foc: "0",
-//       rob: "58.71",
-//     },
-//   },
-// };
+const reportType = {
+  NOON: "sailing",
+  DSBY: "sailing",
+  DCSP: "sailing",
+  ASBY: "sailing",
+  AFWE: "waiting",
+  BDN: "waiting",
+};
+
+for (let i in ships) {
+  const ship = ships[i];
+  // Sailing/Waiting
+  if (ship.last_report_type in reportType) {
+    const status = reportType[ship.last_report_type];
+    store.shipStatus.push(reportType[ship.last_report_type]);
+    if (status == "sailing") {
+      store.shipCount.sailingVessels++;
+    } else {
+      store.shipCount.waitingVessels++;
+    }
+    // Event
+  } else if (
+    ship.last_report_type in eventTypes &&
+    Object.keys(ship.last_operation).length != 0
+  ) {
+    const keys = Object.keys(ship.last_operation).sort();
+    if (ship.last_operation[keys[1]] || ship.last_operation[keys[2]]) {
+      store.shipCount.inPortVessels++;
+      store.shipCount.cargoVessels++;
+      store.shipStatus.push("cargo");
+    } else if (ship.last_operation[keys[0]]) {
+      store.shipCount.inPortVessels++;
+      store.shipCount.bunkeringVessels++;
+      store.shipStatus.push("bunkering");
+    } else if (ship.last_operation[keys[4]] || ship.last_operation[keys[5]]) {
+      store.shipCount.etcVessels++;
+      store.shipStatus.push("etc");
+    } else {
+      store.shipCount.inPortVessels++;
+      store.shipCount.waitingVessels++;
+      store.shipStatus.push("waiting");
+    }
+    // ETC catch
+  } else {
+    store.shipCount.etcVessels++;
+    store.shipStatus.push("etc");
+  }
+}
+
+const isSuccess = true;
 </script>

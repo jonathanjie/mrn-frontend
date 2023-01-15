@@ -74,6 +74,7 @@
           </div>
         </div> -->
       </div>
+      <div v-else></div>
     </div>
     <div class="divide-y divide-solid w-full">
       <div>
@@ -91,7 +92,9 @@
                 class="text-14 font-semibold text-gray-700"
                 >{{ new Date(portCalls[0].arrival_date).toUTCString() }}</span
               >
+              <span v-else></span>
             </div>
+            <div v-else></div>
           </div>
           <!-- <div
             class="hidden flex h-12 bg-gray-100 rounded-lg align-center p-px"
@@ -137,7 +140,7 @@
           $t("portCalls")
         }}</span>
         <div class="flex flex-row">
-          <div v-if="legsSuccess" class="flex flex-col">
+          <div v-if="!legsSuccess" class="flex flex-col">
             <PortCard
               v-for="port in portCalls"
               :key="port.id"
@@ -148,6 +151,7 @@
               :arrivalTime="port.arrival_date"
             ></PortCard>
           </div>
+          <div v-else></div>
           <!-- <SpeedGraphReminders></SpeedGraphReminders> -->
         </div>
       </div>
@@ -165,7 +169,8 @@ const props = defineProps({
   vesselname: String,
   imo: String,
 });
-console.log("SpeedGraphLoads");
+
+console.log(props);
 const shipRef = constants.shipRefs;
 const store = useHQStore();
 const { isSuccess: shipSuccess, data: ship } = store.shipQuery(props.imo);

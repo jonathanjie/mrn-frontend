@@ -1,6 +1,9 @@
 <template>
-  <button
-    @click="navigate"
+  <router-link
+    :to="{
+      name: 'speed-graph-overview',
+      params: { vesselname: props.vesselName, imo: props.imoNo },
+    }"
     class="flex h-20 mx-12 rounded-xl min-w-max z-10 bg-white drop-shadow mt-5 p-4 items-center"
   >
     <div class="flex w-full mr-16 ml-0.5 items-center justify-between">
@@ -85,12 +88,10 @@
         </ul>
       </div>
     </div>
-  </button>
+  </router-link>
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
-
 const props = defineProps({
   vesselStatus: String,
   vesselName: String,
@@ -102,12 +103,4 @@ const props = defineProps({
   reportStatus: String,
   updatedDate: String,
 });
-const router = useRouter();
-
-const navigate = async () => {
-  router.push({
-    name: "speed-graph-overview",
-    params: { vesselname: props.vesselName, imo: props.imoNo },
-  });
-};
 </script>
