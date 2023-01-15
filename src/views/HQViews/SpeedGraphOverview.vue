@@ -90,7 +90,10 @@
               <span
                 v-if="portCalls[0].arrival_date !== undefined"
                 class="text-14 font-semibold text-gray-700"
-                >{{ new Date(portCalls[0].arrival_date).toUTCString() }}</span
+                >{{
+                  dateHelper(portCalls[0].arrival_date, portCalls[0].arrival_tz)
+                }}
+                LT (UTC + {{ portCalls[0].arrival_tz }})</span
               >
               <span v-else></span>
             </div>
@@ -139,8 +142,8 @@
         <span class="text-20 w-full text-blue-800 font-bold mb-4">{{
           $t("portCalls")
         }}</span>
-        <div class="flex flex-row">
-          <div v-if="!legsSuccess" class="flex flex-col">
+        <div class="flex flex-row w-full">
+          <div v-if="legsSuccess" class="flex flex-col w-full">
             <PortCard
               v-for="port in portCalls"
               :key="port.id"
@@ -170,13 +173,17 @@ const props = defineProps({
   imo: String,
 });
 
-console.log(props);
 const shipRef = constants.shipRefs;
 const store = useHQStore();
 const { isSuccess: shipSuccess, data: ship } = store.shipQuery(props.imo);
 const { isSuccess: legsSuccess, data: portCalls } = store.legsQuery(props.imo);
 const { isSuccess: statsSuccess, data: stats } = store.statsQuery(props.imo);
 
+const dateHelper = (arrival, difference) => {
+  const date = new Date(arrival);
+  date.setTime(date.getTime() + difference * 60 * 60 * 1000);
+  return date.toUTCString().split(" ").slice(0, 5).join(" ");
+};
 // Unused variables for CII/EEXI/message feature
 // const previousCIIGrade = "A";
 // const eexiGrade = "2.03/2.2";
