@@ -77,10 +77,8 @@ const {
 const isUploadToS3Successful = ref(true);
 
 const getFileNames = () => {
-  console.log(
-    files.value.map((file) => file.name + "." + file.type.split("/")[1])
-  );
-  return files.value.map((file) => file.name + "." + file.type.split("/")[1]);
+  console.log(files.value.map((file) => file.name));
+  return files.value.map((file) => file.name);
 };
 
 const getPresignedUrlForFiles = async () => {
@@ -111,13 +109,17 @@ const getPresignedUrlForFiles = async () => {
 
 const uploadFile = async (file) => {
   // set up the request data
-  let formData = new FormData();
-  formData.append("file", file.file);
+  // let formData = new FormData();
+  // formData.append("file", file.file);
+  // console.log("need to be binary", file.file);
   const url = `${file.presignedUrl}`;
 
   // track status and upload file
   file.status = "loading";
-  let response = await fetch(url, { method: "PUT", body: formData });
+  let response = await fetch(url, {
+    method: "PUT",
+    body: JSON.stringify(file.file),
+  });
 
   // change status to indicate the success of the upload request
   file.status = response.ok;

@@ -33,7 +33,7 @@ const props = defineProps({
     default: false,
   },
 });
-console.log("voyage!!", props.voyage);
+// console.log("voyage!!", props.voyage);
 
 const voyageLegs = computed(() => props.voyage.voyage_legs);
 const reports = computed(() =>
@@ -84,10 +84,10 @@ const filteredData = computed(() => {
   );
 });
 
-console.log(filteredData.value);
+// console.log(filteredData.value);
 
 const handleClick = async () => {
-  console.log(voyageLegs.value);
+  // console.log(voyageLegs.value);
   storedVoyageLegs.value = voyageLegs.value;
   await refetchLatestReportDetails();
   router.push({

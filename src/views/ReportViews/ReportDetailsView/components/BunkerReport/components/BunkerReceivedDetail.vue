@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, computed, defineProps } from "vue";
+import { ref, computed, defineProps } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { preventNaN } from "@/utils/helpers.js";
 // import DropZone from "@/components/FileDrop/DropZone.vue";
@@ -40,22 +40,29 @@ const getPresignedUrlForFiles = async (filePath) => {
 
 const getFilePath = (file) => {
   const urlFragments = file.split("/");
+  console.log("fielpath", urlFragments);
+
   const rtn =
     urlFragments[3] +
     "/" +
     urlFragments[4] +
     "/" +
-    urlFragments[5].split("?")[0];
-  console.log(rtn);
+    urlFragments[5] +
+    "/" +
+    urlFragments[6] +
+    "/" +
+    urlFragments[7].split("?")[0];
+  // console.log(decodeURI(rtn));
 
-  return rtn;
+  return decodeURI(rtn);
 };
 
-const files = reactive([]);
+const files = ref([]);
+
 for (const file of props.report.bdndata.bdn_file) {
   const filePath = getFilePath(file);
   const presignedUrl = await getPresignedUrlForFiles(filePath);
-  files.push(presignedUrl);
+  files.value.push(presignedUrl);
 }
 
 // const files = await props.report.bdndata.bdn_file
@@ -137,13 +144,13 @@ const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
         @change="onInputChange"
       />
     </DropZone> -->
-
-    <!-- <ul class="text-14 text-gray-700 space-y-1" v-show="files.length">
+    <!-- 
+    <ul class="text-14 text-gray-700 space-y-1" v-show="files.length">
       <FilePreview
         v-for="file of files"
         :key="file.id"
         :file="file"
-        @remove="store.removeFile"
+        :href="file"
       />
     </ul> -->
 
