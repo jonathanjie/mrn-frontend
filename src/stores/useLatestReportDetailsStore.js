@@ -3,13 +3,14 @@ import { useLatestReportDetailsQuery } from "@/queries/useLatestReportDetailsQue
 import { useShipStore } from "./useShipStore";
 import { computed } from "vue";
 import { Report } from "@/constants";
+import { isEmpty } from "@/utils/helpers";
 import { useVoyageStore } from "./useVoyageStore";
 
 export const useLatestReportDetailsStore = defineStore(
   "latestReportDetails",
   () => {
     const shipStore = useShipStore();
-    const { imoReg } = storeToRefs(shipStore);
+    const { fuelOils, lubricatingOils, machinery, imoReg } = storeToRefs(shipStore);
     const voyageStore = useVoyageStore();
     const { voyageLegs } = storeToRefs(voyageStore);
 
@@ -125,34 +126,101 @@ export const useLatestReportDetailsStore = defineStore(
         ? latestReportDetails.value.time_standby_to_cosp
         : ""
     );
+
+    const freshwaterConsumed = computed(() =>
+      isSuccessLatestReportDetails.value &&
+      latestReportDetails.value.freshwater_cons_in_harbour_port
+        ? latestReportDetails.value.freshwater_cons_in_harbour_port
+        : 0
+    );
+    const freshwaterDischarged = computed(() =>
+      isSuccessLatestReportDetails.value &&
+      latestReportDetails.value.freshwater_discharge_in_harbour_port
+        ? latestReportDetails.value.freshwater_discharge_in_harbour_port
+        : 0
+    );
+    const freshwaterGenerated = computed(() =>
+      isSuccessLatestReportDetails.value &&
+      latestReportDetails.value.freshwater_gen_in_harbour_port
+        ? latestReportDetails.value.freshwater_gen_in_harbour_port
+        : 0
+    );
+    const freshwaterReceived = computed(() =>
+      isSuccessLatestReportDetails.value &&
+      latestReportDetails.value.freshwater_receipt_in_harbour_port
+        ? latestReportDetails.value.freshwater_receipt_in_harbour_port
+        : 0
+    );
     const freshwaterRob = computed(() =>
       isSuccessLatestReportDetails.value &&
       latestReportDetails.value.freshwater_rob
         ? latestReportDetails.value.freshwater_rob
         : ""
     );
+
     const fuelOilConsInHarbourPort = computed(() =>
       isSuccessLatestReportDetails.value &&
       latestReportDetails.value.fuel_oil_cons_in_harbour_port
         ? latestReportDetails.value.fuel_oil_cons_in_harbour_port
-        : ""
+        : 0
     );
     const fuelOilConsPilotToPilot = computed(() =>
       isSuccessLatestReportDetails.value &&
       latestReportDetails.value.fuel_oil_cons_pilot_to_pilot
         ? latestReportDetails.value.fuel_oil_cons_pilot_to_pilot
-        : ""
+        : 0
     );
     const fuelOilConsPortToPort = computed(() =>
       isSuccessLatestReportDetails.value &&
       latestReportDetails.value.fuel_oil_cons_port_to_port
         ? latestReportDetails.value.fuel_oil_cons_port_to_port
-        : ""
+        : 0
+    );
+    const fuelOilDebunkering = computed(() =>
+      isSuccessLatestReportDetails.value &&
+      latestReportDetails.value.fuel_oil_debunker_in_harbour_port &&
+      !isEmpty(latestReportDetails.value.fuel_oil_debunker_in_harbour_port)
+        ? latestReportDetails.value.fuel_oil_debunker_in_harbour_port
+        : 0
+    );
+    const fuelOilReceipt = computed(() =>
+      isSuccessLatestReportDetails.value &&
+      latestReportDetails.value.fuel_oil_receipt_in_harbour_port &&
+      !isEmpty(latestReportDetails.value.fuel_oil_receipt_in_harbour_port)
+        ? latestReportDetails.value.fuel_oil_robs
+        : 0
     );
     const fuelOilRobs = computed(() =>
       isSuccessLatestReportDetails.value &&
       latestReportDetails.value.fuel_oil_robs
         ? latestReportDetails.value.fuel_oil_robs
+        : ""
+    );
+    const lubeOilDebunkering = computed(() =>
+      isSuccessLatestReportDetails.value &&
+      latestReportDetails.value.lube_oil_debunker_in_harbour_port &&
+      !isEmpty(latestReportDetails.value.lube_oil_debunker_in_harbour_port)
+        ? latestReportDetails.value.lube_oil_debunker_in_harbour_port
+        : 0
+    );
+    const lubeOilReceipt = computed(() =>
+      isSuccessLatestReportDetails.value &&
+      latestReportDetails.value.lube_oil_receipt_in_harbour_port &&
+      !isEmpty(latestReportDetails.value.lube_oil_receipt_in_harbour_port)
+        ? latestReportDetails.value.lube_oil_receipt_in_harbour_port
+        : 0
+    );
+    const lubeOilTotalConsumption = computed(() =>
+      isSuccessLatestReportDetails.value &&
+      latestReportDetails.value.lube_oil_cons_in_harbour_port &&
+      !isEmpty(latestReportDetails.value.lube_oil_cons_in_harbour_port)
+        ? latestReportDetails.value.lube_oil_cons_in_harbour_port
+        : 0
+    );
+    const lubeOilRobs = computed(() =>
+      isSuccessLatestReportDetails.value &&
+      latestReportDetails.value.lube_oil_robs
+        ? latestReportDetails.value.lube_oil_robs
         : ""
     );
     const id = computed(() =>
@@ -248,12 +316,6 @@ export const useLatestReportDetailsStore = defineStore(
       isSuccessLatestReportDetails.value &&
       latestReportDetails.value.load_condition
         ? latestReportDetails.value.load_condition
-        : ""
-    );
-    const lubeOilRobs = computed(() =>
-      isSuccessLatestReportDetails.value &&
-      latestReportDetails.value.lube_oil_robs
-        ? latestReportDetails.value.lube_oil_robs
         : ""
     );
     const parkingStatus = computed(() =>
@@ -359,16 +421,25 @@ export const useLatestReportDetailsStore = defineStore(
       distanceToGo,
       distanceObsSbyToCosp,
       distanceEngSbyToCosp,
+      freshwaterConsumed,
+      freshwaterDischarged,
+      freshwaterGenerated,
+      freshwaterReceived,
       freshwaterRob,
       fuelOilConsInHarbourPort,
       fuelOilConsPilotToPilot,
       fuelOilConsPortToPort,
+      fuelOilDebunkering,
+      fuelOilReceipt,
       fuelOilRobs,
+      lubeOilDebunkering,
+      lubeOilReceipt,
+      lubeOilTotalConsumption,
+      lubeOilRobs,
       id,
       lastReportDate,
       lastReportType,
       loadCondition,
-      lubeOilRobs,
       parkingStatus,
       plannedOperations,
       otherPlannedOperation,

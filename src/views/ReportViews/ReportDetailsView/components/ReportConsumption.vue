@@ -157,8 +157,8 @@ const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 5);
               {{ $t(fuelOilData.fuel_oil_type) }}
             </div>
             <input
-              disabled
               v-for="entry of Object.entries(fuelOilData.breakdown)"
+              disabled
               :key="entry"
               v-model="entry[1]"
               @keypress="preventNaN($event, entry[1])"

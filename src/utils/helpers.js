@@ -13,6 +13,11 @@ export const sumObjectValues = (obj) => {
   return Object.values(obj).reduce((a, b) => Number(a) + Number(b), 0);
 };
 
+export const isEmpty = (obj) => {
+  
+  return Object.keys(obj).length === 0;
+}
+
 export const textInputOptions = ref({
   format: "yyyy.MM.dd HH:mm",
 });

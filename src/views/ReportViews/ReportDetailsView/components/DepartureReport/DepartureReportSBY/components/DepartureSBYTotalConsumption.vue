@@ -1,135 +1,31 @@
 <script setup>
 import { preventNaN } from "@/utils/helpers";
-import { computed, defineProps } from "vue";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { FuelOil, LubricatingOil } from "@/constants";
+import { computed } from "vue";
+import { storeToRefs } from "pinia";
+import { useShipStore } from "@/stores/useShipStore";
+// import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+// import { FuelOil, LubricatingOil } from "@/constants";
+
 const props = defineProps({
   report: {
     type: Object,
     required: true,
   },
 });
-
-const isAdditionalRemarkFuel = computed(() =>
-  props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set.reduce(
-    (accum, curr) => accum || curr.fueloiltotalconsumptiondatacorrection,
-    false
-  )
-    ? true
-    : false
-);
-const isAdditionalRemarkLubricating = computed(() =>
-  props.report.totalconsumptiondata.lubricatingoiltotalconsumptiondata_set.reduce(
-    (accum, curr) => accum || curr.lubricatingoiltotalconsumptiondatacorrection,
-    false
-  )
-    ? true
-    : false
-);
+const shipStore = useShipStore();
+const { machinery } = storeToRefs(shipStore);
 
 // Fuel Consumption
-const lsfoTotalConsumptionSum = computed(
-  () =>
-    props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "LSFO"
-    )[0].total_consumption
-);
-const lsfoRobSum = computed(
-  () =>
-    props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "LSFO"
-    )[0].rob
+const fuelOilDataSet = computed(
+  () => props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set
 );
 
-const lsfoBreakdownSum = computed(
-  () =>
-    props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "LSFO"
-    )[0].breakdown
-);
-const mgoTotalConsumptionSum = computed(
-  () =>
-    props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "MGO"
-    )[0].total_consumption
-);
-const mgoRobSum = computed(
-  () =>
-    props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "MGO"
-    )[0].total_consumption
-);
-const mgoBreakdownSum = computed(
-  () =>
-    props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "MGO"
-    )[0].breakdown
+
+// Lubricating Oil
+const lubricatingOilDataSet = computed(
+  () => props.report.totalconsumptiondata.lubricatingoiltotalconsumptiondata_set
 );
 
-const fuelOilDataCorrectionSum = computed(() =>
-  isAdditionalRemarkFuel.value
-    ? props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set.filter(
-        (fuelData) => fuelData.fueloildatacorrection != null
-      )[0]
-    : null
-);
-console.log("fuel correction value: ", fuelOilDataCorrectionSum.value);
-// Lubricating Oil Consumption
-const meCylinderBreakdownSum = computed(
-  () =>
-    props.report.totalconsumptiondata.lubricatingoiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "M/E Cylinder"
-    )[0]
-);
-const meCylinderRobSum = computed(
-  () =>
-    props.report.totalconsumptiondata.lubricatingoiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "M/E Cylinder"
-    )[0].rob
-);
-const meSystemBreakdownSum = computed(
-  () =>
-    props.report.totalconsumptiondata.lubricatingoiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "M/E System"
-    )[0]
-);
-const meSystemRobSum = computed(
-  () =>
-    props.report.totalconsumptiondata.lubricatingoiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "M/E System"
-    )[0].rob
-);
-const meSumpBreakdownSum = computed(
-  () =>
-    props.report.totalconsumptiondata.lubricatingoiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "M/E Sump"
-    )[0]
-);
-const meSumpRobSum = computed(
-  () =>
-    props.report.totalconsumptiondata.lubricatingoiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "M/E Sump"
-    )[0].rob
-);
-const geSystemBreakdownSum = computed(
-  () =>
-    props.report.totalconsumptiondata.lubricatingoiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "G/E System"
-    )[0]
-);
-const geSystemRobSum = computed(
-  () =>
-    props.report.totalconsumptiondata.lubricatingoiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "G/E System"
-    )[0].rob
-);
-const lubricatingOilDataCorrectionSum = computed(() =>
-  isAdditionalRemarkFuel.value
-    ? props.report.totalconsumptiondata.lubricatingoiltotalconsumptiondata_set.filter(
-        (fuelData) => fuelData.lubricatingoildatacorrection != null
-      )[0]
-    : null
-);
 
 // Freshwater Consumption
 const freshwaterConsumedSum = computed(
@@ -159,9 +55,271 @@ const freshwaterChangeSum = computed(
 const freshwaterRobSum = computed(
   () => props.report.totalconsumptiondata.freshwatertotalconsumptiondata.rob
 );
+
+const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 5);
 </script>
 
 <template>
+  <div
+    class="grid bg-white rounded-lg p-5 gap-4 shadow-card border border-yellow-500"
+  >
+    <div>
+      <div class="flex items-center">
+        <img
+          src="@/assets/icons/selected_yellow_gradient.svg"
+          class="h-5 w-5"
+        />
+        <span class="text-16 text-yellow-700">
+          {{ $t("consumptionAndConditionHarbourInPortInTotal") }}
+        </span>
+      </div>
+    </div>
+
+    <div class="grid divide-y divide-dashed gap-8">
+      <div>
+        <div class="self-center mb-4 text-16 text-gray-700 pt-4">
+          {{ $t("fuelOilInMT") }}
+        </div>
+
+        <div class="grid mb-4 text-14" :class="getFuelOilCols()">
+          <div
+            class="col-span-1 border-green-100 bg-green-25 px-6 border-l border-t"
+          ></div>
+          <div
+            v-for="item in machinery"
+            :key="item"
+            class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
+          >
+            {{ $t(item) }}
+          </div>
+          <div
+            class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
+          >
+            {{ $t("totalConsumption") }}
+          </div>
+          <div
+            class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
+          >
+            {{ $t("receipt") }}
+          </div>
+          <div
+            class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
+          >
+            {{ $t("debunkering") }}
+          </div>
+          <div
+            class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-x bg-gray-50"
+          >
+            {{ $t("remainOnBoard") }}
+          </div>
+
+          <span
+            v-for="(fuelOilData, index) of fuelOilDataSet"
+            :key="fuelOilData.fuel_oil_type + index"
+            :class="
+              'col-span-full grid ' +
+              getFuelOilCols() +
+              ' ' +
+              (index == fuelOilDataSet.length - 1 ? 'border-b' : '')
+            "
+          >
+            <div
+              class="col-span-1 p-3 text-blue-700 border-t border-l bg-gray-50"
+            >
+              {{ $t(fuelOilData.fuel_oil_type) }}
+            </div>
+            <input
+              v-for="entry of Object.entries(fuelOilData.breakdown)"
+              disabled
+              :key="entry"
+              v-model="entry[1]"
+              @keypress="preventNaN($event, entry[1])"
+              placeholder="0"
+              class="col-span-1 p-3 pl-4 border-t border-l bg-gray-50 text-gray-400 focus:outline-0"
+            />
+            <div
+              class="col-span-1 text-gray-400 p-3 border-t border-l bg-gray-25"
+            >
+              {{ fuelOilData.total_consumption }}
+            </div>
+            <input
+              disabled
+              v-model="fuelOilData.receipt"
+              @keypress="preventNaN($event, fuelOilData.receipt)"
+              placeholder="0"
+              class="col-span-1 p-3 pl-4 border-t border-l bg-gray-50 text-gray-400 focus:outline-0"
+            />
+            <input
+              disabled
+              v-model="fuelOilData.debunkering"
+              @keypress="preventNaN($event, fuelOilData.debunkering)"
+              placeholder="0"
+              class="col-span-1 p-3 pl-4 border-t border-l bg-gray-50 text-gray-400 focus:outline-0"
+            />
+            <div
+              class="col-span-1 text-gray-400 p-3 border-t border-x bg-gray-25"
+            >
+              {{ fuelOilData.rob }}
+            </div>
+          </span>
+        </div>
+      </div>
+
+      <div class="pt-8">
+        <div class="self-center text-16 mb-4 text-gray-700">
+          {{ $t("lubricatingOilInL") }}
+        </div>
+
+        <div class="grid grid-cols-10 text-14 mb-4">
+          <div
+            class="col-span-2 border-yellow-100 bg-yellow-25 px-6 border-l border-t"
+          ></div>
+          <div
+            class="col-span-2 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-l bg-gray-50"
+          >
+            {{ $t("consumption") }}
+          </div>
+          <div
+            class="col-span-2 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-l bg-gray-50"
+          >
+            {{ $t("receipt") }}
+          </div>
+          <div
+            class="col-span-2 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-l bg-gray-50"
+          >
+            {{ $t("debunkering") }}
+          </div>
+          <div
+            class="col-span-2 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-x bg-gray-50"
+          >
+            {{ $t("remainOnBoard") }}
+          </div>
+
+          <span
+            v-for="(lubricatingOilData, index) of lubricatingOilDataSet"
+            :key="lubricatingOilData + index"
+            :class="
+              'col-span-10 grid grid-cols-10' +
+              (index == lubricatingOilDataSet.length - 1 ? ' border-b' : '')
+            "
+          >
+            <div
+              class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
+            >
+              {{ $t(lubricatingOilData.lubricating_oil_type) }}
+            </div>
+            <input
+              disabled
+              v-model="lubricatingOilData.total_consumption"
+              @keypress="
+                preventNaN($event, lubricatingOilData.total_consumption)
+              "
+              placeholder="0"
+              class="col-span-2 p-3 pl-4 border-t border-l bg-gray-50 text-gray-400 focus:outline-0"
+            />
+            <input
+              disabled
+              v-model="lubricatingOilData.receipt"
+              @keypress="preventNaN($event, lubricatingOilData.receipt)"
+              placeholder="0"
+              class="col-span-2 p-3 pl-4 border-t border-l bg-gray-50 text-gray-400 focus:outline-0"
+            />
+            <input
+              disabled
+              v-model="lubricatingOilData.debunkering"
+              @keypress="preventNaN($event, lubricatingOilData.debunkering)"
+              placeholder="0"
+              class="col-span-2 p-3 pl-4 border-t border-l bg-gray-50 text-gray-400 focus:outline-0"
+            />
+            <div
+              class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25"
+            >
+              {{ lubricatingOilData.rob }}
+            </div>
+          </span>
+        </div>
+      </div>
+
+      <div class="pt-8">
+        <div class="self-center text-16 text-gray-700">
+          {{ $t("freshWaterInTon") }}
+        </div>
+        <div class="grid grid-cols-6 pt-8 text-14">
+          <div
+            class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25"
+          >
+            {{ $t("consumed") }}
+          </div>
+          <div
+            class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25"
+          >
+            {{ $t("generated") }}
+          </div>
+          <div
+            class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25"
+          >
+            +/-
+          </div>
+          <div
+            class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25"
+          >
+            {{ $t("receipt") }}
+          </div>
+          <div
+            class="col-span-1 text-sysblue-800 p-3 border-t border-l border-sysblue-100 bg-sysblue-25"
+          >
+            {{ $t("discharging") }}
+          </div>
+          <div
+            class="col-span-1 text-sysblue-800 p-3 border-t border-x border-sysblue-100 bg-sysblue-25"
+          >
+            {{ $t("remainOnBoard") }}
+          </div>
+          <input
+            v-model="freshwaterConsumedSum"
+            @keypress="preventNaN($event, freshwaterConsumedSum)"
+            placeholder="0"
+            disabled
+            class="col-span-1 p-3 pl-4 border-y border-l bg-gray-50 text-gray-400 focus:outline-0"
+          />
+          <input
+            v-model="freshwaterGeneratedSum"
+            @keypress="preventNaN($event, freshwaterGeneratedSum)"
+            placeholder="0"
+            disabled
+            class="col-span-1 p-3 pl-4 border-y border-l bg-gray-50 text-gray-400 focus:outline-0"
+          />
+          <div
+            class="col-span-1 text-gray-400 p-3 border-y border-l bg-gray-25"
+          >
+            {{ freshwaterChangeSum }}
+          </div>
+          <input
+            v-model="freshwaterReceivingSum"
+            @keypress="preventNaN($event, freshwaterReceivingSum)"
+            placeholder="0"
+            disabled
+            class="col-span-1 p-3 pl-4 border-y border-l bg-gray-50 text-gray-400 focus:outline-0"
+          />
+          <input
+            v-model="freshwaterDischargingSum"
+            @keypress="preventNaN($event, freshwaterDischargingSum)"
+            placeholder="0"
+            disabled
+            class="col-span-1 p-3 pl-4 border-y border-l bg-gray-50 text-gray-400 focus:outline-0"
+          />
+          <div
+            class="col-span-1 text-gray-400 p-3 border-y border-x bg-gray-25"
+          >
+            {{ freshwaterRobSum }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- <template>
   <div
     class="grid bg-white rounded-lg p-5 gap-4 shadow-card border border-yellow-500"
   >
@@ -343,16 +501,7 @@ const freshwaterRobSum = computed(
           </div>
         </div>
 
-        <!-- <div
-          v-if="!isAdditionalRemarkFuel"
-          class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
-        >
-          <img
-            src="@/assets/icons/checkboxes/unchecked_square.svg"
-            class="mr-2 h-5 w-5"
-          />
-          <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
-        </div> -->
+        
         <div
           v-if="isAdditionalRemarkFuel"
           class="bg-gray-25 flex-col py-4 px-3 border border-gray-100"
@@ -368,7 +517,7 @@ const freshwaterRobSum = computed(
             <div class="col-span-2 text-blue-700 p-3">
               {{ $t("correction") }}
             </div>
-            <!-- TODO: make dynamic -->
+          
             <select
               disabled
               v-model="fuelOilDataCorrectionSum.type"
@@ -575,7 +724,7 @@ const freshwaterRobSum = computed(
           </div>
         </div>
 
-        <!-- <div
+        <div
           v-if="!isAdditionalRemarkLubricating"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
           
@@ -585,7 +734,7 @@ const freshwaterRobSum = computed(
             class="mr-2 h-5 w-5"
           />
           <span class="text-gray-700">{{ $t("additionalRemarks") }}</span>
-        </div> -->
+        </div> 
         <div
           v-if="isAdditionalRemarkLubricating"
           class="bg-gray-25 flex-col py-4 px-3 border border-gray-100"
@@ -731,4 +880,4 @@ const freshwaterRobSum = computed(
       </div>
     </div>
   </div>
-</template>
+</template> -->
