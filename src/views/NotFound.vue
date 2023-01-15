@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="flex flex-col p-24 pb-52 m-12 justify-center items-center space-y-2 rounded-xl"
-  >
+  <div class="flex flex-col p-24 pb-52 justify-center items-center w-full">
     <img src="@/assets/icons/unauthorized_logo.svg" class="h-75 w-75" />
     <span class="text-30 font-bold text-gray-700 pt-3">{{
       $t("unauthorizedAccess")
@@ -22,19 +20,9 @@
 <script setup>
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 import { useRouter } from "vue-router";
-import { useAuthStore } from "@/stores/useAuthStore";
 const router = useRouter();
 
 const home = () => {
-  if (manager) {
-    router.push({ path: "/my-vessels" });
-  } else {
-    // router.push({
-    //   path: `/vessels/${props.vesselname}/${props.imo}/overview`,
-    // });
-  }
+  router.push({ path: "/" });
 };
-
-const auth = useAuthStore();
-const manager = auth.role === "manager";
 </script>
