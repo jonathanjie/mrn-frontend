@@ -38,7 +38,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   const departureDateTime = ref(departureDate);
   const departureTimeZone = ref(departureTz);
   const arrivalPortCountry = ref(arrivalPort.value.slice(0, 2));
-  const arrivalPortName = ref(departurePort.value.slice(3, 6));
+  const arrivalPortName = ref(arrivalPort.value.slice(3, 6));
 
   // Overview
   const reportNo = arrfReportNo;

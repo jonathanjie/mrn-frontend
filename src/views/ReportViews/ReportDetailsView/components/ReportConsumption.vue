@@ -149,7 +149,7 @@ const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 2);
               'col-span-full grid ' +
               getFuelOilCols() +
               ' ' +
-              (index == fuelOils.length - 1 ? 'border-b' : '')
+              (index == fuelOilDataSet.length - 1 ? 'border-b' : '')
             "
           >
             <div
@@ -303,7 +303,7 @@ const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 2);
             :key="lubricatingOilData + index"
             :class="
               'col-span-10 grid grid-cols-10' +
-              (index == lubricatingOils.length - 1 ? ' border-b' : '')
+              (index == lubricatingOilData.length - 1 ? ' border-b' : '')
             "
           >
             <div
