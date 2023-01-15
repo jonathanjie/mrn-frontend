@@ -2,8 +2,6 @@
 import { computed } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useShipStore } from "@/stores/useShipStore";
-import { storeToRefs } from "pinia";
 
 const props = defineProps({
   report: {
@@ -32,11 +30,12 @@ const me_fo_consumption = computed(
 // Fuel Consumption
 const fuelMachineTypes = computed(() =>
   Object.keys(
-    props.report.consumptionconditiondata.fueloildata_set[0].breakdown
+    props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set[0]
+      .breakdown
   )
 );
 const fuelOilDataSet = computed(
-  () => props.report.consumptionconditiondata.fueloildata_set
+  () => props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set
 );
 const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 2);
 </script>

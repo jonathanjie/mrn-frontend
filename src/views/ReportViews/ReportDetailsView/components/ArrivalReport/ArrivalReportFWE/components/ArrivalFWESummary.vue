@@ -18,66 +18,16 @@ const totalSailingTime = computed(
 );
 
 // Fuel Consumption
-const lsfo_me_sum = computed(
-  () =>
-    props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "LSFO"
-    )[0].breakdown.ME
+const fuelMachineTypes = computed(() =>
+  Object.keys(
+    props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set[0]
+      .breakdown
+  )
 );
-const lsfo_ge_sum = computed(
-  () =>
-    props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "LSFO"
-    )[0].breakdown.GE
+const fuelOilDataSet = computed(
+  () => props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set
 );
-const lsfo_boiler_sum = computed(
-  () =>
-    props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "LSFO"
-    )[0].breakdown.BLR
-);
-const lsfo_igg_sum = computed(
-  () =>
-    props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "LSFO"
-    )[0].breakdown.IGG
-);
-const lsfo_total_sum = computed(
-  () =>
-    props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "LSFO"
-    )[0].total_consumption
-);
-const mgo_me_sum = computed(
-  () =>
-    props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "LSFO"
-    )[0].breakdown.ME
-);
-const mgo_ge_sum = computed(
-  () =>
-    props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "LSFO"
-    )[0].breakdown.GE
-);
-const mgo_boiler_sum = computed(
-  () =>
-    props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "LSFO"
-    )[0].breakdown.BLR
-);
-const mgo_igg_sum = computed(
-  () =>
-    props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "LSFO"
-    )[0].breakdown.IGG
-);
-const mgo_total_sum = computed(
-  () =>
-    props.report.totalconsumptiondata.fueloiltotalconsumptiondata_set.filter(
-      (fuelData) => fuelData.fuel_oil_type == "LSFO"
-    )[0].total_consumption
-);
+const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 2);
 </script>
 
 <template>
@@ -140,87 +90,39 @@ const mgo_total_sum = computed(
           $t("totalConsumptionPortToPort")
         }}</span>
       </div>
-      <div class="grid grid-cols-6 border bg-gray-25 text-14">
+      <div class="grid border bg-gray-25 text-14" :class="getFuelOilCols()">
         <div></div>
-        <div class="p-3 border-l text-blue-700">{{ $t("me") }}</div>
-        <div class="p-3 border-l text-blue-700">{{ $t("ge") }}</div>
-        <div class="p-3 border-l text-blue-700">{{ $t("boiler") }}</div>
-        <div class="p-3 border-l text-blue-700">{{ $t("igg") }}</div>
+        <div
+          v-for="item in fuelMachineTypes"
+          :key="item"
+          class="p-3 border-l text-blue-700"
+        >
+          {{ $t(item) }}
+        </div>
         <div class="p-3 border-l text-blue-700">{{ $t("total") }}</div>
 
-        <div class="text-blue-700 p-3 border-t">{{ $t("lsfo") }}</div>
-        <input
-          v-model="lsfo_me_sum"
-          @keypress="preventNaN($event, lsfo_me_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
-        />
-        <input
-          v-model="lsfo_ge_sum"
-          @keypress="preventNaN($event, lsfo_ge_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
-        />
-        <input
-          v-model="lsfo_boiler_sum"
-          @keypress="preventNaN($event, lsfo_boiler_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
-        />
-        <input
-          v-model="lsfo_igg_sum"
-          @keypress="preventNaN($event, lsfo_igg_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
-        />
-        <input
-          v-model="lsfo_total_sum"
-          @keypress="preventNaN($event, lsfo_total_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
-        />
-
-        <div class="text-blue-700 p-3 border-t">{{ $t("mgo") }}</div>
-        <input
-          v-model="mgo_me_sum"
-          @keypress="preventNaN($event, mgo_me_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
-        />
-        <input
-          v-model="mgo_ge_sum"
-          @keypress="preventNaN($event, mgo_ge_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
-        />
-        <input
-          v-model="mgo_boiler_sum"
-          @keypress="preventNaN($event, mgo_boiler_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
-        />
-        <input
-          v-model="mgo_igg_sum"
-          @keypress="preventNaN($event, mgo_igg_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
-        />
-        <input
-          v-model="mgo_total_sum"
-          @keypress="preventNaN($event, mgo_total_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
-        />
+        <span
+          v-for="(fuelOilData, index) of fuelOilDataSet"
+          :key="index"
+          :class="'col-span-full grid ' + getFuelOilCols()"
+        >
+          <div class="text-blue-700 p-3 border-t">
+            {{ $t(fuelOilData.fuel_oil_type) }}
+          </div>
+          <input
+            v-for="entry of Object.entries(fuelOilData.breakdown)"
+            :key="entry"
+            v-model="entry[1]"
+            placeholder="000.00"
+            disabled
+            class="p-3 pl-4 border-t border-l text-14 text-gray-700 focus:outline-0 bg-gray-50"
+          />
+          <div
+            class="col-span-1 text-gray-700 p-3 border-t border-l bg-gray-50 pl-4 text-14"
+          >
+            {{ fuelOilData.total_consumption }}
+          </div>
+        </span>
       </div>
     </div>
   </div>

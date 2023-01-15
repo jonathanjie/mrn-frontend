@@ -27,15 +27,11 @@ const isLubricatingOilRemarkEnabled = computed(() =>
     : false
 );
 
-// const isFuelOilRemarkEnabled = ref(false);
-// const isLubricatingOilRemarkEnabled = ref(false);
-
 const fuelMachineTypes = computed(() =>
   Object.keys(
     props.report.consumptionconditiondata.fueloildata_set[0].breakdown
   )
 );
-// console.log("fuel machine types: ", fuelMachineTypes.value);
 
 // Fuel Consumption
 const fuelOilDataSet = computed(
@@ -50,8 +46,6 @@ const fuelOilDataCorrection = computed(() =>
     : null
 );
 
-// console.log(fuelOilDataCorrection.value);
-
 // Lubricating Oil
 const lubricatingOilDataSet = computed(
   () => props.report.consumptionconditiondata.lubricatingoildata_set
@@ -65,7 +59,11 @@ const lubricatingOilDataCorrection = computed(() =>
     : null
 );
 
-console.log("correction", JSON.stringify(lubricatingOilDataCorrection.value));
+// console.log(
+//   JSON.parse(
+//     JSON.stringify(lubricatingOilDataCorrection.value.lubricating_oil_type)
+//   )
+// );
 // Freshwater Consumption
 const freshwaterConsumed = computed(
   () => props.report.consumptionconditiondata.freshwaterdata.consumed
@@ -89,8 +87,9 @@ const freshwaterChange = computed(
 const freshwaterRob = computed(
   () => props.report.consumptionconditiondata.freshwaterdata.rob
 );
+console.log(fuelMachineTypes.value.length);
 
-const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 2);
+const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 5);
 </script>
 
 <template>
@@ -303,7 +302,7 @@ const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 2);
             :key="lubricatingOilData + index"
             :class="
               'col-span-10 grid grid-cols-10' +
-              (index == lubricatingOilData.length - 1 ? ' border-b' : '')
+              (index == lubricatingOilDataSet.length - 1 ? ' border-b' : '')
             "
           >
             <div
@@ -375,7 +374,12 @@ const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 2);
             <div class="col-span-2 text-blue-700 p-3 bg-gray-50">
               {{ $t("correction") }}
             </div>
-            <select
+            <div
+              class="col-span-6 p-3 border-l focus:outline-0 bg-gray-50 text-gray-700"
+            >
+              {{ $t(lubricatingOilDataCorrection.lubricating_oil_type) }}
+            </div>
+            <!-- <select
               disabled
               v-model="lubricatingOilDataCorrection.lubricating_oil_type"
               class="col-span-6 p-3 border-l focus:outline-0 bg-gray-50 text-gray-700"
@@ -390,7 +394,7 @@ const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 2);
               >
                 {{ $t(lubricatingOil) }}
               </option>
-            </select>
+            </select> -->
             <div class="flex col-span-6 p-3 pl-4 border-l bg-gray-50">
               <input
                 disabled

@@ -37,8 +37,8 @@ const otherPlannedOperation = computed(
   () => props.report?.plannedoperations?.planned_operation_othersdetails
 );
 
-console.log(JSON.stringify(plannedOperations.value));
-console.log(JSON.stringify(otherPlannedOperation.value));
+// console.log(JSON.stringify(plannedOperations.value));
+// console.log(JSON.stringify(otherPlannedOperation.value));
 </script>
 
 <template>

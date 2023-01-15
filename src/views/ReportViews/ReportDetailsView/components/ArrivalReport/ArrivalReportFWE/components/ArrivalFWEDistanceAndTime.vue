@@ -10,9 +10,13 @@ const props = defineProps({
   },
 });
 
-const hours = computed(() => props.report.distancetimedata.time);
-const distance_obs = computed(() => props.report.distancetimedata.distance_obs);
-const distance_eng = computed(() => props.report.distancetimedata.distance_eng);
+const hours = computed(() => props.report.distancetimedata.hours_since_last);
+const distance_obs = computed(
+  () => props.report.distancetimedata.distance_observed_since_last
+);
+const distance_eng = computed(
+  () => props.report.distancetimedata.distance_engine_since_last
+);
 const revolution_count = computed(
   () => props.report.distancetimedata.revolution_count
 );
@@ -50,13 +54,15 @@ const revolution_count = computed(
       >
         {{ $t("distanceByObservation") }}
       </div>
-      <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
+      <div
+        class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50"
+      >
         <input
           disabled
           v-model="distance_obs"
           @keypress="preventNaN($event, distance_obs)"
           placeholder="0"
-          class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
+          class="w-24 bg-gray-50 text-14 text-gray-700 focus:outline-0"
         />
         <MiniUnitDisplay>NM</MiniUnitDisplay>
       </div>
@@ -89,7 +95,7 @@ const revolution_count = computed(
         v-model="revolution_count"
         @keypress="preventNaN($event, revolution_count)"
         placeholder="0"
-        class="col-span-3 lg:col-span-3 p-3 pl-4 border-x border-y lg:border-t-0 bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-3 lg:col-span-3 p-3 pl-4 border-x border-y lg:border-t-0 bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
     </div>
   </div>

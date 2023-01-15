@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from "vue";
-import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
-import { storeToRefs } from "pinia";
+// import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
+// import { storeToRefs } from "pinia";
 import { TIMEZONES, OPERATIONS, PARKING_STATUS_ARR_FWE } from "@/utils/options";
 // import { UTCPlaceholder } from "@/constants";
 // import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
@@ -10,7 +10,7 @@ import {
   textInputOptions,
   format,
   parsePositionFromString,
-  // formatUTC,
+  convertUTCToLT,
 } from "@/utils/helpers.js";
 
 const props = defineProps({
@@ -23,45 +23,28 @@ const props = defineProps({
 const reportingTimeZone = computed(
   () => props.report.arrivalfwetimeandposition.timezone
 );
-const reportingDateTime = computed(
-  () => props.report.arrivalfwetimeandposition.time
+const reportingDateTime = computed(() =>
+  convertUTCToLT(
+    new Date(props.report.arrivalfwetimeandposition.time),
+    props.report.arrivalfwetimeandposition.timezone
+  )
 );
-
 const position = computed(() =>
   parsePositionFromString(props.report.arrivalfwetimeandposition.position)
 );
-
-const store = useArrivalFWEReportStore();
-const {
-  // reportingTimeZone: reporting_time_zone,
-  // reportingDateTime: reporting_date_time,
-  // reportingDateTimeUTC,
-  // latDir: lat_dir,
-  // latDegree: lat_degree,
-  // latMinute: lat_minute,
-  // longDir: long_dir,
-  // longMinute: long_minutes,
-  // longDegree: long_degree,
-  plannedOperations: planned_operations,
-  otherPlannedOperation: other_planned_operation,
-  operations: operations,
-  status: status,
-} = storeToRefs(store);
-
-const resetOperations = () => {
-  if (
-    operations.value !== ["waiting"] &&
-    !operations.value.includes("waiting")
-  ) {
-    operations.value = ["waiting"];
-  }
-};
-
-// const reporting_date_time_utc = computed(() =>
-//   reportingDateTimeUTC.value
-//     ? formatUTC(new Date(reportingDateTimeUTC.value))
-//     : UTCPlaceholder
-// );
+const operations = computed(() =>
+  props.report?.plannedoperations
+    ? Object.keys(props.report?.plannedoperations).filter(
+        (key) => props.report?.plannedoperations[key]
+      )
+    : []
+);
+const otherPlannedOperation = computed(
+  () => props.report?.plannedoperations?.planned_operation_othersdetails
+);
+const status = computed(
+  () => props.report?.arrivalfwetimeandposition.parking_status
+);
 </script>
 
 <template>
@@ -78,13 +61,10 @@ const resetOperations = () => {
       >
         {{ $t("timeZone") }}
       </div>
-      <div class="flex col-span-3 border-b">
+      <div class="flex col-span-3 border-b bg-gray-50">
         <select
           disabled
-          class="grow self-center p-3 text-14 focus:outline-0"
-          :class="
-            reportingTimeZone === 'default' ? 'text-gray-400' : 'text-gray-700'
-          "
+          class="grow self-center p-3 text-14 focus:outline-0 text-gray-700 bg-gray-50"
           v-model="reportingTimeZone"
         >
           <option selected disabled value="default">
@@ -98,7 +78,7 @@ const resetOperations = () => {
       <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
         {{ $t("dateAndTime") }}
       </div>
-      <div class="col-span-3 relative flex items-center bg-white">
+      <div class="col-span-3 relative flex items-center bg-gray-50">
         <DatePicker
           disabled
           v-model="reportingDateTime"
@@ -125,41 +105,6 @@ const resetOperations = () => {
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
       <span
         class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
-        >{{ $t("latitude") }}</span
-      >
-      <input
-        disabled
-        v-model="position.latDegree"
-        @keypress="preventNaN($event, position.latDegree)"
-        placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
-      />
-      <input
-        disabled
-        v-model="position.latMinutes"
-        @keypress="preventNaN($event, position.latMinutes)"
-        placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
-      />
-      <select
-        disabled
-        v-model="position.latDir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0 focus:outline-0"
-        :class="
-          position.latDir === 'default' ? 'text-gray-400' : 'text-gray-700'
-        "
-      >
-        <option selected disabled value="default">
-          {{ $t("southAndNorth") }}
-        </option>
-        <option value="S">{{ $t("south") }}</option>
-        <option value="N">{{ $t("north") }}</option>
-      </select>
-    </div>
-
-    <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-      <span
-        class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
         >{{ $t("longitude") }}</span
       >
       <input
@@ -167,19 +112,19 @@ const resetOperations = () => {
         v-model="position.longDegree"
         @keypress="preventNaN($event, position.longDegree)"
         placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <input
         disabled
         v-model="position.longMinutes"
         @keypress="preventNaN($event, position.longMinutes)"
         placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <select
         disabled
         v-model="position.longDir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0"
+        class="col-span-3 p-3 text-14 border-l focus:outline-0 bg-gray-50"
         :class="
           position.longDir === 'default' ? 'text-gray-400' : 'text-gray-700'
         "
@@ -191,9 +136,40 @@ const resetOperations = () => {
         <option value="W">{{ $t("west") }}</option>
       </select>
     </div>
+    <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
+      <span
+        class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
+        >{{ $t("latitude") }}</span
+      >
+      <input
+        disabled
+        v-model="position.latDegree"
+        @keypress="preventNaN($event, position.latDegree)"
+        placeholder="000 (Degree)"
+        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-14 text-gray-700 focus:outline-0"
+      />
+      <input
+        disabled
+        v-model="position.latMinutes"
+        @keypress="preventNaN($event, position.latMinutes)"
+        placeholder="000 (Minutes)"
+        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-14 text-gray-700 focus:outline-0"
+      />
+      <select
+        disabled
+        v-model="position.latDir"
+        class="col-span-3 p-3 text-14 border-l focus:outline-0 focus:outline-0 bg-gray-50 text-gray-700"
+      >
+        <option selected disabled value="default">
+          {{ $t("southAndNorth") }}
+        </option>
+        <option value="S">{{ $t("south") }}</option>
+        <option value="N">{{ $t("north") }}</option>
+      </select>
+    </div>
 
     <div
-      class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-white text-14"
+      class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50 text-14"
     >
       <div class="col-span-2 row-span-2 bg-gray-50 text-blue-700 p-3 border-r">
         {{ $t("status") }}
@@ -223,22 +199,19 @@ const resetOperations = () => {
         {{ $t("operationAtCurrentLocation") }}
       </div>
       <div
-        class="col-span-3 bg-white flex flex-col space-y-2 p-3 text-gray-700"
+        class="col-span-3 bg-gray-50 flex flex-col space-y-2 p-3 text-gray-700"
       >
         <div class="flex align-center space-x-2">
           <input
-            :disabled="!planned_operations.includes('waiting')"
+            disabled
             type="checkbox"
             id="waiting"
             value="waiting"
             v-model="operations"
-            @click="resetOperations"
           />
           <label
             for="waiting"
-            :class="
-              planned_operations.includes('waiting') ? '' : 'text-gray-400'
-            "
+            :class="operations.includes('waiting') ? '' : 'text-gray-400'"
             >{{ $t("waiting") }}</label
           >
         </div>
@@ -248,10 +221,7 @@ const resetOperations = () => {
           class="flex align-center space-x-2"
         >
           <input
-            :disabled="
-              !planned_operations.includes(val) ||
-              operations.includes('waiting')
-            "
+            disabled
             type="checkbox"
             :id="val"
             :value="val"
@@ -259,16 +229,13 @@ const resetOperations = () => {
           />
           <label
             :for="val"
-            :class="planned_operations.includes(val) ? '' : 'text-gray-400'"
+            :class="operations.includes(val) ? '' : 'text-gray-400'"
             >{{ $t(key) }}</label
           >
         </div>
-        <div v-if="other_planned_operation" class="flex align-center space-x-2">
+        <div v-if="otherPlannedOperation" class="flex align-center space-x-2">
           <input
-            :disabled="
-              !planned_operations.includes('others') ||
-              operations.includes('waiting')
-            "
+            disabled
             type="checkbox"
             id="others"
             value="others"
@@ -276,10 +243,8 @@ const resetOperations = () => {
           />
           <label
             for="others"
-            :class="
-              planned_operations.includes('others') ? '' : 'text-gray-400'
-            "
-            >{{ other_planned_operation }}</label
+            :class="operations.includes('others') ? '' : 'text-gray-400'"
+            >{{ otherPlannedOperation }}</label
           >
         </div>
       </div>
