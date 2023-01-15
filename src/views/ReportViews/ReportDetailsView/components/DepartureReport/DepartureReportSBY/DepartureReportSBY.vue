@@ -45,10 +45,10 @@ const isFirstReport = computed(
     </ReportConsumption>
 
     <!-- Consumption & Condition (Harbour/In Port in Total) -->
-    <DepartureSBYTotalConsumption
+    <!-- <DepartureSBYTotalConsumption
       v-if="!isFirstReport"
       :report="props.report"
-    />
+    /> -->
 
     <!-- <DepartureSBYTotalConsumption :report="props.report">{{
       $t("consumptionAndConditionHarbourInPortInTotal")

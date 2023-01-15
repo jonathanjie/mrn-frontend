@@ -39,6 +39,15 @@ export const useDepartureSBYReportStore = defineStore(
       freshwaterRob: prevFreshWaterRob,
       fuelOilConsInHarbourPort,
       cargoTotal,
+      fuelOilDebunkering: prevFuelOilDebunkering,
+      fuelOilReceipt: prevFuelOilReceipt,
+      lubeOilDebunkering: prevLubeOilDebunkering,
+      lubeOilReceipt: prevLubeOilReceipt,
+      lubeOilTotalConsumption: prevLubeOilTotalConsumption,
+      freshwaterConsumed: prevFreshwaterConsumed,
+      freshwaterDischarged: prevFreshwaterDischarged,
+      freshwaterGenerated: prevFreshwaterGenerated,
+      freshwaterReceived: prevFreshwaterReceived,
     } = storeToRefs(detailsStore);
 
     const shipStore = useShipStore();
@@ -251,7 +260,7 @@ export const useDepartureSBYReportStore = defineStore(
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
         rtn[fuelOil] = +(
-          temp.fuelOilPrevBreakdown.receipt + Number(fuelOilReceipts[fuelOil])
+          prevFuelOilReceipt.value + Number(fuelOilReceipts[fuelOil])
         ).toFixed(2);
       }
       return rtn;
@@ -260,8 +269,7 @@ export const useDepartureSBYReportStore = defineStore(
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
         rtn[fuelOil] = +(
-          temp.fuelOilPrevBreakdown.debunkering +
-          Number(fuelOilDebunkerings[fuelOil])
+          prevFuelOilDebunkering + Number(fuelOilDebunkerings[fuelOil])
         ).toFixed(2);
       }
       return rtn;
@@ -284,15 +292,15 @@ export const useDepartureSBYReportStore = defineStore(
       for (const lubricatingOil of lubricatingOils.value) {
         rtn[lubricatingOil] = {
           total_consumption: +(
-            temp.lubricatingOilPrevBreakdown.total_consumption +
+            prevLubeOilTotalConsumption +
             Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption)
           ).toFixed(2),
           receipt: +(
-            temp.lubricatingOilPrevBreakdown.receipt +
+            prevLubeOilReceipt +
             Number(lubricatingOilBreakdowns[lubricatingOil].receipt)
           ).toFixed(2),
           debunkering: +(
-            temp.lubricatingOilPrevBreakdown.debunkering +
+            prevLubeOilDebunkering +
             Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
           ).toFixed(2),
         };
@@ -303,26 +311,22 @@ export const useDepartureSBYReportStore = defineStore(
 
     const freshwaterConsumedSum = computed(
       () =>
-        +(
-          temp.freshwaterPrevConsumed + Number(freshwaterConsumed.value)
-        ).toFixed(2)
+        +(prevFreshwaterConsumed + Number(freshwaterConsumed.value)).toFixed(2)
     );
     const freshwaterGeneratedSum = computed(
       () =>
-        +(
-          temp.freshwaterPrevEvaporated + Number(freshwaterGenerated.value)
-        ).toFixed(2)
+        +(prevFreshwaterGenerated + Number(freshwaterGenerated.value)).toFixed(
+          2
+        )
     );
     const freshwaterReceivingSum = computed(
       () =>
-        +(
-          temp.freshwaterPrevReceiving + Number(freshwaterReceiving.value)
-        ).toFixed(2)
+        +(prevFreshwaterReceived + Number(freshwaterReceiving.value)).toFixed(2)
     );
     const freshwaterDischargingSum = computed(
       () =>
         +(
-          temp.freshwaterPrevDischarging + Number(freshwaterDischarging.value)
+          prevFreshwaterDischarged + Number(freshwaterDischarging.value)
         ).toFixed(2)
     );
     const freshwaterChangeSum = computed(
