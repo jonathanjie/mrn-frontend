@@ -34,9 +34,9 @@
         >
           <img src="@/assets/icons/my_vessels.svg" class="h-6 w-6" />
           <Transition name="fade">
-            <span v-if="!collapsed" class="text-white text-14 font-bold"
-              >MyVessels HQ</span
-            >
+            <span v-if="!collapsed" class="text-white text-14 font-bold">{{
+              $t("myVessels")
+            }}</span>
           </Transition>
         </router-link>
         <router-link

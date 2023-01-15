@@ -549,6 +549,7 @@ const i18n = createI18n({
       tg_system_oil: "T/G System",
       made: "Made",
       unauthorizedAccess: "Unauthorized Access",
+      clickMyVessels: 'Click "My Vessels" button',
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser
