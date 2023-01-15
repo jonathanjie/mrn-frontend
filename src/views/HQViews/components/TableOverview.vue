@@ -63,7 +63,9 @@
           >
           <div
             class="grid grid-cols-2 w-full"
-            :class="latestData.fuel_stats.length > 2 ? 'grid-rows-2' : ''"
+            :class="
+              latestData.fuel_stats.length > 2 ? 'grid-rows-2 gap-y-2' : ''
+            "
           >
             <div v-for="value in latestData.fuel_stats" :key="value.id">
               <div
@@ -96,7 +98,9 @@
           >
           <div
             class="grid grid-cols-2 w-full"
-            :class="latestData.fuel_stats.length > 2 ? 'grid-rows-2' : ''"
+            :class="
+              latestData.fuel_stats.length > 2 ? 'grid-rows-2 gap-y-2' : ''
+            "
           >
             <div v-for="value in latestData.fuel_stats" :key="value.id">
               <div
