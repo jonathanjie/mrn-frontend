@@ -97,9 +97,9 @@ const {
   routeArrivalPortCountry,
   routeArrivalPortName,
   routeArrivalDateTimeUTC,
-  isRouteArrivalDateTimeEdited,
   routeArrivalDateTimeEditedUTC,
   routeArrivalTimeZone,
+  dateEditIsDisabled,
   // DateTimeLatLong
   latDir,
   latMinutes,
@@ -250,9 +250,9 @@ const sendReport = async () => {
       departure_date: routeDepartureDateTime.value,
       departure_tz: routeDepartureTimeZone.value,
       arrival_port: routeArrivalPort,
-      arrival_date: isRouteArrivalDateTimeEdited.value
-        ? routeArrivalDateTimeEditedUTC.value
-        : routeArrivalDateTimeUTC.value,
+      arrival_date: dateEditIsDisabled.value
+        ? routeArrivalDateTimeUTC.value
+        : routeArrivalDateTimeEditedUTC.value,
       arrival_tz: routeArrivalTimeZone.value,
     },
     weatherdata: {

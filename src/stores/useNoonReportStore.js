@@ -62,7 +62,6 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   );
 
   // Departure and Destination
-  // TODO: replace dummy values
   const routeDeparturePortCountry = ref(departurePortCountry.value);
   const routeDeparturePortName = ref(departurePortName.value);
   const routeDepartureDateTimeUTC = ref(new Date(departureDate.value));
@@ -79,7 +78,6 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const routeArrivalPortCountry = ref(arrivalPortCountry.value);
   const routeArrivalPortName = ref(arrivalPortName.value);
   const routeArrivalTimeZone = ref(arrivalTz.value);
-  const isRouteArrivalDateTimeEdited = ref(false);
   const routeArrivalDateTimeUTC = ref(new Date(arrivalDate.value));
   const routeArrivalDateTime = computed(() =>
     routeArrivalTimeZone.value !== "default" && routeArrivalDateTimeUTC.value
@@ -89,7 +87,8 @@ export const useNoonReportStore = defineStore("noonReport", () => {
         )
       : ""
   );
-  const routeArrivalDateTimeEdited = ref("");
+  const dateEditIsDisabled = ref(true);
+  const routeArrivalDateTimeEdited = ref(routeArrivalDateTime.value);
   const routeArrivalDateTimeEditedUTC = computed(() =>
     routeArrivalTimeZone.value !== "default" && routeArrivalDateTimeEdited.value
       ? convertLTToUTC(
@@ -195,6 +194,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
       : ""
   );
   const distanceEngSinceNoon = computed(() =>
+    // TODO: add constant for nautical mile
     revolutionCount.value
       ? +(
           ((Number(revolutionCount.value) - Number(revolution_count.value)) *
@@ -444,9 +444,9 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     routeDepartureDateTime,
     routeDepartureDateTimeUTC,
     routeDepartureTimeZone,
+    dateEditIsDisabled,
     routeArrivalPortCountry,
     routeArrivalPortName,
-    isRouteArrivalDateTimeEdited,
     routeArrivalDateTime,
     routeArrivalDateTimeUTC,
     routeArrivalDateTimeEdited,

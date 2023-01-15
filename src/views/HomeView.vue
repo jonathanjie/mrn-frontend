@@ -1,18 +1,23 @@
 <template>
-  <SideNav :vesselname="ship.name" :imo="ship.imo_reg.toString()" />
-  <div class="grow h-screen" :class="collapsed ? 'ml-20' : 'ml-64'">
-    <!-- TODO: change to fixed, not sticky -->
-    <WebHeader class="sticky top-0 z-40" />
-    <router-view class="bg-gray-50 min-h-screen" />
-    <InitializationModal
-      ref="modal"
-      v-if="showModal"
-      @close-modal="showModal = false"
-      :vesselname="ship.name"
-      :imo="ship.imo_reg"
-      :flag="ship.flag"
-      :deadweight_tonnage="ship.deadweight_tonnage"
-    ></InitializationModal>
+  <div v-if="!ship">
+    {{ $t("userAccountHasNotBeenInitialized") }}
+  </div>
+  <div v-else class="grow h-screen">
+    <SideNav :vesselname="ship.name" :imo="ship.imo_reg.toString()" />
+    <div class="grow h-screen" :class="collapsed ? 'ml-20' : 'ml-64'">
+      <!-- TODO: change to fixed, not sticky -->
+      <WebHeader class="sticky top-0 z-40" />
+      <router-view class="bg-gray-50 min-h-screen" />
+      <InitializationModal
+        ref="modal"
+        v-if="showModal"
+        @close-modal="showModal = false"
+        :vesselname="ship.name"
+        :imo="ship.imo_reg"
+        :flag="ship.flag"
+        :deadweight_tonnage="ship.deadweight_tonnage"
+      ></InitializationModal>
+    </div>
   </div>
 </template>
 
@@ -50,6 +55,7 @@ const updateShipDetails = (shipDetails, shipStore) => {
     companyUuid,
     imoReg,
     shipUuid,
+    shipName,
     fuelOils,
     lubricatingOils,
     machinery,
@@ -61,6 +67,7 @@ const updateShipDetails = (shipDetails, shipStore) => {
   companyUuid.value = shipDetails.company.uuid;
   imoReg.value = shipDetails.imo_reg;
   shipUuid.value = shipDetails.uuid;
+  shipName.value = shipDetails.name;
   fuelOils.value = shipDetails.shipspecs.fuel_options;
   lubricatingOils.value = shipDetails.shipspecs.lubricating_oil_options;
   machinery.value = shipDetails.shipspecs.machinery_options;
@@ -91,7 +98,7 @@ axios.defaults.headers.common["Authorization"] = "Bearer " + jwt;
 let showModal = ref(true);
 const ship = await getShip();
 
-if (ship.shipspecs != undefined) {
+if (ship?.shipspecs != undefined) {
   showModal = false;
 }
 
