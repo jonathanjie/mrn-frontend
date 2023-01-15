@@ -44,7 +44,6 @@ const position = computed(() =>
     ? ""
     : parsePositionFromString(props.report.arrivalpilotstation.position)
 );
-console.log(props.report.arrivalpilotstation.position, position.value);
 </script>
 
 <template>
