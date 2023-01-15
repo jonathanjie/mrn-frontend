@@ -353,7 +353,7 @@ export const useArrivalEOSPReportStore = defineStore(
     const meFoConsumption = computed(() =>
       hoursCospToEosp.value
         ? (
-            Object.values(fuelOilBreakdowns).reduce(
+            Object.values(fuelOilBreakdownsSum.value).reduce(
               (total, fuelOil) => total + fuelOil[Machinery.ME],
               0
             ) /
