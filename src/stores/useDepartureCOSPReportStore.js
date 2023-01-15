@@ -28,6 +28,7 @@ export const useDepartureCOSPReportStore = defineStore(
 
     const detailsStore = useLatestReportDetailsStore();
     const {
+      loadCondition,
       departurePortCountry,
       departurePortName,
       departureDate: departureDateTimeUTC,
@@ -50,7 +51,11 @@ export const useDepartureCOSPReportStore = defineStore(
     // Overview
     const reportNo = deprReportNo;
     const legNo = lastLegNo;
-    const loadingCondition = curLoadingCondition;
+    // const loadingCondition = computed(() =>
+    //   curLoadingCondition ? curLoadingCondition : loadCondition
+    // );
+    const loadingCondition = loadCondition;
+
     const voyageNo = curVoyageNo;
     const reportingDateTime = ref("");
     const reportingTimeZone = ref(departureTimeZone);

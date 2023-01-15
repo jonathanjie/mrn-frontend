@@ -334,7 +334,11 @@ const sendReport = async () => {
       :is-disabled="isSubmissionRequested"
     >
       <!-- TODO: need alternate function for saving changes to backend -->
-      <template v-slot:content>{{ $t("sendReport") }}</template>
+
+      <template v-slot:content>
+        <div v-if="isSubmissionRequested">Loading...</div>
+        <div v-else>{{ $t("sendReport") }}</div></template
+      >
     </GradientButton>
   </div>
 </template>
