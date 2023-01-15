@@ -13,15 +13,15 @@ const props = defineProps({
   },
 });
 
+const files = computed(() => props.report.bdndata.bdn_file);
 const oil_type = computed(() =>
   props.report.bdndata.delivered_oil_type.toUpperCase() in ALL_FUEL_OILS
     ? "fuelOil"
     : "lubricatingOil"
 );
 const oil = computed(() => props.report.bdndata.delivered_oil_type);
-const quantity = computed(() => props.report.bdndata.delivered_oil_type);
+const quantity = computed(() => props.report.bdndata.delivered_quantity);
 const density = computed(() => props.report.bdndata.density_15);
-const sg = computed(() => props.report.bdndata.specific_gravity_15);
 const viscosity = computed(() => props.report.bdndata.viscosity_value);
 const viscosity_degree = computed(
   () => props.report.bdndata.viscosity_temperature
@@ -48,6 +48,14 @@ const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
     </div>
 
     <!-- Upload delivery note section -->
+    <a
+      v-for="(file, index) in files"
+      :key="index"
+      :href="file"
+      class="text-12 truncate text-gray-700"
+    >
+      {{ file }}
+    </a>
     <!-- <DropZone
       class="flex drop-area border border-dashed border-sysblue-300 p-14 place-content-center rounded-lg text-16 text-gray-800 bg-gray-25"
       @files-dropped="store.addFiles"
@@ -100,7 +108,7 @@ const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
       <select
         disabled
         v-model="oil_type"
-        class="col-span-3 p-3 text-gray-700 border-b border-r focus:outline-0"
+        class="col-span-3 p-3 text-gray-700 border-b border-r focus:outline-0 bg-gray-50"
         :class="oil_type === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
@@ -117,8 +125,7 @@ const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
         disabled
         v-if="isFuelOil"
         v-model="oil"
-        class="col-span-3 p-3 text-gray-700 border-b focus:outline-0"
-        :class="oil === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        class="col-span-3 p-3 text-gray-700 border-b focus:outline-0 bg-gray-50"
       >
         <option selected disabled value="default">
           {{ $t("selectOil") }}
@@ -135,8 +142,7 @@ const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
         disabled
         v-else-if="isLubricatingOil"
         v-model="oil"
-        class="col-span-3 p-3 text-gray-700 border-b focus:outline-0"
-        :class="oil === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        class="col-span-3 p-3 text-gray-700 border-b focus:outline-0 bg-gray-50"
       >
         <option selected disabled value="default">
           {{ $t("selectOil") }}
@@ -153,7 +159,7 @@ const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
         disabled
         v-else
         v-model="oil"
-        class="col-span-3 p-3 text-gray-700 border-b focus:outline-0"
+        class="col-span-3 p-3 text-gray-700 border-b focus:outline-0 bg-gray-50"
         :class="oil === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
@@ -169,10 +175,11 @@ const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
         <div v-else></div>
       </div>
       <input
+        disabled
         v-model="quantity"
         @keypress="preventNaN($event, quantity)"
         placeholder="000.00"
-        class="col-span-6 p-3 pl-4 border-b text-gray-700 focus:outline-0"
+        class="col-span-6 p-3 pl-4 border-b text-gray-700 focus:outline-0 bg-gray-50"
       />
 
       <div
@@ -182,18 +189,9 @@ const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
         <MiniUnitDisplay>KG/M³</MiniUnitDisplay>
       </div>
       <input
+        disabled
         v-model="density"
         @keypress="preventNaN($event, density)"
-        placeholder="000.00"
-        class="col-span-6 p-3 pl-4 border-b text-gray-700 focus:outline-0"
-      />
-
-      <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50">
-        {{ $t("specificGravityAt15") }}
-      </div>
-      <input
-        v-model="sg"
-        @keypress="preventNaN($event, sg)"
         placeholder="000.00"
         class="col-span-6 p-3 pl-4 border-b text-gray-700 focus:outline-0"
       />
@@ -204,21 +202,23 @@ const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
         {{ $t("viscosity") }}
         <MiniUnitDisplay>cSt</MiniUnitDisplay>
       </div>
-      <div class="flex col-span-3 border-b border-r p-3 pl-4">
+      <div class="flex col-span-3 border-b border-r p-3 pl-4 bg-gray-50">
         <input
+          disabled
           v-model="viscosity"
           @keypress="preventNaN($event, viscosity)"
           placeholder="000.00"
-          class="text-gray-700 focus:outline-0 w-24"
+          class="text-gray-700 focus:outline-0 w-24 bg-gray-50"
         />
         <MiniUnitDisplay>cSt</MiniUnitDisplay>
       </div>
-      <div class="flex col-span-3 border-b p-3 pl-4">
+      <div class="flex col-span-3 border-b p-3 pl-4 bg-gray-50">
         <input
+          disabled
           v-model="viscosity_degree"
           @keypress="preventNaN($event, viscosity_degree)"
           placeholder="000.00"
-          class="text-gray-700 focus:outline-0 w-24"
+          class="text-gray-700 focus:outline-0 w-24 bg-gray-50"
         />
         <MiniUnitDisplay>°C</MiniUnitDisplay>
       </div>
@@ -229,6 +229,7 @@ const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
         <MiniUnitDisplay>°C</MiniUnitDisplay>
       </div>
       <input
+        disabled
         v-model="flash_point"
         @keypress="preventNaN($event, flash_point)"
         placeholder="000.00"
@@ -240,6 +241,7 @@ const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
         <MiniUnitDisplay>%M/M</MiniUnitDisplay>
       </div>
       <input
+        disabled
         v-model="sulfur_content"
         @keypress="preventNaN($event, sulfur_content)"
         placeholder="000.00"
@@ -257,28 +259,31 @@ const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
         {{ $t("marpol") }}
       </div>
       <input
+        disabled
         v-model="marpol"
         @keypress="preventNaN($event, marpol)"
         placeholder="000.00"
-        class="col-span-6 p-3 pl-4 border-r text-gray-700 focus:outline-0"
+        class="col-span-6 p-3 pl-4 text-gray-700 focus:outline-0"
       />
       <div class="col-span-2 text-blue-700 p-3 border-r border-t bg-gray-50">
         {{ $t("ship") }}
       </div>
       <input
+        disabled
         v-model="ship"
         @keypress="preventNaN($event, ship)"
         placeholder="000.00"
-        class="col-span-6 p-3 pl-4 border-r border-t text-gray-700 focus:outline-0"
+        class="col-span-6 p-3 pl-4 border-t text-gray-700 focus:outline-0"
       />
       <div class="col-span-2 text-blue-700 p-3 border-r border-t bg-gray-50">
         {{ $t("barge") }}
       </div>
       <input
+        disabled
         v-model="barge"
         @keypress="preventNaN($event, barge)"
         placeholder="000.00"
-        class="col-span-6 p-3 pl-4 border-r border-t text-gray-700 focus:outline-0"
+        class="col-span-6 p-3 pl-4 border-t text-gray-700 focus:outline-0"
       />
     </div>
   </div>

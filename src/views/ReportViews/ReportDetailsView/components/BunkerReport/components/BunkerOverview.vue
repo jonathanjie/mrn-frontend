@@ -1,8 +1,6 @@
 <script setup>
 import { computed, defineProps } from "vue";
-import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
-import { textInputOptions, format } from "@/utils/helpers";
-import { storeToRefs } from "pinia";
+import { textInputOptions, format, convertUTCToLT } from "@/utils/helpers";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { TIMEZONES } from "@/utils/options";
 
@@ -65,8 +63,9 @@ const reportingTimeZone = computed(() => props.report.report_tz);
         {{ $t("reportingDateAndTime") }}
       </div>
       <DatePicker
+        disabled
         v-model="reportingDateTime"
-        class="col-span-3"
+        class="col-span-3 bg-gray-50"
         textInput
         :textInputOptions="textInputOptions"
         :format="format"
@@ -84,12 +83,10 @@ const reportingTimeZone = computed(() => props.report.report_tz);
       <div class="col-span-2 text-blue-700 p-3 border-r">
         {{ $t("reportingTimeZone") }}
       </div>
-      <div class="flex col-span-3 bg-white">
+      <div class="flex col-span-3 bg-gray-50">
         <select
-          class="grow self-center p-3 text-14 focus:outline-0"
-          :class="
-            reportingTimeZone === 'default' ? 'text-gray-400' : 'text-gray-700'
-          "
+          disabled
+          class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50 text-gray-700"
           v-model="reportingTimeZone"
         >
           <option selected disabled value="default">

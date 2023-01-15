@@ -1,24 +1,56 @@
-
 <script setup>
 import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-import { reactive } from "vue";
-import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
-import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import { convertUTCToLT } from "@/utils/helpers.js";
 
-const store = useBunkerReportStore();
-const {
-  alongside: alongside,
-  hoseConnection: hose_connection,
-  pumpStart: pump_start,
-  pumpStop: pump_stop,
-  hoseDisconnection: hose_disconnection,
-  awayside: awayside,
-  purchaser: purchaser,
-  bargeName: barge_name,
-  supplierName: supplier_name,
-  address: address,
-  telephoneNumber: telephone_number,
-} = storeToRefs(store);
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
+
+const alongside = computed(() =>
+  convertUTCToLT(
+    new Date(props.report.bdndata.alongside_date),
+    props.report.report_tz
+  )
+);
+const hose_connection = computed(() =>
+  convertUTCToLT(
+    new Date(props.report.bdndata.hose_connection_date),
+    props.report.report_tz
+  )
+);
+const pump_start = computed(() =>
+  convertUTCToLT(
+    new Date(props.report.bdndata.pump_start_date),
+    props.report.report_tz
+  )
+);
+const pump_stop = computed(() =>
+  convertUTCToLT(
+    new Date(props.report.bdndata.pump_stop_date),
+    props.report.report_tz
+  )
+);
+const hose_disconnection = computed(() =>
+  convertUTCToLT(
+    new Date(props.report.bdndata.hose_disconnection_date),
+    props.report.report_tz
+  )
+);
+const awayside = computed(() =>
+  convertUTCToLT(
+    new Date(props.report.bdndata.slipoff_date),
+    props.report.report_tz
+  )
+);
+const purchaser = computed(() => props.report.bdndata.purchaser);
+const barge_name = computed(() => props.report.bdndata.barge_name);
+const supplier_name = computed(() => props.report.bdndata.supplier_name);
+const address = computed(() => props.report.bdndata.supplier_address);
+const telephone_number = computed(() => props.report.bdndata.supplier_contact);
 </script>
 
 <template>
@@ -38,6 +70,7 @@ const {
           {{ $t("alongside") }}
         </div>
         <DatePicker
+          disabled
           v-model="alongside"
           class="col-span-3 border-b"
           textInput
@@ -57,8 +90,9 @@ const {
           {{ $t("hoseConnection") }}
         </div>
         <DatePicker
+          disabled
           v-model="hose_connection"
-          class="col-span-3 border-b"
+          class="col-span-3 border-b bg-gray-50"
           textInput
           :textInputOptions="textInputOptions"
           :format="format"
@@ -76,8 +110,9 @@ const {
           {{ $t("pumpStart") }}
         </div>
         <DatePicker
+          disabled
           v-model="pump_start"
-          class="col-span-3 border-b"
+          class="col-span-3 border-b bg-gray-50"
           textInput
           :textInputOptions="textInputOptions"
           :format="format"
@@ -95,8 +130,9 @@ const {
           {{ $t("pumpStop") }}
         </div>
         <DatePicker
+          disabled
           v-model="pump_stop"
-          class="col-span-3 border-b"
+          class="col-span-3 border-b bg-gray-50"
           textInput
           :textInputOptions="textInputOptions"
           :format="format"
@@ -114,8 +150,9 @@ const {
           {{ $t("hoseDisconnection") }}
         </div>
         <DatePicker
+          disabled
           v-model="hose_disconnection"
-          class="col-span-3 border-b"
+          class="col-span-3 border-b bg-gray-50"
           textInput
           :textInputOptions="textInputOptions"
           :format="format"
@@ -131,8 +168,9 @@ const {
           {{ $t("awayside") }}
         </div>
         <DatePicker
+          disabled
           v-model="awayside"
-          class="col-span-3"
+          class="col-span-3 bg-gray-50"
           textInput
           :textInputOptions="textInputOptions"
           :format="format"
@@ -159,9 +197,10 @@ const {
           {{ $t("purchaser") }}
         </div>
         <input
+          disabled
           v-model="purchaser"
           :placeholder="$t('inputDetails')"
-          class="col-span-3 p-3 pl-4 bg-white text-14 text-gray-700 focus:outline-0"
+          class="col-span-3 p-3 pl-4 bg-gray-50 text-14 text-gray-700 focus:outline-0"
         />
 
         <div
@@ -170,9 +209,10 @@ const {
           {{ $t("bargeName") }}
         </div>
         <input
+          disabled
           v-model="barge_name"
           :placeholder="$t('inputDetails')"
-          class="col-span-3 p-3 pl-4 border-t bg-white text-14 text-gray-700 focus:outline-0"
+          class="col-span-3 p-3 pl-4 border-t bg-gray-50 text-14 text-gray-700 focus:outline-0"
         />
 
         <div
@@ -181,9 +221,10 @@ const {
           {{ $t("supplierName") }}
         </div>
         <input
+          disabled
           v-model="supplier_name"
           :placeholder="$t('inputDetails')"
-          class="col-span-3 p-3 pl-4 border-t bg-white text-14 text-gray-700 focus:outline-0"
+          class="col-span-3 p-3 pl-4 border-t bg-gray-50 text-14 text-gray-700 focus:outline-0"
         />
 
         <div
@@ -192,23 +233,23 @@ const {
           {{ $t("address") }}
         </div>
         <input
+          disabled
           v-model="address"
           :placeholder="$t('inputDetails')"
-          class="col-span-3 p-3 pl-4 border-t bg-white text-14 text-gray-700 focus:outline-0"
+          class="col-span-3 p-3 pl-4 border-t bg-gray-50 text-14 text-gray-700 focus:outline-0"
         />
 
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("telephoneNumber") }}
         </div>
         <input
+          disabled
           v-model="telephone_number"
           @keypress="preventNaN($event, telephone_number)"
           :placeholder="$t('countryCodePhoneNumber')"
-          class="col-span-3 p-3 pl-4 border-t bg-white text-14 text-gray-700 focus:outline-0"
+          class="col-span-3 p-3 pl-4 border-t bg-gray-50 text-14 text-gray-700 focus:outline-0"
         />
       </div>
     </div>
   </div>
 </template>
-
-
