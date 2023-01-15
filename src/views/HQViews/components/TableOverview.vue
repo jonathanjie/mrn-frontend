@@ -65,7 +65,7 @@
             class="grid grid-cols-2 w-full"
             :class="latestData.fuel_stats.length > 2 ? 'grid-rows-2' : ''"
           >
-            <div v-for="value in latestData.fuel_stats">
+            <div v-for="value in latestData.fuel_stats" :key="value.id">
               <div
                 class="flex rounded-xl bg-gray-100 ml-2 py-1.5 px-2.5 justify-center"
                 :class="!selectedSpeed ? 'bg-opacity-10' : ''"
@@ -98,7 +98,7 @@
             class="grid grid-cols-2 w-full"
             :class="latestData.fuel_stats.length > 2 ? 'grid-rows-2' : ''"
           >
-            <div v-for="value in latestData.fuel_stats">
+            <div v-for="value in latestData.fuel_stats" :key="value.id">
               <div
                 class="flex rounded-xl bg-gray-100 ml-2 py-1.5 px-2.5 justify-center"
                 :class="!selectedSpeed ? 'bg-opacity-10' : ''"
@@ -134,7 +134,7 @@
         />
       </div>
       <div v-else>
-        <div v-for="(value, key) in fuelObject" :key="_id">
+        <div v-for="(value, key) in fuelObject" :key="value.id">
           <TableOverviewRow
             :header="key.toUpperCase()"
             :fuelFoc="value.foc"
@@ -178,6 +178,120 @@ const data = props.stats;
 //         total_consumption: "100.00",
 //         rob: "100.00",
 //       },
+//       {
+//         fuel_oil_type: "LSFO",
+//         total_consumption: "100.00",
+//         rob: "900.00",
+//       },
+//     ],
+//   },
+//   {
+//     report_date: "2022-12-21T12:00:00Z",
+//     report_type: "NOON",
+//     speed: "1.50",
+//     distance_observed: "20",
+//     distance_to_go: "4000",
+//     fuel_stats: [
+//       {
+//         fuel_oil_type: "HFO",
+//         total_consumption: "0",
+//         rob: "200.00",
+//       },
+//       {
+//         fuel_oil_type: "LSFO",
+//         total_consumption: "200.00",
+//         rob: "200.00",
+//       },
+//     ],
+//   },
+//   {
+//     report_date: "2022-12-21T12:00:00Z",
+//     report_type: "NOON",
+//     speed: "1.50",
+//     distance_observed: "20",
+//     distance_to_go: "4000",
+//     fuel_stats: [
+//       // {
+//       //   fuel_oil_type: "HFO",
+//       //   total_consumption: "300.00",
+//       //   rob: "300.00",
+//       // },
+//       {
+//         fuel_oil_type: "LSFO",
+//         total_consumption: "300.00",
+//         rob: "300.00",
+//       },
+//     ],
+//   },
+//   {
+//     report_date: "2022-12-21T12:00:00Z",
+//     report_type: "NOON",
+//     speed: "1.50",
+//     distance_observed: "20",
+//     distance_to_go: "4000",
+//     fuel_stats: [
+//       {
+//         fuel_oil_type: "HFO",
+//         total_consumption: "400.00",
+//         rob: "400.00",
+//       },
+//       {
+//         fuel_oil_type: "LSFO",
+//         total_consumption: "400.00",
+//         rob: "400.00",
+//       },
+//     ],
+//   },
+//   {
+//     report_date: "2022-12-21T12:00:00Z",
+//     report_type: "NOON",
+//     speed: "1.50",
+//     distance_observed: "20",
+//     distance_to_go: "4000",
+//     fuel_stats: [
+//       {
+//         fuel_oil_type: "HFO",
+//         total_consumption: "500.00",
+//         rob: "500.00",
+//       },
+//       {
+//         fuel_oil_type: "LSFO",
+//         total_consumption: "500.00",
+//         rob: "500.00",
+//       },
+//     ],
+//   },
+//   {
+//     report_date: "2022-12-21T12:00:00Z",
+//     report_type: "NOON",
+//     speed: "1.50",
+//     distance_observed: "20",
+//     distance_to_go: "4000",
+//     fuel_stats: [
+//       {
+//         fuel_oil_type: "HFO",
+//         total_consumption: "600.00",
+//         rob: "600.00",
+//       },
+//       {
+//         fuel_oil_type: "LSFO",
+//         total_consumption: "600.00",
+//         rob: "600.00",
+//       },
+//     ],
+//   },
+//   {
+//     report_date: "2022-12-21T12:00:00Z",
+//     report_type: "NOON",
+//     speed: "1.50",
+//     distance_observed: "20",
+//     distance_to_go: "4000",
+//     fuel_stats: [
+//       {
+//         fuel_oil_type: "HFO",
+//         total_consumption: "100.00",
+//         rob: "900.00",
+//       },
 //       // {
 //       //   fuel_oil_type: "LSFO",
 //       //   total_consumption: "100.00",
@@ -185,131 +299,15 @@ const data = props.stats;
 //       // },
 //     ],
 //   },
-// {
-//   report_date: "2022-12-21T12:00:00Z",
-//   report_type: "NOON",
-//   speed: "1.50",
-//   distance_observed: "20",
-//   distance_to_go: "4000",
-//   fuel_stats: [
-//     {
-//       fuel_oil_type: "HFO",
-//       total_consumption: "200.00",
-//       rob: "200.00",
-//     },
-//     {
-//       fuel_oil_type: "LSFO",
-//       total_consumption: "200.00",
-//       rob: "200.00",
-//     },
-//   ],
-// },
-// {
-//   report_date: "2022-12-21T12:00:00Z",
-//   report_type: "NOON",
-//   speed: "1.50",
-//   distance_observed: "20",
-//   distance_to_go: "4000",
-//   fuel_stats: [
-//     {
-//       fuel_oil_type: "HFO",
-//       total_consumption: "300.00",
-//       rob: "300.00",
-//     },
-//     {
-//       fuel_oil_type: "LSFO",
-//       total_consumption: "300.00",
-//       rob: "300.00",
-//     },
-//   ],
-// },
-// {
-//   report_date: "2022-12-21T12:00:00Z",
-//   report_type: "NOON",
-//   speed: "1.50",
-//   distance_observed: "20",
-//   distance_to_go: "4000",
-//   fuel_stats: [
-//     {
-//       fuel_oil_type: "HFO",
-//       total_consumption: "400.00",
-//       rob: "400.00",
-//     },
-//     {
-//       fuel_oil_type: "LSFO",
-//       total_consumption: "400.00",
-//       rob: "400.00",
-//     },
-//   ],
-// },
-// {
-//   report_date: "2022-12-21T12:00:00Z",
-//   report_type: "NOON",
-//   speed: "1.50",
-//   distance_observed: "20",
-//   distance_to_go: "4000",
-//   fuel_stats: [
-//     {
-//       fuel_oil_type: "HFO",
-//       total_consumption: "500.00",
-//       rob: "500.00",
-//     },
-//     {
-//       fuel_oil_type: "LSFO",
-//       total_consumption: "500.00",
-//       rob: "500.00",
-//     },
-//   ],
-// },
-// {
-//   report_date: "2022-12-21T12:00:00Z",
-//   report_type: "NOON",
-//   speed: "1.50",
-//   distance_observed: "20",
-//   distance_to_go: "4000",
-//   fuel_stats: [
-//     {
-//       fuel_oil_type: "HFO",
-//       total_consumption: "600.00",
-//       rob: "600.00",
-//     },
-//     {
-//       fuel_oil_type: "LSFO",
-//       total_consumption: "600.00",
-//       rob: "600.00",
-//     },
-//   ],
-// },
-// {
-//   report_date: "2022-12-21T12:00:00Z",
-//   report_type: "NOON",
-//   speed: "1.50",
-//   distance_observed: "20",
-//   distance_to_go: "4000",
-//   fuel_stats: [
-//     {
-//       fuel_oil_type: "HFO",
-//       total_consumption: "100.00",
-//       rob: "900.00",
-//     },
-//     {
-//       fuel_oil_type: "LSFO",
-//       total_consumption: "100.00",
-//       rob: "900.00",
-//     },
-//   ],
-// },
 // ];
-
 const latestData = data[0];
-
-const dateList = [];
-const reportType = [];
-const speedList = [];
-const distanceOBSList = [];
-const distanceToGoList = [];
-const fuelObject = {};
-for (let report in data) {
+let dateList = [];
+let reportType = [];
+let speedList = [];
+let distanceOBSList = [];
+let distanceToGoList = [];
+let fuelObject = {};
+for (let report in data.reverse()) {
   let obj = data[report];
   let date = new Date(obj.report_date).toDateString().split(" ");
   dateList.push(date[2] + " " + date[1]);
@@ -327,28 +325,36 @@ for (let report in data) {
   }
 }
 
-console.log("Speed List", speedList);
-
-for (let fuel in fuelObject) {
-  for (let report in data) {
-    let obj = data[report];
-    let tempCount = 0;
-    for (let fuel_type in obj.fuel_stats) {
-      let fuel_item = obj.fuel_stats[fuel_type];
-      if (fuel_item.fuel_oil_type === fuel) {
-        fuelObject[fuel]["foc"].push(fuel_item.total_consumption);
-        fuelObject[fuel]["rob"].push(fuel_item.rob);
-        tempCount = tempCount + 1;
-      }
+// for (let fuel in fuelObject) {
+//   fuelObject[fuel].fob.length = 0;
+//   fuelObject[fuel].rob.length = 0;
+// }
+let tempCount = 0;
+for (let report in data) {
+  let obj = data[report];
+  for (let fuel_type in obj.fuel_stats) {
+    let fuel_item = obj.fuel_stats[fuel_type];
+    if (fuel_item.fuel_oil_type in fuelObject) {
+      fuelObject[fuel_item.fuel_oil_type]["foc"].push(
+        fuel_item.total_consumption
+      );
+      fuelObject[fuel_item.fuel_oil_type]["rob"].push(fuel_item.rob);
+      tempCount = fuelObject[fuel_item.fuel_oil_type]["rob"].length;
     }
-    for (let tempFuel in fuelObject) {
-      if (fuelObject[tempFuel].foc.length < tempCount - 1) {
-        fuelObject[tempFuel].foc.push("0");
-        fuelObject[tempFuel].rob.push("0");
-      }
+  }
+  for (let tempFuel in fuelObject) {
+    if (fuelObject[tempFuel].foc.length < tempCount) {
+      fuelObject[tempFuel].foc.push("0");
+      fuelObject[tempFuel].rob.push("0");
     }
   }
 }
+
+dateList = dateList.reverse();
+reportType = reportType.reverse();
+speedList = speedList.reverse();
+distanceOBSList = distanceOBSList.reverse();
+distanceToGoList = distanceToGoList.reverse();
 
 for (let fuel in fuelObject) {
   fuelObject[fuel].foc = fuelObject[fuel].foc.reverse();

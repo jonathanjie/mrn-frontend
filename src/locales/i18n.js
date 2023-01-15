@@ -547,6 +547,8 @@ const i18n = createI18n({
       userAccountHasNotBeenInitialized:
         "User account has not been initialized. Please contact the administrator.",
       tg_system_oil: "T/G System",
+      made: "Made",
+      unauthorizedAccess: "Unauthorized Access",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser

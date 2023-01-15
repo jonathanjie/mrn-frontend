@@ -9,9 +9,12 @@
           v-if="legsSuccess"
           class="flex bg-gray-100 rounded-2xl py-1 px-3 ml-2"
         >
-          <!-- <span class="text-14 font-semibold text-gray-700">{{
-            new Date(portCalls[0].arrival_date).toUTCString()
-          }}</span> -->
+          <span class="text-14 font-semibold text-gray-700"
+            >{{
+              dateHelper(portCalls[0].arrival_date, portCalls[0].arrival_tz)
+            }}
+            LT (UTC+{{ portCalls[0].arrival_tz }})</span
+          >
         </div>
       </div>
       <!-- <div class="hidden flex h-12 bg-gray-100 rounded-lg align-center p-px">
@@ -67,4 +70,10 @@ const props = defineProps({
 const store = useCrewStore();
 const { isSuccess: legsSuccess, data: portCalls } = store.legsQuery(props.imo);
 const { isSuccess: statsSuccess, data: stats } = store.statsQuery(props.imo);
+
+const dateHelper = (arrival, difference) => {
+  const date = new Date(arrival);
+  date.setTime(date.getTime() + difference * 60 * 60 * 1000);
+  return date.toUTCString().split(" ").slice(0, 5).join(" ");
+};
 </script>

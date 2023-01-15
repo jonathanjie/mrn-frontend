@@ -2,11 +2,7 @@
   <div
     v-if="props.header === 'Speed' && props.values != undefined"
     class="grid w-full rounded-lg w-full border mb-3"
-    :class="
-      props.values.length > 7
-        ? 'grid-cols-9'
-        : 'grid-cols-' + (props.values.length + 2).toString()
-    "
+    :class="gridCol"
   >
     <!-- Table header -->
     <div
@@ -31,11 +27,7 @@
   <div
     v-else-if="props.header === 'Date' && props.values != undefined"
     class="grid grid-rows-2 w-full rounded-lg w-full border mb-3"
-    :class="
-      props.values.length > 7
-        ? 'grid-cols-9'
-        : 'grid-cols-' + (props.values.length + 2).toString()
-    "
+    :class="gridCol"
   >
     <!-- Table header -->
     <div
@@ -105,11 +97,7 @@
   <div
     v-else-if="row1 != undefined && row2 != undefined"
     class="grid grid-rows-2 w-full rounded-lg w-full border mb-3"
-    :class="
-      row1.length > 7
-        ? 'grid-cols-9'
-        : 'grid-cols-' + (row1.length + 2).toString()
-    "
+    :class="gridCol"
   >
     <!-- Table header -->
     <div
@@ -123,14 +111,14 @@
       <span
         v-if="props.header === 'Distance'"
         class="text-14 font-bold text-blue-500"
-        >{{ $t("obs") }}</span
+        >{{ $t("made") }}</span
       >
       <span v-else class="text-14 font-bold text-blue-500">{{
         $t("foc")
       }}</span>
     </div>
     <!-- Values -->
-    <div v-for="(value, index) in row1" :key="index">
+    <div v-for="(value, index) in row1" :key="value.id">
       <div
         class="flex px-3.5 py-3 justify-center"
         :class="
@@ -201,5 +189,24 @@ if (props.fuelFoc !== undefined) {
   console.log(props.fuelFoc);
   row1 = props.fuelFoc;
   row2 = props.fuelRob;
+}
+
+let gridCol = "";
+if (props.values != undefined) {
+  if (props.values.length < 8 && props.values.length != 5) {
+    gridCol = "grid-cols-" + (props.values.length + 2).toString();
+  } else if (props.values.length == 5) {
+    gridCol = "grid-cols-7";
+  } else {
+    gridCol = "grid-cols-9";
+  }
+} else {
+  if (row1.length < 8 && row1.length != 5) {
+    gridCol = "grid-cols-" + (row1.length + 2).toString();
+  } else if (row1.length == 5) {
+    gridCol = "grid-cols-7";
+  } else {
+    gridCol = "grid-cols-9";
+  }
 }
 </script>

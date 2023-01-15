@@ -147,6 +147,7 @@
             textInput
             :textInputOptions="textInputOptions"
             :format="format"
+            :disabled="!is_destination_enabled"
             :modelValue="string"
             :placeholder="$t('selectDateAndTime')"
           >
