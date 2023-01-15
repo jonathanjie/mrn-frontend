@@ -13,7 +13,6 @@ import { Report } from "@/constants";
 import { parsePortLocode } from "@/utils/helpers";
 import { UrlDomain } from "@/constants";
 import { ref } from "vue";
-import axios from "axios";
 
 const props = defineProps({
   isCreate: {
@@ -290,7 +289,12 @@ const sendReport = async () => {
         @click="sendReport()"
         :is-disabled="isSubmissionRequested"
       >
-        <template v-slot:content>{{ $t("sendReport") }}</template>
+        <template v-if="isSubmissionRequested" v-slot:content>
+          <div>Loading...</div>
+        </template>
+        <template v-else v-slot:content>
+          <div>{{ $t("sendReport") }}</div>
+        </template>
       </GradientButton>
     </div>
   </div>

@@ -90,7 +90,6 @@ import { useVoyageStore } from "@/stores/useVoyageStore";
 import { storeToRefs } from "pinia";
 import SubmissionResultsModal from "@/components/Modals/SubmissionResultsModal.vue";
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
-import { onBeforeRouteLeave } from "vue-router";
 import { useLatestReportDetailsStore } from "@/stores/useLatestReportDetailsStore";
 import { Report } from "@/constants";
 

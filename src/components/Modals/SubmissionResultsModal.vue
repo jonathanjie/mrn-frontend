@@ -1,6 +1,7 @@
 <template>
   <div>
     <div
+      v-if="errorMessage"
       class="bg-slate-400 overflow-auto fixed inset-0 z-50 justify-center items-center flex"
     >
       <div
