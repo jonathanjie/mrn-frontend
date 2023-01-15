@@ -93,7 +93,7 @@
                 >{{
                   dateHelper(portCalls[0].arrival_date, portCalls[0].arrival_tz)
                 }}
-                LT (UTC + {{ portCalls[0].arrival_tz }})</span
+                LT (UTC+{{ portCalls[0].arrival_tz }})</span
               >
               <span v-else></span>
             </div>
