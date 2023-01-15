@@ -31,7 +31,7 @@ const isBeforeArrival = computed(() => props.report.bdndata.is_before_arrival);
         name="arrival_port"
         id="beforeArrival"
         value="0"
-        v-model="isBeforeArrival"
+        :checked="isBeforeArrival"
       />
       <label for="beforeArrival" class="mr-1">{{ $t("beforeArrival") }}</label>
       <input
@@ -40,7 +40,7 @@ const isBeforeArrival = computed(() => props.report.bdndata.is_before_arrival);
         name="arrival_port"
         id="afterArrival"
         value="1"
-        v-model="isBeforeArrival"
+        :checked="!isBeforeArrival"
       />
       <label for="afterArrival">{{ $t("afterArrival") }}</label>
     </div>
