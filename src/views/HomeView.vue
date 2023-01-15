@@ -62,7 +62,6 @@ const updateShipDetails = (shipDetails, shipStore) => {
   } = storeToRefs(shipStore);
 
   crewShipDetails.value = shipDetails;
-  console.log(shipDetails);
 
   companyUuid.value = shipDetails.company.uuid;
   imoReg.value = shipDetails.imo_reg;
@@ -71,7 +70,7 @@ const updateShipDetails = (shipDetails, shipStore) => {
   fuelOils.value = shipDetails.shipspecs.fuel_options;
   lubricatingOils.value = shipDetails.shipspecs.lubricating_oil_options;
   machinery.value = shipDetails.shipspecs.machinery_options;
-  console.log(shipDetails.shipspecs.fuel_options);
+  // console.log(shipDetails.shipspecs.fuel_options);
 
   return shipDetails;
 };
@@ -92,7 +91,7 @@ const getShip = async () => {
 };
 
 const jwt = await getAccessTokenSilently();
-console.log("Token", jwt);
+// console.log("Token", jwt);
 axios.defaults.headers.common["Authorization"] = "Bearer " + jwt;
 
 let showModal = ref(true);

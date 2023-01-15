@@ -39,7 +39,7 @@ const operations = computed(() =>
       )
     : []
 );
-console.log(operations.value);
+// console.log(operations.value);
 const otherPlannedOperation = computed(
   () => props.report?.plannedoperations?.planned_operation_othersdetails
 );

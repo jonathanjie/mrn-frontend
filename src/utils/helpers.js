@@ -125,7 +125,6 @@ export const parsePositionFromString = (positionString) => {
   const rawLong = splitString[2].slice(0, -1);
 
   const latDegree = Math.abs(rawLat.split(".")[0]);
-  console.log("sadf", latDegree);
   const latMinutes = parseInt(
     Math.round(Number("0." + rawLat.split(".")[1]) * 60)
   );
@@ -280,21 +279,4 @@ export const generateLubricatingOilData = (
     });
   }
   return rtn;
-};
-
-// for calculating rpmAvg, speedAvg, slipAvg etc.
-export const calculateNewAverage = (
-  oldAverage,
-  newDataPoint,
-  numPrevDataPoints,
-  numCurDataPoints
-) => {
-  console.log(oldAverage, newDataPoint, numPrevDataPoints, numCurDataPoints);
-  if (numCurDataPoints === 0) {
-    return 0;
-  } else if (oldAverage === 0 && numPrevDataPoints === numCurDataPoints) {
-    return newDataPoint;
-  } else {
-    return (oldAverage * numPrevDataPoints + newDataPoint) / numCurDataPoints;
-  }
 };

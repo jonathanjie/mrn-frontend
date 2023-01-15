@@ -29,8 +29,8 @@ const getPresignedUrlForFiles = async (filePath) => {
 
   try {
     const data = await response.json();
-    console.log(response);
-    console.log(data.presigned_urls);
+    // console.log(response);
+    // console.log(data.presigned_urls);
 
     return data.presigned_urls;
   } catch (error) {

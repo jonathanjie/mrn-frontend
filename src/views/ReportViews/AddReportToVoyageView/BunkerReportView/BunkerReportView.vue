@@ -78,7 +78,7 @@ const {
 const isUploadToS3Successful = ref(true);
 
 const getFileNames = () => {
-  console.log(files.value.map((file) => file.name));
+  // console.log(files.value.map((file) => file.name));
   return files.value.map((file) => file.name);
 };
 
@@ -99,8 +99,8 @@ const getPresignedUrlForFiles = async () => {
 
   try {
     const data = await response.json();
-    console.log(response);
-    console.log(data);
+    // console.log(response);
+    // console.log(data);
 
     return data.presigned_urls;
   } catch (error) {
@@ -188,7 +188,7 @@ const sendReport = async () => {
     },
   };
 
-  console.log("data: ", REPORT);
+  // console.log("data: ", REPORT);
   isSubmissionModalVisible.value = true;
   const response = await fetch(`${UrlDomain.DEV}/marinanet/reports/`, {
     headers: {
@@ -198,7 +198,7 @@ const sendReport = async () => {
     method: "POST",
     body: JSON.stringify(REPORT),
   });
-  console.log(response.status);
+  // console.log(response.status);
 
   if (
     files.value.length &&
@@ -214,8 +214,8 @@ const sendReport = async () => {
   try {
     if (isUploadToS3Successful.value) {
       const data = await response.json();
-      console.log(response);
-      console.log(data);
+      // console.log(response);
+      // console.log(data);
 
       if (response.ok) {
         isSubmissionSuccessful.value = true;

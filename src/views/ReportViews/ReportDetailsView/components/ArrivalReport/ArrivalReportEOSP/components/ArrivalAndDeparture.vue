@@ -9,7 +9,7 @@ const props = defineProps({
     required: true,
   },
 });
-console.log(JSON.stringify(props.report));
+// console.log(JSON.stringify(props.report));
 
 const departurePortCountry = computed(
   () => props.report?.reportroute.departure_port.split(" ")[0]

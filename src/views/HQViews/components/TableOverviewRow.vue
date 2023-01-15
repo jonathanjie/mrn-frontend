@@ -186,7 +186,7 @@ let row1 = props.header === "Distance" ? props.distanceOBS : undefined;
 let row2 = props.header === "Distance" ? props.distanceToGo : undefined;
 
 if (props.fuelFoc !== undefined) {
-  console.log(props.fuelFoc);
+  // console.log(props.fuelFoc);
   row1 = props.fuelFoc;
   row2 = props.fuelRob;
 }
