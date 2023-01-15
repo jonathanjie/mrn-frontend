@@ -14,9 +14,8 @@ export const sumObjectValues = (obj) => {
 };
 
 export const isEmpty = (obj) => {
-  
   return Object.keys(obj).length === 0;
-}
+};
 
 export const textInputOptions = ref({
   format: "yyyy.MM.dd HH:mm",
@@ -127,10 +126,14 @@ export const parsePositionFromString = (positionString) => {
 
   const latDegree = Math.abs(rawLat.split(".")[0]);
   console.log("sadf", latDegree);
-  const latMinutes = parseInt(Number("0." + rawLat.split(".")[1]) * 60);
+  const latMinutes = parseInt(
+    Math.round(Number("0." + rawLat.split(".")[1]) * 60)
+  );
   const latDir = Math.sign(+rawLat) === -1 ? "S" : "N";
   const longDegree = Math.abs(rawLong.split(".")[0]);
-  const longMinutes = parseInt(Number("0." + rawLong.split(".")[1]) * 60);
+  const longMinutes = parseInt(
+    Math.round(Number("0." + rawLong.split(".")[1]) * 60)
+  );
   const longDir = Math.sign(+rawLong) === -1 ? "E" : "W";
 
   return {
