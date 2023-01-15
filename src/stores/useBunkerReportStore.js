@@ -69,6 +69,7 @@ export const useBunkerReportStore = defineStore("bunkerReport", () => {
     constructor(file) {
       this.file = file;
       this.id = `${file.name}-${file.size}-${file.lastModified}-${file.type}`;
+      this.type = file.type;
       this.presignedUrl = "";
       // this.status = null;
     }

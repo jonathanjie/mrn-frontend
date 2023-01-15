@@ -536,6 +536,13 @@ const i18n = createI18n({
       boiler: "BLR",
       noReportCreated: "No report created",
       addNewReportToContinue: "Add a new report to continue",
+      lng: "LNG",
+      mdo: "MDO",
+      mgo: "MGO",
+      lsfo: "LSFO",
+      hfo: "HFO",
+      lpgp: "LPG-Propane",
+      lpgb: "LPG-Butane",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser

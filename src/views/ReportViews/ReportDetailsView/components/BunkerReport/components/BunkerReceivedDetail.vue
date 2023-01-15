@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineProps } from "vue";
+import { reactive, computed, defineProps } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { preventNaN } from "@/utils/helpers.js";
 // import DropZone from "@/components/FileDrop/DropZone.vue";
@@ -13,9 +13,60 @@ const props = defineProps({
   },
 });
 
-const files = computed(() => props.report.bdndata.bdn_file);
+const getPresignedUrlForFiles = async (filePath) => {
+  const response = await fetch(
+    "https://mui7py4yakmr4db4na4vogvotm0jyacz.lambda-url.ap-southeast-1.on.aws/",
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      body: JSON.stringify({
+        filepaths: filePath,
+      }),
+    }
+  );
+
+  try {
+    const data = await response.json();
+    console.log(response);
+    console.log(data.presigned_urls);
+
+    return data.presigned_urls;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getFilePath = (file) => {
+  const urlFragments = file.split("/");
+  const rtn =
+    urlFragments[3] +
+    "/" +
+    urlFragments[4] +
+    "/" +
+    urlFragments[5].split("?")[0];
+  console.log(rtn);
+
+  return rtn;
+};
+
+const files = reactive([]);
+for (const file of props.report.bdndata.bdn_file) {
+  const filePath = getFilePath(file);
+  const presignedUrl = await getPresignedUrlForFiles(filePath);
+  files.push(presignedUrl);
+}
+
+// const files = await props.report.bdndata.bdn_file
+//   .map((file) => getFilePath(file))
+//   .map((filePath) => getPresignedUrlForFiles(filePath))
+//   .then((response) => console.log("hhe", response));
+
 const oil_type = computed(() =>
-  props.report.bdndata.delivered_oil_type.toUpperCase() in ALL_FUEL_OILS
+  Object.keys(ALL_FUEL_OILS).includes(
+    props.report.bdndata.delivered_oil_type.toLowerCase()
+  )
     ? "fuelOil"
     : "lubricatingOil"
 );

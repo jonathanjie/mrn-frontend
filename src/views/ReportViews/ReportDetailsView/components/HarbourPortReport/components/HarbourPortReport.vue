@@ -6,7 +6,7 @@ import {
   textInputOptions,
   format,
   parsePositionFromString,
-  // formatUTC,
+  convertUTCToLT,
 } from "@/utils/helpers.js";
 import {
   TIMEZONES,
@@ -33,15 +33,23 @@ const reportSubtypeIsNoon = computed(() =>
 );
 
 const status = computed(() => props.report.eventdata?.parking_status ?? "");
-const reportingTimeZone = computed(() => props.report.eventdata?.timezone ?? 0);
-const reportingDateTime = computed(() => props.report.eventdata?.time ?? "");
+const reportingTimeZone = computed(() => props.report.report_tz);
+const reportingDateTime = computed(() =>
+  convertUTCToLT(new Date(props.report.report_date), props.report.report_tz)
+);
 const distanceTravelled = computed(
   () => props.report.eventdata?.distance_travelled ?? 0
 );
-const operations = computed(() => props.report.plannedoperations);
-const plannedOperations = computed(() => props.report.plannedoperations);
+const operations = computed(() =>
+  props.report?.plannedoperations
+    ? Object.keys(props.report?.plannedoperations).filter(
+        (key) => props.report?.plannedoperations[key]
+      )
+    : []
+);
+const plannedOperations = operations;
 const otherPlannedOperation = computed(
-  () => props.report.plannedoperations?.others ?? false
+  () => props.report?.plannedoperations?.planned_operation_othersdetails
 );
 const position = computed(() =>
   parsePositionFromString(props.report.eventdata.position)

@@ -88,6 +88,7 @@ const getPresignedUrlForFiles = async () => {
       body: JSON.stringify({
         file_prefix: `${company_uuid.value}/${voyage_uuid.value}/bdn`,
         file_count: files.value.length,
+        file_extension: files.value[0].type.split("/")[1],
       }),
     }
   );
@@ -231,7 +232,6 @@ const sendReport = async () => {
     isSubmissionModalVisible.value = true;
   }
 };
-
 </script>
 
 <template>
