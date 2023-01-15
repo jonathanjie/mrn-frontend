@@ -260,7 +260,8 @@ export const useDepartureSBYReportStore = defineStore(
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
         rtn[fuelOil] = +(
-          prevFuelOilReceipt.value + Number(fuelOilReceipts[fuelOil])
+          Number(prevFuelOilReceipt.value[fuelOil]) +
+          Number(fuelOilReceipts[fuelOil])
         ).toFixed(2);
       }
       return rtn;
@@ -269,7 +270,8 @@ export const useDepartureSBYReportStore = defineStore(
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
         rtn[fuelOil] = +(
-          prevFuelOilDebunkering + Number(fuelOilDebunkerings[fuelOil])
+          Number(prevFuelOilDebunkering.value[fuelOil]) +
+          Number(fuelOilDebunkerings[fuelOil])
         ).toFixed(2);
       }
       return rtn;
@@ -292,15 +294,15 @@ export const useDepartureSBYReportStore = defineStore(
       for (const lubricatingOil of lubricatingOils.value) {
         rtn[lubricatingOil] = {
           total_consumption: +(
-            prevLubeOilTotalConsumption +
+            Number(prevLubeOilTotalConsumption.value[lubricatingOil]) +
             Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption)
           ).toFixed(2),
           receipt: +(
-            prevLubeOilReceipt +
+            Number(prevLubeOilReceipt.value[lubricatingOil]) +
             Number(lubricatingOilBreakdowns[lubricatingOil].receipt)
           ).toFixed(2),
           debunkering: +(
-            prevLubeOilDebunkering +
+            Number(prevLubeOilDebunkering.value[lubricatingOil]) +
             Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
           ).toFixed(2),
         };
@@ -311,27 +313,38 @@ export const useDepartureSBYReportStore = defineStore(
 
     const freshwaterConsumedSum = computed(
       () =>
-        +(prevFreshwaterConsumed + Number(freshwaterConsumed.value)).toFixed(2)
+        +(
+          Number(prevFreshwaterConsumed.value) +
+          Number(freshwaterConsumed.value)
+        ).toFixed(2)
     );
     const freshwaterGeneratedSum = computed(
       () =>
-        +(prevFreshwaterGenerated + Number(freshwaterGenerated.value)).toFixed(
-          2
-        )
+        +(
+          Number(prevFreshwaterGenerated.value) +
+          Number(freshwaterGenerated.value)
+        ).toFixed(2)
     );
     const freshwaterReceivingSum = computed(
       () =>
-        +(prevFreshwaterReceived + Number(freshwaterReceiving.value)).toFixed(2)
+        +(
+          Number(prevFreshwaterReceived.value) +
+          Number(freshwaterReceiving.value)
+        ).toFixed(2)
     );
     const freshwaterDischargingSum = computed(
       () =>
         +(
-          prevFreshwaterDischarged + Number(freshwaterDischarging.value)
+          Number(prevFreshwaterDischarged.value) +
+          Number(freshwaterDischarging.value)
         ).toFixed(2)
     );
     const freshwaterChangeSum = computed(
       () =>
-        +(freshwaterGeneratedSum.value - freshwaterConsumedSum.value).toFixed(2)
+        +(
+          Number(freshwaterGeneratedSum.value) -
+          Number(freshwaterConsumedSum.value)
+        ).toFixed(2)
     );
     const freshwaterRobSum = freshwaterRobComputed;
 

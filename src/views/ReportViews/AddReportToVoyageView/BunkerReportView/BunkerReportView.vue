@@ -109,16 +109,19 @@ const getPresignedUrlForFiles = async () => {
 
 const uploadFile = async (file) => {
   // set up the request data
-  // let formData = new FormData();
-  // formData.append("file", file.file);
+  let formData = new FormData();
+  formData.append("file", file.file);
   // console.log("need to be binary", file.file);
   const url = `${file.presignedUrl}`;
 
   // track status and upload file
   file.status = "loading";
   let response = await fetch(url, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
     method: "PUT",
-    body: JSON.stringify(file.file),
+    body: formData,
   });
 
   // change status to indicate the success of the upload request
