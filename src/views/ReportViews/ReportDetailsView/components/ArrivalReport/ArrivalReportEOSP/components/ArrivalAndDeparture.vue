@@ -1,48 +1,44 @@
 <script setup>
 import { computed } from "vue";
-import {
-  textInputOptions,
-  format,
-  // formatUTC
-} from "@/utils/helpers.js";
-import { storeToRefs } from "pinia";
-import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
+import { textInputOptions, format, convertUTCToLT } from "@/utils/helpers.js";
 import { OPERATIONS } from "@/utils/options";
-// import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-// import { UTCPlaceholder } from "@/constants";
+
 const props = defineProps({
   report: {
     type: Object,
     required: true,
   },
 });
+console.log(JSON.stringify(props.report));
 
 const departurePortCountry = computed(
-  () => props.report.reportroute.departure_port.split(" ")[0]
+  () => props.report?.reportroute.departure_port.split(" ")[0]
 );
 const departurePortName = computed(
-  () => props.report.reportroute.departure_port.split(" ")[1]
+  () => props.report?.reportroute.departure_port.split(" ")[1]
 );
-const departureDateTime = computed(
-  () => props.report.reportroute?.departure_date ?? ""
+const departureDateTime = computed(() =>
+  convertUTCToLT(new Date(props.report?.report_date), props.report.report_tz)
 );
-
 const arrivalPortCountry = computed(
-  () => props.report.reportroute?.arrival_port.split(" ")[0] ?? ""
+  () => props.report?.reportroute?.arrival_port.split(" ")[0] ?? ""
 );
 const arrivalPortName = computed(
-  () => props.report.reportroute?.arrival_port.split(" ")[1] ?? ""
+  () => props.report?.reportroute?.arrival_port.split(" ")[1] ?? ""
+);
+const plannedOperations = computed(() =>
+  props.report?.plannedoperations
+    ? Object.keys(props.report?.plannedoperations).filter(
+        (key) => props.report?.plannedoperations[key]
+      )
+    : []
+);
+const otherPlannedOperation = computed(
+  () => props.report?.plannedoperations?.planned_operation_othersdetails
 );
 
-const store = useArrivalEOSPReportStore();
-const {
-  plannedOperations: planned_operations,
-  otherPlannedOperation: other_planned_operation,
-} = storeToRefs(store);
-
-// const departure_date_time_utc = departureDateTimeUTC.value
-//   ? formatUTC(new Date(departureDateTimeUTC.value))
-//   : UTCPlaceholder;
+console.log(JSON.stringify(plannedOperations.value));
+console.log(JSON.stringify(otherPlannedOperation.value));
 </script>
 
 <template>
@@ -61,12 +57,12 @@ const {
         </div>
         <input
           disabled
-          class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b disabled:text-gray-500 disabled:bg-gray-50"
+          class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b disabled:bg-gray-50"
           v-model="departurePortCountry"
         />
         <input
           disabled
-          class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l disabled:text-gray-500 disabled:bg-gray-50"
+          class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l disabled:bg-gray-50"
           v-model="departurePortName"
         />
       </div>
@@ -108,12 +104,12 @@ const {
         </div>
         <input
           disabled
-          class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b disabled:text-gray-500 disabled:bg-gray-50"
+          class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l border-b disabled:bg-gray-50"
           v-model="arrivalPortCountry"
         />
         <input
           disabled
-          class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l disabled:text-gray-500 disabled:bg-gray-50"
+          class="col-span-3 p-3 text-gray-700 bg-gray-50 border-l disabled:bg-gray-50"
           v-model="arrivalPortName"
         />
       </div>
@@ -122,7 +118,7 @@ const {
           {{ $t("plannedOperation") }}
         </div>
         <div
-          class="col-span-3 bg-white flex flex-col space-y-2 p-3 text-gray-700"
+          class="col-span-3 bg-gray-50 flex flex-col space-y-2 p-3 text-gray-700"
         >
           <div
             v-for="(val, key) in OPERATIONS"
@@ -134,7 +130,7 @@ const {
               type="checkbox"
               :id="val"
               :value="val"
-              v-model="planned_operations"
+              v-model="plannedOperations"
             />
             <label :for="val">{{ $t(key) }}</label>
           </div>
@@ -144,7 +140,7 @@ const {
               type="checkbox"
               id="others"
               value="others"
-              v-model="planned_operations"
+              v-model="plannedOperations"
             />
             <label for="others">{{ $t("others") }}</label>
           </div>
@@ -154,9 +150,9 @@ const {
         <div class="col-span-2 text-blue-700 p-3">{{ $t("others") }}</div>
         <input
           disabled
-          class="col-span-3 p-3 text-gray-700 border-l disabled:text-gray-500 disabled:bg-gray-50 focus:outline-0"
+          class="col-span-3 p-3 text-gray-700 border-l disabled:bg-gray-50 focus:outline-0"
           :placeholder="$t('inputOtherPlannedOperation')"
-          v-model="other_planned_operation"
+          v-model="otherPlannedOperation"
         />
       </div>
     </div>

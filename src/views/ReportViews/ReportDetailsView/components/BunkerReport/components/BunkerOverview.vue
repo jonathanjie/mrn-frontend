@@ -17,7 +17,9 @@ const reportNum = computed(() => props.report.report_num);
 const legNum = computed(() => props.report.voyage_leg.leg_num);
 const voyageNum = computed(() => props.report.voyage_leg.voyage.voyage_num);
 const loadingCondition = computed(() => props.report.voyage_leg.load_condition);
-const reportingDateTime = computed(() => props.report.report_date);
+const reportingDateTime = computed(() =>
+  convertUTCToLT(new Date(props.report.report_date), props.report.report_tz)
+);
 const reportingTimeZone = computed(() => props.report.report_tz);
 </script>
 

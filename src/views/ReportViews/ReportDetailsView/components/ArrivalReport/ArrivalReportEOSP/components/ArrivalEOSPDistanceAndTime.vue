@@ -38,11 +38,6 @@ const distance_eng_total = computed(
 const revolution_count = computed(
   () => props.report.distancetimedata.revolution_count
 );
-
-// const toggle = () => {
-//   distanceToGoDisabled.value = !distanceToGoDisabled.value;
-//   edited.value = true;
-// };
 </script>
 
 <template>
@@ -95,8 +90,7 @@ const revolution_count = computed(
         {{ $t("distanceToGo") }}
       </div>
       <div
-        class="flex items-center col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t"
-        :class="distanceToGoDisabled ? 'bg-gray-50' : 'bg-white'"
+        class="flex items-center col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50"
       >
         <input
           v-if="!edited"
@@ -133,21 +127,22 @@ const revolution_count = computed(
         :placeholder="$t('inputRemarks')"
         disabled
         class="col-span-6 lg:col-span-3 p-3 pl-4 border-x border-t text-14 text-gray-700 focus:outline-0"
-        :class="distanceToGoDisabled ? 'bg-gray-50' : 'bg-white'"
       />
 
       <div
-        class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-l border-t bg-gray-50 text-14"
+        class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-l border-t bg-gray-50 text-14 bg-gray-50"
       >
         {{ $t("distanceByObservation") }}
       </div>
-      <div class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t">
+      <div
+        class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50"
+      >
         <input
           disabled
           v-model="distance_obs_since_noon"
           @keypress="preventNaN($event, distance_obs_since_noon)"
           placeholder="0"
-          class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
+          class="w-24 bg-gray-50 text-14 text-gray-700 focus:outline-0"
         />
         <MiniUnitDisplay>NM</MiniUnitDisplay>
       </div>
@@ -211,7 +206,7 @@ const revolution_count = computed(
         v-model="revolution_count"
         @keypress="preventNaN($event, revolution_count)"
         placeholder="0"
-        class="col-span-6 lg:col-span-3 p-3 pl-4 border-x border-y lg:border-t-0 bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-6 lg:col-span-3 p-3 pl-4 border-x border-y lg:border-t-0 bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
     </div>
   </div>

@@ -2,7 +2,7 @@
 import { preventNaN } from "@/utils/helpers";
 import { computed } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
+import { useShipStore } from "@/stores/useShipStore";
 import { storeToRefs } from "pinia";
 
 const props = defineProps({
@@ -92,14 +92,10 @@ const freshwaterRob = computed(
   () => props.report.consumptionconditiondata.freshwaterdata.rob
 );
 
-const store = useDepartureSBYReportStore();
+const store = useShipStore();
 const { fuelOils, lubricatingOils, machinery } = storeToRefs(store);
 
-const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 5);
-
-console.log(fuelOils.value);
-console.log(lubricatingOils.value);
-console.log(machinery.value);
+const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 2);
 </script>
 
 <template>
