@@ -15,7 +15,7 @@
           {{ $t("fuelOilInMT") }}
         </div>
 
-        <div class="grid mb-4 text-14" :class="getFuelOilCols()">
+        <div class="grid text-14" :class="getFuelOilCols()">
           <div
             class="col-span-1 border-green-100 bg-green-25 px-6 border-l border-t"
           ></div>
@@ -95,7 +95,7 @@
           </span>
         </div>
 
-        <div
+        <!-- <div
           v-if="!isFuelOilRemarkEnabled"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
           @click="isFuelOilRemarkEnabled = !isFuelOilRemarkEnabled"
@@ -166,7 +166,7 @@
               class="col-span-8 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="pt-8">
@@ -174,7 +174,7 @@
           {{ $t("lubricatingOilInL") }}
         </div>
 
-        <div class="grid grid-cols-10 text-14 mb-4">
+        <div class="grid grid-cols-10 text-14">
           <div
             class="col-span-2 border-yellow-100 bg-yellow-25 px-6 border-l border-t"
           ></div>
@@ -259,7 +259,7 @@
           </span>
         </div>
 
-        <div
+        <!-- <div
           v-if="!isLubricatingOilRemarkEnabled"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
           @click="
@@ -334,7 +334,7 @@
               class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="pt-8">

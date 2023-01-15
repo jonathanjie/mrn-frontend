@@ -200,6 +200,7 @@ const sendReport = async () => {
       parking_status: status.value,
     },
     plannedoperations: {
+      waiting: includesOperation("waiting"),
       cargo_operation_berth: includesOperation(OPERATIONS.cargoOperationBerth),
       cargo_operation_stsstb: includesOperation(
         OPERATIONS.cargoOperationSTSSTB
@@ -251,13 +252,12 @@ const sendReport = async () => {
     } else {
       errorMessage.value = data;
     }
-   
   } catch (error) {
     console.log(error);
     errorMessage.value = {
       unexpectedError: ["Please contact the administrator."],
     };
   }
-  isSubmissionResponse.value=true
+  isSubmissionResponse.value = true;
 };
 </script>

@@ -109,7 +109,7 @@ const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 5);
           {{ $t("fuelOilInMT") }}
         </div>
 
-        <div class="grid mb-4 text-14" :class="getFuelOilCols()">
+        <div class="grid text-14" :class="getFuelOilCols()">
           <div
             class="col-span-1 border-green-100 bg-green-25 px-6 border-l border-t"
           ></div>
@@ -192,7 +192,7 @@ const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 5);
           </span>
         </div>
 
-        <div
+        <!-- <div
           v-if="!isFuelOilRemarkEnabled"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
           @click="isFuelOilRemarkEnabled = !isFuelOilRemarkEnabled"
@@ -264,7 +264,7 @@ const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 5);
               class="col-span-8 row-span-2 border-t border-l p-3 pl-4 bg-gray-50 text-gray-700 focus:outline-0"
             ></textarea>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="pt-8">
@@ -272,7 +272,7 @@ const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 5);
           {{ $t("lubricatingOilInL") }}
         </div>
 
-        <div class="grid grid-cols-10 text-14 mb-4">
+        <div class="grid grid-cols-10 text-14">
           <div
             class="col-span-2 border-yellow-100 bg-yellow-25 px-6 border-l border-t"
           ></div>
@@ -341,7 +341,7 @@ const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 5);
           </span>
         </div>
 
-        <div
+        <!-- <div
           v-if="!isLubricatingOilRemarkEnabled"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
           @click="
@@ -379,22 +379,6 @@ const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 5);
             >
               {{ $t(lubricatingOilDataCorrection.lubricating_oil_type) }}
             </div>
-            <!-- <select
-              disabled
-              v-model="lubricatingOilDataCorrection.lubricating_oil_type"
-              class="col-span-6 p-3 border-l focus:outline-0 bg-gray-50 text-gray-700"
-            >
-              <option selected disabled value="default">
-                {{ $t("selectType") }}
-              </option>
-              <option
-                v-for="lubricatingOil of lubricatingOils"
-                :value="lubricatingOil"
-                :key="lubricatingOil"
-              >
-                {{ $t(lubricatingOil) }}
-              </option>
-            </select> -->
             <div class="flex col-span-6 p-3 pl-4 border-l bg-gray-50">
               <input
                 disabled
@@ -429,7 +413,7 @@ const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 5);
               class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-gray-50 text-gray-700 focus:outline-0"
             ></textarea>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="pt-8">

@@ -223,6 +223,7 @@ const sendReport = async () => {
       parking_status: status.value,
     },
     plannedoperations: {
+      waiting: includesOperation("waiting"),
       cargo_operation_berth: includesOperation(OPERATIONS.cargoOperationBerth),
       cargo_operation_stsstb: includesOperation(
         OPERATIONS.cargoOperationSTSSTB

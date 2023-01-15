@@ -167,9 +167,20 @@
             :value="val"
             v-model="operations"
           />
-          <label :for="val">{{ $t(key) }}</label>
+          <label
+            :for="val"
+            :class="
+              planned_operations.includes(val)
+                ? 'text-gray-700'
+                : 'text-gray-400'
+            "
+            >{{ $t(key) }}</label
+          >
         </div>
-        <div v-if="other_planned_operation" class="flex align-center space-x-2">
+        <div
+          v-if="other_planned_operation !== 'NIL'"
+          class="flex align-center space-x-2"
+        >
           <input
             :disabled="
               !planned_operations.includes('others') ||

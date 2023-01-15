@@ -177,7 +177,10 @@
             >{{ $t(key) }}</label
           >
         </div>
-        <div v-if="other_planned_operation" class="flex align-center space-x-2">
+        <div
+          v-if="other_planned_operation !== 'NIL'"
+          class="flex align-center space-x-2"
+        >
           <input
             :disabled="
               report_subtype_is_noon ||

@@ -55,7 +55,7 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 5);
           {{ $t("fuelOilInMT") }}
         </div>
 
-        <div class="grid mb-4 text-14" :class="getFuelOilCols()">
+        <div class="grid text-14" :class="getFuelOilCols()">
           <div
             class="col-span-1 border-green-100 bg-green-25 px-6 border-l border-t"
           ></div>
@@ -146,7 +146,7 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 5);
           {{ $t("lubricatingOilInL") }}
         </div>
 
-        <div class="grid grid-cols-10 text-14 mb-4">
+        <div class="grid grid-cols-10 text-14">
           <div
             class="col-span-2 border-yellow-100 bg-yellow-25 px-6 border-l border-t"
           ></div>

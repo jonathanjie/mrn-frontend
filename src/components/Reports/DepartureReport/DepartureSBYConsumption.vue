@@ -15,7 +15,7 @@
           {{ $t("fuelOilInMT") }}
         </div>
 
-        <div class="grid mb-4 text-14" :class="getFuelOilCols()">
+        <div class="grid text-14" :class="getFuelOilCols()">
           <div
             class="col-span-1 border-green-100 bg-green-25 px-6 border-l border-t"
           ></div>
@@ -103,7 +103,7 @@
           </span>
         </div>
 
-        <div
+        <!-- <div
           v-if="!isFuelOilRemarkEnabled"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
           @click="isFuelOilRemarkEnabled = !isFuelOilRemarkEnabled"
@@ -174,7 +174,7 @@
               class="col-span-8 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="pt-8">
@@ -182,7 +182,7 @@
           {{ $t("lubricatingOilInL") }}
         </div>
 
-        <div class="grid grid-cols-10 text-14 mb-4">
+        <div class="grid grid-cols-10 text-14">
           <div
             class="col-span-2 border-yellow-100 bg-yellow-25 px-6 border-l border-t"
           ></div>
@@ -277,7 +277,7 @@
           </span>
         </div>
 
-        <div
+        <!-- <div
           v-if="!isLubricatingOilRemarkEnabled"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
           @click="
@@ -352,7 +352,7 @@
               class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="pt-8">
@@ -440,13 +440,11 @@
 
 <script setup>
 import { preventNaN } from "@/utils/helpers";
-import { ref } from "vue";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 import { storeToRefs } from "pinia";
 
-const isFuelOilRemarkEnabled = ref(false);
-const isLubricatingOilRemarkEnabled = ref(false);
+// const isFuelOilRemarkEnabled = ref(false);
+// const isLubricatingOilRemarkEnabled = ref(false);
 
 const store = useDepartureSBYReportStore();
 const {
@@ -454,24 +452,21 @@ const {
   fuelOils,
   lubricatingOils,
   machinery,
-  // Overview
-  reportNo,
-  legNo,
   // fuel oil
   fuelOilTotalConsumptions: fuel_oil_total_consumptions,
   // fuelOilRobs: fuel_oil_robs,
   fuelOilRobsComputed,
   fuelOilRobsStatic,
-  fuelOilRobs: fuel_oil_robs,
+  // fuelOilRobs: fuel_oil_robs,
   fuelOilBreakdowns: fuel_oil_breakdowns,
   fuelOilReceipts: fuel_oil_receipts,
   fuelOilDebunkerings: fuel_oil_debunkerings,
-  fuelOilDataCorrection: fuel_oil_data_correction,
+  // fuelOilDataCorrection: fuel_oil_data_correction,
   // lubricating oil
   lubricatingOilBreakdowns: lubricating_oil_breakdowns,
   lubricatingOilRobsComputed,
   lubricatingOilRobsStatic,
-  lubricatingOilDataCorrection: lubricating_oil_data_correction,
+  // lubricatingOilDataCorrection: lubricating_oil_data_correction,
   // fresh water
   freshwaterConsumed: freshwater_consumed,
   freshwaterGenerated: freshwater_generated,
