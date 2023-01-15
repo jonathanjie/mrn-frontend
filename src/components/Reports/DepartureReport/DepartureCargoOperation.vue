@@ -71,16 +71,16 @@
           :class="isFirstReport ? 'bg-white' : 'bg-gray-50'"
         >
           <input
-            v-model="total_amount"
-            @keypress="preventNaN($event, total_amount)"
+            v-if="isFirstReport"
+            v-model="totalAmountStatic"
+            @keypress="preventNaN($event, totalAmountStatic)"
             placeholder="0"
-            :disabled="!isFirstReport"
-            class="w-24 text-14 focus:outline-0"
-            :class="
-              isFirstReport
-                ? 'bg-white text-gray-700'
-                : 'bg-gray-50 text-gray-400'
-            "
+            class="w-24 text-14 focus:outline-0 bg-white text-gray-700"
+          />
+          <input
+            v-else
+            v-model="totalAmountComputed"
+            class="w-24 text-14 focus:outline-0 bg-gray-50 text-gray-400"
           />
           <MiniUnitDisplay>{{ $t(cargoUnit) }}</MiniUnitDisplay>
         </div>
@@ -117,7 +117,8 @@ const {
   loadCondition: load_condition,
   loading: loading,
   unloading: unloading,
-  totalAmount: total_amount,
+  totalAmountComputed,
+  totalAmountStatic,
   time: time,
   cargoUnit: cargoUnit,
 } = storeToRefs(store);

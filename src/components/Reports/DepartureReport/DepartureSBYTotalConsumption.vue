@@ -3,7 +3,6 @@ import { preventNaN } from "@/utils/helpers";
 import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 import { storeToRefs } from "pinia";
 
-
 const store = useDepartureSBYReportStore();
 const {
   fuelOils,
@@ -213,6 +212,7 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 5);
                   lubricating_oil_breakdowns_sum[lubricatingOil]['receipt']
                 )
               "
+              disabled
               placeholder="0"
               class="col-span-2 p-3 pl-4 border-t border-l bg-gray-50 text-gray-400 focus:outline-0"
             />
@@ -220,6 +220,7 @@ const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 5);
               v-model="
                 lubricating_oil_breakdowns_sum[lubricatingOil]['debunkering']
               "
+              disabled
               @keypress="
                 preventNaN(
                   $event,
