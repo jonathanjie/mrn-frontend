@@ -204,8 +204,6 @@ const sendReport = async () => {
     files.value.length &&
     (response.status == 200 || response.status == 201)
   ) {
-    // console.log(urls);
-    console.log("why am i here");
     for (const [index, file] of files.value.entries()) {
       file.presignedUrl = urls[index].presigned_url;
     }
@@ -286,7 +284,12 @@ const sendReport = async () => {
       >
         <template v-slot:content>{{ $t("saveChanges") }}</template>
       </CustomButton> -->
-      <GradientButton class="p-3 text-14" type="button" @click="sendReport()">
+      <GradientButton
+        class="p-3 text-14"
+        type="button"
+        @click="sendReport()"
+        :is-disabled="isSubmissionRequested"
+      >
         <template v-slot:content>{{ $t("sendReport") }}</template>
       </GradientButton>
     </div>

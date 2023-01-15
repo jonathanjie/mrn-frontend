@@ -40,8 +40,6 @@ const getPresignedUrlForFiles = async (filePath) => {
 
 const getFilePath = (file) => {
   const urlFragments = file.split("/");
-  console.log("fielpath", urlFragments);
-
   const rtn =
     urlFragments[3] +
     "/" +
@@ -52,9 +50,12 @@ const getFilePath = (file) => {
     urlFragments[6] +
     "/" +
     urlFragments[7].split("?")[0];
-  // console.log(decodeURI(rtn));
 
   return decodeURI(rtn);
+};
+
+const getFileName = (filePath) => {
+  return decodeURI(filePath.split("/")[7].split("?")[0]);
 };
 
 const files = ref([]);
@@ -100,9 +101,7 @@ const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
 
     <div class="flex items-center">
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
-      <span class="text-blue-700 text-16">{{
-        $t("uploadBunkerDeliveryNote")
-      }}</span>
+      <span class="text-blue-700 text-16">{{ $t("bunkerDeliveryNote") }}</span>
     </div>
 
     <!-- Upload delivery note section -->
@@ -110,51 +109,15 @@ const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
       v-for="(file, index) in files"
       :key="index"
       :href="file"
-      class="text-12 truncate text-gray-700"
+      target="_blank"
+      class="text-gray-700 text-14 flex bg-gray-50 py-3 px-4 items-center rounded-xl hover:outline hover:outline-2 hover:outline-blue-300"
     >
-      {{ file }}
+      <img src="@/assets/icons/bdn_icon.svg" class="w-4 h-5 mr-2" />
+
+      {{ getFileName(file) }}
     </a>
-    <!-- <DropZone
-      class="flex drop-area border border-dashed border-sysblue-300 p-14 place-content-center rounded-lg text-16 text-gray-800 bg-gray-25"
-      @files-dropped="store.addFiles"
-      #default="{ dropZoneActive }"
-    >
-      <span v-if="dropZoneActive">
-        <span>{{ $t("dropFileHere") }}</span>
-      </span>
-      <span v-else>
-        <span>{{ $t("dragAndDrop") }}</span>
-        <span class="smaller">
-          {{ $t("or") }}
-          <label for="file-input">
-            <strong class="text-sysblue-500 cursor-pointer"
-              ><u>
-                {{ $t("browseFile") }}
-              </u></strong
-            >
-          </label>
-        </span>
-      </span>
 
-      <input
-        class="hidden"
-        type="file"
-        id="file-input"
-        multiple
-        @change="onInputChange"
-      />
-    </DropZone> -->
-    <!-- 
-    <ul class="text-14 text-gray-700 space-y-1" v-show="files.length">
-      <FilePreview
-        v-for="file of files"
-        :key="file.id"
-        :file="file"
-        :href="file"
-      />
-    </ul> -->
-
-    <div class="mt-6 flex items-center">
+    <div class="mt-3 flex items-center">
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
       <span class="text-blue-700 text-16">{{ $t("deliveredOil") }}</span>
     </div>
