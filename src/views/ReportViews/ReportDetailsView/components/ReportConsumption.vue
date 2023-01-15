@@ -2,8 +2,6 @@
 import { preventNaN } from "@/utils/helpers";
 import { computed } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useShipStore } from "@/stores/useShipStore";
-import { storeToRefs } from "pinia";
 
 const props = defineProps({
   report: {
@@ -52,7 +50,7 @@ const fuelOilDataCorrection = computed(() =>
     : null
 );
 
-console.log(fuelOilDataCorrection.value);
+// console.log(fuelOilDataCorrection.value);
 
 // Lubricating Oil
 const lubricatingOilDataSet = computed(
@@ -92,10 +90,7 @@ const freshwaterRob = computed(
   () => props.report.consumptionconditiondata.freshwaterdata.rob
 );
 
-const store = useShipStore();
-const { fuelOils, lubricatingOils, machinery } = storeToRefs(store);
-
-const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 2);
+const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 2);
 </script>
 
 <template>
