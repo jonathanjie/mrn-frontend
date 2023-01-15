@@ -13,7 +13,6 @@ import { Report } from "@/constants";
 import { parsePortLocode } from "@/utils/helpers";
 import { UrlDomain } from "@/constants";
 import { ref } from "vue";
-import axios from "axios";
 
 const props = defineProps({
   isCreate: {
@@ -71,6 +70,7 @@ const submissionStatusStore = useSubmissionStatusStore();
 const {
   isSubmissionRequested,
   isSubmissionModalVisible,
+  isSubmissionResponse,
   isSubmissionSuccessful,
   errorMessage,
 } = storeToRefs(submissionStatusStore);
@@ -189,7 +189,7 @@ const sendReport = async () => {
   };
 
   console.log("data: ", REPORT);
-
+  isSubmissionModalVisible.value = true;
   const response = await fetch(`${UrlDomain.DEV}/marinanet/reports/`, {
     headers: {
       Authorization: "Bearer " + localStorage.getItem("jwt"),
@@ -230,15 +230,13 @@ const sendReport = async () => {
         ],
       };
     }
-
-    isSubmissionModalVisible.value = true;
   } catch (error) {
     console.log(error);
     errorMessage.value = {
       unexpectedError: ["Please contact the administrator."],
     };
-    isSubmissionModalVisible.value = true;
   }
+  isSubmissionResponse.value = true;
 };
 </script>
 
@@ -290,7 +288,12 @@ const sendReport = async () => {
         @click="sendReport()"
         :is-disabled="isSubmissionRequested"
       >
-        <template v-slot:content>{{ $t("sendReport") }}</template>
+        <template v-if="isSubmissionRequested" v-slot:content>
+          <div>Loading...</div>
+        </template>
+        <template v-else v-slot:content>
+          <div>{{ $t("sendReport") }}</div>
+        </template>
       </GradientButton>
     </div>
   </div>

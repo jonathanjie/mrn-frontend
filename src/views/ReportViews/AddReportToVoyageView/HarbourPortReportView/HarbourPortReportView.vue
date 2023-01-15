@@ -46,7 +46,12 @@
         :is-disabled="isSubmissionRequested"
       >
         <!-- TODO: need alternate function for saving changes to backend -->
-        <template v-slot:content>{{ $t("sendReport") }}</template>
+        <template v-if="isSubmissionRequested" v-slot:content>
+          <div>Loading...</div>
+        </template>
+        <template v-else v-slot:content>
+          <div>{{ $t("sendReport") }}</div>
+        </template>
       </GradientButton>
     </div>
   </div>
@@ -139,6 +144,7 @@ const submissionStatusStore = useSubmissionStatusStore();
 const {
   isSubmissionRequested,
   isSubmissionModalVisible,
+  isSubmissionResponse,
   isSubmissionSuccessful,
   errorMessage,
 } = storeToRefs(submissionStatusStore);
@@ -224,6 +230,7 @@ const sendReport = async () => {
 
   console.log("data: ", REPORT);
 
+  isSubmissionModalVisible.value = true;
   const response = await fetch(`${UrlDomain.DEV}/marinanet/reports/`, {
     headers: {
       Authorization: "Bearer " + localStorage.getItem("jwt"),
@@ -244,13 +251,13 @@ const sendReport = async () => {
     } else {
       errorMessage.value = data;
     }
-    isSubmissionModalVisible.value = true;
+   
   } catch (error) {
     console.log(error);
     errorMessage.value = {
       unexpectedError: ["Please contact the administrator."],
     };
-    isSubmissionModalVisible.value = true;
   }
+  isSubmissionResponse.value=true
 };
 </script>
