@@ -1,13 +1,13 @@
 <template>
   <div v-if="statsSuccess && stats[0] != undefined" class="w-full px-12 p-10">
     <div class="flex justify-between items-center mb-5">
-      <div class="flex">
+      <div class="flex items-center">
         <span class="text-16 font-bold text-blue-800">{{
           $t("estimatedArrivalTime")
         }}</span>
         <div
           v-if="legsSuccess"
-          class="flex bg-gray-100 rounded-2xl py-1 px-3 ml-2"
+          class="flex bg-gray-100 rounded-2xl py-1 px-3 ml-2 items-center"
         >
           <span class="text-14 font-semibold text-gray-700"
             >{{
