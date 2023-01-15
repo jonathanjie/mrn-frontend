@@ -18,6 +18,7 @@ const temp = {
 export const useShipStore = defineStore("ship", () => {
   const crewShipDetails = ref({});
   const companyUuid = ref("");
+  const shipName = ref("");
   const imoReg = ref("");
   const shipUuid = ref("");
   const lastVoyageNo = ref(0);
@@ -41,6 +42,7 @@ export const useShipStore = defineStore("ship", () => {
     companyUuid,
     imoReg,
     shipUuid,
+    shipName,
     lastVoyageNo,
     nextVoyageNo,
     fuelOils,
