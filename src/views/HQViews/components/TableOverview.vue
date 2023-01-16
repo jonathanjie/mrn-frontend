@@ -7,7 +7,7 @@
       <!-- Speed/Distance To Go -->
       <button
         @click="selectSpeed"
-        class="grid relative grid-cols-2 gap-x-2.5 rounded-lg w-full p-2.5 items-center"
+        class="grid relative grid-cols-2 gap-x-2.5 rounded-lg w-full p-2.5 items-center border hover:border-sysblue"
         :class="selectedSpeed ? 'bg-blue-800' : 'bg-white'"
       >
         <img
@@ -48,7 +48,7 @@
       <!-- FOC/ROB -->
       <button
         @click="selectFuel"
-        class="grid relative grid-cols-2 gap-x-2.5 rounded-lg w-full p-2.5 items-center"
+        class="grid relative grid-cols-2 gap-x-2.5 rounded-lg w-full p-2.5 items-center border hover:border-sysblue"
         :class="!selectedSpeed ? 'bg-blue-800' : 'bg-white'"
       >
         <img
