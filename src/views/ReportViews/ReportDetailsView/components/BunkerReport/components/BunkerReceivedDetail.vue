@@ -272,7 +272,7 @@ const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
 
     <div class="flex items-center">
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
-      <span class="text-blue-700 text-16">{{ $t("sampleSeatingNo") }}</span>
+      <span class="text-blue-700 text-16">{{ $t("sampleSealingNo") }}</span>
     </div>
 
     <div class="grid grid-cols-8 border text-14">

@@ -313,7 +313,6 @@ const i18n = createI18n({
       rupEngine: "R/UP Engine",
       sailingAtSea: "SAILING AT SEA",
       sampleSealingNo: "Sample Sealing No.",
-      sampleSeatingNo: "Sample Seating No.",
       save: "Save",
       saveChanges: "Save changes",
       saveDetails: "Save details",
