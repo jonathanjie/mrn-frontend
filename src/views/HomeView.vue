@@ -96,11 +96,10 @@ axios.defaults.headers.common["Authorization"] = "Bearer " + jwt;
 
 let showModal = ref(true);
 const ship = await getShip();
-
-if (ship?.shipspecs != undefined) {
-  showModal = false;
-}
-
 const role = await getUserRole();
 auth.updateUserRoleToken(user, role, jwt);
+
+if (ship?.shipspecs != undefined || role == "manager") {
+  showModal = false;
+}
 </script>
