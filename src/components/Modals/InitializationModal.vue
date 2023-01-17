@@ -473,7 +473,10 @@ const addSettings = () => {
     propeller_pitch: propeller_pitch.value,
   };
   axios
-    .post(`${UrlDomain.DEV}/marinanet/ships/${props.imo}/specs/`, settings)
+    .post(
+      `${process.env.VUE_APP_URL_DOMAIN}/marinanet/ships/${props.imo}/specs/`,
+      settings
+    )
     .then(() => {
       emit("close-modal");
       location.reload();

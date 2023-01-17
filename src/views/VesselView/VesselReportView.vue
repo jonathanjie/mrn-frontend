@@ -109,7 +109,7 @@ const addVoyage = async () => {
       imo_reg: props.imo,
     };
     await axios
-      .post(`${UrlDomain.DEV}/marinanet/voyages/`, voyageData)
+      .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/voyages/`, voyageData)
       .then((response) => {
         // console.log(response);
         refetch.value();

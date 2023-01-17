@@ -20,9 +20,9 @@ const app = createApp(App)
   .use(
     createAuth0({
       domain: "dev-xyrhs609.eu.auth0.com",
-      client_id: "hnNtLkIJBlnHLDThSL77CYTu9QEaWijN",
+      client_id: process.env.VUE_APP_AUTH_0_CLIENT_ID,
       redirect_uri: window.location.origin,
-      audience: "https://django-jwt-test-dan/api",
+      audience: process.env.VUE_APP_AUTH_0_AUDEINCE,
     })
   )
   .use(createPinia().use(resetStore))

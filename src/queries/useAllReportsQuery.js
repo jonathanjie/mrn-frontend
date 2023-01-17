@@ -7,7 +7,9 @@ export const useAllReportsQuery = (imo) => {
     ["getAllReports"],
     async () =>
       await axios
-        .get(`${UrlDomain.DEV}/marinanet/ships/${imo}/reports/`)
+        .get(
+          `${process.env.VUE_APP_URL_DOMAIN}/marinanet/ships/${imo}/reports/`
+        )
         .then((response) => {
           console.log("all reports", response.data);
           return response.data;

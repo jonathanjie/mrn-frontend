@@ -40,7 +40,7 @@ const shipStore = useShipStore();
 
 const getUserRole = async () => {
   return await axios
-    .get(`${UrlDomain.DEV}/marinanet/user/`)
+    .get(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/user/`)
     .then((response) => {
       return response.data.role;
     })
@@ -77,7 +77,7 @@ const updateShipDetails = (shipDetails, shipStore) => {
 
 const getShip = async () => {
   return await axios
-    .get(`${UrlDomain.DEV}/marinanet/ships`)
+    .get(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/ships`)
     .then((response) => {
       // console.log("Ship Details (home view): ", response.data);
       if (response.data[0].shipspecs != undefined) {

@@ -7,7 +7,7 @@ export const useStatsQuery = (imo) => {
     ["stats"],
     async () =>
       axios
-        .get(`${UrlDomain.DEV}/marinanet/ships/${imo}/stats`)
+        .get(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/ships/${imo}/stats`)
         .then((response) => {
           return response.data;
         })

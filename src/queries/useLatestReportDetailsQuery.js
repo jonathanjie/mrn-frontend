@@ -7,7 +7,9 @@ export const useLatestReportDetailsQuery = (imo) => {
     ["latestReport"],
     async () =>
       axios
-        .get(`${UrlDomain.DEV}/marinanet/ships/${imo}/latest-details/`)
+        .get(
+          `${process.env.VUE_APP_URL_DOMAIN}/marinanet/ships/${imo}/latest-details/`
+        )
         .then((response) => {
           console.log(response.data);
           return response.data;
