@@ -381,7 +381,7 @@
             <CustomButton
               class="px-6 py-3 text-14 mr-1 mb-1"
               type="button"
-              @click="$emit('close-modal')"
+              @click="closeModal"
             >
               <template v-slot:content>{{ $t("cancel") }}</template>
             </CustomButton>
@@ -448,6 +448,9 @@ const props = defineProps({
 
 const emit = defineEmits(["close-modal"]);
 
+const closeModal = () => {
+  emit("close-modal");
+};
 const addSettings = () => {
   const settings = {
     flag: "Panama",
@@ -473,6 +476,7 @@ const addSettings = () => {
     .post(`${UrlDomain.DEV}/marinanet/ships/${props.imo}/specs/`, settings)
     .then(() => {
       emit("close-modal");
+      location.reload();
     })
     .catch((error) => {
       console.log(error.response);
