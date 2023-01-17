@@ -80,12 +80,18 @@ const isExpanded = ref(props.isInitiallyOpen);
 const filter = ref(ReportFilterCategories.ALL);
 
 const filteredData = computed(() => {
+  const copy = (list) => [...list];
+
   if (!filter.value || filter.value == ReportFilterCategories.ALL) {
-    return reports.value;
+    return copy(reports.value).sort((a, b) =>
+      new Date(a.report_date) < new Date(b.report_date) ? 1 : -1
+    );
   }
-  return reports.value.filter(
-    (p) => ReportTypeToFilterCategories[p.report_type] === filter.value
-  );
+  return copy(reports.value)
+    .filter((p) => ReportTypeToFilterCategories[p.report_type] === filter.value)
+    .sort((a, b) =>
+      new Date(a.report_date) < new Date(b.report_date) ? 1 : -1
+    );
 });
 
 // console.log(filteredData.value);
@@ -186,10 +192,7 @@ const handleClick = async () => {
 
     <!-- TODO: pagination + different start/dest depending on report type -->
     <div class="flex flex-col space-y-4">
-      <div
-        v-for="(report, index) in filteredData.slice().reverse()"
-        :key="index"
-      >
+      <div v-for="(report, index) in filteredData" :key="index">
         <ReportCard
           :uuid="report.uuid"
           :report_no="
