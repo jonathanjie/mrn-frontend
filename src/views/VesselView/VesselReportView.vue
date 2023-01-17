@@ -1,7 +1,7 @@
 <template>
   <div class="relative bg-gray-50 flex flex-col">
     <GradientButton
-      v-if="isSuccessLatestReportDetails && manager !== true"
+      v-if="isSuccessLatestReportDetails && isManager !== true"
       class="m-10 absolute right-0 -top-32"
       type="button"
       :is-disabled="isAddVoyageLoading || !isAddVoyageEnabled"
@@ -49,7 +49,7 @@ import { useLatestReportDetailsStore } from "@/stores/useLatestReportDetailsStor
 import { useAuthStore } from "@/stores/useAuthStore";
 // import { useCrewStore } from "@/stores/useCrewStore";
 const authStore = useAuthStore();
-const manager = authStore.role === "manager";
+const isManager = authStore.role === "manager";
 const props = defineProps({
   imo: { type: String, require: true },
 });
