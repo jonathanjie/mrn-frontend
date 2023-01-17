@@ -7,7 +7,7 @@ export const useShipQuery = (imo) => {
     ["ship"],
     async () =>
       axios
-        .get(`${UrlDomain.DEV}/marinanet/ships/${imo}`)
+        .get(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/ships/${imo}`)
         .then((response) => {
           return response.data;
         })

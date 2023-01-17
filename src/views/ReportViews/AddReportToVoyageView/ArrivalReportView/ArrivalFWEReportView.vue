@@ -296,14 +296,17 @@ const sendReport = async () => {
   // console.log("data: ", REPORT);
 
   isSubmissionModalVisible.value = true;
-  const response = await fetch(`${UrlDomain.DEV}/marinanet/reports/`, {
-    headers: {
-      Authorization: "Bearer " + localStorage.getItem("jwt"),
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify(REPORT),
-  });
+  const response = await fetch(
+    `${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/`,
+    {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(REPORT),
+    }
+  );
 
   try {
     const data = await response.json();

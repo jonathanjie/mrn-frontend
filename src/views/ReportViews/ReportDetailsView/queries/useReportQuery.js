@@ -7,7 +7,7 @@ export const useReportQuery = (uuid) => {
     ["reportDetail"],
     async () =>
       axios
-        .get(`${UrlDomain.DEV}/marinanet/reports/${uuid}/`)
+        .get(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/${uuid}/`)
         .then((response) => {
           // console.log("report view", response.data);
           return response.data;
