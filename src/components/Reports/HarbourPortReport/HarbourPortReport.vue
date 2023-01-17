@@ -66,7 +66,7 @@
           "
           v-model="reporting_time_zone"
         >
-          <option selected disabled value="default">
+          <option selected disabled value="{{prev_status}}">
             {{ $t("selectTimeZone") }}
           </option>
           <option v-for="(val, key) in TIMEZONES" :key="val" :value="val">
