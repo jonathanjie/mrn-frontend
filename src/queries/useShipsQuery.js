@@ -5,7 +5,7 @@ import { UrlDomain } from "@/constants";
 export const useShipsQuery = () => {
   return useQuery(["ships"], async () =>
     axios
-      .get(`${UrlDomain.DEV}/marinanet/ships-overview`)
+      .get(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/ships-overview`)
       .then((response) => {
         return response.data;
       })

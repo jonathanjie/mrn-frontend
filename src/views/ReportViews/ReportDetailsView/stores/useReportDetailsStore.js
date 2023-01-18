@@ -9,7 +9,7 @@ export const useReportDetailsStore = defineStore("ReportDetails", () => {
   // const report = ref({});
 
   // const getReport = (uuid) => {
-  //   fetch(`${UrlDomain.DEV}/marinanet/reports/` + uuid + "/", {
+  //   fetch(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/` + uuid + "/", {
   //     headers: {
   //       Authorization: "Bearer " + auth.jwt,
   //       "Content-Type": "application/json",

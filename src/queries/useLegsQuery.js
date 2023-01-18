@@ -7,7 +7,7 @@ export const useLegsQuery = (imo) => {
     ["legs"],
     async () =>
       axios
-        .get(`${UrlDomain.DEV}/marinanet/ships/${imo}/legs/`)
+        .get(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/ships/${imo}/legs/`)
         .then((response) => {
           return response.data;
         })
