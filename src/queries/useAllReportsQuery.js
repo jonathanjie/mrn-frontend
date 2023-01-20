@@ -1,6 +1,5 @@
 import { useQuery } from "vue-query";
 import axios from "axios";
-import { UrlDomain } from "@/constants";
 
 export const useAllReportsQuery = (imo) => {
   return useQuery(
@@ -11,7 +10,6 @@ export const useAllReportsQuery = (imo) => {
           `${process.env.VUE_APP_URL_DOMAIN}/marinanet/ships/${imo}/reports/`
         )
         .then((response) => {
-          console.log("all reports", response.data);
           return response.data;
         })
         .catch((error) => {

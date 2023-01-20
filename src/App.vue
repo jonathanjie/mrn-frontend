@@ -11,9 +11,6 @@
 import HomeView from "./views/HomeView.vue";
 import { useAuth0 } from "@auth0/auth0-vue";
 const { isAuthenticated } = useAuth0();
-
-console.log("ENV: ", process.env.NODE_ENV);
-console.log("URL_DOMAIN: ", process.env.VUE_APP_URL_DOMAIN);
 </script>
 
 <style lang="scss">

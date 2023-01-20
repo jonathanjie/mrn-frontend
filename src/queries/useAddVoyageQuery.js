@@ -1,6 +1,5 @@
 import { useQuery } from "vue-query";
 import axios from "axios";
-import { UrlDomain } from "@/constants";
 
 export const useAddVoyageQuery = (voyageData) => {
   return useQuery(
@@ -11,9 +10,6 @@ export const useAddVoyageQuery = (voyageData) => {
           `${process.env.VUE_APP_URL_DOMAIN}/marinanet/voyages/`,
           voyageData
         )
-        .then((response) => {
-          console.log("Added voyage successfuly", response);
-        })
         .catch((error) => {
           console.log(error.message);
         }),
