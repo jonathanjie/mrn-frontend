@@ -2,7 +2,6 @@
 import CustomButton from "./Buttons/CustomButton.vue";
 import ReportCard from ".//ReportCard.vue";
 import { computed, ref } from "vue";
-import { useAuthStore } from "@/stores/useAuthStore";
 import {
   ReportTypeToDisplay,
   ReportFilterCategories,
@@ -15,7 +14,6 @@ import { useVoyageStore } from "@/stores/useVoyageStore";
 import { storeToRefs } from "pinia";
 
 const router = useRouter();
-const auth = useAuthStore();
 const latestReportDetailsStore = useLatestReportDetailsStore();
 const { refetchLatestReportDetails } = latestReportDetailsStore;
 const { departurePort, arrivalPort } = storeToRefs(latestReportDetailsStore);
@@ -176,7 +174,6 @@ const handleClick = async () => {
       </button>
       <CustomButton
         :is-disabled="!props.isInitiallyOpen"
-        v-if="auth.role !== 'manager'"
         @click="
           handleClick()
           // $router.push({
