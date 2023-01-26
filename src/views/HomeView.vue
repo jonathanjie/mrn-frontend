@@ -31,11 +31,10 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { useAuth0 } from "@auth0/auth0-vue";
 import { useShipStore } from "@/stores/useShipStore";
 import axios from "axios";
-import { UrlDomain } from "@/constants";
 import { storeToRefs } from "pinia";
 
 const auth = useAuthStore();
-const { user, getAccessTokenSilently } = useAuth0();
+const { user, getAccessTokenSilently, idTokenClaims } = useAuth0();
 const shipStore = useShipStore();
 
 const getUserRole = async () => {
@@ -93,6 +92,7 @@ const getShip = async () => {
 const jwt = await getAccessTokenSilently();
 // console.log("Token", jwt);
 axios.defaults.headers.common["Authorization"] = "Bearer " + jwt;
+// axios.defaults.headers.common["id-token"] = idTokenClaims;
 
 let showModal = ref(true);
 const ship = await getShip();
