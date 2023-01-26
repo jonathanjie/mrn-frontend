@@ -118,25 +118,24 @@
       <div class="col-span-10 border-t"></div>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-      <span
-        class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
-        >{{ $t("longitude") }}</span
-      >
+      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
+        $t("longitude")
+      }}</span>
       <input
         v-model="pilot_arr_long_degree"
         @keypress="preventNaN($event, pilot_arr_long_degree)"
-        placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        placeholder="000 (Deg)"
+        class="p-3 pl-4 border-l bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
         v-model="pilot_arr_long_minute"
         @keypress="preventNaN($event, pilot_arr_long_minute)"
-        placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        placeholder="000 (Min)"
+        class="p-3 pl-4 border-l bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
         v-model="pilot_arr_long_dir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0"
+        class="p-3 text-14 border-l focus:outline-0"
         :class="
           pilot_arr_long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
         "
@@ -149,25 +148,24 @@
       </select>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-      <span
-        class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
-        >{{ $t("latitude") }}</span
-      >
+      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
+        $t("latitude")
+      }}</span>
       <input
         v-model="pilot_arr_lat_degree"
         @keypress="preventNaN($event, pilot_arr_lat_degree)"
-        placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        placeholder="000 (Deg)"
+        class="p-3 pl-4 border-l bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
         v-model="pilot_arr_lat_minute"
         @keypress="preventNaN($event, pilot_arr_lat_minute)"
-        placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        placeholder="000 (Min)"
+        class="p-3 pl-4 border-l bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
         v-model="pilot_arr_lat_dir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0 focus:outline-0"
+        class="p-3 text-14 border-l focus:outline-0 focus:outline-0"
         :class="
           pilot_arr_lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
         "
