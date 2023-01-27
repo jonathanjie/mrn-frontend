@@ -106,14 +106,21 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   );
   const distanceObs = ref("");
   const distanceEng = computed(() =>
-    revolutionCount.value
+    distanceEngStatic.value
+      ? distanceEngStatic.value
+      : distanceEngComputed.value
+  );
+  const distanceEngComputed = computed(() =>
+    revolutionCountStatic.value
       ? +(
-          ((Number(revolutionCount.value) - Number(revolution_count.value)) *
+          ((Number(revolutionCountStatic.value) -
+            Number(revolution_count.value)) *
             Number(propellerPitch.value)) /
           1852
         ).toFixed(0)
       : ""
   );
+  const distanceEngStatic = ref("");
   const distanceObsTotal = computed(() =>
     distanceObs.value
       ? +(
@@ -128,7 +135,21 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
         ).toFixed(0)
       : ""
   );
-  const revolutionCount = ref("");
+  const revolutionCount = computed(() =>
+    revolutionCountStatic.value
+      ? revolutionCountStatic.value
+      : revolutionCountComputed.value
+  );
+  const revolutionCountComputed = computed(() =>
+    distanceEngStatic.value
+      ? +(
+          (1852 * Number(distanceEngStatic.value)) /
+            Number(propellerPitch.value) +
+          Number(revolution_count.value)
+        ).toFixed(0)
+      : ""
+  );
+  const revolutionCountStatic = ref("");
   const hoursSinceLast = computed(() =>
     reportingDateTimeUTC.value && reportingTimeZone.value !== "default"
       ? +(
@@ -313,7 +334,11 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     hours,
     distanceObs,
     distanceEng,
+    distanceEngComputed,
+    distanceEngStatic,
     revolutionCount,
+    revolutionCountComputed,
+    revolutionCountStatic,
     distanceObsTotal,
     distanceEngTotal,
     hoursTotal,
