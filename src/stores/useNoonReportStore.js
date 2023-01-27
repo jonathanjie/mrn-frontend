@@ -194,15 +194,21 @@ export const useNoonReportStore = defineStore("noonReport", () => {
       : ""
   );
   const distanceEngSinceNoon = computed(() =>
-    // TODO: add constant for nautical mile
-    revolutionCount.value
+    distanceEngSinceNoonStatic.value
+      ? distanceEngSinceNoonStatic.value
+      : distanceEngSinceNoonComputed.value
+  );
+  const distanceEngSinceNoonComputed = computed(() =>
+    revolutionCountStatic.value
       ? +(
-          ((Number(revolutionCount.value) - Number(revolution_count.value)) *
+          ((Number(revolutionCountStatic.value) -
+            Number(revolution_count.value)) *
             Number(propellerPitch.value)) /
           1852
         ).toFixed(0)
       : ""
   );
+  const distanceEngSinceNoonStatic = ref("");
   const distanceEngCospToEosp = computed(() =>
     distanceEngSinceNoon.value
       ? +(
@@ -227,7 +233,21 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   );
   const distanceToGoEdited = ref("");
   const remarksForChanges = ref("");
-  const revolutionCount = ref("");
+  const revolutionCount = computed(() =>
+    revolutionCountStatic.value
+      ? revolutionCountStatic.value
+      : revolutionCountComputed.value
+  );
+  const revolutionCountComputed = computed(() =>
+    distanceEngSinceNoonStatic.value
+      ? +(
+          (1852 * Number(distanceEngSinceNoonStatic.value)) /
+            Number(propellerPitch.value) +
+          Number(revolution_count.value)
+        ).toFixed(0)
+      : ""
+  );
+  const revolutionCountStatic = ref("");
 
   // Performance
   const speedSinceNoon = computed(() =>
@@ -496,9 +516,13 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     distanceObsCospToEosp,
     distanceObsSbyToFwe,
     distanceEngSinceNoon,
+    distanceEngSinceNoonComputed,
+    distanceEngSinceNoonStatic,
     distanceEngCospToEosp,
     distanceEngSbyToFwe,
     revolutionCount,
+    revolutionCountComputed,
+    revolutionCountStatic,
     // Performance
     speedSinceNoon,
     rpmSinceNoon,
