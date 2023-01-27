@@ -261,27 +261,27 @@ const position = computed(() =>
     <div
       class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50 text-14"
     >
-      <span class="col-span-2 row-span-3 text-blue-700 p-3 self-center">{{
+      <span class="col-span-2 text-blue-700 p-3 self-center">{{
         $t("longitude")
       }}</span>
       <input
         disabled
         v-model="position.longDegree"
         @keypress="preventNaN($event, position.longDegree)"
-        placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-gray-700 focus:outline-0"
+        placeholder="000 (Deg)"
+        class="p-3 pl-4 border-l bg-gray-50 text-gray-700 focus:outline-0"
       />
       <input
         disabled
         v-model="position.longMinutes"
         @keypress="preventNaN($event, position.longMinutes)"
-        placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-gray-700 focus:outline-0"
+        placeholder="000 (Min)"
+        class="p-3 pl-4 border-l bg-gray-50 text-gray-700 focus:outline-0"
       />
       <select
         disabled
         v-model="position.longDir"
-        class="col-span-3 p-3 border-l focus:outline-0 bg-gray-50"
+        class="p-3 border-l focus:outline-0 bg-gray-50"
       >
         <option selected disabled value="default">
           {{ $t("eastAndWest") }}

@@ -165,25 +165,24 @@ const position = computed(() =>
       <div class="col-span-10 border-t"></div>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-      <span
-        class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
-        >{{ $t("longitude") }}</span
-      >
+      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
+        $t("longitude")
+      }}</span>
       <input
         v-model="position.longDegree"
-        placeholder="000 (Degree)"
+        placeholder="000 (Deg)"
         disabled
-        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-14 text-gray-700 focus:outline-0"
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <input
         v-model="position.longMinutes"
-        placeholder="000 (Minutes)"
+        placeholder="000 (Min)"
         disabled
-        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-14 text-gray-700 focus:outline-0"
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <select
         v-model="position.longDir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0 bg-gray-50 text-gray-700"
+        class="p-3 text-14 border-l focus:outline-0 bg-gray-50 text-gray-700"
         disabled
       >
         <option selected disabled value="default">
@@ -194,26 +193,25 @@ const position = computed(() =>
       </select>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-      <span
-        class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
-        >{{ $t("latitude") }}</span
-      >
+      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
+        $t("latitude")
+      }}</span>
       <input
         v-model="position.latDegree"
-        placeholder="000 (Degree)"
+        placeholder="000 (Deg)"
         disabled
-        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-14 text-gray-700 focus:outline-0"
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <input
         v-model="position.latMinutes"
-        placeholder="000 (Minutes)"
+        placeholder="000 (Min)"
         disabled
-        class="col-span-3 p-3 pl-4 border-l border-b bg-gray-50 text-14 text-gray-700 focus:outline-0"
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <select
         v-model="position.latDir"
         disabled
-        class="col-span-3 p-3 text-14 border-l focus:outline-0 bg-gray-50 text-gray-700"
+        class="p-3 text-14 border-l focus:outline-0 bg-gray-50 text-gray-700"
       >
         <option selected disabled value="default">
           {{ $t("southAndNorth") }}
