@@ -108,34 +108,6 @@
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
       <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
-        $t("longitude")
-      }}</span>
-      <input
-        v-model="long_degree"
-        @keypress="preventNaN($event, long_degree)"
-        placeholder="000 (Deg)"
-        class="p-3 pl-4 border-l bg-white text-14 text-gray-700 focus:outline-0"
-      />
-      <input
-        v-model="long_minutes"
-        @keypress="preventNaN($event, long_minutes)"
-        placeholder="000 (Min)"
-        class="p-3 pl-4 border-l bg-white text-14 text-gray-700 focus:outline-0"
-      />
-      <select
-        v-model="long_dir"
-        class="p-3 text-14 border-l focus:outline-0"
-        :class="long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
-      >
-        <option selected disabled value="default">
-          {{ $t("eastAndWest") }}
-        </option>
-        <option value="E">{{ $t("east") }}</option>
-        <option value="W">{{ $t("west") }}</option>
-      </select>
-    </div>
-    <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
         $t("latitude")
       }}</span>
       <input
@@ -160,6 +132,34 @@
         </option>
         <option value="S">{{ $t("south") }}</option>
         <option value="N">{{ $t("north") }}</option>
+      </select>
+    </div>
+    <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
+      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
+        $t("longitude")
+      }}</span>
+      <input
+        v-model="long_degree"
+        @keypress="preventNaN($event, long_degree)"
+        placeholder="000 (Deg)"
+        class="p-3 pl-4 border-l bg-white text-14 text-gray-700 focus:outline-0"
+      />
+      <input
+        v-model="long_minutes"
+        @keypress="preventNaN($event, long_minutes)"
+        placeholder="000 (Min)"
+        class="p-3 pl-4 border-l bg-white text-14 text-gray-700 focus:outline-0"
+      />
+      <select
+        v-model="long_dir"
+        class="p-3 text-14 border-l focus:outline-0"
+        :class="long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+      >
+        <option selected disabled value="default">
+          {{ $t("eastAndWest") }}
+        </option>
+        <option value="E">{{ $t("east") }}</option>
+        <option value="W">{{ $t("west") }}</option>
       </select>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border">

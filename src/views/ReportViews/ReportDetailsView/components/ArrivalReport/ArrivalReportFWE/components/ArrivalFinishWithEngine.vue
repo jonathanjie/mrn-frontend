@@ -102,7 +102,36 @@ const status = computed(
       </div>
     </div>
     <div></div>
-
+    <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
+      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
+        $t("latitude")
+      }}</span>
+      <input
+        disabled
+        v-model="position.latDegree"
+        @keypress="preventNaN($event, position.latDegree)"
+        placeholder="000 (Deg)"
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
+      />
+      <input
+        disabled
+        v-model="position.latMinutes"
+        @keypress="preventNaN($event, position.latMinutes)"
+        placeholder="000 (Min)"
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
+      />
+      <select
+        disabled
+        v-model="position.latDir"
+        class="p-3 text-14 border-l focus:outline-0 focus:outline-0 bg-gray-50 text-gray-700"
+      >
+        <option selected disabled value="default">
+          {{ $t("southAndNorth") }}
+        </option>
+        <option value="S">{{ $t("south") }}</option>
+        <option value="N">{{ $t("north") }}</option>
+      </select>
+    </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
       <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
         $t("longitude")
@@ -136,37 +165,6 @@ const status = computed(
         <option value="W">{{ $t("west") }}</option>
       </select>
     </div>
-    <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
-        $t("latitude")
-      }}</span>
-      <input
-        disabled
-        v-model="position.latDegree"
-        @keypress="preventNaN($event, position.latDegree)"
-        placeholder="000 (Deg)"
-        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
-      />
-      <input
-        disabled
-        v-model="position.latMinutes"
-        @keypress="preventNaN($event, position.latMinutes)"
-        placeholder="000 (Min)"
-        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
-      />
-      <select
-        disabled
-        v-model="position.latDir"
-        class="p-3 text-14 border-l focus:outline-0 focus:outline-0 bg-gray-50 text-gray-700"
-      >
-        <option selected disabled value="default">
-          {{ $t("southAndNorth") }}
-        </option>
-        <option value="S">{{ $t("south") }}</option>
-        <option value="N">{{ $t("north") }}</option>
-      </select>
-    </div>
-
     <div
       class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50 text-14"
     >

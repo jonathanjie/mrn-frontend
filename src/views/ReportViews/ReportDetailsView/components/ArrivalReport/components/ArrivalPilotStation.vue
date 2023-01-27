@@ -175,7 +175,7 @@ const position = computed(() =>
         disabled
         v-model="position.latMinutes"
         @keypress="preventNaN($event, position.latMinutes)"
-        placeholder="000 (Minutes)"
+        placeholder="000 (Min)"
         class="p-3 pl-4 border-l text-14 text-gray-700 focus:outline-0 bg-gray-50"
       />
       <select

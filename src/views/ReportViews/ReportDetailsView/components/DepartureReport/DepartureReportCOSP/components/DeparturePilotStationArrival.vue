@@ -166,34 +166,6 @@ const position = computed(() =>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
       <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
-        $t("longitude")
-      }}</span>
-      <input
-        v-model="position.longDegree"
-        placeholder="000 (Deg)"
-        disabled
-        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
-      />
-      <input
-        v-model="position.longMinutes"
-        placeholder="000 (Min)"
-        disabled
-        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
-      />
-      <select
-        v-model="position.longDir"
-        class="p-3 text-14 border-l focus:outline-0 bg-gray-50 text-gray-700"
-        disabled
-      >
-        <option selected disabled value="default">
-          {{ $t("eastAndWest") }}
-        </option>
-        <option value="E">{{ $t("east") }}</option>
-        <option value="W">{{ $t("west") }}</option>
-      </select>
-    </div>
-    <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
         $t("latitude")
       }}</span>
       <input
@@ -218,6 +190,34 @@ const position = computed(() =>
         </option>
         <option value="S">{{ $t("south") }}</option>
         <option value="N">{{ $t("north") }}</option>
+      </select>
+    </div>
+    <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
+      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
+        $t("longitude")
+      }}</span>
+      <input
+        v-model="position.longDegree"
+        placeholder="000 (Deg)"
+        disabled
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
+      />
+      <input
+        v-model="position.longMinutes"
+        placeholder="000 (Min)"
+        disabled
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
+      />
+      <select
+        v-model="position.longDir"
+        class="p-3 text-14 border-l focus:outline-0 bg-gray-50 text-gray-700"
+        disabled
+      >
+        <option selected disabled value="default">
+          {{ $t("eastAndWest") }}
+        </option>
+        <option value="E">{{ $t("east") }}</option>
+        <option value="W">{{ $t("west") }}</option>
       </select>
     </div>
   </div>
