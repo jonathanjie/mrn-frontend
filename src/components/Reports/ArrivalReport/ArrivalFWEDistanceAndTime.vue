@@ -12,9 +12,7 @@
       >
         {{ $t("totalHours") }}
       </div>
-      <div
-        class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50"
-      >
+      <div class="flex col-span-3 p-2 pl-4 border-x border-t bg-gray-50">
         <input
           v-model="hours"
           @keypress="preventNaN($event, hours)"
@@ -30,7 +28,7 @@
       >
         {{ $t("distanceByObservation") }}
       </div>
-      <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
+      <div class="flex col-span-3 p-2 pl-4 border-x border-t">
         <input
           v-model="distance_obs"
           @keypress="preventNaN($event, distance_obs)"
@@ -46,16 +44,30 @@
         {{ $t("distanceByEngine") }}
       </div>
       <div
-        class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t lg:border bg-gray-50"
+        class="flex items-center col-span-3 p-2 pl-4 border-x border-t lg:border bg-gray-50"
+        :class="distanceEngineDisabled ? 'bg-gray-50' : 'bg-white'"
       >
         <input
-          v-model="distance_eng"
-          @keypress="preventNaN($event, distance_eng)"
+          v-if="distanceEngineDisabled"
+          v-model="distance_eng_computed"
           placeholder="0"
           disabled
-          class="w-24 text-14 bg-gray-50 text-gray-700 focus:outline-0"
+          class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
         />
-        <MiniUnitDisplay>NM</MiniUnitDisplay>
+        <input
+          v-else
+          v-model="distance_eng_static"
+          @keypress="preventNaN($event, distance_eng_static)"
+          :placeholder="distance_eng_computed || 0"
+          class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
+          :class="distanceEngineDisabled ? 'bg-gray-50' : 'bg-white'"
+        />
+        <img
+          src="@/assets/icons/edit.svg"
+          @click="toggleDistanceEngine"
+          class="ml-auto h-4 w-4 cursor-pointer"
+        />
+        <MiniUnitDisplay class="ml-2">NM</MiniUnitDisplay>
       </div>
 
       <div
@@ -64,10 +76,18 @@
         {{ $t("revolutionCounter") }}
       </div>
       <input
-        v-model="revolution_count"
+        v-if="distanceEngineDisabled"
+        v-model="revolution_count_static"
         @keypress="preventNaN($event, revolution_count)"
         placeholder="0"
-        class="col-span-3 lg:col-span-3 p-3 pl-4 border-x border-y lg:border-t-0 bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-3 p-3 pl-4 border-x border-y lg:border-t-0 bg-white text-14 text-gray-700 focus:outline-0"
+      />
+      <input
+        v-else
+        v-model="revolution_count_computed"
+        disabled
+        placeholder="0"
+        class="col-span-3 p-3 pl-4 border-x border-y lg:border-t-0 bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
     </div>
   </div>
@@ -78,12 +98,23 @@ import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
 import { storeToRefs } from "pinia";
+import { ref } from "vue";
 
 const store = useArrivalFWEReportStore();
+
+const distanceEngineDisabled = ref(true);
+const toggleDistanceEngine = () => {
+  distanceEngineDisabled.value = !distanceEngineDisabled.value;
+  distance_eng_static.value = "";
+  revolution_count_static.value = "";
+};
+
 const {
   hours: hours,
   distanceObs: distance_obs,
-  distanceEng: distance_eng,
-  revolutionCount: revolution_count,
+  distanceEngComputed: distance_eng_computed,
+  distanceEngStatic: distance_eng_static,
+  revolutionCountComputed: revolution_count_computed,
+  revolutionCountStatic: revolution_count_static,
 } = storeToRefs(store);
 </script>
