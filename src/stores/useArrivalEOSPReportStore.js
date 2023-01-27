@@ -154,14 +154,21 @@ export const useArrivalEOSPReportStore = defineStore(
         : ""
     );
     const distanceEngSinceNoon = computed(() =>
-      revolutionCount.value
+      distanceEngSinceNoonStatic.value
+        ? distanceEngSinceNoonStatic.value
+        : distanceEngSinceNoonComputed.value
+    );
+    const distanceEngSinceNoonComputed = computed(() =>
+      revolutionCountStatic.value
         ? +(
-            ((Number(revolutionCount.value) - revolution_count.value) *
+            ((Number(revolutionCountStatic.value) -
+              Number(revolution_count.value)) *
               Number(propellerPitch.value)) /
             1852
           ).toFixed(0)
         : ""
     );
+    const distanceEngSinceNoonStatic = ref("");
     const distanceEngCospToEosp = computed(() =>
       distanceEngSinceNoon.value
         ? +(
@@ -188,7 +195,21 @@ export const useArrivalEOSPReportStore = defineStore(
     );
     const distanceToGoEdited = ref(""); // use distanceToGoEdited instead of distanceToGo if distanceToGoEdited.value != distanceToGo.value
     const remarksForChanges = ref("");
-    const revolutionCount = ref("");
+    const revolutionCount = computed(() =>
+      revolutionCountStatic.value
+        ? revolutionCountStatic.value
+        : revolutionCountComputed.value
+    );
+    const revolutionCountComputed = computed(() =>
+      distanceEngSinceNoonStatic.value
+        ? +(
+            (1852 * Number(distanceEngSinceNoonStatic.value)) /
+              Number(propellerPitch.value) +
+            Number(revolution_count.value)
+          ).toFixed(0)
+        : ""
+    );
+    const revolutionCountStatic = ref("");
 
     // Performance
     const speedSinceNoon = computed(() =>
@@ -445,9 +466,13 @@ export const useArrivalEOSPReportStore = defineStore(
       distanceObsCospToEosp,
       distanceObsSbyToFwe,
       distanceEngSinceNoon,
+      distanceEngSinceNoonComputed,
+      distanceEngSinceNoonStatic,
       distanceEngCospToEosp,
       distanceEngSbyToFwe,
       revolutionCount,
+      revolutionCountComputed,
+      revolutionCountStatic,
       // Performance
       speedSinceNoon,
       rpmSinceNoon,
