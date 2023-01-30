@@ -1,6 +1,5 @@
 import { useQuery } from "vue-query";
 import axios from "axios";
-import { UrlDomain } from "@/constants";
 
 export const useLegsQuery = (imo) => {
   return useQuery(

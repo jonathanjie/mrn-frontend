@@ -11,7 +11,6 @@ import { useVoyageStore } from "@/stores/useVoyageStore";
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
 import { Report } from "@/constants";
 import { parsePortLocode } from "@/utils/helpers";
-import { UrlDomain } from "@/constants";
 import { ref } from "vue";
 
 const props = defineProps({

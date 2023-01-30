@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 // import { ref } from "vue";
 // import { useAuthStore } from "@/stores/useAuthStore";
 import { useReportQuery } from "../queries/useReportQuery";
-// import { UrlDomain } from "@/constants";
 
 export const useReportDetailsStore = defineStore("ReportDetails", () => {
   // const auth = useAuthStore();

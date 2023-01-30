@@ -242,7 +242,6 @@ import MyVesselsDashboardIcon from "@/views/HQViews/components/MyVesselsDashboar
 import VesselCard from "@/views/HQViews/components/VesselCard.vue";
 import { useHQStore } from "@/stores/useHQStore";
 import constants from "@/constants";
-import { UrlDomain } from "@/constants";
 import axios from "axios";
 
 const shipRef = constants.shipRefs;

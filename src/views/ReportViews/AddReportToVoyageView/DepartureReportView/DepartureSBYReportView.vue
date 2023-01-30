@@ -18,7 +18,6 @@ import {
   generateFuelOilData,
   generateLubricatingOilData,
 } from "@/utils/helpers.js";
-import { UrlDomain } from "@/constants";
 
 const store = useDepartureSBYReportStore();
 const {

@@ -70,7 +70,6 @@ import {
   parsePortLocode,
 } from "@/utils/helpers.js";
 import { OPERATIONS } from "@/utils/options";
-import { UrlDomain } from "@/constants";
 
 const store = useArrivalFWEReportStore();
 const {
