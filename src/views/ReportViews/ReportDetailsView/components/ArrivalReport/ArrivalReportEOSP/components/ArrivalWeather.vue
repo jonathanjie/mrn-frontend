@@ -11,7 +11,9 @@ const props = defineProps({
   },
 });
 
-const weather = computed(() => props.report.weatherdata.weather_notation);
+const weather = computed(
+  () => props.report.weatherdata.weather_notation || "NA"
+);
 const visibility = computed(() => props.report.weatherdata.visibility);
 const windDirection = computed(() => props.report.weatherdata.wind_direction);
 const windSpeed = computed(() => props.report.weatherdata.wind_speed);

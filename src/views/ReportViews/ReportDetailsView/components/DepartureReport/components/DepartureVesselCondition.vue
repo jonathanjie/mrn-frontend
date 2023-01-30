@@ -11,19 +11,23 @@ const props = defineProps({
 });
 
 const draftFwd = computed(
-  () => props.report.departurevesselcondition.draft_fwd
+  () => props.report.departurevesselcondition.draft_fwd || "NA"
 );
 const draftMid = computed(
-  () => props.report.departurevesselcondition.draft_mid
+  () => props.report.departurevesselcondition.draft_mid || "NA"
 );
 const draftAft = computed(
-  () => props.report.departurevesselcondition.draft_aft
+  () => props.report.departurevesselcondition.draft_aft || "NA"
 );
-const constant = computed(() => props.report.departurevesselcondition.constant);
-const gm = computed(() => props.report.departurevesselcondition.gm);
-const ballast = computed(() => props.report.departurevesselcondition.ballast);
+const constant = computed(
+  () => props.report.departurevesselcondition.constant || "NA"
+);
+const gm = computed(() => props.report.departurevesselcondition.gm || "NA");
+const ballast = computed(
+  () => props.report.departurevesselcondition.ballast || "NA"
+);
 const displacement = computed(
-  () => props.report.departurevesselcondition.displacement
+  () => props.report.departurevesselcondition.displacement || "NA"
 );
 </script>
 
