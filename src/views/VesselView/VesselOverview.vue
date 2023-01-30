@@ -59,7 +59,7 @@
 </template>
 
 <script setup>
-import TableOverview from "@/views/HQViews/components/TableOverview.vue";
+import TableOverview from "@/views/HQViews/Overview/components/TableOverview.vue";
 import { useCrewStore } from "@/stores/useCrewStore";
 
 const props = defineProps({

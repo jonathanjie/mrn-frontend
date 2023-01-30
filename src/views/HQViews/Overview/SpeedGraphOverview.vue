@@ -163,8 +163,8 @@
 </template>
 
 <script setup>
-import TableOverview from "@/views/HQViews/components/TableOverview.vue";
-import PortCard from "@/views/HQViews/components/PortCard.vue";
+import TableOverview from "@/views/HQViews/Overview/components/TableOverview.vue";
+import PortCard from "@/views/HQViews/Overview/components/PortCard.vue";
 import { useHQStore } from "@/stores/useHQStore";
 import constants from "@/constants";
 

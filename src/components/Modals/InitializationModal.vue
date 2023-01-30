@@ -405,7 +405,6 @@ import { ref } from "vue";
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 import axios from "axios";
-import { UrlDomain } from "@/constants";
 
 // List to export options from checkboxes
 let lubricatingOthersFlag = ref(true);

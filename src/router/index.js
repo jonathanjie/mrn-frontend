@@ -43,7 +43,8 @@ const routes = [
       {
         path: "overview",
         name: "speed-graph-overview",
-        component: () => import("../views/HQViews/SpeedGraphOverview.vue"),
+        component: () =>
+          import("../views/HQViews/Overview/SpeedGraphOverview.vue"),
         props: true,
         beforeEnter: authGuard,
       },
@@ -58,7 +59,7 @@ const routes = [
         path: "uploaded-reports",
         name: "uploaded-reports",
         component: () => import("../views/VesselView/VesselReportView.vue"),
-        props: true, // To pass HQ parameter to hide Add Report Button
+        props: true,
         beforeEnter: authGuard,
       },
     ],
