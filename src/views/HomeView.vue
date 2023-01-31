@@ -34,7 +34,7 @@ import axios from "axios";
 import { storeToRefs } from "pinia";
 
 const auth = useAuthStore();
-const { user, getAccessTokenSilently, idTokenClaims } = useAuth0();
+const { user, getAccessTokenSilently } = useAuth0();
 const shipStore = useShipStore();
 
 const getUserRole = async () => {

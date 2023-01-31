@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from "vue";
-import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
+import { textInputOptions, format } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { parsePositionFromString } from "@/utils/helpers.js";
 

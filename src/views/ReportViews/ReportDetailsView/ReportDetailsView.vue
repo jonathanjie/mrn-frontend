@@ -21,7 +21,6 @@ const props = defineProps({
 const store = useReportDetailsStore();
 const auth = useAuthStore();
 const { getReportQuery } = store;
-const authStore = useAuthStore;
 // API calls
 // getReport(props.uuid);
 

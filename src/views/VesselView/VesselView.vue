@@ -39,25 +39,6 @@
           >
         </div>
       </div>
-      <!-- Disabled modal until finalized design -->
-      <!-- <GradientButton class="m-10" type="button" @click="showModal = true">>
-                <template v-slot:content>{{ $t("createNewVoyage") }}</template>  
-            </GradientButton> -->
-      <!-- <GradientButton
-        class="m-10"
-        type="button"
-        :disabled="isFetchingVoyages"
-        @click="addVoyage(voyageData)"
-      >
-        <template v-slot:content>{{ $t("createNewVoyage") }}</template>
-      </GradientButton> -->
-      <!-- <InitializationModal
-        ref="modal"
-        v-show="showModal"
-        @close-modal="showModal = false"
-        :vesselname="vesselname"
-        :imo="imo"
-      ></InitializationModal> -->
     </div>
     <suspense>
       <router-view></router-view>
@@ -66,26 +47,9 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-// import GradientButton from "../../components/Buttons/GradientButton.vue";
-// import InitializationModal from "@/components/Modals/InitializationModal.vue";
-// import { useAuthStore } from "@/stores/useAuthStore";
-// import { useShipStore } from "@/stores/useShipStore";
-// import { storeToRefs } from "pinia";
-// import axios from "axios";
-
-// const auth = useAuthStore();
-// const store = useShipStore();
-// const { /**isFetchingVoyages, lastVoyageNo,**/ nextVoyageNo } =
-// storeToRefs(store);
-
-// Variable to force replacement of router-view
-// const update = ref(0);
 const props = defineProps({
   vesselname: String,
   imo: String,
   specs: String,
 });
-
-let showModal = localStorage.getItem("addSpec") == true;
 </script>

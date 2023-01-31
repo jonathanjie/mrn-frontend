@@ -10,8 +10,7 @@ export const useLatestReportDetailsStore = defineStore(
   "latestReportDetails",
   () => {
     const shipStore = useShipStore();
-    const { fuelOils, lubricatingOils, machinery, imoReg } =
-      storeToRefs(shipStore);
+    const { imoReg } = storeToRefs(shipStore);
     const voyageStore = useVoyageStore();
     const { voyageLegs } = storeToRefs(voyageStore);
 

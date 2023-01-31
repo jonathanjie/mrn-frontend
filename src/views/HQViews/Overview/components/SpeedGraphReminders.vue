@@ -7,6 +7,7 @@
     }}</span>
     <ReminderCard
       v-for="reminder in reminders"
+      :key="reminder.id"
       :type="reminder.type"
       :title="reminder.title"
       :message="reminder.message"
