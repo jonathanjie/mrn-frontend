@@ -13,6 +13,7 @@ import { h } from "vue";
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 import resetStore from "@/plugins/resetStore";
+import VueApexCharts from "vue3-apexcharts";
 
 const app = createApp(App)
   .use(i18n)
@@ -27,7 +28,8 @@ const app = createApp(App)
   )
   .use(createPinia().use(resetStore))
   .use(VueClickAway)
-  .use(VueQueryPlugin);
+  .use(VueQueryPlugin)
+  .use(VueApexCharts);
 
 vSelect.props.components.default = () => ({
   OpenIndicator: {

@@ -551,6 +551,8 @@ const i18n = createI18n({
       clickMyVessels: 'Click "My Vessels" button',
       cii: "CII",
       ciiOverview: "CII Grade Overview",
+      gradeRatingOverview: "Grade Rating Overview",
+      currentStats: "CURRENT STATS",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser
