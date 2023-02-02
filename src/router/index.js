@@ -12,7 +12,6 @@ import DepartureReportView from "@/views/ReportViews/AddReportToVoyageView/Depar
 import BunkerReportViewWrapper from "@/views/ReportViews/AddReportToVoyageView/BunkerReportView/BunkerReportViewWrapper.vue";
 import HarbourPortReportView from "@/views/ReportViews/AddReportToVoyageView/HarbourPortReportView/HarbourPortReportView.vue";
 import ReportDetailsViewWrapper from "@/views/ReportViews/ReportDetailsView/ReportDetailsViewWrapper.vue";
-
 import NotFound from "@/views/NotFound.vue";
 
 const routes = [
@@ -130,6 +129,13 @@ const routes = [
     //     component: NoonReportView,
     //   },
     // ],
+    beforeEnter: authGuard,
+  },
+  {
+    path: "/cii-overview",
+    name: "cii-overview",
+    component: () => import("../views/CIIViews/CIIOverview.vue"),
+    props: true,
     beforeEnter: authGuard,
   },
   {
