@@ -56,6 +56,13 @@ const routes = [
         beforeEnter: authGuard,
       },
       {
+        path: "cii-document",
+        name: "cii-document",
+        component: () => import("../views/HQViews/CIIDocument.vue"),
+        props: true,
+        beforeEnter: authGuard,
+      },
+      {
         path: "uploaded-reports",
         name: "uploaded-reports",
         component: () => import("../views/VesselView/VesselReportView.vue"),
