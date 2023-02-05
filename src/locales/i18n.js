@@ -553,6 +553,7 @@ const i18n = createI18n({
       ciiOverview: "CII Grade Overview",
       gradeRatingOverview: "Grade Rating Overview",
       currentStats: "CURRENT STATS",
+      vesselGrade: "Vessel Grade",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser

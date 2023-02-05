@@ -1,26 +1,47 @@
 <script setup>
-const years = [2023, 2022, 2021, 2020];
-const yearButton = {
-  2020: false,
-  2021: false,
-  2022: false,
-  2023: true,
-};
+import { ref, reactive, watch } from "vue";
+const props = defineProps({
+  data: Object,
+});
+const grades = ["Grade A", "Grade B", "Grade C", "Grade D", "Grade E"];
+const series = reactive({});
+
+let years = ref([]);
+watch(
+  () => props.data,
+  () => {
+    for (let year in props.data) {
+      years.value.push(year);
+      series[year] = props.data[year];
+    }
+    console.log(series);
+  }
+);
+
+const yearButton = reactive({});
+for (let year in years) {
+  if (year == 0) {
+    yearButton[years[year]] = true;
+  } else yearButton[years[year]] = false;
+}
+let selectedYear = years[0];
+
 const switchColor = (year) => {
   for (let item in yearButton) {
-    if (item == year) [];
-    else {
+    if (item == year) {
+      selectedYear = year;
+      yearButton[item] = true;
+    } else {
       yearButton[item] = false;
     }
   }
 };
-const series = [11, 15, 16, 1, 1];
 
 const chartOptions = {
   dataLabels: {
     enabled: false,
   },
-  labels: ["Grade A", "Grade B", "Grade C", "Grade D", "Grade E"],
+  labels: grades,
   colors: ["#12B76A", "#7BBD58", "#FFD400", "#FDA80C", "#F04438"],
   legend: {
     position: "bottom",
@@ -81,8 +102,25 @@ const chartOptions = {
           width="400"
           type="donut"
           :options="chartOptions"
-          :series="series"
+          :series="series[selectedYear]"
         />
+      </div>
+      <div
+        class="flex flex-col w-full p-4 bg-gray-100 ml-5 rounded-xl align-middle"
+      >
+        <span class="text-14 text-gray-700 font-bold">{{
+          $t("vesselGrade")
+        }}</span>
+        <div
+          class="flex justify-between w-full rounded-l bg-white px-3 py-2.5 mt-3"
+          v-for="(value, index) in series[selectedYear]"
+          :key="value.id"
+        >
+          <span class="text-14 text-gray-600 ml-2.5">{{ grades[index] }}</span>
+          <span class="text-14 text-gray-700 font-bold"
+            >{{ value }} Vessel</span
+          >
+        </div>
       </div>
     </div>
   </div>
