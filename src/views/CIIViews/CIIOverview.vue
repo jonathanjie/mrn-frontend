@@ -1,6 +1,6 @@
 <script setup>
 import CIIGraph from "./components/CIIGraph.vue";
-import CIIVesselListCard from "./components/CIIVesselListCard.vue";
+import CIIVesselListCard from "./components/CIIVesselList/CIIVesselListCard.vue";
 import CIIRatingAlertCard from "./components/CIIRatingAlertCard.vue";
 // const inputData = [
 //   {

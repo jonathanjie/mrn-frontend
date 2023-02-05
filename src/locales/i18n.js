@@ -554,6 +554,7 @@ const i18n = createI18n({
       gradeRatingOverview: "Grade Rating Overview",
       currentStats: "CURRENT STATS",
       vesselGrade: "Vessel Grade",
+      builtYear: "Built Year",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser
