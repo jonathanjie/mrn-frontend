@@ -95,6 +95,13 @@ module.exports = {
       gradientgreen: "#09DBA9",
       white: "#FFFFFF",
       black: "#000000",
+      grades: {
+        a: "#12B76A",
+        b: "#7BBD58",
+        c: "#FFD400",
+        d: "#FDA80C",
+        e: "#F04438",
+      },
     },
     extend: {
       gridTemplateColumns: {
