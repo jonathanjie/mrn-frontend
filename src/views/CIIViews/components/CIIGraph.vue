@@ -1,193 +1,17 @@
 <script setup>
-import { reactive } from "vue";
-// const props = defineProps({
-//   data: Object,
-// });
-
-// const inputData = [
-//   {
-//     uuid: "0e58c71e-3a0b-484e-8f24-120885f3b1ce",
-//     name: "Test Ship 4",
-//     imo_reg: 4234567,
-//     company: {
-//       uuid: "46e39081-dbdf-4816-8c09-5a40a36626b8",
-//       name: "MarinaChain",
-//       link: "https://www.marinachain.io/",
-//     },
-//     ship_type: "GAS",
-//     shipspecs: {
-//       flag: "Panama",
-//       deadweight_tonnage: "2000.00",
-//       cargo_unit: "cargoMt",
-//       fuel_options: ["LSFO", "MGO"],
-//       lubricating_oil_options: [
-//         "me_cylinder_oil",
-//         "me_system_oil",
-//         "ge_system_oil",
-//       ],
-//       machinery_options: ["main_engine", "generator_engine", "boiler"],
-//       propeller_pitch: "2.8740",
-//     },
-//     builtYear: 2002,
-//     setupCii: true,
-//     ciiGrade: {
-//       2021: "B",
-//       2022: "C",
-//       2020: "A",
-//       2023: "E",
-//     },
-//   },
-//   {
-//     uuid: "0d1de952-a361-4b18-95ec-dbaa7a0ca7d8",
-//     name: "Test Ship 5",
-//     imo_reg: 5234567,
-//     company: {
-//       uuid: "46e39081-dbdf-4816-8c09-5a40a36626b8",
-//       name: "MarinaChain",
-//       link: "https://www.marinachain.io/",
-//     },
-//     ship_type: "GEN",
-//     shipspecs: {
-//       flag: "Panama",
-//       deadweight_tonnage: "2000.00",
-//       cargo_unit: "cargoMt",
-//       fuel_options: ["LSFO", "MGO"],
-//       lubricating_oil_options: [
-//         "me_cylinder_oil",
-//         "me_system_oil",
-//         "ge_system_oil",
-//       ],
-//       machinery_options: ["main_engine", "generator_engine", "boiler"],
-//       propeller_pitch: "2.8740",
-//     },
-//     builtYear: 2002,
-//     setupCii: true,
-//     ciiGrade: {
-//       2020: "A",
-//       2021: "A",
-//       2022: "B",
-//       2023: "E",
-//     },
-//   },
-//   {
-//     uuid: "6c1a1e8c-4dfb-4fef-b98c-f43db4576b12",
-//     name: "Test Ship 1",
-//     imo_reg: 1234567,
-//     company: {
-//       uuid: "46e39081-dbdf-4816-8c09-5a40a36626b8",
-//       name: "MarinaChain",
-//       link: "https://www.marinachain.io/",
-//     },
-//     ship_type: "OIL",
-//     shipspecs: {
-//       flag: "Panama",
-//       deadweight_tonnage: "2000.00",
-//       cargo_unit: "cargoMt",
-//       fuel_options: ["LSFO", "MGO"],
-//       lubricating_oil_options: [
-//         "me_cylinder_oil",
-//         "me_system_oil",
-//         "ge_system_oil",
-//       ],
-//       machinery_options: ["main_engine", "generator_engine", "boiler"],
-//       propeller_pitch: "2.7839",
-//     },
-//     builtYear: 2002,
-//     setupCii: true,
-//     ciiGrade: {
-//       2020: "A",
-//       2021: "B",
-//       2022: "C",
-//       2023: "D",
-//     },
-//   },
-//   {
-//     uuid: "45f5fc6d-c600-419e-94f0-ae6b6df5b62a",
-//     name: "Test Ship 2",
-//     imo_reg: 2234567,
-//     company: {
-//       uuid: "46e39081-dbdf-4816-8c09-5a40a36626b8",
-//       name: "MarinaChain",
-//       link: "https://www.marinachain.io/",
-//     },
-//     ship_type: "OIL",
-//     shipspecs: {
-//       flag: "Panama",
-//       deadweight_tonnage: "2000.00",
-//       cargo_unit: "cargoMt",
-//       fuel_options: ["HFO", "MDO"],
-//       lubricating_oil_options: [
-//         "me_cylinder_oil",
-//         "me_system_oil",
-//         "ge_system_oil",
-//       ],
-//       machinery_options: [
-//         "main_engine",
-//         "generator_engine",
-//         "boiler",
-//         "inert_gas_generator",
-//       ],
-//       propeller_pitch: "2.3000",
-//     },
-//     builtYear: 2002,
-//     setupCii: true,
-//     ciiGrade: {
-//       2020: "A",
-//       2021: "B",
-//       2022: "C",
-//       2023: "E",
-//     },
-//   },
-//   {
-//     uuid: "cd408268-cbee-4edc-8c36-d1ed720cb69b",
-//     name: "Test Ship 3",
-//     imo_reg: 3234567,
-//     company: {
-//       uuid: "46e39081-dbdf-4816-8c09-5a40a36626b8",
-//       name: "MarinaChain",
-//       link: "https://www.marinachain.io/",
-//     },
-//     ship_type: "OIL",
-//     shipspecs: {
-//       flag: "Panama",
-//       deadweight_tonnage: "2000.00",
-//       cargo_unit: "cargoMt",
-//       fuel_options: ["LSFO", "MGO"],
-//       lubricating_oil_options: [
-//         "me_cylinder_oil",
-//         "me_system_oil",
-//         "ge_system_oil",
-//       ],
-//       machinery_options: ["main_engine", "generator_engine", "boiler"],
-//       propeller_pitch: "2.8740",
-//     },
-//     builtYear: 2002,
-//     setupCii: true,
-//     ciiGrade: {
-//       2020: "A",
-//       2021: "B",
-//       2022: "C",
-//       2023: "D",
-//     },
-//   },
-// ];
-
-const inputData = [];
+import { reactive, toRefs } from "vue";
+const props = defineProps({
+  data: Object,
+  years: Array,
+});
+const { data, years } = toRefs(props);
+const yearsList = years.value.sort();
 const grades = ["Grade A", "Grade B", "Grade C", "Grade D", "Grade E"];
-let years = [];
-for (let i in inputData) {
-  let keys = Object.keys(inputData[i].ciiGrade);
-  for (let key in keys) {
-    if (!years.includes(keys[key])) {
-      years.push(keys[key]);
-    }
-  }
-}
-years.reverse();
+
 let shipData = reactive({});
 
-for (let index in years) {
-  let year = years[index];
+for (let index in years.value) {
+  let year = years.value[index];
   let yearCount = {
     A: 0,
     B: 0,
@@ -195,8 +19,8 @@ for (let index in years) {
     D: 0,
     E: 0,
   };
-  for (let ship in inputData) {
-    let shipGrade = inputData[ship].ciiGrade[year];
+  for (let ship in data.value) {
+    let shipGrade = data.value[ship].ciiGrade[year];
     if (shipGrade != undefined) {
       yearCount[shipGrade]++;
     }
@@ -209,37 +33,14 @@ for (let index in years) {
   shipData[year] = tempList;
 }
 
-// watch(
-//   () => props.data,
-//   () => {
-//     for (let year in props.data) {
-//       years.value.push(year);
-//       series[year] = props.data[year];
-//     }
-//     console.log(series);
-//   }
-// );
-
-// const data = {
-//   2020: [11, 15, 16, 1, 1],
-//   2021: [1, 2, 3, 4, 5],
-//   2022: [10, 1, 6, 10, 20],
-//   2023: [0],
-// };
-
-// for (let year in data) {
-//   if (data[year].length == 0) {
-//     series[year] = 1;
-//   } else series[year] = data[year];
-// }
 const yearButton = reactive({});
-for (let year in years) {
+for (let year in years.value) {
   if (year == 0) {
-    yearButton[years[year]] = true;
-  } else yearButton[years[year]] = false;
+    yearButton[years.value[year]] = true;
+  } else yearButton[years.value[year]] = false;
 }
 
-let selectedYear = years[0];
+let selectedYear = years.value[0];
 
 const switchColor = (year) => {
   for (let item in yearButton) {
@@ -343,7 +144,7 @@ if (Object.keys(shipData).length == 0) {
           class="flex px-2.5 py-0.5 items-center"
           :class="yearButton[year] ? 'bg-white rounded-xl' : ''"
           @click="switchColor(year)"
-          v-for="year in years"
+          v-for="year in yearsList"
           :key="year.id"
         >
           <span
