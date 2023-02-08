@@ -549,6 +549,14 @@ const i18n = createI18n({
       made: "Made",
       unauthorizedAccess: "Unauthorized Access",
       clickMyVessels: 'Click "My Vessels" button',
+      cii: "CII",
+      ciiOverview: "CII Grade Overview",
+      gradeRatingOverview: "Grade Rating Overview",
+      currentStats: "CURRENT STATS",
+      vesselGrade: "Vessel Grade",
+      builtYear: "Built Year",
+      setupCii: "Setup CII Condition",
+      new: "NEW",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser
