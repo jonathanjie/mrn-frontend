@@ -17,6 +17,10 @@ for (let ship in ships.value) {
   }
   shipGrades.push(tempArr);
 }
+
+const setupCii = () => {
+  console.log("Hello World");
+};
 </script>
 
 <template>
@@ -52,6 +56,7 @@ for (let ship in ships.value) {
         v-if="ship.setupCii"
         class="flex w-full justify-center bg-blue-50 rounded-l border border-blue-600 text-14 text-blue-700 font-bold"
         :class="buttonCols"
+        @click.self.prevent="setupCii"
       >
         {{ $t("setupCii") }}
       </button>
