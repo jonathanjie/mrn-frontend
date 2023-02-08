@@ -44,7 +44,7 @@
           "
           >{{ $t("vesselSpec") }}</router-link
         >
-        <router-link
+        <!-- <router-link
           :to="{
             name: 'cii-document',
             params: { vesselname: props.vesselname, imo: props.imo },
@@ -56,7 +56,7 @@
               : ''
           "
           >{{ $t("ciiDocument") }}</router-link
-        >
+        > -->
         <router-link
           :to="{
             name: 'uploaded-reports',
