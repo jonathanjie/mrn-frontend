@@ -17,12 +17,15 @@ for (let ship in ships.value) {
   }
   shipGrades.push(tempArr);
 }
-console.log(shipGrades);
 </script>
 
 <template>
   <div class="divide-y">
-    <div
+    <router-link
+      :to="{
+        name: 'speed-graph-overview',
+        params: { vesselname: ship.name, imo: ship.imo_reg },
+      }"
       v-for="(ship, index) in ships"
       class="flex grid px-3.5 py-3 my-3 justify-between items-center"
       :key="ship.id"
@@ -46,7 +49,7 @@ console.log(shipGrades);
         ship.builtYear
       }}</span>
       <button
-        v-if="!ship.setupCii"
+        v-if="ship.setupCii"
         class="flex w-full justify-center bg-blue-50 rounded-l border border-blue-600 text-14 text-blue-700 font-bold"
         :class="buttonCols"
       >
@@ -85,6 +88,6 @@ console.log(shipGrades);
         >
         <span v-else>{{ grade }}</span>
       </div>
-    </div>
+    </router-link>
   </div>
 </template>

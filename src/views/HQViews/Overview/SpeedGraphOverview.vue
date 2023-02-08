@@ -173,6 +173,8 @@ const props = defineProps({
   imo: String,
 });
 
+console.log(props, "SpeedOverview props");
+
 const shipRef = constants.shipRefs;
 const store = useHQStore();
 const { isSuccess: shipSuccess, data: ship } = store.shipQuery(props.imo);
