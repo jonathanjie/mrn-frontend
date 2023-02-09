@@ -1,7 +1,12 @@
 <script setup>
 import { ref, computed, defineProps } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { preventNaN } from "@/utils/helpers.js";
+import {
+  preventNaN,
+  getPresignedUrlForFiles,
+  getFilePath,
+  getFileName,
+} from "@/utils/helpers.js";
 // import DropZone from "@/components/FileDrop/DropZone.vue";
 // import FilePreview from "@/components/FileDrop/FilePreview.vue";
 import { ALL_FUEL_OILS, ALL_LUBRICATING_OILS } from "@/utils/options";
@@ -12,51 +17,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-const getPresignedUrlForFiles = async (filePath) => {
-  const response = await fetch(
-    "https://mui7py4yakmr4db4na4vogvotm0jyacz.lambda-url.ap-southeast-1.on.aws/",
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "PUT",
-      body: JSON.stringify({
-        filepaths: filePath,
-      }),
-    }
-  );
-
-  try {
-    const data = await response.json();
-    // console.log(response);
-    // console.log(data.presigned_urls);
-
-    return data.presigned_urls;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const getFilePath = (file) => {
-  const urlFragments = file.split("/");
-  const rtn =
-    urlFragments[3] +
-    "/" +
-    urlFragments[4] +
-    "/" +
-    urlFragments[5] +
-    "/" +
-    urlFragments[6] +
-    "/" +
-    urlFragments[7].split("?")[0];
-
-  return decodeURI(rtn);
-};
-
-const getFileName = (filePath) => {
-  return decodeURI(filePath.split("/")[7].split("?")[0]);
-};
 
 const files = ref([]);
 

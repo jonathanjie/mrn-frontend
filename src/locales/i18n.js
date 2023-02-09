@@ -549,6 +549,7 @@ const i18n = createI18n({
       made: "Made",
       unauthorizedAccess: "Unauthorized Access",
       clickMyVessels: 'Click "My Vessels" button',
+      ciiDocument: "CII Document",
       dailyReport: "Daily Report",
     },
     // Janky way to sort the list
