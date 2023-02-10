@@ -1,7 +1,7 @@
 <script setup>
 import CIIGraph from "./components/CIIGraph.vue";
 import CIIVesselListCard from "./components/CIIVesselList/CIIVesselListCard.vue";
-import CIIRatingAlertCard from "./components/CIIRatingAlertCard.vue";
+import CIIRatingAlertCard from "./components/CIIRatingAlert/CIIRatingAlertCard.vue";
 const inputData = [
   // {
   //   uuid: "0e58c71e-3a0b-484e-8f24-120885f3b1ce",
@@ -182,13 +182,14 @@ for (let i in inputData) {
 }
 </script>
 <template>
-  <div class="flex flex-col px-12 pt-12 w-full">
-    <span class="text-20 font-bold text-blue-800 w-full">{{
-      $t("ciiOverview")
-    }}</span>
-    <CIIGraph :data="inputData" :years="years" />
-
-    <CIIVesselListCard :data="inputData" :yearsList="years" />
+  <div class="flex flex-col px-12 pt-12 w-full divide-y">
+    <div class="mb-10">
+      <span class="text-20 font-bold text-blue-800 w-full">{{
+        $t("ciiOverview")
+      }}</span>
+      <CIIGraph :data="inputData" :years="years" />
+      <CIIVesselListCard :data="inputData" :yearsList="years" />
+    </div>
 
     <CIIRatingAlertCard />
   </div>
