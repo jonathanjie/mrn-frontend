@@ -91,6 +91,7 @@ module.exports = {
       },
       pink: "#ED7B84",
       darkgray: "#EAEEF0",
+      paleblue: "#F5FDFF",
       gradientblue: "#0093B8",
       gradientgreen: "#09DBA9",
       white: "#FFFFFF",

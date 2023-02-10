@@ -8,7 +8,7 @@
         ? 'border-gray-500 text-gray-700 bg-gray-100'
         : isWarning
         ? 'border-red-500 text-red-500 bg-red-50'
-        : 'border-gradientblue text-gradientblue bg-blue-50'
+        : 'border-gradientblue text-gradientblue bg-paleblue'
     "
   >
     <slot name="icon"></slot>

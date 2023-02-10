@@ -166,6 +166,11 @@ export const shipRefs = {
   CRUZ: "Cruise Passenger Ship",
 };
 
+export const CIIModalTypes = {
+  INITIAL_SETUP: "Initial Setup CII",
+  UPLOAD_FILES: "Upload CII Report",
+};
+
 const constants = {
   SRID: "4326",
   Report: Report,
@@ -182,6 +187,7 @@ const constants = {
   ActualPerformanceType: ActualPerformanceType,
   UTCPlaceholder: UTCPlaceholder,
   shipRefs: shipRefs,
+  CIIModalTypes: CIIModalTypes,
 };
 
 export default constants;
