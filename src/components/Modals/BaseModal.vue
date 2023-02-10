@@ -20,9 +20,7 @@ const props = defineProps({
         </div>
 
         <div class="modal-footer">
-          <slot name="footer">
-            default footer
-          </slot>
+          <slot name="footer"> default footer </slot>
         </div>
       </div>
     </div>
@@ -39,7 +37,7 @@ const props = defineProps({
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  transition: opacity 1s ease;
+  transition: opacity 0.1s ease;
 }
 
 .modal-container {
@@ -49,7 +47,7 @@ const props = defineProps({
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
 }
 
 .modal-header h3 {
