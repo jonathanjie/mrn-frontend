@@ -1,5 +1,6 @@
 <script setup>
 import { toRefs } from "vue";
+import CIIAlert from "../../CIIAlert.vue";
 const props = defineProps({
   ships: Object,
   buttonCols: String,
@@ -64,34 +65,21 @@ const setupCii = () => {
         v-else
         v-for="grade in shipGrades[index]"
         :key="grade.id"
-        class="flex items-center"
+        :class="typeof grade == 'string' ? 'justify-self-center' : 'col-span-2'"
       >
         <span
-          v-if="grade === 'A'"
-          class="text-white text-12 font-bold px-1 py-0.5 bg-grades-a rounded-2xl items-center"
+          v-if="typeof grade == 'string'"
+          class="text-white text-12 font-bold px-2 rounded-2xl items-center"
+          :class="'bg-grades-' + grade.toLowerCase()"
           >{{ grade }}</span
         >
-        <span
-          v-else-if="grade == 'B'"
-          class="text-white text-12 font-bold px-1 py-0.5 bg-grades-b rounded-2xl items-center"
-          >{{ grade }}</span
-        >
-        <span
-          v-else-if="grade == 'C'"
-          class="text-white text-12 font-bold px-1 py-0.5 bg-grades-c rounded-2xl items-center"
-          >{{ grade }}</span
-        >
-        <span
-          v-else-if="grade == 'D'"
-          class="text-white text-12 font-bold px-1 py-0.5 bg-grades-d rounded-2xl items-center"
-          >{{ grade }}</span
-        >
-        <span
-          v-else-if="grade == 'E'"
-          class="text-white text-12 font-bold px-1 py-0.5 bg-grades-e rounded-2xl items-center"
-          >{{ grade }}</span
-        >
-        <span v-else>{{ grade }}</span>
+        <CIIAlert
+          v-else
+          :gradeLimit="grade.gradeLimit"
+          :gradeLimitValue="grade.gradeLimitValue"
+          :currentGrade="grade.currentGrade"
+          :currentGradeValue="grade.currentGradeValue"
+        />
       </div>
     </router-link>
   </div>

@@ -91,12 +91,17 @@ const inputData = [
       propeller_pitch: "2.7839",
     },
     builtYear: 2002,
-    setupCii: true,
+    setupCii: false,
     ciiGrade: {
       2020: "A",
       2021: "B",
       2022: "C",
-      2023: "D",
+      2023: {
+        gradeLimit: "B",
+        gradeLimitValue: "4.87",
+        currentGrade: "C",
+        currentGradeValue: "3.62",
+      },
     },
   },
   {
@@ -133,7 +138,12 @@ const inputData = [
       2020: "A",
       2021: "B",
       2022: "C",
-      2023: "E",
+      2023: {
+        gradeLimit: "B",
+        gradeLimitValue: "4.87",
+        currentGrade: "A",
+        currentGradeValue: "4.62",
+      },
     },
   },
   // {

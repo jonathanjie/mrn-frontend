@@ -11,7 +11,7 @@ const { data, yearsList } = toRefs(props);
 const colYears = yearsList.value;
 const ships = data.value;
 const buttonCols = "col-span-" + colYears.length.toString();
-const numCols = "grid-cols-" + (4 + colYears.length).toString();
+const numCols = "grid-cols-" + (5 + colYears.length).toString();
 </script>
 
 <template>
@@ -38,7 +38,7 @@ const numCols = "grid-cols-" + (4 + colYears.length).toString();
       <div
         v-for="(year, index) in colYears"
         :key="year.id"
-        class="items-center"
+        :class="index == colYears.length - 1 ? '' : 'justify-self-center'"
       >
         <span class="text-12 text-gray-500 font-bold">{{
           index == colYears.length - 1 ? year + " LIVE VALUE" : year

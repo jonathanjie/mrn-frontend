@@ -16,7 +16,7 @@ const currentGradeText = "text-grades-" + currentGrade.value.toLowerCase();
 </script>
 
 <template>
-  <div class="flex px-4">
+  <div class="flex">
     <div class="flex bg-gray-100 rounded-l-2xl p-1 items-center">
       <span
         class="text-white text-12 font-bold px-2 rounded-2xl mx-1.5"
