@@ -19,13 +19,15 @@ const example = {
 </script>
 
 <template>
-  <div class="flex bg-white rounded-xl w-full p-6 mb-3.5 justify-between">
+  <div
+    class="flex bg-white rounded-xl w-full px-3.5 py-4 mb-3.5 justify-between items-center"
+  >
     <div class="flex">
       <span class="text-14 text-gray-700 font-bold">{{
         props.alert.shipName
       }}</span>
     </div>
-    <div class="flex divide-x">
+    <div class="flex divide-x items-center">
       <div class="flex mr-6">
         <span class="text-14 text-gray-700"
           >{{ props.alert.startPeriod }}-</span
@@ -33,12 +35,15 @@ const example = {
         <span class="text-14 text-gray-700">{{ props.alert.endPeriod }}</span>
       </div>
       <CIIAlert
+        class="px-5"
         :gradeLimit="props.alert.gradeLimit"
         :gradeLimitValue="props.alert.gradeLimitValue"
         :currentGrade="props.alert.currentGrade"
         :currentGradeValue="props.alert.currentGradeValue"
       />
-      <CIIVoyageAlert />
+      <div class="px-5">
+        <CIIVoyageAlert />
+      </div>
     </div>
   </div>
 </template>
