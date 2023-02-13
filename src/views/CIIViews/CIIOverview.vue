@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from "vue";
 import CIIGraph from "./components/CIIGraph.vue";
 import CIIVesselListCard from "./components/CIIVesselList/CIIVesselListCard.vue";
 import CIIRatingAlertCard from "./components/CIIRatingAlert/CIIRatingAlertCard.vue";
@@ -190,13 +191,32 @@ for (let i in inputData) {
     }
   }
 }
+
+let hover = ref(false);
 </script>
 <template>
-  <div class="flex flex-col px-12 pt-12 w-full divide-y">
+  <div class="flex flex-col px-12 pt-12 w-full divide-y relative">
     <div class="mb-10">
-      <span class="text-20 font-bold text-blue-800 w-full">{{
-        $t("ciiOverview")
-      }}</span>
+      <div class="flex items-center w-full">
+        <div
+          v-if="hover"
+          class="bg-black absolute rounded-xl py-2 px-3 -mt-16 ml-16"
+        >
+          <span class="text-12 text-white"
+            >View the CII overview of your fleet by voyage, past historical and
+            current year</span
+          >
+        </div>
+        <span class="text-20 font-bold text-blue-800 mr-2">{{
+          $t("ciiOverview")
+        }}</span>
+        <img
+          src="@/assets/icons/hover_icon.svg"
+          @mouseover="hover = true"
+          @mouseleave="hover = false"
+        />
+      </div>
+
       <CIIGraph :data="inputData" :years="years" />
       <CIIVesselListCard :data="inputData" :yearsList="years" />
     </div>
