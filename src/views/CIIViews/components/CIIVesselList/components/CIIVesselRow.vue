@@ -1,6 +1,7 @@
 <script setup>
 import { toRefs } from "vue";
 import CIIAlert from "../../CIIAlert.vue";
+import CIIGrade from "../../CIIGrade.vue";
 const props = defineProps({
   ships: Object,
   buttonCols: String,
@@ -65,14 +66,11 @@ const setupCii = () => {
         v-else
         v-for="grade in shipGrades[index]"
         :key="grade.id"
-        :class="typeof grade == 'string' ? 'justify-self-center' : 'col-span-2'"
+        :class="
+          typeof grade === 'string' ? 'justify-self-center' : 'col-span-2'
+        "
       >
-        <span
-          v-if="typeof grade == 'string'"
-          class="text-white text-12 font-bold px-2 rounded-2xl items-center"
-          :class="'bg-grades-' + grade.toLowerCase()"
-          >{{ grade }}</span
-        >
+        <CIIGrade v-if="typeof grade === 'string'" :grade="grade" />
         <CIIAlert
           v-else
           :gradeLimit="grade.gradeLimit"
