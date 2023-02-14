@@ -28,7 +28,7 @@ const alerts = [
     endPeriod: "16 June 2022",
     gradeLimit: "B",
     gradeLimitValue: "4.87",
-    currentGrade: "C",
+    currentGrade: "D",
     currentGradeValue: "3.62",
     alertVoyage: 3,
   },
@@ -38,7 +38,7 @@ const alerts = [
     endPeriod: "16 June 2022",
     gradeLimit: "B",
     gradeLimitValue: "4.87",
-    currentGrade: "C",
+    currentGrade: "E",
     currentGradeValue: "3.62",
     alertVoyage: 3,
   },
@@ -53,8 +53,7 @@ let hover = ref(false);
       class="bg-black absolute rounded-xl py-2 px-3 -mt-12 ml-16"
     >
       <span class="text-12 text-white"
-        >View the CII overview of your fleet by voyage, past historical and
-        current year</span
+        >Receive alerts when any vessel exceeds your configured limits.</span
       >
     </div>
     <div class="flex w-full">
