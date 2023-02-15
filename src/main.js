@@ -13,9 +13,13 @@ import { h } from "vue";
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 import resetStore from "@/plugins/resetStore";
+import TextCell from "@/components/Table/TextCell.vue";
+import ImageCell from "@/components/Table/ImageCell.vue";
 import VueApexCharts from "vue3-apexcharts";
 
 const app = createApp(App)
+  .component("TextCell", TextCell)
+  .component("ImageCell", ImageCell)
   .use(i18n)
   .use(router)
   .use(

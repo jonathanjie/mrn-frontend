@@ -549,6 +549,7 @@ const i18n = createI18n({
       made: "Made",
       unauthorizedAccess: "Unauthorized Access",
       clickMyVessels: 'Click "My Vessels" button',
+      dailyReport: "Daily Report",
       cii: "CII",
       ciiOverview: "CII Grade Overview",
       gradeRatingOverview: "Grade Rating Overview",

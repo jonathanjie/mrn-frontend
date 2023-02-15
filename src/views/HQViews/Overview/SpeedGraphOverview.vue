@@ -1,7 +1,7 @@
 <template>
-  <div class="flex mx-12 mt-6 flex-wrap">
+  <div class="flex mx-12 mt-10 flex-wrap">
     <div
-      class="flex relative rounded-xl bg-white h-32 w-full shadow-md items-center"
+      class="flex relative rounded-xl bg-white w-full shadow-md items-center"
     >
       <div v-if="shipSuccess" class="flex flex-col">
         <div class="flex flex-row items-center justify-evenly p-5">
@@ -80,7 +80,7 @@
       <div>
         <div class="flex mt-12 w-full justify-between items-center">
           <div class="flex">
-            <span class="text-16 font-bold text-blue-800">{{
+            <span class="flex items-center text-16 font-bold text-blue-800">{{
               $t("estimatedArrivalTime")
             }}</span>
             <div
