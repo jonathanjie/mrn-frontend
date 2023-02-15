@@ -3,40 +3,40 @@ import { defineStore } from "pinia";
 
 export const useCIIStore = defineStore("crew", () => {
   const pageNum = ref(2);
-  const shipIndexType = ref("eedi");
-  const shipIndexVal = ref("");
-  const isEngineLimited = ref(true);
-  const engineLimitType = ref("epl");
-  const engineLimitPercent = ref("");
+  const energyEfficiencyIndexType = ref("eedi");
+  const energyEfficiencyIndexVal = ref("");
+  const isEnginePowerLimited = ref(true);
+  const enginePowerLimitType = ref("epl");
+  const enginePowerLimitVal = ref("");
   const reportTypes = ref(["imodcs"]);
-  const ciiTrials = ref([]);
+  const trialCII = ref([]);
   const applicableCII = ref("");
   const IMODCSMethod = ref("1");
   const EUMRVMethod = ref("");
   const fuelOilTypes = ref([]);
   const otherOilName = ref("");
   const conversionFactor = ref("");
-  const targetCIIGrade = ref("default");
+  const currentYearTargetCIIGrade = ref("default");
   const technicalFiles = ref([]);
   const standardizedFiles = ref([]);
   const IMODCSFiles = ref([]);
 
   return {
     pageNum,
-    shipIndexType,
-    shipIndexVal,
-    isEngineLimited,
-    engineLimitType,
-    engineLimitPercent,
+    energyEfficiencyIndexType,
+    energyEfficiencyIndexVal,
+    isEnginePowerLimited,
+    enginePowerLimitType,
+    enginePowerLimitVal,
     reportTypes,
-    ciiTrials,
+    trialCII,
     applicableCII,
     IMODCSMethod,
     EUMRVMethod,
     fuelOilTypes,
     otherOilName,
     conversionFactor,
-    targetCIIGrade,
+    currentYearTargetCIIGrade,
     technicalFiles,
     standardizedFiles,
     IMODCSFiles,

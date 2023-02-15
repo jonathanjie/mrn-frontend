@@ -1,40 +1,40 @@
 <script setup>
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
- import { storeToRefs } from "pinia";
+import { storeToRefs } from "pinia";
 import { useCIIStore } from "@/stores/useCIIStore";
 
- const store = useCIIStore();
- const {
-    shipIndexType,
-    shipIndexVal,
-    isEngineLimited,
-    engineLimitType,
-    engineLimitPercent,
-    reportTypes,
-    ciiTrials,
-    applicableCII,
-    IMODCSMethod,
-    EUMRVMethod,
-    fuelOilTypes,
-    otherOilName,
-    conversionFactor,
-    targetCIIGrade,
-  } = storeToRefs(store)
+const store = useCIIStore();
+const {
+  energyEfficiencyIndexType,
+  energyEfficiencyIndexVal,
+  isEnginePowerLimited,
+  enginePowerLimitType,
+  enginePowerLimitVal,
+  reportTypes,
+  trialCII,
+  applicableCII,
+  IMODCSMethod,
+  EUMRVMethod,
+  fuelOilTypes,
+  otherOilName,
+  conversionFactor,
+  currentYearTargetCIIGrade,
+} = storeToRefs(store);
 
-// const shipIndexType = ref("eedi");
-// const shipIndexVal = ref("");
-// const isEngineLimited = ref(true);
-// const engineLimitType = ref("epl");
-// const engineLimitPercent = ref("");
+// const energyEfficiencyIndexType = ref("eedi");
+// const energyEfficiencyIndexVal = ref("");
+// const isEnginePowerLimited = ref(true);
+// const enginePowerLimitType = ref("epl");
+// const enginePowerLimitVal = ref("");
 // const reportTypes = ref(["imodcs"]);
-// const ciiTrials = ref([]);
+// const trialCII = ref([]);
 // const applicableCII = ref("");
 // const IMODCSMethod = ref("1");
 // const EUMRVMethod = ref("");
 // const fuelOilTypes = ref([]);
 // const otherOilName = ref("");
 // const conversionFactor = ref("");
-// const targetCIIGrade = ref("default");
+// const currentYearTargetCIIGrade = ref("default");
 </script>
 
 <template>
@@ -44,18 +44,28 @@ import { useCIIStore } from "@/stores/useCIIStore";
       <!-- Type selection -->
       <div class="flex space-x-4">
         <div class="flex space-x-2">
-          <input type="radio" id="eedi" value="eedi" v-model="shipIndexType" />
+          <input
+            type="radio"
+            id="eedi"
+            value="eedi"
+            v-model="energyEfficiencyIndexType"
+          />
           <label for="eedi" class="mr-4">EEDI</label>
         </div>
         <div class="flex space-x-2">
-          <input type="radio" id="eexi" value="eexi" v-model="shipIndexType" />
+          <input
+            type="radio"
+            id="eexi"
+            value="eexi"
+            v-model="energyEfficiencyIndexType"
+          />
           <label for="eexi">EEXI</label>
         </div>
       </div>
       <!-- Value input -->
       <div class="flex border rounded-lg py-2 px-3 text-gray-900">
         <input
-          v-model="shipIndexVal"
+          v-model="energyEfficiencyIndexVal"
           class="w-24 focus:outline-0"
           placeholder="0"
         />
@@ -71,14 +81,19 @@ import { useCIIStore } from "@/stores/useCIIStore";
         <input
           type="checkbox"
           id="enginePowerLimited"
-          v-model="isEngineLimited"
+          v-model="isEnginePowerLimited"
         />
         <label for="enginePowerLimited">Is engine power limited?</label>
       </div>
       <!-- Type selection -->
-      <div v-if="isEngineLimited" class="flex space-x-4">
+      <div v-if="isEnginePowerLimited" class="flex space-x-4">
         <div class="flex space-x-2">
-          <input type="radio" id="epl" value="epl" v-model="engineLimitType" />
+          <input
+            type="radio"
+            id="epl"
+            value="epl"
+            v-model="enginePowerLimitType"
+          />
           <label for="epl" class="mr-4">EPL</label>
         </div>
         <div class="flex space-x-2">
@@ -86,18 +101,18 @@ import { useCIIStore } from "@/stores/useCIIStore";
             type="radio"
             id="shapoli"
             value="shapoli"
-            v-model="engineLimitType"
+            v-model="enginePowerLimitType"
           />
           <label for="shapoli">Shapoli</label>
         </div>
       </div>
       <!-- Value input -->
       <div
-        v-if="isEngineLimited"
+        v-if="isEnginePowerLimited"
         class="flex border rounded-lg py-2 px-3 text-gray-900"
       >
         <input
-          v-model="engineLimitPercent"
+          v-model="enginePowerLimitVal"
           class="w-24 focus:outline-0"
           placeholder="0"
         />
@@ -191,45 +206,45 @@ import { useCIIStore } from "@/stores/useCIIStore";
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
         :class="
-          ciiTrials.includes('eepi')
+          trialCII.includes('eepi')
             ? 'border border-gradientblue bg-paleblue'
             : ''
         "
       >
-        <input type="checkbox" id="eepi" value="eepi" v-model="ciiTrials" />
+        <input type="checkbox" id="eepi" value="eepi" v-model="trialCII" />
         <label for="eepi" class="mr-4">EEPI</label>
       </div>
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
         :class="
-          ciiTrials.includes('cbdist')
+          trialCII.includes('cbdist')
             ? 'border border-gradientblue bg-paleblue'
             : ''
         "
       >
-        <input type="checkbox" id="cbdist" value="cbdist" v-model="ciiTrials" />
+        <input type="checkbox" id="cbdist" value="cbdist" v-model="trialCII" />
         <label for="cbdist">cbDIST</label>
       </div>
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
         :class="
-          ciiTrials.includes('cidist')
+          trialCII.includes('cidist')
             ? 'border border-gradientblue bg-paleblue'
             : ''
         "
       >
-        <input type="checkbox" id="cidist" value="cidist" v-model="ciiTrials" />
+        <input type="checkbox" id="cidist" value="cidist" v-model="trialCII" />
         <label for="cidist">cIDIST</label>
       </div>
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
         :class="
-          ciiTrials.includes('eeoi')
+          trialCII.includes('eeoi')
             ? 'border border-gradientblue bg-paleblue'
             : ''
         "
       >
-        <input type="checkbox" id="eeoi" value="eeoi" v-model="ciiTrials" />
+        <input type="checkbox" id="eeoi" value="eeoi" v-model="trialCII" />
         <label for="eeoi">EEOI</label>
       </div>
     </div>
@@ -502,9 +517,11 @@ import { useCIIStore } from "@/stores/useCIIStore";
       <!-- Value input -->
       <div class="flex border rounded-lg py-2 px-3 text-gray-900">
         <select
-          v-model="targetCIIGrade"
+          v-model="currentYearTargetCIIGrade"
           class="w-full flex focus:outline-0"
-          :class="targetCIIGrade === 'default' ? 'text-gray-500' : ''"
+          :class="
+            currentYearTargetCIIGrade === 'default' ? 'text-gray-500' : ''
+          "
         >
           <option selected disabled value="default">Select grade</option>
           <option>A</option>
