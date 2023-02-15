@@ -1,0 +1,99 @@
+<script setup>
+import BaseModal from "@/components/Modals/BaseModal.vue";
+
+import { ref } from "vue";
+import { CIIModalTypes } from "@/constants";
+import GradientButton from "@/components/Buttons/GradientButton.vue";
+import CustomButton from "@/components/Buttons/CustomButton.vue";
+import InitialSetupCII from "@/components/Modals/CIISetupModal/InitialSetupCII.vue";
+import UploadCIIReport from "@/components/Modals/CIISetupModal/UploadCIIReport.vue";
+
+const showModal = ref(false);
+const pageNum = ref(1);
+
+defineProps({
+  setup_type: {
+    type: String,
+    required: false,
+    default: CIIModalTypes.INITIAL_SETUP,
+  },
+});
+
+const cancel = () => {
+  pageNum.value = 1;
+  showModal.value = false;
+};
+
+const uploadSettings = () => {
+  console.log("uploading settings");
+  // implement upload with backend api
+  pageNum.value = 1;
+  showModal.value = false;
+};
+</script>
+
+<template>
+  <button id="show-modal" @click="showModal = true">Show Modal</button>
+
+  <Teleport to="body">
+    <BaseModal :show="showModal" @close="cancel">
+      <template #header>
+        <div class="flex space-x-2 items-center">
+          <div v-if="pageNum === 1" class="text-gray-800">
+            Initial Setup CII
+          </div>
+          <div v-if="pageNum === 2" class="text-gray-800">
+            Upload CII Report
+          </div>
+
+          <img
+            v-if="setup_type === CIIModalTypes.INITIAL_SETUP"
+            src="@/assets/icons/divider.svg"
+            class="h-3 w-px"
+          />
+          <div
+            v-if="setup_type === CIIModalTypes.INITIAL_SETUP"
+            class="text-gray-600"
+          >
+            Step {{ pageNum }} of 2
+          </div>
+        </div>
+      </template>
+      <template #body>
+        <!-- page visualization -->
+        <div class="grid grid-cols-2 sticky top-0">
+          <div
+            class="border-t-gradientblue"
+            :class="pageNum === 1 ? 'border-t-2' : 'border-t-0'"
+          ></div>
+          <div
+            class="border-t-gradientblue"
+            :class="pageNum === 2 ? 'border-t-2' : 'border-t-0'"
+          ></div>
+        </div>
+        <!-- actual content per page -->
+        <div class="px-7 py-8 text-gray-700 text-14 accent-blue-700">
+          <div v-if="pageNum === 1" class="space-y-10">
+            <InitialSetupCII />
+          </div>
+          <div v-if="pageNum === 2">
+            <UploadCIIReport />
+          </div>
+        </div>
+      </template>
+      <template #footer>
+        <div class="flex justify-end space-x-4">
+          <CustomButton @click="cancel"
+            ><template #content>{{ $t("cancel") }}</template></CustomButton
+          >
+          <GradientButton v-if="pageNum === 1" @click="pageNum += 1"
+            ><template #content>{{ $t("next") }}</template></GradientButton
+          >
+          <GradientButton v-if="pageNum === 2" @click="uploadSettings">
+            <template #content>{{ $t("completeSetup") }}</template>
+          </GradientButton>
+        </div>
+      </template>
+    </BaseModal>
+  </Teleport>
+</template>
