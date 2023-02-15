@@ -1,6 +1,6 @@
 <script setup>
 import BasicTable from "@/components/Table/BasicTable.vue";
-import CIISetupModal from "@/components/Modals/CIISetupModal.vue";
+import CIISetupModal from "@/components/Modals/CIISetupModal/CIISetupModal.vue";
 
 const downloadFile = () => {
   console.log("download");
