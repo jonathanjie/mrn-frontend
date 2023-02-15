@@ -561,6 +561,7 @@ const i18n = createI18n({
       dailyReport: "Daily Report",
       next: "Next",
       completeSetup: "Complete Setup",
+      selectYear: "Select Year",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser
