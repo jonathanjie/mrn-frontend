@@ -4,10 +4,15 @@ import { ref } from "vue";
 import CustomTitle from "@/components/CustomTitle.vue";
 import DropZone from "@/components/FileDrop/DropZone.vue";
 import FilePreview from "@/components/FileDrop/FilePreview.vue";
+import { useCIIStore } from "@/stores/useCIIStore";
+import { storeToRefs } from "pinia";
 
-const technicalFiles = ref([]);
-const standardizedFiles = ref([]);
-const IMODCSFiles = ref([]);
+const store = useCIIStore();
+const { technicalFiles, standardizedFiles, IMODCSFiles } = storeToRefs(store);
+
+// const technicalFiles = ref([]);
+// const standardizedFiles = ref([]);
+// const IMODCSFiles = ref([]);
 
 // TODO: change it to compare extensions
 const allowPDF = ["pdf"];

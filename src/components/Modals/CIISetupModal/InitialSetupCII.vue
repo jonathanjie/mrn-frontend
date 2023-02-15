@@ -1,21 +1,40 @@
 <script setup>
-import { ref } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+ import { storeToRefs } from "pinia";
+import { useCIIStore } from "@/stores/useCIIStore";
 
-const shipIndexType = ref("eedi");
-const shipIndexVal = ref("");
-const isEngineLimited = ref(true);
-const engineLimitType = ref("epl");
-const engineLimitPercent = ref("");
-const reportTypes = ref(["imodcs"]);
-const ciiTrials = ref([]);
-const applicableCII = ref("");
-const IMODCSMethod = ref("1");
-const EUMRVMethod = ref("");
-const fuelOilTypes = ref([]);
-const otherOilName = ref("");
-const conversionFactor = ref("");
-const targetCIIGrade = ref("default");
+ const store = useCIIStore();
+ const {
+    shipIndexType,
+    shipIndexVal,
+    isEngineLimited,
+    engineLimitType,
+    engineLimitPercent,
+    reportTypes,
+    ciiTrials,
+    applicableCII,
+    IMODCSMethod,
+    EUMRVMethod,
+    fuelOilTypes,
+    otherOilName,
+    conversionFactor,
+    targetCIIGrade,
+  } = storeToRefs(store)
+
+// const shipIndexType = ref("eedi");
+// const shipIndexVal = ref("");
+// const isEngineLimited = ref(true);
+// const engineLimitType = ref("epl");
+// const engineLimitPercent = ref("");
+// const reportTypes = ref(["imodcs"]);
+// const ciiTrials = ref([]);
+// const applicableCII = ref("");
+// const IMODCSMethod = ref("1");
+// const EUMRVMethod = ref("");
+// const fuelOilTypes = ref([]);
+// const otherOilName = ref("");
+// const conversionFactor = ref("");
+// const targetCIIGrade = ref("default");
 </script>
 
 <template>
