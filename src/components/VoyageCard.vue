@@ -40,25 +40,21 @@ const reports = computed(() =>
   props.voyage.voyage_legs.reduce((acc, curr) => curr.reports.concat(acc), [])
 );
 
-const start = reports.value[0]?.departure_port || departurePort.value || "N/A";
-const mid = "At Sea";
-const dest =
-  reports.value[lastReportIndex]?.arrival_port || arrivalPort.value || "N/A";
-
 const isExpanded = ref(props.isInitiallyOpen);
 
 let lastReportNo = {}; // Using this is Leg component
+
+const lastReportIndex = reports.value.length - 1; // Using this is Leg component
+const lastLegIndex = props.voyage.voyage_legs.length - 1; // Using this is Leg component
+const lastLegNo = props.voyage.voyage_legs[lastLegIndex]?.leg_num;
+const lastLegUuid = props.voyage.voyage_legs[lastLegIndex]?.uuid;
+
 for (let report of reports.value) {
   lastReportNo[report.report_type] = Math.max(
     report.report_num,
     lastReportNo[report.report_type] || 0
   );
 }
-const lastReportIndex = reports.value.length - 1; // Using this is Leg component
-const lastLegIndex = props.voyage.voyage_legs.length - 1; // Using this is Leg component
-const lastLegNo = props.voyage.voyage_legs[lastLegIndex]?.leg_num;
-const lastLegUuid = props.voyage.voyage_legs[lastLegIndex]?.uuid;
-
 const voyageDetails = JSON.stringify({
   voyage_uuid: props.voyage.uuid,
   leg_uuid: lastLegUuid || "",
@@ -76,6 +72,12 @@ const voyageDetails = JSON.stringify({
   last_noonp_report_no: lastReportNo["NNPO"] || 0,
   last_noonc_report_no: lastReportNo["NNHB"] || 0,
 });
+
+const start = reports.value[0]?.departure_port || departurePort.value || "N/A";
+const mid = "At Sea";
+const dest =
+  reports.value[lastReportIndex]?.arrival_port || arrivalPort.value || "N/A";
+
 // const filter = ref(ReportFilterCategories.ALL);
 
 // const filteredData = computed(() => {
