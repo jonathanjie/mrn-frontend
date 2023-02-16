@@ -191,11 +191,18 @@ const handleClick = async () => {
     </div> -->
 
     <!-- TODO: pagination + different start/dest depending on report type -->
-    <div class="flex flex-col space-y-4">
+    <div class="flex justify-end w-full mt-6 mb-5">
       <GradientButton class="py-1.5 px-3.5" type="button">
         <template v-slot:content>{{ $t("createNewLeg") }}</template>
       </GradientButton>
-      <LegCard :voyage="voyage" :reports="reports" />
+    </div>
+    <div class="flex flex-col space-y-6">
+      <LegCard
+        v-for="leg in voyage.voyage_legs"
+        :key="leg.id"
+        :voyage="voyage"
+        :reports="leg.reports"
+      />
       <!-- <div v-for="report in filteredData" :key="report.id">
         <ReportCard
           :uuid="report.uuid"
