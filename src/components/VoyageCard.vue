@@ -1,17 +1,19 @@
 <script setup>
 import CustomButton from "./Buttons/CustomButton.vue";
-import ReportCard from ".//ReportCard.vue";
+// import ReportCard from ".//ReportCard.vue";
 import { computed, ref } from "vue";
-import {
-  ReportTypeToDisplay,
-  ReportFilterCategories,
-  ReportTypeToFilterCategories,
-} from "@/constants";
-import { readableUTCDate } from "@/utils/helpers";
+// import {
+//   ReportTypeToDisplay,
+//   ReportFilterCategories,
+//   ReportTypeToFilterCategories,
+// } from "@/constants";
+// import { readableUTCDate } from "@/utils/helpers";
 import { useRouter } from "vue-router";
 import { useLatestReportDetailsStore } from "@/stores/useLatestReportDetailsStore";
 import { useVoyageStore } from "@/stores/useVoyageStore";
 import { storeToRefs } from "pinia";
+import LegCard from "./LegCard.vue";
+import GradientButton from "./Buttons/GradientButton.vue";
 
 const router = useRouter();
 const latestReportDetailsStore = useLatestReportDetailsStore();
@@ -38,23 +40,24 @@ const reports = computed(() =>
   props.voyage.voyage_legs.reduce((acc, curr) => curr.reports.concat(acc), [])
 );
 
-const lastReportIndex = reports.value.length - 1;
-const lastLegIndex = props.voyage.voyage_legs.length - 1;
-
-const lastLegNo = props.voyage.voyage_legs[lastLegIndex]?.leg_num;
-const lastLegUuid = props.voyage.voyage_legs[lastLegIndex]?.uuid;
 const start = reports.value[0]?.departure_port || departurePort.value || "N/A";
 const mid = "At Sea";
 const dest =
   reports.value[lastReportIndex]?.arrival_port || arrivalPort.value || "N/A";
 
-let lastReportNo = {};
+const isExpanded = ref(props.isInitiallyOpen);
+
+let lastReportNo = {}; // Using this is Leg component
 for (let report of reports.value) {
   lastReportNo[report.report_type] = Math.max(
     report.report_num,
     lastReportNo[report.report_type] || 0
   );
 }
+const lastReportIndex = reports.value.length - 1; // Using this is Leg component
+const lastLegIndex = props.voyage.voyage_legs.length - 1; // Using this is Leg component
+const lastLegNo = props.voyage.voyage_legs[lastLegIndex]?.leg_num;
+const lastLegUuid = props.voyage.voyage_legs[lastLegIndex]?.uuid;
 
 const voyageDetails = JSON.stringify({
   voyage_uuid: props.voyage.uuid,
@@ -73,24 +76,22 @@ const voyageDetails = JSON.stringify({
   last_noonp_report_no: lastReportNo["NNPO"] || 0,
   last_noonc_report_no: lastReportNo["NNHB"] || 0,
 });
+// const filter = ref(ReportFilterCategories.ALL);
 
-const isExpanded = ref(props.isInitiallyOpen);
-const filter = ref(ReportFilterCategories.ALL);
+// const filteredData = computed(() => {
+//   const copy = (list) => [...list];
 
-const filteredData = computed(() => {
-  const copy = (list) => [...list];
-
-  if (!filter.value || filter.value == ReportFilterCategories.ALL) {
-    return copy(reports.value).sort((a, b) =>
-      new Date(a.report_date) < new Date(b.report_date) ? 1 : -1
-    );
-  }
-  return copy(reports.value)
-    .filter((p) => ReportTypeToFilterCategories[p.report_type] === filter.value)
-    .sort((a, b) =>
-      new Date(a.report_date) < new Date(b.report_date) ? 1 : -1
-    );
-});
+//   if (!filter.value || filter.value == ReportFilterCategories.ALL) {
+//     return copy(reports.value).sort((a, b) =>
+//       new Date(a.report_date) < new Date(b.report_date) ? 1 : -1
+//     );
+//   }
+//   return copy(reports.value)
+//     .filter((p) => ReportTypeToFilterCategories[p.report_type] === filter.value)
+//     .sort((a, b) =>
+//       new Date(a.report_date) < new Date(b.report_date) ? 1 : -1
+//     );
+// });
 
 // console.log(filteredData.value);
 
@@ -158,7 +159,7 @@ const handleClick = async () => {
     v-show="isExpanded"
     class="min-h-fit min-w-fit bg-darkgray mx-12 rounded-xl -mt-4 p-5"
   >
-    <div class="min-w-fit flex items-center py-5">
+    <!-- <div class="min-w-fit flex items-center py-5">
       <button
         v-for="category in ReportFilterCategories"
         :key="category"
@@ -185,11 +186,15 @@ const handleClick = async () => {
       >
         <template v-slot:content>+{{ $t("addNewReport") }}</template>
       </CustomButton>
-    </div>
+    </div> -->
 
     <!-- TODO: pagination + different start/dest depending on report type -->
     <div class="flex flex-col space-y-4">
-      <div v-for="(report, index) in filteredData" :key="index">
+      <GradientButton class="py-1.5 px-3.5" type="button">
+        <template v-slot:content>{{ $t("createNewLeg") }}</template>
+      </GradientButton>
+      <LegCard :voyage="voyage" :reports="reports" />
+      <!-- <div v-for="report in filteredData" :key="report.id">
         <ReportCard
           :uuid="report.uuid"
           :report_no="
@@ -204,7 +209,7 @@ const handleClick = async () => {
           "
           :date_of_report="readableUTCDate(new Date(report.report_date))"
         ></ReportCard>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
