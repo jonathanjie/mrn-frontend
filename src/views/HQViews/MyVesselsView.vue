@@ -1,3 +1,114 @@
+<script setup>
+import MyVesselsDashboardIcon from "@/views/HQViews/components/MyVesselsDashboardIcon.vue";
+import VesselCard from "@/views/HQViews/components/VesselCard.vue";
+import BaseModal from "@/components/Modals/BaseModal.vue";
+import { useHQStore } from "@/stores/useHQStore";
+import constants from "@/constants";
+import axios from "axios";
+import { ref } from "vue";
+
+const showModal = ref(false);
+
+const shipRef = constants.shipRefs;
+const reportStatus = (lastReportDate) => {
+  if (lastReportDate === undefined) {
+    return "";
+  } else {
+    let reportTimeDiff =
+      (new Date().getTime() - new Date(lastReportDate).getTime()) /
+      (1000 * 3600 * 24);
+    if (reportTimeDiff > 1) {
+      return "pending";
+    } else {
+      return "uploaded";
+    }
+  }
+};
+
+const dateConverter = (date) => {
+  if (date === undefined) {
+    return "No value";
+  } else {
+    const init = new Date(date).toDateString().split(" ");
+    return init[2] + " " + init[1] + " " + init[3];
+  }
+};
+
+const getShips = async () => {
+  return await axios
+    .get(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/ships-overview`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+};
+const store = useHQStore();
+const shipCount = store.shipCount;
+const shipStatus = store.shipStatus;
+const ships = await getShips();
+shipCount.etcVessels = 0;
+shipCount.bunkeringVessels = 0;
+shipCount.cargoVessels = 0;
+shipCount.inPortVessels = 0;
+shipCount.sailingVessels = 0;
+shipCount.waitingVessels = 0;
+shipStatus.length = 0;
+const eventTypes = { EVPO: "", EVHB: "", NNPO: "", NNHB: "" };
+
+const reportType = {
+  NOON: "sailing",
+  DSBY: "sailing",
+  DCSP: "sailing",
+  ASBY: "sailing",
+  AFWE: "waiting",
+  BDN: "waiting",
+};
+
+for (let i in ships) {
+  const ship = ships[i];
+  // Sailing/Waiting
+  if (ship.last_report_type in reportType) {
+    const status = reportType[ship.last_report_type];
+    store.shipStatus.push(reportType[ship.last_report_type]);
+    if (status == "sailing") {
+      store.shipCount.sailingVessels++;
+    } else {
+      store.shipCount.waitingVessels++;
+    }
+    // Event
+  } else if (
+    ship.last_report_type in eventTypes &&
+    Object.keys(ship.last_operation).length != 0
+  ) {
+    const keys = Object.keys(ship.last_operation).sort();
+    if (ship.last_operation[keys[1]] || ship.last_operation[keys[2]]) {
+      store.shipCount.inPortVessels++;
+      store.shipCount.cargoVessels++;
+      store.shipStatus.push("cargo");
+    } else if (ship.last_operation[keys[0]]) {
+      store.shipCount.inPortVessels++;
+      store.shipCount.bunkeringVessels++;
+      store.shipStatus.push("bunkering");
+    } else if (ship.last_operation[keys[4]] || ship.last_operation[keys[5]]) {
+      store.shipCount.etcVessels++;
+      store.shipStatus.push("etc");
+    } else {
+      store.shipCount.inPortVessels++;
+      store.shipCount.waitingVessels++;
+      store.shipStatus.push("waiting");
+    }
+    // ETC catch
+  } else {
+    store.shipCount.etcVessels++;
+    store.shipStatus.push("etc");
+  }
+}
+
+const isSuccess = true;
+</script>
+
 <template>
   <div v-if="isSuccess" class="bg-gray-100 min-h-screen">
     <div class="flex flex-wrap px-12 pt-12 w-full">
@@ -194,6 +305,19 @@
         </div> -->
       </div>
     </div>
+
+    <button @click="showModal = true">Show Modal</button>
+    <Teleport to="body">
+      <!-- use the modal component, pass in the prop -->
+      <BaseModal :show="showModal" @close="showModal = false">
+        <template #header>
+          <h3>I am custom header</h3>
+        </template>
+        <template #body>
+          <h3>I am custom body</h3>
+        </template>
+      </BaseModal>
+    </Teleport>
     <div class="flex flex-col">
       <VesselCard
         v-for="(ship, index) in ships"
@@ -236,110 +360,3 @@
     }}</span>
   </div>
 </template>
-
-<script setup>
-import MyVesselsDashboardIcon from "@/views/HQViews/components/MyVesselsDashboardIcon.vue";
-import VesselCard from "@/views/HQViews/components/VesselCard.vue";
-import { useHQStore } from "@/stores/useHQStore";
-import constants from "@/constants";
-import axios from "axios";
-
-const shipRef = constants.shipRefs;
-const reportStatus = (lastReportDate) => {
-  if (lastReportDate === undefined) {
-    return "";
-  } else {
-    let reportTimeDiff =
-      (new Date().getTime() - new Date(lastReportDate).getTime()) /
-      (1000 * 3600 * 24);
-    if (reportTimeDiff > 1) {
-      return "pending";
-    } else {
-      return "uploaded";
-    }
-  }
-};
-
-const dateConverter = (date) => {
-  if (date === undefined) {
-    return "No value";
-  } else {
-    const init = new Date(date).toDateString().split(" ");
-    return init[2] + " " + init[1] + " " + init[3];
-  }
-};
-
-const getShips = async () => {
-  return await axios
-    .get(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/ships-overview`)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-};
-const store = useHQStore();
-const shipCount = store.shipCount;
-const shipStatus = store.shipStatus;
-const ships = await getShips();
-shipCount.etcVessels = 0;
-shipCount.bunkeringVessels = 0;
-shipCount.cargoVessels = 0;
-shipCount.inPortVessels = 0;
-shipCount.sailingVessels = 0;
-shipCount.waitingVessels = 0;
-shipStatus.length = 0;
-const eventTypes = { EVPO: "", EVHB: "", NNPO: "", NNHB: "" };
-
-const reportType = {
-  NOON: "sailing",
-  DSBY: "sailing",
-  DCSP: "sailing",
-  ASBY: "sailing",
-  AFWE: "waiting",
-  BDN: "waiting",
-};
-
-for (let i in ships) {
-  const ship = ships[i];
-  // Sailing/Waiting
-  if (ship.last_report_type in reportType) {
-    const status = reportType[ship.last_report_type];
-    store.shipStatus.push(reportType[ship.last_report_type]);
-    if (status == "sailing") {
-      store.shipCount.sailingVessels++;
-    } else {
-      store.shipCount.waitingVessels++;
-    }
-    // Event
-  } else if (
-    ship.last_report_type in eventTypes &&
-    Object.keys(ship.last_operation).length != 0
-  ) {
-    const keys = Object.keys(ship.last_operation).sort();
-    if (ship.last_operation[keys[1]] || ship.last_operation[keys[2]]) {
-      store.shipCount.inPortVessels++;
-      store.shipCount.cargoVessels++;
-      store.shipStatus.push("cargo");
-    } else if (ship.last_operation[keys[0]]) {
-      store.shipCount.inPortVessels++;
-      store.shipCount.bunkeringVessels++;
-      store.shipStatus.push("bunkering");
-    } else if (ship.last_operation[keys[4]] || ship.last_operation[keys[5]]) {
-      store.shipCount.etcVessels++;
-      store.shipStatus.push("etc");
-    } else {
-      store.shipCount.inPortVessels++;
-      store.shipCount.waitingVessels++;
-      store.shipStatus.push("waiting");
-    }
-    // ETC catch
-  } else {
-    store.shipCount.etcVessels++;
-    store.shipStatus.push("etc");
-  }
-}
-
-const isSuccess = true;
-</script>

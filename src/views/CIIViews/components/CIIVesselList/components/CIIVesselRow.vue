@@ -2,11 +2,14 @@
 import { toRefs } from "vue";
 import CIIAlert from "../../CIIAlert.vue";
 import CIIGrade from "../../CIIGrade.vue";
+import { ref } from "vue";
+
 const props = defineProps({
   ships: Object,
   buttonCols: String,
   numCols: String,
 });
+const showModal = ref(false);
 
 const { ships, buttonCols, numCols } = toRefs(props);
 
@@ -19,10 +22,6 @@ for (let ship in ships.value) {
   }
   shipGrades.push(tempArr);
 }
-
-const setupCii = () => {
-  console.log("Hello World");
-};
 </script>
 
 <template>
@@ -58,7 +57,7 @@ const setupCii = () => {
         v-if="ship.setupCii"
         class="flex w-full justify-center bg-blue-50 rounded-l border border-blue-600 text-14 text-blue-700 font-bold"
         :class="buttonCols"
-        @click.self.prevent="setupCii"
+        @click.self.prevent="showModal = true"
       >
         {{ $t("setupCii") }}
       </button>

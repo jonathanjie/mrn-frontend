@@ -564,6 +564,10 @@ const i18n = createI18n({
       new: "NEW",
       ciiRatingAlert: "CII Rating Alert",
       gradeLimit: "Grade Limit",
+      ciiDocument: "CII Document",
+      next: "Next",
+      completeSetup: "Complete Setup",
+      selectYear: "Select Year",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser
