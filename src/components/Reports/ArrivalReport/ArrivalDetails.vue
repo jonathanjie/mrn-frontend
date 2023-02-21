@@ -101,7 +101,7 @@
       />
       <select
         v-model="lat_dir"
-        class="p-3 text-14 border-l focus:outline-0 focus:outline-0"
+        class="p-3 text-14 border-l focus:outline-0"
         :class="lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">

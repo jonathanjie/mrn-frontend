@@ -123,7 +123,7 @@ const status = computed(
       <select
         disabled
         v-model="position.latDir"
-        class="p-3 text-14 border-l focus:outline-0 focus:outline-0 bg-gray-50 text-gray-700"
+        class="p-3 text-14 border-l focus:outline-0 bg-gray-50 text-gray-700"
       >
         <option selected disabled value="default">
           {{ $t("southAndNorth") }}

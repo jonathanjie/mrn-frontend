@@ -100,7 +100,7 @@ const position = computed(() =>
       <select
         disabled
         v-model="position.latDir"
-        class="p-3 text-14 border-l focus:outline-0 focus:outline-0 text-gray-700 disabled:bg-gray-50"
+        class="p-3 text-14 border-l focus:outline-0 text-gray-700 disabled:bg-gray-50"
         :class="
           position.latDir === 'default' ? 'text-gray-400' : 'text-gray-700'
         "
