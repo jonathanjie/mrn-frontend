@@ -1,5 +1,9 @@
 <script setup>
 import CustomButton from "@/components/Buttons/CustomButton.vue";
+import { useCIICalculatorStore } from "@/stores/useCIICalculatorStore";
+import { storeToRefs } from "pinia";
+import CIICalculatorModal from "./components/CIICalculatorModal/CIICalculatorModal.vue";
+
 const currentYear = 2023;
 const currentStats = {
   year: 2023,
@@ -10,13 +14,18 @@ const currentStats = {
   targetCIIGradeValue: 4.62,
   cLevelLimit: 5.0,
 };
+
+const store = useCIICalculatorStore();
+const { showModal } = storeToRefs(store);
 </script>
 <template>
+  <CIICalculatorModal />
   <div class="flex flex-col">
     <div class="flex justify-between items-center">
       <span class="text-18 text-gray-700 font-bold">{{ $t("ciiStatus") }}</span>
       <CustomButton
         class="h-9 text-14 text-blue-700 rounded-xl ml-auto min-w-fit disabled:text-gray-500"
+        @click="showModal = true"
       >
         <template v-slot:content>
           <img
