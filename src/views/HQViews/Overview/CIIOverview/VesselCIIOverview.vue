@@ -1,5 +1,5 @@
 <script setup>
-import VesselCIIStatus from "./components/VesselCIIStatus.vue";
+import VesselCIIStatus from "./components/VesselCIIStatus/VesselCIIStatus.vue";
 import VesselCIIGraph from "./components/VesselCIIGraph.vue";
 import VesselCIITable from "./components/VesselCIITable.vue";
 </script>
