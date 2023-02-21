@@ -22,9 +22,7 @@ if (grade.value == "A") {
 </script>
 
 <template>
-  <span
-    class="text-white text-12 font-bold px-2 rounded-2xl mx-1.5"
-    :class="gradeColor"
-    >{{ grade }}</span
-  >
+  <div class="px-2.5 pb-1 rounded-2xl items-center" :class="gradeColor">
+    <span class="text-white text-12 font-bold">{{ grade }}</span>
+  </div>
 </template>
