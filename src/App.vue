@@ -14,14 +14,41 @@ const { isAuthenticated } = useAuth0();
 </script>
 
 <style lang="scss">
+/* manrope-regular - latin */
 @font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
   font-family: "Manrope";
-  src: local("Manrope"), url(./fonts/Manrope-Medium.otf) format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  src: url("@/fonts/manrope-v13-latin-regular.woff2") format("woff2"),
+    /* Chrome 36+, Opera 23+, Firefox 39+ */
+      url("@/fonts/manrope-v13-latin-regular.woff") format("woff"); /* Chrome 5+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* manrope-500 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 500;
+  src: url("@/fonts/manrope-v13-latin-500.woff2") format("woff2"),
+    /* Chrome 36+, Opera 23+, Firefox 39+ */
+      url("@/fonts/manrope-v13-latin-500.woff") format("woff"); /* Chrome 5+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* manrope-700 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 700;
+  src: url("@/fonts/manrope-v13-latin-700.woff2") format("woff2"),
+    /* Chrome 36+, Opera 23+, Firefox 39+ */
+      url("@/fonts/manrope-v13-latin-700.woff") format("woff"); /* Chrome 5+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
+// Style settings for Date Picker
 $dp__font_family: "Manrope";
 $dp__font_size: 0.875rem;
-$dp__border_radius: 0px;
+$dp__border_radius: 8px;
 $dp__input_padding: 12px 12px;
 $dp__input_icon_padding: 14px;
 
