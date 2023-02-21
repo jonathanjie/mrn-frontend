@@ -44,6 +44,19 @@
           "
           >{{ $t("vesselSpec") }}</router-link
         >
+        <router-link
+          :to="{
+            name: 'vessel-cii-overview',
+            params: { vesselname: props.vesselname, imo: props.imo },
+          }"
+          class="pb-5 hover:text-blue-700 hover:border-b-2 hover:border-blue-700"
+          :class="
+            $route.name == 'vessel-cii-overview'
+              ? 'border-b-2 border-blue-700 text-blue-700'
+              : ''
+          "
+          >{{ $t("ciiOverview") }}</router-link
+        >
         <!-- <router-link
           :to="{
             name: 'cii-document',

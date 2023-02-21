@@ -49,6 +49,14 @@ const routes = [
         beforeEnter: authGuard,
       },
       {
+        path: "vessel-cii-overview",
+        name: "vessel-cii-overview",
+        component: () =>
+          import("../views/HQViews/Overview/CIIOverview/VesselCIIOverview.vue"),
+        props: true,
+        beforeEnter: authGuard,
+      },
+      {
         path: "vessel-spec",
         name: "vessel-spec",
         component: () => import("../views/VesselSpec.vue"),
