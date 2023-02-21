@@ -13,6 +13,7 @@ import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 
 const resetAll = () => {};
 const calculateCII = () => {};
+const cancel = () => {};
 
 const store = useCIICalculatorStore();
 const {
@@ -34,7 +35,7 @@ const {
 
 <template>
   <Teleport to="body">
-    <BaseModal :show="showModal" @close="cancel">
+    <BaseModal :show="showModal" @close="showModal = false">
       <template #header>
         <div class="font-bold text-gray-800 text-16">
           {{ $t("ciiCalculator") }}
