@@ -15,6 +15,7 @@ import "vue-select/dist/vue-select.css";
 import resetStore from "@/plugins/resetStore";
 import TextCell from "@/components/Table/TextCell.vue";
 import ImageCell from "@/components/Table/ImageCell.vue";
+import VueApexCharts from "vue3-apexcharts";
 
 const app = createApp(App)
   .component("TextCell", TextCell)
@@ -31,7 +32,8 @@ const app = createApp(App)
   )
   .use(createPinia().use(resetStore))
   .use(VueClickAway)
-  .use(VueQueryPlugin);
+  .use(VueQueryPlugin)
+  .use(VueApexCharts);
 
 vSelect.props.components.default = () => ({
   OpenIndicator: {
