@@ -2,8 +2,7 @@
 import { ref } from "vue";
 import CIIGraph from "./components/CIIGraph.vue";
 import CIIVesselListCard from "./components/CIIVesselList/CIIVesselListCard.vue";
-import CIIRatingAlertCard from "./components/CIIRatingAlertCard.vue";
-import CIICalculatorModal from "@/components/Modals/CIICalculatorModal/CIICalculatorModal.vue";
+import CIIRatingAlertCard from "./components/CIIRatingAlert/CIIRatingAlertCard.vue";
 
 const inputData = [
   // {
@@ -200,9 +199,6 @@ let hover = ref(false);
   <div class="flex flex-col px-12 pt-12 w-full divide-y relative">
     <div class="mb-10">
       <div class="flex items-center w-full">
-        <!-- temp for testing -->
-        <CIICalculatorModal />
-
         <div
           v-if="hover"
           class="bg-black absolute rounded-xl py-2 px-3 -mt-16 ml-16"

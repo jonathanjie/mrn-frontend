@@ -1,13 +1,9 @@
 <script setup>
 import MyVesselsDashboardIcon from "@/views/HQViews/components/MyVesselsDashboardIcon.vue";
 import VesselCard from "@/views/HQViews/components/VesselCard.vue";
-import BaseModal from "@/components/Modals/BaseModal.vue";
 import { useHQStore } from "@/stores/useHQStore";
 import constants from "@/constants";
 import axios from "axios";
-import { ref } from "vue";
-
-const showModal = ref(false);
 
 const shipRef = constants.shipRefs;
 const reportStatus = (lastReportDate) => {
@@ -305,19 +301,6 @@ const isSuccess = true;
         </div> -->
       </div>
     </div>
-
-    <button @click="showModal = true">Show Modal</button>
-    <Teleport to="body">
-      <!-- use the modal component, pass in the prop -->
-      <BaseModal :show="showModal" @close="showModal = false">
-        <template #header>
-          <h3>I am custom header</h3>
-        </template>
-        <template #body>
-          <h3>I am custom body</h3>
-        </template>
-      </BaseModal>
-    </Teleport>
     <div class="flex flex-col">
       <VesselCard
         v-for="(ship, index) in ships"
