@@ -70,7 +70,7 @@
         />
         <img
           src="@/assets/icons/edit.svg"
-          @click="toggle"
+          @click="toggleDistanceToGo"
           class="ml-auto h-4 w-4 cursor-pointer"
         />
         <MiniUnitDisplay class="ml-2">NM</MiniUnitDisplay>
@@ -89,11 +89,11 @@
       />
 
       <div
-        class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-l border-t bg-gray-50 text-14"
+        class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-l border-y bg-gray-50 text-14"
       >
         {{ $t("distanceByObservation") }}
       </div>
-      <div class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t">
+      <div class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-y">
         <input
           v-model="distance_obs_since_noon"
           @keypress="preventNaN($event, distance_obs_since_noon)"
@@ -103,13 +103,11 @@
         <MiniUnitDisplay>NM</MiniUnitDisplay>
       </div>
       <div
-        class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-b lg:border-b-0 border-l lg:border-l-0 border-t bg-gray-50 text-14"
+        class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-b border-l lg:border-l-0 border-t bg-gray-50 text-14"
       >
         {{ $t("total") }}
       </div>
-      <div
-        class="flex col-span-6 lg:col-span-3 p-2 pl-4 border lg:border-b-0 bg-gray-50"
-      >
+      <div class="flex col-span-6 lg:col-span-3 p-2 pl-4 border bg-gray-50">
         <input
           v-model="distance_obs_total"
           @keypress="preventNaN($event, distance_obs_total)"
@@ -121,47 +119,54 @@
       </div>
 
       <div
-        class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-l border-t lg:border-y bg-gray-50 text-14"
+        class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-l border-b bg-gray-50 text-14"
       >
         {{ $t("distanceByEngine") }}
       </div>
       <div
-        class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t lg:border bg-gray-50"
+        class="flex items-center col-span-6 lg:col-span-3 p-2 pl-4 border-x border-b bg-gray-50"
+        :class="distanceEngineDisabled ? 'bg-gray-50' : 'bg-white'"
       >
         <input
-          v-model="distance_eng_since_noon"
-          @keypress="preventNaN($event, distance_eng_since_noon)"
+          v-if="distanceEngineDisabled"
+          v-model="distance_eng_since_noon_computed"
           placeholder="0"
           disabled
           class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
         />
-        <MiniUnitDisplay>NM</MiniUnitDisplay>
-      </div>
-      <div
-        class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-y border-l lg:border-l-0 bg-gray-50 text-14"
-      >
-        {{ $t("total") }}
-      </div>
-      <div class="flex col-span-6 lg:col-span-3 p-2 pl-4 border bg-gray-50">
         <input
-          v-model="distance_eng_total"
-          @keypress="preventNaN($event, distance_eng_total)"
-          placeholder="0"
-          disabled
+          v-else
+          v-model="distance_eng_since_noon_static"
+          @keypress="preventNaN($event, distance_eng_since_noon_static)"
+          :placeholder="distance_eng_since_noon_computed || 0"
           class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
+          :class="distanceEngineDisabled ? 'bg-gray-50' : 'bg-white'"
         />
-        <MiniUnitDisplay>NM</MiniUnitDisplay>
+        <img
+          src="@/assets/icons/edit.svg"
+          @click="toggleDistanceEngine"
+          class="ml-auto h-4 w-4 cursor-pointer"
+        />
+        <MiniUnitDisplay class="ml-2">NM</MiniUnitDisplay>
       </div>
       <div
-        class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-l border-y lg:border-t-0 bg-gray-50 text-14"
+        class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-l border-y lg:border-l-0 lg:border-t-0 bg-gray-50 text-14"
       >
         {{ $t("revolutionCounter") }}
       </div>
       <input
-        v-model="revolution_count"
+        v-if="distanceEngineDisabled"
+        v-model="revolution_count_static"
         @keypress="preventNaN($event, revolution_count)"
         placeholder="0"
         class="col-span-6 lg:col-span-3 p-3 pl-4 border-x border-y lg:border-t-0 bg-white text-14 text-gray-700 focus:outline-0"
+      />
+      <input
+        v-else
+        v-model="revolution_count_computed"
+        disabled
+        placeholder="0"
+        class="col-span-6 lg:col-span-3 p-3 pl-4 border-x border-y lg:border-t-0 bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
     </div>
   </div>
@@ -177,22 +182,31 @@ import { storeToRefs } from "pinia";
 const store = useArrivalEOSPReportStore();
 const distanceToGoDisabled = ref(true);
 const edited = ref(false);
+const distanceEngineDisabled = ref(true);
 
-const toggle = () => {
+const toggleDistanceToGo = () => {
   distanceToGoDisabled.value = !distanceToGoDisabled.value;
   edited.value = true;
 };
 
+const toggleDistanceEngine = () => {
+  distanceEngineDisabled.value = !distanceEngineDisabled.value;
+  distance_eng_since_noon_static.value = "";
+  revolution_count_static.value = "";
+};
+
 const {
   hoursSinceNoon: hours_since_noon,
-  hoursTotal: hours_total,
+  hoursCospToEosp: hours_total,
   distanceToGo: distance_to_go,
   distanceToGoEdited: distance_to_go_edited,
   remarksForChanges: remarks,
   distanceObsSinceNoon: distance_obs_since_noon,
-  distanceObsTotal: distance_obs_total,
-  distanceEngSinceNoon: distance_eng_since_noon,
-  distanceEngTotal: distance_eng_total,
-  revolutionCount: revolution_count,
+  distanceObsCospToEosp: distance_obs_total,
+  distanceEngSinceNoonComputed: distance_eng_since_noon_computed,
+  distanceEngSinceNoonStatic: distance_eng_since_noon_static,
+  distanceEngCospToEosp: distance_eng_total,
+  revolutionCountComputed: revolution_count_computed,
+  revolutionCountStatic: revolution_count_static,
 } = storeToRefs(store);
 </script>

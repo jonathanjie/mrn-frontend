@@ -1,10 +1,10 @@
 <script setup>
-import { computed, defineProps } from "vue";
+import { computed } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { CargoLoadConditions } from "@/constants";
-// import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
-// import { storeToRefs } from "pinia";
+import { useShipStore } from "@/stores/useShipStore";
+import { storeToRefs } from "pinia";
 
 const props = defineProps({
   report: {
@@ -21,14 +21,9 @@ const unloading = computed(() => props.report.cargooperation.unloading);
 const totalAmount = computed(() => props.report.cargooperation.total);
 const time = computed(() => props.report.cargooperation.time);
 
-// const store = useDepartureSBYReportStore();
-// const {
-//   loadCondition: load_condition,
-//   loading: loading,
-//   unloading: unloading,
-//   totalAmount: total_amount,
-//   time: time,
-// } = storeToRefs(store);
+const store = useShipStore();
+const { crewShipDetails } = storeToRefs(store);
+const cargoUnit = computed(() => crewShipDetails.value.shipspecs.cargo_unit);
 </script>
 
 <template>
@@ -40,14 +35,14 @@ const time = computed(() => props.report.cargooperation.time);
       </span>
     </div>
     <div class="col-span-2 lg:col-span-1">
-      <div class="grid grid-cols-5 my-5 border">
+      <div class="grid grid-cols-5 mb-5 border">
         <div class="col-span-2 text-blue-700 p-3 bg-gray-50 text-14">
           {{ $t("loadCondition") }}
         </div>
         <select
           disabled
           v-model="loadCondition"
-          class="col-span-3 p-3 border-l text-14 focus:outline-0"
+          class="col-span-3 p-3 border-l text-14 focus:outline-0 bg-gray-50"
           :class="
             loadCondition === 'default' ? 'text-gray-400' : 'text-gray-700'
           "
@@ -55,10 +50,16 @@ const time = computed(() => props.report.cargooperation.time);
           <option selected disabled value="default">
             {{ $t("selectAnOption") }}
           </option>
-          <option :value="CargoLoadConditions.BALLAST">{{ $t("ballast") }}</option>
+          <option :value="CargoLoadConditions.BALLAST">
+            {{ $t("ballast") }}
+          </option>
           <option :value="CargoLoadConditions.LADEN">{{ $t("laden") }}</option>
-          <option :value="CargoLoadConditions.EASTBOUND">{{ $t("eastbound") }}</option>
-          <option :value="CargoLoadConditions.WESTBOUND">{{ $t("westbound") }}</option>
+          <option :value="CargoLoadConditions.EASTBOUND">
+            {{ $t("eastbound") }}
+          </option>
+          <option :value="CargoLoadConditions.WESTBOUND">
+            {{ $t("westbound") }}
+          </option>
         </select>
       </div>
       <div class="grid grid-cols-5">
@@ -67,15 +68,17 @@ const time = computed(() => props.report.cargooperation.time);
         >
           {{ $t("loading") }}
         </div>
-        <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
+        <div
+          class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50"
+        >
           <input
             disabled
             v-model="loading"
             @keypress="preventNaN($event, loading)"
             :placeholder="$t('inputDetails')"
-            class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
+            class="w-24 bg-gray-50 text-14 text-gray-700 focus:outline-0"
           />
-          <MiniUnitDisplay>Unit</MiniUnitDisplay>
+          <MiniUnitDisplay>{{ $t(cargoUnit) }}</MiniUnitDisplay>
         </div>
 
         <div
@@ -83,15 +86,17 @@ const time = computed(() => props.report.cargooperation.time);
         >
           {{ $t("unloading") }}
         </div>
-        <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
+        <div
+          class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50"
+        >
           <input
             disabled
             v-model="unloading"
             @keypress="preventNaN($event, unloading)"
             :placeholder="$t('inputDetails')"
-            class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
+            class="w-24 bg-gray-50 text-14 text-gray-700 focus:outline-0"
           />
-          <MiniUnitDisplay>Unit</MiniUnitDisplay>
+          <MiniUnitDisplay>{{ $t(cargoUnit) }}</MiniUnitDisplay>
         </div>
 
         <div
@@ -99,15 +104,17 @@ const time = computed(() => props.report.cargooperation.time);
         >
           {{ $t("totalAmount") }}
         </div>
-        <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
+        <div
+          class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50"
+        >
           <input
             disabled
             v-model="totalAmount"
             @keypress="preventNaN($event, totalAmount)"
             :placeholder="$t('inputDetails')"
-            class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
+            class="w-24 bg-gray-50 text-14 text-gray-700 focus:outline-0"
           />
-          <MiniUnitDisplay>Unit</MiniUnitDisplay>
+          <MiniUnitDisplay>{{ $t(cargoUnit) }}</MiniUnitDisplay>
         </div>
 
         <div
@@ -115,13 +122,13 @@ const time = computed(() => props.report.cargooperation.time);
         >
           {{ $t("time") }}
         </div>
-        <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border">
+        <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border bg-gray-50">
           <input
             disabled
             v-model="time"
             @keypress="preventNaN($event, time)"
             :placeholder="$t('inputDetails')"
-            class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
+            class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
           />
           <MiniUnitDisplay>HRS</MiniUnitDisplay>
         </div>

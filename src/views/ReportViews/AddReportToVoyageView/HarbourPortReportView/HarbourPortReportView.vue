@@ -35,18 +35,23 @@
       <!-- <CustomButton
         class="p-3 text-14"
         type="button"
-        v-on:click="saveChanges()"
+        @click="saveChanges()"
       >
         <template v-slot:content>{{ $t("saveChanges") }}</template>
       </CustomButton> -->
       <GradientButton
         class="p-3 text-14"
         type="button"
-        v-on:click="sendReport()"
-        :disabled="isSubmissionRequested"
+        @click="sendReport()"
+        :is-disabled="isSubmissionRequested"
       >
         <!-- TODO: need alternate function for saving changes to backend -->
-        <template v-slot:content>{{ $t("sendReport") }}</template>
+        <template v-if="isSubmissionRequested" v-slot:content>
+          <div>Loading...</div>
+        </template>
+        <template v-else v-slot:content>
+          <div>{{ $t("sendReport") }}</div>
+        </template>
       </GradientButton>
     </div>
   </div>
@@ -62,8 +67,12 @@ import GradientButton from "@/components/Buttons/GradientButton.vue";
 import { useHarbourPortReportStore } from "@/stores/useHarbourPortReportStore";
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
 import { storeToRefs } from "pinia";
-import { Report, ConsumptionType, FuelOil, LubricatingOil } from "@/constants";
-import { parsePositionToString } from "@/utils/helpers";
+import { Report, ConsumptionType } from "@/constants";
+import {
+  parsePositionToString,
+  generateFuelOilData,
+  generateLubricatingOilData,
+} from "@/utils/helpers";
 import { OPERATIONS } from "@/utils/options";
 
 // TODO: hacky due to the behavior of the custom component RadioBtnDetail, will update later
@@ -77,12 +86,14 @@ const updateActiveReportType = (type) => {
 
 const store = useHarbourPortReportStore();
 const {
+  fuelOils,
+  lubricatingOils,
   // status var
   reportSubtypeIsPort, // HarbourPortReportOverview.vue
   reportSubtypeIsNoon, // HarbourPortReport.vue
   // Harbour Port Overview
   reportNo,
-  legNo,
+  legUuid,
   voyageNo,
   reportingTimeZone,
   reportingDateTimeUTC,
@@ -97,22 +108,15 @@ const {
   longDegree,
   otherPlannedOperation,
   operations,
-  // Consumption And Condition (Full)
-  lsfoTotalConsumption,
-  lsfoRob,
-  mgoTotalConsumption,
-  mgoRob,
-  lsfoBreakdown,
-  mgoBreakdown,
+  // Consumption And Condition
+  fuelOilRobs,
+  fuelOilBreakdowns,
+  fuelOilReceipts,
+  fuelOilDebunkerings,
+  fuelOilTotalConsumptions,
   fuelOilDataCorrection,
-  mecylinderBreakdown,
-  mesystemBreakdown,
-  mesumpBreakdown,
-  gesystemBreakdown,
-  mecylinderRob,
-  mesystemRob,
-  mesumpRob,
-  gesystemRob,
+  lubricatingOilBreakdowns,
+  lubricatingOilRobs,
   lubricatingOilDataCorrection,
   freshwaterConsumed,
   freshwaterGenerated,
@@ -139,6 +143,7 @@ const submissionStatusStore = useSubmissionStatusStore();
 const {
   isSubmissionRequested,
   isSubmissionModalVisible,
+  isSubmissionResponse,
   isSubmissionSuccessful,
   errorMessage,
 } = storeToRefs(submissionStatusStore);
@@ -148,7 +153,6 @@ const includesOperation = (op) => operations.value.includes(op);
 const sendReport = async () => {
   isSubmissionRequested.value = true;
 
-  // TODO: need to do form validation first
   const position = parsePositionToString({
     latDir: latDir.value,
     latMinutes: latMinutes.value,
@@ -158,13 +162,32 @@ const sendReport = async () => {
     longDegree: longDegree.value,
   });
 
+  const fuelOilData = generateFuelOilData(
+    fuelOils.value,
+    fuelOilBreakdowns.value,
+    fuelOilTotalConsumptions.value,
+    fuelOilRobs.value,
+    fuelOilDataCorrection.value,
+    fuelOilReceipts.value,
+    fuelOilDebunkerings.value
+  );
+
+  const lubricatingOilData = generateLubricatingOilData(
+    lubricatingOils.value,
+    lubricatingOilBreakdowns.value,
+    lubricatingOilRobs.value,
+    lubricatingOilDataCorrection.value
+  );
+
   const REPORT = {
     report_type: getEventReportSubtype(
       reportSubtypeIsPort.value,
       reportSubtypeIsNoon.value
     ),
     voyage: voyageNo.value,
-    voyage_leg: legNo.value,
+    voyage_leg: {
+      uuid: legUuid.value,
+    },
     report_num: reportNo.value.value, // temp fix for recursive structure error
     report_date: reportingDateTimeUTC.value,
     report_tz: reportingTimeZone.value,
@@ -172,10 +195,11 @@ const sendReport = async () => {
       time: reportingDateTimeUTC.value,
       timezone: reportingTimeZone.value,
       position: position,
-      distance_travelled: distanceTravelled.value,
+      distance_travelled: Number(distanceTravelled.value) || 0,
       parking_status: status.value,
     },
     plannedoperations: {
+      waiting: includesOperation("waiting"),
       cargo_operation_berth: includesOperation(OPERATIONS.cargoOperationBerth),
       cargo_operation_stsstb: includesOperation(
         OPERATIONS.cargoOperationSTSSTB
@@ -191,122 +215,24 @@ const sendReport = async () => {
       planned_operation_othersdetails: otherPlannedOperation.value || "NIL",
     },
     consumptionconditiondata: {
-      fueloildata_set: [
-        {
-          fuel_oil_type: FuelOil.LSFO,
-          total_consumption: lsfoTotalConsumption.value || 0,
-          receipt: lsfoBreakdown.value.receipt || 0,
-          debunkering: lsfoBreakdown.value.debunkering || 0,
-          rob: lsfoRob.value || 0,
-          breakdown: {
-            GE: lsfoBreakdown.value.ge || 0,
-            ME: lsfoBreakdown.value.me || 0,
-            BLR: lsfoBreakdown.value.blr || 0,
-            IGG: lsfoBreakdown.value.igg || 0,
-          },
-          fueloildatacorrection:
-            fuelOilDataCorrection.value.type === FuelOil.LSFO
-              ? {
-                  correction: fuelOilDataCorrection.value.correction,
-                  remarks: fuelOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: FuelOil.MGO,
-          total_consumption: mgoTotalConsumption.value || 0,
-          receipt: mgoBreakdown.value.receipt || 0,
-          debunkering: mgoBreakdown.value.debunkering || 0,
-          rob: mgoRob.value || 0,
-          breakdown: {
-            GE: mgoBreakdown.value.ge || 0,
-            ME: mgoBreakdown.value.me || 0,
-            BLR: mgoBreakdown.value.blr || 0,
-            IGG: mgoBreakdown.value.igg || 0,
-          },
-          fueloildatacorrection:
-            fuelOilDataCorrection.value.type === FuelOil.MGO
-              ? {
-                  correction: fuelOilDataCorrection.value.correction,
-                  remarks: fuelOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-      ],
-      lubricatingoildata_set: [
-        {
-          fuel_oil_type: LubricatingOil.ME_CYLINDER,
-          total_consumption: mecylinderBreakdown.value.total_consumption || 0,
-          receipt: mecylinderBreakdown.value.receipt || 0,
-          debunkering: mecylinderBreakdown.value.debunkering || 0,
-          rob: mecylinderRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type ===
-            LubricatingOil.ME_CYLINDER
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: LubricatingOil.ME_SYSTEM,
-          total_consumption: mesystemBreakdown.value.total_consumption || 0,
-          receipt: mesystemBreakdown.value.receipt || 0,
-          debunkering: mesystemBreakdown.value.debunkering || 0,
-          rob: mesystemRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type === LubricatingOil.ME_SYSTEM
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: LubricatingOil.ME_SUMP,
-          total_consumption: mesumpBreakdown.value.total_consumption || 0,
-          receipt: mesumpBreakdown.value.receipt || 0,
-          debunkering: mesumpBreakdown.value.debunkering || 0,
-          rob: mesumpRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type === LubricatingOil.ME_SUMP
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: LubricatingOil.GE_SYSTEM,
-          total_consumption: gesystemBreakdown.value.total_consumption || 0,
-          receipt: gesystemBreakdown.value.receipt || 0,
-          debunkering: gesystemBreakdown.value.debunkering || 0,
-          rob: gesystemRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type === LubricatingOil.GE_SYSTEM
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-      ],
+      fueloildata_set: fuelOilData,
+      lubricatingoildata_set: lubricatingOilData,
       freshwaterdata: {
-        consumed: freshwaterConsumed.value || 0,
-        generated: freshwaterGenerated.value || 0,
-        received: freshwaterReceiving.value || 0,
-        discharged: freshwaterDischarging.value || 0,
-        rob: freshwaterRob.value || 0,
+        consumed: Number(freshwaterConsumed.value) || 0,
+        generated: Number(freshwaterGenerated.value) || 0,
+        received: Number(freshwaterReceiving.value) || 0,
+        discharged: Number(freshwaterDischarging.value) || 0,
+        rob: Number(freshwaterRob.value) || 0,
       },
       consumption_type: ConsumptionType.LAST_TO_EVENT,
     },
   };
 
-  console.log("data: ", REPORT);
+  // console.log("data: ", REPORT);
 
+  isSubmissionModalVisible.value = true;
   const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/reports/",
+    `${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/`,
     {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
@@ -319,8 +245,8 @@ const sendReport = async () => {
 
   try {
     const data = await response.json();
-    console.log(response);
-    console.log(data);
+    // console.log(response);
+    // console.log(data);
 
     if (response.ok) {
       isSubmissionSuccessful.value = true;
@@ -328,9 +254,12 @@ const sendReport = async () => {
     } else {
       errorMessage.value = data;
     }
-    isSubmissionModalVisible.value = true;
   } catch (error) {
     console.log(error);
+    errorMessage.value = {
+      unexpectedError: ["Please contact the administrator."],
+    };
   }
+  isSubmissionResponse.value = true;
 };
 </script>

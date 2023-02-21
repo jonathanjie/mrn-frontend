@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineProps } from "vue";
+import { computed } from "vue";
 import { preventNaN } from "@/utils/helpers";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { FuelOil, LubricatingOil } from "@/constants";
@@ -74,7 +74,7 @@ const fuelOilDataCorrection = computed(() =>
       )[0]
     : null
 );
-console.log("fuel correction value: ", fuelOilDataCorrection.value);
+// console.log("fuel correction value: ", fuelOilDataCorrection.value);
 // Lubricating Oil Consumption
 const meCylinderBreakdown = computed(
   () =>
@@ -331,9 +331,7 @@ const freshwaterRob = computed(
             <div class="flex col-span-4 p-3 pl-4 border-l bg-white">
               <input
                 disabled
-                v-model="
-                  fuelOilDataCorrection.fueloildatacorrection.correction
-                "
+                v-model="fuelOilDataCorrection.fueloildatacorrection.correction"
                 @keypress="
                   preventNaN(
                     $event,
@@ -352,9 +350,7 @@ const freshwaterRob = computed(
             </div>
             <textarea
               disabled
-              v-model.trim="
-                fuelOilDataCorrection.fueloildatacorrection.remarks
-              "
+              v-model.trim="fuelOilDataCorrection.fueloildatacorrection.remarks"
               placeholder="Input description here"
               class="col-span-8 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>

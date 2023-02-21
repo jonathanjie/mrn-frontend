@@ -1,6 +1,52 @@
+<script setup>
+import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+import { preventNaN } from "@/utils/helpers.js";
+import DropZone from "@/components/FileDrop/DropZone.vue";
+import FilePreview from "@/components/FileDrop/FilePreview.vue";
+import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import { useShipStore } from "@/stores/useShipStore";
+import { LubricatingOil } from "@/constants";
+
+const props = defineProps({
+  isCreate: {
+    type: Boolean,
+    required: true,
+  },
+});
+
+const shipStore = useShipStore();
+const { fuelOils, lubricatingOils } = storeToRefs(shipStore);
+
+const store = useBunkerReportStore();
+const {
+  oilType: oil_type,
+  oil: oil,
+  quantity: quantity,
+  density: density,
+  viscosity: viscosity,
+  viscosityDegree: viscosity_degree,
+  flashPoint: flash_point,
+  sulfurContent: sulfur_content,
+  marpol: marpol,
+  ship: ship,
+  barge: barge,
+  files: files,
+} = storeToRefs(store);
+
+const isFuelOil = computed(() => oil_type.value === "fuelOil");
+const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
+
+const onInputChange = (e) => {
+  store.addFiles(e.target.files);
+  e.target.value = null;
+};
+</script>
+
 <template>
   <div class="grid grid-cols-1 bg-white rounded-lg p-5 gap-4 shadow-card mb-5">
-    <span class="text-gray-700 text-20">{{ $t("receivedBunkerDetail") }}</span>
+    <span class="text-gray-700 text-20">{{ $t("receivedBunkerDetail") }} </span>
 
     <div class="flex items-center">
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
@@ -11,6 +57,7 @@
 
     <!-- Upload delivery note section -->
     <DropZone
+      v-if="props.isCreate"
       class="flex drop-area border border-dashed border-sysblue-300 p-14 place-content-center rounded-lg text-16 text-gray-800 bg-gray-25"
       @files-dropped="store.addFiles"
       #default="{ dropZoneActive }"
@@ -41,14 +88,18 @@
       />
     </DropZone>
 
-    <ul class="text-14 text-gray-700 space-y-1" v-show="files.length">
-      <FilePreview
-        v-for="file of files"
-        :key="file.id"
-        :file="file"
-        @remove="store.removeFile"
-      />
-    </ul>
+    <div v-if="props.isCreate">
+      <ul class="text-14 text-gray-700 space-y-1" v-show="files.length">
+        <FilePreview
+          v-for="file of files"
+          :key="file.id"
+          :file="file"
+          @remove="store.removeFile"
+        />
+      </ul>
+    </div>
+    <div v-else><a href="google.com" target="_blank">google.com</a></div>
+    <!-- <div><a href="google.com" target="_blank">google.com</a></div> -->
 
     <div class="mt-6 flex items-center">
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
@@ -84,11 +135,11 @@
           {{ $t("selectOil") }}
         </option>
         <option
-          v-for="(value, label) in ALL_FUEL_OILS"
-          :value="value"
-          :key="value"
+          v-for="(fuelOil, index) in fuelOils"
+          :value="fuelOil"
+          :key="index"
         >
-          {{ $t(label) }}
+          {{ $t(fuelOil) }}
         </option>
       </select>
       <select
@@ -101,11 +152,13 @@
           {{ $t("selectOil") }}
         </option>
         <option
-          v-for="(value, label) in ALL_LUBRICATING_OILS"
-          :value="value"
-          :key="value"
+          v-for="(lubricatingOil, index) in lubricatingOils.filter(
+            (oil) => oil !== LubricatingOil.ME_SUMP
+          )"
+          :value="lubricatingOil"
+          :key="index"
         >
-          {{ $t(label) }}
+          {{ $t(lubricatingOil) }}
         </option>
       </select>
       <select
@@ -142,16 +195,6 @@
       <input
         v-model="density"
         @keypress="preventNaN($event, density)"
-        placeholder="000.00"
-        class="col-span-6 p-3 pl-4 border-b text-gray-700 focus:outline-0"
-      />
-
-      <div class="col-span-2 text-blue-700 p-3 border-r border-b bg-gray-50">
-        {{ $t("specificGravityAt15") }}
-      </div>
-      <input
-        v-model="sg"
-        @keypress="preventNaN($event, sg)"
         placeholder="000.00"
         class="col-span-6 p-3 pl-4 border-b text-gray-700 focus:outline-0"
       />
@@ -207,7 +250,7 @@
 
     <div class="flex items-center">
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
-      <span class="text-blue-700 text-16">{{ $t("sampleSeatingNo") }}</span>
+      <span class="text-blue-700 text-16">{{ $t("sampleSealingNo") }}</span>
     </div>
 
     <div class="grid grid-cols-8 border text-14">
@@ -241,39 +284,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { preventNaN } from "@/utils/helpers.js";
-import DropZone from "@/components/FileDrop/DropZone.vue";
-import FilePreview from "@/components/FileDrop/FilePreview.vue";
-import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
-import { storeToRefs } from "pinia";
-import { ALL_FUEL_OILS, ALL_LUBRICATING_OILS } from "@/utils/options";
-import { computed } from "vue";
-
-const store = useBunkerReportStore();
-const {
-  oilType: oil_type,
-  oil: oil,
-  quantity: quantity,
-  density: density,
-  sg: sg,
-  viscosity: viscosity,
-  viscosityDegree: viscosity_degree,
-  flashPoint: flash_point,
-  sulfurContent: sulfur_content,
-  marpol: marpol,
-  ship: ship,
-  barge: barge,
-  files: files,
-} = storeToRefs(store);
-
-const isFuelOil = computed(() => oil_type.value === "fuelOil");
-const isLubricatingOil = computed(() => oil_type.value === "lubricatingOil");
-
-const onInputChange = (e) => {
-  store.addFiles(e.target.files);
-  e.target.value = null;
-};
-</script>

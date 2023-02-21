@@ -1,8 +1,6 @@
 <script setup>
-import { computed, defineProps } from "vue";
-// import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
-// import { storeToRefs } from "pinia";
-import { textInputOptions, format } from "@/utils/helpers";
+import { computed } from "vue";
+import { textInputOptions, format, convertUTCToLT } from "@/utils/helpers";
 import { TIMEZONES } from "@/utils/options";
 
 const props = defineProps({
@@ -13,20 +11,12 @@ const props = defineProps({
 });
 
 const reportNum = computed(() => props.report.report_num);
-const legNum = computed(() => props.report.voyage_leg);
-// TODO: switch to actual voyage number
-const voyageNum = computed(() => props.report.voyage_leg);
-const reportingDate = computed(() => props.report.report_date);
+const legNum = computed(() => props.report.voyage_leg.leg_num);
+const voyageNum = computed(() => props.report.voyage_leg.voyage.voyage_num);
+const reportingDate = computed(() =>
+  convertUTCToLT(new Date(props.report.report_date), props.report.report_tz)
+);
 const reportingTimeZone = computed(() => props.report.report_tz);
-
-// const store = useDepartureSBYReportStore();
-// const {
-//   // depsReportNo: deps_report_no,
-//   curLegNo: cur_leg_no,
-//   voyageNo: voyage_no,
-//   reportingDate: reporting_date,
-//   reportingTimeZone: reporting_time_zone,
-// } = storeToRefs(store);
 </script>
 
 <template>
@@ -88,14 +78,12 @@ const reportingTimeZone = computed(() => props.report.report_tz);
       <div class="col-span-2 text-blue-700 p-3 border-r">
         {{ $t("reportingTimeZone") }}
       </div>
-      <div class="flex col-span-3 bg-white">
+      <div class="flex col-span-3 bg-gray-50">
         <select
           disabled
-          class="grow self-center p-3 text-14 focus:outline-0"
+          class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50"
           :class="
-            reportingTimeZone === 'default'
-              ? 'text-gray-400'
-              : 'text-gray-700'
+            reportingTimeZone === 'default' ? 'text-gray-400' : 'text-gray-700'
           "
           v-model="reportingTimeZone"
         >

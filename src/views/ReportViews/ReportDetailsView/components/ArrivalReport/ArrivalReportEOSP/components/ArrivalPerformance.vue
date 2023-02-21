@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineProps } from "vue";
+import { computed } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 
@@ -11,23 +11,17 @@ const props = defineProps({
 });
 
 const speedSinceNoon = computed(
-  () => props.report.distanceperformancedata.speed_since_noon
+  () => props.report.performancedata.speed_since_last
 );
 const rpmSinceNoon = computed(
-  () => props.report.distanceperformancedata.rpm_since_noon
+  () => props.report.performancedata.rpm_since_last
 );
 const slipSinceNoon = computed(
-  () => props.report.distanceperformancedata.slip_since_noon
+  () => props.report.performancedata.slip_since_last
 );
-const speedAverage = computed(
-  () => props.report.distanceperformancedata.speed_avg
-);
-const rpmAverage = computed(
-  () => props.report.distanceperformancedata.rpm_average
-);
-const slipAverage = computed(
-  () => props.report.distanceperformancedata.slip_average
-);
+const speedAverage = computed(() => props.report.performancedata.speed_average);
+const rpmAverage = computed(() => props.report.performancedata.rpm_average);
+const slipAverage = computed(() => props.report.performancedata.slip_average);
 </script>
 <template>
   <div class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4 shadow-card">
@@ -79,7 +73,7 @@ const slipAverage = computed(
       </div>
     </div>
     <div class="col-span-2 lg:col-span-1 text-14">
-      <div class="pb-2">{{ $t("currentVoyage") }}</div>
+      <div class="pb-2">{{ $t("COSPtoEOSP") }}</div>
       <div class="grid grid-cols-5 border bg-gray-50">
         <div class="col-span-2 text-blue-700 p-3 border-r border-b">
           {{ $t("averageSpeed") }}

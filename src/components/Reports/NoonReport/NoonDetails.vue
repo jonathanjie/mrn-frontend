@@ -56,54 +56,24 @@
     </div>
     <div></div>
     <div class="col-span-2 xl:col-span-1 grid grid-cols-5 border bg-gray-50">
-      <span
-        class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
-        >{{ $t("longitude") }}</span
-      >
-      <input
-        v-model="long_degree"
-        @keypress="preventNaN($event, long_degree)"
-        placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
-      />
-      <input
-        v-model="long_minutes"
-        @keypress="preventNaN($event, long_minutes)"
-        placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
-      />
-      <select
-        v-model="long_dir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0"
-        :class="long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
-      >
-        <option selected disabled value="default">
-          {{ $t("eastAndWest") }}
-        </option>
-        <option value="E">{{ $t("east") }}</option>
-        <option value="W">{{ $t("west") }}</option>
-      </select>
-    </div>
-    <div class="col-span-2 xl:col-span-1 grid grid-cols-5 border bg-gray-50">
-      <span
-        class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
-        >{{ $t("latitude") }}</span
-      >
+      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
+        $t("latitude")
+      }}</span>
       <input
         v-model="lat_degree"
         @keypress="preventNaN($event, lat_degree)"
-        placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        placeholder="000 (Deg)"
+        class="p-3 pl-4 border-l bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
         v-model="lat_minutes"
         @keypress="preventNaN($event, lat_minutes)"
-        placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        placeholder="000 (Min)"
+        class="p-3 pl-4 border-l bg-white text-14 text-gray-700 focus:outline-0"
       />
       <select
         v-model="lat_dir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0 focus:outline-0"
+        class="p-3 text-14 border-l focus:outline-0 focus:outline-0"
         :class="lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">
@@ -111,6 +81,34 @@
         </option>
         <option value="S">{{ $t("south") }}</option>
         <option value="N">{{ $t("north") }}</option>
+      </select>
+    </div>
+    <div class="col-span-2 xl:col-span-1 grid grid-cols-5 border bg-gray-50">
+      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
+        $t("longitude")
+      }}</span>
+      <input
+        v-model="long_degree"
+        @keypress="preventNaN($event, long_degree)"
+        placeholder="000 (Deg)"
+        class="p-3 pl-4 border-l bg-white text-14 text-gray-700 focus:outline-0"
+      />
+      <input
+        v-model="long_minutes"
+        @keypress="preventNaN($event, long_minutes)"
+        placeholder="000 (Min)"
+        class="p-3 pl-4 border-l bg-white text-14 text-gray-700 focus:outline-0"
+      />
+      <select
+        v-model="long_dir"
+        class="p-3 text-14 border-l focus:outline-0"
+        :class="long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+      >
+        <option selected disabled value="default">
+          {{ $t("eastAndWest") }}
+        </option>
+        <option value="E">{{ $t("east") }}</option>
+        <option value="W">{{ $t("west") }}</option>
       </select>
     </div>
   </div>

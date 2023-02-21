@@ -70,15 +70,17 @@ const destinationTimeZone = computed(
         </div>
         <input
           disabled
-          v-model="departurePortCountry"
+          :value="departurePortCountry.toUpperCase()"
+          @input="departurePortCountry = $event.target.value.toUpperCase()"
           :placeholder="$t('inputLocode2')"
-          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
+          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 bg-gray-50"
         />
         <input
           disabled
-          v-model="departurePortName"
+          :value="departurePortName.toUpperCase()"
+          @input="departurePortName = $event.target.value.toUpperCase()"
           :placeholder="$t('inputLocode3')"
-          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
+          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 bg-gray-50"
         />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14">
@@ -87,15 +89,10 @@ const destinationTimeZone = computed(
         >
           {{ $t("timeZone") }}
         </div>
-        <div class="flex col-span-3 border-b bg-white">
+        <div class="flex col-span-3 border-b bg-gray-50 text-gray-700">
           <select
             disabled
-            class="grow self-center p-3 text-14 focus:outline-0"
-            :class="
-              reportingTimeZone === 'default'
-                ? 'text-gray-400'
-                : 'text-gray-700'
-            "
+            class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50"
             v-model="reportingTimeZone"
           >
             <option selected disabled value="default">
@@ -149,14 +146,14 @@ const destinationTimeZone = computed(
         <input
           v-model="destinationPortCountry"
           :placeholder="$t('inputLocode2')"
-          :disabled="!isDestinationEnabled"
-          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 disabled:bg-gray-50 disabled:text-gray-400"
+          disabled
+          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 bg-gray-50"
         />
         <input
           v-model="destinationPortName"
           :placeholder="$t('inputLocode3')"
-          :disabled="!isDestinationEnabled"
-          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 disabled:bg-gray-50 disabled:text-gray-400"
+          disabled
+          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 bg-gray-50"
         />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14">
@@ -165,15 +162,10 @@ const destinationTimeZone = computed(
         >
           {{ $t("timeZone") }}
         </div>
-        <div class="flex col-span-3 border-b bg-white">
+        <div class="flex col-span-3 border-b bg-gray-50">
           <select
             disabled
-            class="grow self-center p-3 text-14 focus:outline-0 disabled:bg-gray-50"
-            :class="
-              destinationTimeZone === 'default' || !isDestinationEnabled
-                ? 'text-gray-400'
-                : 'text-gray-700'
-            "
+            class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50 text-gray-700"
             v-model="destinationTimeZone"
           >
             <option selected disabled value="default">

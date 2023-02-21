@@ -12,7 +12,7 @@
           {{ $t("fuelOilInMT") }}
         </div>
 
-        <div class="grid mb-4 text-14" :class="getFuelOilCols()">
+        <div class="grid text-14" :class="getFuelOilCols()">
           <div
             class="col-span-2 border-green-100 bg-green-25 px-6 border-l border-t"
           ></div>
@@ -21,7 +21,7 @@
             :key="item"
             class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
           >
-            {{ item }}
+            {{ $t(item) }}
           </div>
           <div
             class="col-span-2 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
@@ -47,7 +47,7 @@
             <div
               class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
             >
-              {{ fuelOil }}
+              {{ $t(fuelOil) }}
             </div>
             <input
               v-for="item of machinery"
@@ -70,7 +70,7 @@
           </span>
         </div>
 
-        <div
+        <!-- <div
           v-if="!isFuelOilRemarkEnabled"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
           @click="isFuelOilRemarkEnabled = !isFuelOilRemarkEnabled"
@@ -116,7 +116,7 @@
                 :value="fuelOil"
                 :key="fuelOil"
               >
-                {{ fuelOil }}
+                {{ $t(fuelOil) }}
               </option>
             </select>
             <div class="flex col-span-4 p-3 pl-4 border-l bg-white">
@@ -141,7 +141,7 @@
               class="col-span-8 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="pt-8">
@@ -149,7 +149,7 @@
           {{ $t("lubricatingOilInL") }}
         </div>
 
-        <div class="grid grid-cols-10 text-14 mb-4">
+        <div class="grid grid-cols-10 text-14">
           <div
             class="col-span-2 border-yellow-100 bg-yellow-25 px-6 border-l border-t"
           ></div>
@@ -185,7 +185,7 @@
             <div
               class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
             >
-              {{ lubricatingOil }}
+              {{ $t(lubricatingOil) }}
             </div>
             <input
               v-model="
@@ -234,7 +234,7 @@
           </span>
         </div>
 
-        <div
+        <!-- <div
           v-if="!isLubricatingOilRemarkEnabled"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
           @click="
@@ -284,7 +284,7 @@
                 :value="lubricatingOil"
                 :key="lubricatingOil"
               >
-                {{ lubricatingOil }}
+                {{ $t(lubricatingOil) }}
               </option>
             </select>
             <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
@@ -309,7 +309,7 @@
               class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="pt-8">

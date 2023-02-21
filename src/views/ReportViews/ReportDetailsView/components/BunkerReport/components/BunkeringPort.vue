@@ -1,19 +1,27 @@
-
 <script setup>
 import { textInputOptions, format } from "@/utils/helpers.js";
-import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
-import { storeToRefs } from "pinia";
 import { TIMEZONES } from "@/utils/options";
+import { computed } from "@vue/reactivity";
+import { convertUTCToLT } from "@/utils/helpers.js";
 
-const store = useBunkerReportStore();
-const {
-  portCountry: port_country,
-  portName: port_name,
-  reportingDateTime: reporting_date_time,
-  reportingTimeZone: reporting_time_zone,
-} = storeToRefs(store);
+const props = defineProps({
+  report: {
+    type: Object,
+    required: true,
+  },
+});
+
+const reporting_time_zone = computed(() => props.report.report_tz);
+const reporting_date_time = computed(() =>
+  convertUTCToLT(new Date(props.report.report_date), props.report.report_tz)
+);
+const port_country = computed(
+  () => props.report.bdndata.bunkering_port.split(" ")[0]
+);
+const port_name = computed(
+  () => props.report.bdndata.bunkering_port.split(" ")[1]
+);
 </script>
-
 
 <template>
   <div
@@ -25,18 +33,24 @@ const {
     </div>
     <div class="col-span-1">
       <div class="grid grid-cols-5 border bg-gray-50 text-14">
-        <div class="col-span-2 row-span-2 self-center text-blue-700 p-3">
+        <div
+          class="col-span-2 row-span-2 self-center text-blue-700 p-3 bg-gray-50"
+        >
           {{ $t("portName") }}
         </div>
         <input
-          v-model="port_country"
+          disabled
+          :value="port_country.toUpperCase()"
+          @input="port_country = $event.target.value.toUpperCase()"
           :placeholder="$t('inputLocode2')"
-          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
+          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 bg-gray-50"
         />
         <input
-          v-model="port_name"
+          disabled
+          :value="port_name.toUpperCase()"
+          @input="port_name = $event.target.value.toUpperCase()"
           :placeholder="$t('inputLocode3')"
-          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
+          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 bg-gray-50"
         />
       </div>
     </div>
@@ -48,9 +62,10 @@ const {
         >
           {{ $t("timeZone") }}
         </div>
-        <div class="flex col-span-3 border-b bg-white">
+        <div class="flex col-span-3 border-b bg-gray-50">
           <select
-            class="grow self-center p-3 text-14 focus:outline-0"
+            disabled
+            class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50"
             :class="
               reporting_time_zone === 'default'
                 ? 'text-gray-400'
@@ -70,8 +85,9 @@ const {
           {{ $t("dateAndTime") }}
         </div>
         <DatePicker
+          disabled
           v-model="reporting_date_time"
-          class="col-span-3"
+          class="col-span-3 bg-gray-50"
           textInput
           :textInputOptions="textInputOptions"
           :format="format"
@@ -86,4 +102,3 @@ const {
     </div>
   </div>
 </template>
-

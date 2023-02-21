@@ -2,67 +2,53 @@ import { defineStore } from "pinia";
 import { ref, computed, reactive } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
 import { storeToRefs } from "pinia";
-import { convertLTToUTC } from "@/utils/helpers";
-import { IceCondition } from "@/constants";
-
-const temp = {
-  // Arrival and Departure
-  departurePortCountry: "KR",
-  departurePortName: "PUS",
-  arrivalPortCountry: "SG",
-  arrivalPortName: "PPT",
-  departureDateTime: "2022-06-01T04:23:00Z",
-  departureTimeZone: 9, // from departure sby time zone of this leg
-
-  // Distance & Time / Performance
-  lastNoonReportTime: "2022-12-01T00:00:00Z",
-  rupOfDeparture: "2022-11-21T00:00:00Z",
-  distanceLeft: 4000,
-  distanceObsSoFar: 1000,
-  distanceEngSoFar: 1000,
-  revolutionCountPrevNoon: 20000,
-  propellerPitch: 2,
-  voyageAvgSpeed: 200,
-  voyageAvgRpm: 100,
-  voyageAvgSlip: 5,
-
-  // Consumption & Condition
-  lsfoPrevROB: 200,
-  mgoPrevROB: 200,
-  mecylPrevROB: 200,
-  mesysPrevROB: 200,
-  mesumpPrevROB: 200,
-  gesysPrevROB: 200,
-  freshwaterPrevROB: 200,
-
-  // Actual Performance
-  displacement: 2000, // from departure s/by (vessel condition)
-
-  // Total Consumption
-  prevLsfoBreakdown: {
-    me: 100,
-    ge: 100,
-    blr: 100,
-    igg: 100,
-  },
-  prevMgoBreakdown: {
-    me: 100,
-    ge: 100,
-    blr: 100,
-    igg: 100,
-  },
-};
+import { convertLTToUTC, sumObjectValues } from "@/utils/helpers";
+import { IceCondition, Machinery } from "@/constants";
+import { useShipStore } from "@/stores/useShipStore";
+import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
 
 export const useArrivalEOSPReportStore = defineStore(
   "arrivalEOSPReport",
   () => {
-    const store = useVoyageStore();
-    const { arrsReportNo, curLegNo, curLoadingCondition, curVoyageNo } =
-      storeToRefs(store);
+    const voyageStore = useVoyageStore();
+    const {
+      arrsReportNo,
+      lastLegNo,
+      legUuid,
+      curLoadingCondition,
+      curVoyageNo,
+    } = storeToRefs(voyageStore);
+
+    const shipStore = useShipStore();
+    const { fuelOils, lubricatingOils, machinery } = storeToRefs(shipStore);
+
+    const detailsStore = useLatestReportDetailsStore();
+    const {
+      departurePort,
+      departureTz,
+      departureDate,
+      arrivalPort,
+      lastReportDate,
+      distanceToGo: distance_to_go,
+      distanceObservedTotal,
+      distanceEngineTotal,
+      revolutionCount: revolution_count,
+      propellerPitch,
+      displacementAtDeparture,
+      fuelOilRobs: fuel_oil_robs,
+      lubeOilRobs,
+      freshwaterRob: freshwater_rob,
+      fuelOilConsPilotToPilot,
+      timeSbyToCosp,
+      distanceObsSbyToCosp,
+      revolutionCountSbyToCosp,
+      timeStoppedAtSea,
+      distanceEngSbyToCosp,
+    } = storeToRefs(detailsStore);
 
     // Overview
     const reportNo = arrsReportNo;
-    const legNo = curLegNo;
+    const legNo = lastLegNo;
     const loadingCondition = curLoadingCondition;
     const voyageNo = curVoyageNo;
     const reportingDateTime = ref("");
@@ -77,10 +63,10 @@ export const useArrivalEOSPReportStore = defineStore(
     );
 
     // Departure and Arrival
-    const departurePortCountry = ref(temp.departurePortCountry);
-    const departurePortName = ref(temp.departurePortName);
-    const departureDateTime = ref(temp.departureDateTime);
-    const departureTimeZone = ref(temp.departureTimeZone);
+    const departurePortCountry = ref(departurePort.value.slice(0, 2));
+    const departurePortName = ref(departurePort.value.slice(3, 6));
+    const departureDateTime = ref(departureDate);
+    const departureTimeZone = ref(departureTz);
     const departureDateTimeUTC = computed(() =>
       departureTimeZone.value !== "default" && departureDateTime.value
         ? convertLTToUTC(
@@ -89,8 +75,8 @@ export const useArrivalEOSPReportStore = defineStore(
           )
         : departureDateTime.value
     );
-    const arrivalPortCountry = ref(temp.arrivalPortCountry);
-    const arrivalPortName = ref(temp.arrivalPortName);
+    const arrivalPortCountry = ref(arrivalPort.value.slice(0, 2));
+    const arrivalPortName = ref(arrivalPort.value.slice(3, 6));
     const plannedOperations = ref([]);
     const isOtherPlannedOperationEnabled = computed(() =>
       plannedOperations.value.includes("others")
@@ -122,66 +108,122 @@ export const useArrivalEOSPReportStore = defineStore(
 
     // Distance & Time
     const hoursSinceNoon = computed(() =>
-      reportingDateTime.value
+      reportingDateTimeUTC.value && reportingTimeZone.value !== "default"
         ? +(
-            (Date.parse(reportingDateTime.value) -
-              Date.parse(temp.lastNoonReportTime)) /
-            (1000 * 60 * 60)
-          ).toFixed(0)
-        : ""
-    );
-    const hoursTotal = computed(() =>
-      reportingDateTime.value
-        ? +(
-            (Date.parse(reportingDateTime.value) -
-              Date.parse(temp.rupOfDeparture)) /
-            (1000 * 60 * 60)
-          ).toFixed(0)
-        : ""
-    );
-    const distanceObsSinceNoon = ref("");
-    const distanceObsTotal = computed(() =>
-      distanceObsSinceNoon.value
-        ? +(temp.distanceObsSoFar + Number(distanceObsSinceNoon.value)).toFixed(
-            2
-          )
-        : ""
-    );
-    const distanceEngSinceNoon = computed(() =>
-      revolutionCount.value
-        ? +(
-            (Number(revolutionCount.value) - temp.revolutionCountPrevNoon) *
-            temp.propellerPitch
+            (Date.parse(reportingDateTimeUTC.value) -
+              Date.parse(lastReportDate.value)) /
+            36e5
           ).toFixed(2)
         : ""
     );
-    const distanceEngTotal = computed(() =>
-      distanceEngSinceNoon.value
-        ? +(distanceEngSinceNoon.value + temp.distanceEngSoFar).toFixed(2)
+    const hoursCospToEosp = computed(() =>
+      reportingDateTimeUTC.value
+        ? +(
+            (Date.parse(reportingDateTimeUTC.value) -
+              Date.parse(departureDate.value)) /
+              36e5 -
+            Number(timeSbyToCosp.value)
+          ).toFixed(2)
         : ""
     );
-    const distanceToGo = computed(() =>
-      distanceObsSinceNoon.value
-        ? +(temp.distanceLeft - Number(distanceObsSinceNoon.value)).toFixed(2)
+    const hoursSbyToFwe = computed(() =>
+      reportingDateTimeUTC.value
+        ? +(
+            (Date.parse(reportingDateTimeUTC.value) -
+              Date.parse(departureDate.value)) /
+            36e5
+          ).toFixed(2)
         : ""
+    );
+    const distanceObsSinceNoon = ref("");
+    const distanceObsCospToEosp = computed(() =>
+      distanceObsSinceNoon.value
+        ? +(
+            Number(distanceObservedTotal.value) +
+            Number(distanceObsSinceNoon.value) -
+            Number(distanceObsSbyToCosp.value)
+          ).toFixed(2)
+        : ""
+    );
+    const distanceObsSbyToFwe = computed(() =>
+      distanceObsSinceNoon.value
+        ? +(
+            Number(distanceObservedTotal.value) +
+            Number(distanceObsSinceNoon.value)
+          ).toFixed(2)
+        : ""
+    );
+    const distanceEngSinceNoon = computed(() =>
+      distanceEngSinceNoonStatic.value
+        ? distanceEngSinceNoonStatic.value
+        : distanceEngSinceNoonComputed.value
+    );
+    const distanceEngSinceNoonComputed = computed(() =>
+      revolutionCountStatic.value
+        ? +(
+            ((Number(revolutionCountStatic.value) -
+              Number(revolution_count.value)) *
+              Number(propellerPitch.value)) /
+            1852
+          ).toFixed(0)
+        : ""
+    );
+    const distanceEngSinceNoonStatic = ref("");
+    const distanceEngCospToEosp = computed(() =>
+      distanceEngSinceNoon.value
+        ? +(
+            Number(distanceEngSinceNoon.value) +
+            Number(distanceEngineTotal.value) -
+            Number(distanceEngSbyToCosp.value)
+          ).toFixed(0)
+        : ""
+    );
+    const distanceEngSbyToFwe = computed(() =>
+      distanceEngSinceNoon.value
+        ? +(
+            Number(distanceEngSinceNoon.value) +
+            Number(distanceEngineTotal.value)
+          ).toFixed(0)
+        : ""
+    );
+    const distanceToGo = computed(
+      () =>
+        +(
+          Number(distance_to_go.value) -
+          (Number(distanceObsSinceNoon.value) || 0)
+        ).toFixed(2)
     );
     const distanceToGoEdited = ref(""); // use distanceToGoEdited instead of distanceToGo if distanceToGoEdited.value != distanceToGo.value
     const remarksForChanges = ref("");
-    const revolutionCount = ref("");
+    const revolutionCount = computed(() =>
+      revolutionCountStatic.value
+        ? revolutionCountStatic.value
+        : revolutionCountComputed.value
+    );
+    const revolutionCountComputed = computed(() =>
+      distanceEngSinceNoonStatic.value
+        ? +(
+            (1852 * Number(distanceEngSinceNoonStatic.value)) /
+              Number(propellerPitch.value) +
+            Number(revolution_count.value)
+          ).toFixed(0)
+        : ""
+    );
+    const revolutionCountStatic = ref("");
 
     // Performance
     const speedSinceNoon = computed(() =>
       distanceObsSinceNoon.value && hoursSinceNoon.value
-        ? +(Number(distanceObsSinceNoon.value) / hoursSinceNoon.value).toFixed(
-            2
-          )
+        ? +(
+            Number(distanceObsSinceNoon.value) / Number(hoursSinceNoon.value)
+          ).toFixed(2)
         : ""
     );
     const rpmSinceNoon = computed(() =>
       revolutionCount.value && hoursSinceNoon.value
         ? +(
-            (Number(revolutionCount.value) - temp.revolutionCountPrevNoon) /
-            (hoursSinceNoon.value * 60)
+            (Number(revolutionCount.value) - Number(revolution_count.value)) /
+            (Number(hoursSinceNoon.value) * 60)
           ).toFixed(1)
         : ""
     );
@@ -189,32 +231,37 @@ export const useArrivalEOSPReportStore = defineStore(
       distanceEngSinceNoon.value && distanceObsSinceNoon.value
         ? +(
             100 *
-            ((distanceEngSinceNoon.value - Number(distanceObsSinceNoon.value)) /
-              distanceEngSinceNoon.value)
+            ((Number(distanceEngSinceNoon.value) -
+              Number(distanceObsSinceNoon.value)) /
+              Number(distanceEngSinceNoon.value))
           ).toFixed(2)
         : ""
     );
     const speedAvg = computed(() =>
-      speedSinceNoon.value !== "" && hoursTotal.value
+      speedSinceNoon.value && hoursCospToEosp.value
         ? +(
-            (temp.voyageAvgSpeed + speedSinceNoon.value) /
-            (hoursTotal.value / 24)
+            Number(distanceObsCospToEosp.value) /
+            (Number(hoursCospToEosp.value) - Number(timeStoppedAtSea.value))
           ).toFixed(2)
         : ""
     );
     const rpmAvg = computed(() =>
-      rpmSinceNoon.value !== "" && hoursTotal.value
+      rpmSinceNoon.value && hoursCospToEosp.value
         ? +(
-            (temp.voyageAvgRpm + rpmSinceNoon.value) /
-            (hoursTotal.value / 24)
+            (Number(revolutionCount.value) -
+              Number(revolutionCountSbyToCosp.value)) /
+            ((Number(hoursCospToEosp.value) - Number(timeStoppedAtSea.value)) *
+              60)
           ).toFixed(1)
         : ""
     );
     const slipAvg = computed(() =>
-      slipSinceNoon.value !== "" && hoursTotal.value
+      distanceEngCospToEosp.value && distanceObsCospToEosp.value
         ? +(
-            (temp.voyageAvgSlip + slipSinceNoon.value) /
-            (hoursTotal.value / 24)
+            100 *
+            ((Number(distanceEngCospToEosp.value) -
+              Number(distanceObsCospToEosp.value)) /
+              Number(distanceEngCospToEosp.value))
           ).toFixed(2)
         : ""
     );
@@ -249,102 +296,60 @@ export const useArrivalEOSPReportStore = defineStore(
     const pilotArrLongMinute = ref("");
 
     // Consumption and condition
-    const lsfoBreakdown = reactive({
-      me: "",
-      ge: "",
-      blr: "",
-      igg: "",
+    const fuelOilBreakdowns = reactive({});
+    for (const fuelOil of fuelOils.value) {
+      fuelOilBreakdowns[fuelOil] = {};
+      for (const machine of machinery.value) {
+        fuelOilBreakdowns[fuelOil][machine] = "";
+      }
+      // fuelOilBreakdowns[fuelOil][Machinery.ME] = "";
+      // fuelOilBreakdowns[fuelOil][Machinery.GE] = "";
+      // fuelOilBreakdowns[fuelOil][Machinery.IGG] = "";
+      // fuelOilBreakdowns[fuelOil][Machinery.BLR] = "";
+    }
+    const fuelOilTotalConsumptions = computed(() => {
+      let rtn = {};
+      for (const fuelOil of fuelOils.value) {
+        rtn[fuelOil] = +sumObjectValues(fuelOilBreakdowns[fuelOil]).toFixed(2);
+      }
+      return rtn;
     });
-    const mgoBreakdown = reactive({
-      me: "",
-      ge: "",
-      blr: "",
-      igg: "",
+    const fuelOilRobs = computed(() => {
+      let rtn = {};
+      for (const fuelOil of fuelOils.value) {
+        rtn[fuelOil] = +(
+          Number(fuel_oil_robs.value[fuelOil]) -
+          Number(fuelOilTotalConsumptions.value[fuelOil])
+        ).toFixed(2);
+      }
+      return rtn;
     });
-    const lsfoTotalConsumption = computed(
-      () =>
-        +(
-          Number(lsfoBreakdown.me) +
-          Number(lsfoBreakdown.ge) +
-          Number(lsfoBreakdown.blr) +
-          Number(lsfoBreakdown.igg)
-        )
-    );
-    const lsfoRob = computed(
-      () => temp.lsfoPrevROB - lsfoTotalConsumption.value
-    );
-    const mgoTotalConsumption = computed(
-      () =>
-        +(
-          Number(mgoBreakdown.me) +
-          Number(mgoBreakdown.ge) +
-          Number(mgoBreakdown.blr) +
-          Number(mgoBreakdown.igg)
-        ).toFixed(2)
-    );
-    const mgoRob = computed(() => temp.mgoPrevROB - mgoTotalConsumption.value);
     const fuelOilDataCorrection = reactive({
       type: "default",
       correction: "",
       remarks: "",
     });
 
-    const mecylinderBreakdown = reactive({
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
+    const lubricatingOilBreakdowns = reactive({});
+    for (const lubricatingOil of lubricatingOils.value) {
+      lubricatingOilBreakdowns[lubricatingOil] = {
+        total_consumption: "",
+        receipt: "",
+        debunkering: "",
+      };
+    }
+    const lubricatingOilRobs = computed(() => {
+      let rtn = {};
+      for (const lubricatingOil of lubricatingOils.value) {
+        rtn[lubricatingOil] = +(
+          Number(lubeOilRobs.value[lubricatingOil]) -
+          Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
+          Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
+          Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
+        ).toFixed(2);
+      }
+      return rtn;
     });
-    const mesystemBreakdown = reactive({
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
-    });
-    const mesumpBreakdown = reactive({
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
-    });
-    const gesystemBreakdown = reactive({
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
-    });
-    const mecylinderRob = computed(
-      () =>
-        +(
-          temp.mecylPrevROB -
-          Number(mecylinderBreakdown.total_consumption) +
-          Number(mecylinderBreakdown.receipt) -
-          Number(mecylinderBreakdown.debunkering)
-        ).toFixed(2)
-    );
-    const mesystemRob = computed(
-      () =>
-        +(
-          temp.mesysPrevROB -
-          Number(mesystemBreakdown.total_consumption) +
-          Number(mesystemBreakdown.receipt) -
-          Number(mesystemBreakdown.debunkering)
-        ).toFixed(2)
-    );
-    const mesumpRob = computed(
-      () =>
-        +(
-          temp.mesumpPrevROB -
-          Number(mesumpBreakdown.total_consumption) +
-          Number(mesumpBreakdown.receipt) -
-          Number(mesumpBreakdown.debunkering)
-        ).toFixed(2)
-    );
-    const gesystemRob = computed(
-      () =>
-        +(
-          temp.gesysPrevROB -
-          Number(gesystemBreakdown.total_consumption) +
-          Number(gesystemBreakdown.receipt) -
-          Number(gesystemBreakdown.debunkering)
-        ).toFixed(2)
-    );
     const lubricatingOilDataCorrection = reactive({
       type: "default",
       correction: "",
@@ -357,68 +362,60 @@ export const useArrivalEOSPReportStore = defineStore(
       () => +(freshwaterGenerated.value - freshwaterConsumed.value).toFixed(2)
     );
     const freshwaterRob = computed(
-      () => temp.freshwaterPrevROB + freshwaterChange.value
+      () => freshwater_rob.value + freshwaterChange.value
     );
 
     // Actual performance
-    const totalDistanceObs = distanceObsTotal;
-    const totalSailingTime = hoursTotal;
-    const displacement = ref(temp.displacement);
+    const totalDistanceObs = distanceObsCospToEosp;
+    const totalSailingTime = hoursCospToEosp;
+    const displacement = displacementAtDeparture;
     const avgSpeed = speedAvg;
     const avgRpm = rpmAvg;
     const meFoConsumption = computed(() =>
-      hoursTotal.value
+      hoursCospToEosp.value
         ? (
-            (lsfoMeSum.value + mgoMeSum.value) /
-            (hoursTotal.value * 24)
+            Object.values(fuelOilBreakdownsSum.value).reduce(
+              (total, fuelOil) => total + fuelOil[Machinery.ME],
+              0
+            ) /
+            (Number(hoursCospToEosp.value) / 24)
           ).toFixed(2)
         : ""
     );
-    const lsfoMeSum = computed(
-      () => +(temp.prevLsfoBreakdown.me + Number(lsfoBreakdown.me)).toFixed(2)
-    );
-    const lsfoGeSum = computed(
-      () => +(temp.prevLsfoBreakdown.ge + Number(lsfoBreakdown.ge)).toFixed(2)
-    );
-    const lsfoBoilerSum = computed(
-      () => +(temp.prevLsfoBreakdown.blr + Number(lsfoBreakdown.blr)).toFixed(2)
-    );
-    const lsfoIggSum = computed(
-      () => +(temp.prevLsfoBreakdown.igg + Number(lsfoBreakdown.igg)).toFixed(2)
-    );
-    const lsfoTotalSum = computed(
-      () =>
-        +(
-          Number(lsfoMeSum.value) +
-          Number(lsfoGeSum.value) +
-          Number(lsfoBoilerSum.value) +
-          Number(lsfoIggSum.value)
-        ).toFixed(2)
-    );
-    const mgoMeSum = computed(
-      () => +(temp.prevMgoBreakdown.me + Number(mgoBreakdown.me)).toFixed(2)
-    );
-    const mgoGeSum = computed(
-      () => +(temp.prevMgoBreakdown.ge + Number(mgoBreakdown.ge)).toFixed(2)
-    );
-    const mgoBoilerSum = computed(
-      () => +(temp.prevMgoBreakdown.blr + Number(mgoBreakdown.blr)).toFixed(2)
-    );
-    const mgoIggSum = computed(
-      () => +(temp.prevMgoBreakdown.igg + Number(mgoBreakdown.igg)).toFixed(2)
-    );
-    const mgoTotalSum = computed(
-      () =>
-        +(
-          Number(mgoMeSum.value) +
-          Number(mgoGeSum.value) +
-          Number(mgoBoilerSum.value) +
-          Number(mgoIggSum.value)
-        ).toFixed(2)
-    );
+    const fuelOilBreakdownsSum = computed(() => {
+      let rtn = {};
+      for (const fuelOil of fuelOils.value) {
+        rtn[fuelOil] = {};
+        if (Object.keys(fuelOilConsPilotToPilot.value).length !== 0) {
+          for (const machine of machinery.value) {
+            rtn[fuelOil][machine] = fuelOilBreakdowns[fuelOil][machine]
+              ? +(
+                  Number(fuelOilConsPilotToPilot.value[fuelOil][machine]) +
+                  Number(fuelOilBreakdowns[fuelOil][machine])
+                ).toFixed(2)
+              : Number(fuelOilConsPilotToPilot.value[fuelOil][machine]);
+          }
+        } else {
+          for (const machine of machinery.value) {
+            rtn[fuelOil][machine] = Number(fuelOilBreakdowns[fuelOil][machine]);
+          }
+        }
+      }
+      return rtn;
+    });
+    const fuelOilTotalConsumptionsSum = computed(() => {
+      let rtn = {};
+      for (const fuelOil of fuelOils.value) {
+        rtn[fuelOil] = +sumObjectValues(
+          fuelOilBreakdownsSum.value[fuelOil]
+        ).toFixed(2);
+      }
+      return rtn;
+    });
 
     return {
       // Overview
+      legUuid,
       reportNo,
       legNo,
       loadingCondition,
@@ -460,15 +457,22 @@ export const useArrivalEOSPReportStore = defineStore(
       iceCondition,
       // Distance & Time
       hoursSinceNoon,
-      hoursTotal,
+      hoursCospToEosp,
+      hoursSbyToFwe,
       distanceToGo,
       distanceToGoEdited,
       remarksForChanges,
       distanceObsSinceNoon,
-      distanceObsTotal,
+      distanceObsCospToEosp,
+      distanceObsSbyToFwe,
       distanceEngSinceNoon,
-      distanceEngTotal,
+      distanceEngSinceNoonComputed,
+      distanceEngSinceNoonStatic,
+      distanceEngCospToEosp,
+      distanceEngSbyToFwe,
       revolutionCount,
+      revolutionCountComputed,
+      revolutionCountStatic,
       // Performance
       speedSinceNoon,
       rpmSinceNoon,
@@ -491,21 +495,15 @@ export const useArrivalEOSPReportStore = defineStore(
       pilotArrLongDegree,
       pilotArrLongMinute,
       // Consumption and Condition
-      lsfoTotalConsumption,
-      lsfoRob,
-      mgoTotalConsumption,
-      mgoRob,
-      lsfoBreakdown,
-      mgoBreakdown,
+      fuelOils,
+      lubricatingOils,
+      machinery,
+      fuelOilRobs,
+      fuelOilBreakdowns,
+      fuelOilTotalConsumptions,
       fuelOilDataCorrection,
-      mecylinderBreakdown,
-      mesystemBreakdown,
-      mesumpBreakdown,
-      gesystemBreakdown,
-      mecylinderRob,
-      mesystemRob,
-      mesumpRob,
-      gesystemRob,
+      lubricatingOilBreakdowns,
+      lubricatingOilRobs,
       lubricatingOilDataCorrection,
       freshwaterConsumed,
       freshwaterGenerated,
@@ -518,16 +516,8 @@ export const useArrivalEOSPReportStore = defineStore(
       avgSpeed,
       avgRpm,
       meFoConsumption,
-      lsfoMeSum,
-      lsfoGeSum,
-      lsfoBoilerSum,
-      lsfoIggSum,
-      lsfoTotalSum,
-      mgoMeSum,
-      mgoGeSum,
-      mgoBoilerSum,
-      mgoIggSum,
-      mgoTotalSum,
+      fuelOilBreakdownsSum,
+      fuelOilTotalConsumptionsSum,
     };
   }
 );

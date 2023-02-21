@@ -161,12 +161,14 @@
           {{ $t("portName") }}
         </div>
         <input
+          :disabled="dateEditIsDisabled"
           v-model="route_arrival_port_country"
-          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
+          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 disabled:bg-gray-50"
         />
         <input
+          :disabled="dateEditIsDisabled"
           v-model="route_arrival_port_name"
-          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
+          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 disabled:bg-gray-50"
         />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14 mt-4">
@@ -178,7 +180,7 @@
           :class="dateEditIsDisabled ? 'bg-gray-50' : 'bg-white'"
         >
           <div
-            v-if="!isRouteArrivalDateTimeEdited"
+            v-if="dateEditIsDisabled"
             class="grow col-span-3 relative flex items-center"
           >
             <DatePicker
@@ -229,7 +231,8 @@
         </div>
         <div class="flex col-span-3 bg-white text-gray-700">
           <select
-            class="grow self-center p-3 text-14 focus:outline-0"
+            :disabled="dateEditIsDisabled"
+            class="grow self-center p-3 text-14 focus:outline-0 disabled:bg-gray-50"
             :class="
               route_arrival_time_zone === 'default'
                 ? 'text-gray-400'
@@ -255,15 +258,18 @@ import { textInputOptions, format, formatUTC } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { TIMEZONES } from "@/utils/options";
 import { UTCPlaceholder } from "@/constants";
 
-const dateEditIsDisabled = ref(true);
-
 const toggle = () => {
+  if (!dateEditIsDisabled.value) {
+    route_arrival_port_country.value = arrivalPortCountryStatic;
+    route_arrival_port_name.value = arrivalPortNameStatic;
+    route_arrival_date_time.value = arrivalDateTimeStatic;
+    route_arrival_time_zone.value = arrivalTimeZoneStatic;
+  }
   dateEditIsDisabled.value = !dateEditIsDisabled.value;
-  isRouteArrivalDateTimeEdited.value = true;
 };
 
 const store = useNoonReportStore();
@@ -284,11 +290,16 @@ const {
   routeArrivalPortName: route_arrival_port_name,
   routeArrivalDateTimeUTC,
   routeArrivalDateTime: route_arrival_date_time,
-  isRouteArrivalDateTimeEdited,
   routeArrivalDateTimeEdited: route_arrival_date_time_edited,
   routeArrivalDateTimeEditedUTC,
   routeArrivalTimeZone: route_arrival_time_zone,
+  dateEditIsDisabled,
 } = storeToRefs(store);
+
+const arrivalPortCountryStatic = route_arrival_port_country.value;
+const arrivalPortNameStatic = route_arrival_port_name.value;
+const arrivalDateTimeStatic = route_departure_date_time.value;
+const arrivalTimeZoneStatic = route_departure_time_zone.value;
 
 const reporting_date_time_utc = computed(() =>
   reportingDateTimeUTC.value

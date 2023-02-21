@@ -2,33 +2,9 @@ import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
 import { useVoyageStore } from "./useVoyageStore";
 import { storeToRefs } from "pinia";
-import { convertLTToUTC } from "@/utils/helpers";
-import { PARKING_STATUS_EVNT } from "@/utils/options";
-// TODO: fetch from database
-const temp = {
-  // Finish With Engine
-  plannedOperations: [
-    "waiting",
-    "crewChange",
-    "cargoOpBerth",
-    "bunkeringDebunkering",
-    "receivingProvisionSpareParts",
-  ],
-  otherPlannedOperation: "",
-  // fetch above from most recent arrival eosp/sby
-
-  // Harbour Port Report
-  prevStatus: PARKING_STATUS_EVNT.anchoringStartOutside, // only applies if there was a previous event report
-
-  // Consumption & Condition
-  lsfoPrevROB: 200,
-  mgoPrevROB: 200,
-  mecylPrevROB: 200,
-  mesysPrevROB: 200,
-  mesumpPrevROB: 200,
-  gesysPrevROB: 200,
-  freshwaterPrevROB: 200,
-};
+import { convertLTToUTC, sumObjectValues } from "@/utils/helpers";
+import { useShipStore } from "@/stores/useShipStore";
+import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
 
 export const useHarbourPortReportStore = defineStore(
   "harbourPortReport",
@@ -39,10 +15,23 @@ export const useHarbourPortReportStore = defineStore(
       evntpReportNo,
       noonpReportNo,
       nooncReportNo,
-      curLegNo,
+      lastLegNo,
+      legUuid,
       curLoadingCondition,
       curVoyageNo,
     } = storeToRefs(store);
+
+    const shipStore = useShipStore();
+    const { fuelOils, lubricatingOils, machinery } = storeToRefs(shipStore);
+    const detailsStore = useLatestReportDetailsStore();
+    const {
+      parkingStatus,
+      fuelOilRobs: fuel_oil_robs,
+      lubeOilRobs,
+      freshwaterRob: freshwater_rob,
+      plannedOperations,
+      otherPlannedOperation,
+    } = storeToRefs(detailsStore);
 
     // status var
     const reportSubtypeIsPort = ref(true);
@@ -60,7 +49,7 @@ export const useHarbourPortReportStore = defineStore(
         ? evntcReportNo
         : ""
     );
-    const legNo = curLegNo;
+    const legNo = lastLegNo;
     const loadingCondition = curLoadingCondition;
     const voyageNo = curVoyageNo;
     const reportingDateTime = ref("");
@@ -75,8 +64,8 @@ export const useHarbourPortReportStore = defineStore(
     );
 
     // Harbour Port Report
-    const prevStatus = ref(temp.prevStatus);
-    const status = ref(temp.prevStatus);
+    const prevStatus = ref(parkingStatus.value || "default");
+    const status = ref(parkingStatus.value || "default");
     const distanceTravelled = ref("");
     const latDir = ref("default");
     const latMinutes = ref("");
@@ -84,121 +73,71 @@ export const useHarbourPortReportStore = defineStore(
     const longDir = ref("default");
     const longMinutes = ref("");
     const longDegree = ref("");
-    const plannedOperations = ref(temp.plannedOperations);
-    const otherPlannedOperation = ref(temp.otherPlannedOperation);
     const operations = ref([]);
 
-    // Consumption And Condition Full
-    const lsfoBreakdown = reactive({
-      me: "",
-      ge: "",
-      blr: "",
-      igg: "",
-      receipt: "",
-      debunkering: "",
+    // Consumption And Condition
+    const fuelOilBreakdowns = reactive({});
+    const fuelOilReceipts = reactive({});
+    const fuelOilDebunkerings = reactive({});
+
+    for (const fuelOil of fuelOils.value) {
+      fuelOilBreakdowns[fuelOil] = {};
+      for (const machine of machinery.value) {
+        fuelOilBreakdowns[fuelOil][machine] = "";
+      }
+      // fuelOilBreakdowns[fuelOil][Machinery.ME] = "";
+      // fuelOilBreakdowns[fuelOil][Machinery.GE] = "";
+      // fuelOilBreakdowns[fuelOil][Machinery.IGG] = "";
+      // fuelOilBreakdowns[fuelOil][Machinery.BLR] = "";
+      fuelOilReceipts[fuelOil] = "";
+      fuelOilDebunkerings[fuelOil] = "";
+    }
+
+    const fuelOilTotalConsumptions = computed(() => {
+      let rtn = {};
+      for (const fuelOil of fuelOils.value) {
+        rtn[fuelOil] = +sumObjectValues(fuelOilBreakdowns[fuelOil]).toFixed(2);
+      }
+      return rtn;
     });
-    const mgoBreakdown = reactive({
-      me: "",
-      ge: "",
-      blr: "",
-      igg: "",
-      receipt: "",
-      debunkering: "",
+    const fuelOilRobs = computed(() => {
+      let rtn = {};
+      for (const fuelOil of fuelOils.value) {
+        rtn[fuelOil] = +(
+          fuel_oil_robs.value[fuelOil] -
+          Number(fuelOilTotalConsumptions.value[fuelOil]) +
+          Number(fuelOilReceipts[fuelOil]) -
+          Number(fuelOilDebunkerings[fuelOil])
+        ).toFixed(2);
+      }
+      return rtn;
     });
-    const lsfoTotalConsumption = computed(
-      () =>
-        +(
-          Number(lsfoBreakdown.me) +
-          Number(lsfoBreakdown.ge) +
-          Number(lsfoBreakdown.blr) +
-          Number(lsfoBreakdown.igg)
-        )
-    );
-    const lsfoRob = computed(
-      () =>
-        temp.lsfoPrevROB -
-        lsfoTotalConsumption.value +
-        Number(lsfoBreakdown.receipt) -
-        Number(lsfoBreakdown.debunkering)
-    );
-    const mgoTotalConsumption = computed(
-      () =>
-        +(
-          Number(mgoBreakdown.me) +
-          Number(mgoBreakdown.ge) +
-          Number(mgoBreakdown.blr) +
-          Number(mgoBreakdown.igg)
-        ).toFixed(2)
-    );
-    const mgoRob = computed(
-      () =>
-        temp.mgoPrevROB -
-        mgoTotalConsumption.value +
-        Number(mgoBreakdown.receipt) -
-        Number(mgoBreakdown.debunkering)
-    );
     const fuelOilDataCorrection = reactive({
       type: "default",
       correction: "",
       remarks: "",
     });
 
-    const mecylinderBreakdown = reactive({
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
+    const lubricatingOilBreakdowns = reactive({});
+    for (const lubricatingOil of lubricatingOils.value) {
+      lubricatingOilBreakdowns[lubricatingOil] = {
+        total_consumption: "",
+        receipt: "",
+        debunkering: "",
+      };
+    }
+    const lubricatingOilRobs = computed(() => {
+      let rtn = {};
+      for (const lubricatingOil of lubricatingOils.value) {
+        rtn[lubricatingOil] = +(
+          lubeOilRobs.value[lubricatingOil] -
+          Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
+          Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
+          Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
+        ).toFixed(2);
+      }
+      return rtn;
     });
-    const mesystemBreakdown = reactive({
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
-    });
-    const mesumpBreakdown = reactive({
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
-    });
-    const gesystemBreakdown = reactive({
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
-    });
-    const mecylinderRob = computed(
-      () =>
-        +(
-          temp.mecylPrevROB -
-          Number(mecylinderBreakdown.total_consumption) +
-          Number(mecylinderBreakdown.receipt) -
-          Number(mecylinderBreakdown.debunkering)
-        ).toFixed(2)
-    );
-    const mesystemRob = computed(
-      () =>
-        +(
-          temp.mesysPrevROB -
-          Number(mesystemBreakdown.total_consumption) +
-          Number(mesystemBreakdown.receipt) -
-          Number(mesystemBreakdown.debunkering)
-        ).toFixed(2)
-    );
-    const mesumpRob = computed(
-      () =>
-        +(
-          temp.mesumpPrevROB -
-          Number(mesumpBreakdown.total_consumption) +
-          Number(mesumpBreakdown.receipt) -
-          Number(mesumpBreakdown.debunkering)
-        ).toFixed(2)
-    );
-    const gesystemRob = computed(
-      () =>
-        +(
-          temp.gesysPrevROB -
-          Number(gesystemBreakdown.total_consumption) +
-          Number(gesystemBreakdown.receipt) -
-          Number(gesystemBreakdown.debunkering)
-        ).toFixed(2)
-    );
     const lubricatingOilDataCorrection = reactive({
       type: "default",
       correction: "",
@@ -210,14 +149,17 @@ export const useHarbourPortReportStore = defineStore(
     const freshwaterReceiving = ref("");
     const freshwaterDischarging = ref("");
     const freshwaterChange = computed(
-      () => +(freshwaterGenerated.value - freshwaterConsumed.value).toFixed(2)
+      () =>
+        +(
+          Number(freshwaterGenerated.value) - Number(freshwaterConsumed.value)
+        ).toFixed(2)
     );
     const freshwaterRob = computed(
       () =>
-        temp.freshwaterPrevROB +
+        Number(freshwater_rob.value) +
         Number(freshwaterReceiving.value) -
         Number(freshwaterDischarging.value) +
-        freshwaterChange.value
+        Number(freshwaterChange.value)
     );
 
     return {
@@ -226,6 +168,7 @@ export const useHarbourPortReportStore = defineStore(
       reportSubtypeIsNoon, // HarbourPortReport.vue
       // Harbour Port Overview
       reportNo,
+      legUuid,
       noonpReportNo,
       nooncReportNo,
       evntpReportNo,
@@ -249,22 +192,18 @@ export const useHarbourPortReportStore = defineStore(
       plannedOperations,
       otherPlannedOperation,
       operations,
-      // Consumption And Condition (Full)
-      lsfoTotalConsumption,
-      lsfoRob,
-      mgoTotalConsumption,
-      mgoRob,
-      lsfoBreakdown,
-      mgoBreakdown,
+      // Consumption And Condition
+      fuelOils,
+      lubricatingOils,
+      machinery,
+      fuelOilRobs,
+      fuelOilBreakdowns,
+      fuelOilReceipts,
+      fuelOilDebunkerings,
+      fuelOilTotalConsumptions,
       fuelOilDataCorrection,
-      mecylinderBreakdown,
-      mesystemBreakdown,
-      mesumpBreakdown,
-      gesystemBreakdown,
-      mecylinderRob,
-      mesystemRob,
-      mesumpRob,
-      gesystemRob,
+      lubricatingOilBreakdowns,
+      lubricatingOilRobs,
       lubricatingOilDataCorrection,
       freshwaterConsumed,
       freshwaterGenerated,

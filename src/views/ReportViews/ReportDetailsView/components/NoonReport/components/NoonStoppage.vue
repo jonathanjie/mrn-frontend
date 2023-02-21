@@ -1,10 +1,13 @@
 <script setup>
-import { ref } from "vue";
+import { computed } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { textInputOptions, format, preventNaN } from "@/utils/helpers.js";
-import { useNoonReportStore } from "@/stores/useNoonReportStore";
-import { storeToRefs } from "pinia";
-import { defineProps } from "vue";
+import {
+  textInputOptions,
+  format,
+  preventNaN,
+  convertUTCToLT,
+  parsePositionFromString,
+} from "@/utils/helpers.js";
 
 const props = defineProps({
   report: {
@@ -13,27 +16,30 @@ const props = defineProps({
   },
 });
 
-const store = useNoonReportStore();
+const beginning = computed(() =>
+  convertUTCToLT(
+    new Date(props.report.stoppagedata.start_date),
+    props.report.report_tz
+  )
+);
+const ending = computed(() =>
+  convertUTCToLT(
+    new Date(props.report.stoppagedata.end_date),
+    props.report.report_tz
+  )
+);
 
-const {
-  stoppageBeginning: beginning,
-  stoppageEnding: ending,
-  stoppageDuration: duration,
-  stoppageReducedRPM: reduced_RPM,
-  stoppageReason: reason,
-  stoppageRemarks: remarks,
-  stoppageLatDir: lat_dir,
-  stoppageLatDegree: lat_degree,
-  stoppageLatMinutes: lat_minutes,
-  stoppageLongDir: long_dir,
-  stoppageLongDegree: long_degree,
-  stoppageLongMinutes: long_minutes,
-  stoppageIsActive: stoppage_is_active,
-} = storeToRefs(store);
+const duration = computed(() => props.report.stoppagedata.duration);
+const changed_RPM = computed(() => props.report.stoppagedata.reduced_rpm);
+const reason = computed(() => props.report.stoppagedata.reason);
+const remarks = computed(() => props.report.stoppagedata.remarks);
+const position = computed(() =>
+  parsePositionFromString(props.report.stoppagedata.position)
+);
 </script>
 
 <template>
-  <div
+  <!-- <div
     v-if="!stoppage_is_active"
     @click="stoppage_is_active = !stoppage_is_active"
     class="flex items-center bg-white rounded-lg p-5 shadow-card cursor-pointer"
@@ -46,11 +52,8 @@ const {
     <span class="text-blue-700 text-16">{{
       $t("stoppageOrReductionOfRPM")
     }}</span>
-  </div>
-  <div
-    v-else
-    class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4 shadow-card"
-  >
+  </div> -->
+  <div class="grid grid-cols-2 bg-white rounded-lg p-5 gap-4 shadow-card">
     <div
       class="col-span-2 flex items-center cursor-pointer"
       @click="stoppage_is_active = !stoppage_is_active"
@@ -61,7 +64,7 @@ const {
         class="mr-2 h-5 w-5"
       />
       <span class="text-blue-700 text-16">{{
-        $t("stoppageOrReductionOfRPM")
+        $t("stoppageOrChangeInRPM")
       }}</span>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
@@ -70,6 +73,7 @@ const {
         >{{ $t("beginningDateAndTime") }}</span
       >
       <DatePicker
+        disabled
         v-model="beginning"
         class="col-span-3 border-b"
         textInput
@@ -86,6 +90,7 @@ const {
         $t("endingDateAndTime")
       }}</span>
       <DatePicker
+        disabled
         v-model="ending"
         class="col-span-3"
         textInput
@@ -103,49 +108,52 @@ const {
       <span class="col-span-2 text-blue-700 p-3 border-b text-14 self-center">{{
         $t("duration")
       }}</span>
-      <div class="flex col-span-3 p-2 pl-4 bg-white text-14 border-l border-b">
+      <div
+        class="flex col-span-3 p-2 pl-4 bg-gray-50 text-14 border-l border-b"
+      >
         <input
+          disabled
           v-model="duration"
           @keypress="preventNaN($event, duration)"
           placeholder="0"
-          class="w-24 text-gray-700 focus:outline-0"
+          class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <MiniUnitDisplay>HRS</MiniUnitDisplay>
       </div>
       <span class="col-span-2 text-blue-700 p-3 text-14">{{
-        $t("reducedRPM")
+        $t("changedRPM")
       }}</span>
-      <div class="flex col-span-3 p-2 pl-4 bg-white text-14 border-l">
+      <div class="flex col-span-3 p-2 pl-4 bg-gray-50 text-14 border-l">
         <input
-          v-model="reduced_RPM"
-          @keypress="preventNaN($event, reduced_RPM)"
+          disabled
+          v-model="changed_RPM"
+          @keypress="preventNaN($event, changed_RPM)"
           placeholder="0"
-          class="w-24 text-gray-700 focus:outline-0"
+          class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <MiniUnitDisplay>RPM</MiniUnitDisplay>
       </div>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-      <span
-        class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
-        >{{ $t("latitude") }}</span
-      >
+      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
+        $t("latitude")
+      }}</span>
       <input
-        v-model="lat_degree"
-        @keypress="preventNaN($event, lat_degree)"
-        placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        disabled
+        v-model="position.latDegree"
+        placeholder="000 (Deg)"
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="lat_minutes"
-        @keypress="preventNaN($event, lat_minutes)"
-        placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        disabled
+        v-model="position.latMinutes"
+        placeholder="000 (Min)"
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <select
-        v-model="lat_dir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0"
-        :class="lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        disabled
+        v-model="position.latDir"
+        class="p-3 text-14 border-l focus:outline-0 bg-gray-50 text-gray-700"
       >
         <option selected disabled value="default">
           {{ $t("southAndNorth") }}
@@ -155,26 +163,25 @@ const {
       </select>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-      <span
-        class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
-        >{{ $t("longitude") }}</span
-      >
+      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
+        $t("longitude")
+      }}</span>
       <input
-        v-model="long_degree"
-        @keypress="preventNaN($event, long_degree)"
-        placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        disabled
+        v-model="position.longDegree"
+        placeholder="000 (Deg)"
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <input
-        v-model="long_minutes"
-        @keypress="preventNaN($event, long_minutes)"
-        placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        disabled
+        v-model="position.longMinutes"
+        placeholder="000 (Min)"
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <select
-        v-model="long_dir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0"
-        :class="long_dir === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        disabled
+        v-model="position.longDir"
+        class="p-3 text-14 border-l focus:outline-0 bg-gray-50 text-gray-700"
       >
         <option selected disabled value="default">
           {{ $t("eastAndWest") }}
@@ -188,8 +195,9 @@ const {
         {{ $t("reason") }}
       </div>
       <select
+        disabled
         v-model="reason"
-        class="col-span-3 p-3 border-l text-14 focus:outline-0"
+        class="col-span-3 p-3 border-l text-14 focus:outline-0 bg-gray-50"
         :class="reason === 'default' ? 'text-gray-400' : 'text-gray-700'"
       >
         <option selected disabled value="default">{{ $t("select") }}</option>
@@ -206,13 +214,12 @@ const {
         {{ $t("remarks") }}
       </div>
       <textarea
+        disabled
         v-model.trim="remarks"
         :placeholder="$t('inputRemarks')"
-        class="col-span-3 row-span-2 border-t border-l p-3 pl-4 bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-3 row-span-2 border-t border-l p-3 pl-4 bg-gray-50 text-14 text-gray-700 focus:outline-0"
       ></textarea>
     </div>
     <div></div>
   </div>
 </template>
-
-

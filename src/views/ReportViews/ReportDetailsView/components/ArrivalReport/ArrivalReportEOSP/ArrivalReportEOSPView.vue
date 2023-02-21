@@ -1,14 +1,13 @@
 <script setup>
-import { defineProps } from "vue";
 import ArrivalAndDeparture from "./components/ArrivalAndDeparture.vue";
 import ArrivalDetails from "./components/ArrivalDetails.vue";
 import ArrivalWeather from "./components/ArrivalWeather.vue";
 import ArrivalPerformance from "./components/ArrivalPerformance.vue";
 import ArrivalEOSPDistanceAndTime from "./components/ArrivalEOSPDistanceAndTime.vue";
 import ArrivalEOSPSummary from "./components/ArrivalEOSPSummary.vue";
-import ArrivalConsumption from "../components/ArrivalConsumption.vue";
 import ArrivalOverview from "../components/ArrivalOverview.vue";
 import ArrivalPilotStation from "../components/ArrivalPilotStation.vue";
+import ReportConsumption from "../../ReportConsumption.vue";
 
 const props = defineProps({
   report: {
@@ -24,7 +23,6 @@ const props = defineProps({
     <ArrivalOverview :report="props.report" />
 
     <!-- Departure and Arrival -->
-    <!-- TODO: Fix hardcoded planned operation -->
     <ArrivalAndDeparture :report="props.report" />
 
     <!-- S/BY for Arrival -->
@@ -43,7 +41,11 @@ const props = defineProps({
     <ArrivalPilotStation :report="props.report" />
 
     <!-- Consumption & Condition (Noon - S/BY) -->
-    <ArrivalConsumption :report="props.report" />
+    <ReportConsumption :report="report">
+      <template v-slot:header>
+        {{ $t("consumptionAndConditionNoonToSby") }}
+      </template>
+    </ReportConsumption>
 
     <!-- Actual Performance at Sea / Total Consumption (Pilot to Pilot) -->
     <ArrivalEOSPSummary :report="props.report" />

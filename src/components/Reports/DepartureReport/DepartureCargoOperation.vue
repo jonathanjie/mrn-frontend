@@ -40,10 +40,10 @@
           <input
             v-model="loading"
             @keypress="preventNaN($event, loading)"
-            :placeholder="$t('inputDetails')"
+            placeholder="0"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
-          <MiniUnitDisplay>{{ cargoUnit }}</MiniUnitDisplay>
+          <MiniUnitDisplay>{{ $t(cargoUnit) }}</MiniUnitDisplay>
         </div>
 
         <div
@@ -55,10 +55,10 @@
           <input
             v-model="unloading"
             @keypress="preventNaN($event, unloading)"
-            :placeholder="$t('inputDetails')"
+            placeholder="0"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
-          <MiniUnitDisplay>{{ cargoUnit }}</MiniUnitDisplay>
+          <MiniUnitDisplay>{{ $t(cargoUnit) }}</MiniUnitDisplay>
         </div>
 
         <div
@@ -67,16 +67,22 @@
           {{ $t("totalAmount") }}
         </div>
         <div
-          class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50"
+          class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t"
+          :class="isFirstReport ? 'bg-white' : 'bg-gray-50'"
         >
           <input
-            v-model="total_amount"
-            @keypress="preventNaN($event, total_amount)"
-            :placeholder="$t('inputDetails')"
-            disabled
-            class="w-24 bg-gray-50 text-14 text-gray-400 focus:outline-0"
+            v-if="isFirstReport"
+            v-model="totalAmountStatic"
+            @keypress="preventNaN($event, totalAmountStatic)"
+            placeholder="0"
+            class="w-24 text-14 focus:outline-0 bg-white text-gray-700"
           />
-          <MiniUnitDisplay>{{ cargoUnit }}</MiniUnitDisplay>
+          <input
+            v-else
+            v-model="totalAmountComputed"
+            class="w-24 text-14 focus:outline-0 bg-gray-50 text-gray-400"
+          />
+          <MiniUnitDisplay>{{ $t(cargoUnit) }}</MiniUnitDisplay>
         </div>
 
         <div
@@ -88,7 +94,7 @@
           <input
             v-model="time"
             @keypress="preventNaN($event, time)"
-            :placeholder="$t('inputDetails')"
+            placeholder="0"
             class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
           />
           <MiniUnitDisplay>HRS</MiniUnitDisplay>
@@ -107,10 +113,12 @@ import { LOAD_CONDITIONS } from "@/utils/options";
 
 const store = useDepartureSBYReportStore();
 const {
+  isFirstReport,
   loadCondition: load_condition,
   loading: loading,
   unloading: unloading,
-  totalAmount: total_amount,
+  totalAmountComputed,
+  totalAmountStatic,
   time: time,
   cargoUnit: cargoUnit,
 } = storeToRefs(store);

@@ -48,8 +48,20 @@
         <span class="font-bold text-gray-900 text-14 mr-1">{{
           user.name
         }}</span>
-        <span class="font-semibold text-gray-500 text-12 mr-1">{{
-          $t("shipOwner")
+        <span
+          v-if="auth.role === 'manager'"
+          class="font-semibold text-gray-500 text-12 mr-1"
+          >{{ $t("manager") }}</span
+        >
+        <span
+          v-else-if="auth.role === 'crew'"
+          class="font-semibold text-gray-500 text-12 mr-1"
+          >{{ $t("crew") }}</span
+        >
+        <span
+          v-else
+          class="font-semibold text-gray-500 text-12 mr-1"
+          >{{
         }}</span>
       </div>
       <div v-else class="flex flex-col items-left">
@@ -77,14 +89,15 @@
 </template>
 
 <script setup>
-import { useAuthStore } from "@/stores/useAuthStore";
 import { useAuth0 } from "@auth0/auth0-vue";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { ref } from "vue";
 
 // TODO: get from pinia instead of auth0; need to figure out async state tracking
-const { user, logout, getAccessTokenSilently } = useAuth0();
+const { user, logout } = useAuth0();
+const auth = useAuthStore();
 
-console.log("WebHeader loads");
+// console.log("WebHeader loads");
 let isExpanded = ref(false);
 
 function mouseEnter() {
@@ -94,11 +107,4 @@ function mouseEnter() {
 function mouseLeave() {
   isExpanded.value = false;
 }
-
-// async function getToken() {
-//   const authStore = useAuthStore();
-//   const jwt = await getAccessTokenSilently();
-
-//   authStore.updateToken(jwt);
-// }
 </script>

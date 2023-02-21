@@ -9,12 +9,12 @@ export function preventNaN(event, content) {
   }
 }
 
-export const sumObjectValues = (obj, endIndex) => {
-  endIndex = endIndex || Object.values(obj).length;
+export const sumObjectValues = (obj) => {
+  return Object.values(obj).reduce((a, b) => Number(a) + Number(b), 0);
+};
 
-  return Object.values(obj)
-    .slice(0, endIndex)
-    .reduce((a, b) => Number(a) + Number(b), 0);
+export const isEmpty = (obj) => {
+  return Object.keys(obj).length === 0;
 };
 
 export const textInputOptions = ref({
@@ -22,16 +22,24 @@ export const textInputOptions = ref({
 });
 
 export function format(date) {
+  if (date == null) {
+    return null;
+  }
+
   const day = ("0" + date.getDate()).slice(-2);
   const month = ("0" + (date.getMonth() + 1)).slice(-2);
   const year = date.getFullYear();
   const hour = ("0" + date.getHours()).slice(-2);
   const minute = ("0" + date.getMinutes()).slice(-2);
 
-  return `${year}.${month}.${day} ${hour}:${minute} (LT)`;
+  return `${year}-${month}-${day} ${hour}:${minute}`;
 }
 
 export function formatUTC(date) {
+  if (date == null) {
+    return null;
+  }
+
   const day = ("0" + date.getUTCDate()).slice(-2);
   const month = ("0" + (date.getUTCMonth() + 1)).slice(-2);
   const year = date.getUTCFullYear();
@@ -97,16 +105,34 @@ export const parsePositionToString = ({
 };
 
 export const parsePositionFromString = (positionString) => {
+  if (
+    positionString == "" ||
+    (positionString == null) | (positionString == undefined)
+  ) {
+    return {
+      latDegree: "",
+      latMinutes: "",
+      latDir: "",
+      longDegree: "",
+      longMinutes: "",
+      longDir: "",
+    };
+  }
+
   const splitString = positionString.split(" ");
 
   const rawLat = splitString[1].slice(1);
   const rawLong = splitString[2].slice(0, -1);
 
-  const latDegree = rawLat.split(".")[0];
-  const latMinutes = rawLat.split(".")[1] * 60;
+  const latDegree = Math.abs(rawLat.split(".")[0]);
+  const latMinutes = parseInt(
+    Math.round(Number("0." + rawLat.split(".")[1]) * 60)
+  );
   const latDir = Math.sign(+rawLat) === -1 ? "S" : "N";
-  const longDegree = rawLong.split(".")[0];
-  const longMinutes = rawLong.split(".")[1] * 60;
+  const longDegree = Math.abs(rawLong.split(".")[0]);
+  const longMinutes = parseInt(
+    Math.round(Number("0." + rawLong.split(".")[1]) * 60)
+  );
   const longDir = Math.sign(+rawLong) === -1 ? "E" : "W";
 
   return {
@@ -123,6 +149,9 @@ export const convertLTToUTC = (date, offset) => {
   const userOffset = parseFloat(offset) * -60;
   const calcOffset = date.getTimezoneOffset();
 
+  if (date == null || date == "") {
+    return null;
+  }
   // calculate based on timezone input
   if (userOffset !== calcOffset) {
     date = new Date(
@@ -130,7 +159,8 @@ export const convertLTToUTC = (date, offset) => {
     );
   }
 
-  return date.toISOString();
+  // TODO: Fix this janky catch
+  return date.toString() == "Invalid Date" ? null : date.toISOString();
 };
 
 export const convertUTCToLT = (date, offset) => {
@@ -143,8 +173,7 @@ export const convertUTCToLT = (date, offset) => {
       date.getTime() + 3600000 * (parseFloat(offset) + calcOffset / 60)
     );
   }
-
-  return date.toISOString();
+  return date.toString() == "Invalid Date" ? null : date.toISOString();
 };
 
 export const parsePortLocode = ({ portCountry, portName }) => {
@@ -179,26 +208,32 @@ export const windSpeedToBeaufort = (wind_speed) => {
     : 12;
 };
 
-// data correction parameter is optional
+// last four parameters are optional
 export const generateFuelOilData = (
   fuelOils,
   fuelOilBreakdowns,
   fuelOilTotalConsumptions,
-  fuelOilRobs,
-  fuelOilDataCorrection
+  fuelOilRobs, // optional
+  fuelOilDataCorrection, // optional
+  fuelOilReceipts, // optional
+  fuelOilDebunkerings // optional
 ) => {
   const rtn = [];
 
   const dataCorrection = fuelOilDataCorrection || {};
+  const rob = fuelOilRobs || {};
+  const receipts = fuelOilReceipts || {};
+  const debunkerings = fuelOilDebunkerings || {};
+
   for (const fuelOil of fuelOils) {
     rtn.push({
       fuel_oil_type: fuelOil,
-      total_consumption: fuelOilTotalConsumptions[fuelOil] || 0,
-      receipt: fuelOilBreakdowns.receipt || 0, // non-zero for DEP SBY reports
-      debunkering: fuelOilBreakdowns.debunkering || 0, // non-zero for DEP SBY reports
-      rob: fuelOilRobs[fuelOil] || 0,
+      total_consumption: Number(fuelOilTotalConsumptions[fuelOil]) || 0,
+      receipt: Number(receipts[fuelOil]) || 0, // non-zero for DEP SBY & EVNT reports
+      debunkering: Number(debunkerings[fuelOil]) || 0, // non-zero for DEP SBY & EVNT reports
+      rob: Number(rob[fuelOil]) || 0, // zero for Arrival EOSP Total Consumption
       breakdown: Object.entries(fuelOilBreakdowns[fuelOil]).reduce(
-        (p, [k, v]) => ({ ...p, [k]: v || 0 }),
+        (p, [k, v]) => ({ ...p, [k]: Number(v) || 0 }),
         {}
       ),
       fueloildatacorrection:
@@ -222,22 +257,72 @@ export const generateLubricatingOilData = (
 ) => {
   const rtn = [];
 
+  const dataCorrection = lubricatingOilDataCorrection || {};
+
   for (const lubricatingOil of lubricatingOils) {
     rtn.push({
-      fuel_oil_type: lubricatingOil,
+      lubricating_oil_type: lubricatingOil,
       total_consumption:
-        lubricatingOilBreakdowns[lubricatingOil]["total_consumption"] || 0,
-      receipt: lubricatingOilBreakdowns[lubricatingOil]["receipt"] || 0,
-      debunkering: lubricatingOilBreakdowns[lubricatingOil]["debunkering"] || 0,
-      rob: lubricatingOilRobs[lubricatingOil] || 0,
+        Number(lubricatingOilBreakdowns[lubricatingOil]["total_consumption"]) ||
+        0,
+      receipt: Number(lubricatingOilBreakdowns[lubricatingOil]["receipt"]) || 0,
+      debunkering:
+        Number(lubricatingOilBreakdowns[lubricatingOil]["debunkering"]) || 0,
+      rob: Number(lubricatingOilRobs[lubricatingOil]) || 0,
       lubricatingoildatacorrection:
-        lubricatingOilDataCorrection.type === lubricatingOil
+        dataCorrection.type === lubricatingOil
           ? {
-              correction: lubricatingOilDataCorrection.correction,
-              remarks: lubricatingOilDataCorrection.remarks,
+              correction: dataCorrection.correction,
+              remarks: dataCorrection.remarks,
             }
           : null,
     });
   }
   return rtn;
+};
+
+// file helpers
+export const getPresignedUrlForFiles = async (filePath) => {
+  const response = await fetch(
+    "https://mui7py4yakmr4db4na4vogvotm0jyacz.lambda-url.ap-southeast-1.on.aws/",
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      body: JSON.stringify({
+        filepaths: filePath,
+      }),
+    }
+  );
+
+  try {
+    const data = await response.json();
+    // console.log(response);
+    // console.log(data.presigned_urls);
+
+    return data.presigned_urls;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getFilePath = (file) => {
+  const urlFragments = file.split("/");
+  const rtn =
+    urlFragments[3] +
+    "/" +
+    urlFragments[4] +
+    "/" +
+    urlFragments[5] +
+    "/" +
+    urlFragments[6] +
+    "/" +
+    urlFragments[7].split("?")[0];
+
+  return decodeURI(rtn);
+};
+
+export const getFileName = (filePath) => {
+  return decodeURI(filePath.split("/")[7].split("?")[0]);
 };

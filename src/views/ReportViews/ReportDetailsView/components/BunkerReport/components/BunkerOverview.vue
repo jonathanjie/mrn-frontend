@@ -1,8 +1,6 @@
 <script setup>
 import { computed, defineProps } from "vue";
-import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
-import { textInputOptions, format } from "@/utils/helpers";
-import { storeToRefs } from "pinia";
+import { textInputOptions, format, convertUTCToLT } from "@/utils/helpers";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { TIMEZONES } from "@/utils/options";
 
@@ -14,14 +12,13 @@ const props = defineProps({
 });
 
 const reportNum = computed(() => props.report.report_num);
-const legNum = computed(() => props.report.voyage_leg);
-const voyageNum = computed(() => props.report.voyage_leg);
-// const loading_condition = computed(()=> props.report.report_num)
-const reportingDateTime = computed(() => props.report.report_date);
+const legNum = computed(() => props.report.voyage_leg.leg_num);
+const voyageNum = computed(() => props.report.voyage_leg.voyage.voyage_num);
+const loadingCondition = computed(() => props.report.voyage_leg.load_condition);
+const reportingDateTime = computed(() =>
+  convertUTCToLT(new Date(props.report.report_date), props.report.report_tz)
+);
 const reportingTimeZone = computed(() => props.report.report_tz);
-
-const store = useBunkerReportStore();
-const { loadingCondition: loadingCondition } = storeToRefs(store);
 </script>
 
 <template>
@@ -66,8 +63,9 @@ const { loadingCondition: loadingCondition } = storeToRefs(store);
         {{ $t("reportingDateAndTime") }}
       </div>
       <DatePicker
+        disabled
         v-model="reportingDateTime"
-        class="col-span-3"
+        class="col-span-3 bg-gray-50"
         textInput
         :textInputOptions="textInputOptions"
         :format="format"
@@ -85,12 +83,10 @@ const { loadingCondition: loadingCondition } = storeToRefs(store);
       <div class="col-span-2 text-blue-700 p-3 border-r">
         {{ $t("reportingTimeZone") }}
       </div>
-      <div class="flex col-span-3 bg-white">
+      <div class="flex col-span-3 bg-gray-50">
         <select
-          class="grow self-center p-3 text-14 focus:outline-0"
-          :class="
-            reportingTimeZone === 'default' ? 'text-gray-400' : 'text-gray-700'
-          "
+          disabled
+          class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50 text-gray-700"
           v-model="reportingTimeZone"
         >
           <option selected disabled value="default">

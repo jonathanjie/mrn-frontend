@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineProps } from "vue";
+import { computed } from "vue";
 import {
   textInputOptions,
   format,
@@ -30,7 +30,7 @@ const departureTimeZone = computed(
 );
 
 const destinationPortCountry = computed(
-  () => props.report.reportroute?.arrival_port.split(" ")[1] ?? ""
+  () => props.report.reportroute?.arrival_port.split(" ")[0] ?? ""
 );
 const destinationPortName = computed(
   () => props.report.reportroute?.arrival_port.split(" ")[1] ?? ""
@@ -76,10 +76,10 @@ const destinationTimeZone = computed(
         >
           {{ $t("timeZone") }}
         </div>
-        <div class="flex col-span-3 border-b bg-white">
+        <div class="flex col-span-3 border-b bg-gray-50">
           <select
             disabled
-            class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50 text-gray-700"
+            class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50 text-gray-700 bg-gray-50"
             v-model="departureTimeZone"
           >
             <option selected disabled value="default">
@@ -93,8 +93,9 @@ const destinationTimeZone = computed(
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("dateAndTime") }}
         </div>
-        <div class="col-span-3 relative flex items-center bg-gray-50">
+        <div class="col-span-3 relative flex items-center">
           <DatePicker
+            disabled
             v-model="departureDateTime"
             class="grow"
             textInput
@@ -129,12 +130,14 @@ const destinationTimeZone = computed(
         <input
           v-model="destinationPortCountry"
           :placeholder="$t('inputLocode2')"
-          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
+          disabled
+          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 bg-gray-50"
         />
         <input
           v-model="destinationPortName"
           :placeholder="$t('inputLocode3')"
-          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
+          disabled
+          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 bg-gray-50"
         />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14">
@@ -143,9 +146,10 @@ const destinationTimeZone = computed(
         >
           {{ $t("timeZone") }}
         </div>
-        <div class="flex col-span-3 border-b bg-white">
+        <div class="flex col-span-3 border-b bg-gray-50">
           <select
-            class="grow self-center p-3 text-14 focus:outline-0"
+            disabled
+            class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50"
             :class="
               destinationTimeZone === 'default'
                 ? 'text-gray-400'
@@ -167,6 +171,7 @@ const destinationTimeZone = computed(
         <div class="col-span-3 relative flex items-center">
           <DatePicker
             v-model="destinationEstimatedArrival"
+            disabled
             class="grow"
             textInput
             :textInputOptions="textInputOptions"

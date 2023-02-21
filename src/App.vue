@@ -1,5 +1,4 @@
 <template>
-  <!-- TODO: router view for login page -->
   <!-- <router-view v-if="!isAuthenticated" class="bg-gray-50 min-h-screen"></router-view> -->
   <div v-if="isAuthenticated" class="flex items-start items-stretch">
     <Suspense>
@@ -11,9 +10,7 @@
 <script setup>
 import HomeView from "./views/HomeView.vue";
 import { useAuth0 } from "@auth0/auth0-vue";
-
 const { isAuthenticated } = useAuth0();
-console.log("App is loaded");
 </script>
 
 <style lang="scss">
@@ -28,6 +25,7 @@ $dp__border_radius: 0px;
 $dp__input_padding: 12px 12px;
 $dp__input_icon_padding: 14px;
 
+@import "@/assets/css/global.css";
 @import "node_modules/@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss";
 
 .dp__theme_light {

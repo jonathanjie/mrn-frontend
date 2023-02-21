@@ -3,18 +3,15 @@ import { authGuard } from "@auth0/auth0-vue";
 
 // import LoginView from '@/views/LoginView.vue'from ;
 import VesselView from "@/views/VesselView/VesselView.vue";
-import VesselOverviewView from "@/views/VesselView/VesselOverviewView.vue";
-import VesselSubmittedView from "@/views/VesselView/VesselSubmittedView.vue";
-import VesselDraftView from "@/views/VesselView/VesselDraftView.vue";
-import VesselCancelledView from "@/views/VesselView/VesselCancelledView.vue";
+import VesselOverview from "@/views/VesselView/VesselOverview.vue";
+import VesselReportViewWrapper from "@/views/VesselView/VesselReportViewWrapper.vue";
 import AddReportToVoyageView from "@/views/ReportViews/AddReportToVoyageView/AddReportToVoyageView.vue";
 import NoonReportView from "@/views/ReportViews/AddReportToVoyageView/NoonReportView/NoonReportView.vue";
 import ArrivalReportView from "@/views/ReportViews/AddReportToVoyageView/ArrivalReportView/ArrivalReportView.vue";
 import DepartureReportView from "@/views/ReportViews/AddReportToVoyageView/DepartureReportView/DepartureReportView.vue";
-import BunkerReportView from "@/views/ReportViews/AddReportToVoyageView/BunkerReportView/BunkerReportView.vue";
+import BunkerReportViewWrapper from "@/views/ReportViews/AddReportToVoyageView/BunkerReportView/BunkerReportViewWrapper.vue";
 import HarbourPortReportView from "@/views/ReportViews/AddReportToVoyageView/HarbourPortReportView/HarbourPortReportView.vue";
 import ReportDetailsViewWrapper from "@/views/ReportViews/ReportDetailsView/ReportDetailsViewWrapper.vue";
-
 import NotFound from "@/views/NotFound.vue";
 
 const routes = [
@@ -45,7 +42,8 @@ const routes = [
       {
         path: "overview",
         name: "speed-graph-overview",
-        component: () => import("../views/HQViews/SpeedGraphOverview.vue"),
+        component: () =>
+          import("../views/HQViews/Overview/SpeedGraphOverview.vue"),
         props: true,
         beforeEnter: authGuard,
       },
@@ -57,10 +55,17 @@ const routes = [
         beforeEnter: authGuard,
       },
       {
+        path: "cii-document",
+        name: "cii-document",
+        component: () => import("../views/HQViews/CIIDocument.vue"),
+        props: true,
+        beforeEnter: authGuard,
+      },
+      {
         path: "uploaded-reports",
         name: "uploaded-reports",
-        component: () => import("../views/VesselView/VesselOverviewView.vue"),
-        props: true, // To pass HQ parameter to hide Add Report Button
+        component: () => import("../views/VesselView/VesselReportView.vue"),
+        props: true,
         beforeEnter: authGuard,
       },
     ],
@@ -74,22 +79,14 @@ const routes = [
       {
         path: "overview",
         name: "vessel-overview",
-        component: VesselOverviewView,
+        props: true,
+        component: VesselOverview,
       },
       {
-        path: "submitted",
-        name: "vessel-submitted",
-        component: VesselSubmittedView,
-      },
-      {
-        path: "draft",
-        name: "vessel-draft",
-        component: VesselDraftView,
-      },
-      {
-        path: "cancelled",
-        name: "vessel-cancelled",
-        component: VesselCancelledView,
+        path: "reports",
+        name: "vessel-reports",
+        props: true,
+        component: VesselReportViewWrapper,
       },
     ],
     beforeEnter: authGuard,
@@ -122,7 +119,7 @@ const routes = [
       {
         path: "bunker-delivery",
         name: "bunker-delivery",
-        component: BunkerReportView,
+        component: BunkerReportViewWrapper,
       },
     ],
     beforeEnter: authGuard,
@@ -139,6 +136,13 @@ const routes = [
     //     component: NoonReportView,
     //   },
     // ],
+    beforeEnter: authGuard,
+  },
+  {
+    path: "/cii-overview",
+    name: "cii-overview",
+    component: () => import("../views/CIIViews/CIIOverview.vue"),
+    props: true,
     beforeEnter: authGuard,
   },
   {

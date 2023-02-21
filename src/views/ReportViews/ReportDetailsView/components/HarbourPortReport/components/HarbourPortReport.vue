@@ -1,11 +1,12 @@
 <script setup>
-import { computed, defineProps } from "vue";
+import { computed } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import {
   preventNaN,
   textInputOptions,
   format,
-  // formatUTC,
+  parsePositionFromString,
+  convertUTCToLT,
 } from "@/utils/helpers.js";
 import {
   TIMEZONES,
@@ -32,19 +33,27 @@ const reportSubtypeIsNoon = computed(() =>
 );
 
 const status = computed(() => props.report.eventdata?.parking_status ?? "");
-const reportingTimeZone = computed(() => props.report.eventdata?.timezone ?? 0);
-const reportingDateTime = computed(() => props.report.eventdata?.time ?? "");
+const reportingTimeZone = computed(() => props.report.report_tz);
+const reportingDateTime = computed(() =>
+  convertUTCToLT(new Date(props.report.report_date), props.report.report_tz)
+);
 const distanceTravelled = computed(
   () => props.report.eventdata?.distance_travelled ?? 0
 );
-const operations = computed(() => props.report.eventdata.plannedoperations);
-const plannedOperations = computed(
-  () => props.report.eventdata.plannedoperations 
+const operations = computed(() =>
+  props.report?.plannedoperations
+    ? Object.keys(props.report?.plannedoperations).filter(
+        (key) => props.report?.plannedoperations[key]
+      )
+    : []
 );
+const plannedOperations = operations;
 const otherPlannedOperation = computed(
-  () => props.report.eventdata.plannedoperations?.others ?? false
+  () => props.report?.plannedoperations?.planned_operation_othersdetails
 );
-const position = computed(() => props.report.eventdata.position);
+const position = computed(() =>
+  parsePositionFromString(props.report.eventdata.position)
+);
 
 // const reporting_date_time_utc = computed(() =>
 //   reportingDateTimeUTC.value
@@ -92,9 +101,7 @@ const position = computed(() => props.report.eventdata.position);
       <select
         disabled
         v-model="status"
-        :disabled="reportSubtypeIsNoon"
-        class="col-span-3 p-3 border-y border-r focus:outline-0 disabled:text-gray-400 disabled:bg-gray-50"
-        :class="status === 'default' ? 'text-gray-400' : 'text-gray-700'"
+        class="col-span-3 p-3 border-y border-r focus:outline-0 bg-gray-50 text-gray-700"
       >
         <option selected disabled value="default">
           {{ $t("selectEvent") }}
@@ -112,13 +119,10 @@ const position = computed(() => props.report.eventdata.position);
       >
         {{ $t("timeZone") }}
       </div>
-      <div class="flex col-span-3 border-b border-r bg-white">
+      <div class="flex col-span-3 border-b border-r bg-gray-50">
         <select
           disabled
-          class="grow self-center p-3 text-14 focus:outline-0"
-          :class="
-            reportingTimeZone === 'default' ? 'text-gray-400' : 'text-gray-700'
-          "
+          class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50 text-gray-700"
           v-model="reportingTimeZone"
         >
           <option selected disabled value="default">
@@ -134,7 +138,9 @@ const position = computed(() => props.report.eventdata.position);
       >
         {{ $t("dateAndTime") }}
       </div>
-      <div class="col-span-3 relative flex items-center border-b border-r">
+      <div
+        class="col-span-3 relative flex items-center border-b border-r bg-gray-50"
+      >
         <DatePicker
           disabled
           v-model="reportingDateTime"
@@ -158,13 +164,13 @@ const position = computed(() => props.report.eventdata.position);
       <div class="col-span-2 text-blue-700 p-3 border-x border-b bg-gray-50">
         {{ $t("distanceTravelled") }}
       </div>
-      <div class="flex col-span-3 p-2 pl-4 bg-white border-b border-r">
+      <div class="flex col-span-3 p-2 pl-4 bg-gray-50 border-b border-r">
         <input
           disabled
           v-model="distanceTravelled"
           @keypress="preventNaN($event, distanceTravelled)"
           placeholder="0"
-          class="w-16 text-14 text-gray-700 focus:outline-0"
+          class="w-16 text-14 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <MiniUnitDisplay>NM</MiniUnitDisplay>
       </div>
@@ -172,14 +178,15 @@ const position = computed(() => props.report.eventdata.position);
       <input disabled class="hidden lg:block bg-white col-span-5 p-3" />
     </div>
 
-    <div v-if="plannedOperations"
+    <div
+      v-if="plannedOperations"
       class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-white text-14"
     >
       <div class="col-span-2 row-span-2 text-blue-700 p-3 border-r bg-gray-50">
         {{ $t("operations") }}
       </div>
       <div
-        class="col-span-3 flex flex-col space-y-2 p-3 text-gray-700"
+        class="col-span-3 flex flex-col space-y-2 p-3 text-gray-700 bg-gray-50"
         :class="
           reportSubtypeIsNoon || END_STATUS.includes(status) ? 'bg-gray-50' : ''
         "
@@ -197,7 +204,7 @@ const position = computed(() => props.report.eventdata.position);
             :class="
               reportSubtypeIsNoon ||
               !START_STATUS.includes(status) ||
-              !plannedOperations.includes('waiting')
+              !plannedOperations.waiting
                 ? 'text-gray-400'
                 : ''
             "
@@ -221,7 +228,7 @@ const position = computed(() => props.report.eventdata.position);
             :class="
               reportSubtypeIsNoon ||
               !START_STATUS.includes(status) ||
-              !plannedOperations.includes(val)
+              !plannedOperations.val
                 ? 'text-gray-400'
                 : ''
             "
@@ -241,7 +248,7 @@ const position = computed(() => props.report.eventdata.position);
             :class="
               reportSubtypeIsNoon ||
               !START_STATUS.includes(status) ||
-              !plannedOperations.includes('others')
+              !plannedOperations.others
                 ? 'text-gray-400'
                 : ''
             "
@@ -250,34 +257,30 @@ const position = computed(() => props.report.eventdata.position);
         </div>
       </div>
     </div>
-
     <div
       class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50 text-14"
     >
-      <span class="col-span-2 row-span-3 text-blue-700 p-3 self-center">{{
+      <span class="col-span-2 text-blue-700 p-3 self-center">{{
         $t("latitude")
       }}</span>
       <input
         disabled
         v-model="position.latDegree"
         @keypress="preventNaN($event, position.latDegree)"
-        placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-gray-700 focus:outline-0"
+        placeholder="000 (Deg)"
+        class="p-3 pl-4 border-l bg-gray-50 text-gray-700 focus:outline-0"
       />
       <input
         disabled
         v-model="position.latMinutes"
         @keypress="preventNaN($event, position.latMinutes)"
-        placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-gray-700 focus:outline-0"
+        placeholder="000 (Min)"
+        class="p-3 pl-4 border-l bg-gray-50 text-gray-700 focus:outline-0"
       />
       <select
         disabled
         v-model="position.latDir"
-        class="col-span-3 p-3 border-l focus:outline-0"
-        :class="
-          position.latDir === 'default' ? 'text-gray-400' : 'text-gray-700'
-        "
+        class="p-3 border-l focus:outline-0 bg-gray-50 text-gray-700"
       >
         <option selected disabled value="default">
           {{ $t("southAndNorth") }}
@@ -286,34 +289,30 @@ const position = computed(() => props.report.eventdata.position);
         <option value="N">{{ $t("north") }}</option>
       </select>
     </div>
-
     <div
       class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50 text-14"
     >
-      <span class="col-span-2 row-span-3 text-blue-700 p-3 self-center">{{
+      <span class="col-span-2 text-blue-700 p-3 self-center">{{
         $t("longitude")
       }}</span>
       <input
         disabled
         v-model="position.longDegree"
         @keypress="preventNaN($event, position.longDegree)"
-        placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-gray-700 focus:outline-0"
+        placeholder="000 (Deg)"
+        class="p-3 pl-4 border-l bg-gray-50 text-gray-700 focus:outline-0"
       />
       <input
         disabled
         v-model="position.longMinutes"
         @keypress="preventNaN($event, position.longMinutes)"
-        placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-gray-700 focus:outline-0"
+        placeholder="000 (Min)"
+        class="p-3 pl-4 border-l bg-gray-50 text-gray-700 focus:outline-0"
       />
       <select
         disabled
         v-model="position.longDir"
-        class="col-span-3 p-3 border-l focus:outline-0"
-        :class="
-          position.longDir === 'default' ? 'text-gray-400' : 'text-gray-700'
-        "
+        class="p-3 border-l focus:outline-0 bg-gray-50"
       >
         <option selected disabled value="default">
           {{ $t("eastAndWest") }}

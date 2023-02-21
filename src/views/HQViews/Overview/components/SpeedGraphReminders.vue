@@ -7,6 +7,7 @@
     }}</span>
     <ReminderCard
       v-for="reminder in reminders"
+      :key="reminder.id"
       :type="reminder.type"
       :title="reminder.title"
       :message="reminder.message"
@@ -16,7 +17,7 @@
 </template>
 
 <script setup>
-import ReminderCard from "@/components/ReminderCard.vue";
+import ReminderCard from "@/views/HQViews/Overview/components/ReminderCard.vue";
 
 const reminders = [
   {

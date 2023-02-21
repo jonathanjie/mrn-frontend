@@ -2,7 +2,7 @@
   <div class="bg-gray-50 min-h-screen">
     <div class="flex flex-col px-24 pt-11">
       <div class="flex items-center mx-5 mb-6">
-        <button @click="$router.push({ name: 'vessel-overview' })">
+        <button @click="$router.push({ name: 'vessel-reports' })">
           <img
             src="@/assets/icons/back_arrow.svg"
             class="fill-blue float-left"
@@ -19,6 +19,7 @@
           :content="$t('noon')"
           type="noon"
           :active="reportType"
+          :disabled="!validReportTypes.includes(Report.type.NOON)"
           @onUpdateBtn="updateActiveReportType"
         >
         </RadioBtnIcon>
@@ -27,6 +28,10 @@
           :content="$t('departure')"
           type="departure"
           :active="reportType"
+          :disabled="
+            !validReportTypes.includes(Report.type.DEP_COSP_RUP) &&
+            !validReportTypes.includes(Report.type.DEP_SBY)
+          "
           @onUpdateBtn="updateActiveReportType"
         >
         </RadioBtnIcon>
@@ -35,6 +40,10 @@
           :content="$t('arrival')"
           type="arrival"
           :active="reportType"
+          :disabled="
+            !validReportTypes.includes(Report.type.ARR_FWE) &&
+            !validReportTypes.includes(Report.type.ARR_SBY_EOSP)
+          "
           @onUpdateBtn="updateActiveReportType"
         >
         </RadioBtnIcon>
@@ -43,6 +52,12 @@
           :content="$t('inHarbourOrPort')"
           type="harbour-port"
           :active="reportType"
+          :disabled="
+            !validReportTypes.includes(Report.type.EVENT_HARBOUR) &&
+            !validReportTypes.includes(Report.type.EVENT_PORT) &&
+            !validReportTypes.includes(Report.type.NOON_HARBOUR) &&
+            !validReportTypes.includes(Report.type.NOON_PORT)
+          "
           @onUpdateBtn="updateActiveReportType"
         >
         </RadioBtnIcon>
@@ -51,6 +66,7 @@
           :content="$t('bunkerDelivery')"
           type="bunker-delivery"
           :active="reportType"
+          :disabled="!validReportTypes.includes(Report.type.BUNKER)"
           @onUpdateBtn="updateActiveReportType"
         >
         </RadioBtnIcon>
@@ -70,10 +86,12 @@ import RadioBtnIcon from "@/components/Buttons/RadioBtnIcon.vue";
 import router from "@/router";
 import { ref } from "vue";
 import { useVoyageStore } from "@/stores/useVoyageStore";
+
 import { storeToRefs } from "pinia";
 import SubmissionResultsModal from "@/components/Modals/SubmissionResultsModal.vue";
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
-// import { onBeforeRouteLeave } from "vue-router";
+import { useLatestReportDetailsStore } from "@/stores/useLatestReportDetailsStore";
+import { Report } from "@/constants";
 
 const reportType = ref("");
 
@@ -86,11 +104,15 @@ const submissionStatusStore = useSubmissionStatusStore();
 const { isSubmissionModalVisible } = storeToRefs(submissionStatusStore);
 // const showModal = ref(isSubmissionRequested.value);
 
+const detailsStore = useLatestReportDetailsStore();
+const { validReportTypes } = storeToRefs(detailsStore);
+
 const store = useVoyageStore();
 const {
   voyageUuid,
+  legUuid,
   curLoadingCondition,
-  curLegNo,
+  lastLegNo,
   curVoyageNo,
   lastNoonReportNo,
   lastDepsReportNo,
@@ -107,11 +129,13 @@ const {
 const voyageDetails = history.state.voyageDetails
   ? JSON.parse(history.state.voyageDetails)
   : {};
+// console.log("voyagedetails", voyageDetails);
 
 // store selected voyage details in pinia voyage store
-voyageUuid.value = voyageDetails.uuid;
+voyageUuid.value = voyageDetails.voyage_uuid;
+lastLegNo.value = voyageDetails.last_leg_no;
+legUuid.value = voyageDetails.leg_uuid;
 curLoadingCondition.value = voyageDetails.cur_loading_condition;
-curLegNo.value = voyageDetails.cur_leg_no;
 curVoyageNo.value = voyageDetails.cur_voyage_no;
 lastNoonReportNo.value = voyageDetails.last_noon_report_no;
 lastDepsReportNo.value = voyageDetails.last_deps_report_no;
@@ -131,7 +155,12 @@ lastNooncReportNo.value = voyageDetails.last_noonc_report_no;
 //   const answer = window.confirm(
 //     "Do you really want to leave? You have unsaved changes!"
 //   );
+//   // router.push({ name: "vessel-reports" });
 //   // cancel the navigation and stay on the same page
 //   if (!answer) return false;
 // });
+addEventListener("beforeunload", (event) => {
+  event.preventDefault();
+  router.push({ name: "vessel-reports" });
+});
 </script>

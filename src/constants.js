@@ -31,6 +31,28 @@ export const ReportTypeToDisplay = {
   NNHB: "NOONHB",
 };
 
+export const ReportFilterCategories = {
+  ALL: "allReports",
+  DEP: "departure",
+  ARR: "arrival",
+  NOON: "noon",
+  BDN: "bunkerDelivery",
+  EVNT: "inHarbourOrPort",
+};
+
+export const ReportTypeToFilterCategories = {
+  NOON: "noon",
+  DSBY: "departure",
+  DCSP: "departure",
+  ASBY: "arrival",
+  AFWE: "arrival",
+  BDN: "bunkerDelivery",
+  EVPO: "inHarbourOrPort",
+  EVHB: "inHarbourOrPort",
+  NNPO: "inHarbourOrPort",
+  NNHB: "inHarbourOrPort",
+};
+
 export const ErrorFieldsToDisplay = {
   noonreporttimeandposition: "Reporting Noon",
   weatherdata: "Weather",
@@ -46,7 +68,7 @@ export const ErrorFieldsToDisplay = {
   arrivalpilotstation: "Pilot Station - Arrival",
   departurerunup: "R/UP Engine",
   distancetimedata: "Distance & Time",
-  transoceanicbudget: "Budget Trans Ocean",
+  sailingplan: "Sailing Plam",
   actualperformancedata: "Actual Performance",
   arrivalstandbytimeandposition: "S/BY for Arrival",
   heavyweatherdata: "Heavy Weather Condition",
@@ -54,6 +76,8 @@ export const ErrorFieldsToDisplay = {
   arrivalfwetimeandposition: "Finish With Engine",
   eventdata: "Report",
   bdndata: "BDN",
+  performancedata: "Performance",
+  unexpectedError: "Unexpected Error",
 };
 
 export const Direction = {
@@ -72,28 +96,28 @@ export const IceCondition = {
 };
 
 export const FuelOil = {
-  LSFO: "LSFO",
-  MGO: "MGO",
-  MDO: "MDO",
-  HFO: "HFO",
-  LPGP: "LPGP",
-  LPGB: "LPGB",
-  LNG: "LNG",
+  LSFO: "lsfo",
+  MGO: "mgo",
+  MDO: "mdo",
+  HFO: "hfo",
+  LPGP: "lpgPropane",
+  LPGB: "lpgButane",
+  LNG: "lng",
 };
 
 export const LubricatingOil = {
-  ME_CYLINDER: "M/E Cylinder",
-  ME_SYSTEM: "M/E System",
-  ME_SUMP: "M/E Sump",
-  GE_SYSTEM: "G/E System",
-  TC_SYSTEM: "T/C System",
+  ME_CYLINDER: "me_cylinder_oil",
+  ME_SYSTEM: "me_system_oil",
+  ME_SUMP: "me_sump_tank",
+  GE_SYSTEM: "ge_system_oil",
+  TC_SYSTEM: "tc_system_oil",
 };
 
 export const Machinery = {
-  ME: "M/E",
-  GE: "G/E",
-  IGG: "IGG",
-  BLR: "BLR",
+  ME: "main_engine",
+  GE: "generator_engine",
+  IGG: "inert_gas_generator",
+  BLR: "boiler",
 };
 
 export const TotalConsumptionType = {
@@ -127,11 +151,33 @@ export const ActualPerformanceType = {
 
 export const UTCPlaceholder = "YYYY.MM.DD HH:MM (UTC)";
 
+export const shipRefs = {
+  BULK: "Bulk Carrier",
+  GAS: "Gas Carrier",
+  OIL: "Oil Tanker",
+  CNTR: "Container Ship",
+  RORO: "Ro-Ro Cargo Ship",
+  GCGO: "General Cargo Ship",
+  REFC: "Refrigerated Cargo Carrier",
+  COMB: "Combination Carrier",
+  LNGC: "LNG Carrier",
+  RORV: "Ro-Ro Cargo Ship (Vehicle Carrier)",
+  RORP: "Ro-Ro Passenger Ship",
+  CRUZ: "Cruise Passenger Ship",
+};
+
+export const CIIModalTypes = {
+  INITIAL_SETUP: "Initial Setup CII",
+  UPLOAD_FILES: "Upload CII Report",
+};
+
 const constants = {
   SRID: "4326",
   Report: Report,
   Direction: Direction,
   ReportTypeToDisplay: ReportTypeToDisplay,
+  ReportFilterCategories: ReportFilterCategories,
+  ReportTypeToFilterCategories: ReportTypeToFilterCategories,
   IceCondition: IceCondition,
   FuelOil: FuelOil,
   LubricatingOil: LubricatingOil,
@@ -140,6 +186,8 @@ const constants = {
   TotalConsumptionType: TotalConsumptionType,
   ActualPerformanceType: ActualPerformanceType,
   UTCPlaceholder: UTCPlaceholder,
+  shipRefs: shipRefs,
+  CIIModalTypes: CIIModalTypes,
 };
 
 export default constants;

@@ -1,13 +1,7 @@
 <script setup>
-import { computed, defineProps } from "vue";
+import { computed } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useHarbourPortReportStore } from "@/stores/useHarbourPortReportStore";
-import {
-  textInputOptions,
-  format,
-  // formatUTC
-} from "@/utils/helpers";
-import { storeToRefs } from "pinia";
+import { textInputOptions, format, convertUTCToLT } from "@/utils/helpers";
 import { TIMEZONES } from "@/utils/options";
 
 const props = defineProps({
@@ -18,21 +12,15 @@ const props = defineProps({
 });
 
 const report_no = computed(() => props.report.report_num);
-const leg_no = computed(() => props.report.voyage_leg);
-const voyage_no = computed(() => props.report.voyage_leg);
-// const loading_condition = computed(()=> props.report.report_num)
-const reporting_date_time = computed(() => props.report.report_date);
+const leg_no = computed(() => props.report.voyage_leg.leg_num);
+const voyage_no = computed(() => props.report.voyage_leg.voyage.voyage_num);
+const loading_condition = computed(
+  () => props.report.voyage_leg.load_condition
+);
+const reporting_date_time = computed(() =>
+  convertUTCToLT(new Date(props.report.report_date), props.report.report_tz)
+);
 const reporting_time_zone = computed(() => props.report.report_tz);
-
-const store = useHarbourPortReportStore();
-// TODO: Switch to use real loading condition from backend
-const { loadingCondition: loading_condition } = storeToRefs(store);
-
-// const reporting_date_time_utc = computed(() =>
-//   reportingDateTimeUTC.value
-//     ? formatUTC(new Date(reportingDateTimeUTC.value))
-//     : UTCPlaceholder
-// );
 </script>
 
 <template>
@@ -77,8 +65,9 @@ const { loadingCondition: loading_condition } = storeToRefs(store);
       <div class="col-span-2 text-blue-700 p-3 border-r">
         {{ $t("reportingDateAndTime") }}
       </div>
-      <div class="col-span-3 relative flex items-center bg-white">
+      <div class="col-span-3 relative flex items-center bg-gray-50">
         <DatePicker
+          disabled
           v-model="reporting_date_time"
           class="grow"
           textInput
@@ -104,9 +93,10 @@ const { loadingCondition: loading_condition } = storeToRefs(store);
       <div class="col-span-2 text-blue-700 p-3 border-r">
         {{ $t("reportingTimeZone") }}
       </div>
-      <div class="flex col-span-3 bg-white">
+      <div class="flex col-span-3 bg-gray-50">
         <select
-          class="grow self-center p-3 text-14 focus:outline-0"
+          disabled
+          class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50"
           :class="
             reporting_time_zone === 'default'
               ? 'text-gray-400'

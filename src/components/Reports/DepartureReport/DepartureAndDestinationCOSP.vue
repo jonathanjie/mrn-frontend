@@ -13,13 +13,15 @@
           {{ $t("portName") }}
         </div>
         <input
-          v-model="departure_port_country"
+          :value="departure_port_country.toUpperCase()"
+          @input="departure_port_country = $event.target.value.toUpperCase()"
           :placeholder="$t('inputLocode2')"
           disabled
           class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 bg-gray-50"
         />
         <input
-          v-model="departure_port_name"
+          :value="departure_port_name.toUpperCase()"
+          @input="departure_port_name = $event.target.value.toUpperCase()"
           :placeholder="$t('inputLocode3')"
           disabled
           class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 bg-gray-50"
@@ -51,8 +53,9 @@
         <div class="col-span-3 relative flex items-center bg-gray-50">
           <DatePicker
             v-model="departure_date_time"
-            class="grow"
+            class="grow text-gray-400"
             textInput
+            disabled
             :textInputOptions="textInputOptions"
             :format="format"
             :modelValue="string"
@@ -82,7 +85,8 @@
           {{ $t("portName") }}
         </div>
         <input
-          v-model="destination_port_country"
+          :value="destination_port_country.toUpperCase()"
+          @input="destination_port_country = $event.target.value.toUpperCase()"
           :placeholder="$t('inputLocode2')"
           class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
         />
@@ -119,7 +123,7 @@
         <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
           {{ $t("estimatedTimeOfArrival") }}
         </div>
-        <div class="col-span-3 relative flex items-center">
+        <div class="col-span-3 bg-white relative flex items-center">
           <DatePicker
             v-model="destination_estimated_arrival"
             class="grow"

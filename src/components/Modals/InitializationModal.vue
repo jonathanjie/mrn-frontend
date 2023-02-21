@@ -13,12 +13,12 @@
             class="flex items-center justify-between p-5 border-b border-solid border-slate-200 rounded-t"
           >
             <h3 class="text-3xl font-semibold">{{ $t("generalInfo") }}</h3>
-            <button
+            <!-- <button
               class="p-1 ml-auto bg-transparent border-0 text-black opacity-50 float-right text-3xl leading-none font-semibold"
-              @click="$emit('close-modal')"
+              @click="$emit("close-modal");"
             >
               <span class="h-6 w-6 text-3xl block"> x </span>
-            </button>
+            </button> -->
           </div>
           <!--body-->
           <div class="relative flex-auto w-auto text-14 m-6 space-y-6">
@@ -103,89 +103,89 @@
               <p class="leading-relaxed mb-4 text-gray-700">
                 {{ $t("fuelOilOption") }}
               </p>
-              <div class="grid grid-cols-3 gap-2">
+              <div class="grid grid-cols-3 gap-2 items-center">
                 <div class="flex align-center">
                   <input
-                    v-model="fuel_options.mdo"
-                    type="checkbox"
-                    id="mdo"
-                    name="mdo"
-                    value="mdo"
-                  />
-                  <label class="ml-2 text-14 text-gray-700" for="mdo">
-                    {{ $t("mdo") }}
-                  </label>
-                </div>
-                <div class="flex align-center">
-                  <input
-                    v-model="fuel_options.mgo"
-                    type="checkbox"
-                    id="mgo"
-                    name="mgo"
-                    value="mgo"
-                  />
-                  <label class="ml-2 text-14 text-gray-700" for="mgo">
-                    {{ $t("mgo") }}
-                  </label>
-                </div>
-                <div class="flex align-center">
-                  <input
-                    v-model="fuel_options.lsfo"
+                    v-model="fuel_options[0]"
                     type="checkbox"
                     id="lsfo"
                     name="lsfo"
                     value="lsfo"
                   />
                   <label class="ml-2 text-14 text-gray-700" for="lsfo">
-                    {{ $t("lsfo") }}
+                    {{ $t("LSFO") }}
                   </label>
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="fuel_options.hfo"
+                    v-model="fuel_options[1]"
                     type="checkbox"
                     id="hfo"
                     name="hfo"
                     value="hfo"
                   />
                   <label class="ml-2 text-14 text-gray-700" for="hfo">
-                    {{ $t("hfo") }}
+                    {{ $t("HFO") }}
                   </label>
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="fuel_options.lpgPropane"
+                    v-model="fuel_options[2]"
+                    type="checkbox"
+                    id="mdo"
+                    name="mdo"
+                    value="mdo"
+                  />
+                  <label class="ml-2 text-14 text-gray-700">
+                    {{ $t("MDO") }}
+                  </label>
+                </div>
+                <div class="flex align-center">
+                  <input
+                    v-model="fuel_options[3]"
+                    type="checkbox"
+                    id="mgo"
+                    name="mgo"
+                    value="mgo"
+                  />
+                  <label class="ml-2 text-14 text-gray-700" for="mgo">
+                    {{ $t("MGO") }}
+                  </label>
+                </div>
+                <div class="flex align-center">
+                  <input
+                    v-model="fuel_options[4]"
                     type="checkbox"
                     id="lpgp"
                     name="lpgp"
                     value="lpgp"
                   />
                   <label class="ml-2 text-14 text-gray-700" for="lpgp">
-                    {{ $t("lpgp") }}
+                    {{ $t("LPGP") }}
                   </label>
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="fuel_options.lpg_butane"
+                    v-model="fuel_options[5]"
                     type="checkbox"
                     id="lpgb"
                     name="lpgb"
                     value="lpgb"
                   />
                   <label class="ml-2 text-14 text-gray-700" for="lpgb">
-                    {{ $t("lpgb") }}
+                    {{ $t("LPGB") }}
                   </label>
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="fuel_options.lng"
+                    v-model="fuel_options[6].LNG"
                     type="checkbox"
                     id="lng"
                     name="lng"
                     value="lng"
                   />
                   <label class="ml-2 text-14 text-gray-700" for="lng">
-                    {{ $t("lng") }}
+                    {{ $t("LNG") }}
                   </label>
                 </div>
               </div>
@@ -195,10 +195,10 @@
               <p class="leading-relaxed mb-4 text-gray-700">
                 {{ $t("lubricatingOilType") }}
               </p>
-              <div class="grid grid-cols-3 gap-5">
+              <div class="grid grid-cols-3 gap-5 items-center">
                 <div class="flex align-center">
                   <input
-                    v-model="lubricating_oil_options.me_cylinder_oil"
+                    v-model="lubricating_oil_options[0]"
                     type="checkbox"
                     id="mec"
                     name="mec"
@@ -210,7 +210,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="lubricating_oil_options.me_system_oil"
+                    v-model="lubricating_oil_options[1]"
                     type="checkbox"
                     id="meSys"
                     name="meSys"
@@ -222,7 +222,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="lubricating_oil_options.me_sump_tank"
+                    v-model="lubricating_oil_options[2]"
                     type="checkbox"
                     id="mesp"
                     name="mesp"
@@ -234,7 +234,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="lubricating_oil_options.ge_system_oil"
+                    v-model="lubricating_oil_options[3]"
                     type="checkbox"
                     id="geso"
                     name="geso"
@@ -246,7 +246,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="lubricating_oil_options.tg_system_oil"
+                    v-model="lubricating_oil_options[4]"
                     type="checkbox"
                     id="tgso"
                     name="tgso"
@@ -262,7 +262,7 @@
                     id="othersOil"
                     name="othersOil"
                     value="othersOil"
-                    v-on:click="lubricatingOthersFlag = !lubricatingOthersFlag"
+                    @click="lubricatingOthersFlag = !lubricatingOthersFlag"
                   />
                   <label class="ml-2 text-14 text-gray-700" for="othersOil">
                     {{ $t("others") }}
@@ -282,10 +282,10 @@
               <p class="leading-relaxed mb-4 text-gray-700">
                 {{ $t("machineryType") }}
               </p>
-              <div class="grid grid-cols-3 gap-5">
+              <div class="grid grid-cols-3 gap-5 items-center">
                 <div class="flex align-center">
                   <input
-                    v-model="machinery_options.main_engine"
+                    v-model="machinery_options[0]"
                     type="checkbox"
                     id="mainEngine"
                     name="mainEngine"
@@ -297,7 +297,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="machinery_options.generator_engine"
+                    v-model="machinery_options[1]"
                     type="checkbox"
                     id="generatorEngine"
                     name="generatorEngine"
@@ -312,7 +312,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="machinery_options.boiler"
+                    v-model="machinery_options[2]"
                     type="checkbox"
                     id="boilerEngine"
                     name="boilerEngine"
@@ -324,7 +324,7 @@
                 </div>
                 <div class="flex align-center">
                   <input
-                    v-model="machinery_options.inert_gas_generator"
+                    v-model="machinery_options[3]"
                     type="checkbox"
                     id="inertGasEngine"
                     name="inertGasEngine"
@@ -369,7 +369,7 @@
                 input="number"
                 v-model.lazy="propeller_pitch"
                 id="propellerPitch"
-                placeholder="Input number"
+                placeholder="0"
                 class="w-full p-3 pl-4 border bg-white text-14 text-gray-500 mt-2"
               />
             </div>
@@ -381,14 +381,14 @@
             <CustomButton
               class="px-6 py-3 text-14 mr-1 mb-1"
               type="button"
-              @click="$emit('close-modal')"
+              @click="closeModal"
             >
               <template v-slot:content>{{ $t("cancel") }}</template>
             </CustomButton>
             <GradientButton
               class="px-6 py-2 text-14 mr-1 mb-1"
               type="button"
-              v-on:click="addSettings()"
+              @click="addSettings()"
             >
               <template v-slot:content>{{ $t("saveDetails") }}</template>
             </GradientButton>
@@ -404,9 +404,7 @@
 import { ref } from "vue";
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
-import { useAuthStore } from "@/stores/useAuthStore";
-
-const auth = useAuthStore();
+import axios from "axios";
 
 // List to export options from checkboxes
 let lubricatingOthersFlag = ref(true);
@@ -414,67 +412,77 @@ let machineryOthersFlag = ref(true);
 const lubricatingOthers = ref("");
 const machineryOthers = ref("");
 
-const propeller_pitch = ref(0);
-const flag = "Panama";
-const deadweight_tonnage = "2000.00";
+const propeller_pitch = ref("");
 const ship_type = ref("");
 const cargo_unit = ref("");
-const fuel_options = ref({
-  mdo: false,
-  mgo: false,
-  lsfo: false,
-  hfo: false,
-  lpg_propane: false,
-  lpg_butane: false,
-  lng: false,
-});
 
-const lubricating_oil_options = ref({
-  me_cylinder_oil: false,
-  me_system_oil: false,
-  me_sump_tank: false,
-  ge_system_oil: false,
-  tg_system_oil: false,
-});
+const fuelOrder = ["LSFO", "HFO", "MDO", "MGO", "LPGP", "LPGB", "LNG"];
 
-const machinery_options = ref({
-  main_engine: false,
-  generator_engine: false,
-  boiler: false,
-  ge_system_oil: false,
-  inert_gas_generator: false,
-});
+const lubricatingOilOrder = [
+  "me_cylinder_oil",
+  "me_system_oil",
+  "me_sump_tank",
+  "ge_system_oil",
+  "tg_system_oil",
+];
+
+const machineryOrder = [
+  "main_engine",
+  "generator_engine",
+  "boiler",
+  "inert_gas_generator",
+];
+const fuel_options = ref([false, false, false, false, false, false, false]);
+
+const lubricating_oil_options = ref([true, true, false, true, false]);
+
+const machinery_options = ref([true, true, true, false]);
 
 const props = defineProps({
+  flag: String,
+  deadweight_tonnage: String,
   vesselname: String,
   imo: String,
 });
 
 const emit = defineEmits(["close-modal"]);
 
+const closeModal = () => {
+  emit("close-modal");
+};
 const addSettings = () => {
   const settings = {
-    flag,
-    deadweight_tonnage,
+    flag: "Panama",
+    deadweight_tonnage: "2000.0",
     ship_type: ship_type.value,
     cargo_unit: cargo_unit.value,
-    fuel_options: fuel_options.value,
-    lubricating_oil_options: lubricating_oil_options.value,
-    machinery_options: machinery_options.value,
+    fuel_options: fuelOrder.filter(
+      (fuel) => fuel_options.value[fuelOrder.indexOf(fuel)] == true
+    ),
+    lubricating_oil_options: lubricatingOilOrder.filter(
+      (lubricatingOil) =>
+        lubricating_oil_options.value[
+          lubricatingOilOrder.indexOf(lubricatingOil)
+        ] == true
+    ),
+    machinery_options: machineryOrder.filter(
+      (machinery) =>
+        machinery_options.value[machineryOrder.indexOf(machinery)] == true
+    ),
     propeller_pitch: propeller_pitch.value,
   };
-  const response = fetch(
-    "https://testapi.marinachain.io/marinanet/ships/" + props.imo + "/specs/",
-    {
-      headers: {
-        Authorization: "Bearer " + auth.jwt,
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(settings),
-    }
-  );
-  console.log(settings);
-  emit("close-modal");
+  axios
+    .post(
+      `${process.env.VUE_APP_URL_DOMAIN}/marinanet/ships/${props.imo}/specs/`,
+      settings
+    )
+    .then(() => {
+      emit("close-modal");
+      location.reload();
+    })
+    .catch((error) => {
+      console.log(error.response);
+      alert(JSON.stringify(error.response.data));
+    });
 };
 </script>

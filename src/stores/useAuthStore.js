@@ -16,7 +16,7 @@ export const useAuthStore = defineStore({
     updateToken(token) {
       this.jwt = token;
       localStorage.setItem("jwt", token);
-      console.log("TOKEN: ", localStorage.getItem("jwt"));
+      // console.log("TOKEN: ", localStorage.getItem("jwt"));
     },
     updateUser(user) {
       this.user = user;
@@ -25,7 +25,7 @@ export const useAuthStore = defineStore({
     updateRole(role) {
       this.role = role;
       localStorage.setItem("role", role);
-      console.log("Role updated with: " + role);
+      // console.log("Role updated with: " + role);
     },
     logout() {
       this.user = null;
@@ -35,7 +35,7 @@ export const useAuthStore = defineStore({
       localStorage.removeItem("user");
       localStorage.removeItem("jwt");
       localStorage.removeItem("role");
-      console.log(localStorage.getItem("role"));
+      // console.log(localStorage.getItem("role"));
       // logout({ returnTo: window.location.origin });
       // router.push('/login'); TODO: uncomment when login page is ready
     },

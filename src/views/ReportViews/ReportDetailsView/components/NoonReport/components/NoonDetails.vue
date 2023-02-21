@@ -1,9 +1,12 @@
 <script setup>
-import { computed, defineProps } from "vue";
-import { preventNaN, textInputOptions, format } from "@/utils/helpers.js";
-// import { useNoonReportStore } from "@/stores/useNoonReportStore";
-// import { storeToRefs } from "pinia";
-import { parsePositionFromString } from "@/utils/helpers.js";
+import { computed } from "vue";
+import {
+  preventNaN,
+  textInputOptions,
+  format,
+  parsePositionFromString,
+  convertUTCToLT,
+} from "@/utils/helpers.js";
 
 const props = defineProps({
   report: {
@@ -13,22 +16,12 @@ const props = defineProps({
 });
 
 const reporting_time_zone = computed(() => props.report.report_tz);
-const reporting_date_time = computed(() => props.report.report_date);
+const reporting_date_time = computed(() =>
+  convertUTCToLT(new Date(props.report.report_date), props.report.report_tz)
+);
 const position = computed(() =>
   parsePositionFromString(props.report.noonreporttimeandposition.position)
 );
-
-// const store = useNoonReportStore();
-// const {
-//   reportingTimeZone: reporting_time_zone,
-//   reportingDateTime: reporting_date_time,
-//   latDir: lat_dir,
-//   latMinutes: lat_minutes,
-//   latDegree: lat_degree,
-//   longDir: long_dir,
-//   longMinutes: long_minutes,
-//   longDegree: long_degree,
-// } = storeToRefs(store);
 </script>
 
 <template>
@@ -45,10 +38,10 @@ const position = computed(() =>
       >
         {{ $t("timeZone") }}
       </div>
-      <div class="flex col-span-3 border-b">
+      <div class="flex col-span-3 border-b bg-gray-50">
         <select
           disabled
-          class="grow self-center p-3 text-14 focus:outline-0"
+          class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50"
           :class="
             reporting_time_zone === 'default'
               ? 'text-gray-400'
@@ -110,6 +103,7 @@ const position = computed(() =>
         :format="format"
         :modelValue="string"
         :placeholder="$t('selectDateAndTime')"
+        disabled
       >
         <template #input-icon>
           <img src="" />
@@ -118,29 +112,27 @@ const position = computed(() =>
     </div>
     <div></div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-      <span
-        class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
-        >{{ $t("latitude") }}</span
-      >
+      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
+        $t("latitude")
+      }}</span>
       <input
         v-model="position.latDegree"
         @keypress="preventNaN($event, position.latDegree)"
-        placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        placeholder="000 (Deg)"
+        disabled
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <input
         v-model="position.latMinutes"
         @keypress="preventNaN($event, position.latMinutes)"
-        placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        placeholder="000 (Min)"
+        disabled
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <select
         disabled
         v-model="position.latDir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0 focus:outline-0"
-        :class="
-          position.latDir === 'default' ? 'text-gray-400' : 'text-gray-700'
-        "
+        class="p-3 text-14 border-l bg-gray-50 focus:outline-0 text-gray-700 bg-gray-50"
       >
         <option selected disabled value="default">
           {{ $t("southAndNorth") }}
@@ -150,26 +142,27 @@ const position = computed(() =>
       </select>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-      <span
-        class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
-        >{{ $t("longitude") }}</span
-      >
+      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
+        $t("longitude")
+      }}</span>
       <input
         v-model="position.longDegree"
         @keypress="preventNaN($event, position.longDegree)"
-        placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        placeholder="000 (Deg)"
+        disabled
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <input
         v-model="position.longMinutes"
         @keypress="preventNaN($event, position.longMinutes)"
-        placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        placeholder="000 (Min)"
+        disabled
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
       <select
         disabled
         v-model="position.longDir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0"
+        class="p-3 text-14 border-l focus:outline-0 bg-gray-50"
         :class="
           position.longDir === 'default' ? 'text-gray-400' : 'text-gray-700'
         "

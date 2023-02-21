@@ -118,87 +118,44 @@
           $t("totalConsumptionPilotToPilot")
         }}</span>
       </div>
-      <div class="grid grid-cols-6 border bg-gray-25 text-14">
+      <div class="grid border bg-gray-25 text-14" :class="getFuelOilCols()">
         <div></div>
-        <div class="p-3 border-l text-blue-700">{{ $t("me") }}</div>
-        <div class="p-3 border-l text-blue-700">{{ $t("ge") }}</div>
-        <div class="p-3 border-l text-blue-700">{{ $t("boiler") }}</div>
-        <div class="p-3 border-l text-blue-700">{{ $t("igg") }}</div>
+        <div
+          v-for="item in machinery"
+          :key="item"
+          class="p-3 border-l text-blue-700"
+        >
+          {{ $t(item) }}
+        </div>
         <div class="p-3 border-l text-blue-700">{{ $t("total") }}</div>
 
-        <div class="text-blue-700 p-3 border-t">{{ $t("lsfo") }}</div>
-        <input
-          v-model="lsfo_me_sum"
-          @keypress="preventNaN($event, lsfo_me_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l text-14 text-gray-400 focus:outline-0 bg-gray-50"
-        />
-        <input
-          v-model="lsfo_ge_sum"
-          @keypress="preventNaN($event, lsfo_ge_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l text-14 text-gray-400 focus:outline-0 bg-gray-50"
-        />
-        <input
-          v-model="lsfo_boiler_sum"
-          @keypress="preventNaN($event, lsfo_boiler_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l text-14 text-gray-400 focus:outline-0 bg-gray-50"
-        />
-        <input
-          v-model="lsfo_igg_sum"
-          @keypress="preventNaN($event, lsfo_igg_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l text-14 text-gray-400 focus:outline-0 bg-gray-50"
-        />
-        <input
-          v-model="lsfo_total_sum"
-          @keypress="preventNaN($event, lsfo_total_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
-        />
-
-        <div class="text-blue-700 p-3 border-t">{{ $t("mgo") }}</div>
-        <input
-          v-model="mgo_me_sum"
-          @keypress="preventNaN($event, mgo_me_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l text-14 text-gray-400 focus:outline-0 bg-gray-50"
-        />
-        <input
-          v-model="mgo_ge_sum"
-          @keypress="preventNaN($event, mgo_ge_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l text-14 text-gray-400 focus:outline-0 bg-gray-50"
-        />
-        <input
-          v-model="mgo_boiler_sum"
-          @keypress="preventNaN($event, mgo_boiler_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l text-14 text-gray-400 focus:outline-0 bg-gray-50"
-        />
-        <input
-          v-model="mgo_igg_sum"
-          @keypress="preventNaN($event, mgo_igg_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l text-14 text-gray-400 focus:outline-0 bg-gray-50"
-        />
-        <input
-          v-model="mgo_total_sum"
-          @keypress="preventNaN($event, mgo_total_sum)"
-          placeholder="000.00"
-          disabled
-          class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-700 focus:outline-0"
-        />
+        <span
+          v-for="(fuelOil, index) of fuelOils"
+          :key="index"
+          :class="'col-span-full grid ' + getFuelOilCols()"
+        >
+          <div class="text-blue-700 p-3 border-t">{{ $t(fuelOil) }}</div>
+          <input
+            v-for="item of machinery"
+            :key="item"
+            v-model="fuel_oil_breakdowns_sum[fuelOil][item]"
+            @keypress="
+              preventNaN($event, fuel_oil_breakdowns_sum[fuelOil][item])
+            "
+            placeholder="000.00"
+            disabled
+            class="p-3 pl-4 border-t border-l text-14 text-gray-400 focus:outline-0 bg-gray-50"
+          />
+          <input
+            v-model="fuel_oil_total_consumptions_sum[fuelOil]"
+            @keypress="
+              preventNaN($event, fuel_oil_total_consumptions_sum[fuelOil])
+            "
+            placeholder="000.00"
+            disabled
+            class="p-3 pl-4 border-t border-l bg-gray-50 text-14 text-gray-400 focus:outline-0"
+          />
+        </span>
       </div>
     </div>
   </div>
@@ -212,21 +169,17 @@ import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
 
 const store = useArrivalEOSPReportStore();
 const {
+  fuelOils,
+  machinery,
   totalDistanceObs: total_distance_obs,
   totalSailingTime: total_sailing_time,
   displacement: displacement,
   avgSpeed: avg_speed,
   avgRpm: avg_rpm,
   meFoConsumption: me_fo_consumption,
-  lsfoMeSum: lsfo_me_sum,
-  lsfoGeSum: lsfo_ge_sum,
-  lsfoBoilerSum: lsfo_boiler_sum,
-  lsfoIggSum: lsfo_igg_sum,
-  lsfoTotalSum: lsfo_total_sum,
-  mgoMeSum: mgo_me_sum,
-  mgoGeSum: mgo_ge_sum,
-  mgoBoilerSum: mgo_boiler_sum,
-  mgoIggSum: mgo_igg_sum,
-  mgoTotalSum: mgo_total_sum,
+  fuelOilBreakdownsSum: fuel_oil_breakdowns_sum,
+  fuelOilTotalConsumptionsSum: fuel_oil_total_consumptions_sum,
 } = storeToRefs(store);
+
+const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 2);
 </script>

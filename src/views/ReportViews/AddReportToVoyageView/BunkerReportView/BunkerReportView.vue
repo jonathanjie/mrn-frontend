@@ -1,58 +1,3 @@
-<template>
-  <div class="flex flex-col space-y-6 my-2 mb-6">
-    <div class="flex text-gray-700 space-x-3 text-16">
-      <span class="text-gray-500">{{ $t("arrivalPort") + ":" }}</span>
-      <input
-        type="radio"
-        name="before_or_after_arrival"
-        id="beforeArrival"
-        :value="true"
-        v-model="isBeforeArrival"
-      />
-      <label for="beforeArrival" class="mr-1">{{ $t("beforeArrival") }}</label>
-      <input
-        type="radio"
-        name="before_or_after_arrival"
-        id="afterArrival"
-        :value="false"
-        v-model="isBeforeArrival"
-      />
-      <label for="afterArrival">{{ $t("afterArrival") }}</label>
-    </div>
-
-    <!-- Overview -->
-    <BunkerOverview />
-
-    <!-- Bunkering Port -->
-    <BunkeringPort />
-
-    <!-- Received Bunker Detail -->
-    <BunkerReceivedDetail />
-
-    <!-- Bunker Date and Time & Supplier -->
-    <BunkerDateAndTime />
-
-    <!-- Save and Send -->
-    <div class="flex justify-end space-x-4 my-6">
-      <!-- <CustomButton
-        class="p-3 text-14"
-        type="button"
-        v-on:click="saveChanges()"
-      >
-        <template v-slot:content>{{ $t("saveChanges") }}</template>
-      </CustomButton> -->
-      <GradientButton
-        class="p-3 text-14"
-        type="button"
-        v-on:click="sendReport()"
-        :disabled="isSubmissionRequested"
-      >
-        <template v-slot:content>{{ $t("sendReport") }}</template>
-      </GradientButton>
-    </div>
-  </div>
-</template>
-
 <script setup>
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 import BunkerOverview from "@/components/Reports/BunkerReport/BunkerOverview.vue";
@@ -66,7 +11,14 @@ import { useVoyageStore } from "@/stores/useVoyageStore";
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
 import { Report } from "@/constants";
 import { parsePortLocode } from "@/utils/helpers";
-import axios from "axios";
+import { ref } from "vue";
+
+const props = defineProps({
+  isCreate: {
+    type: Boolean,
+    required: true,
+  },
+});
 
 const shipStore = useShipStore();
 const { companyUuid: company_uuid } = storeToRefs(shipStore);
@@ -80,7 +32,7 @@ const {
   isBeforeArrival,
   // Overview
   reportNo,
-  legNo,
+  legUuid,
   voyageNo,
   reportingTimeZone,
   reportingDateTimeUTC,
@@ -91,7 +43,6 @@ const {
   oil,
   quantity,
   density,
-  sg,
   viscosity,
   viscosityDegree,
   flashPoint,
@@ -118,9 +69,17 @@ const submissionStatusStore = useSubmissionStatusStore();
 const {
   isSubmissionRequested,
   isSubmissionModalVisible,
+  isSubmissionResponse,
   isSubmissionSuccessful,
   errorMessage,
 } = storeToRefs(submissionStatusStore);
+
+const isUploadToS3Successful = ref(true);
+
+const getFileNames = () => {
+  // console.log(files.value.map((file) => file.name));
+  return files.value.map((file) => file.name);
+};
 
 const getPresignedUrlForFiles = async () => {
   const response = await fetch(
@@ -131,16 +90,16 @@ const getPresignedUrlForFiles = async () => {
       },
       method: "POST",
       body: JSON.stringify({
-        file_prefix: `${company_uuid.value}/${voyage_uuid.value}/bdn`,
-        file_count: files.value.length,
+        file_directory: `${company_uuid.value}/${voyage_uuid.value}/bdn`,
+        filenames: getFileNames(),
       }),
     }
   );
 
   try {
     const data = await response.json();
-    console.log(response);
-    console.log(data);
+    // console.log(response);
+    // console.log(data);
 
     return data.presigned_urls;
   } catch (error) {
@@ -148,27 +107,29 @@ const getPresignedUrlForFiles = async () => {
   }
 };
 
-const uploadFilesToS3 = async () => {
-  const boundary =
-    "----WebKitFormBoundary" + Math.random().toString(36).slice(2);
-  const config = {
+const uploadFile = async (file) => {
+  // set up the request data
+  const url = `${file.presignedUrl}`;
+
+  // track status and upload file
+  file.status = "loading";
+
+  let response = await fetch(url, {
+    method: "PUT",
+    body: file.file,
     headers: {
-      "Content-Type": `multipart/form-data; boundary=${boundary}`,
+      "Content-Type": "multipart/form-data",
     },
-  };
+  });
 
-  for (const file of files.value) {
-    const url = `${file.presignedUrl}`;
-    const data = file.file;
+  // change status to indicate the success of the upload request
+  file.status = response.ok;
 
-    try {
-      // TODO: batch request
-      const response = await axios.put(url, data, config);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  return response;
+};
+
+const uploadFiles = (files) => {
+  return Promise.all(files.map((file) => uploadFile(file)));
 };
 
 const sendReport = async () => {
@@ -177,13 +138,6 @@ const sendReport = async () => {
   let urls = [];
   if (files.value.length) {
     urls = await getPresignedUrlForFiles();
-    // console.log(urls);
-
-    for (const [index, file] of files.value.entries()) {
-      file.presignedUrl = urls[index].presigned_url;
-    }
-
-    await uploadFilesToS3();
   }
 
   const bunkeringPort = parsePortLocode({
@@ -197,8 +151,11 @@ const sendReport = async () => {
     report_date: reportingDateTimeUTC.value,
     report_tz: reportingTimeZone.value,
     voyage: voyageNo.value,
-    voyage_leg: legNo.value,
+    voyage_leg: {
+      uuid: legUuid.value,
+    },
     bdndata: {
+      is_before_arrival: isBeforeArrival.value,
       bunkering_port: bunkeringPort,
       bunkering_date: reportingDateTimeUTC.value,
       bdn_file: files.value.length
@@ -207,16 +164,15 @@ const sendReport = async () => {
           })
         : urls,
       delivered_oil_type: oil.value,
-      delivered_quantity: quantity.value,
-      density_15: density.value,
-      specific_gravity_15: sg.value,
-      viscosity_value: viscosity.value,
-      viscosity_temperature: viscosityDegree.value,
-      flash_point: flashPoint.value,
-      sulfur_content: sulfurContent.value,
-      sample_sealing_marpol: marpol.value,
-      sample_sealing_ship: ship.value,
-      sample_sealing_barge: barge.value,
+      delivered_quantity: Number(quantity.value),
+      density_15: Number(density.value),
+      viscosity_value: Number(viscosity.value),
+      viscosity_temperature: Number(viscosityDegree.value),
+      flash_point: Number(flashPoint.value),
+      sulfur_content: Number(sulfurContent.value),
+      sample_sealing_marpol: Number(marpol.value),
+      sample_sealing_ship: Number(ship.value),
+      sample_sealing_barge: Number(barge.value),
       alongside_date: alongsideUTC.value,
       hose_connection_date: hoseConnectionUTC.value,
       pump_start_date: pumpStartUTC.value,
@@ -231,10 +187,10 @@ const sendReport = async () => {
     },
   };
 
-  console.log("data: ", REPORT);
-
+  // console.log("data: ", REPORT);
+  isSubmissionModalVisible.value = true;
   const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/reports/",
+    `${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/`,
     {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
@@ -244,21 +200,103 @@ const sendReport = async () => {
       body: JSON.stringify(REPORT),
     }
   );
+  // console.log(response.status);
+
+  if (
+    files.value.length &&
+    (response.status == 200 || response.status == 201)
+  ) {
+    for (const [index, file] of files.value.entries()) {
+      file.presignedUrl = urls[index].presigned_url;
+    }
+
+    await uploadFiles(files.value);
+  }
 
   try {
-    const data = await response.json();
-    console.log(response);
-    console.log(data);
+    if (isUploadToS3Successful.value) {
+      const data = await response.json();
+      // console.log(response);
+      // console.log(data);
 
-    if (response.ok) {
-      isSubmissionSuccessful.value = true;
-      store.$reset();
+      if (response.ok) {
+        isSubmissionSuccessful.value = true;
+        store.$reset();
+      } else {
+        errorMessage.value = data;
+      }
     } else {
-      errorMessage.value = data;
+      errorMessage.value = {
+        unexpectedError: [
+          "Failed to upload file. Please contact the administrator.",
+        ],
+      };
     }
-    isSubmissionModalVisible.value = true;
   } catch (error) {
     console.log(error);
+    errorMessage.value = {
+      unexpectedError: ["Please contact the administrator."],
+    };
   }
+  isSubmissionResponse.value = true;
 };
 </script>
+
+<template>
+  <div class="flex flex-col space-y-6 my-2 mb-6">
+    <div class="flex text-gray-700 space-x-3 text-16">
+      <span class="text-gray-500">{{ $t("arrivalPort") + ":" }}</span>
+      <input
+        type="radio"
+        name="before_or_after_arrival"
+        id="beforeArrival"
+        :value="true"
+        v-model="isBeforeArrival"
+      />
+      <label for="beforeArrival" class="mr-1">{{ $t("beforeArrival") }}</label>
+      <input
+        type="radio"
+        name="before_or_after_arrival"
+        id="afterArrival"
+        :value="false"
+        v-model="isBeforeArrival"
+      />
+      <label for="afterArrival">{{ $t("afterArrival") }}</label>
+    </div>
+    <!-- Overview -->
+    <BunkerOverview />
+
+    <!-- Bunkering Port -->
+    <BunkeringPort />
+
+    <!-- Received Bunker Detail -->
+    <BunkerReceivedDetail :is-create="props.isCreate" />
+
+    <!-- Bunker Date and Time & Supplier -->
+    <BunkerDateAndTime />
+
+    <!-- Save and Send -->
+    <div v-if="props.isCreate" class="flex justify-end space-x-4 my-6">
+      <!-- <CustomButton
+        class="p-3 text-14"
+        type="button"
+        @click="saveChanges()"
+      >
+        <template v-slot:content>{{ $t("saveChanges") }}</template>
+      </CustomButton> -->
+      <GradientButton
+        class="p-3 text-14"
+        type="button"
+        @click="sendReport()"
+        :is-disabled="isSubmissionRequested"
+      >
+        <template v-if="isSubmissionRequested" v-slot:content>
+          <div>Loading...</div>
+        </template>
+        <template v-else v-slot:content>
+          <div>{{ $t("sendReport") }}</div>
+        </template>
+      </GradientButton>
+    </div>
+  </div>
+</template>

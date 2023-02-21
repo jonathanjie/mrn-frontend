@@ -27,14 +27,14 @@ module.exports = {
         900: "#010E1C",
         800: "#004557",
         700: "#007694",
-        600: "#053672",
+        600: "#0093B8",
         500: "#06448E",
         400: "#4179BE",
         300: "#88A6C9",
         200: "#CDDAE8",
         100: "#EAEFF6",
         75: "#E6ECF4",
-        50: "#F8FAFC",
+        50: "#F0FCFF",
       },
       sysblue: {
         DEFAULT: "#1570EF",
@@ -91,10 +91,18 @@ module.exports = {
       },
       pink: "#ED7B84",
       darkgray: "#EAEEF0",
+      paleblue: "#F5FDFF",
       gradientblue: "#0093B8",
       gradientgreen: "#09DBA9",
       white: "#FFFFFF",
       black: "#000000",
+      grades: {
+        a: "#12B76A",
+        b: "#7BBD58",
+        c: "#FFD400",
+        d: "#FDA80C",
+        e: "#F04438",
+      },
     },
     extend: {
       gridTemplateColumns: {
@@ -116,6 +124,7 @@ module.exports = {
       16: ["16px", "24px"],
       18: ["18px", "26px"],
       20: ["20px", "30px"], // huge
+      30: ["30px", "28px"],
     },
   },
   variants: {

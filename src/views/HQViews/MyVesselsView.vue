@@ -1,9 +1,119 @@
+<script setup>
+import MyVesselsDashboardIcon from "@/views/HQViews/components/MyVesselsDashboardIcon.vue";
+import VesselCard from "@/views/HQViews/components/VesselCard.vue";
+import BaseModal from "@/components/Modals/BaseModal.vue";
+import { useHQStore } from "@/stores/useHQStore";
+import constants from "@/constants";
+import axios from "axios";
+import { ref } from "vue";
+
+const showModal = ref(false);
+
+const shipRef = constants.shipRefs;
+const reportStatus = (lastReportDate) => {
+  if (lastReportDate === undefined) {
+    return "";
+  } else {
+    let reportTimeDiff =
+      (new Date().getTime() - new Date(lastReportDate).getTime()) /
+      (1000 * 3600 * 24);
+    if (reportTimeDiff > 1) {
+      return "pending";
+    } else {
+      return "uploaded";
+    }
+  }
+};
+
+const dateConverter = (date) => {
+  if (date === undefined) {
+    return "No value";
+  } else {
+    const init = new Date(date).toDateString().split(" ");
+    return init[2] + " " + init[1] + " " + init[3];
+  }
+};
+
+const getShips = async () => {
+  return await axios
+    .get(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/ships-overview`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+};
+const store = useHQStore();
+const shipCount = store.shipCount;
+const shipStatus = store.shipStatus;
+const ships = await getShips();
+shipCount.etcVessels = 0;
+shipCount.bunkeringVessels = 0;
+shipCount.cargoVessels = 0;
+shipCount.inPortVessels = 0;
+shipCount.sailingVessels = 0;
+shipCount.waitingVessels = 0;
+shipStatus.length = 0;
+const eventTypes = { EVPO: "", EVHB: "", NNPO: "", NNHB: "" };
+
+const reportType = {
+  NOON: "sailing",
+  DSBY: "sailing",
+  DCSP: "sailing",
+  ASBY: "sailing",
+  AFWE: "waiting",
+  BDN: "waiting",
+};
+
+for (let i in ships) {
+  const ship = ships[i];
+  // Sailing/Waiting
+  if (ship.last_report_type in reportType) {
+    const status = reportType[ship.last_report_type];
+    store.shipStatus.push(reportType[ship.last_report_type]);
+    if (status == "sailing") {
+      store.shipCount.sailingVessels++;
+    } else {
+      store.shipCount.waitingVessels++;
+    }
+    // Event
+  } else if (
+    ship.last_report_type in eventTypes &&
+    Object.keys(ship.last_operation).length != 0
+  ) {
+    const keys = Object.keys(ship.last_operation).sort();
+    if (ship.last_operation[keys[1]] || ship.last_operation[keys[2]]) {
+      store.shipCount.inPortVessels++;
+      store.shipCount.cargoVessels++;
+      store.shipStatus.push("cargo");
+    } else if (ship.last_operation[keys[0]]) {
+      store.shipCount.inPortVessels++;
+      store.shipCount.bunkeringVessels++;
+      store.shipStatus.push("bunkering");
+    } else if (ship.last_operation[keys[4]] || ship.last_operation[keys[5]]) {
+      store.shipCount.etcVessels++;
+      store.shipStatus.push("etc");
+    } else {
+      store.shipCount.inPortVessels++;
+      store.shipCount.waitingVessels++;
+      store.shipStatus.push("waiting");
+    }
+    // ETC catch
+  } else {
+    store.shipCount.etcVessels++;
+    store.shipStatus.push("etc");
+  }
+}
+
+const isSuccess = true;
+</script>
+
 <template>
-  <div class="bg-gray-100 min-h-screen">
+  <div v-if="isSuccess" class="bg-gray-100 min-h-screen">
     <div class="flex flex-wrap px-12 pt-12 w-full">
       <div class="flex flex-wrap w-full mb-6">
-        <h1 class="text-20 font-bold mb-4">Vessels Dashboard</h1>
-        <!-- Vessels dashboard -->
+        <h1 class="text-20 font-bold mb-4">{{ $t("vesselsDashboard") }}</h1>
         <div class="grid xl:grid-cols-4 grid-cols-2 gap-x-5 w-full">
           <MyVesselsDashboardIcon>
             <template v-slot:img>
@@ -16,8 +126,8 @@
               <h1 class="text-gray-500 text-12">{{ $t("totalVessels") }}</h1>
             </template>
             <template v-slot:numVessels>
-              <h2 v-if="totalVessels != 0" class="text-gray-700 text-18">
-                {{ totalVessels }}
+              <h2 v-if="ships.length != 0" class="text-gray-700 text-18">
+                {{ ships.length }}
               </h2>
               <h2 v-else class="text-gray-700 text-18">-</h2>
             </template>
@@ -35,8 +145,11 @@
               </h1>
             </template>
             <template v-slot:numVessels>
-              <h2 v-if="sailingVessels != 0" class="text-gray-700 text-18">
-                {{ sailingVessels }}
+              <h2
+                v-if="shipCount.sailingVessels != 0"
+                class="text-gray-700 text-18"
+              >
+                {{ shipCount.sailingVessels }}
               </h2>
               <h2 v-else class="text-gray-700 text-18">-</h2>
             </template>
@@ -52,8 +165,11 @@
               <h1 class="text-gray-500 text-12">{{ $t("inPortVessels") }}</h1>
             </template>
             <template v-slot:numVessels>
-              <h2 v-if="inPortVessels != 0" class="text-gray-700 text-18">
-                {{ inPortVessels }}
+              <h2
+                v-if="shipCount.inPortVessels != 0"
+                class="text-gray-700 text-18"
+              >
+                {{ shipCount.inPortVessels }}
               </h2>
               <h2 v-else class="text-gray-700 text-18">-</h2>
             </template>
@@ -69,8 +185,11 @@
               <h1 class="text-gray-500 text-12">{{ $t("etcVessels") }}</h1>
             </template>
             <template v-slot:numVessels>
-              <h2 v-if="etcVessels != 0" class="text-gray-700 text-18">
-                {{ etcVessels }}
+              <h2
+                v-if="shipCount.etcVessels != 0"
+                class="text-gray-700 text-18"
+              >
+                {{ shipCount.etcVessels }}
               </h2>
               <h2 v-else class="text-gray-700 text-18">-</h2>
             </template>
@@ -81,7 +200,6 @@
       <div
         class="flex bg-white w-full h-16 rounded-xl items-center p-3.5 mt-6 justify-evenly shadow"
       >
-        <!-- Sailing Icon -->
         <div class="flex">
           <img
             src="@/assets/icons/My_Vessels/sailing_icon.svg"
@@ -92,11 +210,10 @@
               >{{ $t("sailingVessels") }}:
             </span>
             <span class="text-12 font-bold text-gray-700"
-              >{{ sailingVessels }} vessels</span
+              >{{ shipCount.sailingVessels }} vessels</span
             >
           </div>
         </div>
-        <!-- Cargo operation icon (Need to check background color) -->
         <div class="flex">
           <img
             src="@/assets/icons/My_Vessels/cargo_icon.svg"
@@ -107,11 +224,10 @@
               >{{ $t("cargoOperation") }}:
             </span>
             <span class="text-12 font-bold text-gray-700"
-              >{{ cargoVessels }} vessels</span
+              >{{ shipCount.cargoVessels }} vessels</span
             >
           </div>
         </div>
-        <!-- Bunkering Icon (Need to check background color) -->
         <div class="flex">
           <img
             src="@/assets/icons/My_Vessels/bunkering_icon.svg"
@@ -120,11 +236,10 @@
           <div class="my-3 ml-2">
             <span class="text-12 text-gray-700">{{ $t("bunkering") }}: </span>
             <span class="text-12 font-bold text-gray-700"
-              >{{ bunkeringVessels }} vessels</span
+              >{{ shipCount.bunkeringVessels }} vessels</span
             >
           </div>
         </div>
-        <!-- Waiting Icon -->
         <div class="flex">
           <img
             src="@/assets/icons/My_Vessels/waiting_icon.svg"
@@ -133,11 +248,10 @@
           <div class="my-3 ml-2">
             <span class="text-12 text-gray-700">{{ $t("waiting") }}: </span>
             <span class="text-12 font-bold text-gray-700"
-              >{{ waitingVessels }} vessels</span
+              >{{ shipCount.waitingVessels }} vessels</span
             >
           </div>
         </div>
-        <!-- Etc Icon -->
         <div class="flex">
           <img
             src="@/assets/icons/My_Vessels/etc_icon.svg"
@@ -146,17 +260,16 @@
           <div class="my-3 ml-2">
             <span class="text-12 text-gray-700">{{ $t("etcVessels") }}: </span>
             <span class="text-12 font-bold text-gray-700"
-              >{{ etcVessels }} vessels</span
+              >{{ shipCount.etcVessels }} vessels</span
             >
           </div>
         </div>
       </div>
-      <!-- Vessels list header -->
       <div class="flex mt-12 w-full items-center">
         <h1 class="text-20 font-bold w-full">
-          {{ $t("vesselList") }} ({{ totalVessels }})
+          {{ $t("vesselList") }} ({{ ships.length }})
         </h1>
-        <div class="flex justify-end">
+        <!-- <div class="flex justify-end">
           <div
             class="hidden flex bg-white border border-gray-300 w-60 h-10 rounded-lg mr-4"
           >
@@ -167,11 +280,9 @@
               icon="search"
             />
           </div>
-          <!-- Need to figure out table filter and export CSV -->
           <CustomButton
             class="hidden text-14 text-sm font-bold mr-4 pr-7 whitespace-nowrap text-blue-700"
             type="button"
-            @click=""
           >
             <template v-slot:icon
               ><img
@@ -183,7 +294,6 @@
           <CustomButton
             class="hidden text-14 text-sm font-bold mr-4 pr-7 whitespace-nowrap text-blue-700"
             type="button"
-            @click=""
           >
             <template v-slot:icon
               ><img
@@ -192,172 +302,61 @@
             /></template>
             <template v-slot:content>{{ $t("exportCSV") }}</template>
           </CustomButton>
-        </div>
+        </div> -->
       </div>
     </div>
-    <!-- Vessels list content -->
-    <!-- if there are no voyages in backend -->
-    <div
-      v-if="isEmpty"
-      class="flex flex-col p-24 pb-52 m-12 justify-center items-center space-y-2 rounded-xl"
-    >
-      <img src="@/assets/icons/empty.svg" class="h-28 w-28" />
-      <span class="text-lg font-bold text-gray-800 pt-3">{{
-        $t("noVesselCreated")
-      }}</span>
-      <span class="text-14 text-gray-500">{{
-        $t("clickOnCreateNewVoyageAboveToBegin")
-      }}</span>
-    </div>
-    <div v-else class="flex flex-col">
+
+    <button @click="showModal = true">Show Modal</button>
+    <Teleport to="body">
+      <!-- use the modal component, pass in the prop -->
+      <BaseModal :show="showModal" @close="showModal = false">
+        <template #header>
+          <h3>I am custom header</h3>
+        </template>
+        <template #body>
+          <h3>I am custom body</h3>
+        </template>
+      </BaseModal>
+    </Teleport>
+    <div class="flex flex-col">
       <VesselCard
-        v-for="(ship, i) in ships"
-        :key="ship.name + ship.imo_reg + i"
-        :vesselName="ship.name"
-        :loadType="shipRef[ship.ship_type]"
-        :imoNo="ship.imo_reg"
-        :vesselStatus="vessel.vesselStatus"
-        :flag="vessel.flag"
-        :shipSize="vessel.shipSize"
-        :loadingCondition="vessel.loadingCondition"
-        :reportStatus="vessel.reportStatus"
-        :updatedDate="vessel.updatedDate"
+        v-for="(ship, index) in ships"
+        :key="ship.id"
+        :vesselName="ship.name == null ? 'Invalid Ship' : ship.name"
+        :imoNo="ship.imo_reg == null ? 'Invalid Ship' : ship.imo_reg"
+        :loadType="
+          ship.ship_type == null ? 'Invalid Ship' : shipRef[ship.ship_type]
+        "
+        :vesselStatus="
+          ship.last_report_type === null
+            ? 'No report uploaded'
+            : shipStatus[index]
+        "
+        :flag="ship.flag == null ? 'Invalid Ship' : ship.flag"
+        :shipSize="
+          ship.deadweight_tonnage == null
+            ? 'Invalid Ship'
+            : ship.deadweight_tonnage
+        "
+        :loadingCondition="
+          ship.load_condition != null
+            ? ship.load_condition
+            : 'No report uploaded'
+        "
+        :reportStatus="reportStatus(ship.last_report_date)"
+        :updatedDate="dateConverter(ship.last_report_date)"
       />
-      <!-- To be used to test VesselCard
-      <VesselCard
-        v-for="vessel in vessels"
-        :vesselStatus="vessel.vesselStatus"
-        :vesselName="vessel.vesselName"
-        :loadType="vessel.loadType"
-        :flag="vessel.flag"
-        :imoNo="vessel.imoNo"
-        :shipSize="vessel.shipSize"
-        :loadingCondition="vessel.loadingCondition"
-        :reportStatus="vessel.reportStatus"
-        :updatedDate="vessel.updatedDate"
-      ></VesselCard> -->
     </div>
     <hr class="mt-6 w-full bg-gray-200" />
-    <!-- Pagination module -->
     <div class="hidden flex justify-center">12345678910</div>
   </div>
+  <div
+    v-else
+    class="flex flex-col p-24 pb-52 m-12 justify-center items-center space-y-2 rounded-xl"
+  >
+    <img src="@/assets/icons/empty.svg" class="h-28 w-28" />
+    <span class="text-lg font-bold text-gray-800 pt-3">{{
+      $t("noVesselCreated")
+    }}</span>
+  </div>
 </template>
-
-<script setup>
-import MyVesselsDashboardIcon from "@/components/MyVesselsDashboardIcon.vue";
-import CustomButton from "@/components/Buttons/CustomButton.vue";
-import VesselCard from "@/components/VesselCard.vue";
-import { useAuthStore } from "@/stores/useAuthStore";
-// To be pulled from backend
-
-const auth = useAuthStore();
-const totalVessels = 33;
-const sailingVessels = 20;
-const inPortVessels = 13;
-const etcVessels = 0;
-const isEmpty = false;
-
-const cargoVessels = 0;
-const bunkeringVessels = 0;
-const waitingVessels = 0;
-
-const shipRef = {
-  BULK: "Bulk Carrier",
-  GAS: "Gas Carrier",
-  OIL: "Oil Tanker",
-  CNTR: "Container Ship",
-  RORO: "Ro-Ro Cargo Ship",
-  GCGO: "General Cargo Ship",
-  REFC: "Refrigerated Cargo Carrier",
-  COMB: "Combination Carrier",
-  LNGC: "LNG Carrier",
-  RORV: "Ro-Ro Cargo Ship (Vehicle Carrier)",
-  RORP: "Ro-Ro Passenger Ship",
-  CRUZ: "Cruise Passenger Ship",
-};
-
-const vessel = {
-  vesselStatus: "sailing", // sailing, cargo, bunkering, waiting, etc
-  flag: "Panama",
-  shipSize: "300,000",
-  loadingCondition: "Westbound",
-  reportStatus: "uploaded", // Uploaded, Error, Pending
-  updatedDate: "18 Nov 2022",
-};
-
-// const vessels = [
-//   {
-//     vesselStatus: "sailing", // sailing, cargo, bunkering, waiting, etc
-//     vesselName: "MARINA A",
-//     loadType: "Oil",
-//     flag: "Panama",
-//     imoNo: "9876543",
-//     shipSize: "300,000",
-//     loadingCondition: "Westbound",
-//     reportStatus: "uploaded", // Uploaded, Error, Pending
-//     updatedDate: "18 Nov 2022",
-//   },
-//   {
-//     vesselStatus: "waiting", // sailing, cargo, bunkering, waiting, etc
-//     vesselName: "MARINA B",
-//     loadType: "Oil",
-//     flag: "Panama",
-//     imoNo: "12345678",
-//     shipSize: "300,000",
-//     loadingCondition: "Eastbound",
-//     reportStatus: "error", // uploaded, error, pending
-//     updatedDate: "18 Nov 2022",
-//   },
-//   {
-//     vesselStatus: "cargo", // sailing, cargo, bunkering, waiting, etc
-//     vesselName: "MARINA C",
-//     loadType: "Oil",
-//     flag: "Panama",
-//     imoNo: "91234567",
-//     shipSize: "300,000",
-//     loadingCondition: "Ballast",
-//     reportStatus: "pending", // uploaded, error, pending
-//     updatedDate: "18 Nov 2022",
-//   },
-//   {
-//     vesselStatus: "bunkering", // sailing, cargo, bunkering, waiting, etc
-//     vesselName: "MARINA A",
-//     loadType: "Oil",
-//     flag: "Panama",
-//     imoNo: "9876543",
-//     shipSize: "300,000",
-//     loadingCondition: "Laden",
-//     reportStatus: "uploaded", // uploaded, error, pending
-//     updatedDate: "18 Nov 2022",
-//   },
-//   {
-//     vesselStatus: "etc", // sailing, cargo, bunkering, waiting, etc
-//     vesselName: "MARINA A",
-//     loadType: "Oil",
-//     flag: "Panama",
-//     imoNo: "9876543",
-//     shipSize: "300,000",
-//     loadingCondition: "Westbound",
-//     reportStatus: "uploaded", // uploaded, error, pending
-//     updatedDate: "18 Nov 2022",
-//   },
-// ];
-
-const getShips = async () => {
-  const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/ships/",
-    {
-      headers: {
-        Authorization: "Bearer " + auth.jwt,
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    }
-  );
-
-  const ships = response.json();
-  return ships;
-};
-
-const ships = await getShips();
-</script>

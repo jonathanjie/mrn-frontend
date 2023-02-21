@@ -12,29 +12,16 @@
           {{ $t("fuelOilInMT") }}
         </div>
 
-        <div class="grid grid-cols-10 mb-4 text-14">
+        <div class="grid text-14" :class="getFuelOilCols()">
           <div
             class="col-span-2 border-green-100 bg-green-25 px-6 border-l border-t"
           ></div>
           <div
+            v-for="item in machinery"
+            :key="item"
             class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
           >
-            {{ $t("me") }}
-          </div>
-          <div
-            class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
-          >
-            {{ $t("ge") }}
-          </div>
-          <div
-            class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
-          >
-            {{ $t("blr") }}
-          </div>
-          <div
-            class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
-          >
-            {{ $t("igg") }}
+            {{ $t(item) }}
           </div>
           <div
             class="col-span-2 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
@@ -47,89 +34,46 @@
             {{ $t("remainOnBoard") }}
           </div>
 
-          <div
-            class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
+          <span
+            v-for="(fuelOil, index) of fuelOils"
+            :key="index"
+            :class="
+              'col-span-full grid ' +
+              getFuelOilCols() +
+              ' ' +
+              (index == fuelOils.length - 1 ? 'border-b' : '')
+            "
           >
-            {{ $t("lsfo") }}
-          </div>
-          <input
-            v-model="lsfo_breakdown.me"
-            @keypress="preventNaN($event, lsfo_breakdown.me)"
-            placeholder="0"
-            class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <input
-            v-model="lsfo_breakdown.ge"
-            @keypress="preventNaN($event, lsfo_breakdown.ge)"
-            placeholder="0"
-            class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <input
-            v-model="lsfo_breakdown.blr"
-            @keypress="preventNaN($event, lsfo_breakdown.blr)"
-            placeholder="0"
-            class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <input
-            v-model="lsfo_breakdown.igg"
-            @keypress="preventNaN($event, lsfo_breakdown.igg)"
-            placeholder="0"
-            class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <div
-            class="col-span-2 text-gray-400 p-3 border-t border-l bg-gray-25"
-          >
-            {{ lsfo_total_consumption }}
-          </div>
-          <div
-            class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25"
-          >
-            {{ lsfo_rob }}
-          </div>
-
-          <div
-            class="col-span-2 p-3 text-blue-700 border-y border-l bg-gray-50"
-          >
-            {{ $t("mgo") }}
-          </div>
-          <input
-            v-model="mgo_breakdown.me"
-            @keypress="preventNaN($event, mgo_breakdown.me)"
-            placeholder="0"
-            class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <input
-            v-model="mgo_breakdown.ge"
-            @keypress="preventNaN($event, mgo_breakdown.ge)"
-            placeholder="0"
-            class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <input
-            v-model="mgo_breakdown.blr"
-            @keypress="preventNaN($event, mgo_breakdown.blr)"
-            placeholder="0"
-            class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <input
-            v-model="mgo_breakdown.igg"
-            @keypress="preventNaN($event, mgo_breakdown.igg)"
-            placeholder="0"
-            class="col-span-1 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <div
-            class="col-span-2 text-gray-400 p-3 border-y border-l bg-gray-25"
-          >
-            {{ mgo_total_consumption }}
-          </div>
-          <div class="col-span-2 text-gray-400 p-3 border bg-gray-25">
-            {{ mgo_rob }}
-          </div>
+            <div
+              class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
+            >
+              {{ $t(fuelOil) }}
+            </div>
+            <input
+              v-for="item of machinery"
+              :key="item"
+              v-model="fuel_oil_breakdowns[fuelOil][item]"
+              @keypress="preventNaN($event, fuel_oil_breakdowns[fuelOil][item])"
+              placeholder="0"
+              class="col-span-1 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+            />
+            <div
+              class="col-span-2 text-gray-400 p-3 border-t border-l bg-gray-25"
+            >
+              {{ fuel_oil_total_consumptions[fuelOil] }}
+            </div>
+            <div
+              class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25"
+            >
+              {{ fuel_oil_robs[fuelOil] }}
+            </div>
+          </span>
         </div>
 
-        <div
-          v-if="!isAdditionalRemarkFuel"
+        <!-- <div
+          v-if="!isFuelOilRemarkEnabled"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
-          @click="isAdditionalRemarkFuel = !isAdditionalRemarkFuel"
+          @click="isFuelOilRemarkEnabled = !isFuelOilRemarkEnabled"
         >
           <img
             src="@/assets/icons/checkboxes/unchecked_square.svg"
@@ -143,7 +87,7 @@
         >
           <div
             class="flex items-center mb-3 cursor-pointer"
-            @click="isAdditionalRemarkFuel = !isAdditionalRemarkFuel"
+            @click="isFuelOilRemarkEnabled = !isFuelOilRemarkEnabled"
           >
             <img
               src="@/assets/icons/checkboxes/checked_square.svg"
@@ -167,8 +111,13 @@
               <option selected disabled value="default">
                 {{ $t("selectType") }}
               </option>
-              <option :value="FuelOil.LSFO">{{ $t("lsfo") }}</option>
-              <option :value="FuelOil.MGO">{{ $t("mgo") }}</option>
+              <option
+                v-for="fuelOil of fuelOils"
+                :value="fuelOil"
+                :key="fuelOil"
+              >
+                {{ $t(fuelOil) }}
+              </option>
             </select>
             <div class="flex col-span-4 p-3 pl-4 border-l bg-white">
               <input
@@ -192,7 +141,7 @@
               class="col-span-8 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="pt-8">
@@ -200,155 +149,96 @@
           {{ $t("lubricatingOilInL") }}
         </div>
 
-        <div class="grid grid-cols-14 text-14 mb-4">
+        <div class="grid grid-cols-10 text-14">
           <div
             class="col-span-2 border-yellow-100 bg-yellow-25 px-6 border-l border-t"
           ></div>
           <div
-            class="col-span-3 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-l bg-gray-50"
+            class="col-span-2 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-l bg-gray-50"
           >
             {{ $t("consumption") }}
           </div>
           <div
-            class="col-span-3 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-l bg-gray-50"
+            class="col-span-2 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-l bg-gray-50"
           >
             {{ $t("receipt") }}
           </div>
           <div
-            class="col-span-3 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-l bg-gray-50"
+            class="col-span-2 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-l bg-gray-50"
           >
             {{ $t("debunkering") }}
           </div>
           <div
-            class="col-span-3 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-x bg-gray-50"
+            class="col-span-2 flex items-center text-yellow-800 border-yellow-100 bg-yellow-25 p-3 border-t border-x bg-gray-50"
           >
             {{ $t("remainOnBoard") }}
           </div>
 
-          <div
-            class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
-          >
-            {{ $t("meCylinder") }}
-          </div>
-          <input
-            v-model="mecylinder_breakdown.total_consumption"
-            @keypress="
-              preventNaN($event, mecylinder_breakdown.total_consumption)
+          <span
+            v-for="(lubricatingOil, index) of lubricatingOils"
+            :key="index"
+            :class="
+              'col-span-10 grid grid-cols-10' +
+              (index == lubricatingOils.length - 1 ? ' border-b' : '')
             "
-            placeholder="0"
-            class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <input
-            v-model="mecylinder_breakdown.receipt"
-            @keypress="preventNaN($event, mecylinder_breakdown.receipt)"
-            placeholder="0"
-            class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <input
-            v-model="mecylinder_breakdown.debunkering"
-            @keypress="preventNaN($event, mecylinder_breakdown.debunkering)"
-            placeholder="0"
-            class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <div
-            class="col-span-3 text-gray-400 p-3 border-t border-x bg-gray-25"
           >
-            {{ mecylinder_rob }}
-          </div>
-
-          <div
-            class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
-          >
-            {{ $t("meSystem") }}
-          </div>
-          <input
-            v-model="mesystem_breakdown.total_consumption"
-            @keypress="preventNaN($event, mesystem_breakdown.total_consumption)"
-            placeholder="0"
-            class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <input
-            v-model="mesystem_breakdown.receipt"
-            @keypress="preventNaN($event, mesystem_breakdown.receipt)"
-            placeholder="0"
-            class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <input
-            v-model="mesystem_breakdown.debunkering"
-            @keypress="preventNaN($event, mesystem_breakdown.debunkering)"
-            placeholder="0"
-            class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <div
-            class="col-span-3 text-gray-400 p-3 border-t border-x bg-gray-25"
-          >
-            {{ mesystem_rob }}
-          </div>
-
-          <div
-            class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
-          >
-            {{ $t("meSump") }}
-          </div>
-          <input
-            v-model="mesump_breakdown.total_consumption"
-            @keypress="preventNaN($event, mesump_breakdown.total_consumption)"
-            placeholder="0"
-            class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <input
-            v-model="mesump_breakdown.receipt"
-            @keypress="preventNaN($event, mesump_breakdown.receipt)"
-            placeholder="0"
-            class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <input
-            v-model="mesump_breakdown.debunkering"
-            @keypress="preventNaN($event, mesump_breakdown.debunkering)"
-            placeholder="0"
-            class="col-span-3 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <div
-            class="col-span-3 text-gray-400 p-3 border-t border-x bg-gray-25"
-          >
-            {{ mesump_rob }}
-          </div>
-
-          <div
-            class="col-span-2 p-3 text-blue-700 border-y border-l bg-gray-50"
-          >
-            {{ $t("geSystem") }}
-          </div>
-          <input
-            v-model="gesystem_breakdown.total_consumption"
-            @keypress="preventNaN($event, gesystem_total_consumption)"
-            placeholder="0"
-            class="col-span-3 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <input
-            v-model="gesystem_breakdown.receipt"
-            @keypress="preventNaN($event, gesystem_breakdown.receipt)"
-            placeholder="0"
-            class="col-span-3 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <input
-            v-model="gesystem_breakdown.debunkering"
-            @keypress="preventNaN($event, gesystem_breakdown.debunkering)"
-            placeholder="0"
-            class="col-span-3 p-3 pl-4 border-y border-l bg-white text-gray-700 focus:outline-0"
-          />
-          <div
-            class="col-span-3 text-gray-400 p-3 border-y border-x bg-gray-25"
-          >
-            {{ gesystem_rob }}
-          </div>
+            <div
+              class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
+            >
+              {{ $t(lubricatingOil) }}
+            </div>
+            <input
+              v-model="
+                lubricating_oil_breakdowns[lubricatingOil]['total_consumption']
+              "
+              @keypress="
+                preventNaN(
+                  $event,
+                  lubricating_oil_breakdowns[lubricatingOil][
+                    'total_consumption'
+                  ]
+                )
+              "
+              placeholder="0"
+              class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+            />
+            <input
+              v-model="lubricating_oil_breakdowns[lubricatingOil]['receipt']"
+              @keypress="
+                preventNaN(
+                  $event,
+                  lubricating_oil_breakdowns[lubricatingOil]['receipt']
+                )
+              "
+              placeholder="0"
+              class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+            />
+            <input
+              v-model="
+                lubricating_oil_breakdowns[lubricatingOil]['debunkering']
+              "
+              @keypress="
+                preventNaN(
+                  $event,
+                  lubricating_oil_breakdowns[lubricatingOil]['debunkering']
+                )
+              "
+              placeholder="0"
+              class="col-span-2 p-3 pl-4 border-t border-l bg-white text-gray-700 focus:outline-0"
+            />
+            <div
+              class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25"
+            >
+              {{ lubricating_oil_robs[lubricatingOil] }}
+            </div>
+          </span>
         </div>
 
-        <div
-          v-if="!isAdditionalRemarkLubricating"
+        <!-- <div
+          v-if="!isLubricatingOilRemarkEnabled"
           class="bg-gray-25 flex items-center py-4 px-3 border border-gray-100 cursor-pointer"
           @click="
-            isAdditionalRemarkLubricating = !isAdditionalRemarkLubricating
+            isLubricatingOilRemarkEnabled = !isLubricatingOilRemarkEnabled
           "
         >
           <img
@@ -364,7 +254,7 @@
           <div
             class="flex items-center mb-3 cursor-pointer"
             @click="
-              isAdditionalRemarkLubricating = !isAdditionalRemarkLubricating
+              isLubricatingOilRemarkEnabled = !isLubricatingOilRemarkEnabled
             "
           >
             <img
@@ -389,17 +279,12 @@
               <option selected disabled value="default">
                 {{ $t("selectType") }}
               </option>
-              <option :value="LubricatingOil.ME_CYLINDER">
-                {{ $t("mecylinder") }}
-              </option>
-              <option :value="LubricatingOil.ME_SYSTEM">
-                {{ $t("mesystem") }}
-              </option>
-              <option :value="LubricatingOil.ME_SUMP">
-                {{ $t("mesump") }}
-              </option>
-              <option :value="LubricatingOil.GE_SYSTEM">
-                {{ $t("gesystem") }}
+              <option
+                v-for="lubricatingOil of lubricatingOils"
+                :value="lubricatingOil"
+                :key="lubricatingOil"
+              >
+                {{ $t(lubricatingOil) }}
               </option>
             </select>
             <div class="flex col-span-6 p-3 pl-4 border-l bg-white">
@@ -424,7 +309,7 @@
               class="col-span-12 row-span-2 border-t border-l p-3 pl-4 bg-white text-gray-700 focus:outline-0"
             ></textarea>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="pt-8">
@@ -486,30 +371,23 @@ import { ref } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
 import { storeToRefs } from "pinia";
-import { FuelOil, LubricatingOil } from "@/constants";
 
-const isAdditionalRemarkFuel = ref(false);
-const isAdditionalRemarkLubricating = ref(false);
+const isFuelOilRemarkEnabled = ref(false);
+const isLubricatingOilRemarkEnabled = ref(false);
 
 const store = useArrivalFWEReportStore();
 const {
+  fuelOils,
+  lubricatingOils,
+  machinery,
   // fuel oil
-  lsfoTotalConsumption: lsfo_total_consumption,
-  lsfoRob: lsfo_rob,
-  mgoTotalConsumption: mgo_total_consumption,
-  mgoRob: mgo_rob,
-  lsfoBreakdown: lsfo_breakdown,
-  mgoBreakdown: mgo_breakdown,
+  fuelOilTotalConsumptions: fuel_oil_total_consumptions,
+  fuelOilRobs: fuel_oil_robs,
+  fuelOilBreakdowns: fuel_oil_breakdowns,
   fuelOilDataCorrection: fuel_oil_data_correction,
   // lubricating oil
-  mecylinderBreakdown: mecylinder_breakdown,
-  mesystemBreakdown: mesystem_breakdown,
-  mesumpBreakdown: mesump_breakdown,
-  gesystemBreakdown: gesystem_breakdown,
-  mecylinderRob: mecylinder_rob,
-  mesystemRob: mesystem_rob,
-  mesumpRob: mesump_rob,
-  gesystemRob: gesystem_rob,
+  lubricatingOilBreakdowns: lubricating_oil_breakdowns,
+  lubricatingOilRobs: lubricating_oil_robs,
   lubricatingOilDataCorrection: lubricating_oil_data_correction,
   // fresh water
   freshwaterConsumed: freshwater_consumed,
@@ -517,4 +395,6 @@ const {
   freshwaterChange: freshwater_change,
   freshwaterRob: freshwater_rob,
 } = storeToRefs(store);
+
+const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 6);
 </script>

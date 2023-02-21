@@ -1,6 +1,6 @@
 <script setup>
 import { preventNaN } from "@/utils/helpers";
-import { computed, defineProps } from "vue";
+import { computed } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { Report } from "@/constants";
 
@@ -76,7 +76,7 @@ const fuelOilDataCorrection = computed(() =>
       )[0]
     : null
 );
-console.log("fuel correction value: ", fuelOilDataCorrection.value);
+// console.log("fuel correction value: ", fuelOilDataCorrection.value);
 // Lubricating Oil Consumption
 const meCylinderBreakdown = computed(
   () =>

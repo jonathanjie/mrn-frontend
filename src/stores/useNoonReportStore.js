@@ -9,51 +9,45 @@ import {
 import { storeToRefs } from "pinia";
 import { IceCondition } from "@/constants";
 import { useShipStore } from "@/stores/useShipStore";
-
-// TODO: retrieve from backend or generate as needed
-// API /reports/latest
-const temp = {
-  // Distance & Time / Performance
-  lastNoonReportTime: "2022-12-01T00:00:00Z",
-  rupOfDeparture: "2022-11-21T00:00:00Z",
-  distanceLeft: 4000,
-  distanceObsSoFar: 1000,
-  distanceEngSoFar: 1000,
-  revolutionCountYesterday: 20000,
-  propellerPitch: 2,
-  voyageAvgSpeed: 200,
-  voyageAvgRpm: 100,
-  voyageAvgSlip: 5,
-
-  // Consumption & Condition
-  prevRobs: {
-    LSFO: 200,
-    MGO: 200,
-    MDO: 200,
-    HFO: 200,
-    LPGP: 200,
-    LPGB: 200,
-    LNG: 200,
-    "M/E Cylinder": 200,
-    "M/E System": 200,
-    "M/E Sump": 200,
-    "G/E System": 200,
-    "T/C System": 200,
-  },
-  freshwaterPrevROB: 200,
-};
+import { useLatestReportDetailsStore } from "./useLatestReportDetailsStore";
 
 export const useNoonReportStore = defineStore("noonReport", () => {
   const store = useVoyageStore();
-  const { noonReportNo, curLegNo, curLoadingCondition, curVoyageNo } =
+  const { legUuid, noonReportNo, lastLegNo, curLoadingCondition, curVoyageNo } =
     storeToRefs(store);
 
   const shipStore = useShipStore();
   const { fuelOils, lubricatingOils, machinery } = storeToRefs(shipStore);
 
+  const detailsStore = useLatestReportDetailsStore();
+  const {
+    departurePortCountry,
+    departurePortName,
+    departureTz,
+    departureDate,
+    arrivalPortCountry,
+    arrivalPortName,
+    arrivalTz,
+    arrivalDate,
+    lastReportDate,
+    distanceToGo: distance_to_go,
+    distanceObservedTotal,
+    distanceEngineTotal,
+    revolutionCount: revolution_count,
+    propellerPitch,
+    fuelOilRobs: fuel_oil_robs,
+    lubeOilRobs,
+    freshwaterRob: freshwater_rob,
+    timeSbyToCosp,
+    distanceEngSbyToCosp,
+    distanceObsSbyToCosp,
+    revolutionCountSbyToCosp,
+    timeStoppedAtSea,
+  } = storeToRefs(detailsStore);
+
   // Overview
   const reportNo = noonReportNo;
-  const legNo = curLegNo;
+  const legNo = lastLegNo;
   const loadingCondition = curLoadingCondition;
   const voyageNo = curVoyageNo;
   const reportingDateTime = ref("");
@@ -68,11 +62,10 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   );
 
   // Departure and Destination
-  // TODO: replace dummy values
-  const routeDeparturePortCountry = ref("SG");
-  const routeDeparturePortName = ref("PPT");
-  const routeDepartureDateTimeUTC = ref(new Date("2022-12-01T00:00:00Z"));
-  const routeDepartureTimeZone = ref("8");
+  const routeDeparturePortCountry = ref(departurePortCountry.value);
+  const routeDeparturePortName = ref(departurePortName.value);
+  const routeDepartureDateTimeUTC = ref(new Date(departureDate.value));
+  const routeDepartureTimeZone = ref(departureTz.value);
   const routeDepartureDateTime = computed(() =>
     routeDepartureTimeZone.value !== "default" &&
     routeDepartureDateTimeUTC.value
@@ -82,11 +75,10 @@ export const useNoonReportStore = defineStore("noonReport", () => {
         )
       : ""
   );
-  const routeArrivalPortCountry = ref("SA");
-  const routeArrivalPortName = ref("RTA");
-  const routeArrivalTimeZone = ref("3");
-  const isRouteArrivalDateTimeEdited = ref(false);
-  const routeArrivalDateTimeUTC = ref(new Date("2022-12-21T00:00:00Z"));
+  const routeArrivalPortCountry = ref(arrivalPortCountry.value);
+  const routeArrivalPortName = ref(arrivalPortName.value);
+  const routeArrivalTimeZone = ref(arrivalTz.value);
+  const routeArrivalDateTimeUTC = ref(new Date(arrivalDate.value));
   const routeArrivalDateTime = computed(() =>
     routeArrivalTimeZone.value !== "default" && routeArrivalDateTimeUTC.value
       ? convertUTCToLT(
@@ -95,7 +87,8 @@ export const useNoonReportStore = defineStore("noonReport", () => {
         )
       : ""
   );
-  const routeArrivalDateTimeEdited = ref("");
+  const dateEditIsDisabled = ref(true);
+  const routeArrivalDateTimeEdited = ref(routeArrivalDateTime.value);
   const routeArrivalDateTimeEditedUTC = computed(() =>
     routeArrivalTimeZone.value !== "default" && routeArrivalDateTimeEdited.value
       ? convertLTToUTC(
@@ -158,59 +151,125 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     reportingDateTimeUTC.value && reportingTimeZone.value !== "default"
       ? +(
           (Date.parse(reportingDateTimeUTC.value) -
-            Date.parse(temp.lastNoonReportTime)) /
-          (1000 * 60 * 60)
-        ).toFixed(0)
-      : ""
-  );
-  const hoursTotal = computed(() =>
-    hoursSinceNoon.value
-      ? +(
-          (Date.parse(reportingDateTimeUTC.value) -
-            Date.parse(temp.rupOfDeparture)) /
-          (1000 * 60 * 60)
-        ).toFixed(0)
-      : ""
-  );
-  const distanceObsSinceNoon = ref("");
-  const distanceObsTotal = computed(() =>
-    distanceObsSinceNoon.value
-      ? +(temp.distanceObsSoFar + Number(distanceObsSinceNoon.value)).toFixed(2)
-      : ""
-  );
-  const distanceEngSinceNoon = computed(() =>
-    revolutionCount.value
-      ? +(
-          (Number(revolutionCount.value) - temp.revolutionCountYesterday) *
-          temp.propellerPitch
+            Date.parse(lastReportDate.value)) /
+          36e5
         ).toFixed(2)
       : ""
   );
-  const distanceEngTotal = computed(() =>
-    distanceEngSinceNoon.value
-      ? +(distanceEngSinceNoon.value + temp.distanceEngSoFar).toFixed(2)
+  const hoursCospToEosp = computed(() =>
+    reportingDateTimeUTC.value
+      ? +(
+          (Date.parse(reportingDateTimeUTC.value) -
+            Date.parse(departureDate.value)) /
+            36e5 -
+          Number(timeSbyToCosp.value)
+        ).toFixed(2)
       : ""
   );
-  const distanceToGo = computed(() =>
-    distanceObsSinceNoon.value
-      ? +(temp.distanceLeft - Number(distanceObsSinceNoon.value)).toFixed(2)
+  const hoursSbyToFwe = computed(() =>
+    reportingDateTimeUTC.value
+      ? +(
+          (Date.parse(reportingDateTimeUTC.value) -
+            Date.parse(departureDate.value)) /
+          36e5
+        ).toFixed(2)
       : ""
+  );
+  const distanceObsSinceNoon = ref("");
+  const distanceObsCospToEosp = computed(() =>
+    distanceObsSinceNoon.value
+      ? +(
+          Number(distanceObservedTotal.value) +
+          Number(distanceObsSinceNoon.value) -
+          Number(distanceObsSbyToCosp.value)
+        ).toFixed(2)
+      : ""
+  );
+  const distanceObsSbyToFwe = computed(() =>
+    distanceObsSinceNoon.value
+      ? +(
+          Number(distanceObservedTotal.value) +
+          Number(distanceObsSinceNoon.value)
+        ).toFixed(2)
+      : ""
+  );
+  const distanceEngSinceNoon = computed(() =>
+    distanceEngSinceNoonStatic.value
+      ? distanceEngSinceNoonStatic.value
+      : distanceEngSinceNoonComputed.value
+  );
+  const distanceEngSinceNoonComputed = computed(() =>
+    revolutionCountStatic.value
+      ? +(
+          ((Number(revolutionCountStatic.value) -
+            Number(revolution_count.value)) *
+            Number(propellerPitch.value)) /
+          1852
+        ).toFixed(0)
+      : ""
+  );
+  const distanceEngSinceNoonStatic = ref("");
+  const distanceEngCospToEosp = computed(() =>
+    distanceEngSinceNoon.value
+      ? +(
+          Number(distanceEngSinceNoon.value) +
+          Number(distanceEngineTotal.value) -
+          Number(distanceEngSbyToCosp.value)
+        ).toFixed(0)
+      : ""
+  );
+  const distanceEngSbyToFwe = computed(() =>
+    distanceEngSinceNoon.value
+      ? +(
+          Number(distanceEngSinceNoon.value) + Number(distanceEngineTotal.value)
+        ).toFixed(0)
+      : ""
+  );
+  const distanceToGo = computed(
+    () =>
+      +(
+        Number(distance_to_go.value) - (Number(distanceObsSinceNoon.value) || 0)
+      ).toFixed(2)
   );
   const distanceToGoEdited = ref("");
   const remarksForChanges = ref("");
-  const revolutionCount = ref("");
+  const revolutionCount = computed(() =>
+    revolutionCountStatic.value
+      ? revolutionCountStatic.value
+      : revolutionCountComputed.value
+  );
+  const revolutionCountComputed = computed(() =>
+    distanceEngSinceNoonStatic.value
+      ? +(
+          (1852 * Number(distanceEngSinceNoonStatic.value)) /
+            Number(propellerPitch.value) +
+          Number(revolution_count.value)
+        ).toFixed(0)
+      : ""
+  );
+  const revolutionCountStatic = ref("");
 
   // Performance
   const speedSinceNoon = computed(() =>
     distanceObsSinceNoon.value && hoursSinceNoon.value
-      ? +(Number(distanceObsSinceNoon.value) / hoursSinceNoon.value).toFixed(2)
+      ? +(
+          Number(distanceObsSinceNoon.value) /
+          (Number(hoursSinceNoon.value) -
+            (stoppageChangedRPM.value === "0"
+              ? Number(stoppageDuration.value)
+              : 0))
+        ).toFixed(2)
       : ""
   );
   const rpmSinceNoon = computed(() =>
     revolutionCount.value && hoursSinceNoon.value
       ? +(
-          (Number(revolutionCount.value) - temp.revolutionCountYesterday) /
-          (hoursSinceNoon.value * 60)
+          (Number(revolutionCount.value) - Number(revolution_count.value)) /
+          ((Number(hoursSinceNoon.value) -
+            (stoppageChangedRPM.value === "0"
+              ? Number(stoppageDuration.value)
+              : 0)) *
+            60)
         ).toFixed(1)
       : ""
   );
@@ -218,32 +277,45 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     distanceEngSinceNoon.value && distanceObsSinceNoon.value
       ? +(
           100 *
-          ((distanceEngSinceNoon.value - Number(distanceObsSinceNoon.value)) /
-            distanceEngSinceNoon.value)
+          ((Number(distanceEngSinceNoon.value) -
+            Number(distanceObsSinceNoon.value)) /
+            Number(distanceEngSinceNoon.value))
         ).toFixed(2)
       : ""
   );
   const speedAvg = computed(() =>
-    speedSinceNoon.value !== "" && hoursTotal.value
+    speedSinceNoon.value && hoursCospToEosp.value
       ? +(
-          (temp.voyageAvgSpeed + speedSinceNoon.value) /
-          (hoursTotal.value / 24)
+          Number(distanceObsCospToEosp.value) /
+          (Number(hoursCospToEosp.value) -
+            Number(timeStoppedAtSea.value) -
+            (stoppageChangedRPM.value === "0"
+              ? Number(stoppageDuration.value)
+              : 0))
         ).toFixed(2)
       : ""
   );
   const rpmAvg = computed(() =>
-    rpmSinceNoon.value !== "" && hoursTotal.value
+    rpmSinceNoon.value && hoursCospToEosp.value
       ? +(
-          (temp.voyageAvgRpm + rpmSinceNoon.value) /
-          (hoursTotal.value / 24)
+          (Number(revolutionCount.value) -
+            Number(revolutionCountSbyToCosp.value)) /
+          ((Number(hoursCospToEosp.value) -
+            Number(timeStoppedAtSea.value) -
+            (stoppageChangedRPM.value === "0"
+              ? Number(stoppageDuration.value)
+              : 0)) *
+            60)
         ).toFixed(1)
       : ""
   );
   const slipAvg = computed(() =>
-    slipSinceNoon.value !== "" && hoursTotal.value
+    distanceEngCospToEosp.value && distanceObsCospToEosp.value
       ? +(
-          (temp.voyageAvgSlip + slipSinceNoon.value) /
-          (hoursTotal.value / 24)
+          100 *
+          ((Number(distanceEngCospToEosp.value) -
+            Number(distanceObsCospToEosp.value)) /
+            Number(distanceEngCospToEosp.value))
         ).toFixed(2)
       : ""
   );
@@ -251,31 +323,29 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   // Consumption and Condition
   const fuelOilBreakdowns = reactive({});
   for (const fuelOil of fuelOils.value) {
-    fuelOilBreakdowns[fuelOil] = {
-      "M/E": "",
-      "G/E": "",
-      IGG: "",
-      BLR: "",
-    };
+    fuelOilBreakdowns[fuelOil] = {};
+    for (const machine of machinery.value) {
+      fuelOilBreakdowns[fuelOil][machine] = "";
+    }
+    // fuelOilBreakdowns[fuelOil][Machinery.ME] = "";
+    // fuelOilBreakdowns[fuelOil][Machinery.GE] = "";
+    // fuelOilBreakdowns[fuelOil][Machinery.IGG] = "";
+    // fuelOilBreakdowns[fuelOil][Machinery.BLR] = "";
   }
   const fuelOilTotalConsumptions = computed(() => {
     let rtn = {};
     for (const fuelOil of fuelOils.value) {
-      if (fuelOils.value.includes(fuelOil)) {
-        rtn[fuelOil] = +sumObjectValues(fuelOilBreakdowns[fuelOil]).toFixed(2);
-      }
+      rtn[fuelOil] = +sumObjectValues(fuelOilBreakdowns[fuelOil]).toFixed(2);
     }
     return rtn;
   });
   const fuelOilRobs = computed(() => {
     let rtn = {};
     for (const fuelOil of fuelOils.value) {
-      if (fuelOils.value.includes(fuelOil)) {
-        rtn[fuelOil] = +(
-          temp.prevRobs[fuelOil] -
-          Number(fuelOilTotalConsumptions.value[fuelOil])
-        ).toFixed(2);
-      }
+      rtn[fuelOil] = +(
+        Number(fuel_oil_robs.value[fuelOil]) -
+        Number(fuelOilTotalConsumptions.value[fuelOil])
+      ).toFixed(2);
     }
     return rtn;
   });
@@ -296,14 +366,12 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const lubricatingOilRobs = computed(() => {
     let rtn = {};
     for (const lubricatingOil of lubricatingOils.value) {
-      if (lubricatingOils.value.includes(lubricatingOil)) {
-        rtn[lubricatingOil] = +(
-          temp.prevRobs[lubricatingOil] -
-          Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
-          Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
-          Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
-        ).toFixed(2);
-      }
+      rtn[lubricatingOil] = +(
+        Number(lubeOilRobs.value[lubricatingOil]) -
+        Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
+        Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
+        Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
+      ).toFixed(2);
     }
     return rtn;
   });
@@ -319,7 +387,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     () => +(freshwaterGenerated.value - freshwaterConsumed.value).toFixed(2)
   );
   const freshwaterRob = computed(
-    () => temp.freshwaterPrevROB + freshwaterChange.value
+    () => freshwater_rob.value + freshwaterChange.value
   );
 
   // Stoppage or Reduction RPM
@@ -334,14 +402,25 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   );
   const stoppageEnding = ref("");
   const stoppageEndingUTC = computed(() =>
-    reportingTimeZone.value !== "default" && stoppageEndingUTC.value
-      ? convertLTToUTC(
-          new Date(stoppageEndingUTC.value),
-          reportingTimeZone.value
-        )
+    reportingTimeZone.value !== "default" && stoppageEnding.value
+      ? convertLTToUTC(new Date(stoppageEnding.value), reportingTimeZone.value)
       : ""
   );
-  const stoppageDuration = ref("");
+  const stoppageDuration = computed(() =>
+    stoppageBeginningUTC.value && stoppageEndingUTC.value
+      ? (
+          (Date.parse(stoppageEndingUTC.value) -
+            Date.parse(stoppageBeginningUTC.value)) /
+          36e5
+        ).toFixed(2)
+      : stoppageBeginningUTC.value && reportingDateTimeUTC.value
+      ? (
+          (Date.parse(reportingDateTimeUTC.value) -
+            Date.parse(stoppageBeginningUTC.value)) /
+          36e5
+        ).toFixed(2)
+      : ""
+  );
   const stoppageChangedRPM = ref("");
   const stoppageReason = ref("default");
   const stoppageRemarks = ref("");
@@ -373,6 +452,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     // Overview
     reportNo,
     legNo,
+    legUuid,
     loadingCondition,
     voyageNo,
     reportingDateTime,
@@ -384,9 +464,9 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     routeDepartureDateTime,
     routeDepartureDateTimeUTC,
     routeDepartureTimeZone,
+    dateEditIsDisabled,
     routeArrivalPortCountry,
     routeArrivalPortName,
-    isRouteArrivalDateTimeEdited,
     routeArrivalDateTime,
     routeArrivalDateTimeUTC,
     routeArrivalDateTimeEdited,
@@ -425,17 +505,24 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     heavyRemarks,
     isHeavyWeatherEnabled,
     shouldHeavyWeatherDataBeSent,
-    // DistanceTime
+    // Distance & Time
     hoursSinceNoon,
-    hoursTotal,
+    hoursSbyToFwe,
+    hoursCospToEosp,
     distanceToGo,
     distanceToGoEdited,
     remarksForChanges,
     distanceObsSinceNoon,
-    distanceObsTotal,
+    distanceObsCospToEosp,
+    distanceObsSbyToFwe,
     distanceEngSinceNoon,
-    distanceEngTotal,
+    distanceEngSinceNoonComputed,
+    distanceEngSinceNoonStatic,
+    distanceEngCospToEosp,
+    distanceEngSbyToFwe,
     revolutionCount,
+    revolutionCountComputed,
+    revolutionCountStatic,
     // Performance
     speedSinceNoon,
     rpmSinceNoon,

@@ -1,14 +1,13 @@
 <script setup>
-import { onBeforeMount } from "vue";
 import { useReportDetailsStore } from "./stores/useReportDetailsStore";
 import router from "@/router";
-import { Report } from "@/constants";
-import { storeToRefs } from "pinia";
+import { Report, ReportTypeToDisplay } from "@/constants";
 import NoonReportView from "./components/NoonReport/NoonReportView.vue";
 import DepartureReportView from "./components/DepartureReport/DepartureReportView.vue";
 import ArrivalReportView from "./components/ArrivalReport/ArrivalReportView.vue";
 import HarbourPortReportView from "./components/HarbourPortReport/HarbourPortReportView.vue";
 import BunkerReportView from "./components/BunkerReport/BunkerReportView.vue";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 // Props
 const props = defineProps({
@@ -20,9 +19,8 @@ const props = defineProps({
 
 // Store
 const store = useReportDetailsStore();
-// const { report } = storeToRefs(store);
-const { getReport, getReportQuery } = store;
-
+const auth = useAuthStore();
+const { getReportQuery } = store;
 // API calls
 // getReport(props.uuid);
 
@@ -30,16 +28,23 @@ const { getReport, getReportQuery } = store;
 //   getReport(props.uuid);
 // });
 
+const { isSuccess, isFetching, data: report } = getReportQuery(props.uuid);
+
 const { isSuccess, data: report } = getReportQuery(props.uuid);
 // Event Handlers
 const handleBack = () => {
-  router.push({ name: "vessel-reports" });
+  if (auth.role == "crew") {
+    router.push({ name: "vessel-reports" });
+  } else {
+    router.push({ name: "uploaded-reports" });
+  }
 };
 </script>
 
 <template>
   <div class="bg-gray-50 min-h-screen">
-    <div v-if="isSuccess" class="flex flex-col px-24 pt-11">
+    <div v-if="isFetching">Loading...</div>
+    <div v-else-if="isSuccess" class="flex flex-col px-24 pt-11">
       <button @click="handleBack">
         <img
           src="@/assets/icons/back_arrow.svg"
@@ -47,8 +52,12 @@ const handleBack = () => {
           type="button"
         />
       </button>
-      <div>REPORT TYPE: {{ report.report_type }}</div>
-      <div>
+      <div
+        class="mt-5 text-20 text-blue-700 rounded-xl bg-white flex py-1 px-3 max-w-fit border border-2 border-blue-700"
+      >
+        {{ ReportTypeToDisplay[report.report_type] }}
+      </div>
+      <div class="mb-5">
         <div v-if="report.report_type == Report.type.NOON">
           <NoonReportView :report="report" />
         </div>
@@ -83,9 +92,9 @@ const handleBack = () => {
         </div>
         <div v-else><div>Invalid Report Type</div></div>
       </div>
-
-      <div>{{ report }}</div>
+      <!-- Uncomment For Debugging -->
+      <!-- <div>{{ report }}</div> -->
     </div>
-    <div v-else>Loading...</div>
+    <div v-else></div>
   </div>
 </template>

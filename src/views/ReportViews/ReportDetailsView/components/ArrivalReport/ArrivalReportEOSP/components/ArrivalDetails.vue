@@ -1,16 +1,13 @@
 <script setup>
-import { computed, defineProps } from "vue";
+import { computed } from "vue";
 import {
   preventNaN,
   textInputOptions,
   format,
   parsePositionFromString,
-  // formatUTC,
+  convertUTCToLT,
 } from "@/utils/helpers.js";
 import { TIMEZONES } from "@/utils/options";
-// import { UTCPlaceholder } from "@/constants";
-// import { computed } from "vue";
-// import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 
 const props = defineProps({
   report: {
@@ -19,22 +16,13 @@ const props = defineProps({
   },
 });
 
-console.log("wtf", props.report);
-
 const reportingTimeZone = computed(() => props.report.report_tz);
-const reportingDateTime = computed(() => props.report.report_date);
-
+const reportingDateTime = computed(() =>
+  convertUTCToLT(new Date(props.report.report_date), props.report.report_tz)
+);
 const position = computed(() =>
   parsePositionFromString(props.report.arrivalstandbytimeandposition.position)
 );
-console.log("timezone: ", reportingTimeZone);
-console.log("datetime: ", reportingDateTime);
-
-// const reporting_date_time_utc = computed(() =>
-//   reportingDateTimeUTC.value
-//     ? formatUTC(new Date(reportingDateTimeUTC.value))
-//     : UTCPlaceholder
-// );
 </script>
 
 <template>
@@ -51,13 +39,10 @@ console.log("datetime: ", reportingDateTime);
       >
         {{ $t("timeZone") }}
       </div>
-      <div class="flex col-span-3 border-b">
+      <div class="flex col-span-3 border-b bg-gray-50">
         <select
           disabled
-          class="grow self-center p-3 text-14 focus:outline-0"
-          :class="
-            reportingTimeZone === 'default' ? 'text-gray-400' : 'text-gray-700'
-          "
+          class="grow self-center p-3 text-14 focus:outline-0 bg-gray-50 text-gray-700"
           v-model="reportingTimeZone"
         >
           <option selected disabled value="default">
@@ -71,7 +56,7 @@ console.log("datetime: ", reportingDateTime);
       <div class="col-span-2 text-blue-700 p-3 border-r bg-gray-50 text-14">
         {{ $t("dateAndTime") }}
       </div>
-      <div class="col-span-3 relative flex items-center">
+      <div class="col-span-3 relative flex items-center bg-gray-50">
         <DatePicker
           disabled
           v-model="reportingDateTime"
@@ -95,28 +80,27 @@ console.log("datetime: ", reportingDateTime);
     </div>
     <div></div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-      <span
-        class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
-        >{{ $t("latitude") }}</span
-      >
+      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
+        $t("latitude")
+      }}</span>
       <input
         disabled
         v-model="position.latDegree"
         @keypress="preventNaN($event, position.latDegree)"
-        placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        placeholder="000 (Deg)"
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0 text-gray-700 disabled:bg-gray-50"
       />
       <input
         disabled
         v-model="position.latMinutes"
         @keypress="preventNaN($event, position.latMinutes)"
-        placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        placeholder="000 (Min)"
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0 text-gray-700 disabled:bg-gray-50"
       />
       <select
         disabled
         v-model="position.latDir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0 focus:outline-0"
+        class="p-3 text-14 border-l focus:outline-0 focus:outline-0 text-gray-700 disabled:bg-gray-50"
         :class="
           position.latDir === 'default' ? 'text-gray-400' : 'text-gray-700'
         "
@@ -129,31 +113,27 @@ console.log("datetime: ", reportingDateTime);
       </select>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-      <span
-        class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
-        >{{ $t("longitude") }}</span
-      >
+      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
+        $t("longitude")
+      }}</span>
       <input
         disabled
         v-model="position.longDegree"
         @keypress="preventNaN($event, position.longDegree)"
-        placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        placeholder="000 (Deg)"
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0 text-gray-700 disabled:bg-gray-50"
       />
       <input
         disabled
         v-model="position.longMinutes"
         @keypress="preventNaN($event, position.longMinutes)"
-        placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        placeholder="000 (Min)"
+        class="p-3 pl-4 border-l bg-gray-50 text-14 text-gray-700 focus:outline-0 text-gray-700 disabled:bg-gray-50"
       />
       <select
         disabled
         v-model="position.longDir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0"
-        :class="
-          position.longDir === 'default' ? 'text-gray-400' : 'text-gray-700'
-        "
+        class="p-3 text-14 border-l focus:outline-0 text-gray-700 disabled:bg-gray-50"
       >
         <option selected disabled value="default">
           {{ $t("eastAndWest") }}

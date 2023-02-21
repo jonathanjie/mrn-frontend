@@ -1,3 +1,38 @@
+<script setup>
+import { preventNaN } from "@/utils/helpers";
+import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
+import { storeToRefs } from "pinia";
+
+const store = useDepartureSBYReportStore();
+const {
+  fuelOils,
+  lubricatingOils,
+  machinery,
+  // fuel oil
+  fuelOilTotalConsumptionsSum: fuel_oil_total_consumptions_sum,
+  fuelOilRobsSum: fuel_oil_robs_sum,
+  fuelOilBreakdownsSum: fuel_oil_breakdowns_sum,
+  fuelOilReceiptsSum: fuel_oil_receipts_sum,
+  fuelOilDebunkeringsSum: fuel_oil_debunkerings_sum,
+  // lubricating oil
+  lubricatingOilBreakdownsSum: lubricating_oil_breakdowns_sum,
+  lubricatingOilRobsSum: lubricating_oil_robs_sum,
+  // fresh water
+  freshwaterConsumedSum: freshwater_consumed_sum,
+  freshwaterGeneratedSum: freshwater_generated_sum,
+  freshwaterChangeSum: freshwater_change_sum,
+  freshwaterReceivingSum: freshwater_receiving_sum,
+  freshwaterDischargingSum: freshwater_discharging_sum,
+  freshwaterRobSum: freshwater_rob_sum,
+  isSuccessPrevData,
+  isFetchingPrevData,
+  prevData,
+} = storeToRefs(store);
+// const { isSuccessPrevData, isFetchingPrevData, prevData } = store;
+
+const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 5);
+</script>
+
 <template>
   <div
     class="grid bg-white rounded-lg p-5 gap-4 shadow-card border border-yellow-500"
@@ -20,34 +55,34 @@
           {{ $t("fuelOilInMT") }}
         </div>
 
-        <div class="grid mb-4 text-14" :class="getFuelOilCols()">
+        <div class="grid text-14" :class="getFuelOilCols()">
           <div
-            class="col-span-2 border-green-100 bg-green-25 px-6 border-l border-t"
+            class="col-span-1 border-green-100 bg-green-25 px-6 border-l border-t"
           ></div>
           <div
             v-for="item in machinery"
             :key="item"
             class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
           >
-            {{ item }}
+            {{ $t(item) }}
           </div>
           <div
-            class="col-span-2 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
+            class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
           >
             {{ $t("totalConsumption") }}
           </div>
           <div
-            class="col-span-2 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
+            class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
           >
             {{ $t("receipt") }}
           </div>
           <div
-            class="col-span-2 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
+            class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-l bg-gray-50"
           >
             {{ $t("debunkering") }}
           </div>
           <div
-            class="col-span-2 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-x bg-gray-50"
+            class="col-span-1 flex items-center text-blue-700 border-green-100 bg-green-25 p-3 border-t border-x bg-gray-50"
           >
             {{ $t("remainOnBoard") }}
           </div>
@@ -63,9 +98,9 @@
             "
           >
             <div
-              class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
+              class="col-span-1 p-3 text-blue-700 border-t border-l bg-gray-50"
             >
-              {{ fuelOil }}
+              {{ $t(fuelOil) }}
             </div>
             <input
               v-for="item of machinery"
@@ -79,30 +114,26 @@
               class="col-span-1 p-3 pl-4 border-t border-l bg-gray-50 text-gray-400 focus:outline-0"
             />
             <div
-              class="col-span-2 text-gray-400 p-3 border-t border-l bg-gray-25"
+              class="col-span-1 text-gray-400 p-3 border-t border-l bg-gray-25"
             >
               {{ fuel_oil_total_consumptions_sum[fuelOil] }}
             </div>
             <input
-              v-model="fuel_oil_breakdowns_sum[fuelOil].receipt"
-              @keypress="
-                preventNaN($event, fuel_oil_breakdowns_sum[fuelOil].receipt)
-              "
+              v-model="fuel_oil_receipts_sum[fuelOil]"
+              @keypress="preventNaN($event, fuel_oil_receipts_sum[fuelOil])"
               disabled
               placeholder="0"
-              class="col-span-2 p-3 pl-4 border-t border-l bg-gray-50 text-gray-400 focus:outline-0"
+              class="col-span-1 p-3 pl-4 border-t border-l bg-gray-50 text-gray-400 focus:outline-0"
             />
             <input
-              v-model="fuel_oil_breakdowns_sum[fuelOil].debunkering"
-              @keypress="
-                preventNaN($event, fuel_oil_breakdowns_sum[fuelOil].debunkering)
-              "
+              v-model="fuel_oil_debunkerings_sum[fuelOil]"
+              @keypress="preventNaN($event, fuel_oil_debunkerings_sum[fuelOil])"
               disabled
               placeholder="0"
-              class="col-span-2 p-3 pl-4 border-t border-l bg-gray-50 text-gray-400 focus:outline-0"
+              class="col-span-1 p-3 pl-4 border-t border-l bg-gray-50 text-gray-400 focus:outline-0"
             />
             <div
-              class="col-span-2 text-gray-400 p-3 border-t border-x bg-gray-25"
+              class="col-span-1 text-gray-400 p-3 border-t border-x bg-gray-25"
             >
               {{ fuel_oil_robs_sum[fuelOil] }}
             </div>
@@ -115,7 +146,7 @@
           {{ $t("lubricatingOilInL") }}
         </div>
 
-        <div class="grid grid-cols-10 text-14 mb-4">
+        <div class="grid grid-cols-10 text-14">
           <div
             class="col-span-2 border-yellow-100 bg-yellow-25 px-6 border-l border-t"
           ></div>
@@ -151,7 +182,7 @@
             <div
               class="col-span-2 p-3 text-blue-700 border-t border-l bg-gray-50"
             >
-              {{ lubricatingOil }}
+              {{ $t(lubricatingOil) }}
             </div>
             <input
               v-model="
@@ -181,6 +212,7 @@
                   lubricating_oil_breakdowns_sum[lubricatingOil]['receipt']
                 )
               "
+              disabled
               placeholder="0"
               class="col-span-2 p-3 pl-4 border-t border-l bg-gray-50 text-gray-400 focus:outline-0"
             />
@@ -188,6 +220,7 @@
               v-model="
                 lubricating_oil_breakdowns_sum[lubricatingOil]['debunkering']
               "
+              disabled
               @keypress="
                 preventNaN(
                   $event,
@@ -284,32 +317,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { preventNaN } from "@/utils/helpers";
-import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
-import { storeToRefs } from "pinia";
-
-const store = useDepartureSBYReportStore();
-const {
-  fuelOils,
-  lubricatingOils,
-  machinery,
-  // fuel oil
-  fuelOilTotalConsumptionsSum: fuel_oil_total_consumptions_sum,
-  fuelOilRobsSum: fuel_oil_robs_sum,
-  fuelOilBreakdownsSum: fuel_oil_breakdowns_sum,
-  // lubricating oil
-  lubricatingOilBreakdownsSum: lubricating_oil_breakdowns_sum,
-  lubricatingOilRobsSum: lubricating_oil_robs_sum,
-  // fresh water
-  freshwaterConsumedSum: freshwater_consumed_sum,
-  freshwaterGeneratedSum: freshwater_generated_sum,
-  freshwaterChangeSum: freshwater_change_sum,
-  freshwaterReceivingSum: freshwater_receiving_sum,
-  freshwaterDischargingSum: freshwater_discharging_sum,
-  freshwaterRobSum: freshwater_rob_sum,
-} = storeToRefs(store);
-
-const getFuelOilCols = () => "grid-cols-" + (machinery.value.length + 10);
-</script>

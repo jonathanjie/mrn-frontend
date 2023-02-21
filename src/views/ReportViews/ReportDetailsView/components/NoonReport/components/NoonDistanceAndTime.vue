@@ -2,9 +2,6 @@
 import { ref, computed } from "vue";
 import { preventNaN } from "@/utils/helpers.js";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-import { useNoonReportStore } from "@/stores/useNoonReportStore";
-import { storeToRefs } from "pinia";
-import { defineProps } from "vue";
 
 const props = defineProps({
   report: {
@@ -14,65 +11,33 @@ const props = defineProps({
 });
 
 const hoursSinceNoon = computed(
-  () => props.report.distanceperformancedata.hours_since_noon
+  () => props.report.distancetimedata.hours_since_last
 );
-const hoursTotal = computed(
-  () => props.report.distanceperformancedata.hours_total
-);
+const hoursTotal = computed(() => props.report.distancetimedata.hours_total);
 const distanceToGo = computed(
-  () => props.report.distanceperformancedata.distance_to_go
+  () => props.report.distancetimedata.distance_to_go
 );
 const remarks = computed(
-  () => props.report.distanceperformancedata.remarks_for_changes
+  () => props.report.distancetimedata.remarks_for_changes
 );
 const distanceObservedSinceNoon = computed(
-  () => props.report.distanceperformancedata.distance_observed_since_noon
+  () => props.report.distancetimedata.distance_observed_since_last
 );
 const distanceObservedTotal = computed(
-  () => props.report.distanceperformancedata.distance_observed_total
+  () => props.report.distancetimedata.distance_observed_total
 );
 const distanceEngineSinceNoon = computed(
-  () => props.report.distanceperformancedata.distance_engine_since_noon
+  () => props.report.distancetimedata.distance_engine_since_last
 );
 const distanceEngineTotal = computed(
-  () => props.report.distanceperformancedata.distance_engine_total
+  () => props.report.distancetimedata.distance_engine_total
 );
 const revolutionCount = computed(
-  () => props.report.distanceperformancedata.revolution_count
+  () => props.report.distancetimedata.revolution_count
 );
 
 const distanceToGoDisabled = ref(true);
 const edited = ref(false);
-// const store = useNoonReportStore();
-
-// const toggle = () => {
-//   distanceToGoDisabled.value = !distanceToGoDisabled.value;
-//   edited.value = true;
-// };
-
-// const {
-//   hoursSinceNoon: hours_since_noon,
-//   hoursTotal: hours_total,
-//   distanceToGo: distance_to_go,
-//   distanceToGoEdited: distance_to_go_edited,
-//   remarksForChanges: remarks,
-//   distanceObsSinceNoon: distance_obs_since_noon,
-//   distanceObsTotal: distance_obs_total,
-//   distanceEngSinceNoon: distance_eng_since_noon,
-//   distanceEngTotal: distance_eng_total,
-//   revolutionCount: revolution_count,
-// } = storeToRefs(store);
-
-// const data = reactive({
-//   // TODO: total distance in voyage - distance by observation? or engine?
-//   hours_since_noon: "", // Distance & Time: time
-//   hours_total: "", // Distance & Time: time total
-//   distance_obs_since_noon: "", // Distance & Time: distance by observation
-//   distance_obs_total: "", // distance observation total field missing from BE
-//   distance_eng_since_noon: "", // Distance & Time: distance by engine
-//   distance_eng_total: "", // Distance & Time: distance by engine total
-//   revolution_count: "", // only for noon report
-// });
 </script>
 
 <template>
@@ -125,8 +90,7 @@ const edited = ref(false);
         {{ $t("distanceToGo") }}
       </div>
       <div
-        class="flex items-center col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t"
-        :class="distanceToGoDisabled ? 'bg-gray-50' : 'bg-white'"
+        class="flex items-center col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50"
       >
         <input
           v-if="!edited"
@@ -134,7 +98,7 @@ const edited = ref(false);
           v-model="distanceToGo"
           @keypress="preventNaN($event, distanceToGo)"
           placeholder="0"
-          class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
+          class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50 bg-gray-50"
         />
         <!-- <input
           v-else
@@ -150,7 +114,7 @@ const edited = ref(false);
           @click="toggle"
           class="ml-auto h-4 w-4 cursor-pointer"
         /> -->
-        <MiniUnitDisplay class="ml-2">NM</MiniUnitDisplay>
+        <MiniUnitDisplay class="ml-auto">NM</MiniUnitDisplay>
       </div>
       <div
         class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-b lg:border-b-0 border-l lg:border-l-0 border-t bg-gray-50 text-14"
@@ -161,8 +125,7 @@ const edited = ref(false);
         v-model="remarks"
         :placeholder="$t('inputRemarks')"
         :disabled="distanceToGoDisabled"
-        class="col-span-6 lg:col-span-3 p-3 pl-4 border-x border-t text-14 text-gray-700 focus:outline-0"
-        :class="distanceToGoDisabled ? 'bg-gray-50' : 'bg-white'"
+        class="col-span-6 lg:col-span-3 p-3 pl-4 border-x border-t text-14 text-gray-700 focus:outline-0 bg-gray-50"
       />
 
       <div
@@ -170,13 +133,15 @@ const edited = ref(false);
       >
         {{ $t("distanceByObservation") }}
       </div>
-      <div class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t">
+      <div
+        class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50"
+      >
         <input
           disabled
           v-model="distanceObservedSinceNoon"
           @keypress="preventNaN($event, distanceObservedSinceNoon)"
           placeholder="0"
-          class="w-24 bg-white text-14 text-gray-700 focus:outline-0"
+          class="w-24 bg-gray-50 text-14 text-gray-700 focus:outline-0"
         />
         <MiniUnitDisplay>NM</MiniUnitDisplay>
       </div>
@@ -240,7 +205,7 @@ const edited = ref(false);
         v-model="revolutionCount"
         @keypress="preventNaN($event, revolutionCount)"
         placeholder="0"
-        class="col-span-6 lg:col-span-3 p-3 pl-4 border-x border-y lg:border-t-0 bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-6 lg:col-span-3 p-3 pl-4 border-x border-y lg:border-t-0 bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
     </div>
   </div>

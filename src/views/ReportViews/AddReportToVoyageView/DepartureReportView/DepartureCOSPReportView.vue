@@ -27,18 +27,24 @@
     <!-- <CustomButton
           class="p-3 text-14"
           type="button"
-          v-on:click="saveChanges()"
+          @click="saveChanges()"
         >
           <template v-slot:content>{{ $t("saveChanges") }}</template>
         </CustomButton> -->
     <GradientButton
       class="p-3 text-14"
       type="button"
-      v-on:click="sendReport()"
-      :disabled="isSubmissionRequested"
+      @click="sendReport()"
+      :is-disabled="isSubmissionRequested"
     >
       <!-- TODO: need alternate function for saving changes to backend -->
-      <template v-slot:content>{{ $t("sendReport") }}</template>
+
+      <template v-if="isSubmissionRequested" v-slot:content>
+        <div>Loading...</div>
+      </template>
+      <template v-else v-slot:content>
+        <div>{{ $t("sendReport") }}</div>
+      </template>
     </GradientButton>
   </div>
 </template>
@@ -68,10 +74,9 @@ const store = useDepartureCOSPReportStore();
 const {
   fuelOils,
   lubricatingOils,
-  machinery,
   // Overview
+  legUuid,
   reportNo,
-  legNo,
   voyageNo,
   reportingDateTimeUTC,
   reportingTimeZone,
@@ -106,6 +111,7 @@ const {
   pilotArrLongDir,
   pilotArrLongDegree,
   pilotArrLongMinute,
+  shouldPilotArrDataBeSent,
   // R/UP Engine / Distance & Time
   rupEngLatDir,
   rupEngLatDegree,
@@ -118,6 +124,11 @@ const {
   sbyToRupDistanceEng,
   sbyToRupRevolutionCount,
   sbyToRupSetRPM,
+  distanceObsTotal,
+  distanceEngTotal,
+  // distanceToGo,
+  // hoursSinceLast,
+  hoursTotal,
   // Sailing Plan (Pilot to Pilot)
   budgetDistance,
   budgetSpeed,
@@ -140,6 +151,7 @@ const submissionStatusStore = useSubmissionStatusStore();
 const {
   isSubmissionRequested,
   isSubmissionModalVisible,
+  isSubmissionResponse,
   isSubmissionSuccessful,
   errorMessage,
 } = storeToRefs(submissionStatusStore);
@@ -176,13 +188,14 @@ const sendReport = async () => {
     portCountry: departurePortCountry.value,
     portName: departurePortName.value,
   });
+
   const destinationPort = parsePortLocode({
     portCountry: destinationPortCountry.value,
     portName: destinationPortName.value,
   });
 
   const fuelOilData = generateFuelOilData(
-    fuelOils,
+    fuelOils.value,
     fuelOilBreakdowns.value,
     fuelOilTotalConsumptions.value,
     fuelOilRobs.value,
@@ -190,7 +203,7 @@ const sendReport = async () => {
   );
 
   const lubricatingOilData = generateLubricatingOilData(
-    lubricatingOils,
+    lubricatingOils.value,
     lubricatingOilBreakdowns.value,
     lubricatingOilRobs.value,
     lubricatingOilDataCorrection.value
@@ -199,14 +212,16 @@ const sendReport = async () => {
   const REPORT = {
     report_type: Report.type.DEP_COSP_RUP,
     voyage: voyageNo.value,
-    voyage_leg: legNo.value,
     report_num: reportNo.value,
     report_date: reportingDateTimeUTC.value,
     report_tz: reportingTimeZone.value,
+    voyage_leg: {
+      uuid: legUuid.value,
+    },
     reportroute: {
       departure_port: departurePort,
       departure_date: departureDateTimeUTC.value,
-      depature_tz: departureTimeZone.value,
+      departure_tz: departureTimeZone.value,
       arrival_port: destinationPort,
       arrival_date: destinationEstimatedArrivalUTC.value,
       arrival_tz: destinationTimeZone.value,
@@ -218,50 +233,58 @@ const sendReport = async () => {
           position: pilotDepPosition,
         }
       : null,
-    arrivalpilotstation: {
-      name: pilotArrName.value,
-      date: pilotArrDateTimeUTC.value,
-      position: pilotArrPosition,
-      draft_fwd: pilotArrDraftFwd.value,
-      draft_mid: pilotArrDraftMid.value,
-      draft_aft: pilotArrDraftAft.value,
-    },
+    arrivalpilotstation: shouldPilotArrDataBeSent.value
+      ? {
+          name: pilotArrName.value,
+          date: pilotArrDateTimeUTC.value,
+          position: pilotArrPosition,
+          draft_fwd: Number(pilotArrDraftFwd.value),
+          draft_mid: Number(pilotArrDraftMid.value),
+          draft_aft: Number(pilotArrDraftAft.value),
+        }
+      : null,
     departurerunup: {
       time: reportingDateTimeUTC.value,
       timezone: reportingTimeZone.value,
       position: departureRupPosition,
     },
     distancetimedata: {
-      time: sbyToRupTime.value,
-      distance_obs: sbyToRupDistanceObs.value,
-      distance_eng: sbyToRupDistanceEng.value,
-      revolution_count: sbyToRupRevolutionCount.value,
-      set_rpm: sbyToRupSetRPM.value,
+      revolution_count: Number(sbyToRupRevolutionCount.value),
+      set_rpm: Number(sbyToRupSetRPM.value),
+      distance_observed_since_last: Number(sbyToRupDistanceObs.value),
+      distance_observed_total: Number(distanceObsTotal.value),
+      distance_engine_since_last: Number(sbyToRupDistanceEng.value),
+      distance_engine_total: Number(distanceEngTotal.value),
+      distance_to_go: Number(budgetDistance.value),
+      hours_total: Number(hoursTotal.value),
+      hours_since_last: Number(sbyToRupTime.value),
+      remarks_for_changes: "NIL",
     },
-    transoceanicbudget: {
-      distance_to_go: budgetDistance.value,
-      speed: budgetSpeed.value,
-      me_daily_fo_consumption: meDaily.value,
-      me_rpm: meRPM.value,
+    sailingplan: {
+      distance_to_go: Number(budgetDistance.value),
+      speed: Number(budgetSpeed.value),
+      me_daily_fo_consumption: Number(meDaily.value),
+      me_rpm: Number(meRPM.value),
     },
     consumptionconditiondata: {
       fueloildata_set: fuelOilData,
       lubricatingoildata_set: lubricatingOilData,
       freshwaterdata: {
-        consumed: freshwaterConsumed.value || 0,
-        generated: freshwaterGenerated.value || 0,
+        consumed: Number(freshwaterConsumed.value) || 0,
+        generated: Number(freshwaterGenerated.value) || 0,
         received: 0, // Does not apply for Departure COSP reports
         discharged: 0, // Does not apply for Departure COSP reports
-        rob: freshwaterRob.value || 0,
+        rob: Number(freshwaterRob.value) || 0,
       },
       consumption_type: ConsumptionType.SBY_TO_RUP,
     },
   };
 
-  console.log("data: ", REPORT);
+  // console.log("data: ", REPORT);
 
+  isSubmissionModalVisible.value = true;
   const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/reports/",
+    `${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/`,
     {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
@@ -274,8 +297,8 @@ const sendReport = async () => {
 
   try {
     const data = await response.json();
-    console.log(response);
-    console.log(data);
+    // console.log(response);
+    // console.log(data);
 
     if (response.ok) {
       isSubmissionSuccessful.value = true;
@@ -283,9 +306,15 @@ const sendReport = async () => {
     } else {
       errorMessage.value = data;
     }
-    isSubmissionModalVisible.value = true;
+    // isSubmissionModalVisible.value = true;
+    // isSubmissionResponse.value=true
   } catch (error) {
     console.log(error);
+    errorMessage.value = {
+      unexpectedError: ["Please contact the administrator."],
+    };
+    // isSubmissionModalVisible.value = true;
   }
+  isSubmissionResponse.value = true;
 };
 </script>

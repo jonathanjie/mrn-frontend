@@ -8,7 +8,7 @@
 import { inject } from "vue";
 
 export default {
-  props: ["title"],
+  props: ["title", "disabled"],
   setup() {
     const selectedTitle = inject("selectedTitle");
 

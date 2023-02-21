@@ -40,13 +40,13 @@ export const TIMEZONES = {
 
 export const OPERATIONS = {
   // excluding "waiting" and "other" operations
-  cargoOperationBerth: "cargoOpBerth",
-  cargoOperationSTSSTB: "cargoOpSTSSTB",
-  bunkeringDebunkering: "bunkeringDebunkering",
-  dryDocking: "dryDocking",
-  crewChange: "crewChange",
-  receivingProvisionSpareParts: "receivingProvisionSpareParts",
-  survey: "survey",
+  cargoOperationBerth: "cargo_operation_berth",
+  cargoOperationSTSSTB: "cargo_operation_stsstb",
+  bunkeringDebunkering: "bunkering_debunkering",
+  dryDocking: "dry_docking",
+  crewChange: "crew_change",
+  receivingProvisionSpareParts: "receiving_provisions_spares",
+  survey: "surveying",
 };
 
 export const ALL_FUEL_OILS = {

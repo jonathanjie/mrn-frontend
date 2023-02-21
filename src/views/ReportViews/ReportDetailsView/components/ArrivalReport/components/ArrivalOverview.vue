@@ -1,13 +1,8 @@
 <script setup>
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { TIMEZONES } from "@/utils/options";
-import {
-  textInputOptions,
-  format,
-  // formatUTC
-} from "@/utils/helpers";
-// import { UTCPlaceholder } from "@/constants";
-import { computed, defineProps } from "vue";
+import { textInputOptions, format, convertUTCToLT } from "@/utils/helpers";
+import { computed } from "vue";
 
 const props = defineProps({
   report: {
@@ -17,19 +12,13 @@ const props = defineProps({
 });
 
 const reportNum = computed(() => props.report.report_num);
-const legNum = computed(() => props.report.voyage_leg);
-// TODO: switch to actual voyage number
-const voyageNum = computed(() => props.report.voyage_leg);
-// TODO: use actual backend loading conditions
-const loadingCondition = computed(() => "NIL");
-const reportingDateTime = computed(() => props.report.report_date);
+const legNum = computed(() => props.report.voyage_leg.leg_num);
+const voyageNum = computed(() => props.report.voyage_leg.voyage.voyage_num);
+const loadingCondition = computed(() => props.report.voyage_leg.load_condition);
+const reportingDateTime = computed(() =>
+  convertUTCToLT(new Date(props.report.report_date), props.report.report_tz)
+);
 const reportingTimeZone = computed(() => props.report.report_tz);
-
-// const reporting_date_time_utc = computed(() =>
-//   reportingDateTimeUTC.value
-//     ? formatUTC(new Date(reportingDateTimeUTC.value))
-//     : UTCPlaceholder
-// );
 </script>
 
 <template>
@@ -75,10 +64,12 @@ const reportingTimeZone = computed(() => props.report.report_tz);
       <div class="bg-gray-50 col-span-2 text-blue-700 p-3 border-r">
         {{ $t("reportingDateAndTime") }}
       </div>
-      <div class="col-span-3 relative flex items-center">
+      <div class="col-span-3 relative flex items-center bg-gray-50">
         <DatePicker
+          disabled
           v-model="reportingDateTime"
-          class="grow"
+          class=""
+          input-class="col-span-3 text-gray-700 bg-gray-50 border-b"
           textInput
           :textInputOptions="textInputOptions"
           :format="format"
@@ -102,12 +93,10 @@ const reportingTimeZone = computed(() => props.report.report_tz);
       <div class="col-span-2 text-blue-700 p-3 border-r">
         {{ $t("reportingTimeZone") }}
       </div>
-      <div class="flex col-span-3 bg-white min-w-fit">
+      <div class="flex col-span-3 min-w-fit bg-gray-50">
         <select
-          class="grow self-center p-3 text-14 focus:outline-0"
-          :class="
-            reportingTimeZone === 'default' ? 'text-gray-400' : 'text-gray-700'
-          "
+          disabled
+          class="grow self-center p-3 text-14 focus:outline-0 text-gray-700 bg-gray-50"
           v-model="reportingTimeZone"
         >
           <option selected disabled value="default">

@@ -13,12 +13,14 @@
           {{ $t("portName") }}
         </div>
         <input
-          v-model="departure_port_country"
+          :value="departure_port_country.toUpperCase()"
+          @input="departure_port_country = $event.target.value.toUpperCase()"
           :placeholder="$t('inputLocode2')"
           class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0"
         />
         <input
-          v-model="departure_port_name"
+          :value="departure_port_name.toUpperCase()"
+          @input="departure_port_name = $event.target.value.toUpperCase()"
           :placeholder="$t('inputLocode3')"
           class="col-span-3 p-3 text-gray-700 border-l focus:outline-0"
         />
@@ -96,16 +98,18 @@
           {{ $t("portName") }}
         </div>
         <input
-          v-model="destination_port_country"
+          :value="destination_port_country.toUpperCase()"
+          @input="destination_port_country = $event.target.value.toUpperCase()"
           :placeholder="$t('inputLocode2')"
           :disabled="!is_destination_enabled"
-          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 disabled:bg-gray-50 disabled:text-gray-400"
+          class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 disabled:bg-gray-50 disabled:text-gray-500"
         />
         <input
-          v-model="destination_port_name"
+          :value="destination_port_name.toUpperCase()"
+          @input="destination_port_name = $event.target.value.toUpperCase()"
           :placeholder="$t('inputLocode3')"
           :disabled="!is_destination_enabled"
-          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 disabled:bg-gray-50 disabled:text-gray-400"
+          class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 disabled:bg-gray-50 disabled:text-gray-500"
         />
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14">
@@ -143,6 +147,7 @@
             textInput
             :textInputOptions="textInputOptions"
             :format="format"
+            :disabled="!is_destination_enabled"
             :modelValue="string"
             :placeholder="$t('selectDateAndTime')"
           >

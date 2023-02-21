@@ -3,11 +3,10 @@ import {
   preventNaN,
   textInputOptions,
   format,
-  // formatUTC,
+  convertUTCToLT,
 } from "@/utils/helpers.js";
-import { computed, defineProps } from "vue";
+import { computed } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
-// import { UTCPlaceholder } from "@/constants";
 import { parsePositionFromString } from "@/utils/helpers.js";
 
 const props = defineProps({
@@ -16,30 +15,30 @@ const props = defineProps({
     required: true,
   },
 });
+
 const isActive = computed(() =>
   props.report.arrivalpilotstation ? true : false
 );
 
 const pilotArrName = computed(() => props.report.arrivalpilotstation.name);
-const pilotArrDateTime = computed(() => props.report.arrivalpilotstation.date);
-const pilotArrDraftFwd = computed(() =>
-  parsePositionFromString(props.report.arrivalpilotstation.position)
+const pilotArrDateTime = computed(() =>
+  convertUTCToLT(
+    new Date(props.report.arrivalpilotstation.date),
+    props.report.report_tz
+  )
 );
-const pilotArrDraftMid = computed(() =>
-  parsePositionFromString(props.report.arrivalpilotstation.position)
+const pilotArrDraftFwd = computed(
+  () => props.report.arrivalpilotstation.draft_fwd
 );
-const pilotArrDraftAft = computed(() =>
-  parsePositionFromString(props.report.arrivalpilotstation.position)
+const pilotArrDraftMid = computed(
+  () => props.report.arrivalpilotstation.draft_mid
+);
+const pilotArrDraftAft = computed(
+  () => props.report.arrivalpilotstation.draft_aft
 );
 const position = computed(() =>
   parsePositionFromString(props.report.arrivalpilotstation.position)
 );
-
-// const pilot_arr_date_time_utc = computed(() =>
-//   pilotArrDateTimeUTC.value
-//     ? formatUTC(new Date(pilotArrDateTimeUTC.value))
-//     : UTCPlaceholder
-// );
 </script>
 
 <template>
@@ -78,7 +77,7 @@ const position = computed(() =>
         disabled
         v-model="pilotArrName"
         :placeholder="$t('inputName')"
-        class="col-span-3 p-3 pl-4 border-y border-r bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-3 p-3 pl-4 border-y border-r text-14 text-gray-700 focus:outline-0 bg-gray-50"
       />
       <div
         class="col-span-2 text-blue-700 p-3 border-x border-b lg:border-b-0 bg-gray-50 text-14"
@@ -86,7 +85,7 @@ const position = computed(() =>
         {{ $t("dateAndTime") }}
       </div>
       <div
-        class="col-span-3 relative flex items-center border-r border-b lg:border-b-0"
+        class="col-span-3 relative flex items-center border-r border-b lg:border-b-0 bg-gray-50"
       >
         <DatePicker
           disabled
@@ -123,67 +122,66 @@ const position = computed(() =>
       <div class="col-span-1 text-blue-700 p-3 border-b my-auto self-center">
         {{ $t("fwd") }}
       </div>
-      <div class="flex col-span-5 p-2 pl-4 border-b border-x bg-white">
+      <div class="flex col-span-5 p-2 pl-4 border-b border-x bg-gray-50">
         <input
           disabled
           v-model="pilotArrDraftFwd"
           @keypress="preventNaN($event, pilotArrDraftFwd)"
           placeholder="00.00"
-          class="w-24 text-gray-700 focus:outline-0"
+          class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <MiniUnitDisplay>M</MiniUnitDisplay>
       </div>
       <div class="col-span-1 text-blue-700 p-3 border-b my-auto self-center">
         {{ $t("mid") }}
       </div>
-      <div class="flex col-span-5 p-2 pl-4 border-b border-x bg-white">
+      <div class="flex col-span-5 p-2 pl-4 border-b border-x bg-gray-50">
         <input
           disabled
           v-model="pilotArrDraftMid"
           @keypress="preventNaN($event, pilotArrDraftMid)"
           placeholder="00.00"
-          class="w-24 text-gray-700 focus:outline-0"
+          class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <MiniUnitDisplay>M</MiniUnitDisplay>
       </div>
       <div class="col-span-1 text-blue-700 p-3 my-auto self-center">
         {{ $t("aft") }}
       </div>
-      <div class="flex col-span-5 p-2 pl-4 border-x bg-white">
+      <div class="flex col-span-5 p-2 pl-4 border-x bg-gray-50">
         <input
           disabled
           v-model="pilotArrDraftAft"
           @keypress="preventNaN($event, pilotArrDraftAft)"
           placeholder="00.00"
-          class="w-24 text-gray-700 focus:outline-0"
+          class="w-24 text-gray-700 focus:outline-0 bg-gray-50"
         />
         <MiniUnitDisplay>M</MiniUnitDisplay>
       </div>
       <div class="col-span-10 border-t"></div>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-      <span
-        class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
-        >{{ $t("latitude") }}</span
-      >
+      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
+        $t("latitude")
+      }}</span>
       <input
         disabled
         v-model="position.latDegree"
         @keypress="preventNaN($event, position.latDegree)"
-        placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        placeholder="000 (Deg)"
+        class="p-3 pl-4 border-l text-14 text-gray-700 focus:outline-0 bg-gray-50"
       />
       <input
         disabled
         v-model="position.latMinutes"
         @keypress="preventNaN($event, position.latMinutes)"
-        placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        placeholder="000 (Min)"
+        class="p-3 pl-4 border-l text-14 text-gray-700 focus:outline-0 bg-gray-50"
       />
       <select
         disabled
         v-model="position.latDir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0 focus:outline-0"
+        class="p-3 text-14 border-l focus:outline-0 bg-gray-50"
         :class="
           position.latDir === 'default' ? 'text-gray-400' : 'text-gray-700'
         "
@@ -196,28 +194,27 @@ const position = computed(() =>
       </select>
     </div>
     <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border bg-gray-50">
-      <span
-        class="col-span-2 row-span-3 text-blue-700 p-3 text-14 self-center"
-        >{{ $t("longitude") }}</span
-      >
+      <span class="col-span-2 text-blue-700 p-3 text-14 self-center">{{
+        $t("longitude")
+      }}</span>
       <input
         disabled
         v-model="position.longDegree"
         @keypress="preventNaN($event, position.longDegree)"
-        placeholder="000 (Degree)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        placeholder="000 (Deg)"
+        class="p-3 pl-4 border-l text-14 text-gray-700 focus:outline-0 bg-gray-50"
       />
       <input
         disabled
         v-model="position.longMinutes"
         @keypress="preventNaN($event, position.longMinutes)"
-        placeholder="000 (Minutes)"
-        class="col-span-3 p-3 pl-4 border-l border-b bg-white text-14 text-gray-700 focus:outline-0"
+        placeholder="000 (Min)"
+        class="p-3 pl-4 border-l text-14 text-gray-700 focus:outline-0 bg-gray-50"
       />
       <select
         disabled
         v-model="position.longDir"
-        class="col-span-3 p-3 text-14 border-l focus:outline-0"
+        class="p-3 text-14 border-l focus:outline-0 bg-gray-50"
         :class="
           position.longDir === 'default' ? 'text-gray-400' : 'text-gray-700'
         "

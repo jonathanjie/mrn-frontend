@@ -24,18 +24,23 @@
     <!-- <CustomButton
           class="p-3 text-14"
           type="button"
-          v-on:click="saveChanges()"
+          @click="saveChanges()"
         >
           <template v-slot:content>{{ $t("saveChanges") }}</template>
         </CustomButton> -->
     <GradientButton
       class="p-3 text-14"
       type="button"
-      v-on:click="sendReport()"
-      :disabled="isSubmissionRequested"
+      @click="sendReport()"
+      :is-disabled="isSubmissionRequested"
     >
       <!-- TODO: need alternate function for saving changes to backend -->
-      <template v-slot:content>{{ $t("sendReport") }}</template>
+      <template v-if="isSubmissionRequested" v-slot:content>
+        <div>Loading...</div>
+      </template>
+      <template v-else v-slot:content>
+        <div>{{ $t("sendReport") }}</div>
+      </template>
     </GradientButton>
   </div>
 </template>
@@ -54,20 +59,29 @@ import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
 import {
   Report,
-  FuelOil,
-  LubricatingOil,
   ConsumptionType,
   TotalConsumptionType,
   ActualPerformanceType,
 } from "@/constants";
-import { parsePositionToString } from "@/utils/helpers.js";
+import {
+  parsePositionToString,
+  generateFuelOilData,
+  generateLubricatingOilData,
+  parsePortLocode,
+} from "@/utils/helpers.js";
 import { OPERATIONS } from "@/utils/options";
 
 const store = useArrivalFWEReportStore();
 const {
+  departurePortCountry,
+  departurePortName,
+  departureDateTime,
+  departureTimeZone,
+  arrivalPortCountry,
+  arrivalPortName,
   // Overview
   reportNo,
-  legNo,
+  legUuid,
   voyageNo,
   reportingTimeZone,
   reportingDateTimeUTC,
@@ -99,22 +113,18 @@ const {
   distanceObs,
   distanceEng,
   revolutionCount,
+  distanceObsTotal,
+  distanceEngTotal,
+  hoursTotal,
   // Consumption and Condition
-  lsfoTotalConsumption,
-  lsfoRob,
-  mgoTotalConsumption,
-  mgoRob,
-  lsfoBreakdown,
-  mgoBreakdown,
+  fuelOils,
+  lubricatingOils,
+  fuelOilRobs,
+  fuelOilBreakdowns,
+  fuelOilTotalConsumptions,
   fuelOilDataCorrection,
-  mecylinderBreakdown,
-  mesystemBreakdown,
-  mesumpBreakdown,
-  gesystemBreakdown,
-  mecylinderRob,
-  mesystemRob,
-  mesumpRob,
-  gesystemRob,
+  lubricatingOilBreakdowns,
+  lubricatingOilRobs,
   lubricatingOilDataCorrection,
   freshwaterConsumed,
   freshwaterGenerated,
@@ -122,22 +132,15 @@ const {
   // Actual performance
   totalDistanceObs,
   totalSailingTime,
-  lsfoMeSum,
-  lsfoGeSum,
-  lsfoBoilerSum,
-  lsfoIggSum,
-  lsfoTotalSum,
-  mgoMeSum,
-  mgoGeSum,
-  mgoBoilerSum,
-  mgoIggSum,
-  mgoTotalSum,
+  fuelOilBreakdownsSum,
+  fuelOilTotalConsumptionsSum,
 } = storeToRefs(store);
 
 const submissionStatusStore = useSubmissionStatusStore();
 const {
   isSubmissionRequested,
   isSubmissionModalVisible,
+  isSubmissionResponse,
   isSubmissionSuccessful,
   errorMessage,
 } = storeToRefs(submissionStatusStore);
@@ -164,13 +167,54 @@ const sendReport = async () => {
     longDegree: longDegree.value,
   });
 
+  const departurePort = parsePortLocode({
+    portCountry: departurePortCountry.value,
+    portName: departurePortName.value,
+  });
+
+  const arrivalPort = parsePortLocode({
+    portCountry: arrivalPortCountry.value,
+    portName: arrivalPortName.value,
+  });
+
+  const fuelOilData = generateFuelOilData(
+    fuelOils.value,
+    fuelOilBreakdowns.value,
+    fuelOilTotalConsumptions.value,
+    fuelOilRobs.value,
+    fuelOilDataCorrection.value
+  );
+
+  const lubricatingOilData = generateLubricatingOilData(
+    lubricatingOils.value,
+    lubricatingOilBreakdowns.value,
+    lubricatingOilRobs.value,
+    lubricatingOilDataCorrection.value
+  );
+
+  const fuelOilDataSum = generateFuelOilData(
+    fuelOils.value,
+    fuelOilBreakdownsSum.value,
+    fuelOilTotalConsumptionsSum.value
+  );
+
   const REPORT = {
     report_type: Report.type.ARR_FWE,
     voyage: voyageNo.value,
-    voyage_leg: legNo.value,
+    voyage_leg: {
+      uuid: legUuid.value,
+    },
     report_num: reportNo.value,
     report_date: reportingDateTimeUTC.value,
     report_tz: reportingTimeZone.value,
+    reportroute: {
+      departure_port: departurePort,
+      departure_date: departureDateTime.value,
+      departure_tz: departureTimeZone.value,
+      arrival_port: arrivalPort,
+      arrival_date: reportingDateTimeUTC.value,
+      arrival_tz: reportingTimeZone.value,
+    },
     arrivalfwetimeandposition: {
       time: reportingDateTimeUTC.value,
       timezone: reportingTimeZone.value,
@@ -178,6 +222,7 @@ const sendReport = async () => {
       parking_status: status.value,
     },
     plannedoperations: {
+      waiting: includesOperation("waiting"),
       cargo_operation_berth: includesOperation(OPERATIONS.cargoOperationBerth),
       cargo_operation_stsstb: includesOperation(
         OPERATIONS.cargoOperationSTSSTB
@@ -197,183 +242,65 @@ const sendReport = async () => {
           name: pilotArrName.value,
           date: pilotArrDateTimeUTC.value,
           position: pilotArrPosition,
-          draft_fwd: pilotArrDraftFwd.value,
-          draft_mid: pilotArrDraftMid.value,
-          draft_aft: pilotArrDraftAft.value,
+          draft_fwd: Number(pilotArrDraftFwd.value),
+          draft_mid: Number(pilotArrDraftMid.value),
+          draft_aft: Number(pilotArrDraftAft.value),
         }
       : null,
     distancetimedata: {
-      time: hours.value,
-      distance_obs: distanceObs.value,
-      distance_eng: distanceEng.value,
-      revolution_count: revolutionCount.value,
+      revolution_count: Number(revolutionCount.value),
       set_rpm: 0, // irrelevant for Arrival FWE report
+      distance_observed_since_last: Number(distanceObs.value),
+      distance_observed_total: Number(distanceObsTotal.value),
+      distance_engine_since_last: Number(distanceEng.value),
+      distance_engine_total: Number(distanceEngTotal.value),
+      distance_to_go: 0,
+      hours_total: Number(hoursTotal.value),
+      hours_since_last: Number(hours.value),
+      remarks_for_changes: "NIL",
     },
     consumptionconditiondata: {
-      fueloildata_set: [
-        {
-          fuel_oil_type: FuelOil.LSFO,
-          total_consumption: lsfoTotalConsumption.value || 0,
-          receipt: 0, // Does not apply for Arrival FWE reports
-          debunkering: 0, // Does not apply for Arrival FWE reports
-          rob: lsfoRob.value || 0,
-          breakdown: {
-            GE: lsfoBreakdown.value.ge || 0,
-            ME: lsfoBreakdown.value.me || 0,
-            BLR: lsfoBreakdown.value.blr || 0,
-            IGG: lsfoBreakdown.value.igg || 0,
-          },
-          fueloildatacorrection:
-            fuelOilDataCorrection.value.type === FuelOil.LSFO
-              ? {
-                  correction: fuelOilDataCorrection.value.correction,
-                  remarks: fuelOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: FuelOil.MGO,
-          total_consumption: mgoTotalConsumption.value || 0,
-          receipt: 0, // Does not apply for Arrival FWE reports
-          debunkering: 0, // Does not apply for Arrival FWE reports
-          rob: mgoRob.value || 0,
-          breakdown: {
-            GE: mgoBreakdown.value.ge || 0,
-            ME: mgoBreakdown.value.me || 0,
-            BLR: mgoBreakdown.value.blr || 0,
-            IGG: mgoBreakdown.value.igg || 0,
-          },
-          fueloildatacorrection:
-            fuelOilDataCorrection.value.type === FuelOil.MGO
-              ? {
-                  correction: fuelOilDataCorrection.value.correction,
-                  remarks: fuelOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-      ],
-      lubricatingoildata_set: [
-        {
-          fuel_oil_type: LubricatingOil.ME_CYLINDER,
-          total_consumption: mecylinderBreakdown.value.total_consumption || 0,
-          receipt: mecylinderBreakdown.value.receipt || 0,
-          debunkering: mecylinderBreakdown.value.debunkering || 0,
-          rob: mecylinderRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type ===
-            LubricatingOil.ME_CYLINDER
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: LubricatingOil.ME_SYSTEM,
-          total_consumption: mesystemBreakdown.value.total_consumption || 0,
-          receipt: mesystemBreakdown.value.receipt || 0,
-          debunkering: mesystemBreakdown.value.debunkering || 0,
-          rob: mesystemRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type === LubricatingOil.ME_SYSTEM
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: LubricatingOil.ME_SUMP,
-          total_consumption: mesumpBreakdown.value.total_consumption || 0,
-          receipt: mesumpBreakdown.value.receipt || 0,
-          debunkering: mesumpBreakdown.value.debunkering || 0,
-          rob: mesumpRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type === LubricatingOil.ME_SUMP
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-        {
-          fuel_oil_type: LubricatingOil.GE_SYSTEM,
-          total_consumption: gesystemBreakdown.value.total_consumption || 0,
-          receipt: gesystemBreakdown.value.receipt || 0,
-          debunkering: gesystemBreakdown.value.debunkering || 0,
-          rob: gesystemRob.value || 0,
-          lubricatingoildatacorrection:
-            lubricatingOilDataCorrection.value.type === LubricatingOil.GE_SYSTEM
-              ? {
-                  correction: lubricatingOilDataCorrection.value.correction,
-                  remarks: lubricatingOilDataCorrection.value.remarks,
-                }
-              : null,
-        },
-      ],
+      fueloildata_set: fuelOilData,
+      lubricatingoildata_set: lubricatingOilData,
       freshwaterdata: {
-        consumed: freshwaterConsumed.value || 0,
-        generated: freshwaterGenerated.value || 0,
+        consumed: Number(freshwaterConsumed.value) || 0,
+        generated: Number(freshwaterGenerated.value) || 0,
         received: 0, // Does not apply for Arrival FWE reports
         discharged: 0, // Does not apply for Arrival FWE reports
-        rob: freshwaterRob.value || 0,
+        rob: Number(freshwaterRob.value) || 0,
       },
       consumption_type: ConsumptionType.SBY_TO_FWE,
     },
     actualperformancedata: {
       actual_performance_type: ActualPerformanceType.PORT_TO_PORT,
-      distance_obs_total: totalDistanceObs.value,
-      sailing_time: totalSailingTime.value,
+      distance_obs_total: Number(totalDistanceObs.value),
+      sailing_time: Number(totalSailingTime.value),
       displacement: 0, // Does not apply for Arrival FWE reports
       speed_average: 0, // Does not apply for Arrival FWE reports
       rpm_average: 0, // Does not apply for Arrival FWE reports
       me_average_daily_fo_consumption: 0, // Does not apply for Arrival FWE reports
     },
     totalconsumptiondata: {
-      fueloiltotalconsumptiondata_set: [
-        {
-          fueloiltotalconsumptiondatacorrection: null,
-          fuel_oil_type: FuelOil.LSFO,
-          total_consumption: lsfoTotalSum.value,
-          receipt: 0, // irrelevant for total consumption in Arrival FWE
-          debunkering: 0, // irrelevant for total consumption in Arrival FWE
-          rob: 0, // irrelevant for total consumption in Arrival FWE
-          breakdown: {
-            GE: lsfoGeSum.value,
-            ME: lsfoMeSum.value,
-            IGG: lsfoIggSum.value,
-            BLR: lsfoBoilerSum.value,
-          },
-        },
-        {
-          fueloiltotalconsumptiondatacorrection: null,
-          fuel_oil_type: FuelOil.MGO,
-          total_consumption: mgoTotalSum.value,
-          receipt: 0, // irrelevant for total consumption in Arrival FWE
-          debunkering: 0, // irrelevant for total consumption in Arrival FWE
-          rob: 0, // irrelevant for total consumption in Arrival FWE
-          breakdown: {
-            GE: mgoGeSum.value,
-            ME: mgoMeSum.value,
-            IGG: mgoIggSum.value,
-            BLR: mgoBoilerSum.value,
-          },
-        },
-      ],
-      freshwatertotalconsumptiondata: null,
+      fueloiltotalconsumptiondata_set: fuelOilDataSum,
+      freshwatertotalconsumptiondata: {
+        consumed: 0,
+        generated: 0,
+        received: 0,
+        discharged: 0,
+        rob: 0,
+      },
       consumption_type: TotalConsumptionType.PORT_TO_PORT,
     },
   };
+  // console.log("data: ", REPORT);
 
-  console.log("data: ", REPORT);
-
+  isSubmissionModalVisible.value = true;
   const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/reports/",
+    `${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/`,
     {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
         "Content-Type": "application/json",
-        Accept: "application/json",
       },
       method: "POST",
       body: JSON.stringify(REPORT),
@@ -382,8 +309,8 @@ const sendReport = async () => {
 
   try {
     const data = await response.json();
-    console.log(response);
-    console.log(data);
+    // console.log(response);
+    // console.log(data);
 
     if (response.ok) {
       isSubmissionSuccessful.value = true;
@@ -391,9 +318,12 @@ const sendReport = async () => {
     } else {
       errorMessage.value = data;
     }
-    isSubmissionModalVisible.value = true;
   } catch (error) {
     console.log(error);
+    errorMessage.value = {
+      unexpectedError: ["Please contact the administrator."],
+    };
   }
+  isSubmissionResponse.value = true;
 };
 </script>

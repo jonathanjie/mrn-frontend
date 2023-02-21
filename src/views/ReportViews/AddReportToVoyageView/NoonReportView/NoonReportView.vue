@@ -34,18 +34,23 @@
       <!-- <CustomButton
         class="p-3 text-14"
         type="button"
-        v-on:click="saveChanges()"
+        @click="saveChanges()"
       >
         <template v-slot:content>{{ $t("saveChanges") }}</template>
       </CustomButton> -->
       <GradientButton
         class="p-3 text-14"
         type="button"
-        v-on:click="sendReport()"
-        :disabled="isSubmissionRequested"
+        @click="sendReport()"
+        :is-disabled="isSubmissionRequested"
       >
         <!-- TODO: need alternate function for saving changes to backend -->
-        <template v-slot:content>{{ $t("sendReport") }}</template>
+        <template v-if="isSubmissionRequested" v-slot:content>
+          <div>Loading...</div>
+        </template>
+        <template v-else v-slot:content>
+          <div>{{ $t("sendReport") }}</div>
+        </template>
       </GradientButton>
     </div>
   </div>
@@ -79,8 +84,7 @@ const {
   lubricatingOils,
   machinery,
   // Overview
-  voyageNo,
-  legNo,
+  legUuid,
   reportNo,
   reportingTimeZone,
   reportingDateTimeUTC,
@@ -92,9 +96,9 @@ const {
   routeArrivalPortCountry,
   routeArrivalPortName,
   routeArrivalDateTimeUTC,
-  isRouteArrivalDateTimeEdited,
   routeArrivalDateTimeEditedUTC,
   routeArrivalTimeZone,
+  dateEditIsDisabled,
   // DateTimeLatLong
   latDir,
   latMinutes,
@@ -127,16 +131,16 @@ const {
   heavySeaState,
   heavyRemarks,
   shouldHeavyWeatherDataBeSent,
-  // DistanceTime
+  // Distance & Time
   hoursSinceNoon,
-  hoursTotal,
+  hoursSbyToFwe,
   distanceToGo,
   distanceToGoEdited,
   remarksForChanges,
   distanceObsSinceNoon,
-  distanceObsTotal,
+  distanceObsSbyToFwe,
   distanceEngSinceNoon,
-  distanceEngTotal,
+  distanceEngSbyToFwe,
   revolutionCount,
   // Performance
   speedSinceNoon,
@@ -176,6 +180,7 @@ const submissionStatusStore = useSubmissionStatusStore();
 const {
   isSubmissionRequested,
   isSubmissionModalVisible,
+  isSubmissionResponse,
   isSubmissionSuccessful,
   errorMessage,
 } = storeToRefs(submissionStatusStore);
@@ -213,7 +218,7 @@ const sendReport = async () => {
   });
 
   const fuelOilData = generateFuelOilData(
-    fuelOils,
+    fuelOils.value,
     fuelOilBreakdowns.value,
     fuelOilTotalConsumptions.value,
     fuelOilRobs.value,
@@ -221,7 +226,7 @@ const sendReport = async () => {
   );
 
   const lubricatingOilData = generateLubricatingOilData(
-    lubricatingOils,
+    lubricatingOils.value,
     lubricatingOilBreakdowns.value,
     lubricatingOilRobs.value,
     lubricatingOilDataCorrection.value
@@ -229,8 +234,6 @@ const sendReport = async () => {
 
   const REPORT = {
     report_type: Report.type.NOON,
-    voyage: voyageNo.value,
-    voyage_leg: legNo.value,
     report_num: reportNo.value,
     report_date: reportingDateTimeUTC.value,
     report_tz: reportingTimeZone.value,
@@ -239,74 +242,83 @@ const sendReport = async () => {
       timezone: reportingTimeZone.value,
       position: position,
     },
+    voyage_leg: {
+      uuid: legUuid.value,
+    },
     reportroute: {
       departure_port: routeDeparturePort,
       departure_date: routeDepartureDateTime.value,
-      depature_tz: routeDepartureTimeZone.value,
+      departure_tz: routeDepartureTimeZone.value,
       arrival_port: routeArrivalPort,
-      arrival_date: isRouteArrivalDateTimeEdited.value
-        ? routeArrivalDateTimeEditedUTC.value
-        : routeArrivalDateTimeUTC.value,
+      arrival_date: dateEditIsDisabled.value
+        ? routeArrivalDateTimeUTC.value
+        : routeArrivalDateTimeEditedUTC.value,
       arrival_tz: routeArrivalTimeZone.value,
     },
     weatherdata: {
       weather_notation: weather.value,
       visibility: visibility.value,
       wind_direction: windDirection.value,
-      wind_speed: windSpeed.value,
+      wind_speed: Number(windSpeed.value),
       sea_direction: seaDirection.value,
       sea_state: seaState.value,
       swell_direction: swellDirection.value,
       swell_scale: swellScale.value,
-      air_pressure: airPressure.value,
-      air_temperature_dry: airTemperatureDry.value,
-      air_temperature_wet: airTemperatureWet.value,
-      sea_temperature: seaTemperature.value,
+      air_pressure: Number(airPressure.value),
+      air_temperature_dry: Number(airTemperatureDry.value),
+      air_temperature_wet: Number(airTemperatureWet.value),
+      sea_temperature: Number(seaTemperature.value),
       ice_condition: iceCondition.value,
     },
-    distanceperformancedata: {
-      hours_since_noon: hoursSinceNoon.value || 0,
-      hours_total: hoursTotal.value || 0,
+    distancetimedata: {
+      hours_since_last: Number(hoursSinceNoon.value) || 0,
+      hours_total: Number(hoursSbyToFwe.value) || 0,
       distance_to_go:
         distanceToGoEdited.value &&
         distanceToGoEdited.value !== distanceToGo.value
-          ? distanceToGoEdited.value
-          : distanceToGo.value || 0,
+          ? Number(distanceToGoEdited.value)
+          : Number(distanceToGo.value) || 0,
       remarks_for_changes: remarksForChanges.value
         ? remarksForChanges.value
+        : distanceToGoEdited.value != "" &&
+          distanceToGoEdited.value !== distanceToGo.value
+        ? null
         : "NIL",
-      distance_observed_since_noon: distanceObsSinceNoon.value,
-      distance_observed_total: distanceObsTotal.value,
-      distance_engine_since_noon: distanceEngSinceNoon.value,
-      distance_engine_total: distanceEngTotal.value,
-      revolution_count: revolutionCount.value,
-      speed_since_noon: speedSinceNoon.value || 0,
-      rpm_since_noon: rpmSinceNoon.value || 0,
-      slip_since_noon: slipSinceNoon.value || 0,
-      speed_average: speedAvg.value || 0,
-      rpm_average: rpmAvg.value || 0,
-      slip_average: slipAvg.value || 0,
+      distance_observed_since_last: Number(distanceObsSinceNoon.value),
+      distance_observed_total: Number(distanceObsSbyToFwe.value),
+      distance_engine_since_last: Number(distanceEngSinceNoon.value),
+      distance_engine_total: Number(distanceEngSbyToFwe.value),
+      revolution_count: Number(revolutionCount.value),
+      set_rpm: 0, // irrelevant for Noon Report
+    },
+    performancedata: {
+      speed_since_last: Number(speedSinceNoon.value) || 0,
+      rpm_since_last: Number(rpmSinceNoon.value) || 0,
+      slip_since_last: Number(slipSinceNoon.value) || 0,
+      speed_average: Number(speedAvg.value) || 0,
+      rpm_average: Number(rpmAvg.value) || 0,
+      slip_average: Number(slipAvg.value) || 0,
     },
     consumptionconditiondata: {
       fueloildata_set: fuelOilData,
       lubricatingoildata_set: lubricatingOilData,
       freshwaterdata: {
-        consumed: freshwaterConsumed.value || 0,
-        generated: freshwaterGenerated.value || 0,
+        consumed: Number(freshwaterConsumed.value) || 0,
+        generated: Number(freshwaterGenerated.value) || 0,
         received: 0, // irrelevant for noon report
         discharged: 0, // irrelevant for noon report
-        rob: freshwaterRob.value || 0,
+        rob: Number(freshwaterRob.value) || 0,
       },
       consumption_type: ConsumptionType.NOON_TO_NOON,
     },
     heavyweatherdata: shouldHeavyWeatherDataBeSent.value
       ? {
           weather_notation: heavyWeatherNotation.value,
-          total_hours: heavyWeatherHours.value,
-          observed_distance: heavyWeatherDist.value,
-          fuel_consumption: heavyWeatherConsumption.value,
+          total_hours: Number(heavyWeatherHours.value),
+          observed_distance: Number(heavyWeatherDist.value),
+          fuel_consumption: Number(heavyWeatherConsumption.value),
           wind_direction: heavyWindDirection.value,
-          wind_speed: heavyWindSpeed.value,
+          wind_speed: Number(heavyWindSpeed.value),
           sea_direction: heavySeaDirection.value,
           sea_state: heavySeaState.value,
           remarks: heavyRemarks.value,
@@ -316,8 +328,8 @@ const sendReport = async () => {
       ? {
           start_date: stoppageBeginning.value,
           end_date: stoppageEnding.value || null,
-          duration: stoppageDuration.value,
-          reduced_rpm: stoppageChangedRPM.value,
+          duration: Number(stoppageDuration.value),
+          reduced_rpm: Number(stoppageChangedRPM.value),
           position: stoppagePosition,
           reason: stoppageReason.value,
           remarks: stoppageRemarks.value,
@@ -325,10 +337,11 @@ const sendReport = async () => {
       : null,
   };
 
-  console.log("data: ", REPORT);
+  // console.log("data: ", REPORT);
 
+  isSubmissionModalVisible.value = true;
   const response = await fetch(
-    "https://testapi.marinachain.io/marinanet/reports/",
+    `${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/`,
     {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
@@ -341,8 +354,8 @@ const sendReport = async () => {
 
   try {
     const data = await response.json();
-    console.log(response);
-    console.log(data);
+    // console.log(response);
+    // console.log(data);
 
     if (response.ok) {
       isSubmissionSuccessful.value = true;
@@ -350,9 +363,15 @@ const sendReport = async () => {
     } else {
       errorMessage.value = data;
     }
-    isSubmissionModalVisible.value = true;
+    // isSubmissionModalVisible.value = true;
+    // isSubmissionResponse.value=true
   } catch (error) {
     console.log(error);
+    errorMessage.value = {
+      unexpectedError: ["Please contact the administrator."],
+    };
+    // isSubmissionModalVisible.value = true;
   }
+  isSubmissionResponse.value = true;
 };
 </script>
