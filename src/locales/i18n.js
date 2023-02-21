@@ -551,6 +551,7 @@ const i18n = createI18n({
       clickMyVessels: 'Click "My Vessels" button',
       dailyReport: "Daily Report",
       contactUs: "Contact Us",
+      popular: "POPULAR",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser

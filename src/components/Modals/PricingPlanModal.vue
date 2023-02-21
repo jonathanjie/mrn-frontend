@@ -75,7 +75,9 @@ const closeModal = () => {
             >
           </div>
           <!--body-->
-          <div class="flex flex-row w-full justify-center space-x-6 px-10 mt-8">
+          <div
+            class="flex flex-row w-full justify-center space-x-6 px-10 mt-8 mb-20"
+          >
             <PricingContainer
               v-for="(userPlan, index) in userPlans"
               :key="userPlan.id"
@@ -84,18 +86,6 @@ const closeModal = () => {
               :userDescription="userDescription[index]"
               :options="options[userPlan]"
             />
-          </div>
-          <!--footer-->
-          <div
-            class="flex items-center justify-end p-4 bg-gray-50 rounded-b space-x-3"
-          >
-            <CustomButton
-              class="px-6 py-3 text-14 mr-1 mb-1"
-              type="button"
-              @click="closeModal"
-            >
-              <template v-slot:content>{{ $t("cancel") }}</template>
-            </CustomButton>
           </div>
         </div>
       </div>
