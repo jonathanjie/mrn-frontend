@@ -1,7 +1,7 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 
-export const useCIISetupStore = defineStore("crew", () => {
+export const useCIISetupStore = defineStore("cii-setup", () => {
   const pageNum = ref(2);
   const shipIndexType = ref("eedi");
   const shipIndexVal = ref("");

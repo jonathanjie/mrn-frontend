@@ -9,14 +9,15 @@
             ? (selectedTitle = title)
             : selectedTitle
         "
-        class="py-2 px-3 text-14 cursor-pointer"
-        :class="
-          !validTabTitles.includes(title)
-            ? 'text-gray-500 line-through cursor-default'
-            : selectedTitle === title
-            ? 'bg-white rounded-md text-gray-700 drop-shadow'
-            : 'text-gray-500'
-        "
+        :class="{
+          'py-2 px-3 text-14 cursor-pointer': true,
+          'text-gray-500 line-through cursor-default':
+            !validTabTitles.includes(title),
+          'text-gray-700 bg-white rounded-md drop-shadow':
+            selectedTitle === title,
+          'text-gray-500': selectedTitle !== title,
+          'grow w-0 flex justify-center': expand,
+        }"
       >
         {{ title }}
       </li>
@@ -29,6 +30,13 @@
 import { ref, provide } from "vue";
 
 export default {
+  props: {
+    expand: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+  },
   setup(props, { slots }) {
     const tabTitles = ref(slots.default().map((tab) => tab.props.title));
     const validTabTitles = ref(
