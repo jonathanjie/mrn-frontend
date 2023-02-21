@@ -1,5 +1,4 @@
 <script setup>
-import GradientButton from "@/components/Buttons/GradientButton.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 import PricingContainer from "@/components/Modals/components/PricingContainer.vue";
 
@@ -97,13 +96,6 @@ const closeModal = () => {
             >
               <template v-slot:content>{{ $t("cancel") }}</template>
             </CustomButton>
-            <GradientButton
-              class="px-6 py-2 text-14 mr-1 mb-1"
-              type="button"
-              @click="addSettings()"
-            >
-              <template v-slot:content>{{ $t("saveDetails") }}</template>
-            </GradientButton>
           </div>
         </div>
       </div>
