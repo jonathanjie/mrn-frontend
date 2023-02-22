@@ -26,7 +26,7 @@ const gradeColor = (grade) => {
 };
 </script>
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-col pb-8">
     <div class="flex justify-between items-center">
       <span class="text-18 text-gray-700 font-bold">{{ $t("ciiStatus") }}</span>
       <CustomButton
