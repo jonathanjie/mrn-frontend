@@ -9,7 +9,7 @@ const props = defineProps({
   options: Array,
 });
 
-const emailSubject = "Sales%20Inquiry%20for%20MarinaNet";
+const emailSubject = "Upgrading for MarinaNet - Accelerating Decarbonization";
 const { userCurrentPlan, userPlan, userDescription, options } = toRefs(props);
 </script>
 

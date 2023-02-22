@@ -1,5 +1,4 @@
 <script setup>
-import CustomButton from "@/components/Buttons/CustomButton.vue";
 import PricingContainer from "@/components/Modals/components/PricingContainer.vue";
 
 const emit = defineEmits(["close-modal"]);
