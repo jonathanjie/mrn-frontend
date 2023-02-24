@@ -7,17 +7,21 @@ import {
 import { ref, computed, toRefs } from "vue";
 import ReportCard from ".//ReportCard.vue";
 import CustomButton from "./Buttons/CustomButton.vue";
-
+import { useRouter } from "vue-router";
 import { readableUTCDate } from "@/utils/helpers";
+import { useVoyageStore } from "@/stores/useVoyageStore";
+import { storeToRefs } from "pinia";
+import { useLatestReportDetailsStore } from "@/stores/useLatestReportDetailsStore";
 let isExpanded = ref(true);
 const legNum = 1;
-
+const router = useRouter();
 const props = defineProps({
   reports: Array,
   voyage: Object,
+  voyageDetails: Object,
 });
 
-const { reports, voyage } = toRefs(props);
+const { reports, voyage, voyageDetails } = toRefs(props);
 
 const lastReportIndex = reports.value.length - 1;
 const lastLegIndex = voyage.value.voyage_legs.length - 1; // Need to use this
@@ -38,19 +42,22 @@ const filteredData = computed(() => {
     );
 });
 
-const handleClick = () => {
-  console.log("Hello World");
-};
 // Enable for addReport function
-// const handleClick = async () => {
-//   // console.log(voyageLegs.value);
-//   storedVoyageLegs.value = voyageLegs.value;
-//   await refetchLatestReportDetails();
-//   router.push({
-//     name: "add-report",
-//     state: { voyageDetails },
-//   });
-// };
+
+const voyageLegs = computed(() => voyage.voyage_legs);
+const voyageStore = useVoyageStore();
+const { voyageLegs: storedVoyageLegs } = storeToRefs(voyageStore);
+const latestReportDetailsStore = useLatestReportDetailsStore();
+const { refetchLatestReportDetails } = latestReportDetailsStore;
+const handleClick = async () => {
+  // console.log(voyageLegs.value);
+  storedVoyageLegs.value = voyageLegs.value;
+  await refetchLatestReportDetails();
+  router.push({
+    name: "add-report",
+    state: { voyageDetails },
+  });
+};
 </script>
 
 <template>

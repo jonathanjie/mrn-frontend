@@ -13,6 +13,7 @@ import { useLatestReportDetailsStore } from "@/stores/useLatestReportDetailsStor
 import { useVoyageStore } from "@/stores/useVoyageStore";
 import { storeToRefs } from "pinia";
 import LegCard from "./LegCard.vue";
+import axios from "axios";
 import GradientButton from "./Buttons/GradientButton.vue";
 
 const router = useRouter();
@@ -42,13 +43,15 @@ const reports = computed(() =>
 
 const isExpanded = ref(props.isInitiallyOpen);
 
-let lastReportNo = {}; // Using this is Leg component
-
 const lastReportIndex = reports.value.length - 1; // Using this is Leg component
-const lastLegIndex = props.voyage.voyage_legs.length - 1; // Using this is Leg component
+let lastLegIndex = props.voyage.voyage_legs.length - 1; // Using this is Leg component
+if (lastLegIndex < 0) {
+  lastLegIndex = 1;
+}
 const lastLegNo = props.voyage.voyage_legs[lastLegIndex]?.leg_num;
 const lastLegUuid = props.voyage.voyage_legs[lastLegIndex]?.uuid;
 
+let lastReportNo = {}; // Using this is Leg component
 for (let report of reports.value) {
   lastReportNo[report.report_type] = Math.max(
     report.report_num,
@@ -105,6 +108,33 @@ const handleClick = async () => {
     name: "add-report",
     state: { voyageDetails },
   });
+};
+
+const isAddLegLoading = ref(false);
+const addLeg = async () => {
+  console.log("WORKING");
+  if (
+    !confirm("Are you sure? You may not be able to edit your previous leg.")
+  ) {
+    return;
+  } else {
+    isAddLegLoading.value = true;
+    const legData = {
+      voyage: props.voyage.uuid,
+      leg_num: lastLegIndex + 1,
+    };
+    console.log(legData, "Leg data pls");
+    await axios
+      .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/voyagelegs/`, legData)
+      .then((response) => {
+        console.log(response);
+        //refetch.value();
+        isAddLegLoading.value = false;
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }
 };
 </script>
 
@@ -192,13 +222,14 @@ const handleClick = async () => {
 
     <!-- TODO: pagination + different start/dest depending on report type -->
     <div class="flex justify-end w-full mt-6 mb-5">
-      <GradientButton class="py-1.5 px-3.5" type="button">
+      <GradientButton class="py-1.5 px-3.5" @click="addLeg()" type="button">
         <template v-slot:content>{{ $t("createNewLeg") }}</template>
       </GradientButton>
     </div>
     <div class="flex flex-col space-y-6">
       <LegCard
         v-for="leg in voyage.voyage_legs"
+        :voyageDetails="voyageDetails"
         :key="leg.id"
         :voyage="voyage"
         :reports="leg.reports"
