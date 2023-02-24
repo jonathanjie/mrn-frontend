@@ -129,7 +129,7 @@ let chartOptions = {
 };
 </script>
 <template>
-  <div class="flex flex-col bg-white rounded-xl p-5">
+  <div class="flex flex-col bg-white rounded-t-xl p-5 shadow-md">
     <span class="text-18 font-bold text-gray-700 w-full"
       >CII Rating Evolution & Trendlines</span
     >
