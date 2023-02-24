@@ -149,7 +149,7 @@ let chartOptions = {
           }}</span>
         </div>
       </div>
-      <div class="flex w-full">
+      <div class="flex">
         <apexchart
           type="area"
           height="400"
