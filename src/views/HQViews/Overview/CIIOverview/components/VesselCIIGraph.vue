@@ -22,63 +22,89 @@ const data = [
   },
 ];
 
-const requiredCII = 4.6;
 const series = [
   {
-    name: "Grade A",
+    name: "Grade E",
     data: [
-      [2019, 5.0],
-      [2020, 4.9],
-      [2021, 4.8],
-      [2022, 4.7],
-    ],
-  },
-  {
-    name: "Grade B",
-    data: [
-      [2019, 5.0],
-      [2020, 4.9],
-      [2021, 4.8],
-      [2022, 4.7],
-    ],
-  },
-  {
-    name: "Grade C",
-    data: [
-      [2019, 5.0],
-      [2020, 4.9],
-      [2021, 4.8],
-      [2022, 4.7],
+      [2019, 5.23],
+      [2020, 5.17],
+      [2021, 5.12],
+      [2022, 5.07],
+      [2023, 5.02],
+      [2024, 4.95],
+      [2025, 4.9],
     ],
   },
   {
     name: "Grade D",
     data: [
-      [2019, 5.0],
-      [2020, 4.9],
-      [2021, 4.8],
-      [2022, 4.7],
+      [2019, 5.07],
+      [2020, 5.02],
+      [2021, 4.97],
+      [2022, 4.92],
+      [2023, 4.87],
+      [2024, 4.82],
+      [2025, 4.77],
     ],
   },
   {
-    name: "Grade E",
+    name: "Grade C",
     data: [
-      [2019, 5.0],
-      [2020, 4.9],
-      [2021, 4.8],
-      [2022, 4.7],
+      [2019, 4.92],
+      [2020, 4.87],
+      [2021, 4.82],
+      [2022, 4.77],
+      [2023, 4.72],
+      [2024, 4.67],
+      [2025, 4.62],
+    ],
+  },
+  {
+    name: "Grade B",
+    data: [
+      [2019, 4.77],
+      [2020, 4.72],
+      [2021, 4.67],
+      [2022, 4.62],
+      [2023, 4.57],
+      [2024, 4.52],
+      [2025, 4.47],
+    ],
+  },
+
+  {
+    name: "Grade A",
+    data: [
+      [2019, 4.62],
+      [2020, 4.52],
+      [2021, 4.42],
+      [2022, 4.32],
+      [2023, 4.27],
+      [2024, 4.22],
+      [2025, 4.17],
+    ],
+  },
+  {
+    name: "Vessel CII",
+    data: [
+      [2019, 5.07],
+      [2020, 5.05],
+      [2021, 4.82],
+      [2022, 4.77],
+      [2023, 4.72],
+      [2024, 4.72],
+      [2025, 4.72],
     ],
   },
 ];
 
-const labels = [2019, 2020, 2021, 2022];
+const labels = [2019, 2020, 2021, 2022, 2023, 2024, 2025];
 let chartOptions = {
   chart: {
     labels: labels,
     type: "area",
-    stacked: true,
   },
-  colors: ["#12B76A", "#7BBD58", "#FFD400", "#FDA80C", "#F04438"],
+  colors: ["#F04438", "#FDA80C", "#FFD400", "#7BBD58", "#12B76A", "#1570EF"],
   dataLabels: {
     enabled: false,
   },
@@ -95,6 +121,10 @@ let chartOptions = {
   legend: {
     position: "top",
     horizontalAlign: "left",
+  },
+  yaxis: {
+    min: 4,
+    max: 5.5,
   },
 };
 </script>
@@ -114,15 +144,16 @@ let chartOptions = {
             <CIIGrade :grade="grade" />
             <span class="ml-2.5 text-16 text-gray-600">Grade {{ grade }}</span>
           </div>
-          <span class="text-gray-700 text-16 font-bold">{{
+          <span class="ml-14 text-gray-700 text-16 font-bold">{{
             percentages[index]
           }}</span>
         </div>
       </div>
-      <div class="flex bg-white w-full">
+      <div class="flex w-full">
         <apexchart
-          width="700"
           type="area"
+          height="400"
+          width="1000"
           :options="chartOptions"
           :series="series"
         />
