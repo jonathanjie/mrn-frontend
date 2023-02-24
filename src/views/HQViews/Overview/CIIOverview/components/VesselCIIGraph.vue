@@ -1,26 +1,9 @@
 <script setup>
 import CIIGrade from "@/views/CIIViews/components/CIIGrade.vue";
+import HazingBanner from "@/components/HazingBanner.vue";
+const hide = true;
 const grades = ["E", "D", "C", "B", "A"];
 const percentages = ["> 28%", "8% to 28%", "-7% to 8%", "-18% to -7%", "<-18%"];
-
-const data = [
-  {
-    year: 2019,
-    ciiValue: 5.5,
-  },
-  {
-    year: 2020,
-    ciiValue: 5.0,
-  },
-  {
-    year: 2021,
-    ciiValue: 4.75,
-  },
-  {
-    year: 2022,
-    ciiValue: 4.5,
-  },
-];
 
 const series = [
   {
@@ -133,8 +116,8 @@ let chartOptions = {
     <span class="text-18 font-bold text-gray-700 w-full"
       >CII Rating Evolution & Trendlines</span
     >
-    <div class="flex mt-6">
-      <div class="flex flex-col">
+    <div class="flex relative mt-6">
+      <div class="flex flex-col" :class="hide ? 'blur-sm' : ''">
         <div
           v-for="(grade, index) in grades"
           :key="grade.id"
@@ -149,7 +132,7 @@ let chartOptions = {
           }}</span>
         </div>
       </div>
-      <div class="flex">
+      <div class="flex" :class="hide ? 'blur-sm' : ''">
         <apexchart
           type="area"
           height="400"
@@ -158,6 +141,7 @@ let chartOptions = {
           :series="series"
         />
       </div>
+      <HazingBanner v-if="hide" :box="true" />
     </div>
   </div>
 </template>

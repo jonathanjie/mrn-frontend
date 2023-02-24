@@ -2,6 +2,8 @@
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 import CIIVoyageCard from "./components/CIIVoyageCard.vue";
 import CIIGrade from "@/views/CIIViews/components/CIIGrade.vue";
+import HazingBanner from "@/components/HazingBanner.vue";
+const hide = true;
 const currentYear = 2023;
 const currentStats = {
   year: 2023,
@@ -40,8 +42,11 @@ const gradeColor = (grade) => {
         >
       </CustomButton>
     </div>
-    <div class="flex flex-row space-x-6 w-auto">
-      <div class="flex flex-col rounded-xl bg-white p-4">
+    <div class="flex relative flex-row space-x-6 w-auto">
+      <div
+        class="flex flex-col rounded-xl bg-white p-4"
+        :class="hide ? 'blur-sm' : ''"
+      >
         <div class="flex flex-row mb-3">
           <span class="text-14 text-blue-700 font-semibold mr-1.5">{{
             currentYear
@@ -109,7 +114,8 @@ const gradeColor = (grade) => {
           </div>
         </div>
       </div>
-      <CIIVoyageCard />
+      <CIIVoyageCard :class="hide ? 'blur-sm' : ''" />
+      <HazingBanner v-if="hide" />
     </div>
   </div>
 </template>
