@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from "vue";
 import CIIRatingAlertRow from "./components/CIIRatingAlertRow.vue";
+import HazingBanner from "@/components/HazingBanner.vue";
+const hide = true;
 const alerts = [
   {
     shipName: "Marina A",
@@ -66,7 +68,14 @@ let hover = ref(false);
         @mouseleave="hover = false"
       />
     </div>
-
-    <CIIRatingAlertRow v-for="alert in alerts" :key="alert.id" :alert="alert" />
+    <div class="flex flex-col relative">
+      <CIIRatingAlertRow
+        v-for="alert in alerts"
+        :key="alert.id"
+        :alert="alert"
+        :class="hide ? 'blur-sm' : ''"
+      />
+      <HazingBanner />
+    </div>
   </div>
 </template>
