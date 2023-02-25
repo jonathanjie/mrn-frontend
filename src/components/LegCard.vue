@@ -18,7 +18,7 @@ const router = useRouter();
 const props = defineProps({
   reports: Array,
   voyage: Object,
-  voyageDetails: Object,
+  voyageDetails: String,
 });
 
 const { reports, voyage, voyageDetails } = toRefs(props);
@@ -53,6 +53,7 @@ const handleClick = async () => {
   // console.log(voyageLegs.value);
   storedVoyageLegs.value = voyageLegs.value;
   await refetchLatestReportDetails();
+  console.log(voyageDetails, "Voyage details in legcard");
   router.push({
     name: "add-report",
     state: { voyageDetails },

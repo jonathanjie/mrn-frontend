@@ -46,7 +46,7 @@ const isExpanded = ref(props.isInitiallyOpen);
 const lastReportIndex = reports.value.length - 1; // Using this is Leg component
 let lastLegIndex = props.voyage.voyage_legs.length - 1; // Using this is Leg component
 if (lastLegIndex < 0) {
-  lastLegIndex = 1;
+  lastLegIndex = 0;
 }
 const lastLegNo = props.voyage.voyage_legs[lastLegIndex]?.leg_num;
 const lastLegUuid = props.voyage.voyage_legs[lastLegIndex]?.uuid;
@@ -100,15 +100,15 @@ const dest =
 
 // console.log(filteredData.value);
 
-const handleClick = async () => {
-  // console.log(voyageLegs.value);
-  storedVoyageLegs.value = voyageLegs.value;
-  await refetchLatestReportDetails();
-  router.push({
-    name: "add-report",
-    state: { voyageDetails },
-  });
-};
+// const handleClick = async () => {
+//   // console.log(voyageLegs.value);
+//   storedVoyageLegs.value = voyageLegs.value;
+//   await refetchLatestReportDetails();
+//   router.push({
+//     name: "add-report",
+//     state: { voyageDetails },
+//   });
+// };
 
 const isAddLegLoading = ref(false);
 const addLeg = async () => {
