@@ -15,6 +15,7 @@
     <div v-else-if="isSuccess && voyages.length !== 0" class="contents">
       <VoyageCard
         v-for="(voyage, index) in voyages"
+        @refetch-data="refetchData()"
         :key="index"
         :voyage="voyage"
         :is-initially-open="index == 0"
@@ -85,6 +86,10 @@ const isAddVoyageLoading = ref(false);
 // };
 
 // TODO: use addVoyage in crewStore; temp fix to make add voyage work
+
+const refetchData = () => {
+  refetch.value();
+};
 const addVoyage = async () => {
   if (!confirm("Are you sure? You may not be able to edit previous voyages.")) {
     return;
@@ -109,7 +114,7 @@ const addVoyage = async () => {
       .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/voyages/`, voyageData)
       .then((response) => {
         // console.log(response);
-        refetch.value();
+        refetchData();
         isAddVoyageLoading.value = false;
       })
       .catch((error) => {

@@ -1,26 +1,28 @@
 <script setup>
 import CustomButton from "./Buttons/CustomButton.vue";
-// import ReportCard from ".//ReportCard.vue";
+import { useLatestReportDetailsStore } from "@/stores/useLatestReportDetailsStore";
 import { computed, ref } from "vue";
+import { storeToRefs } from "pinia";
+import LegCard from "./LegCard.vue";
+import axios from "axios";
+import GradientButton from "./Buttons/GradientButton.vue";
+import { useShipStore } from "@/stores/useShipStore";
+
+// import ReportCard from ".//ReportCard.vue";
 // import {
 //   ReportTypeToDisplay,
 //   ReportFilterCategories,
 //   ReportTypeToFilterCategories,
 // } from "@/constants";
 // import { readableUTCDate } from "@/utils/helpers";
-import { useRouter } from "vue-router";
-import { useLatestReportDetailsStore } from "@/stores/useLatestReportDetailsStore";
-import { useVoyageStore } from "@/stores/useVoyageStore";
-import { storeToRefs } from "pinia";
-import LegCard from "./LegCard.vue";
-import axios from "axios";
-import GradientButton from "./Buttons/GradientButton.vue";
+// import { useRouter } from "vue-router";
+// import { useVoyageStore } from "@/stores/useVoyageStore";
 
 const latestReportDetailsStore = useLatestReportDetailsStore();
+const { isAddVoyageEnabled } = storeToRefs(latestReportDetailsStore);
 // const voyageStore = useVoyageStore();
 // const { voyageLegs: storedVoyageLegs } = storeToRefs(voyageStore);
 // const router = useRouter();
-// const { refetchLatestReportDetails } = latestReportDetailsStore;
 
 const props = defineProps({
   voyage: {
@@ -107,8 +109,11 @@ const dest =
 //     state: { voyageDetails },
 //   });
 // };
+// const shipStore = useShipStore();
+// const { refetch } = shipStore.getAllReports(props.imo);
 
 const isAddLegLoading = ref(false);
+const emit = defineEmits(["refetch-data"]);
 const addLeg = async () => {
   if (
     !confirm("Are you sure? You may not be able to edit your previous leg.")
@@ -118,13 +123,14 @@ const addLeg = async () => {
     isAddLegLoading.value = true;
     const legData = {
       voyage: props.voyage.uuid,
-      leg_num: lastLegNo || 1,
+      leg_num: lastLegNo + 1 || 1,
     };
     await axios
       .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/voyagelegs/`, legData)
       .then((response) => {
         // console.log(response);
-        //refetch.value();
+        // refetch.value();
+        emit("refetch-data");
         isAddLegLoading.value = false;
       })
       .catch((error) => {
@@ -223,7 +229,12 @@ const addLeg = async () => {
 
     <!-- TODO: pagination + different start/dest depending on report type -->
     <div class="flex justify-end w-full mt-6 mb-5">
-      <GradientButton class="py-1.5 px-3.5" @click="addLeg()" type="button">
+      <GradientButton
+        class="py-1.5 px-3.5"
+        @click="addLeg()"
+        type="button"
+        :is-disabled="isAddLegLoading || !isAddVoyageEnabled"
+      >
         <template v-slot:content>{{ $t("createNewLeg") }}</template>
       </GradientButton>
     </div>
