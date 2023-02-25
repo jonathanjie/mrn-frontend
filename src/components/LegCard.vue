@@ -13,20 +13,22 @@ import { useVoyageStore } from "@/stores/useVoyageStore";
 import { storeToRefs } from "pinia";
 import { useLatestReportDetailsStore } from "@/stores/useLatestReportDetailsStore";
 let isExpanded = ref(true);
-const legNum = 1;
 const router = useRouter();
 const props = defineProps({
   reports: Array,
   voyage: Object,
   voyageDetails: String,
+  legNum: Number,
 });
 
-const { reports, voyage, voyageDetails } = toRefs(props);
-
-const lastReportIndex = reports.value.length - 1;
-const lastLegIndex = voyage.value.voyage_legs.length - 1; // Need to use this
-
+const { reports, voyage, voyageDetails, legNum } = toRefs(props);
+const voyageLegs = computed(() => voyage.value.voyage_legs);
+const voyageStore = useVoyageStore();
+const { voyageLegs: storedVoyageLegs } = storeToRefs(voyageStore);
+const latestReportDetailsStore = useLatestReportDetailsStore();
+const { refetchLatestReportDetails } = latestReportDetailsStore;
 const filter = ref(ReportFilterCategories.ALL);
+
 const filteredData = computed(() => {
   const copy = (list) => [...list];
 
@@ -43,20 +45,14 @@ const filteredData = computed(() => {
 });
 
 // Enable for addReport function
-
-const voyageLegs = computed(() => voyage.voyage_legs);
-const voyageStore = useVoyageStore();
-const { voyageLegs: storedVoyageLegs } = storeToRefs(voyageStore);
-const latestReportDetailsStore = useLatestReportDetailsStore();
-const { refetchLatestReportDetails } = latestReportDetailsStore;
 const handleClick = async () => {
-  // console.log(voyageLegs.value);
   storedVoyageLegs.value = voyageLegs.value;
   await refetchLatestReportDetails();
-  console.log(voyageDetails, "Voyage details in legcard");
+  voyageDetails.value.cur_leg_no = legNum.value;
+  localStorage.setItem("voyageDetails", JSON.stringify(voyageDetails.value));
   router.push({
     name: "add-report",
-    state: { voyageDetails },
+    // state: { voyageDetails },
   });
 };
 </script>

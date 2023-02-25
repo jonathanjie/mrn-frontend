@@ -280,7 +280,7 @@ const sendReport = async () => {
     },
   };
 
-  // console.log("data: ", REPORT);
+  console.log("data: ", REPORT);
 
   isSubmissionModalVisible.value = true;
   const response = await fetch(

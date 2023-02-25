@@ -16,12 +16,11 @@ import LegCard from "./LegCard.vue";
 import axios from "axios";
 import GradientButton from "./Buttons/GradientButton.vue";
 
-const router = useRouter();
 const latestReportDetailsStore = useLatestReportDetailsStore();
-const { refetchLatestReportDetails } = latestReportDetailsStore;
-const { departurePort, arrivalPort } = storeToRefs(latestReportDetailsStore);
-const voyageStore = useVoyageStore();
-const { voyageLegs: storedVoyageLegs } = storeToRefs(voyageStore);
+// const voyageStore = useVoyageStore();
+// const { voyageLegs: storedVoyageLegs } = storeToRefs(voyageStore);
+// const router = useRouter();
+// const { refetchLatestReportDetails } = latestReportDetailsStore;
 
 const props = defineProps({
   voyage: {
@@ -36,18 +35,16 @@ const props = defineProps({
   },
 });
 
-const voyageLegs = computed(() => props.voyage.voyage_legs);
+// const voyageLegs = computed(() => props.voyage.voyage_legs);
 const reports = computed(() =>
   props.voyage.voyage_legs.reduce((acc, curr) => curr.reports.concat(acc), [])
 );
 
 const isExpanded = ref(props.isInitiallyOpen);
 
-const lastReportIndex = reports.value.length - 1; // Using this is Leg component
-let lastLegIndex = props.voyage.voyage_legs.length - 1; // Using this is Leg component
-if (lastLegIndex < 0) {
-  lastLegIndex = 0;
-}
+const lastReportIndex = reports.value.length - 1;
+const lastLegIndex = props.voyage.voyage_legs.length - 1;
+
 const lastLegNo = props.voyage.voyage_legs[lastLegIndex]?.leg_num;
 const lastLegUuid = props.voyage.voyage_legs[lastLegIndex]?.uuid;
 
@@ -58,7 +55,7 @@ for (let report of reports.value) {
     lastReportNo[report.report_type] || 0
   );
 }
-const voyageDetails = JSON.stringify({
+const voyageDetails = {
   voyage_uuid: props.voyage.uuid,
   leg_uuid: lastLegUuid || "",
   cur_voyage_no: props.voyage.voyage_num,
@@ -74,8 +71,9 @@ const voyageDetails = JSON.stringify({
   last_evntc_report_no: lastReportNo["EVHB"] || 0,
   last_noonp_report_no: lastReportNo["NNPO"] || 0,
   last_noonc_report_no: lastReportNo["NNHB"] || 0,
-});
+};
 
+const { departurePort, arrivalPort } = storeToRefs(latestReportDetailsStore);
 const start = reports.value[0]?.departure_port || departurePort.value || "N/A";
 const mid = "At Sea";
 const dest =
@@ -112,7 +110,6 @@ const dest =
 
 const isAddLegLoading = ref(false);
 const addLeg = async () => {
-  console.log("WORKING");
   if (
     !confirm("Are you sure? You may not be able to edit your previous leg.")
   ) {
@@ -121,17 +118,21 @@ const addLeg = async () => {
     isAddLegLoading.value = true;
     const legData = {
       voyage: props.voyage.uuid,
-      leg_num: lastLegIndex + 1,
+      leg_num: lastLegNo || 1,
     };
-    console.log(legData, "Leg data pls");
     await axios
       .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/voyagelegs/`, legData)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         //refetch.value();
         isAddLegLoading.value = false;
       })
       .catch((error) => {
+        if (error.response.status == 400) {
+          confirm(
+            "Unable to add new leg; Please complete your previous leg first."
+          );
+        }
         console.log(error.message);
       });
   }
@@ -233,6 +234,7 @@ const addLeg = async () => {
         :key="leg.id"
         :voyage="voyage"
         :reports="leg.reports"
+        :legNum="leg.leg_num"
       />
       <!-- <div v-for="report in filteredData" :key="report.id">
         <ReportCard
