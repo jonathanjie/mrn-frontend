@@ -17,7 +17,7 @@ const router = useRouter();
 const props = defineProps({
   reports: Array,
   voyage: Object,
-  voyageDetails: String,
+  voyageDetails: Object,
   legNum: Number,
 });
 
@@ -43,7 +43,10 @@ const filteredData = computed(() => {
       new Date(a.report_date) < new Date(b.report_date) ? 1 : -1
     );
 });
-
+let disabled = ref(true);
+if (voyageLegs.value.length === legNum.value) {
+  disabled.value = false;
+}
 // Enable for addReport function
 const handleClick = async () => {
   storedVoyageLegs.value = voyageLegs.value;
@@ -72,6 +75,7 @@ const handleClick = async () => {
       <div class="flex">
         <CustomButton
           @click="handleClick()"
+          :is-disabled="disabled"
           class="h-9 text-14 text-blue-700 rounded-xl ml-auto min-w-fit disabled:text-gray-500"
         >
           <template v-slot:content>+{{ $t("addNewReport") }}</template>
