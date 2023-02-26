@@ -121,9 +121,9 @@ const handleClick = async () => {
           ></ReportCard>
         </div>
       </div>
-      <div class="flex w-full justify-center">
+      <!-- <div class="flex w-full justify-center">
         <span>1234567890</span>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
