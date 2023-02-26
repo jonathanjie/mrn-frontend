@@ -96,13 +96,13 @@ export const IceCondition = {
 };
 
 export const FuelOil = {
-  LSFO: "lsfo",
-  MGO: "mgo",
-  MDO: "mdo",
-  HFO: "hfo",
-  LPGP: "lpgPropane",
-  LPGB: "lpgButane",
-  LNG: "lng",
+  LSFO: "LSFO",
+  MGO: "MGO",
+  MDO: "MDO",
+  HFO: "HFO",
+  LPGP: "LPGP",
+  LPGB: "LPGB",
+  LNG: "LNG",
 };
 
 export const LubricatingOil = {

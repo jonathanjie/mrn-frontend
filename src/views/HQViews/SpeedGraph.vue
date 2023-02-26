@@ -105,6 +105,16 @@
 </template>
 
 <script setup>
+import { useShipStore } from "@/stores/useShipStore";
+import { storeToRefs } from "pinia";
+
+// TEMP FIX; ship store needs to be updated when there is more than 1 ship
+const shipStore = useShipStore();
+const { imoReg } = storeToRefs(shipStore);
+
+// TODO: update other ship store values
+imoReg.value = props.imo;
+
 const props = defineProps({
   vesselname: String,
   imo: String,

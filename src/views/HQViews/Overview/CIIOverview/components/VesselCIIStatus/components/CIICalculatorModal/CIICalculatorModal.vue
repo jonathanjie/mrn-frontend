@@ -13,7 +13,6 @@ import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 
 const resetAll = () => {};
 const calculateCII = () => {};
-const cancel = () => {};
 
 const store = useCIICalculatorStore();
 const {

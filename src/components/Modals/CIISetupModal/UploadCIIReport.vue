@@ -10,7 +10,6 @@ import { storeToRefs } from "pinia";
 const store = useCIISetupStore();
 const { technicalFiles, standardizedFiles, IMODCSFiles } = storeToRefs(store);
 
-// TODO: change it to compare extensions
 const allowPDF = ["pdf"];
 const allowPDFandXLS = ["pdf", "xls", "xlsx"];
 
@@ -23,7 +22,6 @@ const ciiReportTypes = {
   TECHNICAL_FILES: technicalFiles, // EEDI / EEXI Technical File
 };
 
-// TODO: change "files" to a list index to get the right ref list
 const addFiles = (key, newFiles, validFileTypes) => {
   let newUploadableFiles = [...newFiles]
     .map((file) => new UploadableFile(file))
