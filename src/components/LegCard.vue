@@ -12,7 +12,7 @@ import { readableUTCDate } from "@/utils/helpers";
 import { useVoyageStore } from "@/stores/useVoyageStore";
 import { storeToRefs } from "pinia";
 import { useLatestReportDetailsStore } from "@/stores/useLatestReportDetailsStore";
-let isExpanded = ref(true);
+
 const router = useRouter();
 const props = defineProps({
   reports: Array,
@@ -23,12 +23,14 @@ const props = defineProps({
 
 const { reports, voyage, voyageDetails, legNum } = toRefs(props);
 const voyageLegs = computed(() => voyage.value.voyage_legs);
+
 const voyageStore = useVoyageStore();
 const { voyageLegs: storedVoyageLegs } = storeToRefs(voyageStore);
+
 const latestReportDetailsStore = useLatestReportDetailsStore();
 const { refetchLatestReportDetails } = latestReportDetailsStore;
-const filter = ref(ReportFilterCategories.ALL);
 
+const filter = ref(ReportFilterCategories.ALL);
 const filteredData = computed(() => {
   const copy = (list) => [...list];
 
@@ -43,16 +45,19 @@ const filteredData = computed(() => {
       new Date(a.report_date) < new Date(b.report_date) ? 1 : -1
     );
 });
+
+let isExpanded = ref(false);
 let disabled = ref(true);
 if (voyageLegs.value.length === legNum.value) {
   disabled.value = false;
+  isExpanded.value = true;
 }
-// Enable for addReport function
+
 const handleClick = async () => {
   storedVoyageLegs.value = voyageLegs.value;
   await refetchLatestReportDetails();
   voyageDetails.value.cur_leg_no = legNum.value;
-  localStorage.setItem("voyageDetails", JSON.stringify(voyageDetails.value));
+  localStorage.setItem("voyageDetails", JSON.stringify(voyageDetails.value)); // Need to see if there are better ways to store
   router.push({
     name: "add-report",
     // state: { voyageDetails },
@@ -116,7 +121,6 @@ const handleClick = async () => {
           ></ReportCard>
         </div>
       </div>
-
       <div class="flex w-full justify-center">
         <span>1234567890</span>
       </div>

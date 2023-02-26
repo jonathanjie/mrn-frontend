@@ -90,9 +90,8 @@ const addLeg = async () => {
     };
     await axios
       .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/voyagelegs/`, legData)
-      .then((response) => {
+      .then(() => {
         emit("refetch-data");
-        isAddLegLoading.value = false;
       })
       .catch((error) => {
         if (error.response.status == 400) {
@@ -101,6 +100,9 @@ const addLeg = async () => {
           );
         }
         console.log(error.message);
+      })
+      .finally(() => {
+        isAddLegLoading.value = false;
       });
   }
 };

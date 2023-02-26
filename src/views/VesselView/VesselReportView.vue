@@ -90,6 +90,7 @@ const isAddVoyageLoading = ref(false);
 const refetchData = () => {
   refetch.value();
 };
+
 const addVoyage = async () => {
   if (!confirm("Are you sure? You may not be able to edit previous voyages.")) {
     return;
@@ -112,13 +113,17 @@ const addVoyage = async () => {
     };
     await axios
       .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/voyages/`, voyageData)
-      .then((response) => {
-        // console.log(response);
+      .then(() => {
         refetchData();
-        isAddVoyageLoading.value = false;
       })
       .catch((error) => {
+        confirm(
+          "Unable to add new voyage. Check if your previous leg has been completed or if your voyage number already exists"
+        );
         console.log(error.message);
+      })
+      .finally(() => {
+        isAddVoyageLoading.value = false;
       });
   }
 };
