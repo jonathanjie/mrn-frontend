@@ -1,3 +1,5 @@
+<script setup></script>
+
 <template>
   <div class="flex flex-col p-24 pb-52 justify-center items-center w-full">
     <img src="@/assets/icons/empty.svg" class="h-28 w-28" />
