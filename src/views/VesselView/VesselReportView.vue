@@ -16,7 +16,7 @@
       <VoyageCard
         v-for="(voyage, index) in voyages"
         @refetch-data="refetchData()"
-        :key="index"
+        :key="voyage.id"
         :voyage="voyage"
         :is-initially-open="index == 0"
       >
