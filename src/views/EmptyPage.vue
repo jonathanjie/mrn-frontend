@@ -1,8 +1,4 @@
-<script setup>
-import { ref } from "vue";
-import PricingPlanModal from "@/components/Modals/PricingPlanModal.vue";
-let showModal = ref(true);
-</script>
+<script setup></script>
 
 <template>
   <div class="flex flex-col p-24 pb-52 justify-center items-center w-full">
@@ -19,9 +15,4 @@ let showModal = ref(true);
       </div>
     </div>
   </div>
-  <PricingPlanModal
-    ref="modal"
-    v-if="showModal"
-    @close-modal="showModal = false"
-  />
 </template>

@@ -48,13 +48,12 @@ const closeModal = () => {
 </script>
 <template>
   <div>
-    <div class="opacity-80 fixed inset-0 z-40 bg-gray-900"></div>
     <div
-      class="overflow-auto fixed inset-0 z-50 justify-center items-center flex"
+      class="overflow-auto fixed inset-0 z-50 justify-center items-center flex bg-slate-400"
     >
-      <div class="relative my-6 mx-auto w-8/12">
+      <div class="relative mx-auto h-5/6 w-8/12">
         <div
-          class="border-0 rounded-lg items-center relative flex flex-col w-full bg-white"
+          class="border rounded-lg items-center relative flex flex-col w-full bg-white"
         >
           <!--header-->
           <div class="flex items-center w-full justify-end p-5 rounded-t">
@@ -89,5 +88,6 @@ const closeModal = () => {
         </div>
       </div>
     </div>
+    <div class="opacity-80 fixed inset-0 z-40 bg-gray-900"></div>
   </div>
 </template>
