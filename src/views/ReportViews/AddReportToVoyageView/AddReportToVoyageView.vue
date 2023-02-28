@@ -126,7 +126,6 @@ const {
   lastNoonpReportNo,
   lastNooncReportNo,
 } = storeToRefs(store);
-console.log(localStorage.getItem("voyageDetails"), "VoyageDetails");
 
 const voyageDetails = localStorage.getItem("voyageDetails")
   ? JSON.parse(localStorage.getItem("voyageDetails"))

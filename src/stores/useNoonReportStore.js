@@ -448,6 +448,8 @@ export const useNoonReportStore = defineStore("noonReport", () => {
       stoppageLongMinutes.value
   );
 
+  const additionalRemarks = ref("");
+
   return {
     // Overview
     reportNo,
@@ -562,5 +564,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     stoppageLongMinutes,
     isStoppageEnabled,
     shouldStoppageDataBeSent,
+    // Additional remarks
+    additionalRemarks,
   };
 });
