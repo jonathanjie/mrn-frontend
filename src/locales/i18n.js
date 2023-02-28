@@ -512,7 +512,7 @@ const i18n = createI18n({
       collision: "Collision",
       grounding: "Grounding",
       oilSpill: "Oil spill",
-      additionalRemarks: "Additional remarks",
+      additionalRemarks: "Additional Remarks",
       other: "Other",
       fwd: "FWD",
       mid: "MID",
