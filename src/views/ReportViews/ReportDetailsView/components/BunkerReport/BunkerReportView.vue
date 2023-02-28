@@ -4,6 +4,7 @@ import BunkerOverview from "./components/BunkerOverview.vue";
 import BunkeringPort from "./components/BunkeringPort.vue";
 import BunkerReceivedDetail from "./components/BunkerReceivedDetail.vue";
 import BunkerDateAndTime from "./components/BunkerDateAndTime.vue";
+import BunkerAddRemarks from "./components/BunkerAddRemarks.vue";
 
 const props = defineProps({
   report: {
@@ -56,5 +57,8 @@ const isBeforeArrival = computed(() => props.report.bdndata.is_before_arrival);
 
     <!-- Bunker Date and Time & Supplier -->
     <BunkerDateAndTime :report="props.report" />
+
+    <!-- Additional Remarks -->
+    <BunkerAddRemarks :report="props.report" />
   </div>
 </template>

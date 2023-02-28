@@ -3,7 +3,7 @@ import { computed } from "vue";
 import RadioBtnDetail from "@/components/Buttons/RadioBtnDetail.vue";
 import HarbourPortOverview from "./components/HarbourPortOverview.vue";
 import HarbourPortReport from "./components/HarbourPortReport.vue";
-
+import HarbourPortAddRemarks from "./components/HarbourPortAddRemarks.vue";
 import { Report } from "@/constants";
 import ReportConsumption from "../ReportConsumption.vue";
 
@@ -67,5 +67,8 @@ const reportSubtypeIsPort = computed(() =>
         {{ $t("consumptionAndConditionLastReportToEventNoon") }}
       </template>
     </ReportConsumption>
+
+    <!-- Additional Remarks -->
+    <HarbourPortAddRemarks :report="props.report" />
   </div>
 </template>

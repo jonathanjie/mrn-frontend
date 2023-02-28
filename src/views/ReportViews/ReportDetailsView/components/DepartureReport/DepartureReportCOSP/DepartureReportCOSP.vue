@@ -5,6 +5,7 @@ import DeparturePilotStation from "../components/DeparturePilotStation.vue";
 import DeparturePilotStationArrival from "./components/DeparturePilotStationArrival.vue";
 import DepartureDistanceAndTime from "../components/DepartureDistanceAndTime.vue";
 import DepartureSailingPlan from "./components/DepartureSailingPlan.vue";
+import DepartureAddRemarks from "../components/DepartureAddRemarks.vue";
 import ReportConsumption from "../../ReportConsumption.vue";
 
 const props = defineProps({
@@ -40,5 +41,8 @@ const props = defineProps({
         {{ $t("consumptionAndConditionSbyToRup") }}
       </template>
     </ReportConsumption>
+
+    <!-- Additional Remarks -->
+    <DepartureAddRemarks :report="props.report" />
   </div>
 </template>
