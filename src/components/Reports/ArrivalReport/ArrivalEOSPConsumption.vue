@@ -5,6 +5,7 @@
       <span class="text-blue-700 text-16">
         {{ $t("consumptionAndConditionNoonToSby") }}
       </span>
+      <span class="text-red-500 text-16 ml-1">*</span>
     </div>
     <div class="grid divide-y divide-dashed gap-8">
       <div>
