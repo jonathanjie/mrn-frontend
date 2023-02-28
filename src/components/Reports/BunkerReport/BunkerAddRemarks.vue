@@ -1,14 +1,20 @@
 <script setup>
+import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
+import { storeToRefs } from "pinia";
 import { ref } from "vue";
+const store = useBunkerReportStore();
+let isActive = ref(false);
+const { additionalRemarks: remarks } = storeToRefs(store);
 
-const remarks = ref("");
-const additionalRemarksFlag = ref(false);
+const enableRemarks = () => {
+  isActive.value = !isActive.value;
+};
 </script>
 
 <template>
   <div
-    v-if="!additionalRemarksFlag"
-    @click="additionalRemarksFlag = !additionalRemarksFlag"
+    v-if="!isActive"
+    @click="enableRemarks()"
     class="flex items-center bg-white rounded-lg p-5 shadow-card cursor-pointer"
   >
     <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
@@ -24,7 +30,7 @@ const additionalRemarksFlag = ref(false);
   >
     <div
       class="col-span-2 flex items-center cursor-pointer"
-      @click="additionalRemarksFlag = !additionalRemarksFlag"
+      @click="enableRemarks()"
     >
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
       <img

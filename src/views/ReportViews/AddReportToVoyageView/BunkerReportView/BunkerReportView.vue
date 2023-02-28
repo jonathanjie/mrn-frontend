@@ -4,6 +4,7 @@ import BunkerOverview from "@/components/Reports/BunkerReport/BunkerOverview.vue
 import BunkeringPort from "@/components/Reports/BunkerReport/BunkeringPort.vue";
 import BunkerReceivedDetail from "@/components/Reports/BunkerReport/BunkerReceivedDetail.vue";
 import BunkerDateAndTime from "@/components/Reports/BunkerReport/BunkerDateAndTime.vue";
+import BunkerAddRemarks from "@/components/Reports/BunkerReport/BunkerAddRemarks.vue";
 import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
 import { storeToRefs } from "pinia";
 import { useShipStore } from "@/stores/useShipStore";
@@ -63,6 +64,8 @@ const {
   supplierName,
   address,
   telephoneNumber,
+  // Additional Remarks
+  additionalRemarks,
 } = storeToRefs(store);
 
 const submissionStatusStore = useSubmissionStatusStore();
@@ -185,6 +188,10 @@ const sendReport = async () => {
       supplier_address: address.value,
       supplier_contact: telephoneNumber.value,
     },
+    additionalremarks:
+      additionalRemarks.value === ""
+        ? null
+        : { remarks: additionalRemarks.value },
   };
 
   // console.log("data: ", REPORT);
@@ -274,6 +281,9 @@ const sendReport = async () => {
 
     <!-- Bunker Date and Time & Supplier -->
     <BunkerDateAndTime />
+
+    <!-- Additional Remarks -->
+    <BunkerAddRemarks />
 
     <!-- Save and Send -->
     <div v-if="props.isCreate" class="flex justify-end space-x-4 my-6">

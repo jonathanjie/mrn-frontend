@@ -4,7 +4,10 @@
       <div class="flex items-center">
         <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
         <span class="text-16 text-blue-700">
-          <slot>{{ $t("consumptionAndCondition") }}</slot>
+          <slot
+            >{{ $t("consumptionAndCondition")
+            }}<span class="text-red-500 text-16 ml-1">*</span></slot
+          >
         </span>
       </div>
     </div>
@@ -414,13 +417,13 @@
 
 <script setup>
 import { preventNaN } from "@/utils/helpers";
-import { ref } from "vue";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+// import { ref } from "vue";
+// import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useHarbourPortReportStore } from "@/stores/useHarbourPortReportStore";
 import { storeToRefs } from "pinia";
 
-const isFuelOilRemarkEnabled = ref(false);
-const isLubricatingOilRemarkEnabled = ref(false);
+// const isFuelOilRemarkEnabled = ref(false);
+// const isLubricatingOilRemarkEnabled = ref(false);
 
 const store = useHarbourPortReportStore();
 const {
@@ -433,11 +436,11 @@ const {
   fuelOilBreakdowns: fuel_oil_breakdowns,
   fuelOilReceipts: fuel_oil_receipts,
   fuelOilDebunkerings: fuel_oil_debunkerings,
-  fuelOilDataCorrection: fuel_oil_data_correction,
+  // fuelOilDataCorrection: fuel_oil_data_correction,
   // lubricating oil
   lubricatingOilBreakdowns: lubricating_oil_breakdowns,
   lubricatingOilRobs: lubricating_oil_robs,
-  lubricatingOilDataCorrection: lubricating_oil_data_correction,
+  // lubricatingOilDataCorrection: lubricating_oil_data_correction,
   // fresh water
   freshwaterConsumed: freshwater_consumed,
   freshwaterGenerated: freshwater_generated,
