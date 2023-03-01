@@ -94,7 +94,7 @@
         <div v-if="!collapsed">{{ $t("leaveFeedback") }}</div>
       </a>
       <div
-        class="flex flex-col relative bg-white rounded-xl py-6 px-4 mx-4 mb-4"
+        class="flex flex-col relative bg-white rounded-xl py-6 px-4 mx-4 mt-auto mb-4"
       >
         <img
           src="@/assets/icons/PricingPlan/upper_circle.svg"

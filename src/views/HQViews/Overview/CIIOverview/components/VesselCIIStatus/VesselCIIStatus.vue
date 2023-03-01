@@ -2,7 +2,7 @@
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 import { useCIICalculatorStore } from "@/stores/useCIICalculatorStore";
 import { storeToRefs } from "pinia";
-import CIICalculatorModal from "./components/CIICalculatorModal/CIICalculatorModal.vue";
+import CIICalculatorModal from "./components/CIICalculatorModal.vue";
 import CIIVoyageCard from "./components/CIIVoyageCard.vue";
 import CIIGrade from "@/views/CIIViews/components/CIIGrade.vue";
 import HazingBanner from "@/components/HazingBanner.vue";
