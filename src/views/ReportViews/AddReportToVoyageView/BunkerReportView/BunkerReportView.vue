@@ -84,7 +84,7 @@ const getFileNames = () => {
   return files.value.map((file) => file.name);
 };
 
-const getPresignedUrlForFiles = async () => {
+const getPresignedUrlForFileUpload = async () => {
   const response = await fetch(
     "https://majnalcwgg5jdnfpr2zdxvqubq0thpjz.lambda-url.ap-southeast-1.on.aws/",
     {
@@ -140,7 +140,7 @@ const sendReport = async () => {
 
   let urls = [];
   if (files.value.length) {
-    urls = await getPresignedUrlForFiles();
+    urls = await getPresignedUrlForFileUpload();
   }
 
   const bunkeringPort = parsePortLocode({
