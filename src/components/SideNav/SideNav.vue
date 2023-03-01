@@ -94,6 +94,7 @@
         <div v-if="!collapsed">{{ $t("leaveFeedback") }}</div>
       </a>
       <div
+        v-if="!collapsed"
         class="flex flex-col relative bg-white rounded-xl py-6 px-4 mx-4 mt-auto mb-4"
       >
         <img

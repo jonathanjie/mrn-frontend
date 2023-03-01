@@ -15,7 +15,7 @@ const { box } = toRefs(props);
       class="flex p-5 bg-white rounded-2xl shadow-md border"
       :class="box ? '' : ''"
     >
-      <span class="text-30 text-sysblue-600 font-bold">Coming soon!</span>
+      <span class="text-2xl text-blue-600 font-bold">Coming soon!</span>
     </div>
   </div>
 </template>
