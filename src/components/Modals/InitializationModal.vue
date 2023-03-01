@@ -455,13 +455,13 @@ const addSettings = () => {
     flag: "Panama",
     deadweight_tonnage: "2000.0",
     call_sign: "Hello",
-    mmsi: 1234,
-    delivery_date: new Date(),
+    mmsi: "12",
+    delivery_date: "2022-01-10",
     class_society: "Elite",
     gross_tonnage: 500000.0,
     net_tonnage: 500000.0,
     cargo_capacity: 500000.0,
-    // ship_type: ship_type.value, delete
+    ship_type: ship_type.value,
     cargo_unit: cargo_unit.value,
     fuel_options: fuelOrder.filter(
       (fuel) => fuel_options.value[fuelOrder.indexOf(fuel)] == true
