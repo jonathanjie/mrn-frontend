@@ -413,6 +413,8 @@ export const useArrivalEOSPReportStore = defineStore(
       return rtn;
     });
 
+    const additionalRemarks = ref("");
+
     return {
       // Overview
       legUuid,
@@ -518,6 +520,8 @@ export const useArrivalEOSPReportStore = defineStore(
       meFoConsumption,
       fuelOilBreakdownsSum,
       fuelOilTotalConsumptionsSum,
+      // Additional Remarks
+      additionalRemarks,
     };
   }
 );

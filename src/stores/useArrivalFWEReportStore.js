@@ -289,6 +289,8 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     return rtn;
   });
 
+  const additionalRemarks = ref("");
+
   return {
     departurePortCountry,
     departurePortName,
@@ -362,5 +364,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     totalSailingTime,
     fuelOilBreakdownsSum,
     fuelOilTotalConsumptionsSum,
+    // Additional remarks
+    additionalRemarks,
   };
 });

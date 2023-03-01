@@ -7,6 +7,7 @@ import ArrivalEOSPDistanceAndTime from "./components/ArrivalEOSPDistanceAndTime.
 import ArrivalEOSPSummary from "./components/ArrivalEOSPSummary.vue";
 import ArrivalOverview from "../components/ArrivalOverview.vue";
 import ArrivalPilotStation from "../components/ArrivalPilotStation.vue";
+import ArrivalAddRemarks from "../components/ArrivalAddRemarks.vue";
 import ReportConsumption from "../../ReportConsumption.vue";
 
 const props = defineProps({
@@ -49,5 +50,8 @@ const props = defineProps({
 
     <!-- Actual Performance at Sea / Total Consumption (Pilot to Pilot) -->
     <ArrivalEOSPSummary :report="props.report" />
+
+    <!-- Additional Remarks -->
+    <ArrivalAddRemarks :report="props.report" />
   </div>
 </template>

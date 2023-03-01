@@ -1,7 +1,7 @@
 <template>
   <div class="relative bg-gray-50 flex flex-col">
     <GradientButton
-      v-if="isSuccessLatestReportDetails && isManager !== true"
+      v-if="isSuccessLatestReportDetails"
       class="m-10 absolute right-0 -top-32"
       type="button"
       :is-disabled="isAddVoyageLoading || !isAddVoyageEnabled"
@@ -15,7 +15,8 @@
     <div v-else-if="isSuccess && voyages.length !== 0" class="contents">
       <VoyageCard
         v-for="(voyage, index) in voyages"
-        :key="index"
+        @refetch-data="refetchData()"
+        :key="voyage.id"
         :voyage="voyage"
         :is-initially-open="index == 0"
       >
@@ -45,10 +46,8 @@ import GradientButton from "../../components/Buttons/GradientButton.vue";
 import axios from "axios";
 import { ref } from "vue";
 import { useLatestReportDetailsStore } from "@/stores/useLatestReportDetailsStore";
-import { useAuthStore } from "@/stores/useAuthStore";
 // import { useCrewStore } from "@/stores/useCrewStore";
-const authStore = useAuthStore();
-const isManager = authStore.role === "manager";
+
 const props = defineProps({
   imo: { type: String, require: true },
 });
@@ -87,6 +86,11 @@ const isAddVoyageLoading = ref(false);
 // };
 
 // TODO: use addVoyage in crewStore; temp fix to make add voyage work
+
+const refetchData = () => {
+  refetch.value();
+};
+
 const addVoyage = async () => {
   if (!confirm("Are you sure? You may not be able to edit previous voyages.")) {
     return;
@@ -109,13 +113,17 @@ const addVoyage = async () => {
     };
     await axios
       .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/voyages/`, voyageData)
-      .then((response) => {
-        // console.log(response);
-        refetch.value();
-        isAddVoyageLoading.value = false;
+      .then(() => {
+        refetchData();
       })
       .catch((error) => {
+        confirm(
+          "Unable to add new voyage. Check if your previous leg has been completed or if your voyage number already exists"
+        );
         console.log(error.message);
+      })
+      .finally(() => {
+        isAddVoyageLoading.value = false;
       });
   }
 };

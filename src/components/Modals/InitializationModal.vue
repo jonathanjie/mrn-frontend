@@ -91,10 +91,10 @@
                   <option value="" selected hidden>
                     {{ $t("selectAnOption") }}
                   </option>
-                  <option value="cargoM3">{{ $t("cargoM3") }}</option>
-                  <option value="cargoMt">{{ $t("cargoMt") }}</option>
-                  <option value="cargoTeu">{{ $t("cargoTeu") }}</option>
-                  <option value="cargoCeu">{{ $t("cargoCeu") }}</option>
+                  <option value="M3">{{ $t("cargoM3") }}</option>
+                  <option value="MT">{{ $t("cargoMt") }}</option>
+                  <option value="TEU">{{ $t("cargoTeu") }}</option>
+                  <option value="CEU">{{ $t("cargoCeu") }}</option>
                 </select>
               </div>
             </div>

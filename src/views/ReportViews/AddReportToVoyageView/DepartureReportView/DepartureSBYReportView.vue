@@ -8,6 +8,7 @@ import DepartureSBYTotalConsumption from "@/components/Reports/DepartureReport/D
 import DepartureSBYConsumption from "@/components/Reports/DepartureReport/DepartureSBYConsumption.vue";
 import DepartureSBYPilotStation from "@/components/Reports/DepartureReport/DepartureSBYPilotStation.vue";
 import DepartureSBYOverview from "@/components/Reports/DepartureReport/DepartureSBYOverview.vue";
+import AdditionalRemarks from "@/components/Reports/DepartureReport/DepartureSBYAddRemarks.vue";
 import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
 import { storeToRefs } from "pinia";
@@ -18,6 +19,7 @@ import {
   generateFuelOilData,
   generateLubricatingOilData,
 } from "@/utils/helpers.js";
+import axios from "axios";
 
 const store = useDepartureSBYReportStore();
 const {
@@ -94,6 +96,8 @@ const {
   freshwaterReceivingSum,
   freshwaterDischargingSum,
   freshwaterRobSum,
+  // Additional Remarks
+  additionalRemarks,
 } = storeToRefs(store);
 
 const submissionStatusStore = useSubmissionStatusStore();
@@ -221,13 +225,13 @@ const sendReport = async () => {
       fueloildata_set: fuelOilData,
       lubricatingoildata_set: lubricatingOilData,
       freshwaterdata: {
-        consumed: Number(freshwaterConsumed.value) || 0,
-        generated: Number(freshwaterGenerated.value) || 0,
-        received: Number(freshwaterReceiving.value) || 0,
-        discharged: Number(freshwaterDischarging.value) || 0,
+        consumed: Number(freshwaterConsumed.value),
+        generated: Number(freshwaterGenerated.value),
+        received: Number(freshwaterReceiving.value),
+        discharged: Number(freshwaterDischarging.value),
         rob: isFirstReport.value
-          ? Number(freshwaterRobStatic.value) || 0
-          : Number(freshwaterRobComputed.value) || 0,
+          ? Number(freshwaterRobStatic.value)
+          : Number(freshwaterRobComputed.value),
       },
       consumption_type: ConsumptionType.LAST_TO_SBY,
     },
@@ -236,11 +240,11 @@ const sendReport = async () => {
           fueloiltotalconsumptiondata_set: fuelOilDataSum,
           lubricatingoiltotalconsumptiondata_set: lubricatingOilDataSum,
           freshwatertotalconsumptiondata: {
-            consumed: Number(freshwaterConsumedSum.value) || 0,
-            generated: Number(freshwaterGeneratedSum.value) || 0,
-            received: Number(freshwaterReceivingSum.value) || 0,
-            discharged: Number(freshwaterDischargingSum.value) || 0,
-            rob: Number(freshwaterRobSum.value) || 0,
+            consumed: Number(freshwaterConsumedSum.value),
+            generated: Number(freshwaterGeneratedSum.value),
+            received: Number(freshwaterReceivingSum.value),
+            discharged: Number(freshwaterDischargingSum.value),
+            rob: Number(freshwaterRobSum.value),
           },
           consumption_type: TotalConsumptionType.IN_HARBOUR_PORT,
         }
@@ -256,45 +260,35 @@ const sendReport = async () => {
           },
           consumption_type: TotalConsumptionType.IN_HARBOUR_PORT,
         },
+    additionalremarks:
+      additionalRemarks.value === ""
+        ? null
+        : { remarks: additionalRemarks.value },
     // can change the above to null once the database is updated
   };
 
   // console.log("data: ", REPORT);
 
   isSubmissionModalVisible.value = true;
-  const response = await fetch(
-    `${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/`,
-    {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(REPORT),
-    }
-  );
 
-  try {
-    const data = await response.json();
-    // console.log(response);
-    // console.log(data);
-
-    if (response.ok) {
+  axios
+    .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/`, REPORT)
+    .then(() => {
       isSubmissionSuccessful.value = true;
       store.$reset();
-    } else {
-      errorMessage.value = data;
-    }
-    // isSubmissionModalVisible.value = true;
-    // isSubmissionResponse.value=true
-  } catch (error) {
-    console.log(error);
-    errorMessage.value = {
-      unexpectedError: ["Please contact the administrator."],
-    };
-    // isSubmissionModalVisible.value = true;
-  }
-  isSubmissionResponse.value = true;
+    })
+    .catch((error) => {
+      if (error.response.status == 400) {
+        errorMessage.value = error.response.data;
+      } else {
+        errorMessage.value = {
+          unexpectedError: ["Please contact the administrator."],
+        };
+      }
+    })
+    .finally(() => {
+      isSubmissionResponse.value = true;
+    });
 };
 </script>
 
@@ -322,6 +316,9 @@ const sendReport = async () => {
 
     <!-- Consumption & Condition (Harbour/In Port in Total) -->
     <DepartureSBYTotalConsumption v-if="!isFirstReport" />
+
+    <!-- Additional Remarks -->
+    <AdditionalRemarks />
   </div>
 
   <!-- Save and Send -->

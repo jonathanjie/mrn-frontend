@@ -348,6 +348,8 @@ export const useDepartureSBYReportStore = defineStore(
     );
     const freshwaterRobSum = freshwaterRobComputed;
 
+    //Additional remarks
+    const additionalRemarks = ref("");
     return {
       isFetchingPrevData,
       IsSuccessPrevData,
@@ -433,6 +435,8 @@ export const useDepartureSBYReportStore = defineStore(
       freshwaterDischargingSum,
       freshwaterChangeSum,
       freshwaterRobSum,
+      // Additional remarks
+      additionalRemarks,
     };
   }
 );

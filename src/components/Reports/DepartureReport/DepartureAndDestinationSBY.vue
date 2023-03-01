@@ -7,6 +7,7 @@
       <div class="flex items-center">
         <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
         <span class="text-blue-700 text-16">{{ $t("departure") }}</span>
+        <span class="text-red-500 text-16 ml-1">*</span>
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14 my-5">
         <div class="col-span-2 row-span-2 self-center text-blue-700 p-3">
@@ -74,24 +75,12 @@
         </div>
       </div>
     </div>
-
     <!-- Destination -->
     <div class="col-span-1">
       <div class="flex items-center">
         <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
-        <img
-          v-if="is_destination_enabled"
-          src="@/assets/icons/checkboxes/checked_square.svg"
-          class="mr-2 h-5 w-5"
-          @click="is_destination_enabled = !is_destination_enabled"
-        />
-        <img
-          v-else
-          src="@/assets/icons/checkboxes/unchecked_square.svg"
-          class="mr-2 h-5 w-5"
-          @click="is_destination_enabled = !is_destination_enabled"
-        />
         <span class="text-blue-700 text-16">{{ $t("destination") }}</span>
+        <span class="text-red-500 text-16 ml-1">*</span>
       </div>
       <div class="grid grid-cols-5 border bg-gray-50 text-14 my-5">
         <div class="col-span-2 row-span-2 self-center text-blue-700 p-3">
@@ -101,14 +90,12 @@
           :value="destination_port_country.toUpperCase()"
           @input="destination_port_country = $event.target.value.toUpperCase()"
           :placeholder="$t('inputLocode2')"
-          :disabled="!is_destination_enabled"
           class="col-span-3 p-3 text-gray-700 border-l border-b focus:outline-0 disabled:bg-gray-50 disabled:text-gray-500"
         />
         <input
           :value="destination_port_name.toUpperCase()"
           @input="destination_port_name = $event.target.value.toUpperCase()"
           :placeholder="$t('inputLocode3')"
-          :disabled="!is_destination_enabled"
           class="col-span-3 p-3 text-gray-700 border-l focus:outline-0 disabled:bg-gray-50 disabled:text-gray-500"
         />
       </div>
@@ -122,11 +109,10 @@
           <select
             class="grow self-center p-3 text-14 focus:outline-0 disabled:bg-gray-50"
             :class="
-              destination_time_zone === 'default' || !is_destination_enabled
+              destination_time_zone === 'default'
                 ? 'text-gray-400'
                 : 'text-gray-700'
             "
-            :disabled="!is_destination_enabled"
             v-model="destination_time_zone"
           >
             <option selected disabled value="default">
@@ -147,7 +133,6 @@
             textInput
             :textInputOptions="textInputOptions"
             :format="format"
-            :disabled="!is_destination_enabled"
             :modelValue="string"
             :placeholder="$t('selectDateAndTime')"
           >

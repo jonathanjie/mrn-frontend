@@ -246,6 +246,9 @@ export const useDepartureCOSPReportStore = defineStore(
       () => prevFreshWaterRobs.value + freshwaterChange.value
     );
 
+    //Addiitonal remarks
+    const additionalRemarks = ref("");
+
     return {
       // Overview
       reportNo,
@@ -327,6 +330,8 @@ export const useDepartureCOSPReportStore = defineStore(
       freshwaterGenerated,
       freshwaterChange,
       freshwaterRob,
+      // Additional Remarks
+      additionalRemarks,
     };
   }
 );
