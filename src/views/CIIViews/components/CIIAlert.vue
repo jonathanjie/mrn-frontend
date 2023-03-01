@@ -38,7 +38,7 @@ if (currentGrade.value === "A") {
   <div class="flex">
     <div class="flex bg-gray-100 rounded-l-2xl p-1 items-center">
       <CIIGrade :grade="gradeLimit" />
-      <span class="text-12 text-gray-800 font-semibold"
+      <span class="text-12 text-gray-800 font-semibold ml-1.5"
         >{{ $t("gradeLimit") }}: {{ gradeLimitValue }}</span
       >
     </div>

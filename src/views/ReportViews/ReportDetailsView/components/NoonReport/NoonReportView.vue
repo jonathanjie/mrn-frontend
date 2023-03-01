@@ -6,6 +6,7 @@ import NoonHeavyWeather from "./components/NoonHeavyWeather.vue";
 import NoonDistanceAndTime from "./components/NoonDistanceAndTime.vue";
 import NoonPerformance from "./components/NoonPerformance.vue";
 import NoonStoppage from "./components/NoonStoppage.vue";
+import NoonAddRemarks from "./components/NoonAddRemarks.vue";
 import ReportConsumption from "../ReportConsumption.vue";
 
 const props = defineProps({
@@ -48,5 +49,8 @@ const props = defineProps({
 
     <!-- Stoppage or Reduction of RPM (at sea) -->
     <NoonStoppage v-if="props.report.stoppagedata" :report="props.report" />
+
+    <!-- Additional Remarks -->
+    <NoonAddRemarks :report="props.report" />
   </div>
 </template>

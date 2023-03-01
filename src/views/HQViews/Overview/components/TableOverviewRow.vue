@@ -142,7 +142,7 @@
         $t("rob")
       }}</span>
     </div>
-    <div v-for="(value, index) in row2" :key="index">
+    <div v-for="(value, index) in row2" :key="value.id">
       <div
         class="flex px-3.5 py-3 justify-center"
         :class="

@@ -92,6 +92,7 @@
         class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-l border-t bg-gray-50 text-14"
       >
         {{ $t("distanceByObservation") }}
+        <span class="text-red-500 text-16 ml-1">*</span>
       </div>
       <div class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t">
         <input

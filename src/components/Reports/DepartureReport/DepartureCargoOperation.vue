@@ -10,6 +10,7 @@
       <div class="grid grid-cols-5 mb-5 border">
         <div class="col-span-2 text-blue-700 p-3 bg-gray-50 text-14">
           {{ $t("loadCondition") }}
+          <span class="text-red-500 text-16 ml-1">*</span>
         </div>
         <select
           v-model="load_condition"

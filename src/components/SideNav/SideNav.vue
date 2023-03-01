@@ -93,14 +93,45 @@
         <img src="@/assets/icons/feedback.svg" class="w-6 h-6 mr-1.5" />
         <div v-if="!collapsed">{{ $t("leaveFeedback") }}</div>
       </a>
+      <div
+        class="flex flex-col relative bg-white rounded-xl py-6 px-4 mx-4 mb-4"
+      >
+        <img
+          src="@/assets/icons/PricingPlan/upper_circle.svg"
+          class="absolute top-0 right-0"
+        />
+        <span class="text-16 text-blue-700 font-bold mb-4"
+          >Ready to scale your businesses?</span
+        >
+        <GradientButton
+          class="px-6 py-2 text-14 mr-1 mb-1 justify-center"
+          type="button"
+          @click="pricingModal()"
+        >
+          <template v-slot:content>View Pricing Plans</template>
+        </GradientButton>
+      </div>
     </div>
   </div>
+  <PricingPlanModal
+    ref="modal"
+    v-if="showModal"
+    @close-modal="showModal = false"
+  />
 </template>
 
 <script setup>
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/useAuthStore";
+import GradientButton from "../Buttons/GradientButton.vue";
+import { ref } from "vue";
+import PricingPlanModal from "@/components/Modals/PricingPlanModal.vue";
+let showModal = ref(false);
+
+const pricingModal = () => {
+  showModal.value = true;
+};
 const router = useRouter();
 
 const props = defineProps({
