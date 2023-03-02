@@ -4,7 +4,10 @@
       <div class="flex items-center">
         <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
         <span class="text-16 text-blue-700">
-          <slot>{{ $t("consumptionAndConditionLastReportToSby") }}</slot>
+          <slot>
+            <span>{{ $t("consumptionAndConditionLastReportToSby") }}</span>
+            <span class="text-red-500 text-16 ml-1">*</span>
+          </slot>
         </span>
       </div>
     </div>

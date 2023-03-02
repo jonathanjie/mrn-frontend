@@ -3,6 +3,7 @@
     <div class="col-span-2 flex items-center">
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
       <span class="text-blue-700 text-16">{{ $t("overview") }}</span>
+      <span class="text-red-500 text-16 ml-1">*</span>
     </div>
     <div
       class="col-span-2 xl:col-span-1 grid grid-cols-5 border bg-gray-50 text-14"

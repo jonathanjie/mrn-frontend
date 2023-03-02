@@ -7,6 +7,7 @@
       <div class="col-span-2 flex items-center">
         <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
         <span class="text-blue-700 text-16">{{ $t("rupEngine") }}</span>
+        <span class="text-red-500 text-16 ml-1">*</span>
       </div>
       <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border">
         <div
@@ -150,6 +151,7 @@
           class="col-span-2 text-blue-700 p-3 border-l border-t bg-gray-50 text-14"
         >
           {{ $t("distanceByObservation") }}
+          <span class="text-red-500 text-16 ml-1">*</span>
         </div>
         <div class="flex col-span-3 lg:col-span-3 p-2 pl-4 border-x border-t">
           <input

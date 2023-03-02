@@ -29,6 +29,9 @@
     <!-- Stoppage or Reduction of RPM (at sea) -->
     <NoonStoppage />
 
+    <!-- Additional Remarks -->
+    <NoonAddRemarks />
+
     <!-- Save and Send -->
     <div class="flex justify-end space-x-4">
       <!-- <CustomButton
@@ -67,7 +70,9 @@ import NoonDistanceAndTime from "@/components/Reports/NoonReport/NoonDistanceAnd
 import NoonPerformance from "@/components/Reports/NoonReport/NoonPerformance.vue";
 import NoonConsumption from "@/components/Reports/NoonReport/NoonConsumption.vue";
 import NoonStoppage from "@/components/Reports/NoonReport/NoonStoppage.vue";
+import NoonAddRemarks from "@/components/Reports/NoonReport/NoonAddRemarks.vue";
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
+import axios from "axios";
 import { useNoonReportStore } from "@/stores/useNoonReportStore";
 import { storeToRefs } from "pinia";
 import { Report, ConsumptionType } from "@/constants";
@@ -174,6 +179,8 @@ const {
   stoppageLongDegree,
   stoppageLongMinutes,
   shouldStoppageDataBeSent,
+  // Additional Remarks
+  additionalRemarks,
 } = storeToRefs(store);
 
 const submissionStatusStore = useSubmissionStatusStore();
@@ -256,14 +263,17 @@ const sendReport = async () => {
       arrival_tz: routeArrivalTimeZone.value,
     },
     weatherdata: {
-      weather_notation: weather.value,
-      visibility: visibility.value,
-      wind_direction: windDirection.value,
+      weather_notation: weather.value === "default" ? null : weather.value,
+      visibility: visibility.value === "default" ? null : visibility.value,
+      wind_direction:
+        windDirection.value === "default" ? null : windDirection.value,
       wind_speed: Number(windSpeed.value),
-      sea_direction: seaDirection.value,
-      sea_state: seaState.value,
-      swell_direction: swellDirection.value,
-      swell_scale: swellScale.value,
+      sea_direction:
+        seaDirection.value === "default" ? null : seaDirection.value,
+      sea_state: seaState.value === "default" ? null : seaState.value,
+      swell_direction:
+        swellDirection.value === "default" ? null : swellDirection.value,
+      swell_scale: swellScale.value === "default" ? null : swellScale.value,
       air_pressure: Number(airPressure.value),
       air_temperature_dry: Number(airTemperatureDry.value),
       air_temperature_wet: Number(airTemperatureWet.value),
@@ -335,43 +345,32 @@ const sendReport = async () => {
           remarks: stoppageRemarks.value,
         }
       : null,
+    additionalremarks:
+      additionalRemarks.value === ""
+        ? null
+        : { remarks: additionalRemarks.value },
   };
-
-  // console.log("data: ", REPORT);
+  console.log("Funny vision thingy", visibility.value);
+  console.log("data: ", REPORT);
 
   isSubmissionModalVisible.value = true;
-  const response = await fetch(
-    `${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/`,
-    {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(REPORT),
-    }
-  );
-
-  try {
-    const data = await response.json();
-    // console.log(response);
-    // console.log(data);
-
-    if (response.ok) {
+  axios
+    .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/`, REPORT)
+    .then(() => {
       isSubmissionSuccessful.value = true;
       store.$reset();
-    } else {
-      errorMessage.value = data;
-    }
-    // isSubmissionModalVisible.value = true;
-    // isSubmissionResponse.value=true
-  } catch (error) {
-    console.log(error);
-    errorMessage.value = {
-      unexpectedError: ["Please contact the administrator."],
-    };
-    // isSubmissionModalVisible.value = true;
-  }
-  isSubmissionResponse.value = true;
+    })
+    .catch((error) => {
+      if (error.response.status == 400) {
+        errorMessage.value = error.response.data;
+      } else {
+        errorMessage.value = {
+          unexpectedError: ["Please contact the administrator."],
+        };
+      }
+    })
+    .finally(() => {
+      isSubmissionResponse.value = true;
+    });
 };
 </script>

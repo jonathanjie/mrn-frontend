@@ -6,6 +6,7 @@ import DepartureSBYPilotStation from "../components/DeparturePilotStation.vue";
 import DepartureSBYOverview from "../components/DepartureOverview.vue";
 import DepartureCargoOperation from "../components/DepartureCargoOperation.vue";
 import DepartureVesselCondition from "../components/DepartureVesselCondition.vue";
+import DepartureAddRemarks from "../components/DepartureAddRemarks.vue";
 import ReportConsumption from "../../ReportConsumption.vue";
 
 const props = defineProps({
@@ -49,6 +50,9 @@ const isFirstReport = computed(
       v-if="!isFirstReport"
       :report="props.report"
     />
+
+    <!-- Additional Remarks -->
+    <DepartureAddRemarks :report="props.report" />
 
     <!-- <DepartureSBYTotalConsumption :report="props.report">{{
       $t("consumptionAndConditionHarbourInPortInTotal")

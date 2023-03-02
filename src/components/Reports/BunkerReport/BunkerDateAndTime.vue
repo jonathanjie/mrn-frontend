@@ -7,6 +7,7 @@
       <div class="flex items-center mb-5">
         <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
         <span class="text-blue-700 text-16">{{ $t("dateAndTime") }}</span>
+        <span class="text-red-500 text-16 ml-1">*</span>
       </div>
       <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border">
         <div
@@ -128,6 +129,7 @@
       <div class="flex items-center mb-5">
         <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
         <span class="text-blue-700 text-16">{{ $t("supplier") }}</span>
+        <span class="text-red-500 text-16 ml-1">*</span>
       </div>
       <div class="col-span-2 lg:col-span-1 grid grid-cols-5 border">
         <div

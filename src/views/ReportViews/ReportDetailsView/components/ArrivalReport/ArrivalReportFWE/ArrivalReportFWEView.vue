@@ -6,6 +6,7 @@ import ArrivalFWESummary from "./components/ArrivalFWESummary.vue";
 import ArrivalOverview from "../components/ArrivalOverview.vue";
 import ArrivalPilotStation from "../components/ArrivalPilotStation.vue";
 import ReportConsumption from "../../ReportConsumption.vue";
+import ArrivalAddRemarks from "../components/ArrivalAddRemarks.vue";
 
 const props = defineProps({
   report: {
@@ -39,5 +40,8 @@ const props = defineProps({
 
     <!-- ArrivalFWESummary: Actual Performance (Port to Port) & Total Consumption (Pilot to Pilot) -->
     <ArrivalFWESummary :report="props.report" />
+
+    <!-- Additional Remarks -->
+    <ArrivalAddRemarks :report="props.report" />
   </div>
 </template>

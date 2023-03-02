@@ -26,6 +26,9 @@
 
     <!-- Actual Performance at Sea / Total Consumption (Pilot to Pilot) -->
     <ArrivalEOSPSummary />
+
+    <!-- Additional Remarks -->
+    <ArrivalEOSPAddRemarks />
   </div>
 
   <!-- Save and Send -->
@@ -66,6 +69,8 @@ import ArrivalEOSPPilotStation from "@/components/Reports/ArrivalReport/ArrivalE
 import ArrivalEOSPConsumption from "@/components/Reports/ArrivalReport/ArrivalEOSPConsumption.vue";
 import ArrivalEOSPSummary from "@/components/Reports/ArrivalReport/ArrivalEOSPSummary.vue";
 import ArrivalEOSPOverview from "@/components/Reports/ArrivalReport/ArrivalEOSPOverview.vue";
+import ArrivalEOSPAddRemarks from "@/components/Reports/ArrivalReport/ArrivalEOSPAddRemarks.vue";
+import axios from "axios";
 import { storeToRefs } from "pinia";
 import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
@@ -175,6 +180,8 @@ const {
   meFoConsumption,
   fuelOilBreakdownsSum,
   fuelOilTotalConsumptionsSum,
+  // Additional Remarks
+  additionalRemarks,
 } = storeToRefs(store);
 
 const submissionStatusStore = useSubmissionStatusStore();
@@ -278,14 +285,17 @@ const sendReport = async () => {
       position: arrivalSbyPosition,
     },
     weatherdata: {
-      weather_notation: weather.value,
-      visibility: visibility.value,
-      wind_direction: windDirection.value,
+      weather_notation: weather.value === "default" ? null : weather.value,
+      visibility: visibility.value === "default" ? null : visibility.value,
+      wind_direction:
+        windDirection.value === "default" ? null : windDirection.value,
       wind_speed: Number(windSpeed.value),
-      sea_direction: seaDirection.value,
-      sea_state: seaState.value,
-      swell_direction: swellDirection.value,
-      swell_scale: swellScale.value,
+      sea_direction:
+        seaDirection.value === "default" ? null : seaDirection.value,
+      sea_state: seaState.value === "default" ? null : seaState.value,
+      swell_direction:
+        swellDirection.value === "default" ? null : swellDirection.value,
+      swell_scale: swellScale.value === "default" ? null : swellScale.value,
       air_pressure: Number(airPressure.value),
       air_temperature_dry: Number(airTemperatureDry.value),
       air_temperature_wet: Number(airTemperatureWet.value),
@@ -357,40 +367,32 @@ const sendReport = async () => {
       freshwatertotalconsumptiondata: null,
       consumption_type: TotalConsumptionType.PILOT_TO_PILOT,
     },
+    additionalremarks:
+      additionalRemarks.value === ""
+        ? null
+        : { remarks: additionalRemarks.value },
   };
 
   // console.log("data: ", REPORT);
 
   isSubmissionModalVisible.value = true;
-  const response = await fetch(
-    `${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/`,
-    {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(REPORT),
-    }
-  );
-
-  try {
-    const data = await response.json();
-    // console.log(response);
-    // console.log(data);
-
-    if (response.ok) {
+  axios
+    .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/`, REPORT)
+    .then(() => {
       isSubmissionSuccessful.value = true;
       store.$reset();
-    } else {
-      errorMessage.value = data;
-    }
-  } catch (error) {
-    console.log(error);
-    errorMessage.value = {
-      unexpectedError: ["Please contact the administrator."],
-    };
-  }
-  isSubmissionResponse.value = true;
+    })
+    .catch((error) => {
+      if (error.response.status == 400) {
+        errorMessage.value = error.response.data;
+      } else {
+        errorMessage.value = {
+          unexpectedError: ["Please contact the administrator."],
+        };
+      }
+    })
+    .finally(() => {
+      isSubmissionResponse.value = true;
+    });
 };
 </script>

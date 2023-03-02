@@ -8,7 +8,7 @@ export const useVoyageStore = defineStore("voyage", () => {
 
   const curLoadingCondition = ref("");
   const curVoyageNo = ref(0);
-
+  const curLegNo = ref(0);
   const lastLegNo = ref(0);
   const lastNoonReportNo = ref(0); // Noon
   const lastDepsReportNo = ref(0); // Departure S/BY
@@ -22,7 +22,7 @@ export const useVoyageStore = defineStore("voyage", () => {
   const lastNooncReportNo = ref(0); // Noon Coastal
 
   const legNo = computed(() => {
-    return lastLegNo.value + 1;
+    return curLegNo.value;
   });
   const noonReportNo = computed(() => {
     return lastNoonReportNo.value + 1;
@@ -62,6 +62,7 @@ export const useVoyageStore = defineStore("voyage", () => {
     legUuid,
     curLoadingCondition,
     curVoyageNo,
+    curLegNo,
     lastLegNo,
     lastNoonReportNo,
     lastDepsReportNo,

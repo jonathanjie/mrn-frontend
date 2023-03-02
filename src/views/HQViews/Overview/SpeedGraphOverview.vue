@@ -88,14 +88,14 @@
               class="flex bg-gray-100 rounded-2xl py-1 px-3 ml-2"
             >
               <span
-                v-if="portCalls[0].arrival_date !== undefined"
+                v-if="portCalls[0] !== undefined"
                 class="text-14 font-semibold text-gray-700"
                 >{{
                   dateHelper(portCalls[0].arrival_date, portCalls[0].arrival_tz)
                 }}
                 LT (UTC+{{ portCalls[0].arrival_tz }})</span
               >
-              <span v-else></span>
+              <span v-else>No report uploaded, please create a new voyage</span>
             </div>
             <div v-else></div>
           </div>
@@ -143,7 +143,10 @@
           $t("portCalls")
         }}</span>
         <div class="flex flex-row w-full">
-          <div v-if="legsSuccess" class="flex flex-col w-full">
+          <div
+            v-if="legsSuccess && portCalls[0] != undefined"
+            class="flex flex-col w-full"
+          >
             <PortCard
               v-for="port in portCalls"
               :key="port.id"
@@ -154,7 +157,18 @@
               :arrivalTime="port.arrival_date"
             ></PortCard>
           </div>
-          <div v-else></div>
+          <div
+            v-else
+            class="flex flex-col p-24 pb-52 m-12 justify-center items-center space-y-2 rounded-xl w-full"
+          >
+            <img src="@/assets/icons/empty.svg" class="h-28 w-28" />
+            <span class="text-lg font-bold text-gray-800 pt-3">{{
+              $t("noVoyageCreated")
+            }}</span>
+            <span class="text-14 text-gray-500"
+              >Please create a new report on Daily Report</span
+            >
+          </div>
           <!-- <SpeedGraphReminders></SpeedGraphReminders> -->
         </div>
       </div>
@@ -172,6 +186,8 @@ const props = defineProps({
   vesselname: String,
   imo: String,
 });
+
+console.log(props, "SpeedOverview props");
 
 const shipRef = constants.shipRefs;
 const store = useHQStore();

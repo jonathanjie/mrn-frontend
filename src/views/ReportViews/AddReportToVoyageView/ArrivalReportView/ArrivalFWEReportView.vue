@@ -17,6 +17,9 @@
 
     <!-- ArrivalFWESummary: Actual Performance (Port to Port) & Total Consumption (Pilot to Pilot) -->
     <ArrivalFWESummary />
+
+    <!-- Additional Remarks -->
+    <ArrivalFWEAddRemarks />
   </div>
 
   <!-- Save and Send -->
@@ -54,6 +57,8 @@ import ArrivalFWEConsumption from "@/components/Reports/ArrivalReport/ArrivalFWE
 import ArrivalFinishWithEngine from "@/components/Reports/ArrivalReport/ArrivalFinishWithEngine.vue";
 import ArrivalFWESummary from "@/components/Reports/ArrivalReport/ArrivalFWESummary.vue";
 import ArrivalFWEOverview from "@/components/Reports/ArrivalReport/ArrivalFWEOverview.vue";
+import ArrivalFWEAddRemarks from "@/components/Reports/ArrivalReport/ArrivalFWEAddRemarks.vue";
+import axios from "axios";
 import { storeToRefs } from "pinia";
 import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
@@ -134,6 +139,8 @@ const {
   totalSailingTime,
   fuelOilBreakdownsSum,
   fuelOilTotalConsumptionsSum,
+  // Additional Remarks
+  additionalRemarks,
 } = storeToRefs(store);
 
 const submissionStatusStore = useSubmissionStatusStore();
@@ -291,39 +298,31 @@ const sendReport = async () => {
       },
       consumption_type: TotalConsumptionType.PORT_TO_PORT,
     },
+    additionalremarks:
+      additionalRemarks.value === ""
+        ? null
+        : { remarks: additionalRemarks.value },
   };
   // console.log("data: ", REPORT);
 
   isSubmissionModalVisible.value = true;
-  const response = await fetch(
-    `${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/`,
-    {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(REPORT),
-    }
-  );
-
-  try {
-    const data = await response.json();
-    // console.log(response);
-    // console.log(data);
-
-    if (response.ok) {
+  axios
+    .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/`, REPORT)
+    .then(() => {
       isSubmissionSuccessful.value = true;
       store.$reset();
-    } else {
-      errorMessage.value = data;
-    }
-  } catch (error) {
-    console.log(error);
-    errorMessage.value = {
-      unexpectedError: ["Please contact the administrator."],
-    };
-  }
-  isSubmissionResponse.value = true;
+    })
+    .catch((error) => {
+      if (error.response.status == 400) {
+        errorMessage.value = error.response.data;
+      } else {
+        errorMessage.value = {
+          unexpectedError: ["Please contact the administrator."],
+        };
+      }
+    })
+    .finally(() => {
+      isSubmissionResponse.value = true;
+    });
 };
 </script>

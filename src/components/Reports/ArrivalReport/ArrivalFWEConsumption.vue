@@ -5,6 +5,7 @@
       <span class="text-blue-700 text-16">
         {{ $t("consumptionAndConditionSbyToFwe") }}
       </span>
+      <span class="text-red-500 text-16 ml-1">*</span>
     </div>
     <div class="grid divide-y divide-dashed gap-8">
       <div>
@@ -367,13 +368,13 @@
 
 <script setup>
 import { preventNaN } from "@/utils/helpers";
-import { ref } from "vue";
-import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
+// import { ref } from "vue";
+// import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
 import { storeToRefs } from "pinia";
 
-const isFuelOilRemarkEnabled = ref(false);
-const isLubricatingOilRemarkEnabled = ref(false);
+// const isFuelOilRemarkEnabled = ref(false);
+// const isLubricatingOilRemarkEnabled = ref(false);
 
 const store = useArrivalFWEReportStore();
 const {
@@ -384,11 +385,11 @@ const {
   fuelOilTotalConsumptions: fuel_oil_total_consumptions,
   fuelOilRobs: fuel_oil_robs,
   fuelOilBreakdowns: fuel_oil_breakdowns,
-  fuelOilDataCorrection: fuel_oil_data_correction,
+  // fuelOilDataCorrection: fuel_oil_data_correction,
   // lubricating oil
   lubricatingOilBreakdowns: lubricating_oil_breakdowns,
   lubricatingOilRobs: lubricating_oil_robs,
-  lubricatingOilDataCorrection: lubricating_oil_data_correction,
+  // lubricatingOilDataCorrection: lubricating_oil_data_correction,
   // fresh water
   freshwaterConsumed: freshwater_consumed,
   freshwaterGenerated: freshwater_generated,

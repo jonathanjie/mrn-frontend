@@ -12,7 +12,6 @@ import DepartureReportView from "@/views/ReportViews/AddReportToVoyageView/Depar
 import BunkerReportViewWrapper from "@/views/ReportViews/AddReportToVoyageView/BunkerReportView/BunkerReportViewWrapper.vue";
 import HarbourPortReportView from "@/views/ReportViews/AddReportToVoyageView/HarbourPortReportView/HarbourPortReportView.vue";
 import ReportDetailsViewWrapper from "@/views/ReportViews/ReportDetailsView/ReportDetailsViewWrapper.vue";
-
 import NotFound from "@/views/NotFound.vue";
 
 const routes = [
@@ -45,6 +44,14 @@ const routes = [
         name: "speed-graph-overview",
         component: () =>
           import("../views/HQViews/Overview/SpeedGraphOverview.vue"),
+        props: true,
+        beforeEnter: authGuard,
+      },
+      {
+        path: "vessel-cii-overview",
+        name: "vessel-cii-overview",
+        component: () =>
+          import("../views/HQViews/Overview/CIIOverview/VesselCIIOverview.vue"),
         props: true,
         beforeEnter: authGuard,
       },
@@ -130,6 +137,13 @@ const routes = [
     //     component: NoonReportView,
     //   },
     // ],
+    beforeEnter: authGuard,
+  },
+  {
+    path: "/cii-overview",
+    name: "cii-overview",
+    component: () => import("../views/CIIViews/CIIOverview.vue"),
+    props: true,
     beforeEnter: authGuard,
   },
   {
