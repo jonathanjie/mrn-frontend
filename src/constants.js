@@ -157,7 +157,7 @@ export const shipRefs = {
   OIL: "Oil Tanker",
   CNTR: "Container Ship",
   RORO: "Ro-Ro Cargo Ship",
-  GCGO: "General Cargo Ship",
+  GEN: "General Cargo Ship",
   REFC: "Refrigerated Cargo Carrier",
   COMB: "Combination Carrier",
   LNGC: "LNG Carrier",
