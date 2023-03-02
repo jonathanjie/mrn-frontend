@@ -136,7 +136,7 @@ let chartOptions = {
         <apexchart
           type="area"
           height="400"
-          width="1000"
+          width="900"
           :options="chartOptions"
           :series="series"
         />
