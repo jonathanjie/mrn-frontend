@@ -379,7 +379,7 @@
             class="flex items-center justify-end p-4 bg-gray-50 rounded-b space-x-3"
           >
             <CustomButton
-              class="hidden px-6 py-3 text-14 mr-1 mb-1"
+              class="px-6 py-3 text-14 mr-1 mb-1"
               type="button"
               @click="closeModal"
             >
