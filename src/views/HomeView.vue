@@ -99,7 +99,7 @@ const ship = await getShip();
 const role = await getUserRole();
 auth.updateUserRoleToken(user, role, jwt);
 
-if (ship?.shipspecs != undefined || role == "manager") {
+if (ship?.shipspecs !== undefined || role == "manager") {
   showModal = false;
 }
 </script>

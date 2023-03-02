@@ -4,13 +4,12 @@ import { ref } from "vue";
 import CustomTitle from "@/components/CustomTitle.vue";
 import DropZone from "@/components/FileDrop/DropZone.vue";
 import FilePreview from "@/components/FileDrop/FilePreview.vue";
-import { useCIIStore } from "@/stores/useCIIStore";
+import { useCIISetupStore } from "@/stores/useCIISetupStore";
 import { storeToRefs } from "pinia";
 
-const store = useCIIStore();
+const store = useCIISetupStore();
 const { technicalFiles, standardizedFiles, IMODCSFiles } = storeToRefs(store);
 
-// TODO: change it to compare extensions
 const allowPDF = ["pdf"];
 const allowPDFandXLS = ["pdf", "xls", "xlsx"];
 
@@ -23,7 +22,6 @@ const ciiReportTypes = {
   TECHNICAL_FILES: technicalFiles, // EEDI / EEXI Technical File
 };
 
-// TODO: change "files" to a list index to get the right ref list
 const addFiles = (key, newFiles, validFileTypes) => {
   let newUploadableFiles = [...newFiles]
     .map((file) => new UploadableFile(file))

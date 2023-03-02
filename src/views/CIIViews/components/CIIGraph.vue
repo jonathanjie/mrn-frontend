@@ -5,6 +5,13 @@ const props = defineProps({
   years: Array,
 });
 const { data, years } = toRefs(props);
+if (data.value === undefined || data.value === null) {
+  throw new Error("Prop has issues: data");
+}
+
+if (years.value === undefined || years.value === null) {
+  throw new Error("Prop has issues: yearsList");
+}
 const yearsList = years.value.sort();
 const grades = ["Grade A", "Grade B", "Grade C", "Grade D", "Grade E"];
 

@@ -23,7 +23,8 @@
     </div>
     <button
       @click="$emit('remove', file)"
-      class="close-icon align-middle ml-3 text-14 text-red-500"
+      class="close-icon align-middle text-14 text-red-500"
+      :class="{ 'ml-3': isCiiReport, 'ml-auto': !isCiiReport }"
       aria-label="Remove"
     >
       x

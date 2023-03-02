@@ -134,7 +134,7 @@
       />
       <select
         v-model="pilot_arr_lat_dir"
-        class="p-3 text-14 border-l focus:outline-0 focus:outline-0"
+        class="p-3 text-14 border-l focus:outline-0"
         :class="
           pilot_arr_lat_dir === 'default' ? 'text-gray-400' : 'text-gray-700'
         "

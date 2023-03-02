@@ -1,9 +1,9 @@
 <script setup>
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { storeToRefs } from "pinia";
-import { useCIIStore } from "@/stores/useCIIStore";
+import { useCIISetupStore } from "@/stores/useCIISetupStore";
 
-const store = useCIIStore();
+const store = useCIISetupStore();
 const {
   energyEfficiencyIndexType,
   energyEfficiencyIndexVal,

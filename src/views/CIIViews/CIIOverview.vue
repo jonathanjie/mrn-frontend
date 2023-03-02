@@ -1,72 +1,10 @@
 <script setup>
+import { ref } from "vue";
 import CIIGraph from "./components/CIIGraph.vue";
 import CIIVesselListCard from "./components/CIIVesselList/CIIVesselListCard.vue";
-import CIIRatingAlertCard from "./components/CIIRatingAlertCard.vue";
+import CIIRatingAlertCard from "./components/CIIRatingAlert/CIIRatingAlertCard.vue";
+
 const inputData = [
-  // {
-  //   uuid: "0e58c71e-3a0b-484e-8f24-120885f3b1ce",
-  //   name: "Test Ship 4",
-  //   imo_reg: 4234567,
-  //   company: {
-  //     uuid: "46e39081-dbdf-4816-8c09-5a40a36626b8",
-  //     name: "MarinaChain",
-  //     link: "https://www.marinachain.io/",
-  //   },
-  //   ship_type: "GAS",
-  //   shipspecs: {
-  //     flag: "Panama",
-  //     deadweight_tonnage: "2000.00",
-  //     cargo_unit: "cargoMt",
-  //     fuel_options: ["LSFO", "MGO"],
-  //     lubricating_oil_options: [
-  //       "me_cylinder_oil",
-  //       "me_system_oil",
-  //       "ge_system_oil",
-  //     ],
-  //     machinery_options: ["main_engine", "generator_engine", "boiler"],
-  //     propeller_pitch: "2.8740",
-  //   },
-  //   builtYear: 2002,
-  //   setupCii: true,
-  //   ciiGrade: {
-  //     2021: "B",
-  //     2022: "C",
-  //     2020: "A",
-  //     2023: "E",
-  //   },
-  // },
-  // {
-  //   uuid: "0d1de952-a361-4b18-95ec-dbaa7a0ca7d8",
-  //   name: "Test Ship 5",
-  //   imo_reg: 5234567,
-  //   company: {
-  //     uuid: "46e39081-dbdf-4816-8c09-5a40a36626b8",
-  //     name: "MarinaChain",
-  //     link: "https://www.marinachain.io/",
-  //   },
-  //   ship_type: "GEN",
-  //   shipspecs: {
-  //     flag: "Panama",
-  //     deadweight_tonnage: "2000.00",
-  //     cargo_unit: "cargoMt",
-  //     fuel_options: ["LSFO", "MGO"],
-  //     lubricating_oil_options: [
-  //       "me_cylinder_oil",
-  //       "me_system_oil",
-  //       "ge_system_oil",
-  //     ],
-  //     machinery_options: ["main_engine", "generator_engine", "boiler"],
-  //     propeller_pitch: "2.8740",
-  //   },
-  //   builtYear: 2002,
-  //   setupCii: true,
-  //   ciiGrade: {
-  //     2020: "A",
-  //     2021: "A",
-  //     2022: "B",
-  //     2023: "E",
-  //   },
-  // },
   {
     uuid: "6c1a1e8c-4dfb-4fef-b98c-f43db4576b12",
     name: "Test Ship 1",
@@ -91,12 +29,17 @@ const inputData = [
       propeller_pitch: "2.7839",
     },
     builtYear: 2002,
-    setupCii: true,
+    setupCii: false,
     ciiGrade: {
       2020: "A",
       2021: "B",
       2022: "C",
-      2023: "D",
+      2023: {
+        gradeLimit: "B",
+        gradeLimitValue: "4.87",
+        currentGrade: "C",
+        currentGradeValue: "3.62",
+      },
     },
   },
   {
@@ -133,41 +76,14 @@ const inputData = [
       2020: "A",
       2021: "B",
       2022: "C",
-      2023: "E",
+      2023: {
+        gradeLimit: "B",
+        gradeLimitValue: "4.87",
+        currentGrade: "A",
+        currentGradeValue: "4.62",
+      },
     },
   },
-  // {
-  //   uuid: "cd408268-cbee-4edc-8c36-d1ed720cb69b",
-  //   name: "Test Ship 3",
-  //   imo_reg: 3234567,
-  //   company: {
-  //     uuid: "46e39081-dbdf-4816-8c09-5a40a36626b8",
-  //     name: "MarinaChain",
-  //     link: "https://www.marinachain.io/",
-  //   },
-  //   ship_type: "OIL",
-  //   shipspecs: {
-  //     flag: "Panama",
-  //     deadweight_tonnage: "2000.00",
-  //     cargo_unit: "cargoMt",
-  //     fuel_options: ["LSFO", "MGO"],
-  //     lubricating_oil_options: [
-  //       "me_cylinder_oil",
-  //       "me_system_oil",
-  //       "ge_system_oil",
-  //     ],
-  //     machinery_options: ["main_engine", "generator_engine", "boiler"],
-  //     propeller_pitch: "2.8740",
-  //   },
-  //   builtYear: 2002,
-  //   setupCii: true,
-  //   ciiGrade: {
-  //     2020: "A",
-  //     2021: "B",
-  //     2022: "C",
-  //     2023: "D",
-  //   },
-  // },
 ];
 // Some api call to get the vessel and grade infomation
 
@@ -180,15 +96,35 @@ for (let i in inputData) {
     }
   }
 }
+
+let hover = ref(false);
 </script>
 <template>
-  <div class="flex flex-col px-12 pt-12 w-full">
-    <span class="text-20 font-bold text-blue-800 w-full">{{
-      $t("ciiOverview")
-    }}</span>
-    <CIIGraph :data="inputData" :years="years" />
+  <div class="flex flex-col px-12 pt-12 w-full divide-y relative">
+    <div class="mb-10">
+      <div class="flex items-center w-full">
+        <div
+          v-if="hover"
+          class="bg-black absolute rounded-xl py-2 px-3 -mt-16 ml-16"
+        >
+          <span class="text-12 text-white"
+            >View the CII overview of your fleet by voyage, past historical and
+            current year</span
+          >
+        </div>
+        <span class="text-20 font-bold text-blue-800 mr-2">{{
+          $t("ciiOverview")
+        }}</span>
+        <img
+          src="@/assets/icons/hover_icon.svg"
+          @mouseover="hover = true"
+          @mouseleave="hover = false"
+        />
+      </div>
 
-    <CIIVesselListCard :data="inputData" :yearsList="years" />
+      <CIIGraph :data="inputData" :years="years" />
+      <CIIVesselListCard :data="inputData" :yearsList="years" />
+    </div>
 
     <CIIRatingAlertCard />
   </div>
