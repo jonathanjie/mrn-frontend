@@ -179,7 +179,8 @@ const sendReport = async () => {
     report_type: Report.type.DEP_SBY,
     voyage: voyageNo.value,
     report_num: reportNo.value,
-    report_date: reportingDateTimeUTC.value,
+    report_date:
+      reportingDateTimeUTC.value === "" ? null : reportingDateTimeUTC.value,
     report_tz: reportingTimeZone.value,
     voyage_leg: {
       leg_num: legNo.value,
@@ -189,7 +190,8 @@ const sendReport = async () => {
     },
     reportroute: {
       departure_port: departurePort,
-      departure_date: reportingDateTimeUTC.value,
+      departure_date:
+        reportingDateTimeUTC.value === "" ? null : reportingDateTimeUTC.value,
       departure_tz: reportingTimeZone.value,
       // TODO: should be optional in backend
       arrival_port: destinationPort || null,
@@ -197,7 +199,8 @@ const sendReport = async () => {
       arrival_tz: destinationTimeZone.value || null,
     },
     cargooperation: {
-      load_condition: loadCondition.value,
+      load_condition:
+        loadCondition.value === "default" ? null : loadCondition.value,
       loading: Number(loading.value) || 0,
       unloading: Number(unloading.value) || 0,
       total: isFirstReport.value
@@ -267,8 +270,7 @@ const sendReport = async () => {
     // can change the above to null once the database is updated
   };
 
-  // console.log("data: ", REPORT);
-
+  console.log("data: ", REPORT);
   isSubmissionModalVisible.value = true;
 
   axios
