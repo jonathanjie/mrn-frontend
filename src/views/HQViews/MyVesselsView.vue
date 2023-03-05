@@ -122,7 +122,7 @@ const isSuccess = true;
               <h1 class="text-gray-500 text-12">{{ $t("totalVessels") }}</h1>
             </template>
             <template v-slot:numVessels>
-              <h2 v-if="ships.length != 0" class="text-gray-700 text-18">
+              <h2 v-if="ships" class="text-gray-700 text-18">
                 {{ ships.length }}
               </h2>
               <h2 v-else class="text-gray-700 text-18">-</h2>

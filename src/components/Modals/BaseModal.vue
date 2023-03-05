@@ -9,7 +9,9 @@ const props = defineProps({
     v-show="props.show"
     class="fixed z-50 top-0 left-0 w-full h-full bg-black/50 flex"
   >
-    <div class="w-1/2 m-auto bg-white border border-2 drop-shadow rounded-xl">
+    <div
+      class="w-1/2 m-auto bg-white border border-2 drop-shadow rounded-xl min-w-min"
+    >
       <div class="py-5 px-7 border-b">
         <button class="float-right text-gray-800" @click="$emit('close')">
           X

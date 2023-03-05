@@ -2,7 +2,7 @@
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 import { useCIICalculatorStore } from "@/stores/useCIICalculatorStore";
 import { storeToRefs } from "pinia";
-import CIICalculatorModal from "./components/CIICalculatorModal.vue";
+import CIICalculatorModal from "./components/CIICalculatorModal/CIICalculatorModal.vue";
 import CIIVoyageCard from "./components/CIIVoyageCard.vue";
 import CIIGrade from "@/views/CIIViews/components/CIIGrade.vue";
 import HazingBanner from "@/components/HazingBanner.vue";
@@ -41,6 +41,7 @@ const { showModal } = storeToRefs(store);
       <span class="text-18 text-gray-700 font-bold">{{ $t("ciiStatus") }}</span>
       <CustomButton
         class="h-9 text-14 text-blue-700 rounded-xl ml-auto min-w-fit disabled:text-gray-500 mb-4"
+        @click="showModal = true"
       >
         <template v-slot:content>
           <img
