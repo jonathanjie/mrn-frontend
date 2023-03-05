@@ -84,33 +84,35 @@
           </Transition>
         </router-link> -->
       </nav>
-      <a
-        v-if="!manager"
-        href="https://forms.gle/7wW6NxrpBMdDqNmS9"
-        target="_blank"
-        class="hover:animate-none animate-bounce flex items-center rounded-lg p-1.5 text-14 mt-auto mb-5 mx-5 border border-yellow-500 bg-yellow-50 text-yellow-700"
-      >
-        <img src="@/assets/icons/feedback.svg" class="w-6 h-6 mr-1.5" />
-        <div v-if="!collapsed">{{ $t("leaveFeedback") }}</div>
-      </a>
-      <div
-        v-if="!collapsed"
-        class="flex flex-col relative bg-white rounded-xl py-6 px-4 mx-4 mt-auto mb-4"
-      >
-        <img
-          src="@/assets/icons/PricingPlan/upper_circle.svg"
-          class="absolute top-0 right-0"
-        />
-        <span class="text-16 text-blue-700 font-bold mb-4"
-          >Ready to scale your businesses?</span
+      <div class="mt-auto">
+        <a
+          v-if="!manager"
+          href="https://forms.gle/7wW6NxrpBMdDqNmS9"
+          target="_blank"
+          class="hover:animate-none animate-bounce flex items-center rounded-lg p-1.5 text-14 mt-auto mb-5 mx-5 border border-yellow-500 bg-yellow-50 text-yellow-700"
         >
-        <GradientButton
-          class="px-6 py-2 text-14 mr-1 mb-1 justify-center"
-          type="button"
-          @click="pricingModal()"
+          <img src="@/assets/icons/feedback.svg" class="w-6 h-6 mr-1.5" />
+          <div v-if="!collapsed">{{ $t("leaveFeedback") }}</div>
+        </a>
+        <div
+          v-if="!collapsed"
+          class="flex flex-col relative bg-white rounded-xl py-6 px-4 mx-4 mb-4"
         >
-          <template v-slot:content>View Pricing Plans</template>
-        </GradientButton>
+          <img
+            src="@/assets/icons/PricingPlan/upper_circle.svg"
+            class="absolute top-0 right-0"
+          />
+          <span class="text-16 text-blue-700 font-bold mb-4"
+            >Ready to scale your businesses?</span
+          >
+          <GradientButton
+            class="px-6 py-2 text-14 mr-1 mb-1 justify-center"
+            type="button"
+            @click="pricingModal()"
+          >
+            <template v-slot:content>View Pricing Plans</template>
+          </GradientButton>
+        </div>
       </div>
     </div>
   </div>

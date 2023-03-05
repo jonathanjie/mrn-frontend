@@ -285,14 +285,17 @@ const sendReport = async () => {
       position: arrivalSbyPosition,
     },
     weatherdata: {
-      weather_notation: weather.value,
-      visibility: visibility.value,
-      wind_direction: windDirection.value,
+      weather_notation: weather.value === "default" ? null : weather.value,
+      visibility: visibility.value === "default" ? null : visibility.value,
+      wind_direction:
+        windDirection.value === "default" ? null : windDirection.value,
       wind_speed: Number(windSpeed.value),
-      sea_direction: seaDirection.value,
-      sea_state: seaState.value,
-      swell_direction: swellDirection.value,
-      swell_scale: swellScale.value,
+      sea_direction:
+        seaDirection.value === "default" ? null : seaDirection.value,
+      sea_state: seaState.value === "default" ? null : seaState.value,
+      swell_direction:
+        swellDirection.value === "default" ? null : swellDirection.value,
+      swell_scale: swellScale.value === "default" ? null : swellScale.value,
       air_pressure: Number(airPressure.value),
       air_temperature_dry: Number(airTemperatureDry.value),
       air_temperature_wet: Number(airTemperatureWet.value),

@@ -98,33 +98,42 @@ const addVoyage = async () => {
     isAddVoyageLoading.value = true;
     if (voyages.value.length == 0) {
       do {
-        var inputVoyage = parseInt(
-          prompt("Enter initial voyage number above 0.", ""),
-          10
-        );
+        var inputVoyage = prompt("Enter initial voyage number above 0.", "");
+        if (inputVoyage === null) {
+          console.log("Help");
+          break;
+        }
+        inputVoyage = parseInt(inputVoyage, 10);
       } while (isNaN(inputVoyage) || inputVoyage < 1);
-      lastVoyageNo.value = Number(inputVoyage) - 1;
     } else {
       lastVoyageNo.value = Math.max(...voyages.value.map((v) => v.voyage_num));
     }
-    const voyageData = {
-      voyage_num: nextVoyageNo.value,
-      imo_reg: props.imo,
-    };
-    await axios
-      .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/voyages/`, voyageData)
-      .then(() => {
-        refetchData();
-      })
-      .catch((error) => {
-        confirm(
-          "Unable to add new voyage. Check if your previous leg has been completed or if your voyage number already exists"
-        );
-        console.log(error.message);
-      })
-      .finally(() => {
-        isAddVoyageLoading.value = false;
-      });
+    if (inputVoyage != null) {
+      lastVoyageNo.value = Number(inputVoyage) - 1;
+      const voyageData = {
+        voyage_num: nextVoyageNo.value,
+        imo_reg: props.imo,
+      };
+      await axios
+        .post(
+          `${process.env.VUE_APP_URL_DOMAIN}/marinanet/voyages/`,
+          voyageData
+        )
+        .then(() => {
+          refetchData();
+        })
+        .catch((error) => {
+          confirm(
+            "Unable to add new voyage. Check if your previous leg has been completed or if your voyage number already exists"
+          );
+          console.log(error.message);
+        })
+        .finally(() => {
+          isAddVoyageLoading.value = false;
+        });
+    } else {
+      isAddVoyageLoading.value = false;
+    }
   }
 };
 </script>
