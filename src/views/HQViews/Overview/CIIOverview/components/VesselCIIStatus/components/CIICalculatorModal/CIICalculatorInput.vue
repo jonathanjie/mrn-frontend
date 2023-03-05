@@ -1,5 +1,5 @@
 <script setup>
-import { preventNaN, format, textInputOptions } from "@/utils/helpers.js";
+import { preventNaN, dateOnlyFormat } from "@/utils/helpers.js";
 import Tab from "@/components/Tabs/Tab.vue";
 import TabsWrapper from "@/components/Tabs/TabsWrapper.vue";
 import HazingBanner from "@/components/HazingBanner.vue";
@@ -14,7 +14,7 @@ const {
   referenceStartDate,
   referenceEndDate,
   distanceInPeriod,
-  fuelTypes,
+  fuelOils,
   fuelAmounts,
   totalEmissions,
   isTargetCIIGradeEnabled,
@@ -50,18 +50,20 @@ const {
         >
       </div>
       <div
-        class="flex items-center py-4 px-3 bg-white rounded-xl"
+        class="flex items-center py-4 px-3 rounded-xl bg-gray-50"
         :class="
           !isOnlyUsingUserInput && isOnlyUsingUserInput !== ''
             ? 'border border-gradientblue bg-paleblue'
             : ''
         "
       >
+        <!-- TODO: disabled for testing/demo -->
         <input
           type="radio"
           id="includeYTDData"
           v-model="isOnlyUsingUserInput"
           v-bind:value="false"
+          disabled
         />
         <label for="includeYTDData" class="ml-2 mr-4 font-medium"
           >Use my input values + YTD data on our system</label
@@ -120,10 +122,10 @@ const {
             v-model="referenceStartDate"
             class="grow"
             textInput
-            :textInputOptions="textInputOptions"
-            :format="format"
+            :format="dateOnlyFormat"
             :modelValue="string"
             :placeholder="$t('startDate')"
+            :enable-time-picker="false"
           >
             <template #input-icon>
               <img src="" />
@@ -135,10 +137,10 @@ const {
             v-model="referenceEndDate"
             class="grow"
             textInput
-            :textInputOptions="textInputOptions"
-            :format="format"
+            :format="dateOnlyFormat"
             :modelValue="string"
             :placeholder="$t('endDate')"
+            :enable-time-picker="false"
           >
             <template #input-icon>
               <img src="" />
@@ -166,7 +168,7 @@ const {
       <Tab :title="$t('fuelConsumption')">
         <div class="mt-5 text-gray-800 grid grid-cols-2 gap-5">
           <div
-            v-for="(fuelType, index) in fuelTypes"
+            v-for="(fuelType, index) in fuelOils"
             :key="index"
             class="contents"
           >
@@ -211,7 +213,11 @@ const {
           <div
             class="text-18 font-bold ml-auto bg-gradient-to-r from-gradientblue to-gradientgreen inline-block text-black/[0] bg-clip-text"
           >
-            {{ totalEmissions ? totalEmissions : "000,000,000" }}
+            {{
+              totalEmissions
+                ? totalEmissions.toLocaleString("en-US")
+                : "000,000,000"
+            }}
           </div>
 
           <div
@@ -274,7 +280,11 @@ const {
                   ? 'border border-gradientblue bg-paleblue'
                   : ''
               "
-              @click="targetCIIGrade = 'a'"
+              @click="
+                targetCIIGrade == 'a'
+                  ? (targetCIIGrade = '')
+                  : (targetCIIGrade = 'a')
+              "
             >
               <div
                 class="mr-2 flex justify-center items-center rounded-full bg-grades-a text-white w-7 h-7"
@@ -290,7 +300,11 @@ const {
                   ? 'border border-gradientblue bg-paleblue'
                   : ''
               "
-              @click="targetCIIGrade = 'b'"
+              @click="
+                targetCIIGrade == 'b'
+                  ? (targetCIIGrade = '')
+                  : (targetCIIGrade = 'b')
+              "
             >
               <div
                 class="mr-2 flex justify-center items-center rounded-full bg-grades-b text-white w-7 h-7"
@@ -306,7 +320,11 @@ const {
                   ? 'border border-gradientblue bg-paleblue'
                   : ''
               "
-              @click="targetCIIGrade = 'c'"
+              @click="
+                targetCIIGrade == 'c'
+                  ? (targetCIIGrade = '')
+                  : (targetCIIGrade = 'c')
+              "
             >
               <div
                 class="mr-2 flex justify-center items-center rounded-full bg-grades-c text-white w-7 h-7"
@@ -322,7 +340,11 @@ const {
                   ? 'border border-gradientblue bg-paleblue'
                   : ''
               "
-              @click="targetCIIGrade = 'd'"
+              @click="
+                targetCIIGrade == 'd'
+                  ? (targetCIIGrade = '')
+                  : (targetCIIGrade = 'd')
+              "
             >
               <div
                 class="mr-2 flex justify-center items-center rounded-full bg-grades-d text-white w-7 h-7"
@@ -331,7 +353,7 @@ const {
               </div>
               Grade D
             </div>
-            <div
+            <!-- <div
               class="grow flex items-center py-2 px-3 bg-white rounded-lg border cursor-pointer"
               :class="
                 targetCIIGrade === 'e'
@@ -346,7 +368,7 @@ const {
                 E
               </div>
               Grade E
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
