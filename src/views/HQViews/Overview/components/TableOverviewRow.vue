@@ -35,7 +35,7 @@
     >
       <span class="text-14 font-bold text-gray-800">{{ props.header }}</span>
     </div>
-    <div v-for="(value, index) in props.values" :key="value.id">
+    <div v-for="(header, index) in props.values" :key="header.id">
       <div
         class="flex px-3.5 py-3 justify-center"
         :class="
@@ -44,7 +44,7 @@
             : 'border-t border-l border-gray-200'
         "
       >
-        <span class="text-14 font-semibold text-gray-800">{{ value }}</span>
+        <span class="text-14 font-semibold text-gray-800">{{ header }}</span>
       </div>
     </div>
     <div
@@ -54,7 +54,7 @@
         $t("reportType")
       }}</span>
     </div>
-    <div v-for="(value, index) in props.reportType" :key="value.id">
+    <div v-for="(reportType, index) in props.reportType" :key="reportType.id">
       <div
         class="flex px-3.5 py-3 justify-center"
         :class="
@@ -64,32 +64,32 @@
         "
       >
         <img
-          v-if="value === 'DCSP' || value === 'DSBY'"
+          v-if="reportType === 'DCSP' || reportType === 'DSBY'"
           src="@/assets/icons/departure_header_icon.svg"
         />
         <img
-          v-else-if="value === 'ASBY' || value === 'AFWE'"
+          v-else-if="reportType === 'ASBY' || reportType === 'AFWE'"
           src="@/assets/icons/arrival_header_icon.svg"
         />
         <img
-          v-else-if="value === 'NOON'"
+          v-else-if="reportType === 'NOON'"
           src="@/assets/icons/noon_header_icon.svg"
         />
         <img
-          v-else-if="value === 'BDN'"
+          v-else-if="reportType === 'BDN'"
           src="@/assets/icons/bunker_header_icon.svg"
         />
         <img
           v-else-if="
-            value === 'EVHB' ||
-            value === 'EVPO' ||
-            value === 'NNPO' ||
-            value === 'NNHB'
+            reportType === 'EVHB' ||
+            reportType === 'EVPO' ||
+            reportType === 'NNPO' ||
+            reportType === 'NNHB'
           "
           src="@/assets/icons/in_harbour_header_icon.svg"
         />
         <span class="text-14 font-semibold text-gray-800 ml-1">{{
-          reportTypes[value]
+          reportTypes[reportType]
         }}</span>
       </div>
     </div>
@@ -118,7 +118,7 @@
       }}</span>
     </div>
     <!-- Values -->
-    <div v-for="(value, index) in row1" :key="value.id">
+    <div v-for="(item1, index) in row1" :key="item1.id">
       <div
         class="flex px-3.5 py-3 justify-center"
         :class="
@@ -127,7 +127,7 @@
             : 'border-l border-t border-gray-200'
         "
       >
-        <span class="text-14 font-semibold text-gray-800">{{ value }}</span>
+        <span class="text-14 font-semibold text-gray-800">{{ item1 }}</span>
       </div>
     </div>
     <div
@@ -142,7 +142,7 @@
         $t("rob")
       }}</span>
     </div>
-    <div v-for="(value, index) in row2" :key="value.id">
+    <div v-for="(item2, index) in row2" :key="item2.id">
       <div
         class="flex px-3.5 py-3 justify-center"
         :class="
@@ -151,7 +151,7 @@
             : 'border-l border-y border-gray-200'
         "
       >
-        <span class="text-14 font-semibold text-gray-800">{{ value }}</span>
+        <span class="text-14 font-semibold text-gray-800">{{ item2 }}</span>
       </div>
     </div>
   </div>
