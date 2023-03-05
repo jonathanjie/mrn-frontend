@@ -3,6 +3,7 @@ import { ref } from "vue";
 import CIIGraph from "./components/CIIGraph.vue";
 import CIIVesselListCard from "./components/CIIVesselList/CIIVesselListCard.vue";
 import CIIRatingAlertCard from "./components/CIIRatingAlert/CIIRatingAlertCard.vue";
+import CIISetupModal from "@/components/Modals/CIISetupModal/CIISetupModal.vue";
 
 const inputData = [
   {
@@ -125,7 +126,7 @@ let hover = ref(false);
       <CIIGraph :data="inputData" :years="years" />
       <CIIVesselListCard :data="inputData" :yearsList="years" />
     </div>
-
+    <CIISetupModal />
     <CIIRatingAlertCard />
   </div>
 </template>

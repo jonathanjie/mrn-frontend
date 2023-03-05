@@ -3,13 +3,17 @@ import { toRefs } from "vue";
 import CIIAlert from "../../CIIAlert.vue";
 import CIIGrade from "../../CIIGrade.vue";
 import { ref } from "vue";
+import { storeToRefs } from "pinia";
+import { useCIISetupStore } from "@/stores/useCIISetupStore";
 
 const props = defineProps({
   ships: Object,
   buttonCols: String,
   numCols: String,
 });
-const showModal = ref(false);
+
+const store = useCIISetupStore();
+const { showModal } = storeToRefs(store);
 
 const { ships, buttonCols, numCols } = toRefs(props);
 

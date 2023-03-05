@@ -16,6 +16,7 @@ import constants from "@/constants";
 const shipStore = useShipStore();
 const CIISetupStore = useCIISetupStore();
 const {
+  showModal,
   energyEfficiencyIndexType,
   energyEfficiencyIndexVal,
   isEnginePowerLimited,
@@ -35,7 +36,6 @@ const {
   IMODCSFiles,
 } = storeToRefs(CIISetupStore);
 const { imoReg } = storeToRefs(shipStore);
-const showModal = ref(false);
 const pageNum = ref(1);
 
 defineProps({
@@ -120,7 +120,7 @@ const uploadSettings = () => {
 </script>
 
 <template>
-  <button id="show-modal" @click="showModal = true">Show Modal</button>
+  <!-- <button id="show-modal" @click="showModal = true">Show Modal</button> -->
 
   <Teleport to="body">
     <BaseModal :show="showModal" @close="cancel">

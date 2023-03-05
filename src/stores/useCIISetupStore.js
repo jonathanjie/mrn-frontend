@@ -2,6 +2,7 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 
 export const useCIISetupStore = defineStore("cii-setup", () => {
+  const showModal = ref(false);
   const pageNum = ref(2);
   const energyEfficiencyIndexType = ref("eedi");
   const energyEfficiencyIndexVal = ref("");
@@ -22,6 +23,7 @@ export const useCIISetupStore = defineStore("cii-setup", () => {
   const IMODCSFiles = ref([]);
 
   return {
+    showModal,
     pageNum,
     energyEfficiencyIndexType,
     energyEfficiencyIndexVal,
