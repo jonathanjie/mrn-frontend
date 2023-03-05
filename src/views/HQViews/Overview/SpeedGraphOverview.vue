@@ -181,16 +181,25 @@ import TableOverview from "@/views/HQViews/Overview/components/TableOverview.vue
 import PortCard from "@/views/HQViews/Overview/components/PortCard.vue";
 import { useHQStore } from "@/stores/useHQStore";
 import constants from "@/constants";
+import { useShipStore } from "@/stores/useShipStore";
+import { storeToRefs } from "pinia";
+
+const shipStore = useShipStore();
+const { imoReg } = storeToRefs(shipStore);
+
+// TODO: update other ship store values
+imoReg.value = props.imo;
 
 const props = defineProps({
   vesselname: String,
   imo: String,
 });
-
-// console.log(props, "SpeedOverview props");
-
 const shipRef = constants.shipRefs;
 const store = useHQStore();
+
+// const {imoReg} = storeToRefs(shipStore)
+// shipStore.imoReg = props.imo
+
 const { isSuccess: shipSuccess, data: ship } = store.shipQuery(props.imo);
 const { isSuccess: legsSuccess, data: portCalls } = store.legsQuery(props.imo);
 const { isSuccess: statsSuccess, data: stats } = store.statsQuery(props.imo);

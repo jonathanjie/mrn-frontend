@@ -3,6 +3,9 @@ import { ref } from "vue";
 import CIIGraph from "./components/CIIGraph.vue";
 import CIIVesselListCard from "./components/CIIVesselList/CIIVesselListCard.vue";
 import CIIRatingAlertCard from "./components/CIIRatingAlert/CIIRatingAlertCard.vue";
+import CIISetupModal from "@/components/Modals/CIISetupModal/CIISetupModal.vue";
+
+import { useCiiShipsQuery } from "@/queries/useCiiShipsQuery";
 const inputData = [
   {
     uuid: "6c1a1e8c-4dfb-4fef-b98c-f43db4576b12",
@@ -12,6 +15,43 @@ const inputData = [
       uuid: "46e39081-dbdf-4816-8c09-5a40a36626b8",
       name: "MarinaChain",
       link: "https://www.marinachain.io/",
+    },
+    ship_type: "OIL",
+    shipspecs: {
+      flag: "Panama",
+      deadweight_tonnage: "2000.00",
+      cargo_unit: "cargoMt",
+      fuel_options: ["LSFO", "MGO"],
+      lubricating_oil_options: [
+        "me_cylinder_oil",
+        "me_system_oil",
+        "ge_system_oil",
+      ],
+      machinery_options: ["main_engine", "generator_engine", "boiler"],
+      propeller_pitch: "2.7839",
+    },
+    builtYear: 2002,
+    setupCii: false,
+    ciiGrade: {
+      2020: "A",
+      2021: "B",
+      2022: "C",
+      2023: {
+        gradeLimit: "B",
+        gradeLimitValue: "4.87",
+        currentGrade: "C",
+        currentGradeValue: "3.62",
+      },
+    },
+  },
+  {
+    uuid: "df1d02e1-57cf-4b89-bee7-3f638acb7282",
+    name: "FC Adonis",
+    imo_reg: 9449431,
+    company: {
+      uuid: "2505bc2e-f052-4ed9-9567-4864e21b1010",
+      name: "Fortune Marine",
+      link: "http://www.fortunem.com/500/01.php",
     },
     ship_type: "OIL",
     shipspecs: {
@@ -96,6 +136,7 @@ for (let i in inputData) {
   }
 }
 
+const { isSuccess, data: ships } = useCiiShipsQuery();
 let hover = ref(false);
 </script>
 <template>
@@ -120,11 +161,12 @@ let hover = ref(false);
           @mouseleave="hover = false"
         />
       </div>
-
-      <CIIGraph :data="inputData" :years="years" />
-      <CIIVesselListCard :data="inputData" :yearsList="years" />
+      <div v-if="isSuccess" class="flex flex-col">
+        <CIIGraph :data="inputData" :years="years" />
+        <CIIVesselListCard :data="ships" :yearsList="[]" />
+      </div>
     </div>
-
+    <CIISetupModal />
     <CIIRatingAlertCard />
   </div>
 </template>

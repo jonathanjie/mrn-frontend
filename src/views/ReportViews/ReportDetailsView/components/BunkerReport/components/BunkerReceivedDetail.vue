@@ -13,7 +13,7 @@ const props = defineProps({
   },
 });
 
-const getPresignedUrlForFiles = async (filePath) => {
+const getPresignedUrlForFileDownload = async (filePath) => {
   const response = await fetch(
     "https://mui7py4yakmr4db4na4vogvotm0jyacz.lambda-url.ap-southeast-1.on.aws/",
     {
@@ -62,14 +62,9 @@ const files = ref([]);
 
 for (const file of props.report.bdndata.bdn_file) {
   const filePath = getFilePath(file);
-  const presignedUrl = await getPresignedUrlForFiles(filePath);
+  const presignedUrl = await getPresignedUrlForFileDownload(filePath);
   files.value.push(presignedUrl);
 }
-
-// const files = await props.report.bdndata.bdn_file
-//   .map((file) => getFilePath(file))
-//   .map((filePath) => getPresignedUrlForFiles(filePath))
-//   .then((response) => console.log("hhe", response));
 
 const oil_type = computed(() =>
   Object.keys(ALL_FUEL_OILS).includes(

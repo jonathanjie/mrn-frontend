@@ -2,36 +2,35 @@
 import { toRefs } from "vue";
 import CIIAlert from "../../CIIAlert.vue";
 import CIIGrade from "../../CIIGrade.vue";
+import { ref } from "vue";
+import { storeToRefs } from "pinia";
+import { useCIISetupStore } from "@/stores/useCIISetupStore";
+
 const props = defineProps({
   ships: Object,
   buttonCols: String,
   numCols: String,
 });
 
+const store = useCIISetupStore();
+const { showModal } = storeToRefs(store);
+
 const { ships, buttonCols, numCols } = toRefs(props);
-
 const shipGrades = [];
-for (let ship in ships.value) {
-  const tempArr = [];
-  let tempKeys = Object.keys(ships.value[ship].ciiGrade).sort();
-  for (let i in tempKeys) {
-    tempArr.push(ships.value[ship].ciiGrade[tempKeys[i]]);
-  }
-  shipGrades.push(tempArr);
-}
+// for (let ship in ships.value) {
+//   const tempArr = [];
+//   let tempKeys = Object.keys(ships.value[ship].ciiGrade).sort();
+//   for (let i in tempKeys) {
+//     tempArr.push(ships.value[ship].ciiGrade[tempKeys[i]]);
+//   }
+//   shipGrades.push(tempArr);
+// }
 
-const setupCii = () => {
-  console.log("Hello World");
-};
 </script>
 
 <template>
   <div class="divide-y">
-    <router-link
-      :to="{
-        name: 'speed-graph-overview',
-        params: { vesselname: ship.name, imo: ship.imo_reg },
-      }"
+    <div
       v-for="(ship, index) in ships"
       class="flex grid px-3.5 py-3 my-3 justify-between items-center"
       :key="ship.id"
@@ -40,25 +39,25 @@ const setupCii = () => {
       <div>
         <span class="text-14 text-gray-700 font-semibold">{{ ship.name }}</span>
         <span
-          v-if="ship.setupCii"
+          v-if="ship.calculated_ciis.length == 0"
           class="text-12 text-blue-700 px-2 py-1.5 ml-2 rounded-2xl bg-blue-50"
           >{{ $t("new") }}</span
         >
       </div>
       <span class="text-14 text-gray-700 font-semibold"
-        >{{ ship.shipspecs.deadweight_tonnage }} DWT</span
-      >
+        >{{ ship.size === null ? "No size" : ship.size + " DWT" }}
+      </span>
       <span class="text-14 text-gray-700 font-semibold">{{
-        ship.shipspecs.flag
+        ship.flag === null ? "No flag" : ship.flag
       }}</span>
       <span class="text-14 text-gray-700 font-semibold">{{
-        ship.builtYear
+        ship.delivery_date === null ? "No delivery date" : ship.delivery_date
       }}</span>
       <button
-        v-if="ship.setupCii"
+        v-if="ship.calculated_ciis.length == 0"
         class="flex w-full justify-center bg-blue-50 rounded-l border border-blue-600 text-14 text-blue-700 font-bold"
         :class="buttonCols"
-        @click.self.prevent="setupCii"
+        @click.self.prevent="showModal = true"
       >
         {{ $t("setupCii") }}
       </button>
@@ -79,6 +78,6 @@ const setupCii = () => {
           :currentGradeValue="grade.currentGradeValue"
         />
       </div>
-    </router-link>
+    </div>
   </div>
 </template>

@@ -64,7 +64,9 @@
     "parserOptions": {
       "parser": "@babel/eslint-parser"
     },
-    "rules": {}
+    "rules": {
+      "vue/script-setup-uses-vars": "error"
+    }
   },
   "browserslist": [
     "> 1%",

@@ -141,7 +141,7 @@ let chartOptions = {
           :series="series"
         />
       </div>
-      <HazingBanner v-if="hide" :box="true" />
+      <HazingBanner v-if="hide" />
     </div>
   </div>
 </template>

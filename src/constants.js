@@ -96,13 +96,13 @@ export const IceCondition = {
 };
 
 export const FuelOil = {
-  LSFO: "lsfo",
-  MGO: "mgo",
-  MDO: "mdo",
-  HFO: "hfo",
-  LPGP: "lpgPropane",
-  LPGB: "lpgButane",
-  LNG: "lng",
+  LSFO: "LSFO",
+  MGO: "MGO",
+  MDO: "MDO",
+  HFO: "HFO",
+  LPGP: "LPGP",
+  LPGB: "LPGB",
+  LNG: "LNG",
 };
 
 export const LubricatingOil = {
@@ -166,6 +166,16 @@ export const shipRefs = {
   CRUZ: "Cruise Passenger Ship",
 };
 
+export const CIIModalTypes = {
+  INITIAL_SETUP: "Initial Setup CII",
+  UPLOAD_FILES: "Upload CII Report",
+};
+
+export const ShippingAuthorities = {
+  IMODCS: "imodcs",
+  EUMRV: "eumrv"
+}
+
 const constants = {
   SRID: "4326",
   Report: Report,
@@ -182,6 +192,8 @@ const constants = {
   ActualPerformanceType: ActualPerformanceType,
   UTCPlaceholder: UTCPlaceholder,
   shipRefs: shipRefs,
+  CIIModalTypes: CIIModalTypes,
+  ShippingAuthorities: ShippingAuthorities,
 };
 
 export default constants;

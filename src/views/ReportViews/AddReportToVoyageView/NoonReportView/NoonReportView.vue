@@ -350,8 +350,7 @@ const sendReport = async () => {
         ? null
         : { remarks: additionalRemarks.value },
   };
-  console.log("Funny vision thingy", visibility.value);
-  console.log("data: ", REPORT);
+  // console.log("data: ", REPORT);
 
   isSubmissionModalVisible.value = true;
   axios

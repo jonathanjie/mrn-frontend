@@ -91,6 +91,7 @@ module.exports = {
       },
       pink: "#ED7B84",
       darkgray: "#EAEEF0",
+      paleblue: "#F5FDFF",
       gradientblue: "#0093B8",
       gradientgreen: "#09DBA9",
       white: "#FFFFFF",
@@ -102,6 +103,19 @@ module.exports = {
         d: "#FDA80C",
         e: "#F04438",
       },
+      // TODO: does not work, temporary replacement with below
+      // gradeslight: {
+      //   a: "#F6FCF9",
+      //   b: "#E9F2E7",
+      //   c: "#FFFDF0",
+      //   d: "#FFFCF5",
+      //   e: "#FEF8F7",
+      // },
+      gradeslighta: "#F6FCF9",
+      gradeslightb: "#E9F2E7",
+      gradeslightc: "#FFFDF0",
+      gradeslightd: "#FFFCF5",
+      gradeslighte: "#FEF8F7",
     },
     extend: {
       gridTemplateColumns: {
