@@ -171,6 +171,11 @@ export const CIIModalTypes = {
   UPLOAD_FILES: "Upload CII Report",
 };
 
+export const ShippingAuthorities = {
+  IMODCS: "imodcs",
+  EUMRV: "eumrv"
+}
+
 const constants = {
   SRID: "4326",
   Report: Report,
@@ -188,6 +193,7 @@ const constants = {
   UTCPlaceholder: UTCPlaceholder,
   shipRefs: shipRefs,
   CIIModalTypes: CIIModalTypes,
+  ShippingAuthorities: ShippingAuthorities,
 };
 
 export default constants;

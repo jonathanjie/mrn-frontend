@@ -7,7 +7,34 @@ import GradientButton from "@/components/Buttons/GradientButton.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
 import InitialSetupCII from "@/components/Modals/CIISetupModal/InitialSetupCII.vue";
 import UploadCIIReport from "@/components/Modals/CIISetupModal/UploadCIIReport.vue";
+import { useCIISetupStore } from "@/stores/useCIISetupStore";
+import axios from "axios";
+import { storeToRefs } from "pinia";
+import { useShipStore } from "@/stores/useShipStore";
+import constants from "@/constants";
 
+const shipStore = useShipStore();
+const CIISetupStore = useCIISetupStore();
+const {
+  energyEfficiencyIndexType,
+  energyEfficiencyIndexVal,
+  isEnginePowerLimited,
+  enginePowerLimitType,
+  enginePowerLimitVal,
+  reportTypes,
+  trialCII,
+  applicableCII,
+  IMODCSMethod,
+  EUMRVMethod,
+  fuelOilTypes,
+  otherOilName,
+  conversionFactor,
+  currentYearTargetCIIGrade,
+  technicalFiles,
+  standardizedFiles,
+  IMODCSFiles,
+} = storeToRefs(CIISetupStore);
+const { imoReg } = storeToRefs(shipStore);
 const showModal = ref(false);
 const pageNum = ref(1);
 
@@ -24,9 +51,69 @@ const cancel = () => {
   showModal.value = false;
 };
 
+const uploadFiles = () => {
+  const isFileMissing = true;
+  if (isFileMissing) {
+    window.alert("please add all files needed");
+  }
+  console.log("uploading files");
+};
+
 const uploadSettings = () => {
   console.log("uploading settings");
-  // implement upload with backend api
+
+  const SETTINGS = {
+    ship: 1234567,
+    energy_efficiency_index_type: "EEXI",
+    energy_efficiency_index_value: "10.564",
+    is_engine_power_limited: true,
+    engine_power_limit_type: "SPL",
+    engine_power_limit_value: 77,
+    imo_dcs: true,
+    imo_dcs_method: "DCS1",
+    eu_mrv: false,
+    eu_mrv_method: "MRVA",
+    applicable_cii: "AER",
+    trial_cii_types: ["EEPI"],
+    fuel_options: ["LSFO", "MDGO"],
+    current_year_cii_target: {
+      year: 2023,
+      grade: "C",
+    },
+  };
+
+  // const currentYear = new Date().getFullYear();
+  // const SETTINGS = {
+  //   ship: imoReg,
+  //   energy_efficiency_index_type: energyEfficiencyIndexType,
+  //   energy_efficiency_index_value: energyEfficiencyIndexVal,
+  //   is_engine_power_limited: isEnginePowerLimited,
+  //   engine_power_limit_type: enginePowerLimitType,
+  //   engine_power_limit_value: enginePowerLimitVal,
+  //   imo_dcs: reportTypes.value.includes(constants.ShippingAuthorities.IMODCS),
+  //   imo_dcs_method: IMODCSMethod,
+  //   eu_mrv: reportTypes.value.includes(constants.ShippingAuthorities.EUMRV),
+  //   eu_mrv_method: EUMRVMethod,
+  //   applicable_cii: applicableCII,
+  //   trial_cii_types: trialCII,
+  //   fuel_options: fuelOilTypes,
+  //   current_year_cii_target: {
+  //     year: currentYear,
+  //     grade: currentYearTargetCIIGrade,
+  //   },
+  // };
+  axios
+    .post(`${process.env.VUE_APP_URL_DOMAIN}/cii/config/`, SETTINGS)
+    .then()
+    .catch((error) => {
+      // if (error.response.status == 400 || error.response.status == 404) {
+      //   console.log(error);
+      // } else {
+      //   console.error(error);
+      // }
+      console.error(error);
+    });
+
   pageNum.value = 1;
   showModal.value = false;
 };
@@ -91,6 +178,9 @@ const uploadSettings = () => {
           >
           <GradientButton v-if="pageNum === 2" @click="uploadSettings">
             <template #content>{{ $t("completeSetup") }}</template>
+          </GradientButton>
+          <GradientButton v-if="pageNum === 2" @click="uploadFiles">
+            <template #content>Upload files</template>
           </GradientButton>
         </div>
       </template>
