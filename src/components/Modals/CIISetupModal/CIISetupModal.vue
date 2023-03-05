@@ -174,10 +174,13 @@ const uploadSettings = async () => {
       <template #footer>
         <div class="flex justify-end space-x-4">
           <CustomButton @click="cancel"
-            ><template #content>{{ $t("cancel") }}</template></CustomButton
+          ><template #content>{{ $t("cancel") }}</template></CustomButton
           >
           <GradientButton v-if="pageNum === 1" @click="pageNum += 1"
-            ><template #content>{{ $t("next") }}</template></GradientButton
+          ><template #content>{{ $t("next") }}</template></GradientButton
+          >
+          <GradientButton v-if="pageNum === 2" @click="pageNum -= 1"
+            ><template #content>{{ $t("back") }}</template></GradientButton
           >
           <GradientButton v-if="pageNum === 2" @click="uploadSettings">
             <template #content>{{ $t("completeSetup") }}</template>

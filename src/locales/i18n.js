@@ -566,6 +566,7 @@ const i18n = createI18n({
       gradeLimit: "Grade Limit",
       ciiDocument: "CII Document",
       next: "Next",
+      back: "Back",
       completeSetup: "Complete Setup",
       selectYear: "Select Year",
       resetAll: "Reset All",
