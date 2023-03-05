@@ -1,5 +1,6 @@
 <script setup>
 import { reactive, toRefs } from "vue";
+import HazingBanner from "@/components/HazingBanner.vue";
 const props = defineProps({
   data: Object,
   years: Array,
@@ -162,8 +163,8 @@ if (Object.keys(shipData).length == 0) {
         </button>
       </div>
     </div>
-    <div class="flex w-full mt-4">
-      <div class="flex bg-gray-100 rounded-xl px-8 py-12">
+    <div class="flex relative w-full mt-4">
+      <div class="flex bg-gray-100 rounded-xl px-8 py-12 blur-sm">
         <apexchart
           width="400"
           type="donut"
@@ -172,7 +173,7 @@ if (Object.keys(shipData).length == 0) {
         />
       </div>
       <div
-        class="flex flex-col w-full p-4 bg-gray-100 ml-5 rounded-xl align-middle"
+        class="flex flex-col w-full p-4 bg-gray-100 ml-5 rounded-xl align-middle blur-sm"
       >
         <span class="text-14 text-gray-700 font-bold">{{
           $t("vesselGrade")
@@ -241,6 +242,7 @@ if (Object.keys(shipData).length == 0) {
           </div>
         </div>
       </div>
+      <HazingBanner />
     </div>
   </div>
 </template>
