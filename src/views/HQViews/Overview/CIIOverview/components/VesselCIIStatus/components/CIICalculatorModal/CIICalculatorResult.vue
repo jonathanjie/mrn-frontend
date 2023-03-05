@@ -16,11 +16,10 @@ const {
   minCIIGrade,
   targetCIIGrade,
   ciiBoundaries,
-  fuelTypes,
   CO2EmissionForTargetGrade,
-  fuelAmountsForTargetGrade,
   CO2EmissionForMinGrade,
-  fuelAmountsForMinGrade,
+  targetFuelProjection,
+  minFuelProjection,
 } = storeToRefs(store);
 
 const ciiGradeToTailwindBg = (grade) => {
@@ -119,25 +118,26 @@ const ciiGradeToTailwindText = (grade) => {
           <!-- v-for the below in one row -->
           <div class="flex space-x-3 mt-2">
             <div
-              v-for="(fuelType, index) in fuelTypes"
-              :key="index"
+              v-for="(value, key) in targetFuelProjection"
+              :key="key"
               class="bg-gray-50 flex-grow rounded-xl p-3"
             >
-              <div class="text-gray-500 text-14">{{ fuelType }}</div>
+              <div class="text-gray-500 text-14">
+                {{ key == "MDGO" ? "MGO" : key }}
+              </div>
               <div class="flex items-center">
                 <div class="text-16 text-gray-700">
-                  {{
-                    fuelAmountsForTargetGrade[index] === ""
-                      ? "0,000.00"
-                      : fuelAmountsForTargetGrade[index]
-                  }}
+                  {{ value === "" ? "0,000.00" : value.toFixed(2) }}
                 </div>
                 <MiniUnitDisplay class="ml-1 py-0">MT</MiniUnitDisplay>
               </div>
             </div>
           </div>
         </div>
-        <div class="py-8 px-7">
+        <div
+          v-if="ciiGrade > minCIIGrade && minCIIGrade !== targetCIIGrade"
+          class="py-8 px-7"
+        >
           <div
             class="flex items-center bg-gray-50 py-3 pr-3 rounded-r-lg relative"
           >
@@ -185,18 +185,16 @@ const ciiGradeToTailwindText = (grade) => {
           <!-- v-for the below in one row -->
           <div class="flex space-x-3 mt-2">
             <div
-              v-for="(fuelType, index) in fuelTypes"
-              :key="index"
+              v-for="(value, key) in minFuelProjection"
+              :key="key"
               class="bg-gray-50 flex-grow rounded-xl p-3"
             >
-              <div class="text-gray-500 text-14">{{ fuelType }}</div>
+              <div class="text-gray-500 text-14">
+                {{ key == "MDGO" ? "MGO" : key }}
+              </div>
               <div class="flex items-center">
                 <div class="text-16 text-gray-700">
-                  {{
-                    fuelAmountsForMinGrade[index] === ""
-                      ? "0,000.00"
-                      : fuelAmountsForMinGrade[index]
-                  }}
+                  {{ value === "" ? "0,000.00" : value.toFixed(2) }}
                 </div>
                 <MiniUnitDisplay class="ml-1 py-0">MT</MiniUnitDisplay>
               </div>

@@ -1,58 +1,63 @@
 import { ref, reactive, computed } from "vue";
 import { defineStore } from "pinia";
-// import { useShipStore } from "./useShipStore";
-// import { storeToRefs } from "pinia";
+import { useShipStore } from "./useShipStore";
+import { storeToRefs } from "pinia";
 
 export const useCIICalculatorStore = defineStore("cii-calculator", () => {
-  // TODO: need ot use fuel oils from ship store
-  // const shipStore = useShipStore();
-  // const { fuelOils } = storeToRefs(shipStore);
-  const fuelOils = ref(["LSFO", "MGO"]);
+  const shipStore = useShipStore();
+  const { imoReg, fuelOils } = storeToRefs(shipStore);
 
   const showModal = ref(false);
   const isOnlyUsingUserInput = ref("");
+  const isTargetCIIGradeEnabled = ref(false);
+  const resultsCalculated = ref(false);
+
   const referenceStartDate = ref("");
   const referenceEndDate = ref("");
   const distanceInPeriod = ref("");
-  const fuelTypes = fuelOils;
-  const resultsCalculated = ref(false);
 
-  // const fuelTypes = computed(() => {
-  // TODO: add feature to choose fuel types; for now we fetch from the ship store
-  // if (isOnlyUsingUserInput.value) {
-  //   return ["default", "default"];
-  // } else {
-  // return fuelOils;
-  // }
-  // });
+  const fuelAmounts = ref(["", ""]);
 
-  const fuelAmounts = ref([]);
-  const totalEmissions = ref("");
-  const isTargetCIIGradeEnabled = ref(false);
-  const targetCIIGrade = ref("");
-  const minCIIGrade = computed(() => {
-    if (ciiGrade.value === "d" || ciiGrade.value === "e") {
-      return "c";
-    } else if (ciiGrade.value === "c") {
-      return "b";
-    } else {
-      return "a";
+  const CONVERSION_FACTORS = {
+    MGO: "3.206",
+    MDO: "3.206",
+    LSFO: "3.151",
+    HFO: "3.114",
+    LPG_PROPANE: "3.000",
+    LPG_BUTANE: "3.030",
+    LNG: "2.750",
+    METHANOL: "1.375",
+    ETHANOL: "1.913",
+  };
+
+  const totalEmissions = computed(() => {
+    let total = 0;
+    for (let i = 0; i < fuelOils.value.length; i++) {
+      const fuelType = fuelOils.value[i];
+      const fuelAmount = fuelAmounts.value[i];
+      const conversionFactor = CONVERSION_FACTORS[fuelType];
+      const emissions = fuelAmount * conversionFactor;
+      total += emissions;
     }
+    return total;
   });
 
-  const ciiValue = ref("4.36"); // can be computed?
-  const ciiGrade = ref("c");
+  const targetCIIGrade = ref("");
+
+  const ciiGrade = ref("");
+  const ciiValue = ref("");
+  const minCIIGrade = ref("");
   const ciiBoundaries = reactive({
-    a: "4.82",
-    b: "4.62",
-    c: "4.3",
-    d: "4",
-    e: "0",
+    a: "",
+    b: "",
+    c: "",
+    d: "",
+    e: "",
   });
   const CO2EmissionForTargetGrade = ref("");
-  const fuelAmountsForTargetGrade = ref(["", ""]);
   const CO2EmissionForMinGrade = ref("");
-  const fuelAmountsForMinGrade = ref(["", ""]);
+  const targetFuelProjection = ref({});
+  const minFuelProjection = ref({});
 
   function resetValues() {
     referenceStartDate.value = "";
@@ -66,12 +71,13 @@ export const useCIICalculatorStore = defineStore("cii-calculator", () => {
   }
 
   return {
+    imoReg,
     showModal,
     isOnlyUsingUserInput,
     referenceStartDate,
     referenceEndDate,
     distanceInPeriod,
-    fuelTypes,
+    fuelOils,
     resultsCalculated,
     ciiValue,
     ciiGrade,
@@ -82,9 +88,9 @@ export const useCIICalculatorStore = defineStore("cii-calculator", () => {
     isTargetCIIGradeEnabled,
     targetCIIGrade,
     CO2EmissionForTargetGrade,
-    fuelAmountsForTargetGrade,
     CO2EmissionForMinGrade,
-    fuelAmountsForMinGrade,
+    targetFuelProjection,
+    minFuelProjection,
     resetValues,
   };
 });
