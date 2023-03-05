@@ -180,6 +180,7 @@ const addLeg = async () => {
         :voyage="voyage"
         :reports="leg.reports"
         :legNum="leg.leg_num"
+        :loadingCondition="leg.load_condition"
       />
     </div>
     <div
