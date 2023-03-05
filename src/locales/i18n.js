@@ -581,6 +581,9 @@ const i18n = createI18n({
       editCalculation: "Edit calculation",
       complete: "Complete",
       ciiResult: "CII Result",
+      noLegCreated: "No Leg Created",
+      clickOnCreateNewLegAboveToBegin:
+        "Click on 'Create New Leg' above to begin",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser

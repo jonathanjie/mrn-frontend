@@ -6,6 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "testapi": "vue-cli-service build --mode development",
     "deploy-s3-jon": "aws --profile jonathanjie --region ap-southeast-1 s3 sync ./dist s3://marinanet-web --delete",
     "deploy-s3-eryn": "aws --profile eryn --region ap-southeast-1 s3 sync ./dist s3://marinanet-web --delete",
     "deploy-s3-lionel": "aws --profile lionel --region ap-southeast-1 s3 sync ./dist s3://marinanet-web --delete"

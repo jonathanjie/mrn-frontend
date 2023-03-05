@@ -172,7 +172,7 @@ const addLeg = async () => {
         <template v-slot:content>{{ $t("createNewLeg") }}</template>
       </GradientButton>
     </div>
-    <div class="flex flex-col space-y-6">
+    <div v-if="filteredData[0] != undefined" class="flex flex-col space-y-6">
       <LegCard
         v-for="leg in filteredData"
         :voyageDetails="voyageDetails"
@@ -181,6 +181,18 @@ const addLeg = async () => {
         :reports="leg.reports"
         :legNum="leg.leg_num"
       />
+    </div>
+    <div
+      v-else
+      class="flex flex-col p-24 pb-52 m-12 justify-center items-center space-y-2 rounded-xl"
+    >
+      <img src="@/assets/icons/empty.svg" class="h-28 w-28" />
+      <span class="text-lg font-bold text-gray-800 pt-3">{{
+        $t("noLegCreated")
+      }}</span>
+      <span class="text-14 text-gray-500">{{
+        $t("clickOnCreateNewLegAboveToBegin")
+      }}</span>
     </div>
   </div>
 </template>
