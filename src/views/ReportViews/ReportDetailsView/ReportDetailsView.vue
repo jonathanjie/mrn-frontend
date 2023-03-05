@@ -30,7 +30,6 @@ const { getReportQuery } = store;
 
 const { isSuccess, isFetching, data: report } = getReportQuery(props.uuid);
 
-const { isSuccess, data: report } = getReportQuery(props.uuid);
 // Event Handlers
 const handleBack = () => {
   if (auth.role == "crew") {
