@@ -41,7 +41,7 @@
           <span
             class="text-16 font-bold"
             :class="selectedSpeed ? 'text-white' : 'text-blue-500'"
-            >{{ latestData.distance_observed ?? "0" }} nm</span
+            >{{ latestData.distance_to_go ?? "0" }} NM</span
           >
         </div>
       </button>
