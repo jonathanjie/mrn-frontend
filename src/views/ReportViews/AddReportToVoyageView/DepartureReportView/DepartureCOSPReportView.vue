@@ -291,9 +291,10 @@ const sendReport = async () => {
         : { remarks: additionalRemarks.value },
   };
 
-  // console.log("data: ", REPORT);
+  console.log("data: ", JSON.stringify(REPORT));
 
   isSubmissionModalVisible.value = true;
+  // isSubmissionResponse.value = true;
   axios
     .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/`, REPORT)
     .then(() => {

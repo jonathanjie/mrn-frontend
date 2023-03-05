@@ -40,22 +40,20 @@ const setupCii = () => {
       <div>
         <span class="text-14 text-gray-700 font-semibold">{{ ship.name }}</span>
         <span
-          v-if="ship.setupCii"
+          v-if="ship.calculated_ciis.length == 0"
           class="text-12 text-blue-700 px-2 py-1.5 ml-2 rounded-2xl bg-blue-50"
           >{{ $t("new") }}</span
         >
       </div>
       <span class="text-14 text-gray-700 font-semibold"
-        >{{ ship.shipspecs.deadweight_tonnage }} DWT</span
+        >{{ ship.size }} DWT</span
       >
+      <span class="text-14 text-gray-700 font-semibold">{{ ship.flag }}</span>
       <span class="text-14 text-gray-700 font-semibold">{{
-        ship.shipspecs.flag
-      }}</span>
-      <span class="text-14 text-gray-700 font-semibold">{{
-        ship.builtYear
+        ship.delivery_year
       }}</span>
       <button
-        v-if="ship.setupCii"
+        v-if="ship.calculated_ciis.length == 0"
         class="flex w-full justify-center bg-blue-50 rounded-l border border-blue-600 text-14 text-blue-700 font-bold"
         :class="buttonCols"
         @click.self.prevent="setupCii"
