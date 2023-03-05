@@ -9,16 +9,15 @@ const props = defineProps({
 });
 
 const { ships, buttonCols, numCols } = toRefs(props);
-
 const shipGrades = [];
-for (let ship in ships.value) {
-  const tempArr = [];
-  let tempKeys = Object.keys(ships.value[ship].ciiGrade).sort();
-  for (let i in tempKeys) {
-    tempArr.push(ships.value[ship].ciiGrade[tempKeys[i]]);
-  }
-  shipGrades.push(tempArr);
-}
+// for (let ship in ships.value) {
+//   const tempArr = [];
+//   let tempKeys = Object.keys(ships.value[ship].ciiGrade).sort();
+//   for (let i in tempKeys) {
+//     tempArr.push(ships.value[ship].ciiGrade[tempKeys[i]]);
+//   }
+//   shipGrades.push(tempArr);
+// }
 
 const setupCii = () => {
   console.log("Hello World");
@@ -27,11 +26,7 @@ const setupCii = () => {
 
 <template>
   <div class="divide-y">
-    <router-link
-      :to="{
-        name: 'speed-graph-overview',
-        params: { vesselname: ship.name, imo: ship.imo_reg },
-      }"
+    <div
       v-for="(ship, index) in ships"
       class="flex grid px-3.5 py-3 my-3 justify-between items-center"
       :key="ship.id"
@@ -46,11 +41,13 @@ const setupCii = () => {
         >
       </div>
       <span class="text-14 text-gray-700 font-semibold"
-        >{{ ship.size }} DWT</span
-      >
-      <span class="text-14 text-gray-700 font-semibold">{{ ship.flag }}</span>
+        >{{ ship.size === null ? "No size" : ship.size + " DWT" }}
+      </span>
       <span class="text-14 text-gray-700 font-semibold">{{
-        ship.delivery_year
+        ship.flag === null ? "No flag" : ship.flag
+      }}</span>
+      <span class="text-14 text-gray-700 font-semibold">{{
+        ship.delivery_date === null ? "No delivery date" : ship.delivery_date
       }}</span>
       <button
         v-if="ship.calculated_ciis.length == 0"
@@ -77,6 +74,6 @@ const setupCii = () => {
           :currentGradeValue="grade.currentGradeValue"
         />
       </div>
-    </router-link>
+    </div>
   </div>
 </template>
