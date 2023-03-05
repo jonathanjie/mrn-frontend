@@ -5,6 +5,7 @@ import CIIVesselListCard from "./components/CIIVesselList/CIIVesselListCard.vue"
 import CIIRatingAlertCard from "./components/CIIRatingAlert/CIIRatingAlertCard.vue";
 import CIISetupModal from "@/components/Modals/CIISetupModal/CIISetupModal.vue";
 
+import { useCiiShipsQuery } from "@/queries/useCiiShipsQuery";
 const inputData = [
   {
     uuid: "6c1a1e8c-4dfb-4fef-b98c-f43db4576b12",
@@ -135,6 +136,7 @@ for (let i in inputData) {
   }
 }
 
+const { isSuccess, data: ships } = useCiiShipsQuery();
 let hover = ref(false);
 </script>
 <template>
@@ -159,9 +161,10 @@ let hover = ref(false);
           @mouseleave="hover = false"
         />
       </div>
-
-      <CIIGraph :data="inputData" :years="years" />
-      <CIIVesselListCard :data="inputData" :yearsList="years" />
+      <div v-if="isSuccess" class="flex flex-col">
+        <CIIGraph :data="inputData" :years="years" />
+        <CIIVesselListCard :data="ships" :yearsList="[]" />
+      </div>
     </div>
     <CIISetupModal />
     <CIIRatingAlertCard />
