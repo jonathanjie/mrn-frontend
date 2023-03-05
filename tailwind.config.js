@@ -103,6 +103,19 @@ module.exports = {
         d: "#FDA80C",
         e: "#F04438",
       },
+      // TODO: does not work, temporary replacement with below
+      // gradeslight: {
+      //   a: "#F6FCF9",
+      //   b: "#E9F2E7",
+      //   c: "#FFFDF0",
+      //   d: "#FFFCF5",
+      //   e: "#FEF8F7",
+      // },
+      gradeslighta: "#F6FCF9",
+      gradeslightb: "#E9F2E7",
+      gradeslightc: "#FFFDF0",
+      gradeslightd: "#FFFCF5",
+      gradeslighte: "#FEF8F7",
     },
     extend: {
       gridTemplateColumns: {

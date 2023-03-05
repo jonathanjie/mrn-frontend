@@ -578,6 +578,9 @@ const i18n = createI18n({
       createNewLeg: "Create New Leg",
       contactUs: "Contact Us",
       popular: "POPULAR",
+      editCalculation: "Edit calculation",
+      complete: "Complete",
+      ciiResult: "CII Result",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser
