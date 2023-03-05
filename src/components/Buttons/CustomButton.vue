@@ -1,7 +1,7 @@
 <template>
   <button
     @click="onClick"
-    class="font-bold text-14 py-2 px-4 rounded-lg inline-flex items-center border"
+    class="font-bold text-14 py-2 px-4 rounded-lg inline-flex items-center border min-w-fit"
     :disabled="isDisabled"
     :class="
       isDisabled
