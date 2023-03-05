@@ -152,94 +152,8 @@ const {
         </div>
       </div>
     </div>
-    <div class="flex flex-col space-y-3">
-      <span>Applicable CII:</span>
-      <!-- Applicable CII selection -->
-      <div class="flex space-x-4">
-        <div
-          class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
-          :class="
-            applicableCII === 'aer'
-              ? 'border border-gradientblue bg-paleblue'
-              : ''
-          "
-        >
-          <input type="radio" id="aer" value="aer" v-model="applicableCII" />
-          <label for="aer" class="mr-4">AER</label>
-        </div>
-        <div
-          class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
-          :class="
-            applicableCII === 'cgdist'
-              ? 'border border-gradientblue bg-paleblue'
-              : ''
-          "
-        >
-          <input
-            type="radio"
-            id="cgdist"
-            value="cgdist"
-            v-model="applicableCII"
-          />
-          <label for="cgdist">cgDIST</label>
-        </div>
-      </div>
-    </div>
   </div>
-  <!--CII for trial purposes -->
-  <div class="flex flex-col space-y-3">
-    <div>
-      <span>CII for trial purposes </span>
-      <span class="text-gray-500">(Optional):</span>
-    </div>
-    <!-- Report Type selection -->
-    <div class="flex space-x-4">
-      <div
-        class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
-        :class="
-          trialCII.includes('eepi')
-            ? 'border border-gradientblue bg-paleblue'
-            : ''
-        "
-      >
-        <input type="checkbox" id="eepi" value="eepi" v-model="trialCII" />
-        <label for="eepi" class="mr-4">EEPI</label>
-      </div>
-      <div
-        class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
-        :class="
-          trialCII.includes('cbdist')
-            ? 'border border-gradientblue bg-paleblue'
-            : ''
-        "
-      >
-        <input type="checkbox" id="cbdist" value="cbdist" v-model="trialCII" />
-        <label for="cbdist">cbDIST</label>
-      </div>
-      <div
-        class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
-        :class="
-          trialCII.includes('cidist')
-            ? 'border border-gradientblue bg-paleblue'
-            : ''
-        "
-      >
-        <input type="checkbox" id="cidist" value="cidist" v-model="trialCII" />
-        <label for="cidist">cIDIST</label>
-      </div>
-      <div
-        class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
-        :class="
-          trialCII.includes('eeoi')
-            ? 'border border-gradientblue bg-paleblue'
-            : ''
-        "
-      >
-        <input type="checkbox" id="eeoi" value="eeoi" v-model="trialCII" />
-        <label for="eeoi">EEOI</label>
-      </div>
-    </div>
-  </div>
+
   <div class="flex flex-col space-y-3">
     <span>IMO DCS</span>
     <!-- IMO DCS method  selection -->
@@ -344,6 +258,93 @@ const {
             >Direct CO2 emission measurements</span
           >
         </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-col space-y-3">
+    <span>Applicable CII:</span>
+    <!-- Applicable CII selection -->
+    <div class="flex space-x-4">
+      <div
+        class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
+        :class="
+          applicableCII === 'aer'
+            ? 'border border-gradientblue bg-paleblue'
+            : ''
+        "
+      >
+        <input type="radio" id="aer" value="aer" v-model="applicableCII" />
+        <label for="aer" class="mr-4">AER</label>
+      </div>
+      <div
+        class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
+        :class="
+          applicableCII === 'cgdist'
+            ? 'border border-gradientblue bg-paleblue'
+            : ''
+        "
+      >
+        <input
+          type="radio"
+          id="cgdist"
+          value="cgdist"
+          v-model="applicableCII"
+        />
+        <label for="cgdist">cgDIST</label>
+      </div>
+    </div>
+  </div>
+  <!--CII for trial purposes -->
+  <div class="flex flex-col space-y-3">
+    <div>
+      <span>CII for trial purposes </span>
+      <span class="text-gray-500">(Optional):</span>
+    </div>
+    <!-- Report Type selection -->
+    <div class="flex space-x-4">
+      <div
+        class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
+        :class="
+          trialCII.includes('eepi')
+            ? 'border border-gradientblue bg-paleblue'
+            : ''
+        "
+      >
+        <input type="checkbox" id="eepi" value="eepi" v-model="trialCII" />
+        <label for="eepi" class="mr-4">EEPI</label>
+      </div>
+      <div
+        class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
+        :class="
+          trialCII.includes('cbdist')
+            ? 'border border-gradientblue bg-paleblue'
+            : ''
+        "
+      >
+        <input type="checkbox" id="cbdist" value="cbdist" v-model="trialCII" />
+        <label for="cbdist">cbDIST</label>
+      </div>
+      <div
+        class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
+        :class="
+          trialCII.includes('cidist')
+            ? 'border border-gradientblue bg-paleblue'
+            : ''
+        "
+      >
+        <input type="checkbox" id="cidist" value="cidist" v-model="trialCII" />
+        <label for="cidist">cIDIST</label>
+      </div>
+      <div
+        class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
+        :class="
+          trialCII.includes('eeoi')
+            ? 'border border-gradientblue bg-paleblue'
+            : ''
+        "
+      >
+        <input type="checkbox" id="eeoi" value="eeoi" v-model="trialCII" />
+        <label for="eeoi">EEOI</label>
       </div>
     </div>
   </div>

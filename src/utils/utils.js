@@ -52,8 +52,9 @@ const uploadFile = async (file) => {
 
 // Use this function outside
 export const uploadFiles = async (files) => {
+  let urls = [];
   if (files.length) {
-    const urls = await getPresignedUrlForFileUpload();
+    urls = await getPresignedUrlForFileUpload();
   }
 
   return Promise.all(files.map((file) => uploadFile(file)));
