@@ -12,6 +12,7 @@ import axios from "axios";
 import { storeToRefs } from "pinia";
 import { useShipStore } from "@/stores/useShipStore";
 import constants from "@/constants";
+import { useMutation } from "vue-query";
 
 const shipStore = useShipStore();
 const CIISetupStore = useCIISetupStore();
@@ -59,50 +60,50 @@ const uploadFiles = () => {
   console.log("uploading files");
 };
 
-const uploadSettings = () => {
+const uploadSettings = async () => {
   console.log("uploading settings");
 
-  const SETTINGS = {
-    ship: 1234567,
-    energy_efficiency_index_type: "EEXI",
-    energy_efficiency_index_value: "10.564",
-    is_engine_power_limited: true,
-    engine_power_limit_type: "SPL",
-    engine_power_limit_value: 77,
-    imo_dcs: true,
-    imo_dcs_method: "DCS1",
-    eu_mrv: false,
-    eu_mrv_method: "MRVA",
-    applicable_cii: "AER",
-    trial_cii_types: ["EEPI"],
-    fuel_options: ["LSFO", "MDGO"],
-    current_year_cii_target: {
-      year: 2023,
-      grade: "C",
-    },
-  };
-
-  // const currentYear = new Date().getFullYear();
   // const SETTINGS = {
-  //   ship: imoReg,
-  //   energy_efficiency_index_type: energyEfficiencyIndexType,
-  //   energy_efficiency_index_value: energyEfficiencyIndexVal,
-  //   is_engine_power_limited: isEnginePowerLimited,
-  //   engine_power_limit_type: enginePowerLimitType,
-  //   engine_power_limit_value: enginePowerLimitVal,
-  //   imo_dcs: reportTypes.value.includes(constants.ShippingAuthorities.IMODCS),
-  //   imo_dcs_method: IMODCSMethod,
-  //   eu_mrv: reportTypes.value.includes(constants.ShippingAuthorities.EUMRV),
-  //   eu_mrv_method: EUMRVMethod,
-  //   applicable_cii: applicableCII,
-  //   trial_cii_types: trialCII,
-  //   fuel_options: fuelOilTypes,
+  //   ship: 1234567,
+  //   energy_efficiency_index_type: "EEXI",
+  //   energy_efficiency_index_value: "10.564",
+  //   is_engine_power_limited: true,
+  //   engine_power_limit_type: "SPL",
+  //   engine_power_limit_value: 77,
+  //   imo_dcs: true,
+  //   imo_dcs_method: "DCS1",
+  //   eu_mrv: false,
+  //   eu_mrv_method: "MRVA",
+  //   applicable_cii: "AER",
+  //   trial_cii_types: ["EEPI"],
+  //   fuel_options: ["LSFO", "MDGO"],
   //   current_year_cii_target: {
-  //     year: currentYear,
-  //     grade: currentYearTargetCIIGrade,
+  //     year: 2023,
+  //     grade: "C",
   //   },
   // };
-  axios
+
+  const currentYear = new Date().getFullYear();
+  const SETTINGS = {
+    ship: imoReg,
+    energy_efficiency_index_type: energyEfficiencyIndexType,
+    energy_efficiency_index_value: energyEfficiencyIndexVal,
+    is_engine_power_limited: isEnginePowerLimited,
+    engine_power_limit_type: enginePowerLimitType,
+    engine_power_limit_value: enginePowerLimitVal,
+    imo_dcs: reportTypes.value.includes(constants.ShippingAuthorities.IMODCS),
+    imo_dcs_method: IMODCSMethod,
+    eu_mrv: reportTypes.value.includes(constants.ShippingAuthorities.EUMRV),
+    eu_mrv_method: EUMRVMethod,
+    applicable_cii: applicableCII,
+    trial_cii_types: trialCII,
+    fuel_options: fuelOilTypes,
+    current_year_cii_target: {
+      year: currentYear,
+      grade: currentYearTargetCIIGrade,
+    },
+  };
+  await axios
     .post(`${process.env.VUE_APP_URL_DOMAIN}/cii/config/`, SETTINGS)
     .then()
     .catch((error) => {
@@ -110,6 +111,8 @@ const uploadSettings = () => {
       //   console.log(error);
       // } else {
       //   console.error(error);
+      window.alert(error);
+
       // }
       console.error(error);
     });
@@ -179,9 +182,9 @@ const uploadSettings = () => {
           <GradientButton v-if="pageNum === 2" @click="uploadSettings">
             <template #content>{{ $t("completeSetup") }}</template>
           </GradientButton>
-          <GradientButton v-if="pageNum === 2" @click="uploadFiles">
+          <!-- <GradientButton v-if="pageNum === 2" @click="uploadFiles">
             <template #content>Upload files</template>
-          </GradientButton>
+          </GradientButton> -->
         </div>
       </template>
     </BaseModal>

@@ -56,6 +56,9 @@ export const uploadFiles = async (files) => {
   if (files.length) {
     urls = await getPresignedUrlForFileUpload();
   }
+  for (const [index, file] of files.value.entries()) {
+    file.presignedUrl = urls[index].presigned_url;
+  }
 
   return Promise.all(files.map((file) => uploadFile(file)));
 };
