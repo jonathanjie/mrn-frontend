@@ -19,9 +19,12 @@ const props = defineProps({
   voyage: Object,
   voyageDetails: Object,
   legNum: Number,
+  loadingCondition: String,
 });
 
-const { reports, voyage, voyageDetails, legNum } = toRefs(props);
+const { reports, voyage, voyageDetails, legNum, loadingCondition } =
+  toRefs(props);
+
 const voyageLegs = computed(() => voyage.value.voyage_legs);
 
 const voyageStore = useVoyageStore();
@@ -116,7 +119,7 @@ const handleClick = async () => {
             :report_type="report.report_type"
             :departure="report.departure_port || '-'"
             :arrival="report.arrival_port || '-'"
-            :loading_condition="'-'"
+            :loading_condition="loadingCondition"
             :date_of_report="readableUTCDate(new Date(report.report_date))"
           ></ReportCard>
         </div>

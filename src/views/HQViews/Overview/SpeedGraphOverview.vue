@@ -3,7 +3,7 @@
     <div
       class="flex relative rounded-xl bg-white w-full shadow-md items-center"
     >
-      <div v-if="shipSuccess" class="flex flex-col">
+      <div v-if="shipSuccess && ship.shipspecs != null" class="flex flex-col">
         <div class="flex flex-row items-center justify-evenly p-5">
           <img
             src="@/assets/icons/Speed_Graph/ship_image.svg"
@@ -194,6 +194,9 @@ const props = defineProps({
   vesselname: String,
   imo: String,
 });
+
+// console.log(props, "SpeedOverview props");
+
 const shipRef = constants.shipRefs;
 const store = useHQStore();
 
