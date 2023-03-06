@@ -164,9 +164,6 @@ const uploadSettings = async () => {
           <GradientButton v-if="pageNum === 2" @click="pageNum -= 1"
             ><template #content>{{ $t("back") }}</template></GradientButton
           >
-          <GradientButton v-if="pageNum === 2" @click="pageNum -= 1"
-            ><template #content>{{ $t("back") }}</template></GradientButton
-          >
           <GradientButton v-if="pageNum === 2" @click="uploadSettings">
             <template #content>{{ $t("completeSetup") }}</template>
           </GradientButton>

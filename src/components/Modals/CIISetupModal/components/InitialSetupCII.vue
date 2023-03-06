@@ -5,17 +5,13 @@ import { useCIISetupStore } from "@/stores/useCIISetupStore";
 
 const store = useCIISetupStore();
 const {
-  shipIndexVal,
-  isEngineLimited,
-  engineLimitPercent,
+  energyEfficiencyIndexType,
+  energyEfficiencyIndexVal,
+  isEnginePowerLimited,
+  enginePowerLimitType,
+  enginePowerLimitVal,
   reportTypes,
   trialCII,
-  // shipIndexType,
-  // shipIndexVal,
-  // isEngineLimited,
-  // engineLimitType,
-  // engineLimitPercent,
-  // ciiTrials,
   applicableCII,
   IMODCSMethod,
   EUMRVMethod,

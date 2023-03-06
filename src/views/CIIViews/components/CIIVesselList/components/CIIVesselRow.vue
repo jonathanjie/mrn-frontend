@@ -12,6 +12,9 @@ const props = defineProps({
   numCols: String,
 });
 
+const store = useCIISetupStore();
+const { showModal } = storeToRefs(store);
+
 const { ships, buttonCols, numCols } = toRefs(props);
 const shipGrades = [];
 // for (let ship in ships.value) {
