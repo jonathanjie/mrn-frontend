@@ -6,9 +6,52 @@
       <div v-if="shipSuccess && ship.shipspecs != null" class="flex flex-col">
         <div class="flex flex-row items-center justify-evenly p-5">
           <img
+            v-if="ship.ship_type === 'BULK'"
+            src="@/assets/icons/Speed_Graph/Ships/bulkcarrier_icon.svg"
+            class="h-10 w-30 rounded-xl mr-6"
+          />
+          <img
+            v-else-if="ship.ship_type === 'OIL'"
+            src="@/assets/icons/Speed_Graph/Ships/tanker_icon.svg"
+            class="h-10 w-30 rounded-xl mr-6"
+          />
+          <img
+            v-else-if="ship.ship_type === 'GAS' || ship.ship_type === 'LNGC'"
+            src="@/assets/icons/Speed_Graph/Ships/gascarrier_icon.svg"
+            class="h-10 w-30 rounded-xl mr-6"
+          />
+          <img
+            v-else-if="ship.ship_type === 'CNTR'"
+            src="@/assets/icons/Speed_Graph/Ships/containership_icon.svg"
+            class="h-10 w-30 rounded-xl mr-6"
+          />
+          <img
+            v-else-if="
+              ship.ship_type === 'RORV' ||
+              ship.ship_type === 'RORP' ||
+              ship.ship_type === 'RORO' ||
+              ship.ship_type === 'REFC' ||
+              ship.ship_type === 'COMB'
+            "
+            src="@/assets/icons/Speed_Graph/Ships/roro_icon.svg"
+            class="h-10 w-30 rounded-xl mr-6"
+          />
+          <img
+            v-else-if="ship.ship_type === 'GEN'"
+            src="@/assets/icons/Speed_Graph/Ships/cargo_ship_icon.svg"
+            class="h-10 w-30 rounded-xl mr-6"
+          />
+          <img
+            v-else-if="ship.ship_type === 'CRUZ'"
+            src="@/assets/icons/Speed_Graph/Ships/cruiseship_icon.svg"
+            class="h-10 w-30 rounded-xl mr-6"
+          />
+          <img
+            v-else
             src="@/assets/icons/Speed_Graph/ship_image.svg"
             class="h-10 w-30 rounded-xl mr-6"
           />
+
           <div class="flex mr-12">
             <span class="text-14 text-gray-500">{{ $t("name") }}: </span>
             <span class="ml-1.5 text-14 text-gray-700 font-bold">{{
