@@ -63,46 +63,28 @@ const uploadFiles = () => {
 const uploadSettings = async () => {
   console.log("uploading settings");
 
-  // const SETTINGS = {
-  //   ship: 1234567,
-  //   energy_efficiency_index_type: "EEXI",
-  //   energy_efficiency_index_value: "10.564",
-  //   is_engine_power_limited: true,
-  //   engine_power_limit_type: "SPL",
-  //   engine_power_limit_value: 77,
-  //   imo_dcs: true,
-  //   imo_dcs_method: "DCS1",
-  //   eu_mrv: false,
-  //   eu_mrv_method: "MRVA",
-  //   applicable_cii: "AER",
-  //   trial_cii_types: ["EEPI"],
-  //   fuel_options: ["LSFO", "MDGO"],
-  //   current_year_cii_target: {
-  //     year: 2023,
-  //     grade: "C",
-  //   },
-  // };
-
   const currentYear = new Date().getFullYear();
   const SETTINGS = {
     ship: imoReg.value,
-    energy_efficiency_index_type: energyEfficiencyIndexType,
-    energy_efficiency_index_value: energyEfficiencyIndexVal,
-    is_engine_power_limited: isEnginePowerLimited,
-    engine_power_limit_type: enginePowerLimitType,
-    engine_power_limit_value: enginePowerLimitVal,
+    energy_efficiency_index_type: energyEfficiencyIndexType.value,
+    energy_efficiency_index_value: energyEfficiencyIndexVal.value,
+    is_engine_power_limited: isEnginePowerLimited.value,
+    engine_power_limit_type: enginePowerLimitType.value,
+    engine_power_limit_value: enginePowerLimitVal.value,
     imo_dcs: reportTypes.value.includes(constants.ShippingAuthorities.IMODCS),
-    imo_dcs_method: IMODCSMethod,
+    imo_dcs_method: IMODCSMethod.value,
     eu_mrv: reportTypes.value.includes(constants.ShippingAuthorities.EUMRV),
-    eu_mrv_method: EUMRVMethod,
-    applicable_cii: applicableCII,
-    trial_cii_types: trialCII,
-    fuel_options: fuelOilTypes,
+    eu_mrv_method: EUMRVMethod.value,
+    applicable_cii: applicableCII.value,
+    trial_cii_types: trialCII.value,
+    fuel_options: fuelOilTypes.value,
     current_year_cii_target: {
       year: currentYear,
-      grade: currentYearTargetCIIGrade,
+      grade: currentYearTargetCIIGrade.value.toUpperCase(),
     },
   };
+
+  console.log(SETTINGS);
   await axios
     .post(`${process.env.VUE_APP_URL_DOMAIN}/cii/config/`, SETTINGS)
     .then()
@@ -174,10 +156,13 @@ const uploadSettings = async () => {
       <template #footer>
         <div class="flex justify-end space-x-4">
           <CustomButton @click="cancel"
-          ><template #content>{{ $t("cancel") }}</template></CustomButton
+            ><template #content>{{ $t("cancel") }}</template></CustomButton
           >
           <GradientButton v-if="pageNum === 1" @click="pageNum += 1"
-          ><template #content>{{ $t("next") }}</template></GradientButton
+            ><template #content>{{ $t("next") }}</template></GradientButton
+          >
+          <GradientButton v-if="pageNum === 2" @click="pageNum -= 1"
+            ><template #content>{{ $t("back") }}</template></GradientButton
           >
           <GradientButton v-if="pageNum === 2" @click="pageNum -= 1"
             ><template #content>{{ $t("back") }}</template></GradientButton
