@@ -12,16 +12,15 @@ const props = defineProps({
 const showModal = ref(false);
 
 const { ships, buttonCols, numCols } = toRefs(props);
-
 const shipGrades = [];
-for (let ship in ships.value) {
-  const tempArr = [];
-  let tempKeys = Object.keys(ships.value[ship].ciiGrade).sort();
-  for (let i in tempKeys) {
-    tempArr.push(ships.value[ship].ciiGrade[tempKeys[i]]);
-  }
-  shipGrades.push(tempArr);
-}
+// for (let ship in ships.value) {
+//   const tempArr = [];
+//   let tempKeys = Object.keys(ships.value[ship].ciiGrade).sort();
+//   for (let i in tempKeys) {
+//     tempArr.push(ships.value[ship].ciiGrade[tempKeys[i]]);
+//   }
+//   shipGrades.push(tempArr);
+// }
 </script>
 
 <template>
@@ -54,8 +53,8 @@ for (let ship in ships.value) {
         ship.builtYear
       }}</span>
       <button
-        v-if="ship.setupCii"
-        class="flex w-full justify-center bg-blue-50 rounded-l border border-blue-600 text-14 text-blue-700 font-bold"
+        v-if="ship.calculated_ciis.length == 0"
+        class="flex w-full justify-center bg-blue-50 rounded-lg border border-blue-600 text-14 text-blue-700 font-bold"
         :class="buttonCols"
         @click.self.prevent="showModal = true"
       >

@@ -26,7 +26,43 @@ const cancel = () => {
 
 const uploadSettings = () => {
   console.log("uploading settings");
-  // implement upload with backend api
+
+  const currentYear = new Date().getFullYear();
+  const SETTINGS = {
+    ship: imoReg.value,
+    energy_efficiency_index_type: energyEfficiencyIndexType.value,
+    energy_efficiency_index_value: energyEfficiencyIndexVal.value,
+    is_engine_power_limited: isEnginePowerLimited.value,
+    engine_power_limit_type: enginePowerLimitType.value,
+    engine_power_limit_value: enginePowerLimitVal.value,
+    imo_dcs: reportTypes.value.includes(constants.ShippingAuthorities.IMODCS),
+    imo_dcs_method: IMODCSMethod.value,
+    eu_mrv: reportTypes.value.includes(constants.ShippingAuthorities.EUMRV),
+    eu_mrv_method: EUMRVMethod.value,
+    applicable_cii: applicableCII.value,
+    trial_cii_types: trialCII.value,
+    fuel_options: fuelOilTypes.value,
+    current_year_cii_target: {
+      year: currentYear,
+      grade: currentYearTargetCIIGrade.value.toUpperCase(),
+    },
+  };
+
+  console.log(SETTINGS);
+  await axios
+    .post(`${process.env.VUE_APP_URL_DOMAIN}/cii/config/`, SETTINGS)
+    .then()
+    .catch((error) => {
+      // if (error.response.status == 400 || error.response.status == 404) {
+      //   console.log(error);
+      // } else {
+      //   console.error(error);
+      window.alert(error);
+
+      // }
+      console.error(error);
+    });
+
   pageNum.value = 1;
   showModal.value = false;
 };
@@ -88,6 +124,9 @@ const uploadSettings = () => {
           >
           <GradientButton v-if="pageNum === 1" @click="pageNum += 1"
             ><template #content>{{ $t("next") }}</template></GradientButton
+          >
+          <GradientButton v-if="pageNum === 2" @click="pageNum -= 1"
+            ><template #content>{{ $t("back") }}</template></GradientButton
           >
           <GradientButton v-if="pageNum === 2" @click="uploadSettings">
             <template #content>{{ $t("completeSetup") }}</template>

@@ -5,10 +5,8 @@ import { useCIISetupStore } from "@/stores/useCIISetupStore";
 
 const store = useCIISetupStore();
 const {
-  shipIndexType,
   shipIndexVal,
   isEngineLimited,
-  engineLimitType,
   engineLimitPercent,
   reportTypes,
   ciiTrials,
@@ -29,12 +27,22 @@ const {
       <!-- Type selection -->
       <div class="flex space-x-4">
         <div class="flex space-x-2">
-          <input type="radio" id="eedi" value="eedi" v-model="shipIndexType" />
-          <label for="eedi" class="mr-4">EEDI</label>
+          <input
+            type="radio"
+            id="EEDI"
+            value="EEDI"
+            v-model="energyEfficiencyIndexType"
+          />
+          <label for="EEDI" class="mr-4">EEDI</label>
         </div>
         <div class="flex space-x-2">
-          <input type="radio" id="eexi" value="eexi" v-model="shipIndexType" />
-          <label for="eexi">EEXI</label>
+          <input
+            type="radio"
+            id="EEXI"
+            value="EEXI"
+            v-model="energyEfficiencyIndexType"
+          />
+          <label for="EEXI">EEXI</label>
         </div>
       </div>
       <!-- Value input -->
@@ -63,17 +71,22 @@ const {
       <!-- Type selection -->
       <div v-if="isEngineLimited" class="flex space-x-4">
         <div class="flex space-x-2">
-          <input type="radio" id="epl" value="epl" v-model="engineLimitType" />
-          <label for="epl" class="mr-4">EPL</label>
+          <input
+            type="radio"
+            id="EPL"
+            value="EPL"
+            v-model="enginePowerLimitType"
+          />
+          <label for="EPL" class="mr-4">EPL</label>
         </div>
         <div class="flex space-x-2">
           <input
             type="radio"
-            id="shapoli"
-            value="shapoli"
-            v-model="engineLimitType"
+            id="SPL"
+            value="SPL"
+            v-model="enginePowerLimitType"
           />
-          <label for="shapoli">Shapoli</label>
+          <label for="SPL">Shapoli</label>
         </div>
       </div>
       <!-- Value input -->
@@ -226,36 +239,42 @@ const {
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
         :class="
-          IMODCSMethod === '1' ? 'border border-gradientblue bg-paleblue' : ''
+          IMODCSMethod === 'DCS1'
+            ? 'border border-gradientblue bg-paleblue'
+            : ''
         "
       >
-        <input type="radio" id="1" value="1" v-model="IMODCSMethod" />
+        <input type="radio" id="DCS1" value="DCS1" v-model="IMODCSMethod" />
         <div class="flex flex-col">
-          <label for="1" class="mr-4">Method 1</label>
+          <label for="DCS1" class="mr-4">Method 1</label>
           <span class="text-gray-500 text-12">Bunker delivery notes (BDN)</span>
         </div>
       </div>
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
         :class="
-          IMODCSMethod === '2' ? 'border border-gradientblue bg-paleblue' : ''
+          IMODCSMethod === 'DCS2'
+            ? 'border border-gradientblue bg-paleblue'
+            : ''
         "
       >
-        <input type="radio" id="2" value="2" v-model="IMODCSMethod" />
+        <input type="radio" id="DCS2" value="DCS2" v-model="IMODCSMethod" />
         <div class="flex flex-col">
-          <label for="2" class="mr-4">Method 2</label>
+          <label for="DCS2" class="mr-4">Method 2</label>
           <span class="text-gray-500 text-12">Flow meters</span>
         </div>
       </div>
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
         :class="
-          IMODCSMethod === '3' ? 'border border-gradientblue bg-paleblue' : ''
+          IMODCSMethod === 'DCS3'
+            ? 'border border-gradientblue bg-paleblue'
+            : ''
         "
       >
-        <input type="radio" id="3" value="3" v-model="IMODCSMethod" />
+        <input type="radio" id="DCS3" value="DCS3" v-model="IMODCSMethod" />
         <div class="flex flex-col">
-          <label for="3" class="mr-4">Method 3</label>
+          <label for="DCS3" class="mr-4">Method 3</label>
           <span class="text-gray-500 text-12"
             >Bunker fuel tank monitoring on board</span
           >
@@ -271,12 +290,12 @@ const {
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
         :class="
-          EUMRVMethod === 'a' ? 'border border-gradientblue bg-paleblue' : ''
+          EUMRVMethod === 'MRVA' ? 'border border-gradientblue bg-paleblue' : ''
         "
       >
-        <input type="radio" id="a" value="a" v-model="EUMRVMethod" />
+        <input type="radio" id="MRVA" value="MRVA" v-model="EUMRVMethod" />
         <div class="flex flex-col">
-          <label for="a" class="mr-4">Method A</label>
+          <label for="MRVA" class="mr-4">Method A</label>
           <span class="text-gray-500 text-12"
             >BDN and periodic stocktakes of fuel tanks</span
           >
@@ -285,12 +304,12 @@ const {
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
         :class="
-          EUMRVMethod === 'b' ? 'border border-gradientblue bg-paleblue' : ''
+          EUMRVMethod === 'MRVB' ? 'border border-gradientblue bg-paleblue' : ''
         "
       >
-        <input type="radio" id="b" value="b" v-model="EUMRVMethod" />
+        <input type="radio" id="MRVB" value="MRVB" v-model="EUMRVMethod" />
         <div class="flex flex-col">
-          <label for="b" class="mr-4">Method B</label>
+          <label for="MRVB" class="mr-4">Method B</label>
           <span class="text-gray-500 text-12"
             >Bunker fuel tank monitoring on board</span
           >
@@ -299,12 +318,12 @@ const {
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
         :class="
-          EUMRVMethod === 'c' ? 'border border-gradientblue bg-paleblue' : ''
+          EUMRVMethod === 'MRVC' ? 'border border-gradientblue bg-paleblue' : ''
         "
       >
-        <input type="radio" id="c" value="c" v-model="EUMRVMethod" />
+        <input type="radio" id="MRVC" value="MRVC" v-model="EUMRVMethod" />
         <div class="flex flex-col">
-          <label for="c" class="mr-4">Method C</label>
+          <label for="MRVC" class="mr-4">Method C</label>
           <span class="text-gray-500 text-12"
             >Flow meters for applicable combustion processes</span
           >
@@ -313,16 +332,103 @@ const {
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
         :class="
-          EUMRVMethod === 'd' ? 'border border-gradientblue bg-paleblue' : ''
+          EUMRVMethod === 'MRVD' ? 'border border-gradientblue bg-paleblue' : ''
         "
       >
-        <input type="radio" id="d" value="d" v-model="EUMRVMethod" />
+        <input type="radio" id="MRVD" value="MRVD" v-model="EUMRVMethod" />
         <div class="flex flex-col">
-          <label for="d" class="mr-4">Method D</label>
+          <label for="MRVD" class="mr-4">Method D</label>
           <span class="text-gray-500 text-12"
             >Direct CO2 emission measurements</span
           >
         </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-col space-y-3">
+    <span>Applicable CII:</span>
+    <!-- Applicable CII selection -->
+    <div class="flex space-x-4">
+      <div
+        class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
+        :class="
+          applicableCII === 'AER'
+            ? 'border border-gradientblue bg-paleblue'
+            : ''
+        "
+      >
+        <input type="radio" id="AER" value="AER" v-model="applicableCII" />
+        <label for="AER" class="mr-4">AER</label>
+      </div>
+      <div
+        class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
+        :class="
+          applicableCII === 'CGDIST'
+            ? 'border border-gradientblue bg-paleblue'
+            : ''
+        "
+      >
+        <input
+          type="radio"
+          id="CGDIST"
+          value="CGDIST"
+          v-model="applicableCII"
+        />
+        <label for="CGDIST">cgDIST</label>
+      </div>
+    </div>
+  </div>
+  <!--CII for trial purposes -->
+  <div class="flex flex-col space-y-3">
+    <div>
+      <span>CII for trial purposes </span>
+      <span class="text-gray-500">(Optional):</span>
+    </div>
+    <!-- Report Type selection -->
+    <div class="flex space-x-4">
+      <div
+        class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
+        :class="
+          trialCII.includes('EEPI')
+            ? 'border border-gradientblue bg-paleblue'
+            : ''
+        "
+      >
+        <input type="checkbox" id="EEPI" value="EEPI" v-model="trialCII" />
+        <label for="EEPI" class="mr-4">EEPI</label>
+      </div>
+      <div
+        class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
+        :class="
+          trialCII.includes('CBDIST')
+            ? 'border border-gradientblue bg-paleblue'
+            : ''
+        "
+      >
+        <input type="checkbox" id="CBDIST" value="CBDIST" v-model="trialCII" />
+        <label for="CBDIST">cbDIST</label>
+      </div>
+      <div
+        class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
+        :class="
+          trialCII.includes('CLDIST')
+            ? 'border border-gradientblue bg-paleblue'
+            : ''
+        "
+      >
+        <input type="checkbox" id="CLDIST" value="CLDIST" v-model="trialCII" />
+        <label for="CLDIST">clDIST</label>
+      </div>
+      <div
+        class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1"
+        :class="
+          trialCII.includes('EEOI')
+            ? 'border border-gradientblue bg-paleblue'
+            : ''
+        "
+      >
+        <input type="checkbox" id="EEOI" value="EEOI" v-model="trialCII" />
+        <label for="EEOI">EEOI</label>
       </div>
     </div>
   </div>
@@ -333,115 +439,90 @@ const {
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1 items-center"
         :class="
-          fuelOilTypes.includes('mdomgo')
+          fuelOilTypes.includes('MDGO')
             ? 'border border-gradientblue bg-paleblue'
             : ''
         "
       >
-        <input
-          type="checkbox"
-          id="mdomgo"
-          value="mdomgo"
-          v-model="fuelOilTypes"
-        />
-        <label for="mdomgo" class="mr-4">MDO / MGO</label>
+        <input type="checkbox" id="MDGO" value="MDGO" v-model="fuelOilTypes" />
+        <label for="MDGO" class="mr-4">MDO / MGO</label>
       </div>
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1 items-center"
         :class="
-          fuelOilTypes.includes('lsfo')
+          fuelOilTypes.includes('LSFO')
             ? 'border border-gradientblue bg-paleblue'
             : ''
         "
       >
-        <input type="checkbox" id="lsfo" value="lsfo" v-model="fuelOilTypes" />
-        <label for="lsfo">LSFO</label>
+        <input type="checkbox" id="LSFO" value="LSFO" v-model="fuelOilTypes" />
+        <label for="LSFO">LSFO</label>
       </div>
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1 items-center"
         :class="
-          fuelOilTypes.includes('hfo')
+          fuelOilTypes.includes('HFO')
             ? 'border border-gradientblue bg-paleblue'
             : ''
         "
       >
-        <input type="checkbox" id="hfo" value="hfo" v-model="fuelOilTypes" />
-        <label for="hfo">HFO</label>
+        <input type="checkbox" id="HFO" value="HFO" v-model="fuelOilTypes" />
+        <label for="HFO">HFO</label>
       </div>
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1 items-center"
         :class="
-          fuelOilTypes.includes('lpgpropane')
+          fuelOilTypes.includes('LPGP')
             ? 'border border-gradientblue bg-paleblue'
             : ''
         "
       >
-        <input
-          type="checkbox"
-          id="lpgpropane"
-          value="lpgpropane"
-          v-model="fuelOilTypes"
-        />
-        <label for="lpgpropane">LPG-Propane</label>
+        <input type="checkbox" id="LPGP" value="LPGP" v-model="fuelOilTypes" />
+        <label for="LPGP">LPG-Propane</label>
       </div>
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1 items-center"
         :class="
-          fuelOilTypes.includes('lpgbutane')
+          fuelOilTypes.includes('LPGB')
             ? 'border border-gradientblue bg-paleblue'
             : ''
         "
       >
-        <input
-          type="checkbox"
-          id="lpgbutane"
-          value="lpgbutane"
-          v-model="fuelOilTypes"
-        />
-        <label for="lpgbutane">LPG-Butane</label>
+        <input type="checkbox" id="LPGB" value="LPGB" v-model="fuelOilTypes" />
+        <label for="LPGB">LPG-Butane</label>
       </div>
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1 items-center"
         :class="
-          fuelOilTypes.includes('lng')
+          fuelOilTypes.includes('LNG')
             ? 'border border-gradientblue bg-paleblue'
             : ''
         "
       >
-        <input type="checkbox" id="lng" value="lng" v-model="fuelOilTypes" />
-        <label for="lng">LNG</label>
+        <input type="checkbox" id="LNG" value="LNG" v-model="fuelOilTypes" />
+        <label for="LNG">LNG</label>
       </div>
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1 items-center"
         :class="
-          fuelOilTypes.includes('methanol')
+          fuelOilTypes.includes('METH')
             ? 'border border-gradientblue bg-paleblue'
             : ''
         "
       >
-        <input
-          type="checkbox"
-          id="methanol"
-          value="methanol"
-          v-model="fuelOilTypes"
-        />
-        <label for="methanol">Methanol</label>
+        <input type="checkbox" id="METH" value="METH" v-model="fuelOilTypes" />
+        <label for="METH">Methanol</label>
       </div>
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1 items-center"
         :class="
-          fuelOilTypes.includes('ethanol')
+          fuelOilTypes.includes('ETH')
             ? 'border border-gradientblue bg-paleblue'
             : ''
         "
       >
-        <input
-          type="checkbox"
-          id="ethanol"
-          value="ethanol"
-          v-model="fuelOilTypes"
-        />
-        <label for="ethanol">Ethanol</label>
+        <input type="checkbox" id="ETH" value="ETH" v-model="fuelOilTypes" />
+        <label for="ETH">Ethanol</label>
       </div>
       <div
         class="flex space-x-2 bg-gray-50 rounded-xl px-3 py-2 flex-1 items-center"
@@ -456,6 +537,7 @@ const {
           id="others"
           value="others"
           v-model="fuelOilTypes"
+          disabled
         />
         <label for="others">Others</label>
       </div>
