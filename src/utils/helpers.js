@@ -35,6 +35,18 @@ export function format(date) {
   return `${year}-${month}-${day} ${hour}:${minute}`;
 }
 
+export function dateOnlyFormat(date) {
+  if (date == null) {
+    return null;
+  }
+
+  const day = ("0" + date.getDate()).slice(-2);
+  const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  const year = date.getFullYear();
+
+  return `${year}-${month}-${day}`;
+}
+
 export function formatUTC(date) {
   if (date == null) {
     return null;
