@@ -85,7 +85,7 @@ const uploadSettings = async () => {
 
   const currentYear = new Date().getFullYear();
   const SETTINGS = {
-    ship: imoReg,
+    ship: imoReg.value,
     energy_efficiency_index_type: energyEfficiencyIndexType,
     energy_efficiency_index_value: energyEfficiencyIndexVal,
     is_engine_power_limited: isEnginePowerLimited,
