@@ -3,7 +3,7 @@ import { computed, defineProps } from "vue";
 // import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
 // import { storeToRefs } from "pinia";
 import { TIMEZONES } from "@/utils/options";
-import { textInputOptions, format } from "@/utils/helpers";
+import { textInputOptions, format, convertUTCToLT } from "@/utils/helpers";
 
 const props = defineProps({
   report: {
@@ -12,7 +12,9 @@ const props = defineProps({
   },
 });
 
-const reportingDate = computed(() => props.report.report_date);
+const reportingDate = computed(() =>
+  convertUTCToLT(new Date(props.report.report_date), props.report.report_tz)
+);
 const reportingTimeZone = computed(() => props.report.report_tz);
 const departurePortCountry = computed(
   () => props.report.reportroute.departure_port.split(" ")[0]
@@ -28,7 +30,7 @@ const isDestinationEnabled = computed(() =>
     : false
 );
 const destinationPortCountry = computed(
-  () => props.report.reportroute?.arrival_port.split(" ")[1] ?? ""
+  () => props.report.reportroute?.arrival_port.split(" ")[0] ?? ""
 );
 const destinationPortName = computed(
   () => props.report.reportroute?.arrival_port.split(" ")[1] ?? ""
