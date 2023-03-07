@@ -61,7 +61,7 @@
 <script setup>
 import TableOverview from "@/views/HQViews/Overview/components/TableOverview.vue";
 import { useCrewStore } from "@/stores/useCrewStore";
-
+import { convertUTCToLT } from "@/utils/helpers";
 const props = defineProps({
   vesselname: String,
   imo: String,
@@ -72,8 +72,7 @@ const { isSuccess: legsSuccess, data: portCalls } = store.legsQuery(props.imo);
 const { isSuccess: statsSuccess, data: stats } = store.statsQuery(props.imo);
 
 const dateHelper = (arrival, difference) => {
-  const date = new Date(arrival);
-  date.setTime(date.getTime() + difference * 60 * 60 * 1000);
+  const date = new Date(convertUTCToLT(new Date(arrival), difference));
   return date.toUTCString().split(" ").slice(0, 5).join(" ");
 };
 </script>
