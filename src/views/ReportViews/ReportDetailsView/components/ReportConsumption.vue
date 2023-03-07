@@ -27,10 +27,8 @@ const isLubricatingOilRemarkEnabled = computed(() =>
     : false
 );
 
-const fuelMachineTypes = computed(() =>
-  Object.keys(
-    props.report.consumptionconditiondata.fueloildata_set[0].breakdown
-  )
+const fuelMachineTypes = computed(
+  () => props.report.voyage_leg.voyage.ship.shipspecs.machinery_options
 );
 
 // Fuel Consumption
