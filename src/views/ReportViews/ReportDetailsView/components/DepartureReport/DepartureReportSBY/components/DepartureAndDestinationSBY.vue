@@ -35,8 +35,13 @@ const destinationPortCountry = computed(
 const destinationPortName = computed(
   () => props.report.reportroute?.arrival_port.split(" ")[1] ?? ""
 );
-const destinationEstimatedArrival = computed(
-  () => props.report.reportroute?.arrival_date ?? ""
+const destinationEstimatedArrival = computed(() =>
+  props.report.reportroute?.arrival_date != undefined
+    ? convertUTCToLT(
+        new Date(props.report.reportroute?.arrival_date),
+        props.report.reportroute?.arrival_tz
+      )
+    : ""
 );
 const destinationTimeZone = computed(
   () => props.report.reportroute?.arrival_tz ?? ""
