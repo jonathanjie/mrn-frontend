@@ -36,7 +36,7 @@ export const useDepartureCOSPReportStore = defineStore(
       arrivalPortCountry: destinationPortCountry,
       arrivalPortName: destinationPortName,
       arrivalTz: destinationTimeZone,
-      arrivalDate: destinationEstimatedArrival,
+      arrivalDate: destinationEstimatedArrivalUTC,
       lastReportDate,
       propellerPitch,
       revolutionCount: revolution_count,
@@ -77,11 +77,11 @@ export const useDepartureCOSPReportStore = defineStore(
           )
         : ""
     );
-    const destinationEstimatedArrivalUTC = computed(() =>
+    const destinationEstimatedArrival = computed(() =>
       destinationTimeZone.value !== "default" &&
-      destinationEstimatedArrival.value
-        ? convertLTToUTC(
-            new Date(destinationEstimatedArrival.value),
+      destinationEstimatedArrivalUTC.value
+        ? convertUTCToLT(
+            new Date(destinationEstimatedArrivalUTC.value),
             destinationTimeZone.value
           )
         : ""
