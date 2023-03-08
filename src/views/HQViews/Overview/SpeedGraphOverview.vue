@@ -6,7 +6,7 @@
       <div v-if="shipSuccess && ship.shipspecs != null" class="flex flex-col">
         <div class="flex flex-row items-center justify-evenly p-5">
           <img
-            v-if="ship.ship_type === 'BULK'"
+            v-if="ship.ship_type === 'BULK' || ship.ship_type === 'COMB'"
             src="@/assets/icons/Speed_Graph/Ships/bulkcarrier_icon.svg"
             class="h-10 w-30 rounded-xl mr-6"
           />
@@ -21,7 +21,7 @@
             class="h-10 w-30 rounded-xl mr-6"
           />
           <img
-            v-else-if="ship.ship_type === 'CNTR'"
+            v-else-if="ship.ship_type === 'CNTR' || ship.ship_type === 'REFC'"
             src="@/assets/icons/Speed_Graph/Ships/containership_icon.svg"
             class="h-10 w-30 rounded-xl mr-6"
           />
@@ -29,9 +29,7 @@
             v-else-if="
               ship.ship_type === 'RORV' ||
               ship.ship_type === 'RORP' ||
-              ship.ship_type === 'RORO' ||
-              ship.ship_type === 'REFC' ||
-              ship.ship_type === 'COMB'
+              ship.ship_type === 'RORO'
             "
             src="@/assets/icons/Speed_Graph/Ships/roro_icon.svg"
             class="h-10 w-30 rounded-xl mr-6"
