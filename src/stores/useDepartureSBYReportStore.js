@@ -69,14 +69,11 @@ export const useDepartureSBYReportStore = defineStore(
     // Overview
     const reportNo = depsReportNo;
     const voyageNo = curVoyageNo;
-    const reportingDateTime = ref("");
+    const reportingDateTime = ref(new Date());
     const reportingTimeZone = ref("default");
     const reportingDateTimeUTC = computed(() =>
       reportingTimeZone.value !== "default" && reportingDateTime.value
-        ? convertLTToUTC(
-            new Date(reportingDateTime.value),
-            reportingTimeZone.value
-          )
+        ? convertLTToUTC(reportingDateTime.value, reportingTimeZone.value)
         : ""
     );
 
@@ -84,15 +81,16 @@ export const useDepartureSBYReportStore = defineStore(
     const departurePortCountry = ref("");
     const departurePortName = ref("");
     const isDestinationEnabled = ref(true);
+
     const destinationPortCountry = ref("");
     const destinationPortName = ref("");
     const destinationTimeZone = ref("default");
-    const destinationEstimatedArrival = ref("");
+    const destinationEstimatedArrival = ref(new Date());
     const destinationEstimatedArrivalUTC = computed(() =>
       destinationTimeZone.value !== "default" &&
       destinationEstimatedArrival.value
         ? convertLTToUTC(
-            new Date(destinationEstimatedArrival.value),
+            destinationEstimatedArrival.value,
             destinationTimeZone.value
           )
         : ""
@@ -126,11 +124,9 @@ export const useDepartureSBYReportStore = defineStore(
     const displacement = ref("");
 
     // Pilot Station - Departure
-    const shouldPilotDepDataBeSent = computed(
-      () => pilotDepName.value || pilotDepDateTime.value
-    );
+    const shouldPilotDepDataBeSent = computed(() => pilotDepName.value);
     const pilotDepName = ref("");
-    const pilotDepDateTime = ref("");
+    const pilotDepDateTime = ref(new Date());
     const pilotDepDateTimeUTC = computed(() =>
       reportingTimeZone.value !== "default" && pilotDepDateTime.value
         ? convertLTToUTC(

@@ -57,14 +57,11 @@ export const useDepartureCOSPReportStore = defineStore(
     const loadingCondition = loadCondition;
 
     const voyageNo = curVoyageNo;
-    const reportingDateTime = ref("");
-    const reportingTimeZone = ref(departureTimeZone);
+    const reportingDateTime = ref(new Date());
+    const reportingTimeZone = ref(departureTimeZone.value);
     const reportingDateTimeUTC = computed(() =>
       reportingTimeZone.value !== "default" && reportingDateTime.value
-        ? convertLTToUTC(
-            new Date(reportingDateTime.value),
-            reportingTimeZone.value
-          )
+        ? convertLTToUTC(reportingDateTime.value, reportingTimeZone.value)
         : ""
     );
 
