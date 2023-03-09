@@ -298,7 +298,7 @@ const sendReport = async () => {
   isSubmissionModalVisible.value = true;
   // isSubmissionResponse.value = true;
   axios
-    .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/report1s/`, REPORT)
+    .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/`, REPORT)
     .then(() => {
       isSubmissionSuccessful.value = true;
       store.$reset();

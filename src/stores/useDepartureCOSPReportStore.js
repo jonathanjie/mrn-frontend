@@ -111,7 +111,7 @@ export const useDepartureCOSPReportStore = defineStore(
     const pilotDepLongDir = ref("default");
     const pilotDepLongDegree = ref("");
     const pilotDepLongMinute = ref("");
-    const shouldPilotDepDataBeSent = computed(() => pilotDepName.value === "");
+    const shouldPilotDepDataBeSent = computed(() => pilotDepName.value !== "");
 
     // Pilot Station - Arrival
     const pilotArrChecked = ref(false);
@@ -134,7 +134,7 @@ export const useDepartureCOSPReportStore = defineStore(
     const pilotArrLongDir = ref("default");
     const pilotArrLongDegree = ref("");
     const pilotArrLongMinute = ref("");
-    const shouldPilotArrDataBeSent = computed(() => pilotArrName.value === "");
+    const shouldPilotArrDataBeSent = computed(() => pilotArrName.value !== "");
 
     // R/UP Engine / Distance & Time
     const rupEngLatDir = ref("default");
