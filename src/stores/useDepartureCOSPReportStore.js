@@ -58,11 +58,14 @@ export const useDepartureCOSPReportStore = defineStore(
     const loadingCondition = loadCondition;
 
     const voyageNo = curVoyageNo;
-    const reportingDateTime = ref(new Date());
+    const reportingDateTime = ref("");
     const reportingTimeZone = ref(lastReportTz.value);
     const reportingDateTimeUTC = computed(() =>
       reportingTimeZone.value !== "default" && reportingDateTime.value
-        ? convertLTToUTC(reportingDateTime.value, reportingTimeZone.value)
+        ? convertLTToUTC(
+            new Date(reportingDateTime.value),
+            reportingTimeZone.value
+          )
         : ""
     );
 
@@ -96,7 +99,7 @@ export const useDepartureCOSPReportStore = defineStore(
 
     const pilotDepChecked = ref(false);
     const pilotDepName = ref("");
-    const pilotDepDateTime = ref(new Date());
+    const pilotDepDateTime = ref("");
     const pilotDepDateTimeUTC = computed(() =>
       reportingTimeZone.value !== "default" && pilotDepDateTime.value
         ? convertLTToUTC(
@@ -116,7 +119,7 @@ export const useDepartureCOSPReportStore = defineStore(
     // Pilot Station - Arrival
     const pilotArrChecked = ref(false);
     const pilotArrName = ref("");
-    const pilotArrDateTime = ref(new Date());
+    const pilotArrDateTime = ref("");
     const pilotArrDateTimeUTC = computed(() =>
       destinationTimeZone.value !== "default" && pilotArrDateTime.value
         ? convertLTToUTC(

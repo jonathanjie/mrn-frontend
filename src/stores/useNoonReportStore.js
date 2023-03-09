@@ -30,6 +30,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     arrivalTz,
     arrivalDate,
     lastReportDate,
+    lastReportTz,
     distanceToGo: distance_to_go,
     distanceObservedTotal,
     distanceEngineTotal,
@@ -51,7 +52,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const loadingCondition = curLoadingCondition;
   const voyageNo = curVoyageNo;
   const reportingDateTime = ref("");
-  const reportingTimeZone = ref("default");
+  const reportingTimeZone = ref(lastReportTz.value);
   const reportingDateTimeUTC = computed(() =>
     reportingTimeZone.value !== "default" && reportingDateTime.value
       ? convertLTToUTC(

@@ -45,6 +45,7 @@
           :textInputOptions="textInputOptions"
           :format="format"
           :modelValue="string"
+          :placeholder="$t('selectDateAndTime')"
           auto-apply
         >
           <template #input-icon>
