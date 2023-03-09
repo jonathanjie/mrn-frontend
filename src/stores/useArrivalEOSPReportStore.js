@@ -52,7 +52,7 @@ export const useArrivalEOSPReportStore = defineStore(
     const legNo = lastLegNo;
     const loadingCondition = curLoadingCondition;
     const voyageNo = curVoyageNo;
-    const reportingDateTime = ref("");
+    const reportingDateTime = ref(new Date(lastReportDate.value));
     const reportingTimeZone = ref(lastReportTz.value);
     const reportingDateTimeUTC = computed(() =>
       reportingTimeZone.value !== "default" && reportingDateTime.value

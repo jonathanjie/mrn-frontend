@@ -151,6 +151,21 @@
         <MiniUnitDisplay class="ml-2">NM</MiniUnitDisplay>
       </div>
       <div
+        class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-y border-l lg:border-l-0 bg-gray-50 text-14"
+      >
+        {{ $t("total") }}
+      </div>
+      <div class="flex col-span-6 lg:col-span-3 p-2 pl-4 border bg-gray-50">
+        <input
+          v-model="distance_eng_total"
+          @keypress="preventNaN($event, distance_eng_total)"
+          placeholder="0"
+          disabled
+          class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
+        />
+        <MiniUnitDisplay>NM</MiniUnitDisplay>
+      </div>
+      <div
         class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-l border-y lg:border-l-0 lg:border-t-0 bg-gray-50 text-14"
       >
         {{ $t("revolutionCounter") }}

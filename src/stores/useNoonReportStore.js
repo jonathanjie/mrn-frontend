@@ -58,7 +58,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
         )
       : ""
   );
-  const reportingDateTime = ref(prevDate);
+  const reportingDateTime = ref(prevDate.value);
   const reportingTimeZone = ref(lastReportTz.value);
   const reportingDateTimeUTC = computed(() =>
     reportingTimeZone.value !== "default" && reportingDateTime.value
