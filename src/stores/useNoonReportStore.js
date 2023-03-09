@@ -51,7 +51,14 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const legNo = lastLegNo;
   const loadingCondition = curLoadingCondition;
   const voyageNo = curVoyageNo;
-  const reportingDateTime = ref("");
+  const prevDate = computed(() =>
+    lastReportDate.value
+      ? new Date(lastReportDate.value).setDate(
+          new Date(lastReportDate.value).getDate() + 1
+        )
+      : ""
+  );
+  const reportingDateTime = ref(prevDate);
   const reportingTimeZone = ref(lastReportTz.value);
   const reportingDateTimeUTC = computed(() =>
     reportingTimeZone.value !== "default" && reportingDateTime.value
