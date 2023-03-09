@@ -1,7 +1,7 @@
 <template>
   <div
-    v-if="!isActive"
-    @click="isActive = !isActive"
+    v-if="!pilotDepChecked"
+    @click="pilotDepChecked = !pilotDepChecked"
     class="flex items-center bg-white rounded-lg p-5 shadow-card cursor-pointer"
   >
     <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
@@ -17,7 +17,7 @@
   >
     <div
       class="col-span-2 flex items-center cursor-pointer"
-      @click="isActive = !isActive"
+      @click="pilotDepChecked = !pilotDepChecked"
     >
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
       <img
@@ -50,7 +50,7 @@
           :textInputOptions="textInputOptions"
           :format="format"
           :modelValue="string"
-          :placeholder="$t('selectDateAndTime')"
+          auto-apply
         >
           <template #input-icon>
             <img src="" />
@@ -135,16 +135,15 @@ import {
   format,
   formatUTC,
 } from "@/utils/helpers.js";
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
 import { storeToRefs } from "pinia";
 import { UTCPlaceholder } from "@/constants";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 
-const isActive = ref(false);
-
 const store = useDepartureCOSPReportStore();
 const {
+  pilotDepChecked,
   pilotDepName: pilot_dep_name,
   pilotDepDateTime: pilot_dep_date_time,
   pilotDepDateTimeUTC,

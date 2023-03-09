@@ -35,9 +35,10 @@ export const useDepartureCOSPReportStore = defineStore(
       departureTz: departureTimeZone,
       arrivalPortCountry: destinationPortCountry,
       arrivalPortName: destinationPortName,
-      arrivalTz: destinationTimeZone,
-      arrivalDate: destinationEstimatedArrivalUTC,
+      arrivalTz,
+      arrivalDate,
       lastReportDate,
+      lastReportTz,
       propellerPitch,
       revolutionCount: revolution_count,
       fuelOilRobs: prevFuelOilRobs,
@@ -58,7 +59,7 @@ export const useDepartureCOSPReportStore = defineStore(
 
     const voyageNo = curVoyageNo;
     const reportingDateTime = ref(new Date());
-    const reportingTimeZone = ref(departureTimeZone.value);
+    const reportingTimeZone = ref(lastReportTz.value);
     const reportingDateTimeUTC = computed(() =>
       reportingTimeZone.value !== "default" && reportingDateTime.value
         ? convertLTToUTC(reportingDateTime.value, reportingTimeZone.value)
@@ -74,22 +75,28 @@ export const useDepartureCOSPReportStore = defineStore(
           )
         : ""
     );
+
+    const destinationTimeZone = ref(arrivalTz.value);
     const destinationEstimatedArrival = computed(() =>
+      destinationTimeZone.value !== "default" && arrivalDate.value
+        ? convertUTCToLT(new Date(arrivalDate.value), destinationTimeZone.value)
+        : ""
+    );
+    const destinationEstimatedArrivalUTC = computed(() =>
       destinationTimeZone.value !== "default" &&
-      destinationEstimatedArrivalUTC.value
-        ? convertUTCToLT(
-            new Date(destinationEstimatedArrivalUTC.value),
-            destinationTimeZone.value
+      destinationEstimatedArrival.value
+        ? convertLTToUTC(
+            new Date(destinationEstimatedArrival.value),
+            reportingTimeZone.value
           )
         : ""
     );
 
     // Pilot Station - Departure
-    const shouldPilotDepDataBeSent = computed(
-      () => pilotDepName.value || pilotDepDateTime.value
-    );
+
+    const pilotDepChecked = ref(false);
     const pilotDepName = ref("");
-    const pilotDepDateTime = ref("");
+    const pilotDepDateTime = ref(new Date());
     const pilotDepDateTimeUTC = computed(() =>
       reportingTimeZone.value !== "default" && pilotDepDateTime.value
         ? convertLTToUTC(
@@ -104,13 +111,12 @@ export const useDepartureCOSPReportStore = defineStore(
     const pilotDepLongDir = ref("default");
     const pilotDepLongDegree = ref("");
     const pilotDepLongMinute = ref("");
+    const shouldPilotDepDataBeSent = computed(() => pilotDepName.value === "");
 
     // Pilot Station - Arrival
-    const shouldPilotArrDataBeSent = computed(
-      () => pilotArrName.value || pilotArrDateTime.value
-    );
+    const pilotArrChecked = ref(false);
     const pilotArrName = ref("");
-    const pilotArrDateTime = ref("");
+    const pilotArrDateTime = ref(new Date());
     const pilotArrDateTimeUTC = computed(() =>
       destinationTimeZone.value !== "default" && pilotArrDateTime.value
         ? convertLTToUTC(
@@ -128,6 +134,7 @@ export const useDepartureCOSPReportStore = defineStore(
     const pilotArrLongDir = ref("default");
     const pilotArrLongDegree = ref("");
     const pilotArrLongMinute = ref("");
+    const shouldPilotArrDataBeSent = computed(() => pilotArrName.value === "");
 
     // R/UP Engine / Distance & Time
     const rupEngLatDir = ref("default");
@@ -269,6 +276,7 @@ export const useDepartureCOSPReportStore = defineStore(
       destinationEstimatedArrivalUTC,
       // Pilot station - Departure
       shouldPilotDepDataBeSent,
+      pilotDepChecked,
       pilotDepName,
       pilotDepDateTime,
       pilotDepDateTimeUTC,
@@ -280,6 +288,7 @@ export const useDepartureCOSPReportStore = defineStore(
       pilotDepLongMinute,
       // Pilot Station - Arrival
       shouldPilotArrDataBeSent,
+      pilotArrChecked,
       pilotArrName,
       pilotArrDateTime,
       pilotArrDateTimeUTC,

@@ -236,6 +236,7 @@ const sendReport = async () => {
     departurepilotstation: shouldPilotDepDataBeSent.value
       ? {
           name: pilotDepName.value,
+          timezone: reportingTimeZone.value,
           date: pilotDepDateTimeUTC.value || null,
           position: pilotDepPosition,
         }
@@ -243,6 +244,7 @@ const sendReport = async () => {
     arrivalpilotstation: shouldPilotArrDataBeSent.value
       ? {
           name: pilotArrName.value,
+          timezone: reportingTimeZone.value,
           date: pilotArrDateTimeUTC.value,
           position: pilotArrPosition,
           draft_fwd: Number(pilotArrDraftFwd.value),
@@ -296,7 +298,7 @@ const sendReport = async () => {
   isSubmissionModalVisible.value = true;
   // isSubmissionResponse.value = true;
   axios
-    .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/`, REPORT)
+    .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/report1s/`, REPORT)
     .then(() => {
       isSubmissionSuccessful.value = true;
       store.$reset();
