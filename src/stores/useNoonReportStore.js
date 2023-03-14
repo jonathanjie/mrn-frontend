@@ -53,8 +53,9 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const voyageNo = curVoyageNo;
   const prevDate = computed(() =>
     lastReportDate.value
-      ? new Date(lastReportDate.value).setDate(
-          new Date(lastReportDate.value).getDate() + 1
+      ? convertUTCToLT(
+          new Date(new Date(lastReportDate.value).valueOf() + 3600 * 24 * 1000),
+          lastReportTz.value
         )
       : ""
   );
