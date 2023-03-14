@@ -242,21 +242,33 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   );
   const distanceToGoEdited = ref("");
   const remarksForChanges = ref("");
+  const revolutionCountStatic = ref("");
   const revolutionCount = computed(() =>
     revolutionCountStatic.value
       ? revolutionCountStatic.value
       : revolutionCountComputed.value
   );
+
   const revolutionCountComputed = computed(() =>
     distanceEngSinceNoonStatic.value
       ? +(
           (1852 * Number(distanceEngSinceNoonStatic.value)) /
-            Number(propellerPitch.value) +
-          Number(revolution_count.value)
+          Number(propellerPitch.value)
         ).toFixed(0)
       : ""
   );
-  const revolutionCountStatic = ref("");
+
+  const revolutionCountTotal = computed(() =>
+    revolutionCountStatic.value
+      ? +(
+          Number(revolutionCountStatic.value) + Number(revolution_count.value)
+        ).toFixed(0)
+      : +(
+          (1852 * Number(distanceEngSinceNoonStatic.value)) /
+            Number(propellerPitch.value) +
+          Number(revolution_count.value)
+        ).toFixed(0)
+  );
 
   // Performance
   const speedSinceNoon = computed(() =>
@@ -273,7 +285,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const rpmSinceNoon = computed(() =>
     revolutionCount.value && hoursSinceNoon.value
       ? +(
-          (Number(revolutionCount.value) - Number(revolution_count.value)) /
+          Number(revolutionCount.value) /
           ((Number(hoursSinceNoon.value) -
             (stoppageChangedRPM.value === "0"
               ? Number(stoppageDuration.value)
@@ -307,7 +319,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const rpmAvg = computed(() =>
     rpmSinceNoon.value && hoursCospToEosp.value
       ? +(
-          (Number(revolutionCount.value) -
+          (Number(revolutionCountTotal.value) -
             Number(revolutionCountSbyToCosp.value)) /
           ((Number(hoursCospToEosp.value) -
             Number(timeStoppedAtSea.value) -
@@ -534,6 +546,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     revolutionCount,
     revolutionCountComputed,
     revolutionCountStatic,
+    revolutionCountTotal,
     // Performance
     speedSinceNoon,
     rpmSinceNoon,

@@ -196,21 +196,33 @@ export const useArrivalEOSPReportStore = defineStore(
     );
     const distanceToGoEdited = ref(""); // use distanceToGoEdited instead of distanceToGo if distanceToGoEdited.value != distanceToGo.value
     const remarksForChanges = ref("");
+    const revolutionCountStatic = ref("");
     const revolutionCount = computed(() =>
       revolutionCountStatic.value
         ? revolutionCountStatic.value
         : revolutionCountComputed.value
     );
+
     const revolutionCountComputed = computed(() =>
       distanceEngSinceNoonStatic.value
         ? +(
             (1852 * Number(distanceEngSinceNoonStatic.value)) /
-              Number(propellerPitch.value) +
-            Number(revolution_count.value)
+            Number(propellerPitch.value)
           ).toFixed(0)
         : ""
     );
-    const revolutionCountStatic = ref("");
+
+    const revolutionCountTotal = computed(() =>
+      revolutionCountStatic.value
+        ? +(
+            Number(revolutionCountStatic.value) + Number(revolution_count.value)
+          ).toFixed(0)
+        : +(
+            (1852 * Number(distanceEngSinceNoonStatic.value)) /
+              Number(propellerPitch.value) +
+            Number(revolution_count.value)
+          ).toFixed(0)
+    );
 
     // Performance
     const speedSinceNoon = computed(() =>
@@ -476,6 +488,7 @@ export const useArrivalEOSPReportStore = defineStore(
       revolutionCount,
       revolutionCountComputed,
       revolutionCountStatic,
+      revolutionCountTotal,
       // Performance
       speedSinceNoon,
       rpmSinceNoon,

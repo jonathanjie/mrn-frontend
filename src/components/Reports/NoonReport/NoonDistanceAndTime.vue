@@ -120,7 +120,6 @@
         />
         <MiniUnitDisplay>NM</MiniUnitDisplay>
       </div>
-
       <div
         class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-l border-t lg:border-y bg-gray-50 text-14"
       >
@@ -157,7 +156,9 @@
       >
         {{ $t("total") }}
       </div>
-      <div class="flex col-span-6 lg:col-span-3 p-2 pl-4 border bg-gray-50">
+      <div
+        class="flex col-span-6 lg:col-span-3 p-2 pl-4 border-x border-t bg-gray-50"
+      >
         <input
           v-model="distance_eng_total"
           @keypress="preventNaN($event, distance_eng_total)"
@@ -177,15 +178,32 @@
         v-model="revolution_count_static"
         @keypress="preventNaN($event, revolution_count)"
         placeholder="0"
-        class="col-span-6 lg:col-span-3 p-3 pl-4 border-x border-y lg:border-t-0 bg-white text-14 text-gray-700 focus:outline-0"
+        class="col-span-6 lg:col-span-3 p-3 pl-4 border lg:border-t-0 bg-white text-14 text-gray-700 focus:outline-0"
       />
       <input
         v-else
         v-model="revolution_count_computed"
         disabled
         placeholder="0"
-        class="col-span-6 lg:col-span-3 p-3 pl-4 border-x border-y lg:border-t-0 bg-gray-50 text-14 text-gray-700 focus:outline-0"
+        class="col-span-6 lg:col-span-3 p-3 pl-4 border lg:border-t-0 bg-gray-50 text-14 text-gray-700 focus:outline-0"
       />
+      <div
+        class="col-span-4 lg:col-span-2 text-blue-700 p-3 border-b lg:border-b border-l lg:border-l-0 bg-gray-50 text-14"
+      >
+        {{ $t("total") }}
+      </div>
+      <div
+        class="flex col-span-6 lg:col-span-3 p-2 pl-4 border lg:border-b bg-gray-50"
+      >
+        <input
+          v-model="revolution_count_total"
+          @keypress="preventNaN($event, distance_obs_total)"
+          placeholder="0"
+          disabled
+          class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
+        />
+        <MiniUnitDisplay>NM</MiniUnitDisplay>
+      </div>
     </div>
   </div>
 </template>
@@ -226,5 +244,6 @@ const {
   distanceEngCospToEosp: distance_eng_total,
   revolutionCountComputed: revolution_count_computed,
   revolutionCountStatic: revolution_count_static,
+  revolutionCountTotal: revolution_count_total,
 } = storeToRefs(store);
 </script>
