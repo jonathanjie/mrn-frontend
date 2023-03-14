@@ -199,7 +199,6 @@
           disabled
           class="w-24 text-14 text-gray-700 focus:outline-0 bg-gray-50"
         />
-        <MiniUnitDisplay>NM</MiniUnitDisplay>
       </div>
     </div>
   </div>
