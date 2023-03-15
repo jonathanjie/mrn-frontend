@@ -293,7 +293,7 @@ const sendReport = async () => {
         : { remarks: additionalRemarks.value },
   };
 
-  console.log("data: ", JSON.stringify(REPORT));
+  // console.log("data: ", JSON.stringify(REPORT));
 
   isSubmissionModalVisible.value = true;
   // isSubmissionResponse.value = true;

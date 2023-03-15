@@ -86,13 +86,6 @@ import RadioBtnIcon from "@/components/Buttons/RadioBtnIcon.vue";
 import router from "@/router";
 import { ref } from "vue";
 import { useVoyageStore } from "@/stores/useVoyageStore";
-import { useNoonReportStore } from "@/stores/useNoonReportStore";
-import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
-import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
-import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
-import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
-import { useHarbourPortReportStore } from "@/stores/useHarbourPortReportStore";
-import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
 
 import { storeToRefs } from "pinia";
 import SubmissionResultsModal from "@/components/Modals/SubmissionResultsModal.vue";
@@ -106,27 +99,6 @@ const updateActiveReportType = (type) => {
   reportType.value = type;
   router.push({ name: type });
 };
-
-const depSbyStore = useDepartureSBYReportStore();
-depSbyStore.$reset();
-
-const depCospStore = useDepartureCOSPReportStore();
-depCospStore.$reset();
-
-const noonStore = useNoonReportStore();
-noonStore.$reset();
-
-const arrEospStore = useArrivalEOSPReportStore();
-arrEospStore.$reset();
-
-const arrFweStore = useArrivalFWEReportStore();
-arrFweStore.$reset();
-
-const harbourStore = useHarbourPortReportStore();
-harbourStore.$reset();
-
-const bunkerStore = useBunkerReportStore();
-bunkerStore.$reset();
 
 const submissionStatusStore = useSubmissionStatusStore();
 const { isSubmissionModalVisible } = storeToRefs(submissionStatusStore);
@@ -158,7 +130,11 @@ const {
 const voyageDetails = localStorage.getItem("voyageDetails")
   ? JSON.parse(localStorage.getItem("voyageDetails"))
   : {};
-
+if (Object.keys(voyageDetails).length != 0) {
+  if (localStorage.getItem("voyageDetails") != null) {
+    localStorage.removeItem("voyageDetails");
+  }
+}
 // store selected voyage details in pinia voyage store
 voyageUuid.value = voyageDetails.voyage_uuid;
 lastLegNo.value = voyageDetails.last_leg_no;
