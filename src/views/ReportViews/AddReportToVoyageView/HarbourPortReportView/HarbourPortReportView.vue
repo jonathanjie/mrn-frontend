@@ -250,7 +250,6 @@ const sendReport = async () => {
 
     if (response.ok) {
       isSubmissionSuccessful.value = true;
-      store.$reset();
     } else {
       errorMessage.value = data;
     }

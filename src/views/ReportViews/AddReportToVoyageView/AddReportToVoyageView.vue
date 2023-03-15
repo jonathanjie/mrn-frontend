@@ -86,7 +86,13 @@ import RadioBtnIcon from "@/components/Buttons/RadioBtnIcon.vue";
 import router from "@/router";
 import { ref } from "vue";
 import { useVoyageStore } from "@/stores/useVoyageStore";
-
+import { useNoonReportStore } from "@/stores/useNoonReportStore";
+import { useDepartureSBYReportStore } from "@/stores/useDepartureSBYReportStore";
+import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
+import { useArrivalEOSPReportStore } from "@/stores/useArrivalEOSPReportStore";
+import { useArrivalFWEReportStore } from "@/stores/useArrivalFWEReportStore";
+import { useHarbourPortReportStore } from "@/stores/useHarbourPortReportStore";
+import { useBunkerReportStore } from "@/stores/useBunkerReportStore";
 import { storeToRefs } from "pinia";
 import SubmissionResultsModal from "@/components/Modals/SubmissionResultsModal.vue";
 import { useSubmissionStatusStore } from "@/stores/useSubmissionStatusStore";
@@ -99,7 +105,25 @@ const updateActiveReportType = (type) => {
   reportType.value = type;
   router.push({ name: type });
 };
+const noonStore = useNoonReportStore();
+noonStore.$reset();
+// const depSbyStore = useDepartureSBYReportStore();
+// depSbyStore.$reset();
 
+// const depCospStore = useDepartureCOSPReportStore();
+// depCospStore.$reset()
+
+// const arrEospStore = useArrivalEOSPReportStore();
+// arrEospStore.$reset();
+
+// const arrFweStore = useArrivalFWEReportStore();
+// arrFweStore.$reset();
+
+// const harbourStore = useHarbourPortReportStore();
+// harbourStore.$reset();
+
+// const bunkerStore = useBunkerReportStore();
+// bunkerStore.$reset();
 const submissionStatusStore = useSubmissionStatusStore();
 const { isSubmissionModalVisible } = storeToRefs(submissionStatusStore);
 // const showModal = ref(isSubmissionRequested.value);

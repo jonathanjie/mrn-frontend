@@ -357,7 +357,6 @@ const sendReport = async () => {
     .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/`, REPORT)
     .then(() => {
       isSubmissionSuccessful.value = true;
-      store.$reset();
     })
     .catch((error) => {
       if (error.response.status == 400) {

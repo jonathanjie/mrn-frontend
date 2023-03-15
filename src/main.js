@@ -12,7 +12,7 @@ import i18n from "./locales/i18n";
 import { h } from "vue";
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
-import resetStore from "@/plugins/resetStore";
+// import resetStore from "@/plugins/resetStore";
 import VueApexCharts from "vue3-apexcharts";
 import TextCell from "@/components/Table/TextCell.vue";
 import ImageCell from "@/components/Table/ImageCell.vue";
@@ -32,7 +32,8 @@ const app = createApp(App)
       audience: process.env.VUE_APP_AUTH_0_AUDEINCE,
     })
   )
-  .use(createPinia().use(resetStore))
+  .use(createPinia())
+  // .use(createPinia().use(resetStore))
   .use(VueClickAway)
   .use(VueQueryPlugin)
   .use(VueApexCharts);
