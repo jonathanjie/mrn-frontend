@@ -105,13 +105,15 @@ const updateActiveReportType = (type) => {
   reportType.value = type;
   router.push({ name: type });
 };
-const noonStore = useNoonReportStore();
-noonStore.$reset();
-// const depSbyStore = useDepartureSBYReportStore();
-// depSbyStore.$reset();
+
+const depSbyStore = useDepartureSBYReportStore();
+depSbyStore.$reset();
 
 // const depCospStore = useDepartureCOSPReportStore();
 // depCospStore.$reset()
+
+const noonStore = useNoonReportStore();
+noonStore.$reset();
 
 // const arrEospStore = useArrivalEOSPReportStore();
 // arrEospStore.$reset();

@@ -28,7 +28,6 @@ const temp = {
 export const useDepartureSBYReportStore = defineStore(
   "departureReportSBY",
   () => {
-    // SubsStores
     const store = useVoyageStore();
     const { voyageUuid, depsReportNo, legNo, curVoyageNo } = storeToRefs(store);
 
@@ -66,11 +65,14 @@ export const useDepartureSBYReportStore = defineStore(
       () => reportNo.value === 1 && legNo.value === 1
     );
 
+    // Getters
     // Overview
-    const reportNo = depsReportNo;
-    const voyageNo = curVoyageNo;
-    const reportingDateTime = ref("");
-    const reportingTimeZone = ref("default");
+    const reportNo = computed(() =>
+      depsReportNo.value ? depsReportNo.value : 0
+    );
+    const voyageNo = computed(() =>
+      curVoyageNo.value ? curVoyageNo.value : 0
+    );
     const reportingDateTimeUTC = computed(() =>
       reportingTimeZone.value !== "default" && reportingDateTime.value
         ? convertLTToUTC(
@@ -81,14 +83,6 @@ export const useDepartureSBYReportStore = defineStore(
     );
 
     // Departure and Destination
-    const departurePortCountry = ref("");
-    const departurePortName = ref("");
-    const isDestinationEnabled = ref(true);
-
-    const destinationPortCountry = ref("");
-    const destinationPortName = ref("");
-    const destinationTimeZone = ref("default");
-    const destinationEstimatedArrival = ref("");
     const destinationEstimatedArrivalUTC = computed(() =>
       destinationTimeZone.value !== "default" &&
       destinationEstimatedArrival.value
@@ -100,9 +94,6 @@ export const useDepartureSBYReportStore = defineStore(
     );
 
     // Cargo Operation
-    const loadCondition = ref("default");
-    const loading = ref("");
-    const unloading = ref("");
     const totalAmountComputed = computed(
       () =>
         +(
@@ -111,25 +102,12 @@ export const useDepartureSBYReportStore = defineStore(
           Number(unloading.value)
         ).toFixed(2)
     );
-    const totalAmountStatic = ref(0.0);
-    const time = ref("");
     const cargoUnit = computed(
       () => crewShipDetails.value.shipspecs.cargo_unit
     );
 
-    // Vessel Condition at Departure
-    const draftFwd = ref("");
-    const draftMid = ref("");
-    const draftAft = ref("");
-    const constant = ref("");
-    const gm = ref("");
-    const ballast = ref("");
-    const displacement = ref("");
-
     // Pilot Station - Departure
     const shouldPilotDepDataBeSent = computed(() => pilotDepName.value);
-    const pilotDepName = ref("");
-    const pilotDepDateTime = ref("");
     const pilotDepDateTimeUTC = computed(() =>
       reportingTimeZone.value !== "default" && pilotDepDateTime.value
         ? convertLTToUTC(
@@ -139,29 +117,7 @@ export const useDepartureSBYReportStore = defineStore(
         : ""
     );
 
-    const pilotDepLatDir = ref("default");
-    const pilotDepLatDegree = ref("");
-    const pilotDepLatMinute = ref("");
-    const pilotDepLongDir = ref("default");
-    const pilotDepLongDegree = ref("");
-    const pilotDepLongMinute = ref("");
-
     // Consumption And Condition
-    const fuelOilBreakdowns = reactive({});
-    const fuelOilReceipts = reactive({});
-    const fuelOilDebunkerings = reactive({});
-    for (const fuelOil of fuelOils.value) {
-      fuelOilBreakdowns[fuelOil] = {};
-      for (const machine of machinery.value) {
-        fuelOilBreakdowns[fuelOil][machine] = "";
-      }
-      // fuelOilBreakdowns[fuelOil][Machinery.ME] = "";
-      // fuelOilBreakdowns[fuelOil][Machinery.GE] = "";
-      // fuelOilBreakdowns[fuelOil][Machinery.IGG] = "";
-      // fuelOilBreakdowns[fuelOil][Machinery.BLR] = "";
-      fuelOilReceipts[fuelOil] = "";
-      fuelOilDebunkerings[fuelOil] = "";
-    }
     const fuelOilTotalConsumptions = computed(() => {
       let rtn = {};
       for (const fuelOil of fuelOils.value) {
@@ -181,21 +137,6 @@ export const useDepartureSBYReportStore = defineStore(
       }
       return rtn;
     });
-    const fuelOilRobsStatic = reactive({});
-    const fuelOilDataCorrection = reactive({
-      type: "default",
-      correction: "",
-      remarks: "",
-    });
-
-    const lubricatingOilBreakdowns = reactive({});
-    for (const lubricatingOil of lubricatingOils.value) {
-      lubricatingOilBreakdowns[lubricatingOil] = {
-        total_consumption: "",
-        receipt: "",
-        debunkering: "",
-      };
-    }
     const lubricatingOilRobsComputed = computed(() => {
       let rtn = {};
       for (const lubricatingOil of lubricatingOils.value) {
@@ -208,18 +149,6 @@ export const useDepartureSBYReportStore = defineStore(
       }
       return rtn;
     });
-
-    const lubricatingOilRobsStatic = reactive({});
-    const lubricatingOilDataCorrection = reactive({
-      type: "default",
-      correction: "",
-      remarks: "",
-    });
-
-    const freshwaterConsumed = ref("");
-    const freshwaterGenerated = ref("");
-    const freshwaterReceiving = ref("");
-    const freshwaterDischarging = ref("");
     const freshwaterChange = computed(
       () => +(freshwaterGenerated.value - freshwaterConsumed.value).toFixed(2)
     );
@@ -231,7 +160,6 @@ export const useDepartureSBYReportStore = defineStore(
         Number(freshwaterDischarging.value) +
         freshwaterChange.value
     );
-    const freshwaterRobStatic = ref("");
 
     // Consumption and Condition (Total)
     const fuelOilBreakdownsSum = computed(() => {
@@ -347,8 +275,184 @@ export const useDepartureSBYReportStore = defineStore(
     );
     const freshwaterRobSum = freshwaterRobComputed;
 
+    // State
+    // Overview
+    const reportingDateTime = ref("");
+    const reportingTimeZone = ref("default");
+
+    // Departure and Destination
+    const departurePortCountry = ref("");
+    const departurePortName = ref("");
+    const isDestinationEnabled = ref(true);
+    const destinationPortCountry = ref("");
+    const destinationPortName = ref("");
+    const destinationTimeZone = ref("default");
+    const destinationEstimatedArrival = ref("");
+
+    // Cargo Operation
+    const loadCondition = ref("default");
+    const loading = ref("");
+    const unloading = ref("");
+    const totalAmountStatic = ref(0.0);
+    const time = ref("");
+
+    // Vessel Condition at Departure
+    const draftFwd = ref("");
+    const draftMid = ref("");
+    const draftAft = ref("");
+    const constant = ref("");
+    const gm = ref("");
+    const ballast = ref("");
+    const displacement = ref("");
+
+    // Pilot Station - Departure
+    const pilotDepName = ref("");
+    const pilotDepDateTime = ref("");
+    const pilotDepLatDir = ref("default");
+    const pilotDepLatDegree = ref("");
+    const pilotDepLatMinute = ref("");
+    const pilotDepLongDir = ref("default");
+    const pilotDepLongDegree = ref("");
+    const pilotDepLongMinute = ref("");
+
+    // Consumption And Condition
+    const fuelOilBreakdowns = reactive({});
+    const fuelOilReceipts = reactive({});
+    const fuelOilDebunkerings = reactive({});
+    for (const fuelOil of fuelOils.value) {
+      fuelOilBreakdowns[fuelOil] = {};
+      for (const machine of machinery.value) {
+        fuelOilBreakdowns[fuelOil][machine] = "";
+      }
+      // fuelOilBreakdowns[fuelOil][Machinery.ME] = "";
+      // fuelOilBreakdowns[fuelOil][Machinery.GE] = "";
+      // fuelOilBreakdowns[fuelOil][Machinery.IGG] = "";
+      // fuelOilBreakdowns[fuelOil][Machinery.BLR] = "";
+      fuelOilReceipts[fuelOil] = "";
+      fuelOilDebunkerings[fuelOil] = "";
+    }
+
+    const fuelOilRobsStatic = reactive({});
+    const fuelOilDataCorrection = reactive({
+      type: "default",
+      correction: "",
+      remarks: "",
+    });
+
+    const lubricatingOilBreakdowns = reactive({});
+    for (const lubricatingOil of lubricatingOils.value) {
+      lubricatingOilBreakdowns[lubricatingOil] = {
+        total_consumption: "",
+        receipt: "",
+        debunkering: "",
+      };
+    }
+
+    const lubricatingOilRobsStatic = reactive({});
+    const lubricatingOilDataCorrection = reactive({
+      type: "default",
+      correction: "",
+      remarks: "",
+    });
+    const freshwaterConsumed = ref("");
+    const freshwaterGenerated = ref("");
+    const freshwaterReceiving = ref("");
+    const freshwaterDischarging = ref("");
+    const freshwaterRobStatic = ref("");
+
     //Additional remarks
     const additionalRemarks = ref("");
+
+    function $reset() {
+      console.log("Dep S/BY store reset");
+      // Overview
+      reportingDateTime.value = "";
+      reportingTimeZone.value = "default";
+
+      // Departure and Destination
+      departurePortCountry.value = "";
+      departurePortName.value = "";
+      isDestinationEnabled.value = true;
+      destinationPortCountry.value = "";
+      destinationPortName.value = "";
+      destinationTimeZone.value = "default";
+      destinationEstimatedArrival.value = "";
+
+      // Cargo Operation
+      loadCondition.value = "default";
+      loading.value = "";
+      unloading.value = "";
+      totalAmountStatic.value = 0.0;
+      time.value = "";
+
+      // Vessel Condition at Departure
+      draftFwd.value = "";
+      draftMid.value = "";
+      draftAft.value = "";
+      constant.value = "";
+      gm.value = "";
+      ballast.value = "";
+      displacement.value = "";
+
+      // Pilot Station - Departure
+      pilotDepName.value = "";
+      pilotDepDateTime.value = "";
+      pilotDepLatDir.value = "default";
+      pilotDepLatDegree.value = "";
+      pilotDepLatMinute.value = "";
+      pilotDepLongDir.value = "default";
+      pilotDepLongDegree.value = "";
+      pilotDepLongMinute.value = "";
+
+      // Consumption And Condition
+      fuelOilBreakdowns.value = {};
+      fuelOilReceipts.value = {};
+      fuelOilDebunkerings.value = {};
+      for (const fuelOil of fuelOils.value) {
+        fuelOilBreakdowns[fuelOil] = {};
+        for (const machine of machinery.value) {
+          fuelOilBreakdowns[fuelOil][machine] = "";
+        }
+        // fuelOilBreakdowns[fuelOil][Machinery.ME] = "";
+        // fuelOilBreakdowns[fuelOil][Machinery.GE] = "";
+        // fuelOilBreakdowns[fuelOil][Machinery.IGG] = "";
+        // fuelOilBreakdowns[fuelOil][Machinery.BLR] = "";
+        fuelOilReceipts[fuelOil] = "";
+        fuelOilDebunkerings[fuelOil] = "";
+      }
+
+      fuelOilRobsStatic.value = {};
+      fuelOilDataCorrection.value = {
+        type: "default",
+        correction: "",
+        remarks: "",
+      };
+
+      lubricatingOilBreakdowns.value = {};
+      for (const lubricatingOil of lubricatingOils.value) {
+        lubricatingOilBreakdowns[lubricatingOil] = {
+          total_consumption: "",
+          receipt: "",
+          debunkering: "",
+        };
+      }
+
+      lubricatingOilRobsStatic.value = {};
+      lubricatingOilDataCorrection.value = {
+        type: "default",
+        correction: "",
+        remarks: "",
+      };
+      freshwaterConsumed.value = "";
+      freshwaterGenerated.value = "";
+      freshwaterReceiving.value = "";
+      freshwaterDischarging.value = "";
+      freshwaterRobStatic.value = "";
+
+      //Additional remarks
+      additionalRemarks.value = "";
+    }
+
     return {
       isFetchingPrevData,
       IsSuccessPrevData,
@@ -436,6 +540,7 @@ export const useDepartureSBYReportStore = defineStore(
       freshwaterRobSum,
       // Additional remarks
       additionalRemarks,
+      $reset,
     };
   }
 );

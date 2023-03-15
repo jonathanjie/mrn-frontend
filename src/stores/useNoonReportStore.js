@@ -514,8 +514,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   const additionalRemarks = ref("");
 
   function $reset() {
-    console.log("Store reset is being called");
-
+    console.log("Noon store reset is being called");
     // State variables
     // Overview
     reportingDateTime.value = getPrevDate.value;
