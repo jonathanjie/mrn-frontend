@@ -236,6 +236,7 @@ const sendReport = async () => {
     departurepilotstation: shouldPilotDepDataBeSent.value
       ? {
           name: pilotDepName.value,
+          timezone: reportingTimeZone.value,
           date: pilotDepDateTimeUTC.value || null,
           position: pilotDepPosition,
         }
@@ -243,6 +244,7 @@ const sendReport = async () => {
     arrivalpilotstation: shouldPilotArrDataBeSent.value
       ? {
           name: pilotArrName.value,
+          timezone: reportingTimeZone.value,
           date: pilotArrDateTimeUTC.value,
           position: pilotArrPosition,
           draft_fwd: Number(pilotArrDraftFwd.value),
@@ -291,7 +293,7 @@ const sendReport = async () => {
         : { remarks: additionalRemarks.value },
   };
 
-  console.log("data: ", JSON.stringify(REPORT));
+  // console.log("data: ", JSON.stringify(REPORT));
 
   isSubmissionModalVisible.value = true;
   // isSubmissionResponse.value = true;

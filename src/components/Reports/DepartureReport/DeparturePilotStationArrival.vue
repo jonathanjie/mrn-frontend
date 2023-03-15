@@ -1,7 +1,7 @@
 <template>
   <div
-    v-if="!isActive"
-    @click="isActive = !isActive"
+    v-if="!pilotArrChecked"
+    @click="pilotArrChecked = !pilotArrChecked"
     class="flex items-center bg-white rounded-lg p-5 shadow-card cursor-pointer"
   >
     <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
@@ -17,7 +17,7 @@
   >
     <div
       class="col-span-2 flex items-center cursor-pointer"
-      @click="isActive = !isActive"
+      @click="pilotArrChecked = !pilotArrChecked"
     >
       <img src="@/assets/icons/selected_blue_gradient.svg" class="h-5 w-5" />
       <img
@@ -53,6 +53,7 @@
           :format="format"
           :modelValue="string"
           :placeholder="$t('selectDateAndTime')"
+          auto-apply
         >
           <template #input-icon>
             <img src="" />
@@ -188,12 +189,11 @@ import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
 import { useDepartureCOSPReportStore } from "@/stores/useDepartureCOSPReportStore";
 import { storeToRefs } from "pinia";
 import { UTCPlaceholder } from "@/constants";
-import { computed, ref } from "vue";
-
-const isActive = ref(false);
+import { computed } from "vue";
 
 const store = useDepartureCOSPReportStore();
 const {
+  pilotArrChecked,
   pilotArrName: pilot_arr_name,
   pilotArrDateTime: pilot_arr_date_time,
   pilotArrDateTimeUTC,

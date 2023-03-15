@@ -120,6 +120,13 @@ export const Machinery = {
   BLR: "boiler",
 };
 
+export const MachineryOrdered = [
+  "main_engine",
+  "generator_engine",
+  "boiler",
+  "inert_gas_generator",
+];
+
 export const TotalConsumptionType = {
   IN_HARBOUR_PORT: "IN_HARBOUR_PORT",
   PILOT_TO_PILOT: "PILOT_TO_PILOT",
@@ -173,8 +180,8 @@ export const CIIModalTypes = {
 
 export const ShippingAuthorities = {
   IMODCS: "imodcs",
-  EUMRV: "eumrv"
-}
+  EUMRV: "eumrv",
+};
 
 const constants = {
   SRID: "4326",

@@ -47,7 +47,7 @@ const createFuelConsumptionObject = (fuelOils, fuelAmounts) => {
 };
 
 const dateToString = (date) => {
-  console.log(date);
+  // console.log(date);
   if (!date) {
     return null;
   }
@@ -57,7 +57,7 @@ const dateToString = (date) => {
   return `${year}-${month}-${day}`;
 };
 
-console.log(referenceStartDate.value);
+// console.log(referenceStartDate.value);
 // TODO: replace with store values
 
 const calculateCII = async () => {
@@ -75,7 +75,7 @@ const calculateCII = async () => {
       ? targetCIIGrade.value.toUpperCase()
       : null,
   };
-  console.log(requestBody);
+  // console.log(requestBody);
 
   return await axios
     .post(`${process.env.VUE_APP_URL_DOMAIN}/cii/calculator/`, requestBody)
@@ -97,7 +97,7 @@ const calculateCII = async () => {
       resultsCalculated.value = true;
     })
     .catch((error) => {
-      console.log(error.message);
+      // console.log(error.message);
       window.alert(
         "Please check your inputs.\n\nIf the inputs are correct and you are experiencing this issue, CII configurations may not be set up correctly. Please check CII configurations in the CII Overview page."
       );

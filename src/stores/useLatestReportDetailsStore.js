@@ -240,6 +240,12 @@ export const useLatestReportDetailsStore = defineStore(
         ? latestReportDetails.value.last_report_type
         : ""
     );
+    const lastReportTz = computed(() =>
+      isSuccessLatestReportDetails.value &&
+      latestReportDetails.value.last_report_tz
+        ? latestReportDetails.value.last_report_tz
+        : ""
+    );
     const validReportTypes = computed(() => {
       if (voyageLegs.value.length == 0) {
         return [Report.type.DEP_SBY];
@@ -432,6 +438,7 @@ export const useLatestReportDetailsStore = defineStore(
       id,
       lastReportDate,
       lastReportType,
+      lastReportTz,
       loadCondition,
       parkingStatus,
       plannedOperations,

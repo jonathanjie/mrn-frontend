@@ -18,7 +18,10 @@ const departurePortName = computed(
   () => props.report?.reportroute.departure_port.split(" ")[1]
 );
 const departureDateTime = computed(() =>
-  convertUTCToLT(new Date(props.report?.report_date), props.report.report_tz)
+  convertUTCToLT(
+    new Date(props.report?.reportroute.departure_date),
+    props.report.reportroute.departure_tz
+  )
 );
 const arrivalPortCountry = computed(
   () => props.report?.reportroute?.arrival_port.split(" ")[0] ?? ""

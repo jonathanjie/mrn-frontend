@@ -57,11 +57,11 @@ const uploadFiles = () => {
   if (isFileMissing) {
     window.alert("please add all files needed");
   }
-  console.log("uploading files");
+  // console.log("uploading files");
 };
 
 const uploadSettings = async () => {
-  console.log("uploading settings");
+  // console.log("uploading settings");
 
   const currentYear = new Date().getFullYear();
   const SETTINGS = {
@@ -84,7 +84,7 @@ const uploadSettings = async () => {
     },
   };
 
-  console.log(SETTINGS);
+  // console.log(SETTINGS);
   await axios
     .post(`${process.env.VUE_APP_URL_DOMAIN}/cii/config/`, SETTINGS)
     .then()
