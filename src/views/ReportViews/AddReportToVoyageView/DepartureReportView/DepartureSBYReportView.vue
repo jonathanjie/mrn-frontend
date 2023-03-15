@@ -58,6 +58,7 @@ const {
   // Pilot station - Departure
   shouldPilotDepDataBeSent,
   pilotDepName,
+  pilotDepTimeZone,
   pilotDepDateTimeUTC,
   pilotDepLatDir,
   pilotDepLatDegree,
@@ -217,6 +218,7 @@ const sendReport = async () => {
     departurepilotstation: shouldPilotDepDataBeSent.value
       ? {
           name: pilotDepName.value,
+          timezone: reportingTimeZone.value,
           date: pilotDepDateTimeUTC.value || null,
           position: pilotPosition,
         }
@@ -267,10 +269,9 @@ const sendReport = async () => {
     // can change the above to null once the database is updated
   };
 
-  // console.log("data: ", REPORT);
+  console.log("data: ", JSON.stringify(REPORT));
 
   isSubmissionModalVisible.value = true;
-
   axios
     .post(`${process.env.VUE_APP_URL_DOMAIN}/marinanet/reports/`, REPORT)
     .then(() => {

@@ -3,11 +3,11 @@ import BasicTable from "@/components/Table/BasicTable.vue";
 import CIISetupModal from "@/components/Modals/CIISetupModal/CIISetupModal.vue";
 
 const downloadFile = () => {
-  console.log("download");
+  // console.log("download");
 };
 
 const removeFile = () => {
-  console.log("remove");
+  // console.log("remove");
 };
 
 // TODO: remove temp data (columns & rows)

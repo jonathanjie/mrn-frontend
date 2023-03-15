@@ -84,6 +84,7 @@ export const useDepartureSBYReportStore = defineStore(
     const departurePortCountry = ref("");
     const departurePortName = ref("");
     const isDestinationEnabled = ref(true);
+
     const destinationPortCountry = ref("");
     const destinationPortName = ref("");
     const destinationTimeZone = ref("default");
@@ -126,9 +127,7 @@ export const useDepartureSBYReportStore = defineStore(
     const displacement = ref("");
 
     // Pilot Station - Departure
-    const shouldPilotDepDataBeSent = computed(
-      () => pilotDepName.value || pilotDepDateTime.value
-    );
+    const shouldPilotDepDataBeSent = computed(() => pilotDepName.value);
     const pilotDepName = ref("");
     const pilotDepDateTime = ref("");
     const pilotDepDateTimeUTC = computed(() =>

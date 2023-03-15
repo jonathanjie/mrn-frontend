@@ -130,7 +130,11 @@ const {
 const voyageDetails = localStorage.getItem("voyageDetails")
   ? JSON.parse(localStorage.getItem("voyageDetails"))
   : {};
-
+if (Object.keys(voyageDetails).length != 0) {
+  if (localStorage.getItem("voyageDetails") != null) {
+    localStorage.removeItem("voyageDetails");
+  }
+}
 // store selected voyage details in pinia voyage store
 voyageUuid.value = voyageDetails.voyage_uuid;
 lastLegNo.value = voyageDetails.last_leg_no;

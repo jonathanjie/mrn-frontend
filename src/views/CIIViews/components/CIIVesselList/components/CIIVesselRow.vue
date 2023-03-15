@@ -25,7 +25,6 @@ const shipGrades = [];
 //   }
 //   shipGrades.push(tempArr);
 // }
-
 </script>
 
 <template>
@@ -55,7 +54,7 @@ const shipGrades = [];
       }}</span>
       <button
         v-if="ship.calculated_ciis.length == 0"
-        class="flex w-full justify-center bg-blue-50 rounded-l border border-blue-600 text-14 text-blue-700 font-bold"
+        class="flex w-full justify-center bg-blue-50 rounded-lg border border-blue-600 text-14 text-blue-700 font-bold"
         :class="buttonCols"
         @click.self.prevent="showModal = true"
       >

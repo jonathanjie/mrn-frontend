@@ -1,4 +1,5 @@
 <script setup>
+import { MachineryOrdered } from "@/constants";
 import { preventNaN } from "@/utils/helpers";
 import { computed } from "vue";
 import MiniUnitDisplay from "@/components/MiniUnitDisplay.vue";
@@ -28,8 +29,10 @@ const isLubricatingOilRemarkEnabled = computed(() =>
 );
 
 const fuelMachineTypes = computed(() =>
-  Object.keys(
-    props.report.consumptionconditiondata.fueloildata_set[0].breakdown
+  MachineryOrdered.filter(
+    (machinery) =>
+      machinery in
+      props.report.consumptionconditiondata.fueloildata_set[0].breakdown
   )
 );
 
@@ -86,6 +89,11 @@ const freshwaterChange = computed(
 );
 const freshwaterRob = computed(
   () => props.report.consumptionconditiondata.freshwaterdata.rob
+);
+console.log(
+  Object.entries(
+    props.report.consumptionconditiondata.fueloildata_set[0].breakdown
+  )
 );
 // console.log(fuelMachineTypes.value.length);
 
@@ -157,11 +165,11 @@ const getFuelOilCols = () => "grid-cols-" + (fuelMachineTypes.value.length + 5);
               {{ $t(fuelOilData.fuel_oil_type) }}
             </div>
             <input
-              v-for="entry of Object.entries(fuelOilData.breakdown)"
+              v-for="machinery in fuelMachineTypes"
               disabled
-              :key="entry"
-              v-model="entry[1]"
-              @keypress="preventNaN($event, entry[1])"
+              :key="machinery.id"
+              v-model="fuelOilData.breakdown[machinery]"
+              @keypress="preventNaN($event, fuelOilData.breakdown[machinery])"
               placeholder="0"
               class="col-span-1 p-3 pl-4 border-t border-l bg-gray-50 text-gray-700 focus:outline-0"
             />

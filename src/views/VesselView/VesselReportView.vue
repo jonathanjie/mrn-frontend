@@ -100,7 +100,6 @@ const addVoyage = async () => {
       do {
         var inputVoyage = prompt("Enter initial voyage number above 0.", "");
         if (inputVoyage === null) {
-          console.log("Help");
           break;
         }
         inputVoyage = parseInt(inputVoyage, 10);

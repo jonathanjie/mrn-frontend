@@ -3,6 +3,7 @@ import { computed } from "vue";
 import {
   textInputOptions,
   format,
+  convertUTCToLT,
   // formatUTC
 } from "@/utils/helpers.js";
 import { TIMEZONES } from "@/utils/options";
@@ -22,12 +23,13 @@ const departurePortCountry = computed(
 const departurePortName = computed(
   () => props.report.reportroute.departure_port.split(" ")[1]
 );
-const departureDateTime = computed(
-  () => props.report.reportroute?.departure_date ?? ""
+const departureDateTime = computed(() =>
+  convertUTCToLT(
+    new Date(props.report.reportroute.departure_date),
+    props.report.reportroute.departure_tz
+  )
 );
-const departureTimeZone = computed(
-  () => props.report.reportroute?.departure_tz ?? ""
-);
+const departureTimeZone = computed(() => props.report.reportroute.departure_tz);
 
 const destinationPortCountry = computed(
   () => props.report.reportroute?.arrival_port.split(" ")[0] ?? ""
@@ -35,8 +37,13 @@ const destinationPortCountry = computed(
 const destinationPortName = computed(
   () => props.report.reportroute?.arrival_port.split(" ")[1] ?? ""
 );
-const destinationEstimatedArrival = computed(
-  () => props.report.reportroute?.arrival_date ?? ""
+const destinationEstimatedArrival = computed(() =>
+  props.report.reportroute.arrival_tz != undefined
+    ? convertUTCToLT(
+        new Date(props.report.reportroute.arrival_date),
+        props.report.reportroute?.arrival_tz
+      )
+    : ""
 );
 const destinationTimeZone = computed(
   () => props.report.reportroute?.arrival_tz ?? ""
