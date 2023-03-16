@@ -38,7 +38,7 @@ const {
   standardizedFiles,
   IMODCSFiles,
 } = storeToRefs(CIISetupStore);
-const { imoReg, companyUuid } = storeToRefs(shipStore);
+const { imoReg, companyUuid, shipName } = storeToRefs(shipStore);
 const pageNum = ref(1);
 
 defineProps({
@@ -55,18 +55,25 @@ const cancel = () => {
 };
 
 const uploadFiles = async () => {
-  const files = technicalFiles.value;
+  const files = [
+    ...technicalFiles.value,
+    ...standardizedFiles.value,
+    ...IMODCSFiles.value,
+  ];
   console.log(technicalFiles.value);
   console.log(standardizedFiles);
   console.log(IMODCSFiles);
+  const folderPath = `${companyUuid.value}/${shipName.value}/CIISetup`;
 
-  const isFileMissing = true;
+  // const isFileMissing = true;
   // if (isFileMissing) {
   //   window.alert("please add all files needed");
   // }
 
-  await uploadFilesToS3(files, imoReg.value, companyUuid.value);
-  // console.log("uploading files");
+  await uploadFilesToS3(files, folderPath).catch((error) => {
+    window.alert(error);
+    console.error(error);
+  });
 };
 
 const uploadSettings = async () => {
@@ -107,6 +114,8 @@ const uploadSettings = async () => {
       // }
       console.error(error);
     });
+
+  await uploadFiles();
 
   pageNum.value = 1;
   showModal.value = false;

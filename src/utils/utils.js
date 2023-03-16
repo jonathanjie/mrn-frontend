@@ -1,5 +1,5 @@
 // -------------------------------- S3 Utils - File Upload -----------------------------------------------
-const getPresignedUrlForFileUpload = async (files, companyUuid, voyageUuid) => {
+const getPresignedUrlForFileUpload = async (files, folderPath) => {
   const getFileNames = () => {
     return files.map((file) => file.name);
   };
@@ -11,7 +11,7 @@ const getPresignedUrlForFileUpload = async (files, companyUuid, voyageUuid) => {
       },
       method: "POST",
       body: JSON.stringify({
-        file_directory: `${companyUuid}/${voyageUuid}/bdn`,
+        file_directory: folderPath,
         filenames: getFileNames(),
       }),
     }
@@ -50,10 +50,10 @@ const uploadFile = async (file) => {
 };
 
 // Use this function outside
-export const uploadFilesToS3 = async (files, companyUuid, voyageUuid) => {
+export const uploadFilesToS3 = async (files, folderPath) => {
   let urls = [];
   if (files.length) {
-    urls = await getPresignedUrlForFileUpload(files, companyUuid, voyageUuid);
+    urls = await getPresignedUrlForFileUpload(files, folderPath);
   }
   for (const [index, file] of files.entries()) {
     file.presignedUrl = urls[index].presigned_url;
