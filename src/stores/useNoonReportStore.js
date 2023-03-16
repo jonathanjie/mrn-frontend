@@ -64,9 +64,6 @@ export const useNoonReportStore = defineStore("noonReport", () => {
         )
       : ""
   );
-  const getPrevReportTz = computed(() =>
-    lastReportTz.value ? lastReportTz.value : 0
-  );
 
   const reportingDateTimeUTC = computed(() =>
     reportingTimeZone.value !== "default" && reportingDateTime.value
@@ -418,7 +415,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
   // State variables
   // Overview
   const reportingDateTime = ref(getPrevDate.value);
-  const reportingTimeZone = ref(getPrevReportTz.value);
+  const reportingTimeZone = ref("default");
   // Departure and Destination
   const dateEditIsDisabled = ref(true);
   const routeArrivalDateTimeEdited = ref(routeArrivalDateTime.value);
@@ -518,7 +515,7 @@ export const useNoonReportStore = defineStore("noonReport", () => {
     // State variables
     // Overview
     reportingDateTime.value = getPrevDate.value;
-    reportingTimeZone.value = getPrevReportTz.value;
+    reportingTimeZone.value = "default";
     // Departure and Destination
     dateEditIsDisabled.value = true;
     routeArrivalDateTimeEdited.value = routeArrivalDateTime.value;

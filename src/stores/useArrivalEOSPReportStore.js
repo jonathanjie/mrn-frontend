@@ -350,7 +350,7 @@ export const useArrivalEOSPReportStore = defineStore(
     // State
     // Overview
     const reportingDateTime = ref(new Date(lastReportDate.value));
-    const reportingTimeZone = ref(lastReportTz.value);
+    const reportingTimeZone = ref("default");
 
     // Departure and Arrival
 
@@ -444,7 +444,7 @@ export const useArrivalEOSPReportStore = defineStore(
       console.log("Arr EOSP store is reset");
       // Overview
       reportingDateTime.value = new Date(lastReportDate.value);
-      reportingTimeZone.value = lastReportTz.value;
+      reportingTimeZone.value = "default";
 
       // Departure and Arrival
       departureDateTime.value = departureDate.value;
