@@ -1,8 +1,7 @@
-// S3 Utils - File Upload
-const getPresignedUrlForFileUpload = async (files, companyUuid, voyageUuid) => {
+// -------------------------------- S3 Utils - File Upload -----------------------------------------------
+const getPresignedUrlForFileUpload = async (files, folderPath) => {
   const getFileNames = () => {
-    // console.log(files.value.map((file) => file.name));
-    return files.value.map((file) => file.name);
+    return files.map((file) => file.name);
   };
   const response = await fetch(
     "https://majnalcwgg5jdnfpr2zdxvqubq0thpjz.lambda-url.ap-southeast-1.on.aws/",
@@ -12,7 +11,7 @@ const getPresignedUrlForFileUpload = async (files, companyUuid, voyageUuid) => {
       },
       method: "POST",
       body: JSON.stringify({
-        file_directory: `${companyUuid.value}/${voyageUuid.value}/bdn`,
+        file_directory: folderPath,
         filenames: getFileNames(),
       }),
     }
@@ -51,14 +50,16 @@ const uploadFile = async (file) => {
 };
 
 // Use this function outside
-export const uploadFiles = async (files) => {
+export const uploadFilesToS3 = async (files, folderPath) => {
   let urls = [];
   if (files.length) {
-    urls = await getPresignedUrlForFileUpload();
+    urls = await getPresignedUrlForFileUpload(files, folderPath);
   }
-  for (const [index, file] of files.value.entries()) {
+  for (const [index, file] of files.entries()) {
     file.presignedUrl = urls[index].presigned_url;
   }
 
   return Promise.all(files.map((file) => uploadFile(file)));
 };
+
+export default uploadFilesToS3;

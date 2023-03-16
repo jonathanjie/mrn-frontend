@@ -228,10 +228,9 @@ import { convertUTCToLT } from "@/utils/helpers";
 
 const shipStore = useShipStore();
 const { imoReg } = storeToRefs(shipStore);
-
-// TODO: update other ship store values
 imoReg.value = props.imo;
 
+// TODO: Update other ship store values
 const props = defineProps({
   vesselname: String,
   imo: String,
@@ -243,6 +242,7 @@ const store = useHQStore();
 // shipStore.imoReg = props.imo
 
 const { isSuccess: shipSuccess, data: ship } = store.shipQuery(props.imo);
+
 const { isSuccess: legsSuccess, data: portCalls } = store.legsQuery(props.imo);
 const { isSuccess: statsSuccess, data: stats } = store.statsQuery(props.imo);
 

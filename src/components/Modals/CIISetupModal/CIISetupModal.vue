@@ -1,7 +1,6 @@
 <script setup>
 import BaseModal from "@/components/Modals/BaseModal.vue";
 
-// import { ref } from "vue";
 import { CIIModalTypes } from "@/constants";
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
@@ -12,7 +11,7 @@ import axios from "axios";
 import { storeToRefs } from "pinia";
 import { useShipStore } from "@/stores/useShipStore";
 import constants from "@/constants";
-// import { useMutation } from "vue-query";
+import { uploadFilesToS3 } from "@/utils/utils";
 
 const shipStore = useShipStore();
 const CIISetupStore = useCIISetupStore();
@@ -35,7 +34,7 @@ const {
   IMODCSFiles,
   pageNum,
 } = storeToRefs(CIISetupStore);
-const { imoReg } = storeToRefs(shipStore);
+const { imoReg, companyUuid, shipName } = storeToRefs(shipStore);
 
 defineProps({
   setup_type: {
@@ -50,12 +49,26 @@ const cancel = () => {
   showModal.value = false;
 };
 
-const uploadFiles = () => {
-  const isFileMissing = true;
-  if (isFileMissing) {
-    window.alert("please add all files needed");
-  }
-  // console.log("uploading files");
+const uploadFiles = async () => {
+  const files = [
+    ...technicalFiles.value,
+    ...standardizedFiles.value,
+    ...IMODCSFiles.value,
+  ];
+  console.log(technicalFiles.value);
+  console.log(standardizedFiles);
+  console.log(IMODCSFiles);
+  const folderPath = `${companyUuid.value}/${shipName.value}/CIISetup`;
+
+  // const isFileMissing = true;
+  // if (isFileMissing) {
+  //   window.alert("please add all files needed");
+  // }
+
+  await uploadFilesToS3(files, folderPath).catch((error) => {
+    window.alert(error);
+    console.error(error);
+  });
 };
 
 const uploadSettings = async () => {
@@ -96,6 +109,8 @@ const uploadSettings = async () => {
       // }
       console.error(error);
     });
+
+  await uploadFiles();
 
   pageNum.value = 1;
   showModal.value = false;
@@ -181,9 +196,13 @@ const uploadSettings = async () => {
           >
             <template #content>{{ $t("completeSetup") }}</template>
           </GradientButton>
-          <!-- <GradientButton v-if="pageNum === 2" @click="uploadFiles">
+
+          <GradientButton
+            v-if="pageNum === 2"
+            @click="uploadFiles(technicalFiles)"
+          >
             <template #content>Upload files</template>
-          </GradientButton> -->
+          </GradientButton>
         </div>
       </template>
     </BaseModal>
