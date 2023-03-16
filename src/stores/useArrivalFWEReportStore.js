@@ -16,13 +16,16 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
 
   const detailsStore = useLatestReportDetailsStore();
   const {
-    departurePort,
+    departurePortCountry,
+    departurePortName,
     departureTz,
-    arrivalPort,
+    departureDate,
+    arrivalPortCountry,
+    arrivalPortName,
+    lastReportDate,
+    lastReportTz,
     plannedOperations,
     otherPlannedOperation,
-    departureDate,
-    lastReportDate,
     distanceObservedTotal,
     distanceEngineTotal,
     revolutionCount: revolution_count,
@@ -33,20 +36,16 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     fuelOilConsPortToPort,
   } = storeToRefs(detailsStore);
 
-  const departurePortCountry = ref(departurePort.value.slice(0, 2));
-  const departurePortName = ref(departurePort.value.slice(3, 6));
-  const departureDateTime = ref(departureDate);
-  const departureTimeZone = ref(departureTz);
-  const arrivalPortCountry = ref(arrivalPort.value.slice(0, 2));
-  const arrivalPortName = ref(arrivalPort.value.slice(3, 6));
-
+  // Getters
   // Overview
-  const reportNo = arrfReportNo;
-  const legNo = lastLegNo;
-  const loadingCondition = curLoadingCondition;
-  const voyageNo = curVoyageNo;
-  const reportingDateTime = ref("");
-  const reportingTimeZone = ref("default");
+  const reportNo = computed(() =>
+    arrfReportNo.value ? arrfReportNo.value : 0
+  );
+  const legNo = computed(() => (lastLegNo.value ? lastLegNo.value : 0));
+  const loadingCondition = computed(() =>
+    curLoadingCondition.value ? curLoadingCondition.value : "N.A"
+  );
+  const voyageNo = computed(() => (curVoyageNo.value ? curVoyageNo.value : 0));
   const reportingDateTimeUTC = computed(() =>
     reportingTimeZone.value !== "default" && reportingDateTime.value
       ? convertLTToUTC(
@@ -55,15 +54,6 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
         )
       : ""
   );
-  // Finish With Engine
-  const latDir = ref("default");
-  const latMinute = ref("");
-  const latDegree = ref("");
-  const longDir = ref("default");
-  const longMinute = ref("");
-  const longDegree = ref("");
-  const operations = ref([]);
-  const status = ref("");
 
   // Pilot Station -- Arrival
   const shouldPilotArrDataBeSent = computed(
@@ -74,8 +64,6 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
       pilotArrDraftMid.value ||
       pilotArrDraftAft.value
   );
-  const pilotArrName = ref("");
-  const pilotArrDateTime = ref("");
   const pilotArrDateTimeUTC = computed(() =>
     reportingTimeZone.value !== "default" && pilotArrDateTime.value
       ? convertLTToUTC(
@@ -84,15 +72,6 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
         )
       : ""
   );
-  const pilotArrDraftFwd = ref("");
-  const pilotArrDraftMid = ref("");
-  const pilotArrDraftAft = ref("");
-  const pilotArrLatDir = ref("default");
-  const pilotArrLatDegree = ref("");
-  const pilotArrLatMinute = ref("");
-  const pilotArrLongDir = ref("default");
-  const pilotArrLongDegree = ref("");
-  const pilotArrLongMinute = ref("");
 
   // Distance & Time (S/BY to F.W.E)
   const hours = computed(() =>
@@ -104,7 +83,6 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
         ).toFixed(0)
       : ""
   );
-  const distanceObs = ref("");
   const distanceEng = computed(() =>
     distanceEngStatic.value
       ? distanceEngStatic.value
@@ -120,7 +98,6 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
         ).toFixed(0)
       : ""
   );
-  const distanceEngStatic = ref("");
   const distanceObsTotal = computed(() =>
     distanceObs.value
       ? +(
@@ -149,7 +126,6 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
         ).toFixed(0)
       : ""
   );
-  const revolutionCountStatic = ref("");
   const hoursSinceLast = computed(() =>
     reportingDateTimeUTC.value && reportingTimeZone.value !== "default"
       ? +(
@@ -170,17 +146,6 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   );
 
   // Consumption & Condition (S/BY to F.W.E)
-  const fuelOilBreakdowns = reactive({});
-  for (const fuelOil of fuelOils.value) {
-    fuelOilBreakdowns[fuelOil] = {};
-    for (const machine of machinery.value) {
-      fuelOilBreakdowns[fuelOil][machine] = "";
-    }
-    // fuelOilBreakdowns[fuelOil][Machinery.ME] = "";
-    // fuelOilBreakdowns[fuelOil][Machinery.GE] = "";
-    // fuelOilBreakdowns[fuelOil][Machinery.IGG] = "";
-    // fuelOilBreakdowns[fuelOil][Machinery.BLR] = "";
-  }
   const fuelOilTotalConsumptions = computed(() => {
     let rtn = {};
     for (const fuelOil of fuelOils.value) {
@@ -198,20 +163,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     }
     return rtn;
   });
-  const fuelOilDataCorrection = reactive({
-    type: "default",
-    correction: "",
-    remarks: "",
-  });
 
-  const lubricatingOilBreakdowns = reactive({});
-  for (const lubricatingOil of lubricatingOils.value) {
-    lubricatingOilBreakdowns[lubricatingOil] = {
-      total_consumption: "",
-      receipt: "",
-      debunkering: "",
-    };
-  }
   const lubricatingOilRobs = computed(() => {
     let rtn = {};
     for (const lubricatingOil of lubricatingOils.value) {
@@ -224,14 +176,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     }
     return rtn;
   });
-  const lubricatingOilDataCorrection = reactive({
-    type: "default",
-    correction: "",
-    remarks: "",
-  });
 
-  const freshwaterConsumed = ref("");
-  const freshwaterGenerated = ref("");
   const freshwaterChange = computed(
     () => +(freshwaterGenerated.value - freshwaterConsumed.value).toFixed(2)
   );
@@ -289,8 +234,151 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     return rtn;
   });
 
+  // State
+  // Overview
+  const departureDateTime = ref(departureDate);
+  const departureTimeZone = ref(departureTz);
+  const reportingDateTime = ref("");
+  const reportingTimeZone = ref("default");
+
+  // Finish With Engine
+  const latDir = ref("default");
+  const latMinute = ref("");
+  const latDegree = ref("");
+  const longDir = ref("default");
+  const longMinute = ref("");
+  const longDegree = ref("");
+  const operations = ref([]);
+  const status = ref("");
+
+  // Pilot Station -- Arrival
+  const pilotArrName = ref("");
+  const pilotArrDateTime = ref("");
+  const pilotArrDraftFwd = ref("");
+  const pilotArrDraftMid = ref("");
+  const pilotArrDraftAft = ref("");
+  const pilotArrLatDir = ref("default");
+  const pilotArrLatDegree = ref("");
+  const pilotArrLatMinute = ref("");
+  const pilotArrLongDir = ref("default");
+  const pilotArrLongDegree = ref("");
+  const pilotArrLongMinute = ref("");
+
+  // Distance & Time (S/BY to F.W.E)
+  const distanceObs = ref("");
+  const distanceEngStatic = ref("");
+  const revolutionCountStatic = ref("");
+
+  // Consumption & Condition (S/BY to F.W.E)
+  const fuelOilBreakdowns = reactive({});
+  for (const fuelOil of fuelOils.value) {
+    fuelOilBreakdowns[fuelOil] = {};
+    for (const machine of machinery.value) {
+      fuelOilBreakdowns[fuelOil][machine] = "";
+    }
+    // fuelOilBreakdowns[fuelOil][Machinery.ME] = "";
+    // fuelOilBreakdowns[fuelOil][Machinery.GE] = "";
+    // fuelOilBreakdowns[fuelOil][Machinery.IGG] = "";
+    // fuelOilBreakdowns[fuelOil][Machinery.BLR] = "";
+  }
+  const fuelOilDataCorrection = reactive({
+    type: "default",
+    correction: "",
+    remarks: "",
+  });
+
+  const lubricatingOilBreakdowns = reactive({});
+  for (const lubricatingOil of lubricatingOils.value) {
+    lubricatingOilBreakdowns[lubricatingOil] = {
+      total_consumption: "",
+      receipt: "",
+      debunkering: "",
+    };
+  }
+  const lubricatingOilDataCorrection = reactive({
+    type: "default",
+    correction: "",
+    remarks: "",
+  });
+  const freshwaterConsumed = ref("");
+  const freshwaterGenerated = ref("");
+
+  // Additional Remarks
   const additionalRemarks = ref("");
 
+  function $reset() {
+    console.log("Arr EOSP Store reset");
+    // Overview
+    departureDateTime.value = departureDate;
+    departureTimeZone.value = departureTz;
+    reportingDateTime.value = "";
+    reportingTimeZone.value = "default";
+
+    // Finish With Engine
+    latDir.value = "default";
+    latMinute.value = "";
+    latDegree.value = "";
+    longDir.value = "default";
+    longMinute.value = "";
+    longDegree.value = "";
+    operations.value = [];
+    status.value = "";
+
+    // Pilot Station -- Arrival
+    pilotArrName.value = "";
+    pilotArrDateTime.value = "";
+    pilotArrDraftFwd.value = "";
+    pilotArrDraftMid.value = "";
+    pilotArrDraftAft.value = "";
+    pilotArrLatDir.value = "default";
+    pilotArrLatDegree.value = "";
+    pilotArrLatMinute.value = "";
+    pilotArrLongDir.value = "default";
+    pilotArrLongDegree.value = "";
+    pilotArrLongMinute.value = "";
+
+    // Distance & Time (S/BY to F.W.E)
+    distanceObs.value = "";
+    distanceEngStatic.value = "";
+    revolutionCountStatic.value = "";
+
+    // Consumption & Condition (S/BY to F.W.E)
+    fuelOilBreakdowns.value = {};
+    for (const fuelOil of fuelOils.value) {
+      fuelOilBreakdowns[fuelOil] = {};
+      for (const machine of machinery.value) {
+        fuelOilBreakdowns[fuelOil][machine] = "";
+      }
+      // fuelOilBreakdowns[fuelOil][Machinery.ME] = "";
+      // fuelOilBreakdowns[fuelOil][Machinery.GE] = "";
+      // fuelOilBreakdowns[fuelOil][Machinery.IGG] = "";
+      // fuelOilBreakdowns[fuelOil][Machinery.BLR] = "";
+    }
+    fuelOilDataCorrection.value = {
+      type: "default",
+      correction: "",
+      remarks: "",
+    };
+
+    lubricatingOilBreakdowns.value = {};
+    for (const lubricatingOil of lubricatingOils.value) {
+      lubricatingOilBreakdowns[lubricatingOil] = {
+        total_consumption: "",
+        receipt: "",
+        debunkering: "",
+      };
+    }
+    lubricatingOilDataCorrection.value = {
+      type: "default",
+      correction: "",
+      remarks: "",
+    };
+    freshwaterConsumed.value = "";
+    freshwaterGenerated.value = "";
+
+    // Additional Remarks
+    additionalRemarks.value = "";
+  }
   return {
     departurePortCountry,
     departurePortName,
@@ -366,5 +454,6 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     fuelOilTotalConsumptionsSum,
     // Additional remarks
     additionalRemarks,
+    $reset,
   };
 });

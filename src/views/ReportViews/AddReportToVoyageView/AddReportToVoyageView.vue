@@ -115,11 +115,11 @@ depCospStore.$reset();
 const noonStore = useNoonReportStore();
 noonStore.$reset();
 
-// const arrEospStore = useArrivalEOSPReportStore();
-// arrEospStore.$reset();
+const arrEospStore = useArrivalEOSPReportStore();
+arrEospStore.$reset();
 
-// const arrFweStore = useArrivalFWEReportStore();
-// arrFweStore.$reset();
+const arrFweStore = useArrivalFWEReportStore();
+arrFweStore.$reset();
 
 // const harbourStore = useHarbourPortReportStore();
 // harbourStore.$reset();
