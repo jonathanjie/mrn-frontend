@@ -2,6 +2,7 @@
 import BaseModal from "@/components/Modals/BaseModal.vue";
 
 import { ref } from "vue";
+import { useMutation } from "vue-query";
 import { CIIModalTypes } from "@/constants";
 import GradientButton from "@/components/Buttons/GradientButton.vue";
 import CustomButton from "@/components/Buttons/CustomButton.vue";
@@ -12,7 +13,8 @@ import axios from "axios";
 import { storeToRefs } from "pinia";
 import { useShipStore } from "@/stores/useShipStore";
 import constants from "@/constants";
-import { useMutation } from "vue-query";
+
+import { uploadFilesToS3 } from "@/utils/utils";
 
 const shipStore = useShipStore();
 const CIISetupStore = useCIISetupStore();
@@ -36,7 +38,7 @@ const {
   standardizedFiles,
   IMODCSFiles,
 } = storeToRefs(CIISetupStore);
-const { imoReg } = storeToRefs(shipStore);
+const { imoReg, companyUuid } = storeToRefs(shipStore);
 const pageNum = ref(1);
 
 defineProps({
@@ -52,11 +54,18 @@ const cancel = () => {
   showModal.value = false;
 };
 
-const uploadFiles = () => {
+const uploadFiles = async () => {
+  const files = technicalFiles.value;
+  console.log(technicalFiles.value);
+  console.log(standardizedFiles);
+  console.log(IMODCSFiles);
+
   const isFileMissing = true;
-  if (isFileMissing) {
-    window.alert("please add all files needed");
-  }
+  // if (isFileMissing) {
+  //   window.alert("please add all files needed");
+  // }
+
+  await uploadFilesToS3(files, imoReg.value, companyUuid.value);
   // console.log("uploading files");
 };
 
@@ -167,9 +176,13 @@ const uploadSettings = async () => {
           <GradientButton v-if="pageNum === 2" @click="uploadSettings">
             <template #content>{{ $t("completeSetup") }}</template>
           </GradientButton>
-          <!-- <GradientButton v-if="pageNum === 2" @click="uploadFiles">
+
+          <GradientButton
+            v-if="pageNum === 2"
+            @click="uploadFiles(technicalFiles)"
+          >
             <template #content>Upload files</template>
-          </GradientButton> -->
+          </GradientButton>
         </div>
       </template>
     </BaseModal>
