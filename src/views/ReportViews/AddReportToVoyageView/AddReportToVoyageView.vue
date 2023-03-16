@@ -121,11 +121,11 @@ arrEospStore.$reset();
 const arrFweStore = useArrivalFWEReportStore();
 arrFweStore.$reset();
 
-// const harbourStore = useHarbourPortReportStore();
-// harbourStore.$reset();
+const harbourStore = useHarbourPortReportStore();
+harbourStore.$reset();
 
-// const bunkerStore = useBunkerReportStore();
-// bunkerStore.$reset();
+const bunkerStore = useBunkerReportStore();
+bunkerStore.$reset();
 const submissionStatusStore = useSubmissionStatusStore();
 const { isSubmissionModalVisible } = storeToRefs(submissionStatusStore);
 // const showModal = ref(isSubmissionRequested.value);
