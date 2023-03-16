@@ -9,7 +9,7 @@
       <!-- 2020 to current year -->
       <select
         @change="
-          (e) => $emit('selectYear', { file: file, year: e.target.value })
+          (e) => $emit('select-year', e.target.value )
         "
         class="focus:outline-none text-gray-800"
       >
@@ -37,7 +37,7 @@ defineProps({
   file: { type: Object, required: true },
   isCiiReport: { type: Boolean, required: false, default: false },
 });
-defineEmits(["remove", "selectYear"]);
+defineEmits(["remove", "select-year"]);
 
 // list of years from 2020 to current year
 const currentYear = new Date().getFullYear();

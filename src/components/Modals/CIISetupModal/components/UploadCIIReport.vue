@@ -65,10 +65,12 @@ const onInputChange = (key, e, validFileTypes) => {
 class UploadableFile {
   constructor(file) {
     this.file = file;
+    this.filePath = ""
     this.id = `${file.name}-${file.size}-${file.lastModified}-${file.type}`;
     this.type = file.type;
     this.presignedUrl = "";
     this.name = file.name;
+    this.year = null;
     this.extension = file.name.split(".").pop();
   }
 }
@@ -123,6 +125,11 @@ class UploadableFile {
           :file="file"
           is-cii-report
           @remove="(file) => removeFile('IMODCS_FILES', file)"
+          @select-year="
+            (year) => {
+              file.year = year;
+            }
+          "
         />
       </ul>
     </div>
@@ -176,6 +183,11 @@ class UploadableFile {
           :file="file"
           is-cii-report
           @remove="(file) => removeFile('STANDARDIZED_FILES', file)"
+          @select-year="
+            (year) => {
+              file.year = year;
+            }
+          "
         />
       </ul>
     </div>

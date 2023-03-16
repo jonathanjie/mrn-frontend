@@ -55,8 +55,10 @@ export const uploadFilesToS3 = async (files, folderPath) => {
   if (files.length) {
     urls = await getPresignedUrlForFileUpload(files, folderPath);
   }
+
   for (const [index, file] of files.entries()) {
     file.presignedUrl = urls[index].presigned_url;
+    file.filePath = urls[index].filepath;
   }
 
   return Promise.all(files.map((file) => uploadFile(file)));

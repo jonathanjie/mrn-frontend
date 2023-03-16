@@ -40,6 +40,7 @@ const {
 } = storeToRefs(CIISetupStore);
 const { imoReg, companyUuid, shipName } = storeToRefs(shipStore);
 const pageNum = ref(1);
+const FOLDER_PATH = `${companyUuid.value}/${shipName.value}/CIISetup`;
 
 defineProps({
   setup_type: {
@@ -64,16 +65,16 @@ const uploadFiles = async () => {
   if (isFilesEmpty) {
     return null;
   }
+
   console.log(technicalFiles.value);
   console.log(standardizedFiles);
   console.log(IMODCSFiles);
-  const folderPath = `${companyUuid.value}/${shipName.value}/CIISetup`;
 
   // if (isFileMissing) {
   //   window.alert("please add all files needed");
   // }
 
-  await uploadFilesToS3(files, folderPath).catch((error) => {
+  await uploadFilesToS3(files, FOLDER_PATH).catch((error) => {
     window.alert(error);
     console.error(error);
   });
@@ -81,7 +82,6 @@ const uploadFiles = async () => {
 
 const uploadSettings = async () => {
   // console.log("uploading settings");
-
   const currentYear = new Date().getFullYear();
   const SETTINGS = {
     ship: imoReg.value,
@@ -104,6 +104,7 @@ const uploadSettings = async () => {
   };
 
   // console.log(SETTINGS);
+
   await axios
     .post(`${process.env.VUE_APP_URL_DOMAIN}/cii/config/`, SETTINGS)
     .then()
@@ -113,13 +114,54 @@ const uploadSettings = async () => {
       // } else {
       //   console.error(error);
       window.alert(error);
-
       // }
       console.error(error);
     });
+};
 
+const uploadStandardFilesDetails = async () => {
+  const body = standardizedFiles.value.map((file) => {
+    return {
+      file_name: file?.name ?? "",
+      s3_file_path: file.filePath,
+      ship: imoReg.value,
+      year: file.year,
+    };
+  });
+  await axios.post(
+    `${process.env.VUE_APP_URL_DOMAIN}/cii/standarddatareporting/`,
+    body[0]
+  );
+};
+
+const uploadTechnicalFilesDetails = async () => {
+
+  const body = technicalFiles.value.map((file) => {
+    return {
+      file_name: file?.name ?? "",
+      s3_file_path: file.filePath,
+      ship: imoReg.value,
+    };
+  });
+  await axios.post(
+    `${process.env.VUE_APP_URL_DOMAIN}/cii/technicalfiles/`,
+    body[0]
+  );
+};
+
+const handleSetup = async () => {
+  console.log("handle setup");
+  const isMultipleTechincalFile = technicalFiles.value > 0;
+  if (isMultipleTechincalFile) {
+    window.alert("Please only upload one EEDI/EEXI file");
+  }
+  await uploadSettings();
   await uploadFiles();
+  //
+  await uploadStandardFilesDetails();
+  await uploadTechnicalFilesDetails();
 
+  // ----- Close Modal ------
   pageNum.value = 1;
   showModal.value = false;
 };
@@ -185,16 +227,13 @@ const uploadSettings = async () => {
           <GradientButton v-if="pageNum === 2" @click="pageNum -= 1"
             ><template #content>{{ $t("back") }}</template></GradientButton
           >
-          <GradientButton v-if="pageNum === 2" @click="uploadSettings">
+          <GradientButton v-if="pageNum === 2" @click="handleSetup">
             <template #content>{{ $t("completeSetup") }}</template>
           </GradientButton>
 
-          <GradientButton
-            v-if="pageNum === 2"
-            @click="uploadFiles(technicalFiles)"
-          >
+          <!-- <GradientButton v-if="pageNum === 2" @click="handleSetup">
             <template #content>Upload files</template>
-          </GradientButton>
+          </GradientButton> -->
         </div>
       </template>
     </BaseModal>
