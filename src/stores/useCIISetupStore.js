@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 
 export const useCIISetupStore = defineStore("cii-setup", () => {
   const showModal = ref(false);
-  const pageNum = ref(2);
+  const pageNum = ref(1);
   const energyEfficiencyIndexType = ref("eedi");
   const energyEfficiencyIndexVal = ref("");
   const isEnginePowerLimited = ref(true);
