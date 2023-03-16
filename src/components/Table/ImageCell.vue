@@ -3,5 +3,5 @@ defineProps({ src: String });
 </script>
 
 <template>
-  <img :src="require(`../../assets` + src)" class="w-5" />
+  <img :src="require(`../../assets` + src)" />
 </template>
