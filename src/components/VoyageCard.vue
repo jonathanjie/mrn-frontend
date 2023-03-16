@@ -162,7 +162,7 @@ const addLeg = async () => {
     class="min-h-fit min-w-fit bg-darkgray mx-12 rounded-xl -mt-4 p-5"
   >
     <!-- TODO: pagination + different start/dest depending on report type -->
-    <div class="flex justify-end w-full mt-6 mb-5">
+    <div class="flex justify-end w-full mt-2 mb-3">
       <GradientButton
         class="py-1.5 px-3.5"
         @click="addLeg()"
