@@ -120,6 +120,10 @@ const uploadSettings = async () => {
 };
 
 const uploadStandardFilesDetails = async () => {
+  if (standardizedFiles.value.length == 0) {
+    return null;
+  }
+
   const body = standardizedFiles.value.map((file) => {
     return {
       file_name: file?.name ?? "",
@@ -135,6 +139,9 @@ const uploadStandardFilesDetails = async () => {
 };
 
 const uploadTechnicalFilesDetails = async () => {
+  if (standardizedFiles.value.length == 0) {
+    return null;
+  }
 
   const body = technicalFiles.value.map((file) => {
     return {
