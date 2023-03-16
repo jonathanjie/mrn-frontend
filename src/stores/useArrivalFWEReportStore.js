@@ -18,12 +18,11 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
   const {
     departurePortCountry,
     departurePortName,
-    departureTz,
-    departureDate,
+    departureTz: departureTimeZone,
+    departureDate: departureDateTime,
     arrivalPortCountry,
     arrivalPortName,
     lastReportDate,
-    lastReportTz,
     plannedOperations,
     otherPlannedOperation,
     distanceObservedTotal,
@@ -139,7 +138,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     hoursSinceLast.value
       ? +(
           (Date.parse(reportingDateTimeUTC.value) -
-            Date.parse(departureDate.value)) /
+            Date.parse(departureDateTime.value)) /
           36e5
         ).toFixed(0)
       : ""
@@ -196,7 +195,7 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
     reportingDateTimeUTC.value
       ? +(
           (Date.parse(reportingDateTimeUTC.value) -
-            Date.parse(departureDate.value)) /
+            Date.parse(departureDateTime.value)) /
           36e5
         ).toFixed(0)
       : ""
@@ -236,8 +235,6 @@ export const useArrivalFWEReportStore = defineStore("arrivalFWEReport", () => {
 
   // State
   // Overview
-  const departureDateTime = ref(departureDate);
-  const departureTimeZone = ref(departureTz);
   const reportingDateTime = ref("");
   const reportingTimeZone = ref("default");
 

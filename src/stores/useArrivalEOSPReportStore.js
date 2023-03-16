@@ -26,12 +26,11 @@ export const useArrivalEOSPReportStore = defineStore(
     const {
       departurePortCountry,
       departurePortName,
-      departureTz,
-      departureDate,
+      departureTz: departureTimeZone,
+      departureDate: departureDateTime,
       arrivalPortCountry,
       arrivalPortName,
       lastReportDate,
-      lastReportTz,
       distanceToGo: distance_to_go,
       distanceObservedTotal,
       distanceEngineTotal,
@@ -93,7 +92,7 @@ export const useArrivalEOSPReportStore = defineStore(
       reportingDateTimeUTC.value
         ? +(
             (Date.parse(reportingDateTimeUTC.value) -
-              Date.parse(departureDate.value)) /
+              Date.parse(departureDateTime.value)) /
               36e5 -
             Number(timeSbyToCosp.value)
           ).toFixed(2)
@@ -103,7 +102,7 @@ export const useArrivalEOSPReportStore = defineStore(
       reportingDateTimeUTC.value
         ? +(
             (Date.parse(reportingDateTimeUTC.value) -
-              Date.parse(departureDate.value)) /
+              Date.parse(departureDateTime.value)) /
             36e5
           ).toFixed(2)
         : ""
@@ -352,11 +351,6 @@ export const useArrivalEOSPReportStore = defineStore(
     const reportingDateTime = ref(new Date(lastReportDate.value));
     const reportingTimeZone = ref("default");
 
-    // Departure and Arrival
-
-    const departureDateTime = ref(departureDate);
-    const departureTimeZone = ref(departureTz);
-
     const plannedOperations = ref([]);
     const otherPlannedOperation = ref("");
 
@@ -447,8 +441,6 @@ export const useArrivalEOSPReportStore = defineStore(
       reportingTimeZone.value = "default";
 
       // Departure and Arrival
-      departureDateTime.value = departureDate.value;
-      departureTimeZone.value = departureTz.value;
       plannedOperations.value = [];
       otherPlannedOperation.value = "";
 
