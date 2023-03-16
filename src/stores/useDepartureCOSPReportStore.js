@@ -49,17 +49,19 @@ export const useDepartureCOSPReportStore = defineStore(
       distanceToGo: distance_to_go,
     } = storeToRefs(detailsStore);
 
+    // Getters
     // Overview
-    const reportNo = deprReportNo;
-    const legNo = lastLegNo;
+    const reportNo = computed(() =>
+      deprReportNo.value ? deprReportNo.value : 0
+    );
+    const legNo = computed(() => (lastLegNo.value ? lastLegNo.value : 0));
     // const loadingCondition = computed(() =>
     //   curLoadingCondition ? curLoadingCondition : loadCondition
     // );
-    const loadingCondition = loadCondition;
-
-    const voyageNo = curVoyageNo;
-    const reportingDateTime = ref("");
-    const reportingTimeZone = ref(lastReportTz.value);
+    const loadingCondition = computed(() =>
+      loadCondition.value ? loadCondition.value : "N.A"
+    );
+    const voyageNo = computed(() => (curVoyageNo ? curVoyageNo : 0));
     const reportingDateTimeUTC = computed(() =>
       reportingTimeZone.value !== "default" && reportingDateTime.value
         ? convertLTToUTC(
@@ -78,8 +80,6 @@ export const useDepartureCOSPReportStore = defineStore(
           )
         : ""
     );
-
-    const destinationTimeZone = ref(arrivalTz.value);
     const destinationEstimatedArrival = computed(() =>
       destinationTimeZone.value !== "default" && arrivalDate.value
         ? convertUTCToLT(new Date(arrivalDate.value), destinationTimeZone.value)
@@ -96,10 +96,6 @@ export const useDepartureCOSPReportStore = defineStore(
     );
 
     // Pilot Station - Departure
-
-    const pilotDepChecked = ref(false);
-    const pilotDepName = ref("");
-    const pilotDepDateTime = ref("");
     const pilotDepDateTimeUTC = computed(() =>
       reportingTimeZone.value !== "default" && pilotDepDateTime.value
         ? convertLTToUTC(
@@ -108,18 +104,9 @@ export const useDepartureCOSPReportStore = defineStore(
           )
         : ""
     );
-    const pilotDepLatDir = ref("default");
-    const pilotDepLatDegree = ref("");
-    const pilotDepLatMinute = ref("");
-    const pilotDepLongDir = ref("default");
-    const pilotDepLongDegree = ref("");
-    const pilotDepLongMinute = ref("");
     const shouldPilotDepDataBeSent = computed(() => pilotDepName.value !== "");
 
     // Pilot Station - Arrival
-    const pilotArrChecked = ref(false);
-    const pilotArrName = ref("");
-    const pilotArrDateTime = ref("");
     const pilotArrDateTimeUTC = computed(() =>
       destinationTimeZone.value !== "default" && pilotArrDateTime.value
         ? convertLTToUTC(
@@ -128,24 +115,9 @@ export const useDepartureCOSPReportStore = defineStore(
           )
         : ""
     );
-    const pilotArrLatDir = ref("default");
-    const pilotArrDraftFwd = ref("");
-    const pilotArrDraftMid = ref("");
-    const pilotArrDraftAft = ref("");
-    const pilotArrLatDegree = ref("");
-    const pilotArrLatMinute = ref("");
-    const pilotArrLongDir = ref("default");
-    const pilotArrLongDegree = ref("");
-    const pilotArrLongMinute = ref("");
     const shouldPilotArrDataBeSent = computed(() => pilotArrName.value !== "");
 
     // R/UP Engine / Distance & Time
-    const rupEngLatDir = ref("default");
-    const rupEngLatDegree = ref("");
-    const rupEngLatMinute = ref("");
-    const rupEngLongDir = ref("default");
-    const rupEngLongDegree = ref("");
-    const rupEngLongMinute = ref("");
     const sbyToRupTime = computed(() =>
       reportingDateTimeUTC.value
         ? +(
@@ -155,10 +127,6 @@ export const useDepartureCOSPReportStore = defineStore(
           ).toFixed(2)
         : ""
     );
-    const sbyToRupDistanceObs = ref("");
-    const sbyToRupDistanceEng = ref("");
-    const sbyToRupRevolutionCount = ref("");
-    const sbyToRupSetRPM = ref("");
     const distanceObsTotal = computed(() =>
       sbyToRupDistanceObs.value
         ? +(
@@ -176,6 +144,88 @@ export const useDepartureCOSPReportStore = defineStore(
         : ""
     );
     const hoursTotal = sbyToRupTime;
+
+    // Consumption and Condition
+    const fuelOilTotalConsumptions = computed(() => {
+      let rtn = {};
+      for (const fuelOil of fuelOils.value) {
+        rtn[fuelOil] = +sumObjectValues(fuelOilBreakdowns[fuelOil]).toFixed(2);
+      }
+      return rtn;
+    });
+    const fuelOilRobs = computed(() => {
+      let rtn = {};
+      for (const fuelOil of fuelOils.value) {
+        rtn[fuelOil] = +(
+          Number(prevFuelOilRobs.value[fuelOil]) -
+          Number(fuelOilTotalConsumptions.value[fuelOil])
+        ).toFixed(2);
+      }
+      return rtn;
+    });
+    const lubricatingOilRobs = computed(() => {
+      let rtn = {};
+      for (const lubricatingOil of lubricatingOils.value) {
+        rtn[lubricatingOil] = +(
+          Number(prevLubeOilRobs.value[lubricatingOil]) -
+          Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
+          Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
+          Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
+        ).toFixed(2);
+      }
+      return rtn;
+    });
+    const freshwaterChange = computed(
+      () => +(freshwaterGenerated.value - freshwaterConsumed.value).toFixed(2)
+    );
+    const freshwaterRob = computed(
+      () => prevFreshWaterRobs.value + freshwaterChange.value
+    );
+
+    // State
+    // Overview
+    const reportingDateTime = ref("");
+    const reportingTimeZone = ref(lastReportTz.value);
+
+    // Departure and Destination
+    const destinationTimeZone = ref(arrivalTz.value);
+
+    // Pilot Station - Departure
+    const pilotDepChecked = ref(false);
+    const pilotDepName = ref("");
+    const pilotDepDateTime = ref("");
+    const pilotDepLatDir = ref("default");
+    const pilotDepLatDegree = ref("");
+    const pilotDepLatMinute = ref("");
+    const pilotDepLongDir = ref("default");
+    const pilotDepLongDegree = ref("");
+    const pilotDepLongMinute = ref("");
+
+    // Pilot Station - Arrival
+    const pilotArrChecked = ref(false);
+    const pilotArrName = ref("");
+    const pilotArrDateTime = ref("");
+    const pilotArrLatDir = ref("default");
+    const pilotArrDraftFwd = ref("");
+    const pilotArrDraftMid = ref("");
+    const pilotArrDraftAft = ref("");
+    const pilotArrLatDegree = ref("");
+    const pilotArrLatMinute = ref("");
+    const pilotArrLongDir = ref("default");
+    const pilotArrLongDegree = ref("");
+    const pilotArrLongMinute = ref("");
+
+    // R/UP Engine / Distance & Time
+    const rupEngLatDir = ref("default");
+    const rupEngLatDegree = ref("");
+    const rupEngLatMinute = ref("");
+    const rupEngLongDir = ref("default");
+    const rupEngLongDegree = ref("");
+    const rupEngLongMinute = ref("");
+    const sbyToRupDistanceObs = ref("");
+    const sbyToRupDistanceEng = ref("");
+    const sbyToRupRevolutionCount = ref("");
+    const sbyToRupSetRPM = ref("");
 
     // Sailing Plan (Pilot to Pilot)
     const budgetDistance = ref("");
@@ -195,23 +245,7 @@ export const useDepartureCOSPReportStore = defineStore(
       // fuelOilBreakdowns[fuelOil][Machinery.IGG] = "";
       // fuelOilBreakdowns[fuelOil][Machinery.BLR] = "";
     }
-    const fuelOilTotalConsumptions = computed(() => {
-      let rtn = {};
-      for (const fuelOil of fuelOils.value) {
-        rtn[fuelOil] = +sumObjectValues(fuelOilBreakdowns[fuelOil]).toFixed(2);
-      }
-      return rtn;
-    });
-    const fuelOilRobs = computed(() => {
-      let rtn = {};
-      for (const fuelOil of fuelOils.value) {
-        rtn[fuelOil] = +(
-          Number(prevFuelOilRobs.value[fuelOil]) -
-          Number(fuelOilTotalConsumptions.value[fuelOil])
-        ).toFixed(2);
-      }
-      return rtn;
-    });
+
     const fuelOilDataCorrection = reactive({
       type: "default",
       correction: "",
@@ -226,18 +260,7 @@ export const useDepartureCOSPReportStore = defineStore(
         debunkering: "",
       };
     }
-    const lubricatingOilRobs = computed(() => {
-      let rtn = {};
-      for (const lubricatingOil of lubricatingOils.value) {
-        rtn[lubricatingOil] = +(
-          Number(prevLubeOilRobs.value[lubricatingOil]) -
-          Number(lubricatingOilBreakdowns[lubricatingOil].total_consumption) +
-          Number(lubricatingOilBreakdowns[lubricatingOil].receipt) -
-          Number(lubricatingOilBreakdowns[lubricatingOil].debunkering)
-        ).toFixed(2);
-      }
-      return rtn;
-    });
+
     const lubricatingOilDataCorrection = reactive({
       type: "default",
       correction: "",
@@ -246,16 +269,102 @@ export const useDepartureCOSPReportStore = defineStore(
 
     const freshwaterConsumed = ref("");
     const freshwaterGenerated = ref("");
-    const freshwaterChange = computed(
-      () => +(freshwaterGenerated.value - freshwaterConsumed.value).toFixed(2)
-    );
-    const freshwaterRob = computed(
-      () => prevFreshWaterRobs.value + freshwaterChange.value
-    );
 
     //Addiitonal remarks
     const additionalRemarks = ref("");
 
+    function $reset() {
+      console.log("Dep COSP store gets reset");
+      // Overview
+      reportingDateTime.value = "";
+      reportingTimeZone.value = lastReportTz.value;
+
+      // Departure and Destination
+      destinationTimeZone.value = arrivalTz.value;
+
+      // Pilot Station - Departure
+      pilotDepChecked.value = false;
+      pilotDepName.value = "";
+      pilotDepDateTime.value = "";
+      pilotDepLatDir.value = "default";
+      pilotDepLatDegree.value = "";
+      pilotDepLatMinute.value = "";
+      pilotDepLongDir.value = "default";
+      pilotDepLongDegree.value = "";
+      pilotDepLongMinute.value = "";
+
+      // Pilot Station - Arrival
+      pilotArrChecked.value = false;
+      pilotArrName.value = "";
+      pilotArrDateTime.value = "";
+      pilotArrLatDir.value = "default";
+      pilotArrDraftFwd.value = "";
+      pilotArrDraftMid.value = "";
+      pilotArrDraftAft.value = "";
+      pilotArrLatDegree.value = "";
+      pilotArrLatMinute.value = "";
+      pilotArrLongDir.value = "default";
+      pilotArrLongDegree.value = "";
+      pilotArrLongMinute.value = "";
+
+      // R/UP Engine / Distance & Time
+      rupEngLatDir.value = "default";
+      rupEngLatDegree.value = "";
+      rupEngLatMinute.value = "";
+      rupEngLongDir.value = "default";
+      rupEngLongDegree.value = "";
+      rupEngLongMinute.value = "";
+      sbyToRupDistanceObs.value = "";
+      sbyToRupDistanceEng.value = "";
+      sbyToRupRevolutionCount.value = "";
+      sbyToRupSetRPM.value = "";
+
+      // Sailing Plan (Pilot to Pilot)
+      budgetDistance.value = "";
+      budgetSpeed.value = "";
+      meDaily.value = "";
+      meRPM.value = "";
+
+      // Consumption and Condition
+      fuelOilBreakdowns.value = {};
+      for (const fuelOil of fuelOils.value) {
+        fuelOilBreakdowns[fuelOil] = {};
+        for (const machine of machinery.value) {
+          fuelOilBreakdowns[fuelOil][machine] = "";
+        }
+        // fuelOilBreakdowns[fuelOil][Machinery.ME] = "";
+        // fuelOilBreakdowns[fuelOil][Machinery.GE] = "";
+        // fuelOilBreakdowns[fuelOil][Machinery.IGG] = "";
+        // fuelOilBreakdowns[fuelOil][Machinery.BLR] = "";
+      }
+
+      fuelOilDataCorrection.value = {
+        type: "default",
+        correction: "",
+        remarks: "",
+      };
+
+      lubricatingOilBreakdowns.value = {};
+      for (const lubricatingOil of lubricatingOils.value) {
+        lubricatingOilBreakdowns[lubricatingOil] = {
+          total_consumption: "",
+          receipt: "",
+          debunkering: "",
+        };
+      }
+
+      lubricatingOilDataCorrection.value = {
+        type: "default",
+        correction: "",
+        remarks: "",
+      };
+
+      freshwaterConsumed.value = "";
+      freshwaterGenerated.value = "";
+
+      //Addiitonal remarks
+      additionalRemarks.value = "";
+    }
     return {
       // Overview
       reportNo,
@@ -341,6 +450,7 @@ export const useDepartureCOSPReportStore = defineStore(
       freshwaterRob,
       // Additional Remarks
       additionalRemarks,
+      $reset,
     };
   }
 );

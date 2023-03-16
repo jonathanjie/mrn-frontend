@@ -109,8 +109,8 @@ const updateActiveReportType = (type) => {
 const depSbyStore = useDepartureSBYReportStore();
 depSbyStore.$reset();
 
-// const depCospStore = useDepartureCOSPReportStore();
-// depCospStore.$reset()
+const depCospStore = useDepartureCOSPReportStore();
+depCospStore.$reset();
 
 const noonStore = useNoonReportStore();
 noonStore.$reset();
