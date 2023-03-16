@@ -60,12 +60,15 @@ const uploadFiles = async () => {
     ...standardizedFiles.value,
     ...IMODCSFiles.value,
   ];
+  const isFilesEmpty = files.length == 0;
+  if (isFilesEmpty) {
+    return null;
+  }
   console.log(technicalFiles.value);
   console.log(standardizedFiles);
   console.log(IMODCSFiles);
   const folderPath = `${companyUuid.value}/${shipName.value}/CIISetup`;
 
-  // const isFileMissing = true;
   // if (isFileMissing) {
   //   window.alert("please add all files needed");
   // }
