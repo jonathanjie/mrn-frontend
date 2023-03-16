@@ -69,7 +69,7 @@ const handleClick = async () => {
 </script>
 
 <template>
-  <div class="flex flex-col bg-white py-4 rounded-xl items-center divide-y">
+  <div class="flex flex-col bg-white pt-4 rounded-xl items-center divide-y">
     <div class="flex w-full justify-between" :class="isExpanded ? 'mb-4' : ''">
       <div class="flex items-center">
         <img

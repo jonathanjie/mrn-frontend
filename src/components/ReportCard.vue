@@ -61,7 +61,7 @@ const report_sent = true; // TODO: always true for MVP, no save function impleme
 <template>
   <div
     @click="handleClick"
-    class="relative flex h-24 items-center justify-between rounded-xl bg-gray-50 pt-5 cursor-pointer"
+    class="relative flex h-24 items-center justify-between rounded-xl bg-gray-50 pt-5 cursor-pointer border border-gray-200"
   >
     <img
       v-if="

@@ -585,6 +585,7 @@ const i18n = createI18n({
       noLegCreated: "No Leg Created",
       clickOnCreateNewLegAboveToBegin:
         "Click on 'Create New Leg' above to begin",
+      uploadCIIFile: "Upload CII File",
     },
     // Janky way to sort the list
     // 1. console.log the list as a Object, it will be sorted alpabetically by the browser
